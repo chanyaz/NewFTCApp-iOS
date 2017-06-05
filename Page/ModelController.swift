@@ -26,12 +26,15 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
     override init() {
         super.init()
         // Create the data model.
-        let dateFormatter = DateFormatter()
-        pageData = dateFormatter.monthSymbols
+//        let dateFormatter = DateFormatter()
+//        pageData = dateFormatter.monthSymbols
+        
+        pageData = ["首页", "中国", "全球", "金融市场", "生活时尚", "管理", "专栏", "视频"]
     }
 
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> DataViewController? {
         // Return the data view controller for the given index.
+        print ("viewControllerAtIndex: \(index)")
         if (self.pageData.count == 0) || (index >= self.pageData.count) {
             return nil
         }
@@ -45,6 +48,7 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
     func indexOfViewController(_ viewController: DataViewController) -> Int {
         // Return the index of the given data view controller.
         // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
+        print ("indexOfViewController\(pageData.index(of: viewController.dataObject) ?? NSNotFound)")
         return pageData.index(of: viewController.dataObject) ?? NSNotFound
     }
 
@@ -52,6 +56,7 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var index = self.indexOfViewController(viewController as! DataViewController)
+        print ("preparing the prev page")
         if (index == 0) || (index == NSNotFound) {
             return nil
         }
@@ -62,6 +67,7 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         var index = self.indexOfViewController(viewController as! DataViewController)
+        print ("preparing the next page")
         if index == NSNotFound {
             return nil
         }

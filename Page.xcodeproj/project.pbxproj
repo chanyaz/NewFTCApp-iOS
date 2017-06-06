@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60B2EF061EE6521800B8C6DA /* NewsChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF051EE6521800B8C6DA /* NewsChannelsViewController.swift */; };
+		60B2EF0E1EE68F8700B8C6DA /* EnglishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF0D1EE68F8700B8C6DA /* EnglishViewController.swift */; };
+		60B2EF111EE691BD00B8C6DA /* AcademyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF101EE691BD00B8C6DA /* AcademyViewController.swift */; };
+		60B2EF141EE694BC00B8C6DA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */; };
 		60D3C8C11EBFF5DC0085BEF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */; };
-		60D3C8C31EBFF5DC0085BEF6 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C21EBFF5DC0085BEF6 /* NewsViewController.swift */; };
+		60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */; };
 		60D3C8C51EBFF5DC0085BEF6 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C41EBFF5DC0085BEF6 /* DataViewController.swift */; };
 		60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */; };
 		60D3C8CA1EBFF5DC0085BEF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */; };
@@ -36,9 +40,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		60B2EF051EE6521800B8C6DA /* NewsChannelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewsChannelsViewController.swift; path = ../NewsChannelsViewController.swift; sourceTree = "<group>"; };
+		60B2EF0D1EE68F8700B8C6DA /* EnglishViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnglishViewController.swift; path = ../EnglishViewController.swift; sourceTree = "<group>"; };
+		60B2EF101EE691BD00B8C6DA /* AcademyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcademyViewController.swift; sourceTree = "<group>"; };
+		60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		60D3C8BD1EBFF5DC0085BEF6 /* Page.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		60D3C8C21EBFF5DC0085BEF6 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
+		60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
 		60D3C8C41EBFF5DC0085BEF6 /* DataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
 		60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
 		60D3C8C91EBFF5DC0085BEF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -78,6 +86,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		60B2EF071EE680DE00B8C6DA /* Reusable Classes */ = {
+			isa = PBXGroup;
+			children = (
+				60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */,
+				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
+				60D3C8C41EBFF5DC0085BEF6 /* DataViewController.swift */,
+				60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */,
+				60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */,
+			);
+			name = "Reusable Classes";
+			sourceTree = "<group>";
+		};
+		60B2EF081EE6810900B8C6DA /* News */ = {
+			isa = PBXGroup;
+			children = (
+				60B2EF051EE6521800B8C6DA /* NewsChannelsViewController.swift */,
+			);
+			name = News;
+			sourceTree = "<group>";
+		};
+		60B2EF0F1EE68FB500B8C6DA /* English */ = {
+			isa = PBXGroup;
+			children = (
+				60B2EF0D1EE68F8700B8C6DA /* EnglishViewController.swift */,
+			);
+			name = English;
+			sourceTree = "<group>";
+		};
+		60B2EF121EE691C700B8C6DA /* Academy */ = {
+			isa = PBXGroup;
+			children = (
+				60B2EF101EE691BD00B8C6DA /* AcademyViewController.swift */,
+			);
+			name = Academy;
+			sourceTree = "<group>";
+		};
 		60D3C8B41EBFF5DC0085BEF6 = {
 			isa = PBXGroup;
 			children = (
@@ -101,10 +145,10 @@
 		60D3C8BF1EBFF5DC0085BEF6 /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */,
-				60D3C8C21EBFF5DC0085BEF6 /* NewsViewController.swift */,
-				60D3C8C41EBFF5DC0085BEF6 /* DataViewController.swift */,
-				60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */,
+				60B2EF071EE680DE00B8C6DA /* Reusable Classes */,
+				60B2EF081EE6810900B8C6DA /* News */,
+				60B2EF0F1EE68FB500B8C6DA /* English */,
+				60B2EF121EE691C700B8C6DA /* Academy */,
 				60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */,
 				60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */,
 				60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */,
@@ -266,8 +310,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60D3C8C31EBFF5DC0085BEF6 /* NewsViewController.swift in Sources */,
+				60B2EF111EE691BD00B8C6DA /* AcademyViewController.swift in Sources */,
+				60B2EF061EE6521800B8C6DA /* NewsChannelsViewController.swift in Sources */,
+				60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */,
 				60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */,
+				60B2EF0E1EE68F8700B8C6DA /* EnglishViewController.swift in Sources */,
+				60B2EF141EE694BC00B8C6DA /* AppNavigation.swift in Sources */,
 				60D3C8C51EBFF5DC0085BEF6 /* DataViewController.swift in Sources */,
 				60D3C8C11EBFF5DC0085BEF6 /* AppDelegate.swift in Sources */,
 			);

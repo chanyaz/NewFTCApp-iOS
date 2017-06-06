@@ -23,13 +23,14 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
     var pageData: [String] = []
 
 
-    override init() {
+    init(tabName: String) {
         super.init()
         // Create the data model.
 //        let dateFormatter = DateFormatter()
 //        pageData = dateFormatter.monthSymbols
-        
-        pageData = ["首页", "中国", "全球", "金融市场", "生活时尚", "管理", "专栏", "视频"]
+        if let p = AppNavigation().getNavigation(for: tabName) {
+            pageData = p
+        }
     }
 
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> DataViewController? {

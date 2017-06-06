@@ -8,9 +8,11 @@
 
 import UIKit
 
-class NewsViewController: UIViewController, UIPageViewControllerDelegate {
+class ChannelViewController: UIViewController, UIPageViewControllerDelegate {
 
     var pageViewController: UIPageViewController?
+    
+    var tabName: String? = nil
 
 
     override func viewDidLoad() {
@@ -30,10 +32,7 @@ class NewsViewController: UIViewController, UIPageViewControllerDelegate {
         self.view.addSubview(self.pageViewController!.view)
 
         // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-        var pageViewRect = self.view.bounds
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            pageViewRect = pageViewRect.insetBy(dx: 40.0, dy: 40.0)
-        }
+        let pageViewRect = self.view.bounds
         self.pageViewController!.view.frame = pageViewRect
 
         self.pageViewController!.didMove(toParentViewController: self)
@@ -52,7 +51,9 @@ class NewsViewController: UIViewController, UIPageViewControllerDelegate {
         // Return the model controller object, creating it if necessary.
         // In more complex implementations, the model controller may be passed to the view controller.
         if _modelController == nil {
-            _modelController = ModelController()
+            if let t = tabName {
+                _modelController = ModelController(tabName: t)
+            }
         }
         return _modelController!
     }

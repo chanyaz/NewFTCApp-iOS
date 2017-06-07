@@ -25,9 +25,7 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
 
     init(tabName: String) {
         super.init()
-        // Create the data model.
-//        let dateFormatter = DateFormatter()
-//        pageData = dateFormatter.monthSymbols
+        // Create the data model
         if let p = AppNavigation.sharedInstance.getNavigation(for: tabName) {
             pageData = p
         }

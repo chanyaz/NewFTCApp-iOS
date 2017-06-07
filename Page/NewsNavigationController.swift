@@ -1,18 +1,18 @@
 //
-//  EnglishViewController.swift
+//  NewsNavigationViewController.swift
 //  Page
 //
-//  Created by Oliver Zhang on 2017/6/6.
+//  Created by Oliver Zhang on 2017/6/7.
 //  Copyright © 2017年 Oliver Zhang. All rights reserved.
 //
 
 import UIKit
 
-class EnglishViewController: ChannelViewController {
+class NewsNavigationController: CustomNavigationController {
 
     override var tabName: String? {
         get {
-            return "每日英语"
+            return "News"
         }
         set {
             // Do Nothing

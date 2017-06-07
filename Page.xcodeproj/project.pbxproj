@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		60B2EF061EE6521800B8C6DA /* NewsChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF051EE6521800B8C6DA /* NewsChannelsViewController.swift */; };
-		60B2EF0E1EE68F8700B8C6DA /* EnglishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF0D1EE68F8700B8C6DA /* EnglishViewController.swift */; };
-		60B2EF111EE691BD00B8C6DA /* AcademyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF101EE691BD00B8C6DA /* AcademyViewController.swift */; };
 		60B2EF141EE694BC00B8C6DA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */; };
 		60D3C8C11EBFF5DC0085BEF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */; };
 		60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */; };
@@ -20,6 +17,14 @@
 		60D3C8CF1EBFF5DC0085BEF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */; };
 		60D3C8DA1EBFF5DC0085BEF6 /* PageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8D91EBFF5DC0085BEF6 /* PageTests.swift */; };
 		60D3C8E51EBFF5DC0085BEF6 /* PageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8E41EBFF5DC0085BEF6 /* PageUITests.swift */; };
+		60D4B8F31EE7A22C00A4506D /* StyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */; };
+		60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */; };
+		60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */; };
+		60D4B8F91EE7C85A00A4506D /* NewsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8F81EE7C85A00A4506D /* NewsNavigationController.swift */; };
+		60D4B8FB1EE7CA7800A4506D /* EnglishNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8FA1EE7CA7800A4506D /* EnglishNavigationController.swift */; };
+		60D4B8FD1EE7CB1F00A4506D /* AcademyNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */; };
+		60D4B8FF1EE7D90700A4506D /* VideoNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */; };
+		60D4B9011EE7D92500A4506D /* MyFTNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,9 +45,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		60B2EF051EE6521800B8C6DA /* NewsChannelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewsChannelsViewController.swift; path = ../NewsChannelsViewController.swift; sourceTree = "<group>"; };
-		60B2EF0D1EE68F8700B8C6DA /* EnglishViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnglishViewController.swift; path = ../EnglishViewController.swift; sourceTree = "<group>"; };
-		60B2EF101EE691BD00B8C6DA /* AcademyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcademyViewController.swift; sourceTree = "<group>"; };
 		60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		60D3C8BD1EBFF5DC0085BEF6 /* Page.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,14 @@
 		60D3C8E01EBFF5DC0085BEF6 /* PageUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PageUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D3C8E41EBFF5DC0085BEF6 /* PageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageUITests.swift; sourceTree = "<group>"; };
 		60D3C8E61EBFF5DC0085BEF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleExtensions.swift; sourceTree = "<group>"; };
+		60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
+		60D4B8F81EE7C85A00A4506D /* NewsNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsNavigationController.swift; sourceTree = "<group>"; };
+		60D4B8FA1EE7CA7800A4506D /* EnglishNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnglishNavigationController.swift; sourceTree = "<group>"; };
+		60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcademyNavigationController.swift; sourceTree = "<group>"; };
+		60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoNavigationController.swift; sourceTree = "<group>"; };
+		60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFTNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,40 +96,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		60B2EF071EE680DE00B8C6DA /* Reusable Classes */ = {
+		60B2EF071EE680DE00B8C6DA /* Reusables */ = {
 			isa = PBXGroup;
 			children = (
-				60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */,
 				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
+				60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */,
 				60D3C8C41EBFF5DC0085BEF6 /* DataViewController.swift */,
 				60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */,
-				60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */,
+				60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */,
 			);
-			name = "Reusable Classes";
-			sourceTree = "<group>";
-		};
-		60B2EF081EE6810900B8C6DA /* News */ = {
-			isa = PBXGroup;
-			children = (
-				60B2EF051EE6521800B8C6DA /* NewsChannelsViewController.swift */,
-			);
-			name = News;
-			sourceTree = "<group>";
-		};
-		60B2EF0F1EE68FB500B8C6DA /* English */ = {
-			isa = PBXGroup;
-			children = (
-				60B2EF0D1EE68F8700B8C6DA /* EnglishViewController.swift */,
-			);
-			name = English;
-			sourceTree = "<group>";
-		};
-		60B2EF121EE691C700B8C6DA /* Academy */ = {
-			isa = PBXGroup;
-			children = (
-				60B2EF101EE691BD00B8C6DA /* AcademyViewController.swift */,
-			);
-			name = Academy;
+			name = Reusables;
 			sourceTree = "<group>";
 		};
 		60D3C8B41EBFF5DC0085BEF6 = {
@@ -145,10 +131,8 @@
 		60D3C8BF1EBFF5DC0085BEF6 /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				60B2EF071EE680DE00B8C6DA /* Reusable Classes */,
-				60B2EF081EE6810900B8C6DA /* News */,
-				60B2EF0F1EE68FB500B8C6DA /* English */,
-				60B2EF121EE691C700B8C6DA /* Academy */,
+				60B2EF071EE680DE00B8C6DA /* Reusables */,
+				60D4B9021EE7D95800A4506D /* Customizations */,
 				60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */,
 				60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */,
 				60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */,
@@ -173,6 +157,21 @@
 				60D3C8E61EBFF5DC0085BEF6 /* Info.plist */,
 			);
 			path = PageUITests;
+			sourceTree = "<group>";
+		};
+		60D4B9021EE7D95800A4506D /* Customizations */ = {
+			isa = PBXGroup;
+			children = (
+				60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */,
+				60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */,
+				60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */,
+				60D4B8F81EE7C85A00A4506D /* NewsNavigationController.swift */,
+				60D4B8FA1EE7CA7800A4506D /* EnglishNavigationController.swift */,
+				60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */,
+				60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */,
+				60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */,
+			);
+			name = Customizations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,13 +309,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60B2EF111EE691BD00B8C6DA /* AcademyViewController.swift in Sources */,
-				60B2EF061EE6521800B8C6DA /* NewsChannelsViewController.swift in Sources */,
+				60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */,
+				60D4B9011EE7D92500A4506D /* MyFTNavigationController.swift in Sources */,
+				60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */,
 				60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */,
 				60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */,
-				60B2EF0E1EE68F8700B8C6DA /* EnglishViewController.swift in Sources */,
+				60D4B8FD1EE7CB1F00A4506D /* AcademyNavigationController.swift in Sources */,
+				60D4B8FF1EE7D90700A4506D /* VideoNavigationController.swift in Sources */,
 				60B2EF141EE694BC00B8C6DA /* AppNavigation.swift in Sources */,
 				60D3C8C51EBFF5DC0085BEF6 /* DataViewController.swift in Sources */,
+				60D4B8F91EE7C85A00A4506D /* NewsNavigationController.swift in Sources */,
+				60D4B8F31EE7A22C00A4506D /* StyleExtensions.swift in Sources */,
+				60D4B8FB1EE7CA7800A4506D /* EnglishNavigationController.swift in Sources */,
 				60D3C8C11EBFF5DC0085BEF6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -473,6 +477,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
 				INFOPLIST_FILE = Page/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = oli.zh.Page;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -486,6 +491,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
 				INFOPLIST_FILE = Page/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = oli.zh.Page;
 				PRODUCT_NAME = "$(TARGET_NAME)";

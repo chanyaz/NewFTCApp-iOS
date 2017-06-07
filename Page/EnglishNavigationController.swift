@@ -1,22 +1,22 @@
 //
-//  AcademyViewController.swift
+//  EnglishNavigationController.swift
 //  Page
 //
-//  Created by Oliver Zhang on 2017/6/6.
+//  Created by Oliver Zhang on 2017/6/7.
 //  Copyright © 2017年 Oliver Zhang. All rights reserved.
 //
 
 import UIKit
 
-class AcademyViewController: ChannelViewController {
-
+class EnglishNavigationController: CustomNavigationController {
+    
     override var tabName: String? {
         get {
-            return "FT商学院"
+            return "English"
         }
         set {
             // Do Nothing
         }
     }
-
+    
 }

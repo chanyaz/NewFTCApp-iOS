@@ -1,23 +1,23 @@
 //
-//  ViewController.swift
+//  VideoNavigationController.swift
 //  Page
 //
-//  Created by Oliver Zhang on 2017/6/6.
+//  Created by Oliver Zhang on 2017/6/7.
 //  Copyright © 2017年 Oliver Zhang. All rights reserved.
 //
 
+
 import UIKit
 
-class NewsChannelsViewController: ChannelViewController {
+class VideoNavigationController: CustomNavigationController {
     
     override var tabName: String? {
         get {
-            return "新闻"
+            return "Video"
         }
         set {
             // Do Nothing
         }
     }
     
-
 }

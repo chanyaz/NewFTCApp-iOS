@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: ChannelViewController, UINavigationControllerDelegate {
+class DetailViewController: PagesViewController, UINavigationControllerDelegate {
 
     var viewTitle = ""
 

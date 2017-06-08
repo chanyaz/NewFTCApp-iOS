@@ -26,7 +26,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q3h-pU-vEd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1105" y="436"/>
+            <point key="canvasLocation" x="-1106" y="484"/>
         </scene>
         <!--Channel View Controller-->
         <scene sceneID="VD1-va-pSO">
@@ -45,7 +45,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tga-lN-T3s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-439" y="436"/>
+            <point key="canvasLocation" x="-439" y="503"/>
         </scene>
         <!--Channel View Controller-->
         <scene sceneID="ulU-ev-zpp">
@@ -64,7 +64,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nYe-tc-aDd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="225" y="436"/>
+            <point key="canvasLocation" x="225" y="502"/>
         </scene>
         <!--Channel View Controller-->
         <scene sceneID="3CT-uP-rTJ">
@@ -84,7 +84,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ey5-vz-0ds" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="894" y="436"/>
+            <point key="canvasLocation" x="940" y="501"/>
         </scene>
         <!--Channel View Controller-->
         <scene sceneID="3qt-5F-fqZ">
@@ -104,7 +104,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7da-EC-6fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1569" y="436"/>
+            <point key="canvasLocation" x="1615" y="502"/>
         </scene>
         <!--Data View Controller-->
         <scene sceneID="snT-py-3hH">
@@ -136,7 +136,42 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GmD-Rr-ZGN" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-980" y="-1089"/>
+            <point key="canvasLocation" x="-2138" y="484"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="8jS-Yg-eeT">
+            <objects>
+                <viewController storyboardIdentifier="Detail View" modalTransitionStyle="flipHorizontal" modalPresentationStyle="currentContext" hidesBottomBarWhenPushed="YES" id="naC-T6-XIm" customClass="DetailViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5uS-gj-lpA"/>
+                        <viewControllerLayoutGuide type="bottom" id="1bF-GV-FCk"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Vqa-bC-mKn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail Page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iiy-iy-hx6">
+                                <rect key="frame" x="144" y="323" width="87" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Iiy-iy-hx6" firstAttribute="centerY" secondItem="Vqa-bC-mKn" secondAttribute="centerY" id="0O3-vW-3RF"/>
+                            <constraint firstItem="Iiy-iy-hx6" firstAttribute="centerX" secondItem="Vqa-bC-mKn" secondAttribute="centerX" id="ZpA-HQ-Q9r"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <navigationItem key="navigationItem" id="Izp-uS-eCX"/>
+                    <connections>
+                        <outlet property="detailTitle" destination="Iiy-iy-hx6" id="2dE-3X-Z2n"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BWI-YL-odL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2138" y="-244"/>
         </scene>
         <!--News Navigation Controller-->
         <scene sceneID="UVA-jQ-V7K">
@@ -155,7 +190,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpI-Mg-c5k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1105" y="-244"/>
+            <point key="canvasLocation" x="-1106" y="-244"/>
         </scene>
         <!--Custom Tab Bar Controller-->
         <scene sceneID="idt-g5-Ayo">

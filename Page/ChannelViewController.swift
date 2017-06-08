@@ -117,7 +117,9 @@ class ChannelViewController: UIViewController, UIPageViewControllerDelegate {
             }
             if let navColor = AppNavigation.sharedInstance.getNavigationProperty(for: currentTabName, of: "navColor") {
                 navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(hex: navColor)]
+                navigationController?.navigationBar.tintColor = UIColor(hex: navColor)
             }
+            
             navigationController?.navigationBar.isTranslucent = false
         }
         self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)

@@ -10,17 +10,18 @@ import UIKit
 
 class CustomNavigationController: UINavigationController {
     var tabName: String? = nil
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
-        if let currentTabName = tabName,
-            let tabBackGroundColor = AppNavigation.sharedInstance.getNavigationProperty(for: currentTabName, of: "navBackGroundColor") {
-            let isNavLightContent = AppNavigation.sharedInstance.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
-            if isNavLightContent == true {
-                tabBarController?.tabBar.tintColor = UIColor(hex: tabBackGroundColor)
-            } else {
-                tabBarController?.tabBar.tintColor = UIColor(hex: AppNavigation.sharedInstance.highlightedTabFontColor)
+        if let currentTabName = tabName {
+            if let tabBackGroundColor = AppNavigation.sharedInstance.getNavigationProperty(for: currentTabName, of: "navBackGroundColor") {
+                let isNavLightContent = AppNavigation.sharedInstance.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
+                if isNavLightContent == true {
+                    tabBarController?.tabBar.tintColor = UIColor(hex: tabBackGroundColor)
+                } else {
+                    tabBarController?.tabBar.tintColor = UIColor(hex: AppNavigation.sharedInstance.highlightedTabFontColor)
+                }
             }
         }
     }

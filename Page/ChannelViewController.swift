@@ -122,7 +122,7 @@ class ChannelViewController: UIViewController, UIPageViewControllerDelegate {
             
             navigationController?.navigationBar.isTranslucent = false
         }
-        self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
     }
     
     

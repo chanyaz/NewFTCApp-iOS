@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomNavigationController: UINavigationController {
+class CustomNavigationController: UINavigationController, UINavigationControllerDelegate {
     var tabName: String? = nil
     
     
@@ -39,17 +39,6 @@ class CustomNavigationController: UINavigationController {
     
     
     
-    
-    
-    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //
-    //
-    //        print ("seguage is called")
-    ////        let tableVC = navVC?.viewControllers.first as! YourTableViewControllerClass
-    ////
-    ////        tableVC.yourTableViewArray = localArrayValue
-    //
-    //    }
-    
-    
 }
+
+

@@ -12,7 +12,8 @@ struct AppNavigation {
     // MARK: - Use singleton pattern to pass speech data between view controllers.
     static let sharedInstance = AppNavigation()
     
-    public let defaultTabBackgroundColor = "#FFF1E5"
+    public let defaultTabBackgroundColor = "#FFEFEF"
+    public let defaultContentBackgroundColor = "#FFF1E5"
     public let defaultTabFontColor = "#333333"
     public let highlightedTabFontColor = "#9E2F50"
     public let normalTabFontColor = "#555555"

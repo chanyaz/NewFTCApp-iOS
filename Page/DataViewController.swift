@@ -17,7 +17,7 @@ class DataViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: - Set Styles
-        self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         
         // MARK: - Test code to add gesture to a label
         //let tap = UITapGestureRecognizer(target: self, action: Selector(("tapFunction:")))

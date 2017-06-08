@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6093F1641EE8EFA4009F16EE /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093F1631EE8EFA4009F16EE /* DetailViewController.swift */; };
+		6093F1661EE90E81009F16EE /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093F1651EE90E81009F16EE /* CustomPopTransition.swift */; };
 		60B2EF141EE694BC00B8C6DA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */; };
 		60D3C8C11EBFF5DC0085BEF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */; };
 		60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		6093F1631EE8EFA4009F16EE /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		6093F1651EE90E81009F16EE /* CustomPopTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
 		60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		60D3C8BD1EBFF5DC0085BEF6 /* Page.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				6093F1631EE8EFA4009F16EE /* DetailViewController.swift */,
+				6093F1651EE90E81009F16EE /* CustomPopTransition.swift */,
 				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
 				60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */,
 				60D3C8C41EBFF5DC0085BEF6 /* DataViewController.swift */,
@@ -324,6 +327,7 @@
 				60D4B8F91EE7C85A00A4506D /* NewsNavigationController.swift in Sources */,
 				60D4B8F31EE7A22C00A4506D /* StyleExtensions.swift in Sources */,
 				60D4B8FB1EE7CA7800A4506D /* EnglishNavigationController.swift in Sources */,
+				6093F1661EE90E81009F16EE /* CustomPopTransition.swift in Sources */,
 				60D3C8C11EBFF5DC0085BEF6 /* AppDelegate.swift in Sources */,
 				6093F1641EE8EFA4009F16EE /* DetailViewController.swift in Sources */,
 			);

@@ -45,7 +45,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tga-lN-T3s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-439" y="503"/>
+            <point key="canvasLocation" x="-439" y="484"/>
         </scene>
         <!--Channel View Controller-->
         <scene sceneID="ulU-ev-zpp">
@@ -64,7 +64,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nYe-tc-aDd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="225" y="502"/>
+            <point key="canvasLocation" x="225" y="484"/>
         </scene>
         <!--Channel View Controller-->
         <scene sceneID="3CT-uP-rTJ">
@@ -84,7 +84,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ey5-vz-0ds" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="940" y="501"/>
+            <point key="canvasLocation" x="894" y="484"/>
         </scene>
         <!--Channel View Controller-->
         <scene sceneID="3qt-5F-fqZ">
@@ -104,7 +104,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7da-EC-6fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1615" y="502"/>
+            <point key="canvasLocation" x="1569" y="484"/>
         </scene>
         <!--Data View Controller-->
         <scene sceneID="snT-py-3hH">
@@ -149,25 +149,10 @@
                     <view key="view" contentMode="scaleToFill" id="Vqa-bC-mKn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail Page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iiy-iy-hx6">
-                                <rect key="frame" x="144" y="323" width="87" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Iiy-iy-hx6" firstAttribute="centerY" secondItem="Vqa-bC-mKn" secondAttribute="centerY" id="0O3-vW-3RF"/>
-                            <constraint firstItem="Iiy-iy-hx6" firstAttribute="centerX" secondItem="Vqa-bC-mKn" secondAttribute="centerX" id="ZpA-HQ-Q9r"/>
-                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="Izp-uS-eCX"/>
-                    <connections>
-                        <outlet property="detailTitle" destination="Iiy-iy-hx6" id="2dE-3X-Z2n"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BWI-YL-odL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -204,8 +189,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="Kih-19-Ipx" kind="relationship" relationship="viewControllers" id="ef4-PY-yC6"/>
-                        <segue destination="FJL-lv-f58" kind="relationship" relationship="viewControllers" id="AKM-ZP-KUH"/>
                         <segue destination="QXG-H9-h2U" kind="relationship" relationship="viewControllers" id="hTp-Pi-ZTk"/>
+                        <segue destination="FJL-lv-f58" kind="relationship" relationship="viewControllers" id="AKM-ZP-KUH"/>
                         <segue destination="ImL-Tl-Ta2" kind="relationship" relationship="viewControllers" id="RWH-nR-0Um"/>
                         <segue destination="LG1-Md-6Qy" kind="relationship" relationship="viewControllers" id="Ftl-u7-Mwz"/>
                     </connections>

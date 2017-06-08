@@ -16,8 +16,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         //print (viewTitle)
         // detailTitle.text = viewTitle
         

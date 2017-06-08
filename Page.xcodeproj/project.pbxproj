@@ -111,8 +111,8 @@
 		50057FC91EE9752D0092180A /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				6093F1631EE8EFA4009F16EE /* DetailViewController.swift */,
 				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
+				6093F1631EE8EFA4009F16EE /* DetailViewController.swift */,
 				50057FCA1EE977D80092180A /* PagesViewController.swift */,
 				60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */,
 				60D3C8C41EBFF5DC0085BEF6 /* DataViewController.swift */,

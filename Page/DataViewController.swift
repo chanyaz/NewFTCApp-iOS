@@ -14,15 +14,47 @@ class DataViewController: UICollectionViewController {
 
     
     // MARK: - Once The dataObject is changed, UI should be updated
-    var dataObject = [String: String]() {
+    var dataObject = [String: String]()
+    var pageTitle: String = ""
+    
+    var pageContent = [String: Any]() {
         didSet {
             updateUI()
         }
     }
-    var pageTitle: String = ""
     
-    func updateUI() {
-        
+    
+    func getDataFromUrl(_ url:URL, completion: @escaping ((_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> Void)) {
+        let listTask = URLSession.shared.dataTask(with: url, completionHandler:{(data, response, error) in
+            completion(data, response, error as NSError?)
+            return ()
+        })
+        listTask.resume()
+    }
+    
+    private func getAPI(_ urlString: String) {
+        let url = URL(string: urlString)
+        if let urlValue = url {
+            getDataFromUrl(urlValue) { (data, response, error)  in
+                DispatchQueue.main.async { () -> Void in
+                    guard let data = data , error == nil else { return }
+                    print (data)
+                    //self.handleJSONData(data)
+                }
+            }
+        }
+    }
+    
+    
+    
+    private func updateUI() {
+        print ("update UI here")
+    }
+    
+    private func requestNewContent() {
+        if let api = dataObject["api"] {
+            getAPI(api)
+        }
     }
     
     
@@ -37,6 +69,9 @@ class DataViewController: UICollectionViewController {
 
         // Do any additional setup after loading the view.
         view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+        
+        // MARK: - Get Content Data for the Page
+        requestNewContent()
         
     }
 

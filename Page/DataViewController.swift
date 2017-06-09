@@ -30,16 +30,10 @@ class DataViewController: UICollectionViewController {
         let url = URL(string: urlString)
         if let urlValue = url {
             Download().getDataFromUrl(urlValue) { (data, response, error)  in
+                guard let data = data , error == nil else { return }
                 DispatchQueue.main.async { () -> Void in
-                    guard let data = data , error == nil else { return }
-                    do {
-                        let JSON = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
-                        if let json = JSON as? [String: Any] {
-                            print ("data retrieved")
-                            self.pageContent = json
-                        }
-                    } catch {
-                        
+                    if let k = self.formatJSONData(data) {
+                        self.pageContent = k
                     }
                 }
             }
@@ -47,15 +41,55 @@ class DataViewController: UICollectionViewController {
     }
     
     
+    private func formatJSONData(_ data: Data) -> [String: Any]? {
+        do {
+            let JSON = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
+            if let json = JSON as? [String: Any] {
+                guard let sections = json["sections"] as? [[String: Any]] else {
+                    print("creatives Not an Array")
+                    return nil
+                }
+                for section in sections {
+                    if let type = section["type"] as? String,
+                        type == "block"{
+                        guard let lists = section["lists"] as? [[String: Any]] else {
+                            print("lists Not an Array")
+                            break
+                        }
+                        for list in lists {
+                            print (list)
+                        }
+                    }
+                }
+            }
+        } catch {
+            
+        }
+        return nil
+    }
+    
+    
     
     private func updateUI() {
-        print ("update UI here")
+        //print (pageContent)
+
+
     }
     
     private func requestNewContent() {
+        // MARK: - Request Data from Server
         if let api = dataObject["api"] {
+            // TODO: Display a spinner
+            
             getAPI(api)
+        } else {
+            //TODO: Show a warning if there's no api to get
+            
         }
+        
+        // TODO: Check if there's a local version of data
+        
+        
     }
     
     

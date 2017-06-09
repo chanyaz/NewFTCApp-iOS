@@ -2,28 +2,41 @@
 //  DataViewController.swift
 //  Page
 //
-//  Created by Oliver Zhang on 2017/5/8.
+//  Created by Oliver Zhang on 2017/6/9.
 //  Copyright © 2017年 Oliver Zhang. All rights reserved.
 //
 
 import UIKit
 
-class DataViewController: UIViewController {
+private let reuseIdentifier = "ItemCell"
 
-    @IBOutlet weak var dataLabel: UILabel!
-    var dataObject: String = ""
+class DataViewController: UICollectionViewController {
 
-
+    
+    // MARK: - Once The dataObject is changed, UI should be updated
+    var dataObject = [String: String]() {
+        didSet {
+            updateUI()
+        }
+    }
+    var pageTitle: String = ""
+    
+    func updateUI() {
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // MARK: - Set Styles
-        self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-        
-        // MARK: - Test code to add gesture to a label
-        //let tap = UITapGestureRecognizer(target: self, action: Selector(("tapFunction:")))
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
-        dataLabel.isUserInteractionEnabled = true
-        dataLabel.addGestureRecognizer(tapGestureRecognizer)
+
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Register cell classes
+        // self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+
+        // Do any additional setup after loading the view.
+        view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         
     }
 
@@ -32,32 +45,73 @@ class DataViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.dataLabel!.text = dataObject
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print(segue.identifier ?? "not found")
-    }
-    
-    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
-        //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
-        //performSegue(withIdentifier: "Show Detail Content", sender: self)
-        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-            let titleForDetailView: String
-            if let recognizerView = recognizer.view as? UILabel {
-                titleForDetailView = recognizerView.text ?? "No Title From the Label"
-            } else {
-                titleForDetailView = "Not a Label"
-            }
-            detailViewController.viewTitle = "Detail View Clicked From \(titleForDetailView)"
-            navigationController?.pushViewController(detailViewController, animated: true)
-        }
-        
-    }
-    
+    // MARK: - Navigation
 
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+    }
+
+
+    // MARK: UICollectionViewDataSource
+
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of items
+        return 100
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        // Configure the cell
+        switch reuseIdentifier {
+            case "ItemCell":
+                if let cell = cell as? ItemCell {
+                    cell.title.text = "headline of the story"
+                    cell.lead.text = "lead for this story"
+             return cell
+            }
+        default: break
+        }
+    
+        return cell
+    }
+
+    // MARK: UICollectionViewDelegate
+
+    /*
+    // Uncomment this method to specify if the specified item should be highlighted during tracking
+    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    */
+
+    /*
+    // Uncomment this method to specify if the specified item should be selected
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    */
+
+    /*
+    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        return false
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+    
+    }
+    */
 
 }
-

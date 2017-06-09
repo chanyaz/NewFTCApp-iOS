@@ -25,37 +25,119 @@ struct AppNavigation {
             "navColor": "#333333",
             "navBackGroundColor": "#f7e9d8",
             "isNavLightContent": false,
-            "Channels": ["头条","中国","全球","金融市场","管理","生活时尚","专栏"]
+            "Channels": [
+                ["title": "头条",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "中国",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "全球",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "金融市场",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "管理",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "生活时尚",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "专栏",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ]
+            ]
         ],
         "English": [
             "title": "每日英语",
             "navColor": "#FFFFFF",
             "navBackGroundColor": "#a84358",
             "isNavLightContent": true,
-            "Channels": ["最新","英语电台","双语阅读","金融英语速读","原声视频"]
+            "Channels": [
+                ["title": "最新",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "英语电台",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "双语阅读",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "金融英语速读",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "原声视频",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ]
+            ]
         ],
         "Academy": [
             "title": "FT商学院",
             "navColor": "#FFFFFF",
             "navBackGroundColor": "#057b93",
             "isNavLightContent": true,
-            "Channels": ["最新","热点观察","MBA训练营","互动小测","深度阅读"]
+            "Channels": [
+                ["title": "最新",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "热点观察",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "MBA训练营",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "互动小测",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "深度阅读",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ]
+            ]
         ],
         "Video": [
             "title": "视频",
             "navColor": "#FFFFFF",
             "navBackGroundColor": "#008280",
             "isNavLightContent": true,
-            "Channels": ["最新","商业","政经","有色眼镜"]
-        ],
-        "MyFT": [
-            "title": "我的FT",
-            "navColor": "#FFFFFF",
-            "navBackGroundColor": "#5a8caf",
-            "isNavLightContent": true,
-            "Channels": ["最新","阅读历史","猜你喜欢","收藏","设置"]
+            "Channels": [
+                ["title": "最新",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "商业",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "政经",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "有色眼镜",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ]
+            ]
         ]
     ]
+    
     
     public func getNavigation(for tabName: String) -> [String]? {
         if let currentNavigation = AppNavigation.appMap[tabName]?["Channels"] as? [String] {
@@ -76,6 +158,13 @@ struct AppNavigation {
             return p
         }
         return false
+    }
+    
+    public func getNavigationPropertyData(for tabName: String, of property: String) -> [[String: String]]? {
+        if let p = AppNavigation.appMap[tabName]?[property] as? [[String: String]] {
+            return p
+        }
+        return nil
     }
     
 }

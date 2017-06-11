@@ -16,6 +16,8 @@ class ItemCell: UICollectionViewCell {
     var id: String?
     var link: String?
     
+    
+    
     // MARK: - View Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,7 +36,10 @@ class ItemCell: UICollectionViewCell {
         self.layoutIfNeeded()
         
         let desiredHeight: CGFloat = self.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        let desiredWidth: CGFloat = self.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).width
+        print ("desired width is \(desiredWidth) and desired height is \(desiredHeight)")
         newFrame.size.height = desiredHeight
+        newFrame.size.width = desiredWidth/2 - 40
         attr.frame = newFrame
         return attr
     }

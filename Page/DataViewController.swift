@@ -184,8 +184,9 @@ class DataViewController: UICollectionViewController {
                 // TODO: The following code should be moved to ItemCell class. Then you only need to set fetch result for cell. Check out detail implementation on Paul's Stanford Lecture 9 on table view
                 cell.title.text = fetches.fetchResults[indexPath.section].items[indexPath.row].headline
                 cell.lead.text = fetches.fetchResults[indexPath.section].items[indexPath.row].lead
-                cell.title.preferredMaxLayoutWidth = 440
-                cell.lead.preferredMaxLayoutWidth = 440
+                cell.title.preferredMaxLayoutWidth = view.frame.width
+                cell.lead.preferredMaxLayoutWidth = view.frame.width - 150
+
                 return cell
             }
         default: break

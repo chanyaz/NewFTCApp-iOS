@@ -128,7 +128,7 @@ class DataViewController: UICollectionViewController {
 
 
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = CGSize(width: 20, height: 20)
+            flowLayout.estimatedItemSize = CGSize(width: 414, height: 200)
             flowLayout.minimumLineSpacing = 30
         }
         

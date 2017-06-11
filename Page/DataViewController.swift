@@ -8,10 +8,17 @@
 
 import UIKit
 
-private let reuseIdentifier = "ItemCell"
-
 class DataViewController: UICollectionViewController {
+    fileprivate let reuseIdentifier = "ItemCell"
+    //fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 1, right: 0)
+    fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+
     
+    fileprivate var fetches = ContentFetchResults(
+    apiUrl: "",
+    fetchResults: [ContentSection]()
+    )
+    fileprivate let contentAPI = ContentFetch()
     
     // MARK: - Once The dataObject is changed, UI should be updated
     var dataObject = [String: String]()
@@ -24,56 +31,70 @@ class DataViewController: UICollectionViewController {
     }
     
     
-
-    
     private func getAPI(_ urlString: String) {
-        let url = URL(string: urlString)
-        if let urlValue = url {
-            Download().getDataFromUrl(urlValue) { (data, response, error)  in
-                guard let data = data , error == nil else { return }
-                DispatchQueue.main.async { () -> Void in
-                    if let k = self.formatJSONData(data) {
-                        self.pageContent = k
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    private func formatJSONData(_ data: Data) -> [String: Any]? {
-        do {
-            let JSON = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
-            if let json = JSON as? [String: Any] {
-                guard let sections = json["sections"] as? [[String: Any]] else {
-                    print("creatives Not an Array")
-                    return nil
-                }
-                for section in sections {
-                    if let type = section["type"] as? String,
-                        type == "block"{
-                        guard let lists = section["lists"] as? [[String: Any]] else {
-                            print("lists Not an Array")
-                            break
-                        }
-                        for list in lists {
-                            print (list)
-                        }
-                    }
-                }
-            }
-        } catch {
+        // 1
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        view.addSubview(activityIndicator)
+        activityIndicator.frame = view.bounds
+        activityIndicator.startAnimating()
+        contentAPI.fetchContentForUrl(urlString) {
+            results, error in
             
+            
+            activityIndicator.removeFromSuperview()
+            
+            
+            if let error = error {
+                // 2
+                print("Error searching : \(error)")
+                return
+            }
+            
+            if let results = results {
+                // 3
+                print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
+                //self.fetches.insert(results, at: 0)
+                self.fetches = results
+                
+                
+                // 4
+                self.collectionView?.reloadData()
+            }
         }
-        return nil
     }
+    
+    
+//    private func formatJSONData(_ data: Data) -> [String: Any]? {
+//        do {
+//            let JSON = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
+//            if let json = JSON as? [String: Any] {
+//                guard let sections = json["sections"] as? [[String: Any]] else {
+//                    print("creatives Not an Array")
+//                    return nil
+//                }
+//                for section in sections {
+//                    if let type = section["type"] as? String,
+//                        type == "block"{
+//                        guard let lists = section["lists"] as? [[String: Any]] else {
+//                            print("lists Not an Array")
+//                            break
+//                        }
+//                        for list in lists {
+//                            print (list)
+//                        }
+//                    }
+//                }
+//            }
+//        } catch {
+//            
+//        }
+//        return nil
+//    }
     
     
     
     private func updateUI() {
         //print (pageContent)
-
-
     }
     
     private func requestNewContent() {
@@ -102,8 +123,18 @@ class DataViewController: UICollectionViewController {
         // Register cell classes
         // self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        // Do any additional setup after loading the view.
+        // MARK: - Get Content
         view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+
+
+        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.estimatedItemSize = CGSize(width: 20, height: 20)
+            flowLayout.minimumLineSpacing = 30
+        }
+        
+
+        
+
         
         // MARK: - Get Content Data for the Page
         requestNewContent()
@@ -128,23 +159,29 @@ class DataViewController: UICollectionViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return fetches.fetchResults.count
     }
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 100
+        return fetches.fetchResults[section].items.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        cell.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+
         // Configure the cell
+        
         switch reuseIdentifier {
         case "ItemCell":
             if let cell = cell as? ItemCell {
-                cell.title.text = "headline of the story"
-                cell.lead.text = "lead for this story"
+                // TODO: The following code should be moved to ItemCell class. Then you only need to set fetch result for cell. Check out detail implementation on Paul's Stanford Lecture 9 on table view
+                cell.title.text = fetches.fetchResults[indexPath.section].items[indexPath.row].headline
+                cell.lead.text = fetches.fetchResults[indexPath.section].items[indexPath.row].lead
+                cell.title.preferredMaxLayoutWidth = 440
+                cell.lead.preferredMaxLayoutWidth = 440
                 return cell
             }
         default: break
@@ -183,5 +220,56 @@ class DataViewController: UICollectionViewController {
      
      }
      */
+    
+}
+
+
+// MARK: - Private
+//private extension DataViewController {
+//    func itemForIndexPath(indexPath: IndexPath) -> ContentItem {
+//        return fetches[(indexPath as NSIndexPath).section].fetchResults[(indexPath as IndexPath).row]
+//    }
+//}
+
+
+
+fileprivate let itemsPerRow: CGFloat = 1
+
+
+extension DataViewController : UICollectionViewDelegateFlowLayout {
+
+
+    //1
+//    func collectionView(_ collectionView: UICollectionView,
+//                        layout collectionViewLayout: UICollectionViewLayout,
+//                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        //2
+//
+//            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+//            let availableWidth = view.frame.width - paddingSpace
+//            let widthPerItem = availableWidth / itemsPerRow
+//        let heightPerItem: CGFloat
+//        if indexPath.row == 0 || indexPath.row == 8 {
+//            heightPerItem = widthPerItem * 1
+//        } else {
+//            heightPerItem = widthPerItem * 0.618
+//        }
+//            return CGSize(width: widthPerItem, height: heightPerItem)
+//    }
+    
+    //3
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
+    
+    // 4
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInsets.left
+    }
+    
     
 }

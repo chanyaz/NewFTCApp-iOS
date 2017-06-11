@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -147,39 +148,52 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5Zl-dh-vUO">
-                            <size key="itemSize" width="375" height="93"/>
+                            <size key="itemSize" width="375" height="127"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItemCell" id="9Um-Hb-5iS" customClass="ItemCell" customModule="Page" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
+                                <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yz6-B1-Hpn">
-                                            <rect key="frame" x="12" y="12" width="42" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yz6-B1-Hpn">
+                                            <rect key="frame" x="8" y="8" width="359" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I9a-Q1-SFg">
-                                            <rect key="frame" x="12" y="41" width="59" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="I9a-Q1-SFg">
+                                            <rect key="frame" x="0.0" y="36.5" width="160" height="90"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="160" id="Ocl-Hb-urI"/>
+                                                <constraint firstAttribute="height" constant="90" id="YNn-i6-FBa"/>
+                                            </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Lead" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbi-BU-vez">
-                                            <rect key="frame" x="105" y="43" width="222" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lead" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbi-BU-vez">
+                                            <rect key="frame" x="160" y="36" width="215" height="91"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstItem="I9a-Q1-SFg" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leading" id="4kn-iq-LeY"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="yz6-B1-Hpn" secondAttribute="trailing" id="7IS-cW-EwC"/>
+                                    <constraint firstItem="rbi-BU-vez" firstAttribute="leading" secondItem="I9a-Q1-SFg" secondAttribute="trailing" id="7ZW-RT-vzg"/>
+                                    <constraint firstItem="yz6-B1-Hpn" firstAttribute="top" secondItem="9Um-Hb-5iS" secondAttribute="topMargin" id="CY2-71-38g"/>
+                                    <constraint firstAttribute="bottom" secondItem="rbi-BU-vez" secondAttribute="bottom" id="LkB-w9-Prw"/>
+                                    <constraint firstItem="I9a-Q1-SFg" firstAttribute="top" secondItem="yz6-B1-Hpn" secondAttribute="bottom" constant="8" symbolic="YES" id="SKf-lS-C6j"/>
+                                    <constraint firstItem="rbi-BU-vez" firstAttribute="top" secondItem="yz6-B1-Hpn" secondAttribute="bottom" constant="8" symbolic="YES" id="cBu-do-iKp"/>
+                                    <constraint firstAttribute="bottom" secondItem="I9a-Q1-SFg" secondAttribute="bottom" id="mEs-GP-msg"/>
+                                    <constraint firstItem="yz6-B1-Hpn" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leadingMargin" id="y4f-1g-byu"/>
+                                    <constraint firstAttribute="trailing" secondItem="rbi-BU-vez" secondAttribute="trailing" id="zcg-Th-2Rt"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="image" destination="I9a-Q1-SFg" id="tdd-2n-60y"/>
                                     <outlet property="lead" destination="rbi-BU-vez" id="cSY-d5-tHZ"/>
@@ -217,11 +231,11 @@
             </objects>
             <point key="canvasLocation" x="-2138" y="-244"/>
         </scene>
-        <!--News Navigation Controller-->
+        <!--新闻-->
         <scene sceneID="UVA-jQ-V7K">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Kih-19-Ipx" customClass="NewsNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="featured" id="o6H-tl-sO3"/>
+                    <tabBarItem key="tabBarItem" title="新闻" image="NewsDim" selectedImage="News" id="o6H-tl-sO3"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="N3C-QK-VoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -258,11 +272,11 @@
             </objects>
             <point key="canvasLocation" x="97" y="-1090"/>
         </scene>
-        <!--English Navigation Controller-->
+        <!--每日英语-->
         <scene sceneID="l8I-Jc-aRU">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QXG-H9-h2U" customClass="EnglishNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" systemItem="recents" id="Oqv-LY-RGD"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="每日英语" image="EngishDim" selectedImage="English" id="Oqv-LY-RGD"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="3tL-ZB-8jq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -277,11 +291,11 @@
             </objects>
             <point key="canvasLocation" x="-438" y="-244"/>
         </scene>
-        <!--Academy Navigation Controller-->
+        <!--FT商学院-->
         <scene sceneID="nE1-oe-yRD">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FJL-lv-f58" customClass="AcademyNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="2" systemItem="bookmarks" id="T8K-4b-0vj"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="FT商学院" image="AcademyDim" selectedImage="Academy" id="T8K-4b-0vj"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="BXf-ud-JED">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -296,11 +310,11 @@
             </objects>
             <point key="canvasLocation" x="225" y="-244"/>
         </scene>
-        <!--Video Navigation Controller-->
+        <!--视频-->
         <scene sceneID="bYq-8F-as6">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ImL-Tl-Ta2" customClass="VideoNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="3" systemItem="mostViewed" id="Hoc-Bx-w6J"/>
+                    <tabBarItem key="tabBarItem" tag="3" title="视频" image="VideoDim" selectedImage="Video" id="Hoc-Bx-w6J"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZoQ-TI-cN8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -315,11 +329,11 @@
             </objects>
             <point key="canvasLocation" x="895" y="-244"/>
         </scene>
-        <!--MyFT Navigation Controller-->
+        <!--我的FT-->
         <scene sceneID="ToJ-sh-hsV">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LG1-Md-6Qy" customClass="MyFTNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="4" systemItem="more" id="ddG-YK-4fi"/>
+                    <tabBarItem key="tabBarItem" tag="4" title="我的FT" image="MyFTDim" selectedImage="MyFT" id="ddG-YK-4fi"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Sg5-kk-PM6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -335,4 +349,16 @@
             <point key="canvasLocation" x="1570" y="-244"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Academy" width="25" height="25"/>
+        <image name="AcademyDim" width="25" height="25"/>
+        <image name="EngishDim" width="25" height="25"/>
+        <image name="English" width="25" height="25"/>
+        <image name="MyFT" width="25" height="25"/>
+        <image name="MyFTDim" width="25" height="25"/>
+        <image name="News" width="25" height="25"/>
+        <image name="NewsDim" width="25" height="25"/>
+        <image name="Video" width="25" height="25"/>
+        <image name="VideoDim" width="25" height="25"/>
+    </resources>
 </document>

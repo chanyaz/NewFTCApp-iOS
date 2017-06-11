@@ -135,6 +135,30 @@ struct AppNavigation {
                  "url":"http://www.ftchinese.com/"
                 ]
             ]
+        ],
+        "MyFT": [
+            "title": "我的FT",
+            "navColor": "#FFFFFF",
+            "navBackGroundColor": "#5a8caf",
+            "isNavLightContent": true,
+            "Channels": [
+                ["title": "最新",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "阅读偏好",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "订阅",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "账号",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ]
+            ]
         ]
     ]
     

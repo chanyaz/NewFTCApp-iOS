@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -163,15 +163,29 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EPv-2m-y9e">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nkd-uM-LyG">
-                                                    <rect key="frame" x="99" y="53" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="headline" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nkd-uM-LyG">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="lead: this is a very long lead of the story. It usually has three to four lines. Sometimes 5 lines.  " lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXz-k9-B3D">
+                                                    <rect key="frame" x="0.0" y="28.5" width="375" height="98.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" red="0.14901960780000001" green="0.4549019608" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <constraints>
+                                                <constraint firstItem="nkd-uM-LyG" firstAttribute="top" secondItem="EPv-2m-y9e" secondAttribute="top" id="1ht-TJ-n10"/>
+                                                <constraint firstItem="OXz-k9-B3D" firstAttribute="leading" secondItem="EPv-2m-y9e" secondAttribute="leading" id="7r4-Zk-0oy"/>
+                                                <constraint firstItem="OXz-k9-B3D" firstAttribute="top" secondItem="nkd-uM-LyG" secondAttribute="bottom" constant="8" symbolic="YES" id="9Cb-j6-RMD"/>
+                                                <constraint firstAttribute="trailing" secondItem="nkd-uM-LyG" secondAttribute="trailing" id="H4F-58-Yn8"/>
+                                                <constraint firstAttribute="bottom" secondItem="OXz-k9-B3D" secondAttribute="bottom" id="O6i-Ja-gPc"/>
+                                                <constraint firstAttribute="trailing" secondItem="OXz-k9-B3D" secondAttribute="trailing" id="Vko-N3-uG1"/>
+                                                <constraint firstItem="nkd-uM-LyG" firstAttribute="leading" secondItem="EPv-2m-y9e" secondAttribute="leading" id="nNi-Ty-xXp"/>
+                                            </constraints>
                                         </view>
                                     </subviews>
                                 </view>
@@ -181,6 +195,11 @@
                                     <constraint firstItem="EPv-2m-y9e" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leading" id="aui-tL-zy7"/>
                                     <constraint firstAttribute="trailing" secondItem="EPv-2m-y9e" secondAttribute="trailing" id="on0-eG-mYu"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="containerView" destination="EPv-2m-y9e" id="9iV-yP-Gjb"/>
+                                    <outlet property="headline" destination="nkd-uM-LyG" id="fUB-Wc-4Jl"/>
+                                    <outlet property="lead" destination="OXz-k9-B3D" id="Plq-6N-cVJ"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -191,7 +210,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1eD-OD-n7T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2140" y="1409.1454272863568"/>
+            <point key="canvasLocation" x="-2140.4296875" y="1409.0775988286969"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="8jS-Yg-eeT">

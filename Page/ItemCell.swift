@@ -12,11 +12,14 @@ class ItemCell: UICollectionViewCell {
     //    @IBOutlet weak var title: UILabel!
     //    @IBOutlet weak var image: UIImageView!
     //    @IBOutlet weak var lead: UILabel!
-    
-    @IBOutlet weak var headline: UILabel!
-    @IBOutlet weak var lead: UILabel!
+    //    @IBOutlet weak var containerView: UIView!
+    //
+    //    @IBOutlet weak var headline: UILabel!
+    //    @IBOutlet weak var lead: UILabel!
     
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var headline: UILabel!
+    @IBOutlet weak var lead: UILabel!
     
     
     
@@ -43,14 +46,17 @@ class ItemCell: UICollectionViewCell {
         
         headline.text = itemCell?.headline
         lead.text = itemCell?.lead
-        //        if let cellWidth = cellWidth {
-        //            self.containerView.translatesAutoresizingMaskIntoConstraints = false
-        //            let containerWidth = cellWidth - cellMargins - containerViewMargins
-        //            //let containerWidth: CGFloat = 200
-        //            let containerWidthLayoutConstraint = NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: containerWidth)
-        //            self.addConstraint(containerWidthLayoutConstraint)
-        //        }
-        //        print ("update UI for the cell\(String(describing: itemCell?.lead))")
+        if let cellWidth = cellWidth {
+            self.containerView.translatesAutoresizingMaskIntoConstraints = false
+            let containerWidth = cellWidth - cellMargins - containerViewMargins
+            //let containerWidth: CGFloat = 200
+//            print ("contain view width is \(containerWidth)")
+//            let containerWidthLayoutConstraint = NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: containerWidth)
+//            containerView.addConstraint(containerWidthLayoutConstraint)
+            containerView.frame.size.width = containerWidth
+            self.frame.size.width = containerWidth
+        }
+        print ("update UI for the cell\(String(describing: itemCell?.lead))")
     }
     
     

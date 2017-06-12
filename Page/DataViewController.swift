@@ -116,11 +116,11 @@ class DataViewController: UICollectionViewController {
             cellWidth = totalCellAvailableWidth! / columnNum
             
             print ("cell width is \(cellWidth)")
-            //            if #available(iOS 10.0, *) {
-            //                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-            //            } else {
-            //                flowLayout.estimatedItemSize = CGSize(width: 200, height: 200)
-            //            }
+                        if #available(iOS 10.0, *) {
+                            flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                        } else {
+                            flowLayout.estimatedItemSize = CGSize(width: 200, height: 200)
+                        }
         }
         
         

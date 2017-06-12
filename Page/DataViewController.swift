@@ -107,20 +107,12 @@ class DataViewController: UICollectionViewController {
         
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             
-            //flowLayout.minimumLineSpacing = 30
-            //flowLayout.sectionInset = sectionInsets
-            //let spaceBetweenCells = flowLayout.minimumInteritemSpacing * (columnNum - 1)
-            //let totalCellAvailableWidth = (collectionView?.frame.size.width)! - flowLayout.sectionInset.left - flowLayout.sectionInset.right - spaceBetweenCells
-            let totalCellAvailableWidth = collectionView?.frame.size.width
-            
-            cellWidth = totalCellAvailableWidth! / columnNum
-            
-            print ("cell width is \(cellWidth)")
-                        if #available(iOS 10.0, *) {
-                            flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-                        } else {
-                            flowLayout.estimatedItemSize = CGSize(width: 200, height: 200)
-                        }
+//            let totalCellAvailableWidth = collectionView?.frame.size.width
+//            
+//            cellWidth = totalCellAvailableWidth! / columnNum
+//            let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
+//            let availableWidth = view.frame.width - paddingSpace
+//            flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
         }
         
         
@@ -182,7 +174,7 @@ class DataViewController: UICollectionViewController {
         switch reuseIdentifier {
         case "ItemCell":
             if let cell = cell as? ItemCell {
-                cell.cellWidth = cellWidth
+                //cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }

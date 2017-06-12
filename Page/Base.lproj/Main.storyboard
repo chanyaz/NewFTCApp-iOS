@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
-    <device id="ipad12_9" orientation="portrait">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,7 +19,7 @@
                         <viewControllerLayoutGuide type="bottom" id="IfR-02-kHw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="502-Ir-ELC">
-                        <rect key="frame" x="0.0" y="64" width="1024" height="1253"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -37,7 +38,7 @@
                         <viewControllerLayoutGuide type="bottom" id="4ul-bL-qlc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="VwW-z9-Cp0">
-                        <rect key="frame" x="0.0" y="64" width="1024" height="1253"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -56,7 +57,7 @@
                         <viewControllerLayoutGuide type="bottom" id="8Zv-Qw-d7L"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wNt-SS-31s">
-                        <rect key="frame" x="0.0" y="64" width="1024" height="1253"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -75,7 +76,7 @@
                         <viewControllerLayoutGuide type="bottom" id="dUM-sn-6cw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Lqt-nf-JAs">
-                        <rect key="frame" x="0.0" y="64" width="1024" height="1253"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -95,7 +96,7 @@
                         <viewControllerLayoutGuide type="bottom" id="KKN-uw-mrM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zui-UD-yem">
-                        <rect key="frame" x="0.0" y="64" width="1024" height="1253"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -115,11 +116,11 @@
                         <viewControllerLayoutGuide type="bottom" id="EPS-s9-h4K"/>
                     </layoutGuides>
                     <view key="view" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="ZwX-cT-FIQ">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="cF2-Le-7mQ">
-                                <rect key="frame" x="495" y="674.5" width="34.5" height="17"/>
+                                <rect key="frame" x="170.5" y="325" width="34.5" height="17"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -143,62 +144,51 @@
             <objects>
                 <collectionViewController storyboardIdentifier="DataViewController" id="9YA-Ph-HsZ" customClass="DataViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="kPF-ls-9Vr">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5Zl-dh-vUO">
-                            <size key="itemSize" width="375" height="127"/>
+                            <size key="itemSize" width="375" height="112"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItemCell" id="9Um-Hb-5iS" customClass="ItemCell" customModule="Page" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="112"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="112"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EPv-2m-y9e">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="headline" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nkd-uM-LyG">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="lead: this is a very long lead of the story. It usually has three to four lines. Sometimes 5 lines.  " lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXz-k9-B3D">
-                                                    <rect key="frame" x="0.0" y="28.5" width="375" height="98.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dgj-T4-ygq">
+                                            <rect key="frame" x="8" y="8" width="359" height="20.5"/>
                                             <color key="backgroundColor" red="0.14901960780000001" green="0.4549019608" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <constraints>
-                                                <constraint firstItem="nkd-uM-LyG" firstAttribute="top" secondItem="EPv-2m-y9e" secondAttribute="top" id="1ht-TJ-n10"/>
-                                                <constraint firstItem="OXz-k9-B3D" firstAttribute="leading" secondItem="EPv-2m-y9e" secondAttribute="leading" id="7r4-Zk-0oy"/>
-                                                <constraint firstItem="OXz-k9-B3D" firstAttribute="top" secondItem="nkd-uM-LyG" secondAttribute="bottom" constant="8" symbolic="YES" id="9Cb-j6-RMD"/>
-                                                <constraint firstAttribute="trailing" secondItem="nkd-uM-LyG" secondAttribute="trailing" id="H4F-58-Yn8"/>
-                                                <constraint firstAttribute="bottom" secondItem="OXz-k9-B3D" secondAttribute="bottom" id="O6i-Ja-gPc"/>
-                                                <constraint firstAttribute="trailing" secondItem="OXz-k9-B3D" secondAttribute="trailing" id="Vko-N3-uG1"/>
-                                                <constraint firstItem="nkd-uM-LyG" firstAttribute="leading" secondItem="EPv-2m-y9e" secondAttribute="leading" id="nNi-Ty-xXp"/>
-                                            </constraints>
-                                        </view>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Lead" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0tj-CX-fRq">
+                                            <rect key="frame" x="8" y="36.5" width="359" height="67.5"/>
+                                            <color key="backgroundColor" red="0.14901960780000001" green="0.4549019608" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="EPv-2m-y9e" secondAttribute="bottom" id="A1g-DN-QmF"/>
-                                    <constraint firstItem="EPv-2m-y9e" firstAttribute="top" secondItem="9Um-Hb-5iS" secondAttribute="top" id="Jzg-68-5aC"/>
-                                    <constraint firstItem="EPv-2m-y9e" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leading" id="aui-tL-zy7"/>
-                                    <constraint firstAttribute="trailing" secondItem="EPv-2m-y9e" secondAttribute="trailing" id="on0-eG-mYu"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Dgj-T4-ygq" secondAttribute="trailing" id="7q4-RK-w7S"/>
+                                    <constraint firstItem="Dgj-T4-ygq" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leadingMargin" id="9is-Jg-kw1"/>
+                                    <constraint firstItem="Dgj-T4-ygq" firstAttribute="top" secondItem="9Um-Hb-5iS" secondAttribute="topMargin" id="Aug-GU-Axe"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="0tj-CX-fRq" secondAttribute="trailing" id="GPH-oI-9OC"/>
+                                    <constraint firstItem="0tj-CX-fRq" firstAttribute="top" secondItem="Dgj-T4-ygq" secondAttribute="bottom" constant="8" symbolic="YES" id="Opi-nD-q2m"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="0tj-CX-fRq" secondAttribute="bottom" id="bNs-4G-gGQ"/>
+                                    <constraint firstItem="0tj-CX-fRq" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leadingMargin" id="o0F-Yc-oHY"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="containerView" destination="EPv-2m-y9e" id="9iV-yP-Gjb"/>
-                                    <outlet property="headline" destination="nkd-uM-LyG" id="fUB-Wc-4Jl"/>
-                                    <outlet property="lead" destination="OXz-k9-B3D" id="Plq-6N-cVJ"/>
+                                    <outlet property="headline" destination="Dgj-T4-ygq" id="h95-na-EDQ"/>
+                                    <outlet property="lead" destination="0tj-CX-fRq" id="oJI-Yh-73i"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -210,7 +200,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1eD-OD-n7T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2140.4296875" y="1409.0775988286969"/>
+            <point key="canvasLocation" x="-2141.5999999999999" y="1408.2458770614694"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="8jS-Yg-eeT">
@@ -221,7 +211,7 @@
                         <viewControllerLayoutGuide type="bottom" id="1bF-GV-FCk"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Vqa-bC-mKn">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>

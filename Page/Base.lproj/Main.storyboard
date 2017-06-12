@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -161,45 +160,27 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yz6-B1-Hpn">
-                                            <rect key="frame" x="8" y="8" width="359" height="20.5"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="I9a-Q1-SFg">
-                                            <rect key="frame" x="0.0" y="36.5" width="160" height="90"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="160" id="Ocl-Hb-urI"/>
-                                                <constraint firstAttribute="height" constant="90" id="YNn-i6-FBa"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lead" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbi-BU-vez">
-                                            <rect key="frame" x="160" y="36" width="215" height="91"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EPv-2m-y9e">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nkd-uM-LyG">
+                                                    <rect key="frame" x="99" y="53" width="42" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
                                     </subviews>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="rbi-BU-vez" secondAttribute="bottom" id="3S7-LV-D1f"/>
-                                    <constraint firstAttribute="bottom" secondItem="I9a-Q1-SFg" secondAttribute="bottom" id="4ek-nr-MZz"/>
-                                    <constraint firstItem="I9a-Q1-SFg" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leading" id="4kn-iq-LeY"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="yz6-B1-Hpn" secondAttribute="trailing" id="7IS-cW-EwC"/>
-                                    <constraint firstItem="rbi-BU-vez" firstAttribute="leading" secondItem="I9a-Q1-SFg" secondAttribute="trailing" id="7ZW-RT-vzg"/>
-                                    <constraint firstItem="yz6-B1-Hpn" firstAttribute="top" secondItem="9Um-Hb-5iS" secondAttribute="topMargin" id="CY2-71-38g"/>
-                                    <constraint firstAttribute="bottom" secondItem="rbi-BU-vez" secondAttribute="bottom" id="LkB-w9-Prw"/>
-                                    <constraint firstItem="I9a-Q1-SFg" firstAttribute="top" secondItem="yz6-B1-Hpn" secondAttribute="bottom" constant="8" symbolic="YES" id="SKf-lS-C6j"/>
-                                    <constraint firstItem="rbi-BU-vez" firstAttribute="top" secondItem="yz6-B1-Hpn" secondAttribute="bottom" constant="8" symbolic="YES" id="cBu-do-iKp"/>
-                                    <constraint firstItem="yz6-B1-Hpn" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leadingMargin" id="y4f-1g-byu"/>
-                                    <constraint firstAttribute="trailing" secondItem="rbi-BU-vez" secondAttribute="trailing" id="zcg-Th-2Rt"/>
+                                    <constraint firstAttribute="bottom" secondItem="EPv-2m-y9e" secondAttribute="bottom" id="A1g-DN-QmF"/>
+                                    <constraint firstItem="EPv-2m-y9e" firstAttribute="top" secondItem="9Um-Hb-5iS" secondAttribute="top" id="Jzg-68-5aC"/>
+                                    <constraint firstItem="EPv-2m-y9e" firstAttribute="leading" secondItem="9Um-Hb-5iS" secondAttribute="leading" id="aui-tL-zy7"/>
+                                    <constraint firstAttribute="trailing" secondItem="EPv-2m-y9e" secondAttribute="trailing" id="on0-eG-mYu"/>
                                 </constraints>
-                                <connections>
-                                    <outlet property="image" destination="I9a-Q1-SFg" id="tdd-2n-60y"/>
-                                    <outlet property="lead" destination="rbi-BU-vez" id="cSY-d5-tHZ"/>
-                                    <outlet property="title" destination="yz6-B1-Hpn" id="YFq-1O-SrT"/>
-                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>

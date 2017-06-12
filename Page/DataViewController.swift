@@ -10,13 +10,16 @@ import UIKit
 
 class DataViewController: UICollectionViewController {
     fileprivate let reuseIdentifier = "ItemCell"
-    //fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 1, right: 0)
-    fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-
+    
+    //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    
+    let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
+    var cellWidth: CGFloat = 0
+    
     
     fileprivate var fetches = ContentFetchResults(
-    apiUrl: "",
-    fetchResults: [ContentSection]()
+        apiUrl: "",
+        fetchResults: [ContentSection]()
     )
     fileprivate let contentAPI = ContentFetch()
     
@@ -29,6 +32,7 @@ class DataViewController: UICollectionViewController {
             updateUI()
         }
     }
+    
     
     
     private func getAPI(_ urlString: String) {
@@ -64,32 +68,6 @@ class DataViewController: UICollectionViewController {
     }
     
     
-//    private func formatJSONData(_ data: Data) -> [String: Any]? {
-//        do {
-//            let JSON = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
-//            if let json = JSON as? [String: Any] {
-//                guard let sections = json["sections"] as? [[String: Any]] else {
-//                    print("creatives Not an Array")
-//                    return nil
-//                }
-//                for section in sections {
-//                    if let type = section["type"] as? String,
-//                        type == "block"{
-//                        guard let lists = section["lists"] as? [[String: Any]] else {
-//                            print("lists Not an Array")
-//                            break
-//                        }
-//                        for list in lists {
-//                            print (list)
-//                        }
-//                    }
-//                }
-//            }
-//        } catch {
-//            
-//        }
-//        return nil
-//    }
     
     
     
@@ -125,24 +103,47 @@ class DataViewController: UICollectionViewController {
         
         // MARK: - Get Content
         view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-
-
+        
+        
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            if #available(iOS 10.0, *) {
-                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-            } else {
-                flowLayout.estimatedItemSize = CGSize(width: 200, height: 200)
-            }
-            flowLayout.minimumLineSpacing = 30
+            
+            //flowLayout.minimumLineSpacing = 30
+            //flowLayout.sectionInset = sectionInsets
+            //let spaceBetweenCells = flowLayout.minimumInteritemSpacing * (columnNum - 1)
+            //let totalCellAvailableWidth = (collectionView?.frame.size.width)! - flowLayout.sectionInset.left - flowLayout.sectionInset.right - spaceBetweenCells
+            let totalCellAvailableWidth = collectionView?.frame.size.width
+            
+            cellWidth = totalCellAvailableWidth! / columnNum
+            
+            print ("cell width is \(cellWidth)")
+            //            if #available(iOS 10.0, *) {
+            //                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+            //            } else {
+            //                flowLayout.estimatedItemSize = CGSize(width: 200, height: 200)
+            //            }
         }
         
-
         
-
+        if #available(iOS 10.0, *) {
+            let refreshControl = UIRefreshControl()
+            refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
+            collectionView?.refreshControl = refreshControl
+        }
+        
+        
+        
+        
         
         // MARK: - Get Content Data for the Page
         requestNewContent()
         
+    }
+    
+    
+    func refreshControlDidFire(sender:AnyObject) {
+        print ("pull to refresh fired")
+        // TODO: Handle Pull to Refresh
+        requestNewContent()
     }
     
     override func didReceiveMemoryWarning() {
@@ -175,18 +176,14 @@ class DataViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         cell.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-
+        
         // Configure the cell
         
         switch reuseIdentifier {
         case "ItemCell":
             if let cell = cell as? ItemCell {
-                // TODO: The following code should be moved to ItemCell class. Then you only need to set fetch result for cell. Check out detail implementation on Paul's Stanford Lecture 9 on table view
-                cell.title.text = fetches.fetchResults[indexPath.section].items[indexPath.row].headline
-                cell.lead.text = fetches.fetchResults[indexPath.section].items[indexPath.row].lead
-                cell.title.preferredMaxLayoutWidth = view.frame.width
-                cell.lead.preferredMaxLayoutWidth = view.frame.width - 150
-
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
         default: break
@@ -238,43 +235,34 @@ class DataViewController: UICollectionViewController {
 
 
 
-fileprivate let itemsPerRow: CGFloat = 1
-
+fileprivate let itemsPerRow: CGFloat = 3
+fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
 
 extension DataViewController : UICollectionViewDelegateFlowLayout {
-
-
-    //1
-//    func collectionView(_ collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        //2
-//
-//            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-//            let availableWidth = view.frame.width - paddingSpace
-//            let widthPerItem = availableWidth / itemsPerRow
-//        let heightPerItem: CGFloat
-//        if indexPath.row == 0 || indexPath.row == 8 {
-//            heightPerItem = widthPerItem * 1
-//        } else {
-//            heightPerItem = widthPerItem * 0.618
-//        }
-//            return CGSize(width: widthPerItem, height: heightPerItem)
-//    }
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        print ("sizeFor Item At called")
+        let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
+        let widthPerItem = availableWidth / itemsPerRow
+        let heightPerItem: CGFloat
+        heightPerItem = widthPerItem * 0.618
+        return CGSize(width: widthPerItem, height: heightPerItem)
+    }
     
-    //3
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsets
+        return sectionInsetsForPad
     }
     
-    // 4
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInsets.left
+        return sectionInsetsForPad.left
     }
-    
-    
 }

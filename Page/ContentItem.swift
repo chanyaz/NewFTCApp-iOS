@@ -24,9 +24,15 @@ class ContentItem{
     }
     
     func getImageURL(_ imageUrl: String) -> URL? {
-        //    if let url =  URL(string: self.largeImage) {
-        //      return url
-        //    }
+        let urlString: String
+        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+            urlString = "https://www.ft.com/__origami/service/image/v2/images/raw/\(u)?source=ftchinese&width=800&height=450&fit=cover"
+        } else {
+            urlString = imageUrl
+        }
+        if let url =  URL(string: urlString) {
+            return url
+        }
         return nil
     }
     

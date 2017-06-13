@@ -30,7 +30,9 @@ struct AppNavigation {
             "Channels": [
                 ["title": "头条",
                  "api":"https://m.ftimg.net/index.php/jsapi/home",
-                 "url":"http://www.ftchinese.com/"
+                 "url":"http://www.ftchinese.com/",
+                 "phoneLayout": "Classic",
+                 "padLayout": "Classic"
                 ],
                 ["title": "中国",
                  "api":"https://m.ftimg.net/index.php/jsapi/home",

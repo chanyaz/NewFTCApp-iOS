@@ -43,7 +43,7 @@ class ContentItem{
             }
             return
         }
-        
+        print ("\(loadURL.absoluteString) should be loaded just once")
         let loadRequest = URLRequest(url:loadURL)
         
         URLSession.shared.dataTask(with: loadRequest, completionHandler: { (data, response, error) in

@@ -18,6 +18,8 @@ struct AppNavigation {
     public let highlightedTabFontColor = "#c0282e"
     public let normalTabFontColor = "#555555"
     public let defaultBorderColor = "#d4c9bc"
+    public let headlineColor = "#33302d"
+    public let leadColor = "#66605a"
     
     private static let appMap = [
         "News": [

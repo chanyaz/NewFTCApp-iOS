@@ -10,6 +10,7 @@ import UIKit
 
 class DataViewController: UICollectionViewController {
     fileprivate let reuseIdentifier = "ItemCell"
+    var refreshControl = UIRefreshControl()
     
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
@@ -94,43 +95,31 @@ class DataViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        
-        // Register cell classes
-        // self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-//        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ChannelCell")
         
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         
         
-        // MARK: - Get Content
-        view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-        
+        // MARK: - Update Styles
+        view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
+        collectionView?.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
         
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            
-            let totalCellAvailableWidth = collectionView?.frame.size.width
-            
-            cellWidth = totalCellAvailableWidth! / columnNum
+            flowLayout.minimumInteritemSpacing = 0
+            flowLayout.minimumLineSpacing = 0
             let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
             flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+            cellWidth = availableWidth
+            //print (cellWidth)
         }
         
-        
         if #available(iOS 10.0, *) {
-            let refreshControl = UIRefreshControl()
             refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
             collectionView?.refreshControl = refreshControl
         }
-        
-        
-        
-        
-        
+    
         // MARK: - Get Content Data for the Page
         requestNewContent()
         
@@ -242,8 +231,8 @@ class DataViewController: UICollectionViewController {
 
 
 
-fileprivate let itemsPerRow: CGFloat = 1
-fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 14, left: 14, bottom: 14, right: 14)
+fileprivate let itemsPerRow: CGFloat = 3
+fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 0)
 
 extension DataViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,

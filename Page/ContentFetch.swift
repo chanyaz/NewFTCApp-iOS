@@ -112,23 +112,27 @@ class ContentFetch {
                         guard let lists = section["lists"] as? [[String: Any]] else {
                             break
                         }
-                        for list in lists {
+                        
+                        for (section, list) in lists.enumerated() {
                             guard let items = list["items"] as? [[String: Any]]  else {
                                 break
                             }
                             var itemCollection = [ContentItem]()
-                            for item in items {
+                            for (row, item) in items.enumerated() {
                                 let id = item["id"] as? String ?? ""
                                 let image = item["image"] as? String ?? ""
                                 let headline = item["headline"] as? String ?? ""
                                 let lead = item["longlead"] as? String ?? ""
                                 let type = item["type"] as? String ?? ""
+                                // MARK: Note that section may not be continuous
                                 let oneItem = ContentItem(
                                     id: id,
                                     image: image,
                                     headline: headline,
                                     lead: lead,
-                                    type: type
+                                    type: type,
+                                    section: section,
+                                    row:row
                                 )
                                 itemCollection.append(oneItem)
                             }

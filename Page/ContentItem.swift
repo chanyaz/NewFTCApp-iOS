@@ -10,13 +10,17 @@ class ContentItem{
     let headline : String
     let lead : String
     let type : String
+    let section: Int
+    let row: Int
     
-    init (id:String, image:String, headline: String, lead: String, type: String) {
+    init (id: String, image: String, headline: String, lead: String, type: String, section: Int, row: Int) {
         self.id = id
         self.image = image
         self.headline = headline
         self.lead = lead
         self.type = type
+        self.section = section
+        self.row = row
     }
     
     func getImageURL(_ imageUrl: String) -> URL? {

@@ -195,7 +195,7 @@
         <scene sceneID="l8I-Jc-aRU">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QXG-H9-h2U" customClass="EnglishNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="每日英语" image="EngishDim" selectedImage="English" id="Oqv-LY-RGD"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="每日英语" image="EnglishDim" selectedImage="English" id="Oqv-LY-RGD"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="3tL-ZB-8jq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -271,8 +271,8 @@
     <resources>
         <image name="Academy" width="25" height="25"/>
         <image name="AcademyDim" width="25" height="25"/>
-        <image name="EngishDim" width="25" height="25"/>
         <image name="English" width="25" height="25"/>
+        <image name="EnglishDim" width="25" height="25"/>
         <image name="MyFT" width="25" height="25"/>
         <image name="MyFTDim" width="25" height="25"/>
         <image name="News" width="25" height="25"/>

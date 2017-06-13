@@ -24,8 +24,12 @@ class CustomNavigationController: UINavigationController, UINavigationController
                 }
             }
         }
+        
+
+        
     }
     
+
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         if let currentTabName = tabName {

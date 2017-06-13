@@ -36,11 +36,13 @@ class ChannelCell: UICollectionViewCell {
         containerView.layoutMargins.right = 0
         
         // MARK: - set the border color
-        border.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
-        
-//        self.layer.borderWidth = 1.0
-//        self.layer.borderColor = UIColor.black.cgColor
- 
+        if let row = itemCell?.row,
+            row > 0 {
+            border.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
+        } else {
+            border.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+        }
+
         
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
@@ -56,5 +58,5 @@ class ChannelCell: UICollectionViewCell {
         }
         //print ("update UI for the cell\(String(describing: itemCell?.lead))")
     }
-
+    
 }

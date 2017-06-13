@@ -12,17 +12,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ChannelCell" id="gTV-IL-0wX" customClass="ChannelCell" customModule="Page" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="323" height="91"/>
+            <rect key="frame" x="0.0" y="0.0" width="323" height="149"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="323" height="91"/>
+                <rect key="frame" x="0.0" y="0.0" width="323" height="149"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yfD-Kf-wUR">
-                        <rect key="frame" x="0.0" y="0.0" width="323" height="91"/>
+                        <rect key="frame" x="0.0" y="0.0" width="323" height="149"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeZ-uA-ElO">
-                                <rect key="frame" x="20" y="20" width="283" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeZ-uA-ElO">
+                                <rect key="frame" x="20" y="20" width="283" height="11"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -35,14 +35,14 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="63A-Fz-18z">
-                                <rect key="frame" x="20" y="48.5" width="160" height="90"/>
+                                <rect key="frame" x="20" y="39" width="160" height="90"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="90" id="M6O-yk-mCs"/>
                                     <constraint firstAttribute="width" constant="160" id="NsK-fw-DDO"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RXw-TM-ab8">
-                                <rect key="frame" x="188" y="45.5" width="115" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RXw-TM-ab8">
+                                <rect key="frame" x="188" y="36" width="115" height="18"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -51,6 +51,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="63A-Fz-18z" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="20" symbolic="YES" id="8F8-bX-jiF"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="63A-Fz-18z" secondAttribute="bottom" constant="20" symbolic="YES" id="DTH-MS-XFy"/>
                             <constraint firstAttribute="trailing" secondItem="ZeZ-uA-ElO" secondAttribute="trailing" constant="20" symbolic="YES" id="GD7-ls-qwX"/>
                             <constraint firstItem="RXw-TM-ab8" firstAttribute="top" secondItem="63A-Fz-18z" secondAttribute="top" constant="-3" id="MLN-kM-DGR"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="20" symbolic="YES" id="OIq-Sz-gYA"/>
@@ -73,7 +74,7 @@
                 <constraint firstItem="yfD-Kf-wUR" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="WqD-Ql-KCG"/>
                 <constraint firstAttribute="trailing" secondItem="yfD-Kf-wUR" secondAttribute="trailing" id="atl-An-Mg5"/>
             </constraints>
-            <size key="customSize" width="323" height="91"/>
+            <size key="customSize" width="323" height="149"/>
             <connections>
                 <outlet property="border" destination="dD2-9f-YHY" id="MVC-Ic-fwT"/>
                 <outlet property="containerView" destination="yfD-Kf-wUR" id="T60-bB-qq7"/>
@@ -82,7 +83,7 @@
                 <outlet property="imageView" destination="63A-Fz-18z" id="eQD-GB-bMY"/>
                 <outlet property="lead" destination="RXw-TM-ab8" id="HkM-JG-whT"/>
             </connections>
-            <point key="canvasLocation" x="-55.5" y="-369.5"/>
+            <point key="canvasLocation" x="-55.5" y="-340.5"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -48,6 +48,7 @@ class DataViewController: UICollectionViewController {
             
             activityIndicator.removeFromSuperview()
             
+            self.refreshControl.endRefreshing()
             
             if let error = error {
                 // 2

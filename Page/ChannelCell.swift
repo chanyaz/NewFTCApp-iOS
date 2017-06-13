@@ -9,12 +9,18 @@
 import UIKit
 
 class ChannelCell: UICollectionViewCell {
+    
+    // MARK: - Style settings for this class
+    let imageWidth = 160
+    let imageHeight = 90
+    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
     @IBOutlet weak var lead: UILabel!
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var border: UIView!
     @IBOutlet weak var imageView: UIImageView!
+
     
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
@@ -36,9 +42,6 @@ class ChannelCell: UICollectionViewCell {
         containerView.layoutMargins.left = 0
         containerView.layoutMargins.right = 0
         
-        
-
-        
         // MARK: - set the border color
         if let row = itemCell?.row,
             row > 0 {
@@ -46,17 +49,14 @@ class ChannelCell: UICollectionViewCell {
         } else {
             border.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         }
-
         
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        //lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
-        itemCell?.loadLargeImage(width: 160, height: 90, completion: { [weak self](cellContentItem, error) in
-            //            print ("image loaded")
-            //            print (cellContentItem.largeImage)
+        itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
             self?.imageView.image = cellContentItem.largeImage
         })
         

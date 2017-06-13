@@ -14,6 +14,7 @@ class ChannelCell: UICollectionViewCell {
     @IBOutlet weak var lead: UILabel!
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var border: UIView!
+    @IBOutlet weak var imageView: UIImageView!
     
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
@@ -35,12 +36,8 @@ class ChannelCell: UICollectionViewCell {
         containerView.layoutMargins.left = 0
         containerView.layoutMargins.right = 0
         
-        // MARK: - Load the image of the item
-        itemCell?.loadLargeImage({ [weak self](cellContentItem, error) in
-            print ("image loaded")
-            print (cellContentItem.largeImage)
-            //self.imageView 
-        })
+        
+
         
         // MARK: - set the border color
         if let row = itemCell?.row,
@@ -53,7 +50,15 @@ class ChannelCell: UICollectionViewCell {
         
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        //lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        
+        // MARK: - Load the image of the item
+        imageView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        itemCell?.loadLargeImage(width: 160, height: 90, completion: { [weak self](cellContentItem, error) in
+            //            print ("image loaded")
+            //            print (cellContentItem.largeImage)
+            self?.imageView.image = cellContentItem.largeImage
+        })
         
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right

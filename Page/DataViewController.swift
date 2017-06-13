@@ -101,18 +101,23 @@ class DataViewController: UICollectionViewController {
         // Register cell classes
         // self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
+//        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ChannelCell")
+        
+        collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
+        
+        
         // MARK: - Get Content
         view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         
         
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             
-//            let totalCellAvailableWidth = collectionView?.frame.size.width
-//            
-//            cellWidth = totalCellAvailableWidth! / columnNum
-//            let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
-//            let availableWidth = view.frame.width - paddingSpace
-//            flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+            let totalCellAvailableWidth = collectionView?.frame.size.width
+            
+            cellWidth = totalCellAvailableWidth! / columnNum
+            let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
+            let availableWidth = view.frame.width - paddingSpace
+            flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
         }
         
         
@@ -160,26 +165,36 @@ class DataViewController: UICollectionViewController {
     }
     
     
+    let randomTexts = ["Aenean dapibus urna a ullamcorper malesuada. Ut tempor.",
+                       "Sed venenatis ligula massa, a vulputate ipsum fringilla eget. Ut justo erat, facilisis id rhoncus cursus, fringilla at.",
+                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis nibh metus, elementum tempus libero ornare vitae. Etiam sed leo pretium, consectetur turpis non, dapibus purus. Suspendisse potenti. Ut ut eros nunc. Cras nulla justo, porttitor non sapien at, iaculis.",
+                       "Maecenas pellentesque sed magna in congue. Sed non lacus in mi posuere scelerisque. Aenean.",
+                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eget ex a velit tincidunt sodales. Donec elementum nisi at enim tempus, et rutrum erat semper. Phasellus ultricies est nec finibus."]
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return fetches.fetchResults[section].items.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        cell.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+//        cell.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         
         // Configure the cell
         
-        switch reuseIdentifier {
-        case "ItemCell":
-            if let cell = cell as? ItemCell {
-                //cell.cellWidth = cellWidth
-                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                return cell
-            }
-        default: break
-        }
+//        switch reuseIdentifier {
+//        case "ItemCell":
+//            if let cell = cell as? ItemCell {
+//                cell.cellWidth = cellWidth
+//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+//                return cell
+//            }
+//        default: break
+//        }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChannelCell", for: indexPath) as! ChannelCell
+        cell.cellWidth = cellWidth
+        cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
         
         return cell
     }
@@ -227,15 +242,15 @@ class DataViewController: UICollectionViewController {
 
 
 
-fileprivate let itemsPerRow: CGFloat = 3
-fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+fileprivate let itemsPerRow: CGFloat = 1
+fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 14, left: 14, bottom: 14, right: 14)
 
 extension DataViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        print ("sizeFor Item At called")
+        //print ("sizeFor Item At called")
         let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow

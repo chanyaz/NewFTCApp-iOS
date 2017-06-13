@@ -1,31 +1,43 @@
 //
-//  ItemCell.swift
+//  ChannelCell.swift
 //  Page
 //
-//  Created by Oliver Zhang on 2017/6/9.
+//  Created by Oliver Zhang on 2017/6/13.
 //  Copyright © 2017年 Oliver Zhang. All rights reserved.
 //
 
 import UIKit
 
-class ItemCell: UICollectionViewCell {
+class ChannelCell: UICollectionViewCell {
 
+//    @IBOutlet weak var headerLabel: UILabel!
+//    @IBOutlet weak var descriptionLabel: UILabel!
+//    @IBOutlet weak var widthConstraint: NSLayoutConstraint!
+
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+//        self.contentView.translatesAutoresizingMaskIntoConstraints = false
+//        let screenWidth = UIScreen.main.bounds.size.width
+//        widthConstraint.constant = screenWidth - (2 * 30)
+    }
+    
+    
+    
     
 //    @IBOutlet weak var containerView: UIView!
 //    @IBOutlet weak var headline: UILabel!
 //    @IBOutlet weak var lead: UILabel!
 //    @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     
-//    @IBOutlet weak var headline: UILabel!
-//    @IBOutlet weak var lead: UILabel!
-    
-//    @IBOutlet weak var headline: UILabel!
-//    @IBOutlet weak var lead: UILabel!
-    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
     @IBOutlet weak var lead: UILabel!
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
+    
+    
+    
     
     var type: String?
     var id: String?
@@ -50,21 +62,18 @@ class ItemCell: UICollectionViewCell {
         
         
         
-        headline.text = itemCell?.headline
-        lead.text = itemCell?.lead
+        headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         //lead.sizeToFit()
         if let cellWidth = cellWidth {
-            self.containerView.translatesAutoresizingMaskIntoConstraints = false
+            self.contentView.translatesAutoresizingMaskIntoConstraints = false
             let containerWidth = cellWidth - cellMargins - containerViewMargins
             containerViewWidthConstraint.constant = containerWidth
-            //let containerWidth: CGFloat = 200
-            print ("contain view width is \(containerWidth)")
-//            let containerWidthLayoutConstraint = NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: containerWidth)
-//            containerView.addConstraint(containerWidthLayoutConstraint)
-//            containerView.frame.size.width = containerWidth
-//            self.frame.size.width = containerWidth
         }
-        //print ("update UI for the cell\(String(describing: itemCell?.lead))")
+        print ("update UI for the cell\(String(describing: itemCell?.lead))")
     }
     
+
+    
+
 }

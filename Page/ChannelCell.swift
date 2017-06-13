@@ -13,6 +13,8 @@ class ChannelCell: UICollectionViewCell {
     @IBOutlet weak var headline: UILabel!
     @IBOutlet weak var lead: UILabel!
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var border: UIView!
+    
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
         didSet {
@@ -23,7 +25,6 @@ class ChannelCell: UICollectionViewCell {
     // MARK: Use the data source to update UI for the cell
     func updateUI() {
         // MARK: - Update Styles and Layouts
-        self.backgroundColor = UIColor.gray
         containerView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         headline.textColor = UIColor(hex: AppNavigation.sharedInstance.headlineColor)
         lead.textColor = UIColor(hex: AppNavigation.sharedInstance.leadColor)
@@ -33,6 +34,9 @@ class ChannelCell: UICollectionViewCell {
         layoutMargins.bottom = 0
         containerView.layoutMargins.left = 0
         containerView.layoutMargins.right = 0
+        
+        // MARK: - set the border color
+        border.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
         
 //        self.layer.borderWidth = 1.0
 //        self.layer.borderColor = UIColor.black.cgColor

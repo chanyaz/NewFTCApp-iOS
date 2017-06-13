@@ -35,6 +35,13 @@ class ChannelCell: UICollectionViewCell {
         containerView.layoutMargins.left = 0
         containerView.layoutMargins.right = 0
         
+        // MARK: - Load the image of the item
+        itemCell?.loadLargeImage({ [weak self](cellContentItem, error) in
+            print ("image loaded")
+            print (cellContentItem.largeImage)
+            //self.imageView 
+        })
+        
         // MARK: - set the border color
         if let row = itemCell?.row,
             row > 0 {

@@ -56,9 +56,14 @@ class ChannelCell: UICollectionViewCell {
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        if let loadedImage = itemCell?.largeImage {
+            imageView.image = loadedImage
+            print ("image is already loaded, no need to download again. ")
+        } else {
         itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
             self?.imageView.image = cellContentItem.largeImage
         })
+        }
         
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right

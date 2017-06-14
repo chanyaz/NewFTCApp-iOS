@@ -9,7 +9,6 @@
 import UIKit
 
 class DataViewController: UICollectionViewController {
-    fileprivate let reuseIdentifier = "ItemCell"
     var refreshControl = UIRefreshControl()
     
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -28,11 +27,11 @@ class DataViewController: UICollectionViewController {
     var dataObject = [String: String]()
     var pageTitle: String = ""
     
-    var pageContent = [String: Any]() {
-        didSet {
-            updateUI()
-        }
-    }
+    //    var pageContent = [String: Any]() {
+    //        didSet {
+    //            updateUI()
+    //        }
+    //    }
     
     
     
@@ -73,9 +72,9 @@ class DataViewController: UICollectionViewController {
     
     
     
-    private func updateUI() {
-        //print (pageContent)
-    }
+    //    private func updateUI() {
+    //        //print (pageContent)
+    //    }
     
     private func requestNewContent() {
         // MARK: - Request Data from Server
@@ -100,6 +99,8 @@ class DataViewController: UICollectionViewController {
         // self.clearsSelectionOnViewWillAppear = false
         
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
+        collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
+        collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
         
         
         // MARK: - Update Styles
@@ -120,7 +121,7 @@ class DataViewController: UICollectionViewController {
             refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
             collectionView?.refreshControl = refreshControl
         }
-    
+        
         // MARK: - Get Content Data for the Page
         requestNewContent()
         
@@ -154,7 +155,7 @@ class DataViewController: UICollectionViewController {
         return fetches.fetchResults.count
     }
     
-
+    
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
@@ -162,26 +163,72 @@ class DataViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-//        cell.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+        //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        //        cell.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         
         // Configure the cell
         
-//        switch reuseIdentifier {
-//        case "ItemCell":
-//            if let cell = cell as? ItemCell {
-//                cell.cellWidth = cellWidth
-//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-//                return cell
-//            }
-//        default: break
-//        }
+        //        switch reuseIdentifier {
+        //        case "ItemCell":
+        //            if let cell = cell as? ItemCell {
+        //                cell.cellWidth = cellWidth
+        //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+        //                return cell
+        //            }
+        //        default: break
+        //        }
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChannelCell", for: indexPath) as! ChannelCell
-        cell.cellWidth = cellWidth
-        cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+        let reuseIdentifier = getReuseIdentifierForCell(indexPath)
+        let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         
-        return cell
+        switch reuseIdentifier {
+        case "CoverCell":
+            if let cell = cellItem as? CoverCell {
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
+        default:
+            if let cell = cellItem as? ChannelCell {
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
+        }
+        
+        
+        
+        return cellItem
+    }
+    
+    // MARK: - Use different cell based on different strategy
+    private func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
+        print (view.frame.width)
+        print (dataObject)
+        print (layoutType())
+        let layoutKey = layoutType()
+        let layoutStrategy: String?
+        if let layoutValue = dataObject[layoutKey] {
+            layoutStrategy = layoutValue
+        } else {
+            layoutStrategy = nil
+        }
+        let reuseIdentifier: String
+        if layoutStrategy == "Simple Headline" {
+            if indexPath.section == 0 && indexPath.row == 0 {
+                reuseIdentifier = "CoverCell"
+            } else {
+                reuseIdentifier = "HeadlineCell"
+            }
+        } else {
+            if indexPath.section == 0 && indexPath.row == 0 {
+                reuseIdentifier = "CoverCell"
+            } else {
+                reuseIdentifier = "ChannelCell"
+            }
+        }
+        
+        return reuseIdentifier
     }
     
     // MARK: UICollectionViewDelegate
@@ -258,3 +305,5 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         return sectionInsetsForPad.left
     }
 }
+
+

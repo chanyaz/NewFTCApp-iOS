@@ -19,32 +19,19 @@ class CustomTabBarController: UITabBarController {
         } else {
             // Fallback on earlier versions
         }
-        //self.tabBarItem.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.green], for:.normal)
         self.tabBar.tintColor = UIColor(hex: AppNavigation.sharedInstance.highlightedTabFontColor)
         self.tabBar.barTintColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         self.tabBar.backgroundImage = UIImage.colorForNavBar(color: UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor))
         self.tabBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor))
         self.tabBar.isTranslucent = false
         
-        
-//        if let items = tabBarController?.tabBar.items {
-//            let tabBarImages = getTabBarImages() // tabBarImages: [UIImage]
-//            for i in 0..<items.count {
-//                let tabBarItem = items[i]
-//                let tabBarImage = tabBarImages[i]
-//                tabBarItem.image = tabBarImage.withRenderingMode(.alwaysOriginal)
-//                tabBarItem.selectedImage = tabBarImage
-//            }
-//        }
-        
+        // MARK: Replace unselected tab icons with original icon
         if let items = self.tabBar.items {
-            let tabBarImages = getTabBarImages() // tabBarImages: [UIImage]
+            let tabBarImages = getTabBarImages()
             for i in 0..<items.count {
                 let tabBarItem = items[i]
                 let tabBarImage = tabBarImages[i]
                 tabBarItem.image = tabBarImage?.withRenderingMode(.alwaysOriginal)
-                //tabBarItem.selectedImage = tabBarImage
-                //tabBarItem.image = tabBarImage
             }
         }
 
@@ -58,8 +45,6 @@ class CustomTabBarController: UITabBarController {
         }
         return images
     }
-    
-    
     
     
     // MARK: On mobile phone, lock the screen to portrait only

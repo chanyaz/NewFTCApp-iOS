@@ -29,6 +29,17 @@ class Ad: UICollectionReusableView {
 //    }
     
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        //nibSetup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        //nibSetup()
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

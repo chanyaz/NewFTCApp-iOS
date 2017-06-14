@@ -56,12 +56,12 @@ class CoverCell: UICollectionViewCell {
         imageView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         if let loadedImage = itemCell?.largeImage {
             imageView.image = loadedImage
-            print ("image is already loaded, no need to download again. ")
+            //print ("image is already loaded, no need to download again. ")
         } else {
             itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
                 self?.imageView.image = cellContentItem.largeImage
             })
-            print ("should load image here")
+            //print ("should load image here")
         }
         
         // MARK: - Use calculated cell width to diplay auto-sizing cells

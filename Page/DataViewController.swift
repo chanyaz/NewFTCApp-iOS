@@ -101,7 +101,8 @@ class DataViewController: UICollectionViewController {
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
         collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
-        
+        //collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forCellWithReuseIdentifier: "Ad")
+        collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
         
         // MARK: - Update Styles
         view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
@@ -163,21 +164,6 @@ class DataViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        //        cell.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-        
-        // Configure the cell
-        
-        //        switch reuseIdentifier {
-        //        case "ItemCell":
-        //            if let cell = cell as? ItemCell {
-        //                cell.cellWidth = cellWidth
-        //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-        //                return cell
-        //            }
-        //        default: break
-        //        }
-        
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         
@@ -201,11 +187,39 @@ class DataViewController: UICollectionViewController {
         return cellItem
     }
     
+    
+    override func collectionView(_ collectionView: UICollectionView,
+                                 viewForSupplementaryElementOfKind kind: String,
+                                 at indexPath: IndexPath) -> UICollectionReusableView {
+        print ("section header is called")
+        //1
+        switch kind {
+        //2
+        case UICollectionElementKindSectionHeader:
+            //3
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                             withReuseIdentifier: "Ad",
+                                                                             for: indexPath) as! Ad
+            //headerView.label.text = searches[(indexPath as NSIndexPath).section].searchTerm
+            return headerView
+        default:
+            //4
+            assert(false, "Unexpected element kind")
+        }
+    }
+    
+    // Calculate Height for Headers
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: view.frame.width/4)
+        //return CGSize(width: 300, height: 250)
+    }
+    
+    
     // MARK: - Use different cell based on different strategy
     private func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
-        print (view.frame.width)
-        print (dataObject)
-        print (layoutType())
+//        print (view.frame.width)
+//        print (dataObject)
+//        print (layoutType())
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {

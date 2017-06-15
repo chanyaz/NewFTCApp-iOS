@@ -15,7 +15,7 @@ class DataViewController: UICollectionViewController {
     
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
     var cellWidth: CGFloat = 0
-    
+    var themeColor: String? = nil
     
     fileprivate var fetches = ContentFetchResults(
         apiUrl: "",
@@ -117,11 +117,12 @@ class DataViewController: UICollectionViewController {
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
+            //FIXME: Why does this break scrolling?
+            //flowLayout.sectionHeadersPinToVisibleBounds = true
             let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
             flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
             cellWidth = availableWidth
-            //print (cellWidth)
         }
         
         if #available(iOS 10.0, *) {
@@ -131,7 +132,9 @@ class DataViewController: UICollectionViewController {
         
         // MARK: - Get Content Data for the Page
         requestNewContent()
-        
+//        if let tabName = (navigationController as? CustomNavigationController)?.tabName {
+//            print (tabName)
+//        }
     }
     
     
@@ -214,6 +217,8 @@ class DataViewController: UICollectionViewController {
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView
+                headerView.themeColor = themeColor
+                headerView.contentSection = fetches.fetchResults[indexPath.section]
                 //headerView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
                 return headerView
             default:
@@ -227,9 +232,8 @@ class DataViewController: UICollectionViewController {
     
     // Calculate Height for Headers
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if let reuseIdentifier = getReuseIdentifierForSectionHeader(section).reuseId {
-            print (reuseIdentifier)
-            return CGSize(width: view.frame.width, height: view.frame.width/4)
+        if getReuseIdentifierForSectionHeader(section).reuseId != nil {
+            return getReuseIdentifierForSectionHeader(section).sectionSize
         }
         return CGSize.zero
         
@@ -279,8 +283,13 @@ class DataViewController: UICollectionViewController {
             reuseIdentifier = "Ad"
             sectionSize = CGSize(width: 300, height: 600)
         case "List":
-            reuseIdentifier = "HeaderView"
-            sectionSize = CGSize(width: view.frame.width, height: 80)
+            if fetches.fetchResults[sectionIndex].title != "" {
+                reuseIdentifier = "HeaderView"
+                sectionSize = CGSize(width: view.frame.width, height: 44)
+            } else {
+                reuseIdentifier = nil
+                sectionSize = CGSize.zero
+            }
         default:
             reuseIdentifier = nil
             sectionSize = CGSize.zero

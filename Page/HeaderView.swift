@@ -10,9 +10,25 @@ import UIKit
 
 class HeaderView: UICollectionReusableView {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    
+    @IBOutlet weak var title: UILabel!
+    var themeColor: String? = nil
+    var contentSection: ContentSection? = nil {
+        didSet {
+            updateUI()
+        }
+    }
+    
+    func updateUI() {
+        title.text = contentSection?.title
+        title.textColor = UIColor.white
+        //self.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        if let theme = themeColor {
+            self.backgroundColor = UIColor(hex: theme)
+
+        }
+        //title.font = title.font.bold()
+
     }
     
 }

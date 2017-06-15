@@ -22,6 +22,7 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
 
     var pageData = [[String: String]]()
     var pageTitles: [String] = []
+    var pageThemeColor: String? = nil
 
 
     init(tabName: String) {
@@ -29,6 +30,14 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
         // Create the data model
         if let p = AppNavigation.sharedInstance.getNavigationPropertyData(for: tabName, of: "Channels" ) {
             pageData = p
+        }
+        if let themeColor = AppNavigation.sharedInstance.getNavigationProperty(for: tabName, of: "navBackGroundColor") {
+            let isNavLightContent = AppNavigation.sharedInstance.isNavigationPropertyTrue(for: tabName, of: "isNavLightContent")
+            if isNavLightContent == true {
+                pageThemeColor = themeColor
+            } else {
+                pageThemeColor = AppNavigation.sharedInstance.highlightedTabFontColor
+            }
         }
         pageTitles = pageData.map { (value: [String: String]) -> String in
             return value["title"] ?? ""
@@ -46,6 +55,7 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
         //print(dataViewController.view.frame)
         dataViewController.dataObject = self.pageData[index]
         dataViewController.pageTitle = self.pageTitles[index]
+        dataViewController.themeColor = self.pageThemeColor
         return dataViewController
     }
 

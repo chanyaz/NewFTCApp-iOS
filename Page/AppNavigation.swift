@@ -15,6 +15,7 @@ struct AppNavigation {
     public let defaultTabBackgroundColor = "#f7e9d8"
     public let defaultContentBackgroundColor = "#FFF1E5"
     public let defaultTabFontColor = "#333333"
+    public let defaultHeaderColor = "#333333"
     public let highlightedTabFontColor = "#c0282e"
     public let normalTabFontColor = "#555555"
     public let defaultBorderColor = "#d4c9bc"
@@ -95,7 +96,7 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "api":"https://m.ftimg.net/index.php/jsapi/publish/test",
                  "url":"http://www.ftchinese.com/"
                 ],
                 ["title": "热点观察",

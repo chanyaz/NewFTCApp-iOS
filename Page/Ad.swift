@@ -45,7 +45,6 @@ class Ad: UICollectionReusableView {
         if let urlString = urlString,
             let url = URL(string: urlString) {
             let req = URLRequest(url:url)
-            
             if let adHTMLPath = Bundle.main.path(forResource: "ad", ofType: "html"),
                 let gaJSPath = Bundle.main.path(forResource: "ga", ofType: "js"){
                 do {

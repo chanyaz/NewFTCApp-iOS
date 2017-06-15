@@ -12,23 +12,13 @@ import WebKit
 
 class Ad: UICollectionReusableView {
 
+    // MARK: - Use lazy var for webView as we might later switch to native ad and use web view only as fallback
     lazy var webView = WKWebView()
-//    var frame: CGRect
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//    }
-    
-    
+    var urlString: String? = nil {
+        didSet {
+            updateUI()
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         //nibSetup()
@@ -39,28 +29,36 @@ class Ad: UICollectionReusableView {
         //nibSetup()
     }
     
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    // MARK: Use WKWebview to migrate current display ads.
+    func updateUI() {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        
         self.backgroundColor = UIColor.red
         webView = WKWebView(frame: self.frame, configuration: config)
         self.addSubview(self.webView)
         self.clipsToBounds = true
         webView.scrollView.bounces = false
         webView.configuration.allowsInlineMediaPlayback = true
-        let webPageUrl = "http://www.ftchinese.com/"
-        if let url = URL(string:webPageUrl) {
+        if let urlString = urlString,
+            let url = URL(string: urlString) {
             let req = URLRequest(url:url)
-            webView.load(req)
+            
+            if let templatepath = Bundle.main.path(forResource: "a", ofType: "html") {
+                do {
+                    let s = try NSString(contentsOfFile:templatepath, encoding:String.Encoding.utf8.rawValue)
+                    self.webView.loadHTMLString(s as String, baseURL:url)
+                } catch {
+                    webView.load(req)
+                }
+            } else {
+                webView.load(req)
+            }
+            
         }
     }
     
     
-    // TODO: 1. Use WKWebview to migrate current display ads. 2. Upgrade to native for default templates
+    // TODO: Upgrade to native for default templates
     
     
 }

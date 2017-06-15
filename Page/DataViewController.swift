@@ -153,6 +153,8 @@ class DataViewController: UICollectionViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
+        // let fetchR = fetches.fetchResults
+        print ("found \(fetches.fetchResults.count) sections")
         return fetches.fetchResults.count
     }
     
@@ -191,7 +193,6 @@ class DataViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView,
                                  viewForSupplementaryElementOfKind kind: String,
                                  at indexPath: IndexPath) -> UICollectionReusableView {
-        print ("section header is called")
         //1
         switch kind {
         //2
@@ -200,7 +201,7 @@ class DataViewController: UICollectionViewController {
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                              withReuseIdentifier: "Ad",
                                                                              for: indexPath) as! Ad
-            //headerView.label.text = searches[(indexPath as NSIndexPath).section].searchTerm
+            headerView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
             return headerView
         default:
             //4
@@ -217,9 +218,6 @@ class DataViewController: UICollectionViewController {
     
     // MARK: - Use different cell based on different strategy
     private func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
-//        print (view.frame.width)
-//        print (dataObject)
-//        print (layoutType())
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {

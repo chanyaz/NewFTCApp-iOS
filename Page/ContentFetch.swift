@@ -147,28 +147,6 @@ class ContentFetch {
                     }
                 }
                 
-                
-                
-                //                for photoObject in photosReceived {
-                //                    guard let photoID = photoObject["id"] as? String,
-                //                        let farm = photoObject["farm"] as? Int ,
-                //                        let server = photoObject["server"] as? String ,
-                //                        let secret = photoObject["secret"] as? String else {
-                //                            break
-                //                    }
-                //                    let flickrPhoto = ContentItem(photoID: photoID, farm: farm, server: server, secret: secret)
-                //
-                //                    guard let url = flickrPhoto.flickrImageURL(),
-                //                        let imageData = try? Data(contentsOf: url as URL) else {
-                //                            break
-                //                    }
-                //
-                //                    if let image = UIImage(data: imageData) {
-                //                        flickrPhoto.thumbnail = image
-                //                        flickrPhotos.append(flickrPhoto)
-                //                    }
-                //                }
-                
                 OperationQueue.main.addOperation({
                     completion(ContentFetchResults(apiUrl: urlString, fetchResults: contentSections), nil)
                 })

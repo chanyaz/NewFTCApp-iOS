@@ -67,7 +67,7 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "api":"https://m.ftimg.net/index.php/jsapi/publish/test",
                  "url":"http://www.ftchinese.com/"
                 ],
                 ["title": "英语电台",

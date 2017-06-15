@@ -34,7 +34,10 @@ class Ad: UICollectionReusableView {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         self.backgroundColor = UIColor.red
-        webView = WKWebView(frame: self.frame, configuration: config)
+        let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height)
+        webView = WKWebView(frame: webViewFrame, configuration: config)
+        print (webViewFrame)
+        
         self.addSubview(self.webView)
         self.clipsToBounds = true
         webView.scrollView.bounces = false
@@ -43,10 +46,13 @@ class Ad: UICollectionReusableView {
             let url = URL(string: urlString) {
             let req = URLRequest(url:url)
             
-            if let templatepath = Bundle.main.path(forResource: "a", ofType: "html") {
+            if let adHTMLPath = Bundle.main.path(forResource: "ad", ofType: "html"),
+                let gaJSPath = Bundle.main.path(forResource: "ga", ofType: "js"){
                 do {
-                    let s = try NSString(contentsOfFile:templatepath, encoding:String.Encoding.utf8.rawValue)
-                    self.webView.loadHTMLString(s as String, baseURL:url)
+                    let adHTML = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let gaJS = try NSString(contentsOfFile:gaJSPath, encoding:String.Encoding.utf8.rawValue)
+                    let adHTMLFinal = (adHTML as String).replacingOccurrences(of: "{google-analytics-js}", with: gaJS as String)
+                    self.webView.loadHTMLString(adHTMLFinal, baseURL:url)
                 } catch {
                     webView.load(req)
                 }

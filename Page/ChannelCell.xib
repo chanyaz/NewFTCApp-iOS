@@ -34,7 +34,7 @@
                                     <constraint firstAttribute="height" constant="1" id="GWV-pU-HpB"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="63A-Fz-18z">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="63A-Fz-18z">
                                 <rect key="frame" x="20" y="39" width="160" height="90"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="90" id="M6O-yk-mCs"/>

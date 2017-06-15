@@ -21,7 +21,8 @@
 		604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 604FF94A1EEF7649005D2A41 /* ChannelCell.xib */; };
 		607094AD1EE9436900760A60 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AC1EE9436900760A60 /* Tabs.swift */; };
 		607094AF1EE943A900760A60 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AE1EE943A900760A60 /* Channels.swift */; };
-		6087E3D71EF212960034A92F /* a.html in Resources */ = {isa = PBXBuildFile; fileRef = 6087E3D61EF212960034A92F /* a.html */; };
+		6087E3D71EF212960034A92F /* ad.html in Resources */ = {isa = PBXBuildFile; fileRef = 6087E3D61EF212960034A92F /* ad.html */; };
+		6087E3DA1EF2294C0034A92F /* ga.js in Resources */ = {isa = PBXBuildFile; fileRef = 6087E3D91EF2294C0034A92F /* ga.js */; };
 		6093F1641EE8EFA4009F16EE /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093F1631EE8EFA4009F16EE /* DetailViewController.swift */; };
 		6093F1661EE90E81009F16EE /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093F1651EE90E81009F16EE /* CustomPopTransition.swift */; };
 		6093F1691EE937E8009F16EE /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6093F1671EE937E8009F16EE /* Model.xcdatamodeld */; };
@@ -81,7 +82,8 @@
 		604FF94A1EEF7649005D2A41 /* ChannelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCell.xib; sourceTree = "<group>"; };
 		607094AC1EE9436900760A60 /* Tabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		607094AE1EE943A900760A60 /* Channels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
-		6087E3D61EF212960034A92F /* a.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = a.html; sourceTree = "<group>"; };
+		6087E3D61EF212960034A92F /* ad.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ad.html; sourceTree = "<group>"; };
+		6087E3D91EF2294C0034A92F /* ga.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ga.js; sourceTree = "<group>"; };
 		6093F1631EE8EFA4009F16EE /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		6093F1651EE90E81009F16EE /* CustomPopTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
 		6093F1681EE937E8009F16EE /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -220,7 +222,8 @@
 			children = (
 				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
 				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
-				6087E3D61EF212960034A92F /* a.html */,
+				6087E3D61EF212960034A92F /* ad.html */,
+				6087E3D91EF2294C0034A92F /* ga.js */,
 			);
 			name = Ad;
 			sourceTree = "<group>";
@@ -414,10 +417,11 @@
 			files = (
 				60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */,
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
-				6087E3D71EF212960034A92F /* a.html in Resources */,
+				6087E3D71EF212960034A92F /* ad.html in Resources */,
 				60D3C8CF1EBFF5DC0085BEF6 /* LaunchScreen.storyboard in Resources */,
 				604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */,
 				60D3C8CC1EBFF5DC0085BEF6 /* Assets.xcassets in Resources */,
+				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
 				60D3C8CA1EBFF5DC0085BEF6 /* Main.storyboard in Resources */,
 				60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */,
 			);

@@ -11,8 +11,8 @@ import UIKit
 class ChannelCell: UICollectionViewCell {
     
     // MARK: - Style settings for this class
-    let imageWidth = 160
-    let imageHeight = 90
+    let imageWidth = 16
+    let imageHeight = 9
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!

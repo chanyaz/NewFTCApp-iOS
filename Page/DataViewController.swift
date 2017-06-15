@@ -58,8 +58,14 @@ class DataViewController: UICollectionViewController {
             if let results = results {
                 // 3
                 print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
-                //self.fetches.insert(results, at: 0)
-                self.fetches = results
+                // MARK: - Insert Ads into the fetch results
+                let resultsWithAds = ContentFetchResults(
+                    apiUrl: results.apiUrl,
+                    fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
+                )
+                print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
+                self.fetches = resultsWithAds
+                
                 
                 
                 // 4
@@ -101,8 +107,8 @@ class DataViewController: UICollectionViewController {
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
         collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
-        //collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forCellWithReuseIdentifier: "Ad")
         collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
+        collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
         
         // MARK: - Update Styles
         view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
@@ -193,25 +199,40 @@ class DataViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView,
                                  viewForSupplementaryElementOfKind kind: String,
                                  at indexPath: IndexPath) -> UICollectionReusableView {
-        //1
         switch kind {
-        //2
         case UICollectionElementKindSectionHeader:
-            //3
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                             withReuseIdentifier: "Ad",
-                                                                             for: indexPath) as! Ad
-            headerView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
+            let reuseIdentifier = getReuseIdentifierForSectionHeader(indexPath.section).reuseId ?? ""
+            let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: reuseIdentifier,
+                for: indexPath
+            )
+            switch reuseIdentifier {
+            case "Ad":
+                let adView = headerView as! Ad
+                adView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
+                return adView
+            case "HeaderView":
+                let headerView = headerView as! HeaderView
+                //headerView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
+                return headerView
+            default:
+                assert(false, "Unknown Identifier")
+            }
             return headerView
         default:
-            //4
             assert(false, "Unexpected element kind")
         }
     }
     
     // Calculate Height for Headers
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.width/4)
+        if let reuseIdentifier = getReuseIdentifierForSectionHeader(section).reuseId {
+            print (reuseIdentifier)
+            return CGSize(width: view.frame.width, height: view.frame.width/4)
+        }
+        return CGSize.zero
+        
         //return CGSize(width: 300, height: 250)
     }
     
@@ -233,14 +254,38 @@ class DataViewController: UICollectionViewController {
                 reuseIdentifier = "HeadlineCell"
             }
         } else {
-            if indexPath.section == 0 && indexPath.row == 0 {
+            if indexPath.row == 0 {
                 reuseIdentifier = "CoverCell"
             } else {
                 reuseIdentifier = "ChannelCell"
             }
         }
-        
         return reuseIdentifier
+    }
+    
+    private func getReuseIdentifierForSectionHeader(_ sectionIndex: Int) -> (reuseId: String?, sectionSize: CGSize) {
+        let reuseIdentifier: String?
+        let sectionSize: CGSize
+        let sectionType = fetches.fetchResults[sectionIndex].type
+        print (sectionType)
+        switch sectionType {
+        case "Banner":
+            reuseIdentifier = "Ad"
+            sectionSize = CGSize(width: view.frame.width, height: view.frame.width/4)
+        case "MPU":
+            reuseIdentifier = "Ad"
+            sectionSize = CGSize(width: 300, height: 250)
+        case "HalfPage":
+            reuseIdentifier = "Ad"
+            sectionSize = CGSize(width: 300, height: 600)
+        case "List":
+            reuseIdentifier = "HeaderView"
+            sectionSize = CGSize(width: view.frame.width, height: 80)
+        default:
+            reuseIdentifier = nil
+            sectionSize = CGSize.zero
+        }
+        return (reuseId: reuseIdentifier, sectionSize: sectionSize)
     }
     
     // MARK: UICollectionViewDelegate
@@ -287,7 +332,7 @@ class DataViewController: UICollectionViewController {
 
 
 fileprivate let itemsPerRow: CGFloat = 3
-fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 0)
+fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
 extension DataViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,

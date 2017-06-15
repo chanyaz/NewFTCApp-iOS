@@ -139,7 +139,9 @@ class ContentFetch {
                             let title = list["title"] as? String ?? ""
                             let contentSection = ContentSection(
                                 title: title,
-                                items: itemCollection
+                                items: itemCollection,
+                                type: "List",
+                                adid: nil
                             )
                             contentSections.append(contentSection)
                         }

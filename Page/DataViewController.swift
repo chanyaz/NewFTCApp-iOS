@@ -190,6 +190,12 @@ class DataViewController: UICollectionViewController {
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "HeadlineCell":
+            if let cell = cellItem as? HeadlineCell {
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         default:
             if let cell = cellItem as? ChannelCell {
                 cell.cellWidth = cellWidth

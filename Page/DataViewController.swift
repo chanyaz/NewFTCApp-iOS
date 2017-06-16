@@ -121,7 +121,12 @@ class DataViewController: UICollectionViewController {
             //flowLayout.sectionHeadersPinToVisibleBounds = true
             let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
-            flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+            if #available(iOS 10.0, *) {
+                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+            } else {
+                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+            }
+            
             cellWidth = availableWidth
         }
         
@@ -213,7 +218,8 @@ class DataViewController: UICollectionViewController {
             switch reuseIdentifier {
             case "Ad":
                 let adView = headerView as! Ad
-                adView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
+                //adView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
+                adView.contentSection = fetches.fetchResults[indexPath.section]
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView

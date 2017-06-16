@@ -203,9 +203,6 @@ class DataViewController: UICollectionViewController {
                 return cell
             }
         }
-        
-        
-        
         return cellItem
     }
     
@@ -264,7 +261,7 @@ class DataViewController: UICollectionViewController {
         }
         let reuseIdentifier: String
         if layoutStrategy == "Simple Headline" {
-            if indexPath.section == 0 && indexPath.row == 0 {
+            if indexPath.row == 0 {
                 reuseIdentifier = "CoverCell"
             } else {
                 reuseIdentifier = "HeadlineCell"

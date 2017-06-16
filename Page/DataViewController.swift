@@ -121,12 +121,12 @@ class DataViewController: UICollectionViewController {
             //flowLayout.sectionHeadersPinToVisibleBounds = true
             let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
-            if #available(iOS 10.0, *) {
-                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-            } else {
-                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-            }
-            
+//            if #available(iOS 10.0, *) {
+//                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+//            } else {
+//                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+//            }
+            flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
             cellWidth = availableWidth
         }
         
@@ -252,6 +252,10 @@ class DataViewController: UICollectionViewController {
     
     // MARK: - Use different cell based on different strategy
     private func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
+        let section = fetches.fetchResults[indexPath.section]
+        let sectionTitle = section.title
+        let item = section.items[indexPath.row]
+        let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {
@@ -261,13 +265,13 @@ class DataViewController: UICollectionViewController {
         }
         let reuseIdentifier: String
         if layoutStrategy == "Simple Headline" {
-            if indexPath.row == 0 {
+            if isCover {
                 reuseIdentifier = "CoverCell"
             } else {
                 reuseIdentifier = "HeadlineCell"
             }
         } else {
-            if indexPath.row == 0 {
+            if isCover {
                 reuseIdentifier = "CoverCell"
             } else {
                 reuseIdentifier = "ChannelCell"
@@ -280,7 +284,6 @@ class DataViewController: UICollectionViewController {
         let reuseIdentifier: String?
         let sectionSize: CGSize
         let sectionType = fetches.fetchResults[sectionIndex].type
-        print (sectionType)
         switch sectionType {
         case "Banner":
             reuseIdentifier = "Ad"

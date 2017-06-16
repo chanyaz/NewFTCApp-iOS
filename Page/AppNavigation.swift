@@ -22,6 +22,8 @@ struct AppNavigation {
     public let headlineColor = "#33302d"
     public let leadColor = "#66605a"
     
+
+    
     private static let appMap = [
         "News": [
             "title": "FT中文网",
@@ -194,6 +196,14 @@ struct AppNavigation {
             return p
         }
         return nil
+    }
+    
+    
+    // MARK: Ad Constants
+    private let adBaseUrl = "http://www.ftchinese.com/m/marketing/a.html"
+    public func getAdPageUrlForAdId(_ adid: String) -> String {
+        
+        return "\(adBaseUrl)#adid=\(adid)"
     }
     
 }

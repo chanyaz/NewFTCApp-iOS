@@ -14,8 +14,32 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     //private var channelScroller: UICollectionView = UICollectionView()
     private let channelScrollerHeight: CGFloat = 40
     var pageData:[[String : String]] = []
+    var channelScrollerView: UICollectionView?
     
-    
+    var currentChannelIndexPath: IndexPath? {
+        didSet {
+            var indexPaths = [IndexPath]()
+            if let currentChannelIndexPath = currentChannelIndexPath {
+                indexPaths.append(currentChannelIndexPath)
+            }
+            if let oldValue = oldValue {
+                indexPaths.append(oldValue)
+            }
+            //3
+            channelScrollerView?.performBatchUpdates({
+                self.channelScrollerView?.reloadItems(at: indexPaths)
+            }) { completed in
+                //4
+                if let largePhotoIndexPath = self.currentChannelIndexPath {
+                    self.channelScrollerView?.scrollToItem(
+                        at: largePhotoIndexPath,
+                        at: .centeredVertically,
+                        animated: true)
+                }
+            }
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
@@ -26,7 +50,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         // MARK: - Add channelScroller
         let channelScrollerRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: channelScrollerHeight)
         let flowLayout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
+        channelScrollerView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
         collectionView.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
         //collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
         flowLayout.scrollDirection = .horizontal

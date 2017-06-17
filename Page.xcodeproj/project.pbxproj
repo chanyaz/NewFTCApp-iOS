@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		50057FCB1EE977D80092180A /* PagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50057FCA1EE977D80092180A /* PagesViewController.swift */; };
+		503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */; };
+		503A3B0A1EF4C9CD00FB6006 /* ChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */; };
 		5070EDF51EEBD425008A10CE /* ContentSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5070EDF41EEBD425008A10CE /* ContentSection.swift */; };
 		50A704C31EEB689900660022 /* ContentFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C01EEB689900660022 /* ContentFetch.swift */; };
 		50A704C41EEB689900660022 /* ContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C11EEB689900660022 /* ContentItem.swift */; };
@@ -72,6 +74,8 @@
 
 /* Begin PBXFileReference section */
 		50057FCA1EE977D80092180A /* PagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagesViewController.swift; sourceTree = "<group>"; };
+		503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelScrollerCell.swift; sourceTree = "<group>"; };
+		503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelScrollerCell.xib; sourceTree = "<group>"; };
 		5070EDF41EEBD425008A10CE /* ContentSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentSection.swift; sourceTree = "<group>"; };
 		50A704C01EEB689900660022 /* ContentFetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetch.swift; sourceTree = "<group>"; };
 		50A704C11EEB689900660022 /* ContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentItem.swift; sourceTree = "<group>"; };
@@ -197,6 +201,8 @@
 			isa = PBXGroup;
 			children = (
 				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
+				503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */,
+				503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */,
 				50057FCA1EE977D80092180A /* PagesViewController.swift */,
 				60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */,
 			);
@@ -440,6 +446,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				503A3B0A1EF4C9CD00FB6006 /* ChannelScrollerCell.xib in Resources */,
 				60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */,
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
@@ -477,6 +484,7 @@
 				60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */,
 				60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */,
 				60FEBB511EF0CEAE00C3EBB6 /* CoverCell.swift in Sources */,
+				503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */,
 				60D4B9011EE7D92500A4506D /* MyFTNavigationController.swift in Sources */,
 				607094AD1EE9436900760A60 /* Tabs.swift in Sources */,
 				60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */,

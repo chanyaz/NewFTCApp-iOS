@@ -51,19 +51,21 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         let channelScrollerRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: channelScrollerHeight)
         let flowLayout = UICollectionViewFlowLayout()
         channelScrollerView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
-        collectionView.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
+        channelScrollerView?.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
         //collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 0
         flowLayout.estimatedItemSize = CGSize(width: 50, height: channelScrollerHeight)
         // flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.white
-        collectionView.showsHorizontalScrollIndicator = false
-        //collectionView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
-        self.view.addSubview(collectionView)
+        channelScrollerView?.delegate = self
+        channelScrollerView?.dataSource = self
+        channelScrollerView?.backgroundColor = UIColor.white
+        channelScrollerView?.showsHorizontalScrollIndicator = false
+        //channelScrollerView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        if let channelScrollerView = channelScrollerView {
+            self.view.addSubview(channelScrollerView)
+        }
         
         // MARK: - Get Channels Data as the Data Source
         if let currentTabName = tabName,

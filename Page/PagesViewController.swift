@@ -45,16 +45,8 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         self.addChildViewController(self.pageViewController!)
         self.view.addSubview(self.pageViewController!.view)
         self.pageViewController!.didMove(toParentViewController: self)
-
-
-        
-        
-        
-        
         // MARK: To avoid pageview controller behind the navigation and bottom bar, just uncheck Under Top Bars for both: UIPageViewController and your custom PageContentViewController: https://stackoverflow.com/questions/18202475/content-pushed-down-in-a-uipageviewcontroller-with-uinavigationcontroller
-        
         // self.automaticallyAdjustsScrollViewInsets = false
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -84,7 +76,6 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
             let currentViewController = self.pageViewController!.viewControllers![0]
             let viewControllers = [currentViewController]
             self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: true, completion: {done in })
-            
             self.pageViewController!.isDoubleSided = false
             return .min
         }
@@ -102,7 +93,6 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
             viewControllers = [previousViewController!, currentViewController]
         }
         self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: true, completion: {done in })
-        
         return .mid
     }
     
@@ -124,10 +114,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
         self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
     }
-    
-    
-    
-    
+
     
 }
 

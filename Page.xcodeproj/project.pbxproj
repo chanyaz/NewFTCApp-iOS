@@ -179,6 +179,16 @@
 			name = Main;
 			sourceTree = "<group>";
 		};
+		503A3B0B1EF4E03E00FB6006 /* Channel */ = {
+			isa = PBXGroup;
+			children = (
+				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
+				503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */,
+				503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */,
+			);
+			name = Channel;
+			sourceTree = "<group>";
+		};
 		50EC3A651EF2C83F00BF17AD /* Header */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,11 +210,9 @@
 		604FF94D1EEF8BBE005D2A41 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
-				503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */,
-				503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */,
 				50057FCA1EE977D80092180A /* PagesViewController.swift */,
 				60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */,
+				503A3B0B1EF4E03E00FB6006 /* Channel */,
 			);
 			name = Pages;
 			sourceTree = "<group>";

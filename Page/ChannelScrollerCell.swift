@@ -10,7 +10,6 @@ import UIKit
 
 class ChannelScrollerCell: UICollectionViewCell {
 
-    @IBOutlet weak var cellHeight: NSLayoutConstraint!
     @IBOutlet weak var channel: UILabel!
     var pageData = [String: String]() {
         didSet {

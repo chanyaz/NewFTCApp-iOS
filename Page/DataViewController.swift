@@ -57,13 +57,13 @@ class DataViewController: UICollectionViewController {
             
             if let results = results {
                 // 3
-                print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
+                //print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
                 // MARK: - Insert Ads into the fetch results
                 let resultsWithAds = ContentFetchResults(
                     apiUrl: results.apiUrl,
                     fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
                 )
-                print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
+                //print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
                 self.fetches = resultsWithAds
                 
                 
@@ -168,7 +168,7 @@ class DataViewController: UICollectionViewController {
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         // let fetchR = fetches.fetchResults
-        print ("found \(fetches.fetchResults.count) sections")
+        // print ("found \(fetches.fetchResults.count) sections")
         return fetches.fetchResults.count
     }
     

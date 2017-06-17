@@ -21,7 +21,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bf-AU-6S3">
                         <rect key="frame" x="10" y="0.0" width="30" height="50"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="50" id="Zr7-Da-xI3"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="4YA-gp-5OV"/>
                         </constraints>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <nil key="textColor"/>
@@ -36,7 +36,6 @@
                 <constraint firstItem="7bf-AU-6S3" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="xCq-cz-pyC"/>
             </constraints>
             <connections>
-                <outlet property="cellHeight" destination="Zr7-Da-xI3" id="PBc-HO-Z7g"/>
                 <outlet property="channel" destination="7bf-AU-6S3" id="aLr-p7-U7c"/>
             </connections>
         </collectionViewCell>

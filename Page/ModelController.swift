@@ -19,11 +19,9 @@ import UIKit
 
 
 class ModelController: NSObject, UIPageViewControllerDataSource {
-
     var pageData = [[String: String]]()
     var pageTitles: [String] = []
     var pageThemeColor: String? = nil
-
 
     init(tabName: String) {
         super.init()
@@ -46,7 +44,7 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
 
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> DataViewController? {
         // Return the data view controller for the given index.
-        print ("viewControllerAtIndex: \(index)")
+        print ("Return the data view controller for \(index)")
         if (self.pageData.count == 0) || (index >= self.pageData.count) {
             return nil
         }
@@ -62,8 +60,12 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
     func indexOfViewController(_ viewController: DataViewController) -> Int {
         // Return the index of the given data view controller.
         // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
-        print ("indexOfViewController\(pageTitles.index(of: viewController.pageTitle) ?? NSNotFound)")
-        return pageTitles.index(of: viewController.pageTitle) ?? NSNotFound
+        if let currentPageIndex = pageTitles.index(of: viewController.pageTitle) {
+            print ("index Of ViewController: \(currentPageIndex)")
+            return currentPageIndex
+        }
+        
+        return NSNotFound
     }
 
     // MARK: - Page View Controller Data Source

@@ -37,6 +37,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = UIColor.white
+        collectionView.showsHorizontalScrollIndicator = false
         //collectionView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         self.view.addSubview(collectionView)
         
@@ -56,7 +57,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChannelScrollerCell", for: indexPath as IndexPath)
         if let cell = cell as? ChannelScrollerCell {
-            cell.cellHeight.constant = channelScrollerHeight
+            //cell.cellHeight.constant = channelScrollerHeight
             cell.pageData = pageData[indexPath.row]
             return cell
         }

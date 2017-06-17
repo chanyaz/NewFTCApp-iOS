@@ -29,8 +29,16 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
                     animated: true
                 )
                 print ("scrolled to item at index \(currentChannelIndex)")
-            } else {
-                print ("page index kept at \(String(describing: currentChannelIndex))")
+                let currentViewController: DataViewController = self.modelController.viewControllerAtIndex(currentChannelIndex, storyboard: self.storyboard!)!
+                let viewControllers = [currentViewController]
+                let direction: UIPageViewControllerNavigationDirection
+                if currentChannelIndex>oldValue {
+                    direction = .forward
+                } else {
+                    direction = .reverse
+                }
+                self.pageViewController!.setViewControllers(viewControllers, direction: direction, animated: true, completion: {done in })
+                
             }
         }
     }
@@ -93,6 +101,40 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 50, height: channelScrollerHeight)
+    }
+    
+    func jumptoPage(_ index : Int) {
+        //        let vc: DataViewController = self.modelController.viewControllerAtIndex(index, storyboard: self.storyboard!)!
+        //
+        //        let direction : UIPageViewControllerNavigationDirection!
+        //
+        //        if currentChannelIndex < index {
+        //            direction = UIPageViewControllerNavigationDirection.forward
+        //        }
+        //        else {
+        //            direction = UIPageViewControllerNavigationDirection.reverse
+        //        }
+        //
+        //        if (currentChannelIndex < index) {
+        //            for i in (0..<index) {
+        //                if (i == index) {
+        //                    self.pageViewController!.setViewControllers([vc], direction: direction, animated: true, completion: nil)
+        //                } else {
+        //                    self.pageViewController!.setViewControllers([self.modelController.viewControllerAtIndex(i, storyboard: self.storyboard!)!], direction: direction, animated: false, completion: nil)
+        //                }
+        //            }
+        //        } else {
+        //            for i in (index...currentChannelIndex) {
+        //                if i == index {
+        //                    self.pageViewController!.setViewControllers([vc], direction: direction, animated: true, completion: nil)
+        //                } else {
+        //                    self.pageViewController!.setViewControllers([self.modelController.viewControllerAtIndex(i, storyboard: self.storyboard!)!], direction: direction, animated: false, completion: nil)
+        //                }
+        //            }
+        //        }
+        
+        //let currentViewController = self.pageViewController!.viewControllers![index]
+        
     }
     
 }

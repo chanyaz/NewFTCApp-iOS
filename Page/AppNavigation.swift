@@ -60,6 +60,32 @@ struct AppNavigation {
                 ["title": "专栏",
                  "api":"https://m.ftimg.net/index.php/jsapi/home",
                  "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "热门文章",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/",
+                 "compactLayout": "Simple Headline",
+                 "regularLayout": ""
+                ],
+                ["title": "数据新闻",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "金融市场",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "管理",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "生活时尚",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "专栏",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
                 ]
             ]
         ],

@@ -28,6 +28,12 @@ class ChannelScrollerCell: UICollectionViewCell {
         }
         //self.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         self.backgroundColor = UIColor.white
-        channel.textColor = UIColor(hex: AppNavigation.sharedInstance.defaultHeaderColor)
+        if isSelected == true {
+            channel.textColor = UIColor(hex: AppNavigation.sharedInstance.highlightedTabFontColor)
+            print ("\(String(describing: pageData["title"])) is selected")
+        } else {
+            channel.textColor = UIColor(hex: AppNavigation.sharedInstance.defaultHeaderColor)
+            print ("\(String(describing: pageData["title"])) is not selected")
+        }
     }
 }

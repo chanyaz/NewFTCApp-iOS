@@ -16,30 +16,25 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     var pageData:[[String : String]] = []
     var channelScrollerView: UICollectionView?
     
-    var currentChannelIndexPath: IndexPath? {
+    var currentChannelIndex: Int = 0 {
         didSet {
-            var indexPaths = [IndexPath]()
-            if let currentChannelIndexPath = currentChannelIndexPath {
-                indexPaths.append(currentChannelIndexPath)
-            }
-            if let oldValue = oldValue {
-                indexPaths.append(oldValue)
-            }
-            //3
-            channelScrollerView?.performBatchUpdates({
-                self.channelScrollerView?.reloadItems(at: indexPaths)
-            }) { completed in
-                //4
-                if let largePhotoIndexPath = self.currentChannelIndexPath {
-                    self.channelScrollerView?.scrollToItem(
-                        at: largePhotoIndexPath,
-                        at: .centeredVertically,
-                        animated: true)
-                }
+            if currentChannelIndex != oldValue {
+                print ("page index changed to \(String(describing: currentChannelIndex))")
+                channelScrollerView?.reloadData()
+                // MARK: - add "view.layoutIfNeeded()" before implementing scrollToItem method
+                view.layoutIfNeeded()
+                channelScrollerView?.scrollToItem(
+                    at: IndexPath(row: currentChannelIndex, section: 0),
+                    at: .centeredHorizontally,
+                    animated: true
+                )
+                print ("scrolled to item at index \(currentChannelIndex)")
+            } else {
+                print ("page index kept at \(String(describing: currentChannelIndex))")
             }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
@@ -84,6 +79,11 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChannelScrollerCell", for: indexPath as IndexPath)
         if let cell = cell as? ChannelScrollerCell {
             //cell.cellHeight.constant = channelScrollerHeight
+            if indexPath.row == currentChannelIndex {
+                cell.isSelected = true
+            } else {
+                cell.isSelected = false
+            }
             cell.pageData = pageData[indexPath.row]
             return cell
         }
@@ -95,4 +95,11 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         return CGSize(width: 50, height: channelScrollerHeight)
     }
     
+}
+
+extension ChannelViewController {
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        currentChannelIndex = indexPath.row
+        return false
+    }
 }

@@ -155,10 +155,24 @@
 				604FF94E1EEF8BED005D2A41 /* Page */,
 				50EC3A651EF2C83F00BF17AD /* Header */,
 				604FF9501EEF8CA5005D2A41 /* Cell */,
-				6087E3D81EF212A30034A92F /* Ad */,
-				604FF94F1EEF8C73005D2A41 /* Model */,
+				604FF94F1EEF8C73005D2A41 /* Content */,
 			);
 			name = Layouts;
+			sourceTree = "<group>";
+		};
+		503A3B021EF4AFB100FB6006 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */,
+				60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */,
+				60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */,
+				60D4B8F81EE7C85A00A4506D /* NewsNavigationController.swift */,
+				60D4B8FA1EE7CA7800A4506D /* EnglishNavigationController.swift */,
+				60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */,
+				60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */,
+				60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */,
+			);
+			name = Main;
 			sourceTree = "<group>";
 		};
 		50EC3A651EF2C83F00BF17AD /* Header */ = {
@@ -199,7 +213,7 @@
 			name = Page;
 			sourceTree = "<group>";
 		};
-		604FF94F1EEF8C73005D2A41 /* Model */ = {
+		604FF94F1EEF8C73005D2A41 /* Content */ = {
 			isa = PBXGroup;
 			children = (
 				50A704C01EEB689900660022 /* ContentFetch.swift */,
@@ -207,7 +221,7 @@
 				5070EDF41EEBD425008A10CE /* ContentSection.swift */,
 				50A704C11EEB689900660022 /* ContentItem.swift */,
 			);
-			name = Model;
+			name = Content;
 			sourceTree = "<group>";
 		};
 		604FF9501EEF8CA5005D2A41 /* Cell */ = {
@@ -312,14 +326,8 @@
 		60D4B9021EE7D95800A4506D /* Customizations */ = {
 			isa = PBXGroup;
 			children = (
-				60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */,
-				60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */,
-				60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */,
-				60D4B8F81EE7C85A00A4506D /* NewsNavigationController.swift */,
-				60D4B8FA1EE7CA7800A4506D /* EnglishNavigationController.swift */,
-				60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */,
-				60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */,
-				60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */,
+				503A3B021EF4AFB100FB6006 /* Main */,
+				6087E3D81EF212A30034A92F /* Ad */,
 			);
 			name = Customizations;
 			sourceTree = "<group>";

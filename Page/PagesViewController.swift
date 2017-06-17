@@ -8,11 +8,12 @@
 
 import UIKit
 
+// MARK: - PagesViewContoller is a horizonal pages layout which supports panning from page to page. This is commonly seen in channel page and story page.
 class PagesViewController: UIViewController, UIPageViewControllerDelegate {
     
     var pageViewController: UIPageViewController?
     
-    private var tabName: String? {
+    var tabName: String? {
         get {
             if let k = navigationController as? CustomNavigationController {
                 return k.tabName
@@ -30,6 +31,8 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // Configure the page view controller and add it as a child view controller.
+        applyStyles()
+        
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
         
@@ -41,14 +44,11 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         
         self.addChildViewController(self.pageViewController!)
         self.view.addSubview(self.pageViewController!.view)
-        
-        // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-        let pageViewRect = self.view.bounds
-        self.pageViewController!.view.frame = pageViewRect
-        
         self.pageViewController!.didMove(toParentViewController: self)
+
+
         
-        applyStyles()
+        
         
         
         // MARK: To avoid pageview controller behind the navigation and bottom bar, just uncheck Under Top Bars for both: UIPageViewController and your custom PageContentViewController: https://stackoverflow.com/questions/18202475/content-pushed-down-in-a-uipageviewcontroller-with-uinavigationcontroller

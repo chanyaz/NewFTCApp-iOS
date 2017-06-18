@@ -154,14 +154,6 @@ class DataViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    
     
     // MARK: UICollectionViewDataSource
     
@@ -326,18 +318,39 @@ class DataViewController: UICollectionViewController {
 
      // MARK: - Handle user tapping on a cell
      override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        print ("the cell is tapped")
         // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
+        print ("the cell is tapped")
+        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+//            let titleForDetailView: String
+//            if let recognizerView = recognizer.view as? UILabel {
+//                titleForDetailView = recognizerView.text ?? "No Title From the Label"
+//            } else {
+//                titleForDetailView = "Not a Label"
+//            }
+//            detailViewController.viewTitle = "Detail View Clicked From \(titleForDetailView)"
+            navigationController?.pushViewController(detailViewController, animated: true)
+        }
         return true
      }
- 
-    
 
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+        print ("prepare for segue here")
+
+    }
+    
     open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
         //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
         //performSegue(withIdentifier: "Show Detail Content", sender: self)
         print ("header view tapped")
+
+
     }
+    
     
 }
 

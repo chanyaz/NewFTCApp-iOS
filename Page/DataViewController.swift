@@ -218,6 +218,10 @@ class DataViewController: UICollectionViewController {
                 withReuseIdentifier: reuseIdentifier,
                 for: indexPath
             )
+            // MARK: - a common tag gesture for all kinds of headers
+            let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
+            headerView.isUserInteractionEnabled = true
+            headerView.addGestureRecognizer(tapGestureRecognizer)
             switch reuseIdentifier {
             case "Ad":
                 let adView = headerView as! Ad
@@ -233,6 +237,7 @@ class DataViewController: UICollectionViewController {
             default:
                 assert(false, "Unknown Identifier")
             }
+
             return headerView
         default:
             assert(false, "Unexpected element kind")
@@ -322,13 +327,17 @@ class DataViewController: UICollectionViewController {
      // MARK: - Handle user tapping on a cell
      override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         print ("the cell is tapped")
-        // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap. 
+        // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
         return true
      }
  
     
 
-    
+    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
+        //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
+        //performSegue(withIdentifier: "Show Detail Content", sender: self)
+        print ("header view tapped")
+    }
     
 }
 

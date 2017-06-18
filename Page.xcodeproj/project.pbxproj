@@ -185,6 +185,7 @@
 				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
 				503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */,
 				503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */,
+				6093F1631EE8EFA4009F16EE /* DetailViewController.swift */,
 			);
 			name = Channel;
 			sourceTree = "<group>";
@@ -222,7 +223,6 @@
 			children = (
 				6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */,
 				60FEBB4D1EEFDDFA00C3EBB6 /* TapGestureCode.swift */,
-				6093F1631EE8EFA4009F16EE /* DetailViewController.swift */,
 			);
 			name = Page;
 			sourceTree = "<group>";

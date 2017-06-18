@@ -75,6 +75,32 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             let p = AppNavigation.sharedInstance.getNavigationPropertyData(for: currentTabName, of: "Channels" ) {
             pageData = p
         }
+        
+        // MARK: - Observing notification about page panning end
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(pagePanningEnd(_:)),
+            name: NSNotification.Name(rawValue: AppNavigation.sharedInstance.pagePanningEndNotification),
+            object: nil
+        )
+    }
+    
+    deinit {
+        // MARK: - Remove Panning End Observer
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name(rawValue: AppNavigation.sharedInstance.pagePanningEndNotification),
+            object: nil
+        )
+        print ("panning oberser removed")
+    }
+    
+    func pagePanningEnd(_ notification: Notification) {
+        if let object = notification.object as? (index: Array.Index, title: String) {
+            if let index = object.index as? Int {
+                print ("panning to \(object.title): \(index)")
+            }
+        }
     }
     
     

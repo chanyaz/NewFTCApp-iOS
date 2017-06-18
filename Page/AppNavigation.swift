@@ -22,7 +22,8 @@ struct AppNavigation {
     public let headlineColor = "#33302d"
     public let leadColor = "#66605a"
     
-
+    // MARK: Notification Names
+    public let pagePanningEndNotification = "Page Panning End"
     
     private static let appMap = [
         "News": [

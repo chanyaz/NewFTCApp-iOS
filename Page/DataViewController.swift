@@ -318,27 +318,17 @@ class DataViewController: UICollectionViewController {
      }
      */
     
-    /*
-     // Uncomment this method to specify if the specified item should be selected
+
+     // MARK: - Handle user tapping on a cell
      override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-     return true
+        print ("the cell is tapped")
+        // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap. 
+        return true
      }
-     */
+ 
     
-    /*
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-     return false
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-     return false
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-     
-     }
-     */
+
+    
     
 }
 
@@ -350,6 +340,24 @@ class DataViewController: UICollectionViewController {
 //    }
 //}
 
+/*
+extension DataViewController {
+     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+     return true
+     }
+     
+     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+     return true
+     }
+     
+     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+     
+     print ("performAction called! ")
+     }
+ 
+}
+ */
 
 
 fileprivate let itemsPerRow: CGFloat = 3

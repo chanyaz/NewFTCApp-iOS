@@ -102,8 +102,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         if let object = notification.object as? (index: Array.Index, title: String) {
             let index = object.index as Int
             print ("panning to \(object.title): \(index)")
-            isUserPanningEnd = true
-            currentChannelIndex = index
+            goToPage(index, isUserPanningEnd: true)
         }
     }
     
@@ -134,7 +133,8 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     
     func goToPage(_ index: Int, isUserPanningEnd: Bool) {
-        
+        self.isUserPanningEnd = isUserPanningEnd
+        currentChannelIndex = index
     }
 
     
@@ -143,8 +143,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
 extension ChannelViewController {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         // TODO: use a gotopage function
-        isUserPanningEnd = false
-        currentChannelIndex = indexPath.row
+        goToPage(indexPath.row, isUserPanningEnd: false)
         return false
     }
 }

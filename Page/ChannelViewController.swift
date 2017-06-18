@@ -15,7 +15,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     private let channelScrollerHeight: CGFloat = 40
     var pageData:[[String : String]] = []
     var channelScrollerView: UICollectionView?
-    
+    var isUserPanningEnd = false
     var currentChannelIndex: Int = 0 {
         didSet {
             if currentChannelIndex != oldValue {
@@ -29,16 +29,19 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
                     animated: true
                 )
                 print ("scrolled to item at index \(currentChannelIndex)")
-                let currentViewController: DataViewController = self.modelController.viewControllerAtIndex(currentChannelIndex, storyboard: self.storyboard!)!
-                let viewControllers = [currentViewController]
-                let direction: UIPageViewControllerNavigationDirection
-                if currentChannelIndex>oldValue {
-                    direction = .forward
+                if isUserPanningEnd == false {
+                    let currentViewController: DataViewController = self.modelController.viewControllerAtIndex(currentChannelIndex, storyboard: self.storyboard!)!
+                    let viewControllers = [currentViewController]
+                    let direction: UIPageViewControllerNavigationDirection
+                    if currentChannelIndex>oldValue {
+                        direction = .forward
+                    } else {
+                        direction = .reverse
+                    }
+                    self.pageViewController!.setViewControllers(viewControllers, direction: direction, animated: true, completion: {done in })
                 } else {
-                    direction = .reverse
+                    print ("the user is panning, no need to update page view")
                 }
-                self.pageViewController!.setViewControllers(viewControllers, direction: direction, animated: true, completion: {done in })
-                
             }
         }
     }
@@ -86,20 +89,21 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     
     deinit {
+        // MARK: - Starting from iOS 8, Observers will automatically be removed when deinit.
         // MARK: - Remove Panning End Observer
         NotificationCenter.default.removeObserver(
             self,
             name: Notification.Name(rawValue: AppNavigation.sharedInstance.pagePanningEndNotification),
             object: nil
         )
-        print ("panning oberser removed")
     }
     
     func pagePanningEnd(_ notification: Notification) {
         if let object = notification.object as? (index: Array.Index, title: String) {
-            if let index = object.index as? Int {
-                print ("panning to \(object.title): \(index)")
-            }
+            let index = object.index as Int
+            print ("panning to \(object.title): \(index)")
+            isUserPanningEnd = true
+            currentChannelIndex = index
         }
     }
     
@@ -129,44 +133,17 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         return CGSize(width: 50, height: channelScrollerHeight)
     }
     
-    func jumptoPage(_ index : Int) {
-        //        let vc: DataViewController = self.modelController.viewControllerAtIndex(index, storyboard: self.storyboard!)!
-        //
-        //        let direction : UIPageViewControllerNavigationDirection!
-        //
-        //        if currentChannelIndex < index {
-        //            direction = UIPageViewControllerNavigationDirection.forward
-        //        }
-        //        else {
-        //            direction = UIPageViewControllerNavigationDirection.reverse
-        //        }
-        //
-        //        if (currentChannelIndex < index) {
-        //            for i in (0..<index) {
-        //                if (i == index) {
-        //                    self.pageViewController!.setViewControllers([vc], direction: direction, animated: true, completion: nil)
-        //                } else {
-        //                    self.pageViewController!.setViewControllers([self.modelController.viewControllerAtIndex(i, storyboard: self.storyboard!)!], direction: direction, animated: false, completion: nil)
-        //                }
-        //            }
-        //        } else {
-        //            for i in (index...currentChannelIndex) {
-        //                if i == index {
-        //                    self.pageViewController!.setViewControllers([vc], direction: direction, animated: true, completion: nil)
-        //                } else {
-        //                    self.pageViewController!.setViewControllers([self.modelController.viewControllerAtIndex(i, storyboard: self.storyboard!)!], direction: direction, animated: false, completion: nil)
-        //                }
-        //            }
-        //        }
-        
-        //let currentViewController = self.pageViewController!.viewControllers![index]
+    func goToPage(_ index: Int, isUserPanningEnd: Bool) {
         
     }
+
     
 }
 
 extension ChannelViewController {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        // TODO: use a gotopage function
+        isUserPanningEnd = false
         currentChannelIndex = indexPath.row
         return false
     }

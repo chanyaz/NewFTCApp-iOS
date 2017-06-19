@@ -121,11 +121,11 @@ class DataViewController: UICollectionViewController {
             //flowLayout.sectionHeadersPinToVisibleBounds = true
             let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
-//            if #available(iOS 10.0, *) {
-//                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-//            } else {
-//                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-//            }
+            //            if #available(iOS 10.0, *) {
+            //                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+            //            } else {
+            //                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+            //            }
             flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
             cellWidth = availableWidth
         }
@@ -137,9 +137,9 @@ class DataViewController: UICollectionViewController {
         
         // MARK: - Get Content Data for the Page
         requestNewContent()
-//        if let tabName = (navigationController as? CustomNavigationController)?.tabName {
-//            print (tabName)
-//        }
+        //        if let tabName = (navigationController as? CustomNavigationController)?.tabName {
+        //            print (tabName)
+        //        }
     }
     
     
@@ -229,7 +229,7 @@ class DataViewController: UICollectionViewController {
             default:
                 assert(false, "Unknown Identifier")
             }
-
+            
             return headerView
         default:
             assert(false, "Unexpected element kind")
@@ -315,24 +315,29 @@ class DataViewController: UICollectionViewController {
      }
      */
     
-
-     // MARK: - Handle user tapping on a cell
-     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    
+    // MARK: - Handle user tapping on a cell
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
-        print ("the cell is tapped")
         if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-//            let titleForDetailView: String
-//            if let recognizerView = recognizer.view as? UILabel {
-//                titleForDetailView = recognizerView.text ?? "No Title From the Label"
-//            } else {
-//                titleForDetailView = "Not a Label"
-//            }
-//            detailViewController.viewTitle = "Detail View Clicked From \(titleForDetailView)"
+            var pageData1 = [ContentItem]()
+            var pageData2 = [ContentItem]()
+            for (sectionIndex, section) in fetches.fetchResults.enumerated() {
+                for (itemIndex, item) in section.items.enumerated() {
+                    if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
+                        pageData1.append(item)
+                    } else {
+                        pageData2.append(item)
+                    }
+                }
+            }
+            let pageData = pageData1 + pageData2
+            detailViewController.contentPageData = pageData
             navigationController?.pushViewController(detailViewController, animated: true)
         }
         return true
-     }
-
+    }
+    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -340,15 +345,15 @@ class DataViewController: UICollectionViewController {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
         print ("prepare for segue here")
-
+        
     }
     
     open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
         //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
         //performSegue(withIdentifier: "Show Detail Content", sender: self)
         print ("header view tapped")
-
-
+        
+        
     }
     
     
@@ -363,22 +368,22 @@ class DataViewController: UICollectionViewController {
 //}
 
 /*
-extension DataViewController {
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-     return true
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-     return true
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-     
-     print ("performAction called! ")
-     }
+ extension DataViewController {
+ // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+ override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+ return true
+ }
  
-}
+ override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+ return true
+ }
+ 
+ override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+ 
+ print ("performAction called! ")
+ }
+ 
+ }
  */
 
 

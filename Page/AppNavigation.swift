@@ -22,7 +22,8 @@ struct AppNavigation {
     public let headlineColor = "#33302d"
     public let leadColor = "#66605a"
     
-
+    // MARK: Notification Names
+    public let pagePanningEndNotification = "Page Panning End"
     
     private static let appMap = [
         "News": [
@@ -42,6 +43,32 @@ struct AppNavigation {
                  "regularLayout": ""
                 ],
                 ["title": "全球",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "金融市场",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "管理",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "生活时尚",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "专栏",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
+                ],
+                ["title": "热门文章",
+                 "api":"https://m.ftimg.net/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/",
+                 "compactLayout": "Simple Headline",
+                 "regularLayout": ""
+                ],
+                ["title": "数据新闻",
                  "api":"https://m.ftimg.net/index.php/jsapi/home",
                  "url":"http://www.ftchinese.com/"
                 ],

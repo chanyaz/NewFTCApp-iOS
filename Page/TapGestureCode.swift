@@ -48,7 +48,6 @@ class DataViewController1: UIViewController {
             detailViewController.viewTitle = "Detail View Clicked From \(titleForDetailView)"
             navigationController?.pushViewController(detailViewController, animated: true)
         }
-        
     }
     
     

@@ -71,6 +71,7 @@ class Ad: UICollectionReusableView {
         }
     }
     
+    // TODO: Need to implement url click in wkwebview
     
     // TODO: Upgrade to native for default templates
     

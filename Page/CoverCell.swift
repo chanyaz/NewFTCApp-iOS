@@ -13,8 +13,8 @@ import UIKit
 class CoverCell: UICollectionViewCell {
     
     // MARK: - Style settings for this class
-    let imageWidth = 832   // 16 * 52
-    let imageHeight = 468  // 9 * 52
+    let imageWidth = 408   // 16 * 52
+    let imageHeight = 234  // 9 * 52
     
 
     @IBOutlet weak var containerView: UIView!

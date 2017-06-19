@@ -103,7 +103,7 @@ class ContentFetch {
                     return
                 }
                 
-                print("data reformated into dictionary! ")
+                //print("data reformated into dictionary! ")
                 
                 var contentSections = [ContentSection]()
                 for section in sections {

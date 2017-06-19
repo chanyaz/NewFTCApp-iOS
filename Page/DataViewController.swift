@@ -57,13 +57,13 @@ class DataViewController: UICollectionViewController {
             
             if let results = results {
                 // 3
-                print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
+                //print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
                 // MARK: - Insert Ads into the fetch results
                 let resultsWithAds = ContentFetchResults(
                     apiUrl: results.apiUrl,
                     fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
                 )
-                print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
+                //print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
                 self.fetches = resultsWithAds
                 
                 
@@ -121,12 +121,12 @@ class DataViewController: UICollectionViewController {
             //flowLayout.sectionHeadersPinToVisibleBounds = true
             let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
-            if #available(iOS 10.0, *) {
-                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-            } else {
-                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-            }
-            
+//            if #available(iOS 10.0, *) {
+//                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+//            } else {
+//                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+//            }
+            flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
             cellWidth = availableWidth
         }
         
@@ -154,21 +154,13 @@ class DataViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    
     
     // MARK: UICollectionViewDataSource
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         // let fetchR = fetches.fetchResults
-        print ("found \(fetches.fetchResults.count) sections")
+        // print ("found \(fetches.fetchResults.count) sections")
         return fetches.fetchResults.count
     }
     
@@ -218,6 +210,10 @@ class DataViewController: UICollectionViewController {
                 withReuseIdentifier: reuseIdentifier,
                 for: indexPath
             )
+            // MARK: - a common tag gesture for all kinds of headers
+            let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
+            headerView.isUserInteractionEnabled = true
+            headerView.addGestureRecognizer(tapGestureRecognizer)
             switch reuseIdentifier {
             case "Ad":
                 let adView = headerView as! Ad
@@ -233,6 +229,7 @@ class DataViewController: UICollectionViewController {
             default:
                 assert(false, "Unknown Identifier")
             }
+
             return headerView
         default:
             assert(false, "Unexpected element kind")
@@ -252,6 +249,10 @@ class DataViewController: UICollectionViewController {
     
     // MARK: - Use different cell based on different strategy
     private func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
+        let section = fetches.fetchResults[indexPath.section]
+        let sectionTitle = section.title
+        let item = section.items[indexPath.row]
+        let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {
@@ -261,13 +262,13 @@ class DataViewController: UICollectionViewController {
         }
         let reuseIdentifier: String
         if layoutStrategy == "Simple Headline" {
-            if indexPath.row == 0 {
+            if isCover {
                 reuseIdentifier = "CoverCell"
             } else {
                 reuseIdentifier = "HeadlineCell"
             }
         } else {
-            if indexPath.row == 0 {
+            if isCover {
                 reuseIdentifier = "CoverCell"
             } else {
                 reuseIdentifier = "ChannelCell"
@@ -280,7 +281,6 @@ class DataViewController: UICollectionViewController {
         let reuseIdentifier: String?
         let sectionSize: CGSize
         let sectionType = fetches.fetchResults[sectionIndex].type
-        print (sectionType)
         switch sectionType {
         case "Banner":
             reuseIdentifier = "Ad"
@@ -315,27 +315,42 @@ class DataViewController: UICollectionViewController {
      }
      */
     
-    /*
-     // Uncomment this method to specify if the specified item should be selected
+
+     // MARK: - Handle user tapping on a cell
      override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-     return true
+        // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
+        print ("the cell is tapped")
+        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+//            let titleForDetailView: String
+//            if let recognizerView = recognizer.view as? UILabel {
+//                titleForDetailView = recognizerView.text ?? "No Title From the Label"
+//            } else {
+//                titleForDetailView = "Not a Label"
+//            }
+//            detailViewController.viewTitle = "Detail View Clicked From \(titleForDetailView)"
+            navigationController?.pushViewController(detailViewController, animated: true)
+        }
+        return true
      }
-     */
+
+    // MARK: - Navigation
     
-    /*
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-     return false
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-     return false
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-     
-     }
-     */
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+        print ("prepare for segue here")
+
+    }
+    
+    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
+        //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
+        //performSegue(withIdentifier: "Show Detail Content", sender: self)
+        print ("header view tapped")
+
+
+    }
+    
     
 }
 
@@ -347,6 +362,24 @@ class DataViewController: UICollectionViewController {
 //    }
 //}
 
+/*
+extension DataViewController {
+     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+     return true
+     }
+     
+     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+     return true
+     }
+     
+     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+     
+     print ("performAction called! ")
+     }
+ 
+}
+ */
 
 
 fileprivate let itemsPerRow: CGFloat = 3

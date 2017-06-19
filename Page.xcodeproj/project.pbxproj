@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		50057FCB1EE977D80092180A /* PagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50057FCA1EE977D80092180A /* PagesViewController.swift */; };
+		503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */; };
+		503A3B0A1EF4C9CD00FB6006 /* ChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */; };
 		5070EDF51EEBD425008A10CE /* ContentSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5070EDF41EEBD425008A10CE /* ContentSection.swift */; };
 		50A704C31EEB689900660022 /* ContentFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C01EEB689900660022 /* ContentFetch.swift */; };
 		50A704C41EEB689900660022 /* ContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C11EEB689900660022 /* ContentItem.swift */; };
@@ -72,6 +74,8 @@
 
 /* Begin PBXFileReference section */
 		50057FCA1EE977D80092180A /* PagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagesViewController.swift; sourceTree = "<group>"; };
+		503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelScrollerCell.swift; sourceTree = "<group>"; };
+		503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelScrollerCell.xib; sourceTree = "<group>"; };
 		5070EDF41EEBD425008A10CE /* ContentSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentSection.swift; sourceTree = "<group>"; };
 		50A704C01EEB689900660022 /* ContentFetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetch.swift; sourceTree = "<group>"; };
 		50A704C11EEB689900660022 /* ContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentItem.swift; sourceTree = "<group>"; };
@@ -155,10 +159,35 @@
 				604FF94E1EEF8BED005D2A41 /* Page */,
 				50EC3A651EF2C83F00BF17AD /* Header */,
 				604FF9501EEF8CA5005D2A41 /* Cell */,
-				6087E3D81EF212A30034A92F /* Ad */,
-				604FF94F1EEF8C73005D2A41 /* Model */,
+				604FF94F1EEF8C73005D2A41 /* Content */,
 			);
 			name = Layouts;
+			sourceTree = "<group>";
+		};
+		503A3B021EF4AFB100FB6006 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */,
+				60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */,
+				60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */,
+				60D4B8F81EE7C85A00A4506D /* NewsNavigationController.swift */,
+				60D4B8FA1EE7CA7800A4506D /* EnglishNavigationController.swift */,
+				60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */,
+				60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */,
+				60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		503A3B0B1EF4E03E00FB6006 /* Channel */ = {
+			isa = PBXGroup;
+			children = (
+				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
+				503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */,
+				503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */,
+				6093F1631EE8EFA4009F16EE /* DetailViewController.swift */,
+			);
+			name = Channel;
 			sourceTree = "<group>";
 		};
 		50EC3A651EF2C83F00BF17AD /* Header */ = {
@@ -182,9 +211,9 @@
 		604FF94D1EEF8BBE005D2A41 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */,
 				50057FCA1EE977D80092180A /* PagesViewController.swift */,
 				60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */,
+				503A3B0B1EF4E03E00FB6006 /* Channel */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -194,12 +223,11 @@
 			children = (
 				6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */,
 				60FEBB4D1EEFDDFA00C3EBB6 /* TapGestureCode.swift */,
-				6093F1631EE8EFA4009F16EE /* DetailViewController.swift */,
 			);
 			name = Page;
 			sourceTree = "<group>";
 		};
-		604FF94F1EEF8C73005D2A41 /* Model */ = {
+		604FF94F1EEF8C73005D2A41 /* Content */ = {
 			isa = PBXGroup;
 			children = (
 				50A704C01EEB689900660022 /* ContentFetch.swift */,
@@ -207,7 +235,7 @@
 				5070EDF41EEBD425008A10CE /* ContentSection.swift */,
 				50A704C11EEB689900660022 /* ContentItem.swift */,
 			);
-			name = Model;
+			name = Content;
 			sourceTree = "<group>";
 		};
 		604FF9501EEF8CA5005D2A41 /* Cell */ = {
@@ -312,14 +340,8 @@
 		60D4B9021EE7D95800A4506D /* Customizations */ = {
 			isa = PBXGroup;
 			children = (
-				60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */,
-				60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */,
-				60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */,
-				60D4B8F81EE7C85A00A4506D /* NewsNavigationController.swift */,
-				60D4B8FA1EE7CA7800A4506D /* EnglishNavigationController.swift */,
-				60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */,
-				60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */,
-				60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */,
+				503A3B021EF4AFB100FB6006 /* Main */,
+				6087E3D81EF212A30034A92F /* Ad */,
 			);
 			name = Customizations;
 			sourceTree = "<group>";
@@ -432,6 +454,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				503A3B0A1EF4C9CD00FB6006 /* ChannelScrollerCell.xib in Resources */,
 				60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */,
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
@@ -469,6 +492,7 @@
 				60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */,
 				60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */,
 				60FEBB511EF0CEAE00C3EBB6 /* CoverCell.swift in Sources */,
+				503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */,
 				60D4B9011EE7D92500A4506D /* MyFTNavigationController.swift in Sources */,
 				607094AD1EE9436900760A60 /* Tabs.swift in Sources */,
 				60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */,

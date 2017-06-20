@@ -7,7 +7,7 @@ The aim of this project is to create a "mother of all news apps". When the proje
 ### News Reader
 ### Billigual Support
 ### Channels
-### Advertising
+### Advertising: including launch ad, in page ad and paid post
 ### In-app Purchase
 
 ## Enhancement to existing hybrid app

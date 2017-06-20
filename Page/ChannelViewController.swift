@@ -12,7 +12,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     
     //private var channelScroller: UICollectionView = UICollectionView()
-    private let channelScrollerHeight: CGFloat = 40
+    private let channelScrollerHeight: CGFloat = 44
     
     var channelScrollerView: UICollectionView?
     var isUserPanningEnd = false
@@ -94,7 +94,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         // flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         channelScrollerView?.delegate = self
         channelScrollerView?.dataSource = self
-        channelScrollerView?.backgroundColor = UIColor.white
+        channelScrollerView?.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerBackground)
         channelScrollerView?.showsHorizontalScrollIndicator = false
         //channelScrollerView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         if let channelScrollerView = channelScrollerView {

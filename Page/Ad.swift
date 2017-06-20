@@ -34,9 +34,13 @@ class Ad: UICollectionReusableView {
     func updateUI() {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        self.backgroundColor = UIColor.red
+        self.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.adBackground)
         let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height)
         webView = WKWebView(frame: webViewFrame, configuration: config)
+        webView.isOpaque = false
+        webView.backgroundColor = UIColor.clear
+        webView.scrollView.backgroundColor = UIColor.clear
+        
         self.addSubview(self.webView)
         self.clipsToBounds = true
         webView.scrollView.bounces = false

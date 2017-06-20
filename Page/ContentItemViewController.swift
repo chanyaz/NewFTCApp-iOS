@@ -20,6 +20,11 @@ class ContentItemViewController: UIViewController {
     var dataObject: ContentItem?
     var pageTitle: String = ""
     var themeColor: String?
+    var contentDetail: ContentDetail? {
+        didSet {
+            
+        }
+    }
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var toolBar: UIToolbar!

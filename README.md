@@ -20,6 +20,22 @@ The aim of this project is to create a "mother of all news apps". When the proje
 ### JSON formating that supports as many as possible APIs
 ### Newspaper experience on iPad
 
+## Work that can be delegated
+### Channel Structure: 
+1. The final correct channel structure. 
+2. Retrieve and convert other types of API. 
+### Story Page: 
+1. Use TextKit to display good layout both on phone and pad. 
+2. Consider split view. 
+3. 
+### Channel Page Collection View on iPad: 
+1. Stop using auto-resizing cells on Regular size. 
+2. Paginated Scroller
+### Advertising: 
+1. retrieve Ad info from Dolphin's script string
+
+## Work that cannot be delegated
+### Core data
 
 
 

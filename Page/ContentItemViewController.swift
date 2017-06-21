@@ -17,9 +17,16 @@ class ContentItemViewController: UIViewController {
         // Drawing code
     }
     */
-    var dataObject: ContentItem?
+    var dataObject: ContentItem? {
+        didSet {
+            print ("data object changed")
+            initText()
+        }
+    }
     var pageTitle: String = ""
     var themeColor: String?
+    private var detailDisplayed = false
+    
     fileprivate let contentAPI = ContentFetch()
     
     @IBOutlet weak var textView: UITextView!
@@ -38,7 +45,7 @@ class ContentItemViewController: UIViewController {
     }
     
     func getDetailInfo() {
-        let urlString = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/001073043?20170521235700"
+        let urlString = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/\(dataObject?.id ?? "")"
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
@@ -55,16 +62,11 @@ class ContentItemViewController: UIViewController {
             }
             
             if let results = results {
-                // 3
-                //print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
-                // MARK: - Insert Ads into the fetch results
-                
-                //print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
-                //self.fetches = resultsWithAds
-                
-                
-                // 4
-                // self.collectionView?.reloadData()
+                DispatchQueue.main.async {
+                    self.dataObject?.cbody = results.fetchResults[0].items[0].cbody
+                    self.dataObject?.ebody = results.fetchResults[0].items[0].ebody
+                }
+
             }
         }
     }
@@ -79,7 +81,10 @@ class ContentItemViewController: UIViewController {
         
     }
     
-    func initText() {
+        func initText() {
+        if detailDisplayed == true {
+            return
+        }
         let finalText = NSMutableAttributedString()
     
         // MARK: headline
@@ -92,21 +97,24 @@ class ContentItemViewController: UIViewController {
         // MARK: body
         let bodyStyle = NSMutableParagraphStyle()
         bodyStyle.paragraphSpacing = 12.0
-        let bodyString = dataObject?.lead ?? ""
+        if dataObject?.cbody != nil {
+            detailDisplayed = true
+        }
+        let bodyString = dataObject?.cbody ?? "body"
         let body = NSAttributedString(string: bodyString, attributes: [NSParagraphStyleAttributeName: bodyStyle])
         
         // MARK: the final text
         finalText.append(headline)
         finalText.append(body)
         
-        textView.attributedText = finalText
+        textView?.attributedText = finalText
         
-        textView.font = UIFont.preferredFont(forTextStyle: .body)
+        textView?.font = UIFont.preferredFont(forTextStyle: .body)
         
         // MARK: - a workaround for the myterious scroll view bug
-        textView.isScrollEnabled = false
-        textView.isScrollEnabled = true
-        textView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        textView?.isScrollEnabled = false
+        textView?.isScrollEnabled = true
+        textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
     }
     
     

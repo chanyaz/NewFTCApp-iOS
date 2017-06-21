@@ -86,70 +86,97 @@ class ContentFetch {
     func formatJSON(_ resultsDictionary: [String: Any]) -> [ContentSection] {
         if let sections = resultsDictionary["sections"] as? [[String: Any]] {
             return formatPageMakerJSON(sections)
-        } else if let resultsDictionary = resultsDictionary as? [String: Any],
-        let _ = resultsDictionary["id"] as? String,
-            let _ = resultsDictionary["id"] as? String {
+        } else if let _ = resultsDictionary["id"] as? String,
+            let _ = resultsDictionary["cbody"] as? String {
             return formatFTCStoryJSON(resultsDictionary)
         }
         return [ContentSection]()
     }
     
-    func formatFTCStoryJSON(_ resultsDictionary: [String: Any]) -> [ContentSection] {
+    func formatFTCStoryJSON(_ item: [String: Any]) -> [ContentSection] {
         var contentSections = [ContentSection]()
-        print (resultsDictionary["cbody"])
-
-        return contentSections
-    }
-    func formatPageMakerJSON(_ sections: [[String: Any]]) -> [ContentSection] {
-        var contentSections = [ContentSection]()
-        for section in sections {
-        if let type = section["type"] as? String,
-        type == "block"{
-        guard let lists = section["lists"] as? [[String: Any]] else {
-        break
-        }
-        for (section, list) in lists.enumerated() {
-        guard let items = list["items"] as? [[String: Any]]  else {
-        break
-        }
         var itemCollection = [ContentItem]()
-        for (row, item) in items.enumerated() {
-        let id = item["id"] as? String ?? ""
-        let image = item["image"] as? String ?? ""
-        let headline = item["headline"] as? String ?? ""
-        let lead = item["longlead"] as? String ?? ""
-        let type = item["type"] as? String ?? ""
-        let preferSponsorImage = item["preferSponsorImage"] as? String ?? ""
-        let tag = item["tag"] as? String ?? ""
-        let customLink = item["customLink"] as? String ?? ""
-        let timeStamp = item["timeStamp"] as? Int ?? 0
+
         
         // MARK: Note that section may not be continuous
         let oneItem = ContentItem(
-        id: id,
-        image: image,
-        headline: headline,
-        lead: lead,
-        type: type,
-        preferSponsorImage: preferSponsorImage,
-        tag: tag,
-        customLink: customLink,
-        timeStamp: timeStamp,
-        section: section,
-        row:row
+            id: "",
+            image: "",
+            headline: "",
+            lead: "",
+            type: "story",
+            preferSponsorImage: "",
+            tag: "",
+            customLink: "",
+            timeStamp: 0,
+            section: 0,
+            row:0
         )
+        oneItem.cbody = item["cbody"] as? String
+        oneItem.ebody = item["ebody"] as? String
+        oneItem.cauthor = item["cauthor"] as? String
+        oneItem.eauthor = item["eauthor"] as? String
         itemCollection.append(oneItem)
-        }
-        let title = list["title"] as? String ?? ""
         let contentSection = ContentSection(
-        title: title,
-        items: itemCollection,
-        type: "List",
-        adid: nil
+            title: "",
+            items: itemCollection,
+            type: "List",
+            adid: nil
         )
         contentSections.append(contentSection)
-        }
-        }
+        return contentSections
+    }
+    
+    func formatPageMakerJSON(_ sections: [[String: Any]]) -> [ContentSection] {
+        var contentSections = [ContentSection]()
+        for section in sections {
+            if let type = section["type"] as? String,
+                type == "block"{
+                guard let lists = section["lists"] as? [[String: Any]] else {
+                    break
+                }
+                for (section, list) in lists.enumerated() {
+                    guard let items = list["items"] as? [[String: Any]]  else {
+                        break
+                    }
+                    var itemCollection = [ContentItem]()
+                    for (row, item) in items.enumerated() {
+                        let id = item["id"] as? String ?? ""
+                        let image = item["image"] as? String ?? ""
+                        let headline = item["headline"] as? String ?? ""
+                        let lead = item["longlead"] as? String ?? ""
+                        let type = item["type"] as? String ?? ""
+                        let preferSponsorImage = item["preferSponsorImage"] as? String ?? ""
+                        let tag = item["tag"] as? String ?? ""
+                        let customLink = item["customLink"] as? String ?? ""
+                        let timeStamp = item["timeStamp"] as? Int ?? 0
+                        
+                        // MARK: Note that section may not be continuous
+                        let oneItem = ContentItem(
+                            id: id,
+                            image: image,
+                            headline: headline,
+                            lead: lead,
+                            type: type,
+                            preferSponsorImage: preferSponsorImage,
+                            tag: tag,
+                            customLink: customLink,
+                            timeStamp: timeStamp,
+                            section: section,
+                            row:row
+                        )
+                        itemCollection.append(oneItem)
+                    }
+                    let title = list["title"] as? String ?? ""
+                    let contentSection = ContentSection(
+                        title: title,
+                        items: itemCollection,
+                        type: "List",
+                        adid: nil
+                    )
+                    contentSections.append(contentSection)
+                }
+            }
         }
         return contentSections
     }

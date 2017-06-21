@@ -30,11 +30,11 @@ class ChannelScrollerCell: UICollectionViewCell {
         self.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerBackground)
         if isSelected == true {
             channel.textColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerHighlight)
-            channel.font = UIFont.preferredFont(forTextStyle: .title3)
+            //channel.font = UIFont.preferredFont(forTextStyle: .title3)
             //print ("\(String(describing: pageData["title"])) is selected")
         } else {
             channel.textColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerColor)
-            channel.font = UIFont.preferredFont(forTextStyle: .body)
+            //channel.font = UIFont.preferredFont(forTextStyle: .body)
             //print ("\(String(describing: pageData["title"])) is not selected")
         }
     }

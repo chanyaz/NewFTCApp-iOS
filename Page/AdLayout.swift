@@ -54,6 +54,8 @@ struct AdLayout {
             newContentSections.insert(topBanner, at: 0)
             newContentSections.append(bottomBanner)
             newContentSections = updateSectionRowIndex(newContentSections)
+
+            
             return newContentSections
         default:
             return newContentSections

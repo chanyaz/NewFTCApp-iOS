@@ -20,17 +20,14 @@ class ContentItemViewController: UIViewController {
     var dataObject: ContentItem?
     var pageTitle: String = ""
     var themeColor: String?
-    var contentDetail: ContentDetail? {
-        didSet {
-            
-        }
-    }
+    fileprivate let contentAPI = ContentFetch()
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var toolBar: UIToolbar!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getDetailInfo()
         initStyle()
     }
     
@@ -38,6 +35,38 @@ class ContentItemViewController: UIViewController {
         super.viewDidLayoutSubviews()
         initText()
         
+    }
+    
+    func getDetailInfo() {
+        let urlString = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/001073043?20170521235700"
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        view.addSubview(activityIndicator)
+        activityIndicator.frame = view.bounds
+        activityIndicator.startAnimating()
+        contentAPI.fetchContentForUrl(urlString) {
+            results, error in
+            
+            activityIndicator.removeFromSuperview()
+            
+            if let error = error {
+                // 2
+                print("Error searching : \(error)")
+                return
+            }
+            
+            if let results = results {
+                // 3
+                //print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
+                // MARK: - Insert Ads into the fetch results
+                
+                //print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
+                //self.fetches = resultsWithAds
+                
+                
+                // 4
+                // self.collectionView?.reloadData()
+            }
+        }
     }
     
     func initStyle() {

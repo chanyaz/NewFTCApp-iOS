@@ -9,17 +9,19 @@
 import UIKit
 
 class ContentItemViewController: UIViewController {
-
+    
     /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+     // Only override draw() if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func draw(_ rect: CGRect) {
+     // Drawing code
+     }
+     */
+    
     var dataObject: ContentItem? {
         didSet {
-            print ("data object changed")
+            //            print ("data object changed")
+            //            print ("id: \(dataObject?.id) type: \(dataObject?.type) body: \(dataObject?.cbody)")
             initText()
         }
     }
@@ -29,9 +31,11 @@ class ContentItemViewController: UIViewController {
     
     fileprivate let contentAPI = ContentFetch()
     
+    private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var toolBar: UIToolbar!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getDetailInfo()
@@ -40,33 +44,27 @@ class ContentItemViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        //print ("view did layout subviews")
         initText()
-        
     }
     
     func getDetailInfo() {
         let urlString = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/\(dataObject?.id ?? "")"
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
         contentAPI.fetchContentForUrl(urlString) {
-            results, error in
-            
-            activityIndicator.removeFromSuperview()
-            
-            if let error = error {
-                // 2
-                print("Error searching : \(error)")
-                return
-            }
-            
-            if let results = results {
-                DispatchQueue.main.async {
-                    self.dataObject?.cbody = results.fetchResults[0].items[0].cbody
-                    self.dataObject?.ebody = results.fetchResults[0].items[0].ebody
+            [weak self] results, error in
+            DispatchQueue.main.async {
+                self?.activityIndicator.removeFromSuperview()
+                if let error = error {
+                    print("Error searching : \(error)")
+                    return
                 }
-
+                if let results = results {
+                    self?.dataObject?.cbody = results.fetchResults[0].items[0].cbody
+                    self?.dataObject?.ebody = results.fetchResults[0].items[0].ebody
+                }
             }
         }
     }
@@ -76,39 +74,28 @@ class ContentItemViewController: UIViewController {
         toolBar.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         toolBar.barTintColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         toolBar.isTranslucent = false
-        //toolBar.barStyle = .black
-        
-        
     }
     
-        func initText() {
-        if detailDisplayed == true {
-            return
-        }
+    func initText() {
         let finalText = NSMutableAttributedString()
-    
+        
         // MARK: headline
         let headlineStyle = NSMutableParagraphStyle()
         headlineStyle.paragraphSpacing = 12.0
         let headlineString = dataObject?.headline ?? ""
         let headline = NSAttributedString(string: "\(headlineString)\n", attributes: [NSParagraphStyleAttributeName: headlineStyle])
         
-        
         // MARK: body
         let bodyStyle = NSMutableParagraphStyle()
         bodyStyle.paragraphSpacing = 12.0
-        if dataObject?.cbody != nil {
-            detailDisplayed = true
-        }
-        let bodyString = dataObject?.cbody ?? "body"
+        let bodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
         let body = NSAttributedString(string: bodyString, attributes: [NSParagraphStyleAttributeName: bodyStyle])
         
-        // MARK: the final text
+        // MARK: put all things together
         finalText.append(headline)
         finalText.append(body)
         
         textView?.attributedText = finalText
-        
         textView?.font = UIFont.preferredFont(forTextStyle: .body)
         
         // MARK: - a workaround for the myterious scroll view bug
@@ -116,6 +103,5 @@ class ContentItemViewController: UIViewController {
         textView?.isScrollEnabled = true
         textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
     }
-    
     
 }

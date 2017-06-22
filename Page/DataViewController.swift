@@ -34,41 +34,29 @@ class DataViewController: UICollectionViewController {
     //    }
     
     
-    
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
-        // 1
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
         contentAPI.fetchContentForUrl(urlString) {
-            results, error in
-            
-            
-            activityIndicator.removeFromSuperview()
-            
-            self.refreshControl.endRefreshing()
-            
-            if let error = error {
-                // 2
-                print("Error searching : \(error)")
-                return
-            }
-            
-            if let results = results {
-                // 3
-                //print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
-                // MARK: - Insert Ads into the fetch results
-                let resultsWithAds = ContentFetchResults(
-                    apiUrl: results.apiUrl,
-                    fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
-                )
-                //print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
-                self.fetches = resultsWithAds
-                
-                
-                // 4
-                self.collectionView?.reloadData()
+            [weak self] results, error in
+            DispatchQueue.main.async {
+                self?.activityIndicator.removeFromSuperview()
+                self?.refreshControl.endRefreshing()
+                if let error = error {
+                    print("Error searching : \(error)")
+                    return
+                }
+                if let results = results {
+                    // MARK: - Insert Ads into the fetch results
+                    let resultsWithAds = ContentFetchResults(
+                        apiUrl: results.apiUrl,
+                        fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
+                    )
+                    self?.fetches = resultsWithAds
+                    self?.collectionView?.reloadData()
+                }
             }
         }
     }

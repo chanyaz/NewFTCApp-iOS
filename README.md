@@ -21,10 +21,13 @@ The aim of this project is to create a "mother of all news apps". When the proje
 ### Newspaper experience on iPad
 
 ## Work that can be delegated
+### Static Color Management: Constants and Naming: Weiguo
 
-### Channel Structure: 
+
+### Channel Structure: Xiangyun
 1. The final correct channel structure. 
 2. Retrieve and convert other types of API. 
+
 
 ### Channel Page Collection View on iPad: 
 1. Stop using auto-resizing cells on Regular size. 

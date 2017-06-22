@@ -96,7 +96,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         channelScrollerView?.dataSource = self
         channelScrollerView?.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerBackground)
         channelScrollerView?.showsHorizontalScrollIndicator = false
-        //channelScrollerView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        //channelScrollerView.backgroundColor = UIColor(hex: Color.Tab.background)
         if let channelScrollerView = channelScrollerView {
             self.view.addSubview(channelScrollerView)
         }

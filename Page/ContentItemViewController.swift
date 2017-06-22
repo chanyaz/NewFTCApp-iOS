@@ -36,6 +36,10 @@ class ContentItemViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var toolBar: UIToolbar!
     
+    @IBOutlet weak var languageSwitch: UISegmentedControl!
+    @IBOutlet weak var actionButton: UIBarButtonItem!
+    @IBOutlet weak var bookMark: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getDetailInfo()
@@ -71,9 +75,20 @@ class ContentItemViewController: UIViewController {
     
     private func initStyle() {
         textView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-        toolBar.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
-        toolBar.barTintColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        toolBar.backgroundColor = UIColor(hex: Color.Tab.background)
+        toolBar.barTintColor = UIColor(hex: Color.Tab.background)
         toolBar.isTranslucent = false
+        
+        let buttonTint = UIColor(hex: Color.Button.Tint)
+        
+        // MARK: Set style for the language switch
+        languageSwitch.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+        languageSwitch.tintColor = buttonTint
+        
+        // MARK: Set style for the bottom buttons
+        
+        actionButton.tintColor = buttonTint
+        bookMark.tintColor = buttonTint
     }
     
     private func initText() {

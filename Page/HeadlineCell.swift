@@ -58,7 +58,7 @@ class HeadlineCell: UICollectionViewCell {
         //     lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         
         // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
         if let loadedImage = itemCell?.largeImage {
             imageView.image = loadedImage
             //        print ("headline image is already loaded, no need to download again. ")

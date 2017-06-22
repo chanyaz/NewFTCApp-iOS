@@ -20,8 +20,8 @@ class CustomTabBarController: UITabBarController {
             // Fallback on earlier versions
         }
         self.tabBar.tintColor = UIColor(hex: AppNavigation.sharedInstance.highlightedTabFontColor)
-        self.tabBar.barTintColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
-        self.tabBar.backgroundImage = UIImage.colorForNavBar(color: UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor))
+        self.tabBar.barTintColor = UIColor(hex: Color.Tab.background)
+        self.tabBar.backgroundImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Tab.background))
         self.tabBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor))
         self.tabBar.isTranslucent = false
         

@@ -41,7 +41,7 @@ class Ad: UICollectionReusableView {
         webView = WKWebView(frame: webViewFrame, configuration: config)
         webView.isOpaque = true
         webView.backgroundColor = UIColor.clear
-        //webView.scrollView.backgroundColor = UIColor.clear
+        webView.scrollView.backgroundColor = UIColor.clear
         //webView.backgroundColor = UIColor.yellow
         
         

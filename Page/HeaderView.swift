@@ -22,7 +22,7 @@ class HeaderView: UICollectionReusableView {
     func updateUI() {
         title.text = contentSection?.title
         title.textColor = UIColor.white
-        //self.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        //self.backgroundColor = UIColor(hex: Color.Tab.background)
         if let theme = themeColor {
             self.backgroundColor = UIColor(hex: theme)
 

@@ -48,7 +48,7 @@ class ContentItemViewController: UIViewController {
         initText()
     }
     
-    func getDetailInfo() {
+    private func getDetailInfo() {
         let urlString = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/\(dataObject?.id ?? "")"
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
@@ -69,14 +69,14 @@ class ContentItemViewController: UIViewController {
         }
     }
     
-    func initStyle() {
+    private func initStyle() {
         textView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
         toolBar.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         toolBar.barTintColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
         toolBar.isTranslucent = false
     }
     
-    func initText() {
+    private func initText() {
         let finalText = NSMutableAttributedString()
         
         // MARK: headline

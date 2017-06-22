@@ -97,6 +97,8 @@ class ContentItemViewController: UIViewController {
         // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         
+        let finalText = NSMutableAttributedString()
+        
         let headlineStyle = NSMutableParagraphStyle()
         headlineStyle.paragraphSpacing = 12.0
         let headlineString = dataObject?.headline ?? ""
@@ -116,9 +118,10 @@ class ContentItemViewController: UIViewController {
         let cBodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
         let cbody = NSAttributedString(string: cBodyString, attributes: bodyAttributes)
 
-        headline.append(cbody)
+        finalText.append(headline)
+        finalText.append(cbody)
         //Apply to the label
-        textView?.attributedText = headline
+        textView?.attributedText = finalText
         
         
         

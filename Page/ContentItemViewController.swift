@@ -92,31 +92,98 @@ class ContentItemViewController: UIViewController {
     }
     
     private func initText() {
-        let finalText = NSMutableAttributedString()
         
-        // MARK: headline
+        
+        // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
+        // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
+        
         let headlineStyle = NSMutableParagraphStyle()
         headlineStyle.paragraphSpacing = 12.0
         let headlineString = dataObject?.headline ?? ""
-        let headline = NSAttributedString(string: "\(headlineString)\n", attributes: [NSParagraphStyleAttributeName: headlineStyle])
+        let headline = NSMutableAttributedString(
+            string: "\(headlineString)\n",
+            attributes: [
+                NSFontAttributeName: UIFont.preferredFont(forTextStyle: .title1).bold(),
+                NSParagraphStyleAttributeName: headlineStyle,
+                NSForegroundColorAttributeName: UIColor.blue
+            ]
+        )
         
-        // MARK: body
-        let bodyStyle = NSMutableParagraphStyle()
-        bodyStyle.paragraphSpacing = 12.0
-        let bodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
-        let body = NSAttributedString(string: bodyString, attributes: [NSParagraphStyleAttributeName: bodyStyle])
+        let bodyAttributes:[String:AnyObject]? = [
+            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
+            NSForegroundColorAttributeName:UIColor.blue
+        ]
+        let cBodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
+        let cbody = NSAttributedString(string: cBodyString, attributes: bodyAttributes)
+
+        headline.append(cbody)
+        //Apply to the label
+        textView?.attributedText = headline
         
-        // MARK: put all things together
-        finalText.append(headline)
-        finalText.append(body)
         
-        textView?.attributedText = finalText
-        textView?.font = UIFont.preferredFont(forTextStyle: .body)
         
-        // MARK: - a workaround for the myterious scroll view bug
-        textView?.isScrollEnabled = false
-        textView?.isScrollEnabled = true
-        textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        
+        
+        
+        
+        
+        /*
+         
+         let finalText = NSMutableAttributedString()
+         
+         
+         
+         
+         
+         // MARK: headline
+         let headlineStyle = NSMutableParagraphStyle()
+         headlineStyle.paragraphSpacing = 12.0
+         let headlineFont = UIFont.preferredFont(forTextStyle: .title1)
+         let headlineString = dataObject?.headline ?? ""
+         let headline = NSMutableAttributedString(
+         string: "\(headlineString)\n",
+         attributes: [
+         NSParagraphStyleAttributeName: headlineStyle,
+         //NSFontAttributeName: headlineFont,
+         NSForegroundColorAttributeName: UIColor.blue
+         ]
+         )
+         headline.addAttributes([NSFontAttributeName : headlineFont], range: NSRange(location: 0, length: headline.length))
+         
+         
+         
+         let myMutableString = NSMutableAttributedString(
+         string: "a test from oliver",
+         attributes: [NSFontAttributeName:UIFont(
+         name: "Georgia",
+         size: 50.0)!])
+         //Add more attributes here
+         
+         //Apply to the label
+         
+         
+         // MARK: body
+         let bodyStyle = NSMutableParagraphStyle()
+         bodyStyle.paragraphSpacing = 12.0
+         let bodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
+         let body = NSAttributedString(string: bodyString, attributes: [NSParagraphStyleAttributeName: bodyStyle])
+         
+         // MARK: put all things together
+         finalText.append(myMutableString)
+         
+         finalText.append(headline)
+         finalText.append(body)
+         
+         textView?.attributedText = myMutableString
+         
+         textView?.attributedText = finalText
+         textView?.font = UIFont.preferredFont(forTextStyle: .body)
+         
+         // MARK: - a workaround for the myterious scroll view bug
+         textView?.isScrollEnabled = false
+         textView?.isScrollEnabled = true
+         textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+         */
     }
     
 }

@@ -208,11 +208,40 @@ class ContentItemViewController: UIViewController {
 
 extension String {
     func htmlToAttributedString() -> NSMutableAttributedString? {
+
         let text = self.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
         .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
         .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
         
+        handleHTMLTags()
+        
         return NSMutableAttributedString(string: text, attributes: nil)
         //return nil
+        
+        
+//        let pattern = "<b>(.*)</b>"
+//        let inString = "this is a <b>text</b> with mention for"
+//        let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
+//        let range = NSMakeRange(0, inString.characters.count)
+//        let matches = (regex?.matches(in: inString, options: [], range: range))!
+//        
+//        let attrString = NSMutableAttributedString(string: inString, attributes:nil)
+//        print(matches.count)
+//        
+//        //Iterate over regex matches
+//        for match in matches.reversed() {
+//            //Properly print match range
+//            print(match.range)
+//            let value = attrString.attributedSubstring(from: match.rangeAt(1)).string
+//            print (value)
+//            attrString.addAttribute(NSLinkAttributeName, value: "\(value)", range: match.rangeAt(0))
+//            attrString.replaceCharacters(in: match.rangeAt(0), with: "\(value)")
+//        }
+//        return attrString
     }
+    
+    func handleHTMLTags() {
+        print ("handle it")
+    }
+    
 }

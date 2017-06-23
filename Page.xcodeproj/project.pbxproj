@@ -52,6 +52,10 @@
 		60D4B8FD1EE7CB1F00A4506D /* AcademyNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */; };
 		60D4B8FF1EE7D90700A4506D /* VideoNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */; };
 		60D4B9011EE7D92500A4506D /* MyFTNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */; };
+		60F4C16D1EFCEBA500F21EB6 /* CoverCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */; };
+		60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */; };
+		60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */; };
+		60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */; };
 		60FEBB4E1EEFDDFA00C3EBB6 /* TapGestureCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB4D1EEFDDFA00C3EBB6 /* TapGestureCode.swift */; };
 		60FEBB511EF0CEAE00C3EBB6 /* CoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */; };
 		60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */; };
@@ -128,6 +132,10 @@
 		60D4B8FC1EE7CB1F00A4506D /* AcademyNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcademyNavigationController.swift; sourceTree = "<group>"; };
 		60D4B8FE1EE7D90700A4506D /* VideoNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoNavigationController.swift; sourceTree = "<group>"; };
 		60D4B9001EE7D92500A4506D /* MyFTNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFTNavigationController.swift; sourceTree = "<group>"; };
+		60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverCellRegular.swift; sourceTree = "<group>"; };
+		60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCellRegular.xib; sourceTree = "<group>"; };
+		60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCellRegular.swift; sourceTree = "<group>"; };
+		60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCellRegular.xib; sourceTree = "<group>"; };
 		60FEBB4D1EEFDDFA00C3EBB6 /* TapGestureCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureCode.swift; sourceTree = "<group>"; };
 		60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverCell.swift; sourceTree = "<group>"; };
 		60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCell.xib; sourceTree = "<group>"; };
@@ -252,12 +260,8 @@
 		604FF9501EEF8CA5005D2A41 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */,
-				60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */,
-				604FF9491EEF7649005D2A41 /* ChannelCell.swift */,
-				604FF94A1EEF7649005D2A41 /* ChannelCell.xib */,
-				60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */,
-				60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */,
+				60F4C1741EFCEBE500F21EB6 /* Compact */,
+				60F4C1731EFCEBCC00F21EB6 /* Regular */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -364,6 +368,30 @@
 				6087E3D81EF212A30034A92F /* Ad */,
 			);
 			name = Customizations;
+			sourceTree = "<group>";
+		};
+		60F4C1731EFCEBCC00F21EB6 /* Regular */ = {
+			isa = PBXGroup;
+			children = (
+				60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */,
+				60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */,
+				60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */,
+				60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */,
+			);
+			name = Regular;
+			sourceTree = "<group>";
+		};
+		60F4C1741EFCEBE500F21EB6 /* Compact */ = {
+			isa = PBXGroup;
+			children = (
+				60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */,
+				60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */,
+				604FF9491EEF7649005D2A41 /* ChannelCell.swift */,
+				604FF94A1EEF7649005D2A41 /* ChannelCell.xib */,
+				60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */,
+				60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */,
+			);
+			name = Compact;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -476,10 +504,12 @@
 			files = (
 				503A3B0A1EF4C9CD00FB6006 /* ChannelScrollerCell.xib in Resources */,
 				60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */,
+				60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */,
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
 				60D3C8CF1EBFF5DC0085BEF6 /* LaunchScreen.storyboard in Resources */,
 				604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */,
+				60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */,
 				60D3C8CC1EBFF5DC0085BEF6 /* Assets.xcassets in Resources */,
 				60CA7BC51EF28AD4000CD9B4 /* HeaderView.xib in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
@@ -516,11 +546,13 @@
 				60FEBB511EF0CEAE00C3EBB6 /* CoverCell.swift in Sources */,
 				503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */,
 				60D4B9011EE7D92500A4506D /* MyFTNavigationController.swift in Sources */,
+				60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */,
 				607094AD1EE9436900760A60 /* Tabs.swift in Sources */,
 				60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */,
 				60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */,
 				60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */,
 				60D4B8FD1EE7CB1F00A4506D /* AcademyNavigationController.swift in Sources */,
+				60F4C16D1EFCEBA500F21EB6 /* CoverCellRegular.swift in Sources */,
 				50EC3A631EF1E18E00BF17AD /* Ad.swift in Sources */,
 				60D4B8FF1EE7D90700A4506D /* VideoNavigationController.swift in Sources */,
 				60B2EF141EE694BC00B8C6DA /* AppNavigation.swift in Sources */,

@@ -113,7 +113,7 @@ class DataViewController: UICollectionViewController {
             flowLayout.minimumLineSpacing = 0
             //FIXME: Why does this break scrolling?
             //flowLayout.sectionHeadersPinToVisibleBounds = true
-            let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
+            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
             
 
@@ -408,7 +408,7 @@ class DataViewController: UICollectionViewController {
 
 
 fileprivate let itemsPerRow: CGFloat = 3
-fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
 extension DataViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
@@ -416,7 +416,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         //print ("sizeFor Item At called")
-        let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
+        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem: CGFloat
         let heightPerItem: CGFloat
@@ -428,9 +428,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = widthPerItem * 0.618
         }
-        
-        
-        
+
         return CGSize(width: widthPerItem, height: heightPerItem)
     }
     
@@ -438,14 +436,14 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsetsForPad
+        return sectionInsets
     }
     
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInsetsForPad.left
+        return sectionInsets.left
     }
 }
 

@@ -42,4 +42,7 @@ struct Color {
         static let background = "#f6e9d8"
     }
 }
+struct APIs {
+    static let story = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/"
+}
 

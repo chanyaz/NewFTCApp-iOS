@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContentItemViewController: UIViewController {
+class ContentItemViewController: UIViewController, UINavigationControllerDelegate{
     
     /*
      // Only override draw() if you perform custom drawing.
@@ -44,6 +44,8 @@ class ContentItemViewController: UIViewController {
         super.viewDidLoad()
         getDetailInfo()
         initStyle()
+        
+
     }
     
     override func viewDidLayoutSubviews() {
@@ -53,7 +55,7 @@ class ContentItemViewController: UIViewController {
     }
     
     private func getDetailInfo() {
-        let urlString = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/\(dataObject?.id ?? "")"
+        let urlString = "\(APIs.story)\(dataObject?.id ?? "")"
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()

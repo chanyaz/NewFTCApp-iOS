@@ -33,6 +33,8 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         applyStyles()
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
+        
+        //self.navigationItem.title = "YourTitle"
     }
     
     override func didReceiveMemoryWarning() {

@@ -91,6 +91,7 @@ class DataViewController: UICollectionViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
+        
         let horizontalClass = self.traitCollection.horizontalSizeClass
         let verticalCass = self.traitCollection.verticalSizeClass
         

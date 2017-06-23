@@ -39,6 +39,18 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         self.addChildViewController(self.pageViewController!)
         self.view.addSubview(self.pageViewController!.view)
         self.pageViewController!.didMove(toParentViewController: self)
+        
+        //        let segment: UISegmentedControl = UISegmentedControl(items: ["First", "Second"])
+        //        segment.sizeToFit()
+        //        segment.tintColor = UIColor(red:0.99, green:0.00, blue:0.25, alpha:1.00)
+        //        segment.selectedSegmentIndex = 0;
+        //        segment.setTitleTextAttributes([NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)],
+        //                                       for: UIControlState.normal)
+        //        self.navigationItem.titleView = segment
+        
+        print ("navigation title is \(self.navigationItem.title)")
+        self.navigationItem.title = "Story Title"
+        
     }
 
     override func didReceiveMemoryWarning() {

@@ -105,8 +105,8 @@ class DataViewController: UICollectionViewController {
         collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
         
         // MARK: - Update Styles
-        view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
-        collectionView?.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
+        view.backgroundColor = UIColor(hex: Color.Content.border)
+        collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
         
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.minimumInteritemSpacing = 0

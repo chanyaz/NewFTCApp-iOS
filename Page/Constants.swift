@@ -8,14 +8,38 @@
 
 import Foundation
 struct Color {
-    struct Button {
-        static let Tint = "#057b93"
+// Those nested structures are grouped mostly according to their functions
+    struct Content {
+        static let headline = "#33302d"
+        static let body = "#333333"
+        static let lead = "#66605a"
+        static let border = "#d4c9bc"
+        static let background = "#FFF1E5"
     }
     struct Tab {
+        static let text = "#333333"
+        static let normalText = "#555555"
+        static let highlightedText = "#c0282e"
+        static let border = "#d4c9bc"
         static let background = "#f7e9d8"
     }
-    struct Content {
-        static let headline = "#333333"
-        static let body = "#333333"
+    struct Button {
+        static let tint = "#057b93"
+    }
+    struct Header {
+        static let text = "#333333"
+    }
+    
+    struct ChannelScroller {
+        static let text = "#565656"
+        static let highlightedText = "#c0282c"
+        static let background = "#e8dbcb"
+    }
+    struct Navigation {
+        static let border = "#d5c6b3"
+    }
+    struct Ad {
+        static let background = "#f6e9d8"
     }
 }
+

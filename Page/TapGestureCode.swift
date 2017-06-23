@@ -13,7 +13,7 @@
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
 //        // MARK: - Set Styles
-//        self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+//        self.view.backgroundColor = UIColor(hex: Color.Content.background)
 //        
 //        // MARK: - Test code to add gesture to a label
 //        //let tap = UITapGestureRecognizer(target: self, action: Selector(("tapFunction:")))

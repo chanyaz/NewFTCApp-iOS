@@ -12,19 +12,19 @@ struct AppNavigation {
     // MARK: - Use singleton pattern to pass speech data between view controllers.
     static let sharedInstance = AppNavigation()
     
-    public let defaultContentBackgroundColor = "#FFF1E5"
-    public let defaultTabFontColor = "#333333"
-    public let defaultHeaderColor = "#333333"
-    public let highlightedTabFontColor = "#c0282e"
-    public let normalTabFontColor = "#555555"
-    public let defaultBorderColor = "#d4c9bc"
-    public let headlineColor = "#33302d"
-    public let leadColor = "#66605a"
-    public let adBackground = "#f6e9d8"
-    public let channelScrollerBackground = "#e8dbcb"
-    public let channelScrollerHighlight = "#c0282c"
-    public let channelScrollerColor = "#565656"
-    public let navigationBorderColor = "#d5c6b3"
+//    public let defaultContentBackgroundColor = "#FFF1E5"
+//    public let defaultTabFontColor = "#333333"
+//    public let defaultHeaderColor = "#333333"
+//    public let highlightedTabFontColor = "#c0282e"
+//    public let normalTabFontColor = "#555555"
+//    public let defaultBorderColor = "#d4c9bc"
+//    public let headlineColor = "#33302d"
+//    public let leadColor = "#66605a"
+//    public let adBackground = "#f6e9d8"
+//    public let channelScrollerBackground = "#e8dbcb"
+//    public let channelScrollerHighlight = "#c0282c"
+//    public let channelScrollerColor = "#565656"
+//    public let navigationBorderColor = "#d5c6b3"
     
     // MARK: Notification Names
     public let pagePanningEndNotification = "Page Panning End"

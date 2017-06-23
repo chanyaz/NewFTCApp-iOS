@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // MARK: - Set the default background overall color
-        window?.tintColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+        window?.tintColor = UIColor(hex: Color.Content.background)
         
         
         return true

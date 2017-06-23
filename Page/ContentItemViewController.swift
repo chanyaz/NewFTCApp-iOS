@@ -74,15 +74,15 @@ class ContentItemViewController: UIViewController {
     }
     
     private func initStyle() {
-        textView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+        textView.backgroundColor = UIColor(hex: Color.Content.background)
         toolBar.backgroundColor = UIColor(hex: Color.Tab.background)
         toolBar.barTintColor = UIColor(hex: Color.Tab.background)
         toolBar.isTranslucent = false
         
-        let buttonTint = UIColor(hex: Color.Button.Tint)
+        let buttonTint = UIColor(hex: Color.Button.tint)
         
         // MARK: Set style for the language switch
-        languageSwitch.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+        languageSwitch.backgroundColor = UIColor(hex: Color.Content.background)
         languageSwitch.tintColor = buttonTint
         
         // MARK: Set style for the bottom buttons

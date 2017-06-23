@@ -166,23 +166,26 @@ class ContentItemViewController: UIViewController {
     }
     
     private func renderTextview(_ body: NSMutableAttributedString) {
+        let bodyColor = UIColor(hex: Color.Content.body)
+        let headlineColor = UIColor(hex: Color.Content.headline)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
         
         let bodyAttributes:[String:AnyObject] = [
             NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
-            NSForegroundColorAttributeName:UIColor.blue,
+            NSForegroundColorAttributeName: bodyColor,
             NSParagraphStyleAttributeName: paragraphStyle
         ]
         body.addAttributes(bodyAttributes, range: NSMakeRange(0, body.length))
         
+        // MARK: Headline Style and Text
         let headlineString = dataObject?.headline ?? ""
         let headline = NSMutableAttributedString(
             string: "\(headlineString)\n",
             attributes: [
                 NSFontAttributeName: UIFont.preferredFont(forTextStyle: .title1).bold(),
                 NSParagraphStyleAttributeName: paragraphStyle,
-                NSForegroundColorAttributeName: UIColor.blue
+                NSForegroundColorAttributeName: headlineColor
             ]
         )
         

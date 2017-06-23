@@ -14,4 +14,8 @@ struct Color {
     struct Tab {
         static let background = "#f7e9d8"
     }
+    struct Content {
+        static let headline = "#333333"
+        static let body = "#333333"
+    }
 }

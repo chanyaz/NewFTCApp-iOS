@@ -91,11 +91,18 @@ class DataViewController: UICollectionViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
+        let horizontalClass = self.traitCollection.horizontalSizeClass
+        let verticalCass = self.traitCollection.verticalSizeClass
+        
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
         collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
         collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
         collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
+        
+        // MARK: Cell for Regular Size
+        collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
+        collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
         
         // MARK: - Update Styles
         view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
@@ -108,13 +115,17 @@ class DataViewController: UICollectionViewController {
             //flowLayout.sectionHeadersPinToVisibleBounds = true
             let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
-            if #available(iOS 10.0, *) {
-                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-            } else {
-                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+            
+
+            if horizontalClass != .regular || verticalCass != .regular {
+                if #available(iOS 10.0, *) {
+                    flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                } else {
+                    flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+                }
+                cellWidth = availableWidth
             }
-            //flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-            cellWidth = availableWidth
+
         }
         
         if #available(iOS 10.0, *) {
@@ -173,6 +184,20 @@ class DataViewController: UICollectionViewController {
             if let cell = cellItem as? HeadlineCell {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
+        case "CoverCellRegular":
+            if let cell = cellItem as? CoverCellRegular {
+//                cell.cellWidth = cellWidth
+//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.backgroundColor = UIColor.blue
+                return cell
+            }
+        case "ChannelCellRegular":
+            if let cell = cellItem as? ChannelCellRegular {
+                //                cell.cellWidth = cellWidth
+                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.backgroundColor = UIColor.yellow
                 return cell
             }
         default:
@@ -253,10 +278,20 @@ class DataViewController: UICollectionViewController {
                 reuseIdentifier = "HeadlineCell"
             }
         } else {
+            let horizontalClass = self.traitCollection.horizontalSizeClass
+            let verticalCass = self.traitCollection.verticalSizeClass
+            if horizontalClass == .regular && verticalCass == .regular {
+                if isCover {
+                    reuseIdentifier = "CoverCellRegular"
+                } else {
+                    reuseIdentifier = "ChannelCellRegular"
+                }
+            } else {
             if isCover {
                 reuseIdentifier = "CoverCell"
             } else {
                 reuseIdentifier = "ChannelCell"
+            }
             }
         }
         return reuseIdentifier
@@ -383,9 +418,19 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         //print ("sizeFor Item At called")
         let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
+        let widthPerItem: CGFloat
         let heightPerItem: CGFloat
-        heightPerItem = widthPerItem * 0.618
+        // TODO: Should do the layout based on cell's properties
+        if indexPath.row == 0 {
+            widthPerItem = (availableWidth / itemsPerRow) * 2
+            heightPerItem = widthPerItem * 1
+        } else {
+            widthPerItem = availableWidth / itemsPerRow
+            heightPerItem = widthPerItem * 0.618
+        }
+        
+        
+        
         return CGSize(width: widthPerItem, height: heightPerItem)
     }
     

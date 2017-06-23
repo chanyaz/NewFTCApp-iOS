@@ -34,42 +34,29 @@ class DataViewController: UICollectionViewController {
     //    }
     
     
-    
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
-        // 1
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
         contentAPI.fetchContentForUrl(urlString) {
-            results, error in
-            
-            
-            activityIndicator.removeFromSuperview()
-            
-            self.refreshControl.endRefreshing()
-            
-            if let error = error {
-                // 2
-                print("Error searching : \(error)")
-                return
-            }
-            
-            if let results = results {
-                // 3
-                //print("Found \(results.fetchResults.count) matching \(results.apiUrl)")
-                // MARK: - Insert Ads into the fetch results
-                let resultsWithAds = ContentFetchResults(
-                    apiUrl: results.apiUrl,
-                    fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
-                )
-                //print("After inserting ads. now there are \(resultsWithAds.fetchResults.count) matching \(results.apiUrl)")
-                self.fetches = resultsWithAds
-                
-                
-                
-                // 4
-                self.collectionView?.reloadData()
+            [weak self] results, error in
+            DispatchQueue.main.async {
+                self?.activityIndicator.removeFromSuperview()
+                self?.refreshControl.endRefreshing()
+                if let error = error {
+                    print("Error searching : \(error)")
+                    return
+                }
+                if let results = results {
+                    // MARK: - Insert Ads into the fetch results
+                    let resultsWithAds = ContentFetchResults(
+                        apiUrl: results.apiUrl,
+                        fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
+                    )
+                    self?.fetches = resultsWithAds
+                    self?.collectionView?.reloadData()
+                }
             }
         }
     }
@@ -104,30 +91,41 @@ class DataViewController: UICollectionViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
+        let horizontalClass = self.traitCollection.horizontalSizeClass
+        let verticalCass = self.traitCollection.verticalSizeClass
+        
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
         collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
         collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
         collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
         
+        // MARK: Cell for Regular Size
+        collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
+        collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
+        
         // MARK: - Update Styles
-        view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
-        collectionView?.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
+        view.backgroundColor = UIColor(hex: Color.Content.border)
+        collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
         
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
             //FIXME: Why does this break scrolling?
             //flowLayout.sectionHeadersPinToVisibleBounds = true
-            let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
+            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
-//            if #available(iOS 10.0, *) {
-//                flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-//            } else {
-//                flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-//            }
-            flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-            cellWidth = availableWidth
+            
+
+            if horizontalClass != .regular || verticalCass != .regular {
+                if #available(iOS 10.0, *) {
+                    flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                } else {
+                    flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+                }
+                cellWidth = availableWidth
+            }
+
         }
         
         if #available(iOS 10.0, *) {
@@ -137,9 +135,9 @@ class DataViewController: UICollectionViewController {
         
         // MARK: - Get Content Data for the Page
         requestNewContent()
-//        if let tabName = (navigationController as? CustomNavigationController)?.tabName {
-//            print (tabName)
-//        }
+        //        if let tabName = (navigationController as? CustomNavigationController)?.tabName {
+        //            print (tabName)
+        //        }
     }
     
     
@@ -188,6 +186,20 @@ class DataViewController: UICollectionViewController {
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "CoverCellRegular":
+            if let cell = cellItem as? CoverCellRegular {
+//                cell.cellWidth = cellWidth
+//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.backgroundColor = UIColor.blue
+                return cell
+            }
+        case "ChannelCellRegular":
+            if let cell = cellItem as? ChannelCellRegular {
+                //                cell.cellWidth = cellWidth
+                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.backgroundColor = UIColor.yellow
+                return cell
+            }
         default:
             if let cell = cellItem as? ChannelCell {
                 cell.cellWidth = cellWidth
@@ -217,19 +229,17 @@ class DataViewController: UICollectionViewController {
             switch reuseIdentifier {
             case "Ad":
                 let adView = headerView as! Ad
-                //adView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
                 adView.contentSection = fetches.fetchResults[indexPath.section]
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView
                 headerView.themeColor = themeColor
                 headerView.contentSection = fetches.fetchResults[indexPath.section]
-                //headerView.urlString = "http://www.ftchinese.com/m/marketing/a.html?v=20161009143608#adid=20220101&pid=phonebanner0"
                 return headerView
             default:
                 assert(false, "Unknown Identifier")
             }
-
+            
             return headerView
         default:
             assert(false, "Unexpected element kind")
@@ -268,10 +278,20 @@ class DataViewController: UICollectionViewController {
                 reuseIdentifier = "HeadlineCell"
             }
         } else {
+            let horizontalClass = self.traitCollection.horizontalSizeClass
+            let verticalCass = self.traitCollection.verticalSizeClass
+            if horizontalClass == .regular && verticalCass == .regular {
+                if isCover {
+                    reuseIdentifier = "CoverCellRegular"
+                } else {
+                    reuseIdentifier = "ChannelCellRegular"
+                }
+            } else {
             if isCover {
                 reuseIdentifier = "CoverCell"
             } else {
                 reuseIdentifier = "ChannelCell"
+            }
             }
         }
         return reuseIdentifier
@@ -315,24 +335,29 @@ class DataViewController: UICollectionViewController {
      }
      */
     
-
-     // MARK: - Handle user tapping on a cell
-     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    
+    // MARK: - Handle user tapping on a cell
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
-        print ("the cell is tapped")
         if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-//            let titleForDetailView: String
-//            if let recognizerView = recognizer.view as? UILabel {
-//                titleForDetailView = recognizerView.text ?? "No Title From the Label"
-//            } else {
-//                titleForDetailView = "Not a Label"
-//            }
-//            detailViewController.viewTitle = "Detail View Clicked From \(titleForDetailView)"
+            var pageData1 = [ContentItem]()
+            var pageData2 = [ContentItem]()
+            for (sectionIndex, section) in fetches.fetchResults.enumerated() {
+                for (itemIndex, item) in section.items.enumerated() {
+                    if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
+                        pageData1.append(item)
+                    } else {
+                        pageData2.append(item)
+                    }
+                }
+            }
+            let pageData = pageData1 + pageData2
+            detailViewController.contentPageData = pageData
             navigationController?.pushViewController(detailViewController, animated: true)
         }
         return true
-     }
-
+    }
+    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -340,15 +365,15 @@ class DataViewController: UICollectionViewController {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
         print ("prepare for segue here")
-
+        
     }
     
     open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
         //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
         //performSegue(withIdentifier: "Show Detail Content", sender: self)
         print ("header view tapped")
-
-
+        
+        
     }
     
     
@@ -363,27 +388,27 @@ class DataViewController: UICollectionViewController {
 //}
 
 /*
-extension DataViewController {
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-     return true
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-     return true
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-     
-     print ("performAction called! ")
-     }
+ extension DataViewController {
+ // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+ override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+ return true
+ }
  
-}
+ override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+ return true
+ }
+ 
+ override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+ 
+ print ("performAction called! ")
+ }
+ 
+ }
  */
 
 
 fileprivate let itemsPerRow: CGFloat = 3
-fileprivate let sectionInsetsForPad = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
 extension DataViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
@@ -391,11 +416,19 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         //print ("sizeFor Item At called")
-        let paddingSpace = sectionInsetsForPad.left * (itemsPerRow + 1)
+        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
+        let widthPerItem: CGFloat
         let heightPerItem: CGFloat
-        heightPerItem = widthPerItem * 0.618
+        // TODO: Should do the layout based on cell's properties
+        if indexPath.row == 0 {
+            widthPerItem = (availableWidth / itemsPerRow) * 2
+            heightPerItem = widthPerItem * 0.618 / 2
+        } else {
+            widthPerItem = availableWidth / itemsPerRow
+            heightPerItem = widthPerItem * 0.618
+        }
+
         return CGSize(width: widthPerItem, height: heightPerItem)
     }
     
@@ -403,14 +436,14 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsetsForPad
+        return sectionInsets
     }
     
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInsetsForPad.left
+        return sectionInsets.left
     }
 }
 

@@ -154,6 +154,72 @@
             </objects>
             <point key="canvasLocation" x="-2138" y="484"/>
         </scene>
+        <!--Content Item View Controller-->
+        <scene sceneID="0Z7-4z-qGB">
+            <objects>
+                <viewController storyboardIdentifier="ContentItemViewController" id="mjx-Up-6rt" customClass="ContentItemViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9Oi-GV-W50"/>
+                        <viewControllerLayoutGuide type="bottom" id="PRi-H5-eiu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="ContentItemViewController" id="vI6-SU-Y0Z">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="456-ll-82O">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Gy-Bn-1jB">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="yUD-gQ-v5z"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" id="4lh-PI-jMz">
+                                        <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="31u-uU-YbJ">
+                                            <rect key="frame" x="16" y="7" width="121" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <segments>
+                                                <segment title="中文"/>
+                                                <segment title="英文"/>
+                                                <segment title="对照"/>
+                                            </segments>
+                                        </segmentedControl>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="urD-9w-65B"/>
+                                    <barButtonItem systemItem="bookmarks" id="Xuj-mB-euk"/>
+                                    <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="oQF-Ue-dIb"/>
+                                    <barButtonItem systemItem="action" id="ZPC-rB-fWF"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="9Gy-Bn-1jB" secondAttribute="trailing" id="E2O-1v-bBP"/>
+                            <constraint firstItem="456-ll-82O" firstAttribute="top" secondItem="vI6-SU-Y0Z" secondAttribute="top" id="OUR-Bc-EB5"/>
+                            <constraint firstItem="9Gy-Bn-1jB" firstAttribute="leading" secondItem="vI6-SU-Y0Z" secondAttribute="leading" id="PPE-wc-0no"/>
+                            <constraint firstItem="9Gy-Bn-1jB" firstAttribute="top" secondItem="456-ll-82O" secondAttribute="bottom" id="Q9X-gM-bN4"/>
+                            <constraint firstItem="456-ll-82O" firstAttribute="leading" secondItem="vI6-SU-Y0Z" secondAttribute="leading" id="W2c-jA-bj0"/>
+                            <constraint firstItem="PRi-H5-eiu" firstAttribute="top" secondItem="9Gy-Bn-1jB" secondAttribute="bottom" id="cEC-QM-ulT"/>
+                            <constraint firstAttribute="trailing" secondItem="456-ll-82O" secondAttribute="trailing" id="oc9-JN-FLA"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="actionButton" destination="ZPC-rB-fWF" id="MNl-BI-PUg"/>
+                        <outlet property="bookMark" destination="Xuj-mB-euk" id="8Eu-JU-jeN"/>
+                        <outlet property="languageSwitch" destination="31u-uU-YbJ" id="R4b-85-Tli"/>
+                        <outlet property="textView" destination="456-ll-82O" id="95k-Oz-12l"/>
+                        <outlet property="toolBar" destination="9Gy-Bn-1jB" id="XMT-DN-smU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dck-Gk-Dsj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2170.4000000000001" y="1448.7256371814094"/>
+        </scene>
         <!--新闻-->
         <scene sceneID="UVA-jQ-V7K">
             <objects>

@@ -20,12 +20,10 @@ class CustomNavigationController: UINavigationController, UINavigationController
                 if isNavLightContent == true {
                     tabBarController?.tabBar.tintColor = UIColor(hex: tabBackGroundColor)
                 } else {
-                    tabBarController?.tabBar.tintColor = UIColor(hex: AppNavigation.sharedInstance.highlightedTabFontColor)
+                    tabBarController?.tabBar.tintColor = UIColor(hex: Color.Tab.highlightedText)
                 }
             }
         }
-        
-
         
     }
     

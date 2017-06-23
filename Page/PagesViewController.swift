@@ -12,6 +12,7 @@ import UIKit
 class PagesViewController: UIViewController, UIPageViewControllerDelegate {
     
     var pageViewController: UIPageViewController?
+    var pageData:[[String : String]] = []
     
     var tabName: String? {
         get {
@@ -30,21 +31,8 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         // Configure the page view controller and add it as a child view controller.
         applyStyles()
-        
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
-        
-        let startingViewController: DataViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
-        let viewControllers = [startingViewController]
-        self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: false, completion: {done in })
-        
-        self.pageViewController!.dataSource = self.modelController
-        
-        self.addChildViewController(self.pageViewController!)
-        self.view.addSubview(self.pageViewController!.view)
-        self.pageViewController!.didMove(toParentViewController: self)
-        // MARK: To avoid pageview controller behind the navigation and bottom bar, just uncheck Under Top Bars for both: UIPageViewController and your custom PageContentViewController: https://stackoverflow.com/questions/18202475/content-pushed-down-in-a-uipageviewcontroller-with-uinavigationcontroller
-        // self.automaticallyAdjustsScrollViewInsets = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,19 +40,6 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    var modelController: ModelController {
-        // Return the model controller object, creating it if necessary.
-        // In more complex implementations, the model controller may be passed to the view controller.
-        
-        if _modelController == nil {
-            if let t = tabName {
-                _modelController = ModelController(tabName: t)
-            }
-        }
-        return _modelController!
-    }
-    
-    var _modelController: ModelController? = nil
     
     // MARK: - UIPageViewController delegate methods
     
@@ -82,6 +57,8 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
             self.navigationItem.title = tabTitle
             if let navTintColor = AppNavigation.sharedInstance.getNavigationProperty(for: currentTabName, of: "navBackGroundColor") {
                 navigationController?.navigationBar.barTintColor = UIColor(hex: navTintColor)
+                navigationController?.navigationBar.setBackgroundImage(UIImage.colorForNavBar(color: UIColor(hex: navTintColor)), for: .default)
+                navigationController?.navigationBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Navigation.border))
             }
             if let navColor = AppNavigation.sharedInstance.getNavigationProperty(for: currentTabName, of: "navColor") {
                 navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(hex: navColor)]
@@ -90,7 +67,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
             
             navigationController?.navigationBar.isTranslucent = false
         }
-        self.view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
+        self.view.backgroundColor = UIColor(hex: Color.Content.background)
     }
 
     

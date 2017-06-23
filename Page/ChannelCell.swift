@@ -32,9 +32,9 @@ class ChannelCell: UICollectionViewCell {
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     func updateUI() {
         // MARK: - Update Styles and Layouts
-        containerView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-        headline.textColor = UIColor(hex: AppNavigation.sharedInstance.headlineColor)
-        lead.textColor = UIColor(hex: AppNavigation.sharedInstance.leadColor)
+        containerView.backgroundColor = UIColor(hex: Color.Content.background)
+        headline.textColor = UIColor(hex: Color.Content.headline)
+        lead.textColor = UIColor(hex: Color.Content.lead)
         layoutMargins.left = 0
         layoutMargins.right = 0
         layoutMargins.top = 0
@@ -45,7 +45,7 @@ class ChannelCell: UICollectionViewCell {
         // MARK: - set the border color
         if let row = itemCell?.row,
             row > 0 {
-            border.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
+            border.backgroundColor = UIColor(hex: Color.Content.border)
         } else {
             // MARK: - set first item's border color to transparent
             border.backgroundColor = nil
@@ -56,7 +56,7 @@ class ChannelCell: UICollectionViewCell {
         lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         
         // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
         if let loadedImage = itemCell?.largeImage {
             imageView.image = loadedImage
             //print ("image is already loaded, no need to download again. ")

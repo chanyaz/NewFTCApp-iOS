@@ -32,11 +32,21 @@ class Ad: UICollectionReusableView {
     
     // MARK: Use WKWebview to migrate current display ads.
     func updateUI() {
+        print ("update UI now")
+        self.backgroundColor = UIColor(hex: Color.Ad.background)
+        //self.backgroundColor = UIColor.red
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        self.backgroundColor = UIColor.red
         let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height)
         webView = WKWebView(frame: webViewFrame, configuration: config)
+        webView.isOpaque = true
+        webView.backgroundColor = UIColor.clear
+        webView.scrollView.backgroundColor = UIColor.clear
+        //webView.backgroundColor = UIColor.yellow
+        
+        
+        
+        
         self.addSubview(self.webView)
         self.clipsToBounds = true
         webView.scrollView.bounces = false
@@ -48,6 +58,8 @@ class Ad: UICollectionReusableView {
         } else {
             adWidth = "100%"
         }
+        
+        
         if let adid = contentSection?.adid {
             let urlString = AppNavigation.sharedInstance.getAdPageUrlForAdId(adid)
             if let url = URL(string: urlString) {
@@ -59,13 +71,13 @@ class Ad: UICollectionReusableView {
                         let gaJS = try NSString(contentsOfFile:gaJSPath, encoding:String.Encoding.utf8.rawValue)
                         let adHTMLFinal = (adHTML as String)
                             .replacingOccurrences(of: "{google-analytics-js}", with: gaJS as String)
-                        .replacingOccurrences(of: "{adbodywidth}", with: adWidth)
+                            .replacingOccurrences(of: "{adbodywidth}", with: adWidth)
                         self.webView.loadHTMLString(adHTMLFinal, baseURL:url)
                     } catch {
-                        webView.load(req)
+                        self.webView.load(req)
                     }
                 } else {
-                    webView.load(req)
+                    self.webView.load(req)
                 }
             }
         }

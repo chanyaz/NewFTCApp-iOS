@@ -12,8 +12,8 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     
     //private var channelScroller: UICollectionView = UICollectionView()
-    private let channelScrollerHeight: CGFloat = 40
-    var pageData:[[String : String]] = []
+    private let channelScrollerHeight: CGFloat = 44
+    
     var channelScrollerView: UICollectionView?
     var isUserPanningEnd = false
     var currentChannelIndex: Int = 0 {
@@ -46,9 +46,37 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         }
     }
     
+    var modelController: ChannelModelController {
+        // Return the model controller object, creating it if necessary.
+        // In more complex implementations, the model controller may be passed to the view controller.
+        
+        if _modelController == nil {
+            if let t = tabName {
+                _modelController = ChannelModelController(tabName: t)
+            }
+        }
+        return _modelController!
+    }
+    
+    var _modelController: ChannelModelController? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+        
+        
+        // MARK: Set up pages for the channel view
+        let startingViewController: DataViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
+        let viewControllers = [startingViewController]
+        self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: false, completion: {done in })
+        self.pageViewController!.dataSource = self.modelController
+        self.addChildViewController(self.pageViewController!)
+        self.view.addSubview(self.pageViewController!.view)
+        self.pageViewController!.didMove(toParentViewController: self)
+        // MARK: To avoid pageview controller behind the navigation and bottom bar, just uncheck Under Top Bars for both: UIPageViewController and your custom PageContentViewController: https://stackoverflow.com/questions/18202475/content-pushed-down-in-a-uipageviewcontroller-with-uinavigationcontroller
+        // self.automaticallyAdjustsScrollViewInsets = false
+        
+        
+        // MARK - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
         let fullPageViewRect = self.view.bounds
         let pageViewRect = CGRect(x: 0, y: channelScrollerHeight, width: fullPageViewRect.width, height: fullPageViewRect.height - channelScrollerHeight)
         self.pageViewController!.view.frame = pageViewRect
@@ -66,9 +94,9 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         // flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         channelScrollerView?.delegate = self
         channelScrollerView?.dataSource = self
-        channelScrollerView?.backgroundColor = UIColor.white
+        channelScrollerView?.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
         channelScrollerView?.showsHorizontalScrollIndicator = false
-        //channelScrollerView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultTabBackgroundColor)
+        //channelScrollerView.backgroundColor = UIColor(hex: Color.Tab.background)
         if let channelScrollerView = channelScrollerView {
             self.view.addSubview(channelScrollerView)
         }
@@ -136,7 +164,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         self.isUserPanningEnd = isUserPanningEnd
         currentChannelIndex = index
     }
-
+    
     
 }
 

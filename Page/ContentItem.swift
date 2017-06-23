@@ -10,16 +10,38 @@ class ContentItem{
     let headline : String
     let lead : String
     let type : String
+    
+    let preferSponsorImage: String
+    let tag: String
+    let customLink: String
+    let timeStamp: Int
+    
     var section: Int
     var row: Int
     
     var isCover = false
+    
+    
+    
+    // MARK: detail data that only comes with detail content API
+    var cbody: String?
+    var ebody: String?
+    var cauthor: String?
+    var eauthor: String?
+    
+    
+    
+    
     
     init (id: String,
           image: String,
           headline: String,
           lead: String,
           type: String,
+          preferSponsorImage: String,
+          tag: String,
+          customLink: String,
+          timeStamp: Int,
           section: Int,
           row: Int) {
         self.id = id
@@ -27,9 +49,18 @@ class ContentItem{
         self.headline = headline
         self.lead = lead
         self.type = type
+        self.preferSponsorImage = preferSponsorImage
+        self.tag = tag
+        self.customLink = customLink
+        self.timeStamp = timeStamp
         self.section = section
         self.row = row
     }
+    
+    
+    
+    
+    
     
     func getImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? {
         let urlString: String

@@ -40,11 +40,11 @@ class CoverCell: UICollectionViewCell {
 
         
         // MARK: - Update Styles and Layouts
-        containerView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-        headline.textColor = UIColor(hex: AppNavigation.sharedInstance.headlineColor)
+        containerView.backgroundColor = UIColor(hex: Color.Content.background)
+        headline.textColor = UIColor(hex: Color.Content.headline)
         headline.font = headline.font.bold()
         
-        lead.textColor = UIColor(hex: AppNavigation.sharedInstance.leadColor)
+        lead.textColor = UIColor(hex: Color.Content.lead)
         layoutMargins.left = 0
         layoutMargins.right = 0
         layoutMargins.top = 0

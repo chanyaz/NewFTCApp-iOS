@@ -94,7 +94,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         // flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         channelScrollerView?.delegate = self
         channelScrollerView?.dataSource = self
-        channelScrollerView?.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerBackground)
+        channelScrollerView?.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
         channelScrollerView?.showsHorizontalScrollIndicator = false
         //channelScrollerView.backgroundColor = UIColor(hex: Color.Tab.background)
         if let channelScrollerView = channelScrollerView {

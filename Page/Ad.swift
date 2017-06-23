@@ -33,7 +33,7 @@ class Ad: UICollectionReusableView {
     // MARK: Use WKWebview to migrate current display ads.
     func updateUI() {
         print ("update UI now")
-        self.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.adBackground)
+        self.backgroundColor = UIColor(hex: Color.Ad.background)
         //self.backgroundColor = UIColor.red
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true

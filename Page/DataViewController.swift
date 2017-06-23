@@ -98,8 +98,8 @@ class DataViewController: UICollectionViewController {
         collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
         
         // MARK: - Update Styles
-        view.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
-        collectionView?.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
+        view.backgroundColor = UIColor(hex: Color.Content.border)
+        collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
         
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.minimumInteritemSpacing = 0

@@ -15,14 +15,14 @@ class CustomTabBarController: UITabBarController {
         
         // MARK: Customize Tab Bar Styles
         if #available(iOS 10.0, *) {
-            self.tabBar.unselectedItemTintColor = UIColor(hex: AppNavigation.sharedInstance.normalTabFontColor)
+            self.tabBar.unselectedItemTintColor = UIColor(hex: Color.Tab.normalText)
         } else {
             // Fallback on earlier versions
         }
-        self.tabBar.tintColor = UIColor(hex: AppNavigation.sharedInstance.highlightedTabFontColor)
+        self.tabBar.tintColor = UIColor(hex: Color.Tab.highlightedText)
         self.tabBar.barTintColor = UIColor(hex: Color.Tab.background)
         self.tabBar.backgroundImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Tab.background))
-        self.tabBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor))
+        self.tabBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Tab.border))
         self.tabBar.isTranslucent = false
         
         // MARK: Replace unselected tab icons with original icon

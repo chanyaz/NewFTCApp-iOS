@@ -27,13 +27,13 @@ class ChannelScrollerCell: UICollectionViewCell {
             channel.text = title
         }
         //self.backgroundColor = UIColor(hex: Color.Tab.background)
-        self.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerBackground)
+        self.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
         if isSelected == true {
-            channel.textColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerHighlight)
+            channel.textColor = UIColor(hex: Color.ChannelScroller.highlightedText)
             //channel.font = UIFont.preferredFont(forTextStyle: .title3)
             //print ("\(String(describing: pageData["title"])) is selected")
         } else {
-            channel.textColor = UIColor(hex: AppNavigation.sharedInstance.channelScrollerColor)
+            channel.textColor = UIColor(hex: Color.ChannelScroller.text)
             //channel.font = UIFont.preferredFont(forTextStyle: .body)
             //print ("\(String(describing: pageData["title"])) is not selected")
         }

@@ -34,9 +34,9 @@ class HeadlineCell: UICollectionViewCell {
     func updateUI() {
         // MARK: - Update Styles and Layouts
         //    print ("headline should load image here")
-        containerView.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultContentBackgroundColor)
-        headline.textColor = UIColor(hex: AppNavigation.sharedInstance.headlineColor)
-        //    lead.textColor = UIColor(hex: AppNavigation.sharedInstance.leadColor)
+        containerView.backgroundColor = UIColor(hex: Color.Content.background)
+        headline.textColor = UIColor(hex: Color.Content.headline)
+        //    lead.textColor = UIColor(hex: Color.Content.lead)
         layoutMargins.left = 0
         layoutMargins.right = 0
         layoutMargins.top = 0
@@ -47,7 +47,7 @@ class HeadlineCell: UICollectionViewCell {
         // MARK: - set the border color
         if let row = itemCell?.row,
             row > 0 {
-            border.backgroundColor = UIColor(hex: AppNavigation.sharedInstance.defaultBorderColor)
+            border.backgroundColor = UIColor(hex: Color.Content.border)
         } else {
             // MARK: - set first item's border color to transparent
             border.backgroundColor = nil

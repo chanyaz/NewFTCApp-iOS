@@ -423,7 +423,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         // TODO: Should do the layout based on cell's properties
         if indexPath.row == 0 {
             widthPerItem = (availableWidth / itemsPerRow) * 2
-            heightPerItem = widthPerItem * 1
+            heightPerItem = widthPerItem * 0.618 / 2
         } else {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = widthPerItem * 0.618

@@ -86,67 +86,25 @@ class ContentItemViewController: UIViewController {
         languageSwitch.tintColor = buttonTint
         
         // MARK: Set style for the bottom buttons
-        
         actionButton.tintColor = buttonTint
         bookMark.tintColor = buttonTint
     }
     
+
+    
     private func initText() {
-        
-        
         // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         
-        
-        let text = NSMutableAttributedString()
-        
-        let headlineStyle = NSMutableParagraphStyle()
-        headlineStyle.paragraphSpacing = 12.0
-        let headlineString = dataObject?.headline ?? ""
-        let headline = NSMutableAttributedString(
-            string: "\(headlineString)\n",
-            attributes: [
-                NSFontAttributeName: UIFont.preferredFont(forTextStyle: .title1).bold(),
-                NSParagraphStyleAttributeName: headlineStyle,
-                NSForegroundColorAttributeName: UIColor.blue
-            ]
-        )
-        
-        let bodyAttributes:[String:AnyObject] = [
-            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
-            NSForegroundColorAttributeName:UIColor.blue
-        ]
-        
         let bodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
-        //let cbody = NSAttributedString(string: cBodyString, attributes: bodyAttributes)
-        let body: NSMutableAttributedString
-        
-        let cbodyTest = bodyString.htmlToAttributedString()
-        
-        if let htmlBody = bodyString.htmlAttributedString() {
-            body = htmlBody
+        // MARK: Try to convert HTML body text into NSMutableAttributedString. If the result is not complete, use WKWebView to Display the page
+        if let body = bodyString.htmlToAttributedString() {
+            renderTextview(body)
         } else {
-            body = NSMutableAttributedString(string: bodyString, attributes: nil)
+            // TODO: Use WKWebView to display story
+            renderWebView()
         }
-        body.addAttributes(bodyAttributes, range: NSMakeRange(0, body.length))
-        
-        
-        
-        
-        text.append(headline)
-        text.append(body)
-        //Apply to the label
-        textView?.attributedText = text
-        
-        // MARK: - a workaround for the myterious scroll view bug
-        textView?.isScrollEnabled = false
-        textView?.isScrollEnabled = true
-        textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
-        
-        
-        
-        
-        
+
         
         /*
          
@@ -207,21 +165,54 @@ class ContentItemViewController: UIViewController {
          */
     }
     
+    private func renderTextview(_ body: NSMutableAttributedString) {
+        let bodyColor = UIColor(hex: Color.Content.body)
+        let headlineColor = UIColor(hex: Color.Content.headline)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 12.0
+        
+        let bodyAttributes:[String:AnyObject] = [
+            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
+            NSForegroundColorAttributeName: bodyColor,
+            NSParagraphStyleAttributeName: paragraphStyle
+        ]
+        body.addAttributes(bodyAttributes, range: NSMakeRange(0, body.length))
+        
+        // MARK: Headline Style and Text
+        let headlineString = dataObject?.headline ?? ""
+        let headline = NSMutableAttributedString(
+            string: "\(headlineString)\n",
+            attributes: [
+                NSFontAttributeName: UIFont.preferredFont(forTextStyle: .title1).bold(),
+                NSParagraphStyleAttributeName: paragraphStyle,
+                NSForegroundColorAttributeName: headlineColor
+            ]
+        )
+        
+        let text = NSMutableAttributedString()
+        text.append(headline)
+        text.append(body)
+        textView?.attributedText = text
+        // MARK: - a workaround for the myterious scroll view bug
+        textView?.isScrollEnabled = false
+        textView?.isScrollEnabled = true
+        textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+    }
+    
+    private func renderWebView() {
+        
+    }
+    
     
 }
 
 extension String {
-    func htmlAttributedString() -> NSMutableAttributedString? {
-        guard let data = self.data(using: String.Encoding.utf16, allowLossyConversion: false) else { return nil }
-        guard let html = try? NSMutableAttributedString(
-            data: data,
-            options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
-            documentAttributes: nil) else { return nil }
-        return html
-    }
     func htmlToAttributedString() -> NSMutableAttributedString? {
-        let text = self.replacingOccurrences(of: "<[pP]>", with: "\n", options: .regularExpression)
-        print (text)
-        return nil
+        let text = self.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
+        .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
+        .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
+        
+        return NSMutableAttributedString(string: text, attributes: nil)
+        //return nil
     }
 }

@@ -45,7 +45,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         getDetailInfo()
         initStyle()
         
-
+//        navigationController?.delegate = self
+//        navigationItem.title = "another test from oliver"
     }
     
     override func viewDidLayoutSubviews() {
@@ -92,7 +93,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         bookMark.tintColor = buttonTint
     }
     
-
+    
     
     private func initText() {
         // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
@@ -106,7 +107,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // TODO: Use WKWebView to display story
             renderWebView()
         }
-
+        
         
         /*
          
@@ -210,10 +211,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
 
 extension String {
     func htmlToAttributedString() -> NSMutableAttributedString? {
-
+        
         let text = self.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
-        .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
-        .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
         
         handleHTMLTags()
         
@@ -221,25 +222,25 @@ extension String {
         //return nil
         
         
-//        let pattern = "<b>(.*)</b>"
-//        let inString = "this is a <b>text</b> with mention for"
-//        let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
-//        let range = NSMakeRange(0, inString.characters.count)
-//        let matches = (regex?.matches(in: inString, options: [], range: range))!
-//        
-//        let attrString = NSMutableAttributedString(string: inString, attributes:nil)
-//        print(matches.count)
-//        
-//        //Iterate over regex matches
-//        for match in matches.reversed() {
-//            //Properly print match range
-//            print(match.range)
-//            let value = attrString.attributedSubstring(from: match.rangeAt(1)).string
-//            print (value)
-//            attrString.addAttribute(NSLinkAttributeName, value: "\(value)", range: match.rangeAt(0))
-//            attrString.replaceCharacters(in: match.rangeAt(0), with: "\(value)")
-//        }
-//        return attrString
+        //        let pattern = "<b>(.*)</b>"
+        //        let inString = "this is a <b>text</b> with mention for"
+        //        let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
+        //        let range = NSMakeRange(0, inString.characters.count)
+        //        let matches = (regex?.matches(in: inString, options: [], range: range))!
+        //
+        //        let attrString = NSMutableAttributedString(string: inString, attributes:nil)
+        //        print(matches.count)
+        //
+        //        //Iterate over regex matches
+        //        for match in matches.reversed() {
+        //            //Properly print match range
+        //            print(match.range)
+        //            let value = attrString.attributedSubstring(from: match.rangeAt(1)).string
+        //            print (value)
+        //            attrString.addAttribute(NSLinkAttributeName, value: "\(value)", range: match.rangeAt(0))
+        //            attrString.replaceCharacters(in: match.rangeAt(0), with: "\(value)")
+        //        }
+        //        return attrString
     }
     
     func handleHTMLTags() {

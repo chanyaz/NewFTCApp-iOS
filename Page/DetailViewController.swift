@@ -48,8 +48,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         //                                       for: UIControlState.normal)
         //        self.navigationItem.titleView = segment
         
-        print ("navigation title is \(self.navigationItem.title)")
-        self.navigationItem.title = "Story Title"
+        //self.navigationItem.title = "Story Title"
         
     }
 

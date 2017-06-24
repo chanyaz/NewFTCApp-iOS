@@ -20,6 +20,7 @@ class ChannelModelController: ModelController {
         pageTitles = pageData.map { (value: [String: String]) -> String in
             return value["title"] ?? ""
         }
+        self.tabName = tabName
     }
     
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> DataViewController? {
@@ -47,8 +48,10 @@ class ChannelModelController: ModelController {
                 index: currentPageIndex,
                 title: viewController.pageTitle
             )
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: AppNavigation.sharedInstance.pagePanningEndNotification), object: pageInfoObject)
-            
+            if let tabName = self.tabName {
+                let name = NSNotification.Name(rawValue: Event.pagePanningEnd(for: tabName))
+                NotificationCenter.default.post(name: name, object: pageInfoObject)
+            }
             return currentPageIndex
         }
         

@@ -20,6 +20,11 @@ import UIKit
 
 class DetailModelController: ModelController {
     var pageData = [ContentItem]()
+    var currentPageTitle: String? = nil {
+        didSet {
+            print ("current page title: \(String(describing: currentPageTitle))")
+        }
+    }
     
     init(tabName: String, pageData: [ContentItem]) {
         super.init()
@@ -28,6 +33,7 @@ class DetailModelController: ModelController {
         self.pageTitles = pageData.map { (value: ContentItem) -> String in
             return value.headline
         }
+        self.currentPageTitle = self.pageTitles[0]
     }
     
     
@@ -52,6 +58,7 @@ class DetailModelController: ModelController {
         if let currentPageIndex = pageTitles.index(of: viewController.pageTitle) {
             print ("index Of ViewController: \(currentPageIndex)")
             // TODO: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
+            currentPageTitle = pageTitles[currentPageIndex]
             return currentPageIndex
         }
         return NSNotFound

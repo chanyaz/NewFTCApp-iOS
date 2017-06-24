@@ -108,24 +108,29 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         }
         
         // MARK: - Observing notification about page panning end
+        if let tabName = self.tabName {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(pagePanningEnd(_:)),
-            name: NSNotification.Name(rawValue: AppNavigation.sharedInstance.pagePanningEndNotification),
+            name: NSNotification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
             object: nil
         )
+        }
     }
     
     deinit {
         // MARK: - Starting from iOS 8, Observers will automatically be removed when deinit.
         // MARK: - Remove Panning End Observer
+        if let tabName = self.tabName {
         NotificationCenter.default.removeObserver(
             self,
-            name: Notification.Name(rawValue: AppNavigation.sharedInstance.pagePanningEndNotification),
+            name: Notification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
             object: nil
         )
+        }
     }
     
+    // TODO: 5 Channel View Controllers might get this notification. For example, if you swipe to the second page in one of the tabs, all the other tabs will also swipe to the second page.
     func pagePanningEnd(_ notification: Notification) {
         if let object = notification.object as? (index: Array.Index, title: String) {
             let index = object.index as Int

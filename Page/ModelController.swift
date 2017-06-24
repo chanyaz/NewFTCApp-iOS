@@ -21,6 +21,8 @@ import UIKit
 class ModelController: NSObject, UIPageViewControllerDataSource {
     var pageTitles: [String] = []
     var pageThemeColor: String? = nil
+    var tabName: String?
+    
 
     func updateThemeColor(for tabName: String) {
         if let themeColor = AppNavigation.sharedInstance.getNavigationProperty(for: tabName, of: "navBackGroundColor") {

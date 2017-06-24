@@ -26,9 +26,6 @@ struct AppNavigation {
 //    public let channelScrollerColor = "#565656"
 //    public let navigationBorderColor = "#d5c6b3"
     
-    // MARK: Notification Names
-    public let pagePanningEndNotification = "Page Panning End"
-    
     private static let appMap = [
         "News": [
             "title": "FT中文网",

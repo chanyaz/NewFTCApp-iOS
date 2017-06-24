@@ -45,8 +45,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         getDetailInfo()
         initStyle()
         
-//        navigationController?.delegate = self
-//        navigationItem.title = "another test from oliver"
+        navigationController?.delegate = self
+        navigationItem.title = "another test from oliver"
     }
     
     override func viewDidLayoutSubviews() {

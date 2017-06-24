@@ -18,11 +18,21 @@ import UIKit
  */
 
 
+
+
 class DetailModelController: ModelController {
+    // MARK: Delegate Step 2: initiate the delegate of protocol
+    // MARK: The class keyword in the Swift protocol definition limits protocol adoption to class types (and not structures or enums). This is important if we want to use a weak reference to the delegate. We need be sure we do not create a retain cycle between the delegate and the delegating objects, so we use a weak reference to delegate (see below).
+    weak var delegate: DetailModelDelegate?
+
     var pageData = [ContentItem]()
     var currentPageTitle: String? = nil {
         didSet {
             print ("current page title: \(String(describing: currentPageTitle))")
+            // MARK: Delegate Step 3: call the delegate
+            if let title = currentPageTitle {
+                delegate?.didChangePage(title)
+            }
         }
     }
     
@@ -33,7 +43,6 @@ class DetailModelController: ModelController {
         self.pageTitles = pageData.map { (value: ContentItem) -> String in
             return value.headline
         }
-        self.currentPageTitle = self.pageTitles[0]
     }
     
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: PagesViewController, UINavigationControllerDelegate {
+class DetailViewController: PagesViewController, UINavigationControllerDelegate, DetailModelDelegate {
 
     var contentPageData = [ContentItem]()
     
@@ -29,8 +29,18 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
     
     var _modelController: DetailModelController? = nil
     
+    //MARK: Delegate Step 5: implement the methods in protocol. Make sure the class implement the delegate
+    func didChangePage(_ title: String) {
+        self.navigationItem.title = title
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        // MARK: Delegate Step 4: Set the delegate to self
+        modelController.delegate = self
+        
+        
+        
         // MARK: Set up pages for the content detail view
         let startingViewController: ContentItemViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
         let viewControllers = [startingViewController]
@@ -48,7 +58,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         //                                       for: UIControlState.normal)
         //        self.navigationItem.titleView = segment
         
-        //self.navigationItem.title = "Story Title"
+        self.navigationItem.title = contentPageData[0].headline
         
     }
 

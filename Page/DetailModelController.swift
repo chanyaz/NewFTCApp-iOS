@@ -28,7 +28,6 @@ class DetailModelController: ModelController {
     var pageData = [ContentItem]()
     var currentPageTitle: String? = nil {
         didSet {
-            print ("current page title: \(String(describing: currentPageTitle))")
             // MARK: Delegate Step 3: call the delegate
             if let title = currentPageTitle {
                 delegate?.didChangePage(title)

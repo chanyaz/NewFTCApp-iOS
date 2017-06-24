@@ -43,7 +43,8 @@ class ChannelModelController: ModelController {
         // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
         if let currentPageIndex = pageTitles.index(of: viewController.pageTitle) {
             print ("index Of ViewController: \(currentPageIndex)")
-            // TODO: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
+            // TODO: In this case, notification is not the best way to pass data from model to controller. We should use Delegate instead.
+            // MARK: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
             let pageInfoObject = (
                 index: currentPageIndex,
                 title: viewController.pageTitle
@@ -54,13 +55,11 @@ class ChannelModelController: ModelController {
             }
             return currentPageIndex
         }
-        
         return NSNotFound
     }
     
     
     // MARK: - Page View Controller Data Source
-    
     override func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var index = self.indexOfViewController(viewController as! DataViewController)
         print ("preparing the prev page")
@@ -83,6 +82,5 @@ class ChannelModelController: ModelController {
         }
         return self.viewControllerAtIndex(index, storyboard: viewController.storyboard!)
     }
-    
     
 }

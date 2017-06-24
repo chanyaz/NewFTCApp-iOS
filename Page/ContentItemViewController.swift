@@ -91,6 +91,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Set style for the bottom buttons
         actionButton.tintColor = buttonTint
         bookMark.tintColor = buttonTint
+        
+        // MARK: Make the text view uneditable
+        textView.isEditable = false
     }
     
     
@@ -107,79 +110,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // TODO: Use WKWebView to display story
             renderWebView()
         }
-        
-        
-        /*
-         
-         let finalText = NSMutableAttributedString()
-         
-         
-         
-         
-         
-         // MARK: headline
-         let headlineStyle = NSMutableParagraphStyle()
-         headlineStyle.paragraphSpacing = 12.0
-         let headlineFont = UIFont.preferredFont(forTextStyle: .title1)
-         let headlineString = dataObject?.headline ?? ""
-         let headline = NSMutableAttributedString(
-         string: "\(headlineString)\n",
-         attributes: [
-         NSParagraphStyleAttributeName: headlineStyle,
-         //NSFontAttributeName: headlineFont,
-         NSForegroundColorAttributeName: UIColor.blue
-         ]
-         )
-         headline.addAttributes([NSFontAttributeName : headlineFont], range: NSRange(location: 0, length: headline.length))
-         
-         
-         
-         let myMutableString = NSMutableAttributedString(
-         string: "a test from oliver",
-         attributes: [NSFontAttributeName:UIFont(
-         name: "Georgia",
-         size: 50.0)!])
-         //Add more attributes here
-         
-         //Apply to the label
-         
-         
-         // MARK: body
-         let bodyStyle = NSMutableParagraphStyle()
-         bodyStyle.paragraphSpacing = 12.0
-         let bodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
-         let body = NSAttributedString(string: bodyString, attributes: [NSParagraphStyleAttributeName: bodyStyle])
-         
-         // MARK: put all things together
-         finalText.append(myMutableString)
-         
-         finalText.append(headline)
-         finalText.append(body)
-         
-         textView?.attributedText = myMutableString
-         
-         textView?.attributedText = finalText
-         textView?.font = UIFont.preferredFont(forTextStyle: .body)
-         
-         // MARK: - a workaround for the myterious scroll view bug
-         textView?.isScrollEnabled = false
-         textView?.isScrollEnabled = true
-         textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
-         */
     }
     
     private func renderTextview(_ body: NSMutableAttributedString) {
-        let bodyColor = UIColor(hex: Color.Content.body)
         let headlineColor = UIColor(hex: Color.Content.headline)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
         
-        let bodyAttributes:[String:AnyObject] = [
-            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
-            NSForegroundColorAttributeName: bodyColor,
-            NSParagraphStyleAttributeName: paragraphStyle
-        ]
-        body.addAttributes(bodyAttributes, range: NSMakeRange(0, body.length))
+
         
         // MARK: Headline Style and Text
         let headlineString = dataObject?.headline ?? ""
@@ -215,36 +153,59 @@ extension String {
         let text = self.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
             .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
             .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
-        
-        handleHTMLTags()
-        
-        return NSMutableAttributedString(string: text, attributes: nil)
+        return text.handleHTMLTags()
         //return nil
         
         
-        //        let pattern = "<b>(.*)</b>"
-        //        let inString = "this is a <b>text</b> with mention for"
-        //        let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
-        //        let range = NSMakeRange(0, inString.characters.count)
-        //        let matches = (regex?.matches(in: inString, options: [], range: range))!
-        //
-        //        let attrString = NSMutableAttributedString(string: inString, attributes:nil)
-        //        print(matches.count)
-        //
-        //        //Iterate over regex matches
-        //        for match in matches.reversed() {
-        //            //Properly print match range
-        //            print(match.range)
-        //            let value = attrString.attributedSubstring(from: match.rangeAt(1)).string
-        //            print (value)
-        //            attrString.addAttribute(NSLinkAttributeName, value: "\(value)", range: match.rangeAt(0))
-        //            attrString.replaceCharacters(in: match.rangeAt(0), with: "\(value)")
-        //        }
-        //        return attrString
     }
     
-    func handleHTMLTags() {
-        print ("handle it")
+    func handleHTMLTags() -> NSMutableAttributedString {
+        let bodyColor = UIColor(hex: Color.Content.body)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 12.0
+        paragraphStyle.lineHeightMultiple = 1.2
+        
+        let bodyAttributes:[String:AnyObject] = [
+            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
+            NSForegroundColorAttributeName: bodyColor,
+            NSParagraphStyleAttributeName: paragraphStyle
+        ]
+        
+        
+        
+        let pattern = "<b>(.*)</b>"
+        let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
+        let range = NSMakeRange(0, self.characters.count)
+        let matches = (regex?.matches(in: self, options: [], range: range))!
+        
+        let attrString = NSMutableAttributedString(string: self, attributes:nil)
+        print(matches.count)
+        
+        let boldParagraphStyle = NSMutableParagraphStyle()
+        boldParagraphStyle.paragraphSpacing = 6.0
+        
+        attrString.addAttributes(bodyAttributes, range: NSMakeRange(0, attrString.length))
+
+        let boldAttributes:[String:AnyObject] = [
+            NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body).bold(),
+            NSParagraphStyleAttributeName: boldParagraphStyle
+        ]
+        
+        
+        //Iterate over regex matches
+        for match in matches.reversed() {
+            //Properly print match range
+            print(match.range)
+            let value = attrString.attributedSubstring(from: match.rangeAt(1)).string
+            print (value)
+            //attrString.addAttribute(NSLinkAttributeName, value: "http://www.ft.com/", range: match.rangeAt(0))
+            attrString.addAttributes(boldAttributes, range: match.rangeAt(0))
+            attrString.replaceCharacters(in: match.rangeAt(0), with: "\(value)")
+        }
+        return attrString
+        
+        
+        //return NSMutableAttributedString(string: "", attributes: nil)
     }
     
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: PagesViewController, UINavigationControllerDelegate, DetailModelDelegate {
+class DetailViewController: PagesViewController, UINavigationControllerDelegate {
 
     var contentPageData = [ContentItem]()
     
@@ -29,10 +29,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate,
     
     var _modelController: DetailModelController? = nil
     
-    //MARK: Delegate Step 5: implement the methods in protocol. Make sure the class implement the delegate
-    func didChangePage(_ title: String) {
-        self.navigationItem.title = title
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,4 +65,11 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate,
     
     
 
+}
+
+extension DetailViewController: DetailModelDelegate {
+    //MARK: Delegate Step 5: implement the methods in protocol. Make sure the class implement the delegate
+    func didChangePage(_ title: String) {
+        self.navigationItem.title = title
+    }
 }

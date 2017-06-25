@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 class ContentItemViewController: UIViewController, UINavigationControllerDelegate{
     
@@ -28,6 +29,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     var pageTitle: String = ""
     var themeColor: String?
     private var detailDisplayed = false
+    fileprivate lazy var webView: WKWebView? = nil
+    fileprivate var isWebViewAdded = false
     
     fileprivate let contentAPI = ContentFetch()
     
@@ -104,7 +107,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         let bodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
         // MARK: Try to convert HTML body text into NSMutableAttributedString. If the result is not complete, use WKWebView to Display the page
-        if let body = bodyString.htmlToAttributedString() {
+        if let body = htmlToAttributedString(bodyString) {
             renderTextview(body)
         } else {
             // TODO: Use WKWebView to display story
@@ -117,7 +120,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
         
-
+        
         
         // MARK: Headline Style and Text
         let headlineString = dataObject?.headline ?? ""
@@ -141,71 +144,91 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     private func renderWebView() {
-        
+        print ("there are HTML tags that cannot be handled, use webview to handle it instead")
+        let config = WKWebViewConfiguration()
+        config.allowsInlineMediaPlayback = true
+        let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height - 44)
+        webView = WKWebView(frame: webViewFrame, configuration: config)
+        webView?.isOpaque = true
+        webView?.backgroundColor = UIColor.clear
+        webView?.scrollView.backgroundColor = UIColor.clear
+        if let wv = self.webView {
+            //self.textView.removeFromSuperview()
+            // FIXME: add subview is not safe. What happens if there already is a webview?
+            if isWebViewAdded == false {
+                self.view.addSubview(wv)
+                isWebViewAdded = true
+            }
+            self.view.clipsToBounds = true
+            webView?.scrollView.bounces = false
+            let urlString: String
+            if dataObject?.type == "story" {
+                if let id = dataObject?.id {
+                    urlString = "http://www.ftchinese.com/story/\(id)?full=y"
+                } else {
+                    urlString = "http://www.ftchinese.com/"
+                }
+            } else {
+                urlString = "http://www.ftchinese.com/"
+            }
+            
+            if let url = URL(string: urlString) {
+                let request = URLRequest(url: url)
+                self.webView?.load(request)
+            }
+        }
     }
     
     
-}
-
-extension String {
-    func htmlToAttributedString() -> NSMutableAttributedString? {
-        
-        let text = self.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
+    fileprivate func htmlToAttributedString(_ htmltext: String) -> NSMutableAttributedString? {
+        // MARK: remove p tags in text
+        let text = htmltext.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
             .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
             .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
-        return text.handleHTMLTags()
-        //return nil
         
-        
-    }
-    
-    func handleHTMLTags() -> NSMutableAttributedString {
+        // MARK: Set the overall text style
         let bodyColor = UIColor(hex: Color.Content.body)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
         paragraphStyle.lineHeightMultiple = 1.2
-        
         let bodyAttributes:[String:AnyObject] = [
             NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
             NSForegroundColorAttributeName: bodyColor,
             NSParagraphStyleAttributeName: paragraphStyle
         ]
-        
-        
-        
-        let pattern = "<b>(.*)</b>"
+        let attrString = NSMutableAttributedString(string: text, attributes:nil)
+        // MARK: Handle bold tag
+        let pattern = "<[bi]>(.*)</[bi]>"
         let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
-        let range = NSMakeRange(0, self.characters.count)
-        let matches = (regex?.matches(in: self, options: [], range: range))!
-        
-        let attrString = NSMutableAttributedString(string: self, attributes:nil)
-        print(matches.count)
-        
+        let range = NSMakeRange(0, text.characters.count)
+        attrString.addAttributes(bodyAttributes, range: NSMakeRange(0, attrString.length))
         let boldParagraphStyle = NSMutableParagraphStyle()
         boldParagraphStyle.paragraphSpacing = 6.0
-        
-        attrString.addAttributes(bodyAttributes, range: NSMakeRange(0, attrString.length))
-
         let boldAttributes:[String:AnyObject] = [
             NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body).bold(),
             NSParagraphStyleAttributeName: boldParagraphStyle
         ]
         
+        if let matches = regex?.matches(in: text, options: [], range: range) {
+            print(matches.count)
+            //Iterate over regex matches
+            for match in matches.reversed() {
+                //Properly print match range
+                print(match.range)
+                let value = attrString.attributedSubstring(from: match.rangeAt(1)).string
+                print (value)
+                //attrString.addAttribute(NSLinkAttributeName, value: "http://www.ft.com/", range: match.rangeAt(0))
+                attrString.addAttributes(boldAttributes, range: match.rangeAt(0))
+                attrString.replaceCharacters(in: match.rangeAt(0), with: "\(value)")
+            }
+        }
         
-        //Iterate over regex matches
-        for match in matches.reversed() {
-            //Properly print match range
-            print(match.range)
-            let value = attrString.attributedSubstring(from: match.rangeAt(1)).string
-            print (value)
-            //attrString.addAttribute(NSLinkAttributeName, value: "http://www.ft.com/", range: match.rangeAt(0))
-            attrString.addAttributes(boldAttributes, range: match.rangeAt(0))
-            attrString.replaceCharacters(in: match.rangeAt(0), with: "\(value)")
+        // MARK: if there are unhandled tags, use WebView to open the content
+        if attrString.string.contains("<") && attrString.string.contains(">") {
+            return nil
         }
         return attrString
-        
-        
-        //return NSMutableAttributedString(string: "", attributes: nil)
     }
+    
     
 }

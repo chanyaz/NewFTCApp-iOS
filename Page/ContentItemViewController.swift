@@ -104,19 +104,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     private func initText() {
         // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
-        
-        
-
-        
-        
         let bodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
-        // MARK: Try to convert HTML body text into NSMutableAttributedString. If the result is not complete, use WKWebView to Display the page
+        // MARK: There are three ways to convert HTML body text into NSMutableAttributedString. Each has its merits and limits. 
         if let body = htmlToAttributedString(bodyString) {
+            // MARK: If we can handle all the HTML tags confidantly
             renderTextview(body)
         } else if let body = bodyString.htmlAttributedString() {
+            // MARK: The above uses the string extension to convert string to data then to NSMutableAttributedString. Not sure if this is expensive in terms of computing resource. If there are images in the HTML, there might be delay after tapping as the image is not downloaded asyn.
             renderTextview(body)
         } else {
-            // TODO: Use WKWebView to display story
+            // MARK: Use WKWebView to display story
             renderWebView()
         }
     }
@@ -125,8 +122,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let headlineColor = UIColor(hex: Color.Content.headline)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
-        
-        
         
         // MARK: Headline Style and Text
         let headlineString = dataObject?.headline ?? ""

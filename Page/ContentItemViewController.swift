@@ -174,7 +174,19 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             if let url = URL(string: urlString) {
                 let request = URLRequest(url: url)
-                self.webView?.load(request)
+                
+                if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
+                    do {
+                        let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                        let storyHTML = storyTemplate as String
+                        self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                    } catch {
+                        self.webView?.load(request)
+                    }
+                } else {
+                    self.webView?.load(request)
+                }
+                
             }
         }
     }

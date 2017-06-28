@@ -26,14 +26,6 @@ class DetailModelController: ModelController {
     weak var delegate: DetailModelDelegate?
 
     var pageData = [ContentItem]()
-//    var currentPageTitle: String? = nil {
-//        didSet {
-//            // MARK: Delegate Step 3: call the delegate
-//            if let title = currentPageTitle {
-//                delegate?.didChangePage(title)
-//            }
-//        }
-//    }
     var currentItem: ContentItem? = nil {
         didSet {
             delegate?.didChangePage(currentItem)

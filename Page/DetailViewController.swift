@@ -49,7 +49,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         // MARK: Set up pages for the content detail view
         // TODO: Add the bottom bar here instead of in the
         
-        // MARK - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+        // MARK: - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
         let bottomBarHeight = toolBar.frame.height + 1
         let fullPageViewRect = self.view.bounds
         let pageViewRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: fullPageViewRect.height - bottomBarHeight)
@@ -98,6 +98,6 @@ extension DetailViewController: DetailModelDelegate {
     func didChangePage(_ item: ContentItem?) {
         // TODO: There might not be enough space for story title. Consider doing some other things when page is changed
         //self.navigationItem.title = title
-        print ("should do something to update item information in view controller")
+        print ("current item is \(String(describing: item?.headline))")
     }
 }

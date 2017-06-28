@@ -12,7 +12,18 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
 
     var contentPageData = [ContentItem]()
     
-    @IBOutlet weak var bottomBar: UIToolbar!
+    
+    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var languageSwitch: UISegmentedControl!
+    @IBOutlet weak var actionButton: UIBarButtonItem!
+    @IBOutlet weak var bookMark: UIBarButtonItem!
+    
+//    @IBOutlet weak var languageSwitch: UISegmentedControl!
+//    @IBOutlet weak var actionButton: UIBarButtonItem!
+//    @IBOutlet weak var bookMark: UIBarButtonItem!
+    
+    
+   // @IBOutlet weak var bottomBar: UIToolbar!
     var modelController: DetailModelController {
         // Return the model controller object, creating it if necessary.
         // In more complex implementations, the model controller may be passed to the view controller.
@@ -37,6 +48,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         
         // MARK: Set up pages for the content detail view
         // TODO: Add the bottom bar here instead of in the
+        
+        // MARK - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+        let bottomBarHeight = toolBar.frame.height + 1
+        let fullPageViewRect = self.view.bounds
+        let pageViewRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: fullPageViewRect.height - bottomBarHeight)
+        self.pageViewController!.view.frame = pageViewRect
+        
         let startingViewController: ContentItemViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
         let viewControllers = [startingViewController]
         self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: false, completion: {done in })
@@ -47,10 +65,30 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""
+        
+        // MARK: - Color Scheme for the view
+        initStyle()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    private func initStyle() {
+        toolBar.backgroundColor = UIColor(hex: Color.Tab.background)
+        toolBar.barTintColor = UIColor(hex: Color.Tab.background)
+        toolBar.isTranslucent = false
+        
+        let buttonTint = UIColor(hex: Color.Button.tint)
+        
+        // MARK: Set style for the language switch
+        languageSwitch.backgroundColor = UIColor(hex: Color.Content.background)
+        languageSwitch.tintColor = buttonTint
+        
+        // MARK: Set style for the bottom buttons
+        actionButton.tintColor = buttonTint
+        bookMark.tintColor = buttonTint
+        
     }
 
 }

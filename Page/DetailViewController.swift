@@ -12,6 +12,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
 
     var contentPageData = [ContentItem]()
     
+    @IBOutlet weak var bottomBar: UIToolbar!
     var modelController: DetailModelController {
         // Return the model controller object, creating it if necessary.
         // In more complex implementations, the model controller may be passed to the view controller.
@@ -29,16 +30,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
     
     var _modelController: DetailModelController? = nil
     
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: Delegate Step 4: Set the delegate to self
         modelController.delegate = self
         
-        
-        
         // MARK: Set up pages for the content detail view
+        // TODO: Add the bottom bar here instead of in the
         let startingViewController: ContentItemViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
         let viewControllers = [startingViewController]
         self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: false, completion: {done in })
@@ -54,8 +52,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
 
 }
 

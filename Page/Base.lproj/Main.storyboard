@@ -117,10 +117,26 @@
                     <view key="view" contentMode="scaleToFill" id="Vqa-bC-mKn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bc2-gr-Zq9">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem title="Item" id="EUi-FC-Ris"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bc2-gr-Zq9" firstAttribute="leading" secondItem="Vqa-bC-mKn" secondAttribute="leading" id="LTF-h2-fsk"/>
+                            <constraint firstAttribute="bottom" secondItem="bc2-gr-Zq9" secondAttribute="bottom" id="OKh-6D-8eP"/>
+                            <constraint firstAttribute="trailing" secondItem="bc2-gr-Zq9" secondAttribute="trailing" id="TWs-VG-yVG"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="Izp-uS-eCX"/>
+                    <connections>
+                        <outlet property="bottomBar" destination="bc2-gr-Zq9" id="8Vc-3v-3Qk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BWI-YL-odL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

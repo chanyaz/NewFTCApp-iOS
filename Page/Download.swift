@@ -8,7 +8,7 @@
 
 import Foundation
 struct Download {
-    public func getDataFromUrl(_ url:URL, completion: @escaping ((_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> Void)) {
+    public static func getDataFromUrl(_ url:URL, completion: @escaping ((_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> Void)) {
         let listTask = URLSession.shared.dataTask(with: url, completionHandler:{(data, response, error) in
             completion(data, response, error as NSError?)
             return ()

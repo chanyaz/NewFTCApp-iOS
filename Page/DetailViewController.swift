@@ -47,16 +47,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         self.view.addSubview(self.pageViewController!.view)
         self.pageViewController!.didMove(toParentViewController: self)
         
-        //        let segment: UISegmentedControl = UISegmentedControl(items: ["First", "Second"])
-        //        segment.sizeToFit()
-        //        segment.tintColor = UIColor(red:0.99, green:0.00, blue:0.25, alpha:1.00)
-        //        segment.selectedSegmentIndex = 0;
-        //        segment.setTitleTextAttributes([NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)],
-        //                                       for: UIControlState.normal)
-        //        self.navigationItem.titleView = segment
-        
-        self.navigationItem.title = contentPageData[0].headline
-        
+        // MARK: - Set the navigation item title as an empty string.
+        self.navigationItem.title = ""
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,7 +61,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
 
 extension DetailViewController: DetailModelDelegate {
     //MARK: Delegate Step 5: implement the methods in protocol. Make sure the class implement the delegate
-    func didChangePage(_ title: String) {
-        self.navigationItem.title = title
+    func didChangePage(_ item: ContentItem?) {
+        // TODO: There might not be enough space for story title. Consider doing some other things when page is changed
+        //self.navigationItem.title = title
+        print ("should do something to update item information in view controller")
     }
 }

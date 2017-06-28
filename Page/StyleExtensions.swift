@@ -14,19 +14,16 @@ extension UIColor {
         let hexString = hex.replacingOccurrences(of: "#", with: "")
         let scanner = Scanner(string: hexString)
         scanner.scanLocation = 0
-        
         var rgbValue: UInt64 = 0
-        
         scanner.scanHexInt64(&rgbValue)
-        
         let r = (rgbValue & 0xff0000) >> 16
         let g = (rgbValue & 0xff00) >> 8
         let b = rgbValue & 0xff
-        
         self.init(
             red: CGFloat(r) / 0xff,
             green: CGFloat(g) / 0xff,
-            blue: CGFloat(b) / 0xff, alpha: 1
+            blue: CGFloat(b) / 0xff,
+            alpha: 1
         )
     }
 }
@@ -46,9 +43,11 @@ extension UIImage {
 
 
 extension UIViewController {
+    
     func sizeClass() -> (UIUserInterfaceSizeClass, UIUserInterfaceSizeClass) {
         return (self.traitCollection.horizontalSizeClass, self.traitCollection.verticalSizeClass)
     }
+    
     func layoutType() -> String {
         let type: String
         if self.traitCollection.horizontalSizeClass == .regular && self.traitCollection.verticalSizeClass == .regular {
@@ -58,10 +57,12 @@ extension UIViewController {
         }
         return type
     }
+    
 }
 
 
 extension UIFont {
+    
     func withTraits(traits:UIFontDescriptorSymbolicTraits...) -> UIFont {
         let descriptor = self.fontDescriptor
             .withSymbolicTraits(UIFontDescriptorSymbolicTraits(traits))
@@ -75,4 +76,5 @@ extension UIFont {
     func bold() -> UIFont {
         return withTraits(traits: .traitBold)
     }
+    
 }

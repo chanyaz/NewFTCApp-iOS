@@ -149,8 +149,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pageData.count
     }
     

@@ -18,9 +18,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
     @IBOutlet weak var actionButton: UIBarButtonItem!
     @IBOutlet weak var bookMark: UIBarButtonItem!
     
-//    @IBOutlet weak var languageSwitch: UISegmentedControl!
-//    @IBOutlet weak var actionButton: UIBarButtonItem!
-//    @IBOutlet weak var bookMark: UIBarButtonItem!
     
     
    // @IBOutlet weak var bottomBar: UIToolbar!
@@ -65,6 +62,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""
+        
+        
+        
         
         // MARK: - Color Scheme for the view
         initStyle()

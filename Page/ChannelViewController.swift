@@ -9,8 +9,7 @@
 import UIKit
 // MARK: - Channel View Controller is for Channel Pages with a horizontal navigation collection view at the top of the page
 class ChannelViewController: PagesViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
-    
-    
+
     //private var channelScroller: UICollectionView = UICollectionView()
     private let channelScrollerHeight: CGFloat = 44
     
@@ -105,28 +104,30 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         if let currentTabName = tabName,
             let p = AppNavigation.sharedInstance.getNavigationPropertyData(for: currentTabName, of: "Channels" ) {
             pageData = p
+            updateBackBarButton(for: 0)
         }
         
         // MARK: - Observing notification about page panning end
         if let tabName = self.tabName {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(pagePanningEnd(_:)),
-            name: NSNotification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
-            object: nil
-        )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(pagePanningEnd(_:)),
+                name: NSNotification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
+                object: nil
+            )
         }
+        
     }
     
     deinit {
         // MARK: - Starting from iOS 8, Observers will automatically be removed when deinit.
         // MARK: - Remove Panning End Observer
         if let tabName = self.tabName {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: Notification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
-            object: nil
-        )
+            NotificationCenter.default.removeObserver(
+                self,
+                name: Notification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
+                object: nil
+            )
         }
     }
     
@@ -137,6 +138,14 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             print ("panning to \(object.title): \(index)")
             goToPage(index, isUserPanningEnd: true)
         }
+    }
+    
+    private func updateBackBarButton(for index: Int) {
+        // MARK: - Set the back bar button for the popped views
+        let title = pageData[index]["title"] ?? ""
+        let backItem = UIBarButtonItem()
+        backItem.title = title
+        navigationItem.backBarButtonItem = backItem
     }
     
     
@@ -168,9 +177,9 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     func goToPage(_ index: Int, isUserPanningEnd: Bool) {
         self.isUserPanningEnd = isUserPanningEnd
         currentChannelIndex = index
+        updateBackBarButton(for: index)
     }
-    
-    
+
 }
 
 extension ChannelViewController {

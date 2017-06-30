@@ -63,9 +63,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate 
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""
         
-        
-        
-        
         // MARK: - Color Scheme for the view
         initStyle()
     }

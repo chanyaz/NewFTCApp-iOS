@@ -46,9 +46,9 @@ struct APIs {
     static let story = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/"
 }
 struct Event {
-    static func pagePanningEnd (for tab: String) -> String {
-        let pagePanningEndName = "Page Panning End"
-        return "\(pagePanningEndName) for \(tab)"
-    }
+//    static func pagePanningEnd (for tab: String) -> String {
+//        let pagePanningEndName = "Page Panning End"
+//        return "\(pagePanningEndName) for \(tab)"
+//    }
 }
 

@@ -26,9 +26,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
         }
         
     }
-    
 
-    
     override var preferredStatusBarStyle : UIStatusBarStyle {
         if let currentTabName = tabName {
             let isLightContent = AppNavigation.sharedInstance.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
@@ -38,9 +36,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
         }
         return UIStatusBarStyle.default
     }
-    
-    
-    
+
 }
 
 

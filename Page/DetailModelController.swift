@@ -26,12 +26,9 @@ class DetailModelController: ModelController {
     weak var delegate: DetailModelDelegate?
 
     var pageData = [ContentItem]()
-    var currentPageTitle: String? = nil {
+    var currentItem: ContentItem? = nil {
         didSet {
-            // MARK: Delegate Step 3: call the delegate
-            if let title = currentPageTitle {
-                delegate?.didChangePage(title)
-            }
+            delegate?.didChangePage(currentItem)
         }
     }
     
@@ -66,7 +63,8 @@ class DetailModelController: ModelController {
         if let currentPageIndex = pageTitles.index(of: viewController.pageTitle) {
             print ("index Of ViewController: \(currentPageIndex)")
             // TODO: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
-            currentPageTitle = pageTitles[currentPageIndex]
+            //currentPageTitle = pageTitles[currentPageIndex]
+            currentItem = pageData[currentPageIndex]
             return currentPageIndex
         }
         return NSNotFound

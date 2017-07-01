@@ -12,5 +12,5 @@ import Foundation
 
 protocol DetailModelDelegate: class {
     // MARK: When user panning to change page title, the navigation item title should change accordingly
-    func didChangePage(_ title: String)
+    func didChangePage(_ item: ContentItem?)
 }

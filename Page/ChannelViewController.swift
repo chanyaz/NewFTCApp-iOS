@@ -108,37 +108,32 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         }
         
         // MARK: - Observing notification about page panning end
-        if let tabName = self.tabName {
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(pagePanningEnd(_:)),
-                name: NSNotification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
-                object: nil
-            )
-        }
+//        if let tabName = self.tabName {
+//            NotificationCenter.default.addObserver(
+//                self,
+//                selector: #selector(pagePanningEnd(_:)),
+//                name: NSNotification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
+//                object: nil
+//            )
+//        }
+        // MARK: Set modelController's delegate to self
+        modelController.delegate = self
         
     }
     
     deinit {
         // MARK: - Starting from iOS 8, Observers will automatically be removed when deinit.
         // MARK: - Remove Panning End Observer
-        if let tabName = self.tabName {
-            NotificationCenter.default.removeObserver(
-                self,
-                name: Notification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
-                object: nil
-            )
-        }
+//        if let tabName = self.tabName {
+//            NotificationCenter.default.removeObserver(
+//                self,
+//                name: Notification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
+//                object: nil
+//            )
+//        }
     }
     
-    // TODO: 5 Channel View Controllers might get this notification. For example, if you swipe to the second page in one of the tabs, all the other tabs will also swipe to the second page.
-    func pagePanningEnd(_ notification: Notification) {
-        if let object = notification.object as? (index: Array.Index, title: String) {
-            let index = object.index as Int
-            print ("panning to \(object.title): \(index)")
-            goToPage(index, isUserPanningEnd: true)
-        }
-    }
+
     
     private func updateBackBarButton(for index: Int) {
         // MARK: - Set the back bar button for the popped views
@@ -187,4 +182,22 @@ extension ChannelViewController {
         goToPage(indexPath.row, isUserPanningEnd: false)
         return false
     }
+}
+
+extension ChannelViewController: ChannelModelDelegate {
+    func pagePanningEnd(_ pageInfoObject: (index: Int, title: String)) {
+        let index = pageInfoObject.index
+        print ("panning to \(pageInfoObject.title): \(index)")
+        goToPage(index, isUserPanningEnd: true)
+    }
+    
+    // TODO: 5 Channel View Controllers might get this notification. For example, if you swipe to the second page in one of the tabs, all the other tabs will also swipe to the second page.
+//    func pagePanningEnd(_ notification: Notification) {
+//        if let object = notification.object as? (index: Array.Index, title: String) {
+//            let index = object.index as Int
+//            print ("panning to \(object.title): \(index)")
+//            goToPage(index, isUserPanningEnd: true)
+//        }
+//    }
+    
 }

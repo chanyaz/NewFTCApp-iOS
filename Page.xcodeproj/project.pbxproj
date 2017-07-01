@@ -64,6 +64,7 @@
 		60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */; };
 		60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */; };
 		60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
+		F215331C1F07691900DCA7C8 /* PageCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +148,7 @@
 		60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCell.xib; sourceTree = "<group>"; };
 		60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlineCell.swift; sourceTree = "<group>"; };
 		60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeadlineCell.xib; sourceTree = "<group>"; };
+		F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,6 +388,7 @@
 				60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */,
 				60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */,
 				60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */,
+				F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */,
 			);
 			name = Regular;
 			sourceTree = "<group>";
@@ -558,6 +561,7 @@
 				503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */,
 				60D4B9011EE7D92500A4506D /* MyFTNavigationController.swift in Sources */,
 				60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */,
+				F215331C1F07691900DCA7C8 /* PageCollectionViewLayout.swift in Sources */,
 				607094AD1EE9436900760A60 /* Tabs.swift in Sources */,
 				60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */,
 				60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */,

@@ -15,4 +15,15 @@ class CoverCellRegular: UICollectionViewCell {
         // Initialization code
     }
 
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var headLine: UILabel!
+    var cellWidth: CGFloat?
+    var itemCell: ContentItem? {
+        didSet {
+            updateUI()
+        }
+    }
+    func updateUI() {
+//        headLine.backgroundColor = UIColor.red
+    }
 }

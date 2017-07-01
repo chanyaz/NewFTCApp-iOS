@@ -8,8 +8,10 @@
 
 import UIKit
 
+
 class DataViewController: UICollectionViewController {
     var refreshControl = UIRefreshControl()
+    
     
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
@@ -50,11 +52,15 @@ class DataViewController: UICollectionViewController {
                 }
                 if let results = results {
                     // MARK: - Insert Ads into the fetch results
+//                    print("results : \(results)")
                     let resultsWithAds = ContentFetchResults(
                         apiUrl: results.apiUrl,
                         fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
                     )
                     self?.fetches = resultsWithAds
+//                    self?.fetches = results
+                    
+//                    print("fetches : \(resultsWithAds)")
                     self?.collectionView?.reloadData()
                 }
             }
@@ -77,7 +83,7 @@ class DataViewController: UICollectionViewController {
             getAPI(api)
         } else {
             //TODO: Show a warning if there's no api to get
-            
+            print("results : error")
         }
         
         // TODO: Check if there's a local version of data
@@ -90,8 +96,7 @@ class DataViewController: UICollectionViewController {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        
-        
+
         let horizontalClass = self.traitCollection.horizontalSizeClass
         let verticalCass = self.traitCollection.verticalSizeClass
         
@@ -109,25 +114,51 @@ class DataViewController: UICollectionViewController {
         view.backgroundColor = UIColor(hex: Color.Content.border)
         collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
         
-        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.minimumInteritemSpacing = 0
-            flowLayout.minimumLineSpacing = 0
-            //FIXME: Why does this break scrolling?
-            //flowLayout.sectionHeadersPinToVisibleBounds = true
-            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-            let availableWidth = view.frame.width - paddingSpace
-            
 
-            if horizontalClass != .regular || verticalCass != .regular {
-                if #available(iOS 10.0, *) {
-                    flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-                } else {
-                    flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+        collectionView?.dataSource = self
+        collectionView?.delegate = self
+        
+        
+//        flowLayout.invalidateLayout()
+
+//        if horizontalClass == .regular && verticalCass == .regular {
+//            let flowLayout = PageCollectionViewLayout()
+//            collectionView?.collectionViewLayout=flowLayout
+//            flowLayout.minimumInteritemSpacing = 0
+//            flowLayout.minimumLineSpacing = 0
+////            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+////            let availableWidth = view.frame.width - paddingSpace
+//            print ("flowLayout----\(flowLayout.estimatedItemSize)")
+//        
+//        }else{
+        
+            if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+                
+                print ("prepare estimatedItemSize----\(flowLayout.estimatedItemSize)")
+ 
+                flowLayout.minimumInteritemSpacing = 0
+                flowLayout.minimumLineSpacing = 0
+                //FIXME: Why does this break scrolling?
+                //flowLayout.sectionHeadersPinToVisibleBounds = true
+                let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+                let availableWidth = view.frame.width - paddingSpace
+
+                print ("prepare availableWidth----\(availableWidth)")
+                
+                if horizontalClass != .regular || verticalCass != .regular {
+                    if #available(iOS 10.0, *) {
+                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                    } else {
+                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+                    }
+                    cellWidth = availableWidth
                 }
-                cellWidth = availableWidth
-            }
-
+                
+//            }
         }
+        
+  
+
         
         if #available(iOS 10.0, *) {
             refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
@@ -158,8 +189,10 @@ class DataViewController: UICollectionViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        // let fetchR = fetches.fetchResults
-        // print ("found \(fetches.fetchResults.count) sections")
+//         let fetchR = fetches.fetchResults.count
+//         print ("found \(fetches.fetchResults.count) numberOfSections")
+//        print ("fetchR-- \(fetchR) ----fetchR")
+        
         return fetches.fetchResults.count
     }
     
@@ -167,6 +200,7 @@ class DataViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
+        print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
         return fetches.fetchResults[section].items.count
     }
     
@@ -174,6 +208,7 @@ class DataViewController: UICollectionViewController {
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         
+//         print ("cellItem111---- \(cellItem) ----cellItem")
         switch reuseIdentifier {
         case "CoverCell":
             if let cell = cellItem as? CoverCell {
@@ -191,14 +226,17 @@ class DataViewController: UICollectionViewController {
             if let cell = cellItem as? CoverCellRegular {
 //                cell.cellWidth = cellWidth
 //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.backgroundColor = UIColor.blue
+               cell.headLine.backgroundColor = UIColor.blue
+//                cell.backgroundColor = UIColor.blue
+                
                 return cell
             }
         case "ChannelCellRegular":
             if let cell = cellItem as? ChannelCellRegular {
-                //                cell.cellWidth = cellWidth
-                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.backgroundColor = UIColor.yellow
+//                                cell.cellWidth = cellWidth
+//                                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                 cell.headLine.backgroundColor = UIColor.yellow
+//                cell.backgroundColor = UIColor.yellow
                 return cell
             }
         default:
@@ -208,6 +246,7 @@ class DataViewController: UICollectionViewController {
                 return cell
             }
         }
+//        print ("cellItem---- \(cellItem) ----cellItem")
         return cellItem
     }
     
@@ -240,11 +279,12 @@ class DataViewController: UICollectionViewController {
             default:
                 assert(false, "Unknown Identifier")
             }
-            
+//            print ("headerView---- \(headerView) ----headerView")
             return headerView
         default:
             assert(false, "Unexpected element kind")
         }
+        
     }
     
     // Calculate Height for Headers
@@ -272,6 +312,7 @@ class DataViewController: UICollectionViewController {
             layoutStrategy = nil
         }
         let reuseIdentifier: String
+        
         if layoutStrategy == "Simple Headline" {
             if isCover {
                 reuseIdentifier = "CoverCell"
@@ -282,19 +323,21 @@ class DataViewController: UICollectionViewController {
             let horizontalClass = self.traitCollection.horizontalSizeClass
             let verticalCass = self.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
+
                 if isCover {
                     reuseIdentifier = "CoverCellRegular"
                 } else {
                     reuseIdentifier = "ChannelCellRegular"
                 }
             } else {
-            if isCover {
-                reuseIdentifier = "CoverCell"
-            } else {
-                reuseIdentifier = "ChannelCell"
-            }
+                if isCover {
+                    reuseIdentifier = "CoverCell"
+                } else {
+                    reuseIdentifier = "ChannelCell"
+                }
             }
         }
+//        print ("reuseIdentifier---- \(reuseIdentifier) ----reuseIdentifier")
         return reuseIdentifier
     }
     
@@ -365,18 +408,17 @@ class DataViewController: UICollectionViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
-        print ("prepare for segue here")
+//        print ("prepare for segue here")
         
     }
     
     open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
         //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
         //performSegue(withIdentifier: "Show Detail Content", sender: self)
-        print ("header view tapped")
+//        print ("header view tapped")
         
         
     }
-    
     
 }
 
@@ -422,9 +464,9 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         let widthPerItem: CGFloat
         let heightPerItem: CGFloat
         // TODO: Should do the layout based on cell's properties
-        if indexPath.row == 0 {
+        if indexPath.row == 0 && indexPath.section == 1{
             widthPerItem = (availableWidth / itemsPerRow) * 2
-            heightPerItem = widthPerItem * 0.618 / 2
+            heightPerItem = widthPerItem * 0.618
         } else {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = widthPerItem * 0.618
@@ -446,6 +488,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
     }
+    
+    
 }
-
 

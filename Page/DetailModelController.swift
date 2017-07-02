@@ -26,9 +26,10 @@ class DetailModelController: ModelController {
     weak var delegate: DetailModelDelegate?
 
     var pageData = [ContentItem]()
+    var currentPageIndex = 0
     var currentItem: ContentItem? = nil {
         didSet {
-            delegate?.didChangePage(currentItem)
+            delegate?.didChangePage(currentItem, index: currentPageIndex)
         }
     }
     
@@ -64,6 +65,7 @@ class DetailModelController: ModelController {
             print ("index Of ViewController: \(currentPageIndex)")
             // TODO: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
             //currentPageTitle = pageTitles[currentPageIndex]
+            self.currentPageIndex = currentPageIndex as Int
             currentItem = pageData[currentPageIndex]
             return currentPageIndex
         }
@@ -75,6 +77,7 @@ class DetailModelController: ModelController {
     override func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var index = self.indexOfViewController(viewController as! ContentItemViewController)
         print ("preparing the prev page")
+        
         if (index == 0) || (index == NSNotFound) {
             return nil
         }

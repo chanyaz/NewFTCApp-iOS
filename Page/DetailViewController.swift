@@ -67,6 +67,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate,
         // MARK: - Color Scheme for the view
         initStyle()
         
+        // MARK: - Delegate navigation controller to self
+        navigationController?.delegate = self
+        
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handler))
         gestureRecognizer.delegate = self
         view.addGestureRecognizer(gestureRecognizer)
@@ -109,29 +112,30 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate,
     // MARK: Test custom popping
     var interactivePopTransition: UIPercentDrivenInteractiveTransition!
     
+
     
-//    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        print ("the operation is \(operation)")
-//        if (operation == .pop) {
-//            print ("the operation is pop")
-//            return CustomPopTransition()
-//        } else {
-//            print ("the operation is not pop")
-//            return nil
-//        }
-//    }
-//    
-//    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//        print ("check the animationController type")
-//        if animationController is CustomPopTransition {
-//            print ("animationController is custom pop transition")
-//            return interactivePopTransition
-//        } else {
-//            print ("animationController is not custom pop transition")
-//            return nil
-//        }
-//    }
-//    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        print ("the operation is \(operation)")
+        if (operation == .pop) {
+            print ("the operation is pop")
+            return CustomPopTransition()
+        } else {
+            print ("the operation is not pop")
+            return nil
+        }
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        print ("check the animationController type")
+        if animationController is CustomPopTransition {
+            print ("animationController is custom pop transition")
+            return interactivePopTransition
+        } else {
+            print ("animationController is not custom pop transition")
+            return nil
+        }
+    }
+    
     
     
     

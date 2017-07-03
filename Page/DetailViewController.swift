@@ -67,14 +67,14 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // MARK: - Color Scheme for the view
         initStyle()
         
-        /*
+/*
          // MARK: - Delegate navigation controller to self
          navigationController?.delegate = self
          
          let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handler))
          gestureRecognizer.delegate = self
          view.addGestureRecognizer(gestureRecognizer)
-         */
+*/
     }
     
     override func didReceiveMemoryWarning() {
@@ -105,9 +105,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     
     
-    /*
+
      
-     
+     /*
      // TODO: - For now, our mastery of iOS is not enough for us to come up with the proper code to let users pop the current view by swiping from anywhere in the screen, not just from the edge of the screen. It's totally achievable though, as can be seen in countless other apps. 
      // MARK: - https://stackoverflow.com/questions/28949537/uipageviewcontroller-detecting-pan-gestures
      // MARK: Test custom popping
@@ -185,7 +185,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
      
      // MARK: test custom popping end
      
-     */
+*/
     
 }
 

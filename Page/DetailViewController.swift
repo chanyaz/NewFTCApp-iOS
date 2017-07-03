@@ -8,8 +8,8 @@
 
 import UIKit
 
-class DetailViewController: PagesViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
-
+class DetailViewController: PagesViewController, UINavigationControllerDelegate/*, UIGestureRecognizerDelegate*/ {
+    
     var contentPageData = [ContentItem]()
     var currentPageIndex = 0
     
@@ -21,7 +21,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate,
     
     
     
-   // @IBOutlet weak var bottomBar: UIToolbar!
+    // @IBOutlet weak var bottomBar: UIToolbar!
     var modelController: DetailModelController {
         // Return the model controller object, creating it if necessary.
         // In more complex implementations, the model controller may be passed to the view controller.
@@ -67,15 +67,16 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate,
         // MARK: - Color Scheme for the view
         initStyle()
         
-        // MARK: - Delegate navigation controller to self
-        navigationController?.delegate = self
-        
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handler))
-        gestureRecognizer.delegate = self
-        view.addGestureRecognizer(gestureRecognizer)
-
+        /*
+         // MARK: - Delegate navigation controller to self
+         navigationController?.delegate = self
+         
+         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handler))
+         gestureRecognizer.delegate = self
+         view.addGestureRecognizer(gestureRecognizer)
+         */
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -96,96 +97,96 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate,
         bookMark.tintColor = buttonTint
         
         
-//        self.view.backgroundColor = UIColor.clear
-//        self.view.isOpaque = false
+        //        self.view.backgroundColor = UIColor.clear
+        //        self.view.isOpaque = false
         
     }
     
     
     
     
+    /*
+     
+     
+     // TODO: - For now, our mastery of iOS is not enough for us to come up with the proper code to let users pop the current view by swiping from anywhere in the screen, not just from the edge of the screen. It's totally achievable though, as can be seen in countless other apps. 
+     // MARK: - https://stackoverflow.com/questions/28949537/uipageviewcontroller-detecting-pan-gestures
+     // MARK: Test custom popping
+     var interactivePopTransition: UIPercentDrivenInteractiveTransition!
+     
+     
+     
+     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+     print ("the operation is \(operation)")
+     if (operation == .pop) {
+     print ("the operation is pop")
+     return CustomPopTransition()
+     } else {
+     print ("the operation is not pop")
+     return nil
+     }
+     }
+     
+     func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+     print ("check the animationController type")
+     if animationController is CustomPopTransition {
+     print ("animationController is custom pop transition")
+     return interactivePopTransition
+     } else {
+     print ("animationController is not custom pop transition")
+     return nil
+     }
+     }
+     
+     
+     
+     
+     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+     
+     return true
+     }
+     
+ 
+     func handler(_ recognizer: UIPanGestureRecognizer) {
+     var progress = recognizer.translation(in: self.view).x / self.view.bounds.size.width
+     progress = min(1, max(0, progress))
+     
+     print ("currentPageIndex is \(currentPageIndex)")
+     // MARK: if user is in the first story page, enable swipe back function
+     if currentPageIndex == 0 && recognizer.state == .ended && progress > 0.5 {
+     self.navigationController?.popViewController(animated: true)
+     }
+     
+     //        if (recognizer.state == .began) {
+     //            // Create a interactive transition and pop the view controller
+     //
+     //            print ("current recognizer state is .began")
+     //            return
+     //                self.interactivePopTransition = UIPercentDrivenInteractiveTransition()
+     //            self.navigationController?.popViewController(animated: true)
+     //        } else if (recognizer.state == .changed) {
+     //            // Update the interactive transition's progress
+     //            print ("current recognizer state is .changed")
+     //            return
+     //                interactivePopTransition.update(progress)
+     //        } else if (recognizer.state == .ended || recognizer.state == .cancelled) {
+     //            // Finish or cancel the interactive transition
+     //            print ("current recognizer state is .ended or .cancelled")
+     //            return
+     //
+     //            if (progress > 0.5) {
+     //                interactivePopTransition.finish()
+     //            }
+     //            else {
+     //                interactivePopTransition.cancel()
+     //            }
+     //            interactivePopTransition = nil
+     //        }
+     }
+     
+     // MARK: test custom popping end
+     
+     */
     
-    
-    
-    
-    // MARK: - https://stackoverflow.com/questions/28949537/uipageviewcontroller-detecting-pan-gestures
-    // MARK: Test custom popping
-    var interactivePopTransition: UIPercentDrivenInteractiveTransition!
-    
-
-    
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        print ("the operation is \(operation)")
-        if (operation == .pop) {
-            print ("the operation is pop")
-            return CustomPopTransition()
-        } else {
-            print ("the operation is not pop")
-            return nil
-        }
-    }
-    
-    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        print ("check the animationController type")
-        if animationController is CustomPopTransition {
-            print ("animationController is custom pop transition")
-            return interactivePopTransition
-        } else {
-            print ("animationController is not custom pop transition")
-            return nil
-        }
-    }
-    
-    
-    
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        return true
-    }
-    
-    // MARK: This is working!
-    func handler(_ recognizer: UIPanGestureRecognizer) {
-        var progress = recognizer.translation(in: self.view).x / self.view.bounds.size.width
-        progress = min(1, max(0, progress))
-        
-        print ("currentPageIndex is \(currentPageIndex)")
-        // MARK: if user is in the first story page, enable swipe back function
-        if currentPageIndex == 0 && recognizer.state == .ended && progress > 0.5 {
-            self.navigationController?.popViewController(animated: true)
-        }
-        
-//        if (recognizer.state == .began) {
-//            // Create a interactive transition and pop the view controller
-//            
-//            print ("current recognizer state is .began")
-//            return
-//                self.interactivePopTransition = UIPercentDrivenInteractiveTransition()
-//            self.navigationController?.popViewController(animated: true)
-//        } else if (recognizer.state == .changed) {
-//            // Update the interactive transition's progress
-//            print ("current recognizer state is .changed")
-//            return
-//                interactivePopTransition.update(progress)
-//        } else if (recognizer.state == .ended || recognizer.state == .cancelled) {
-//            // Finish or cancel the interactive transition
-//            print ("current recognizer state is .ended or .cancelled")
-//            return
-//            
-//            if (progress > 0.5) {
-//                interactivePopTransition.finish()
-//            }
-//            else {
-//                interactivePopTransition.cancel()
-//            }
-//            interactivePopTransition = nil
-//        }
-    }
-    
-    // MARK: test custom popping end
-    
-    
-
 }
 
 extension DetailViewController: DetailModelDelegate {

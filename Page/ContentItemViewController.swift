@@ -95,9 +95,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         if let body = htmlToAttributedString(bodyString) {
             // MARK: If we can handle all the HTML tags confidantly
             renderTextview(body)
-        } else if let body = bodyString.htmlAttributedString() {
-            // MARK: The above uses the string extension to convert string to data then to NSMutableAttributedString. Not sure if this is expensive in terms of computing resource. If there are images in the HTML, there might be delay after tapping as the image is not downloaded asyn.
-            renderTextview(body)
+//        } else if let body = bodyString.htmlAttributedString() {
+//            // MARK: The above uses the string extension to convert string to data then to NSMutableAttributedString. Not sure if this is expensive in terms of computing resource. If there are images in the HTML, there might be delay after tapping as the image is not downloaded asyn.
+//            renderTextview(body)
         } else {
             // MARK: Use WKWebView to display story
             renderWebView()

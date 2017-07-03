@@ -60,7 +60,6 @@
 		60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */; };
 		60FDA4F91EFF7FAA003D4180 /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA4F81EFF7FAA003D4180 /* story.html */; };
 		60FDA4FB1EFF9CA9003D4180 /* storybody.html in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA4FA1EFF9CA9003D4180 /* storybody.html */; };
-		60FEBB4E1EEFDDFA00C3EBB6 /* TapGestureCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB4D1EEFDDFA00C3EBB6 /* TapGestureCode.swift */; };
 		60FEBB511EF0CEAE00C3EBB6 /* CoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */; };
 		60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */; };
 		60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */; };
@@ -145,7 +144,6 @@
 		60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCellRegular.xib; sourceTree = "<group>"; };
 		60FDA4F81EFF7FAA003D4180 /* story.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = story.html; sourceTree = "<group>"; };
 		60FDA4FA1EFF9CA9003D4180 /* storybody.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = storybody.html; sourceTree = "<group>"; };
-		60FEBB4D1EEFDDFA00C3EBB6 /* TapGestureCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureCode.swift; sourceTree = "<group>"; };
 		60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverCell.swift; sourceTree = "<group>"; };
 		60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCell.xib; sourceTree = "<group>"; };
 		60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlineCell.swift; sourceTree = "<group>"; };
@@ -253,7 +251,6 @@
 				6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */,
 				608C55241EF7A42D00AF27CB /* ContentItemViewController.swift */,
 				60FDA4FA1EFF9CA9003D4180 /* storybody.html */,
-				60FEBB4D1EEFDDFA00C3EBB6 /* TapGestureCode.swift */,
 				60FDA4F81EFF7FAA003D4180 /* story.html */,
 			);
 			name = Page;
@@ -591,7 +588,6 @@
 				604FF94B1EEF7649005D2A41 /* ChannelCell.swift in Sources */,
 				5070EDF51EEBD425008A10CE /* ContentSection.swift in Sources */,
 				6093F1661EE90E81009F16EE /* CustomPopTransition.swift in Sources */,
-				60FEBB4E1EEFDDFA00C3EBB6 /* TapGestureCode.swift in Sources */,
 				607094AF1EE943A900760A60 /* Channels.swift in Sources */,
 				60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */,
 				601418081EEA919300DC3EF9 /* IJReachability.swift in Sources */,

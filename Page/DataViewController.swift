@@ -34,10 +34,14 @@ class DataViewController: UICollectionViewController {
     //            updateUI()
     //        }
     //    }
-    
+//    var contentSection: ContentSection? = nil {
+//        
+//    }
     
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
+        let horizontalClass = self.traitCollection.horizontalSizeClass
+        let verticalCass = self.traitCollection.verticalSizeClass
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
@@ -52,15 +56,24 @@ class DataViewController: UICollectionViewController {
                 }
                 if let results = results {
                     // MARK: - Insert Ads into the fetch results
-//                    print("results : \(results)")
+                    let layoutWay:String
+                    if horizontalClass == .regular && verticalCass == .regular {
+                        layoutWay="ipadhome"
+                    }else{
+                        layoutWay="home"
+                    }
+
                     let resultsWithAds = ContentFetchResults(
                         apiUrl: results.apiUrl,
-                        fetchResults: AdLayout().insertAds("home", to: results.fetchResults)
+                        fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)
                     )
                     self?.fetches = resultsWithAds
+
+                    
 //                    self?.fetches = results
                     
 //                    print("fetches : \(resultsWithAds)")
+                    
                     self?.collectionView?.reloadData()
                 }
             }
@@ -115,26 +128,20 @@ class DataViewController: UICollectionViewController {
         collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
         
 
-        collectionView?.dataSource = self
-        collectionView?.delegate = self
-        
-        
-//        flowLayout.invalidateLayout()
 
-//        if horizontalClass == .regular && verticalCass == .regular {
-//            let flowLayout = PageCollectionViewLayout()
-//            collectionView?.collectionViewLayout=flowLayout
-//            flowLayout.minimumInteritemSpacing = 0
-//            flowLayout.minimumLineSpacing = 0
-////            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-////            let availableWidth = view.frame.width - paddingSpace
-//            print ("flowLayout----\(flowLayout.estimatedItemSize)")
-//        
-//        }else{
+        if horizontalClass == .regular && verticalCass == .regular {
+            let flowLayout = PageCollectionViewLayout()
+            collectionView?.collectionViewLayout=flowLayout
+            flowLayout.minimumInteritemSpacing = 0
+            flowLayout.minimumLineSpacing = 0
+//            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+//            let availableWidth = view.frame.width - paddingSpace
+
         
+        }else{
+
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-                
-                print ("prepare estimatedItemSize----\(flowLayout.estimatedItemSize)")
+
  
                 flowLayout.minimumInteritemSpacing = 0
                 flowLayout.minimumLineSpacing = 0
@@ -143,7 +150,6 @@ class DataViewController: UICollectionViewController {
                 let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
                 let availableWidth = view.frame.width - paddingSpace
 
-                print ("prepare availableWidth----\(availableWidth)")
                 
                 if horizontalClass != .regular || verticalCass != .regular {
                     if #available(iOS 10.0, *) {
@@ -154,7 +160,7 @@ class DataViewController: UICollectionViewController {
                     cellWidth = availableWidth
                 }
                 
-//            }
+            }
         }
         
   
@@ -201,6 +207,8 @@ class DataViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
+//        print ("section.type-- \(fetches.fetchResults[section].type) ----section.type")
+        
         return fetches.fetchResults[section].items.count
     }
     
@@ -226,17 +234,18 @@ class DataViewController: UICollectionViewController {
             if let cell = cellItem as? CoverCellRegular {
 //                cell.cellWidth = cellWidth
 //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-               cell.headLine.backgroundColor = UIColor.blue
+               cell.containerView.backgroundColor = UIColor.blue
 //                cell.backgroundColor = UIColor.blue
-                
+                cell.layer.borderWidth = 1
                 return cell
             }
         case "ChannelCellRegular":
             if let cell = cellItem as? ChannelCellRegular {
-//                                cell.cellWidth = cellWidth
-//                                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                 cell.headLine.backgroundColor = UIColor.yellow
+                 cell.cellWidth = cellWidth
+                  cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                 cell.containerView.backgroundColor = UIColor.yellow
 //                cell.backgroundColor = UIColor.yellow
+               cell.layer.borderWidth = 1
                 return cell
             }
         default:

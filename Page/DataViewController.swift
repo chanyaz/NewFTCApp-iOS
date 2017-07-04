@@ -250,10 +250,7 @@ class DataViewController: UICollectionViewController {
                 withReuseIdentifier: reuseIdentifier,
                 for: indexPath
             )
-            //           let pageLayoutAttributes=PageLayoutAttributes()
-            
-            //            let att = PageLayoutAttributes(forCellWith: indexPath)
-            //            att.frame=CGRect(x: 0, y: 0, width: 100, height: 200)
+
             // MARK: - a common tag gesture for all kinds of headers
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
             headerView.isUserInteractionEnabled = true
@@ -264,7 +261,6 @@ class DataViewController: UICollectionViewController {
                 adView.contentSection = fetches.fetchResults[indexPath.section]
                 
                 print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
-                //                adView.apply(pageLayoutAttributes)
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView

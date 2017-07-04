@@ -9,9 +9,6 @@
 import UIKit
 
 class PageCollectionViewLayout: UICollectionViewFlowLayout{
-//    NSMutableSet* attributes = [NSMutableSet set];
-    let attributes1 = NSMutableSet()
-    var letters = Set<UICollectionViewLayoutAttributes>()
     
     let adHeight = [CGFloat]();
     
@@ -25,6 +22,8 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
     let itemSize0 = CGSize(width: 133, height: 173)
     
     private var contentHeight:CGFloat=0.0
+    
+//    collectionView?.isPagingEnabled = YES
     override func invalidateLayout() {
         
     }
@@ -40,11 +39,12 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
     }
     
     override func prepare() {
-        attributes1.add(attributesList)
-//        letters.insert(attributesList)
+        collectionView?.isPagingEnabled = true
+//        attributes1.add(attributesList)
+
         //        collectionView?.reloadData()
-        let adWidth = CGFloat(100);
-//        let adHeight2 = CGFloat(300);
+//        let adWidth = CGFloat(100);
+
         var lastSectionHeight = CGFloat(0);
         
         let contentWidth = collectionView?.bounds.width
@@ -77,29 +77,18 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
         if numSections != -1{
 
           for j in 0...numSections {
-            
-            
 
-            
-            // attributesList = []
             let endIndex = collectionView!.numberOfItems(inSection: j)
             
             
 //            print ("endIndex --\(String(describing: endIndex))--")
-            
-            
+ 
             //如果section是广告
             if endIndex == 0{
                 //获取广告section的高度给sectionHeight
-                sectionHeight=200
+                sectionHeight=500
                 //把广告的attributes添加到attributesList1
-//                let indexPath = IndexPath(item: 0, section: 0)
-//                let att = PageLayoutAttributes(forCellWith: indexPath)
-//                att.height = 500
-//                att.color = UIColor.red
-//                print("shuchu ad")
-//                att.frame = CGRect(x: 0, y: 0, width: 100, height: 200)
-//                attributesList1.append(att)
+
             }
             if endIndex != 0{
                 //获取section
@@ -139,7 +128,7 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
                         
                     }else{
                         let frame = CGRect(x: xOffset[column], y: yOffset[column], width: widthPerItem, height: heightPerItem/2)
-                        //                            let frame = CGRect(x: CGFloat(i*10+150), y: yOffset[column], width: widthPerItem, height: heightPerItem)
+
                         attributes.frame = frame
                         
                         yOffset[column] = yOffset[column] + heightPerItem/2
@@ -176,35 +165,16 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
     }
 //    As long as the rolling screen method is invoked
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-//       print ("attribute1 size1111111----\(attributesList1)----111111")
-//       print ("attribute size222222----\(sectionCGRect)----22222")
         
             return attributesList1
 
 
     }
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes?{
-//        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
         return attributesList[indexPath.row]
     }
 //    As long as the layout of the page properties change will call again
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
-}
-
-class PageLayoutAttributes:UICollectionViewLayoutAttributes {
-    
-    // 1. Custom attribute
-    var height: CGFloat = 500.0
-//    var color: CGColor = GL_RED as! CGColor
-    var color: UIColor = UIColor.red
-    // 2. Override copyWithZone to conform to NSCopying protocol
-    override func copy(with zone: NSZone?) -> Any {
-        let copy = super.copy(with: zone) as! PageLayoutAttributes
-        copy.height = height
-        copy.color = color
-        return copy
-    }
-    
 }

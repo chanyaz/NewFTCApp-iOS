@@ -76,33 +76,33 @@ struct AdLayout {
 //                type: "Banner",
 //                adid: "20220114"
 //            )
-//            
-//            
-//            // MARK: - The first item in the first section should be marked as Cover
-//            newContentSections[0].items[0].isCover = true
-//           
-////            print ("newContentSections[0] --\(newContentSections[0].items.count)--")
-//            
-//            // MARK: - Break up the first section into two or more, depending on how you want to layout ads
-//            let sectionToSplit = newContentSections[0]
-//            if sectionToSplit.items.count >= 18 {
-//                let newSection = ContentSection(
-//                    title: "",
-//                    items: Array(sectionToSplit.items[9..<sectionToSplit.items.count]),
-//                    type: "List",
-//                    adid: ""
-//                )
-//                newContentSections.insert(newSection, at: 1)
-//                newContentSections[0].items = Array(newContentSections[0].items[0..<9])
-//            }
-//            
-//            
-//            // MARK: Insert ads into sections that has larger index so that you don't have to constantly recalculate the new index
+            
+            
+            // MARK: - The first item in the first section should be marked as Cover
+            newContentSections[0].items[0].isCover = true
+           
+//            print ("newContentSections[0] --\(newContentSections[0].items.count)--")
+            
+            // MARK: - Break up the first section into two or more, depending on how you want to layout ads
+            let sectionToSplit = newContentSections[0]
+            if sectionToSplit.items.count >= 18 {
+                let newSection = ContentSection(
+                    title: "",
+                    items: Array(sectionToSplit.items[9..<sectionToSplit.items.count]),
+                    type: "List",
+                    adid: ""
+                )
+                newContentSections.insert(newSection, at: 1)
+                newContentSections[0].items = Array(newContentSections[0].items[0..<9])
+            }
+            
+            
+            // MARK: Insert ads into sections that has larger index so that you don't have to constantly recalculate the new index
 //            newContentSections.insert(MPU1, at: 1)
 //            newContentSections.insert(topBanner, at: 0)
-////            newContentSections.append(bottomBanner)
-//            newContentSections = updateSectionRowIndex(newContentSections)
-//            print ("newContentSections[0] --\(newContentSections[0].items)--")
+//            newContentSections.append(bottomBanner)
+            newContentSections = updateSectionRowIndex(newContentSections)
+            print ("newContentSections[0] --\(newContentSections[0].items)--")
             
             
             return newContentSections

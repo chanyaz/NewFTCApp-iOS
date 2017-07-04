@@ -142,6 +142,7 @@ class DataViewController: UICollectionViewController {
         // MARK: Cell for Regular Size
         collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
         collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
+        collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
         
         // MARK: - Update Styles
         view.backgroundColor = UIColor(hex: Color.Content.border)
@@ -227,6 +228,15 @@ class DataViewController: UICollectionViewController {
                 cell.layer.borderWidth = 1
                 return cell
             }
+        case "AdCellRegular":
+            if let cell = cellItem as? AdCellRegular {
+//                cell.cellWidth = cellWidth
+//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+//                cell.containerView.backgroundColor = UIColor.yellow
+                cell.backgroundColor = UIColor.red
+//                cell.layer.borderWidth = 1
+                return cell
+            }
         default:
             if let cell = cellItem as? ChannelCell {
                 cell.cellWidth = cellWidth
@@ -259,8 +269,7 @@ class DataViewController: UICollectionViewController {
             case "Ad":
                 let adView = headerView as! Ad
                 adView.contentSection = fetches.fetchResults[indexPath.section]
-                
-                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
+//                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView
@@ -295,6 +304,7 @@ class DataViewController: UICollectionViewController {
         let sectionTitle = section.title
         let item = section.items[indexPath.row]
         let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
+        let isAd = (sectionTitle == "" && indexPath.row == 1)
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {
@@ -315,11 +325,14 @@ class DataViewController: UICollectionViewController {
             let verticalCass = self.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
                 
-                if isCover {
+                if isCover && !isAd{
                     reuseIdentifier = "CoverCellRegular"
-                } else {
+                } else if isAd && !isCover{
+                    reuseIdentifier = "AdCellRegular"
+                }else {
                     reuseIdentifier = "ChannelCellRegular"
                 }
+                
             } else {
                 if isCover {
                     reuseIdentifier = "CoverCell"

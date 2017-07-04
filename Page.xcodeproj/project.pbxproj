@@ -65,6 +65,8 @@
 		60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */; };
 		60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */; };
+		F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */; };
+		F2F92B181F0B6C0C00C4E043 /* AdCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +151,8 @@
 		60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlineCell.swift; sourceTree = "<group>"; };
 		60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeadlineCell.xib; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayout.swift; sourceTree = "<group>"; };
+		F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCellRegular.swift; sourceTree = "<group>"; };
+		F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdCellRegular.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,6 +393,8 @@
 				60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */,
 				60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */,
 				60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */,
+				F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */,
+				F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */,
 			);
 			name = Regular;
 			sourceTree = "<group>";
@@ -523,6 +529,7 @@
 				604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */,
 				60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */,
 				60D3C8CC1EBFF5DC0085BEF6 /* Assets.xcassets in Resources */,
+				F2F92B181F0B6C0C00C4E043 /* AdCellRegular.xib in Resources */,
 				60CA7BC51EF28AD4000CD9B4 /* HeaderView.xib in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
 				60D3C8CA1EBFF5DC0085BEF6 /* Main.storyboard in Resources */,
@@ -574,6 +581,7 @@
 				60B2EF141EE694BC00B8C6DA /* AppNavigation.swift in Sources */,
 				50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */,
 				50A704C31EEB689900660022 /* ContentFetch.swift in Sources */,
+				F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */,
 				60D4B8F91EE7C85A00A4506D /* NewsNavigationController.swift in Sources */,
 				60CA7BC11EF26251000CD9B4 /* AdLayout.swift in Sources */,
 				60B50D6A1EFBA4E000B29F3A /* Constants.swift in Sources */,

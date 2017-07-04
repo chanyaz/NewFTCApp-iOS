@@ -23,13 +23,11 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
     
     private var contentHeight:CGFloat=0.0
     
-//    collectionView?.isPagingEnabled = YES
     override func invalidateLayout() {
         
     }
     
     override class var layoutAttributesClass : AnyClass {
-        print ("found --yunxing----")
         return UICollectionViewLayoutAttributes.self
     }
     override var collectionViewContentSize : CGSize {
@@ -40,9 +38,7 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
     
     override func prepare() {
         collectionView?.isPagingEnabled = true
-//        attributes1.add(attributesList)
 
-        //        collectionView?.reloadData()
 //        let adWidth = CGFloat(100);
 
         var lastSectionHeight = CGFloat(0);
@@ -54,20 +50,20 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
         let widthPerItem = contentWidth!/CGFloat(3)
         let heightPerItem = widthPerItem * 0.618
         
-        //定义Offset的大小
+        //Define the size of the Offset
         var xOffset = [CGFloat]()
         for column in 0 ..< numberOfColumns {
             xOffset.append(CGFloat(column) * widthPerItem )
         }
         
         
-        //第1个cell的宽高
+        //The first cell
         let widthItem1 = widthPerItem*2
         let heightItem1 = heightPerItem
-        //第2个cell的宽高
+        //The Second cell
         let widthItem2 = widthPerItem
         let heightItem2 = heightPerItem/2
-        //第3个cell的宽高
+        //The Third cell
         let widthItem3 = widthPerItem
         let heightItem3 = heightPerItem/2
         
@@ -84,24 +80,24 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
 //            print ("endIndex --\(String(describing: endIndex))--")
  
             //如果section是广告
-            if endIndex == 0{
-                //获取广告section的高度给sectionHeight
-                sectionHeight=500
-                //把广告的attributes添加到attributesList1
-
-            }
+//            if endIndex == 0{
+//                //获取广告section的高度给sectionHeight
+//                sectionHeight=500
+//                //把广告的attributes添加到attributesList1
+//
+//            }
             if endIndex != 0{
-                //获取section
+                //get section
 //                if j==0{
-                //计算section的高度
+                //Calculate the height of the section
                     let sectionHeight0 = Int((endIndex-3)/3)+1
                      sectionHeight = CGFloat(sectionHeight0)*heightPerItem/2+heightItem1/2
 //                }else{
                 
 //                }
                 
-                let cgrect = CGRect(x: 0, y: lastSectionHeight, width: contentWidth!, height:sectionHeight )
-                sectionCGRect.append(cgrect)
+//                let cgrect = CGRect(x: 0, y: lastSectionHeight, width: contentWidth!, height:sectionHeight )
+//                sectionCGRect.append(cgrect)
                 
                 
                 var column = 0
@@ -140,9 +136,7 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
                     }else{
                         column = column + 1
                     }
-                    
                     // print ("attribute size1111111----\(attributes)----111111")
-//                    return attributes
                     attributesList1.append(attributes)
                     return attributes
                 }//map循坏
@@ -153,22 +147,16 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
           
 //          print ("attribute size1111111----\(attributesList)----111111")
             }//for j in 0...numSections
-//             self.layoutAttributesForElements(in: sectionCGRect[0])
-          
-//            print ("attribute size222222----\(sectionCGRect)----22222")
-        }//if numSections != -1
-//        else{
 
-//        }
+
+        }//if numSections != -1
+
        
         
     }
 //    As long as the rolling screen method is invoked
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        
             return attributesList1
-
-
     }
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes?{
         return attributesList[indexPath.row]

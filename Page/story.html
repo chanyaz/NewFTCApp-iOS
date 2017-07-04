@@ -181,239 +181,8 @@ if (/micromessenger/i.test(gUaOfPage)) {
 document.write ('<div class="hide"><img src="https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fi.ftimg.net%2Fpicture%2F9%2F000054809_piclink.jpg?source=ftchinese&width=300&height=300&quality=lowest"/></div>');
 }
 </script><script>checkB();</script>
-<header class="header-container">
-<div class="header-inner">
-<div class="masthead"></div>
-<div class="header-side header-left expandable">
-<div class="current-edition">
-<span>简体中文</span>
-<a href="http://big5.ftchinese.com/">繁体中文</a>
-<a href="http://www.ft.com/">英文</a>
-</div>
-</div>
-<div class="header-side header-right">
-<span class="visitor-box">
-<a onclick="showOverlay('overlay-login')">登录</a>
-<a class="more last" href="http://user.ftchinese.com/register">免费注册</a>
-</span>
-<span class="member-box">
-<a href="/users/mystories">我的FT</a>
-<a id="ft-login-your-account" href="/users/cp">设置</a>
-<a id="ft-login-logout" href="http://user.ftchinese.com/logout">登出</a>
-</span>
-</div>
-</div>
-</header>
-<div class="overlay-container" id="overlay-login">
-<div class="overlay-inner">
-<div class="overlay-bg" data-parentid="overlay-login"></div>
-<div class="overlay-content-outer">
-<div class="overlay-content-inner">
-<div class="overlay-content">
-<div class="overlay-title">登录<i class="overlay-close" data-parentid="overlay-login">×</i></div>
-<form method="post" action="/users/login">
-<div class="input-title" id="login-reason"></div>
-<div class="input-title">电子邮件/用户名</div>
-<div class="input-container"><input type="text" class="input-oneline" name="username" id="ft-login-input-username"></div>
-<div class="input-title">密码</div>
-<div class="input-container"><input type="password" class="input-oneline" name="password"></div>
-<div class="input-title input-submit-container"><input type="checkbox" class="checkbox" value="1" checked="checked" name="saveme" id="ft-login-input-remember">记住我
-<input class="input-submit" type="submit" value="提交"></div>
-<div class="input-title"><a href="/users/findpassword" class="blue-link">找回密码</a></div>
-<div class="input-title"><a href="http://user.ftchinese.com/register" class="blue-link">免费注册</a></div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div><div class="o-nav__placeholder">
-<div class="o-nav">
-<div class="o-nav__outer">
-<div class="o-nav__inner">
-<div class="o-nav__search"  data-o-component="o-toggler">
-<button class="o-nav__search-toggle" data-o-toggler-button aria-controls="search-form">
-<span class="search-toggle--open">搜索</span>
-<span class="search-toggle--close">关闭</span>
-</button>
-<form action="/search/" id="search-form" role="search" data-o-toggler-target>
-<input id="search-term" type="search" name="keys" class="search-input" placeholder="输入年月日‘xxxx-xx-xx’可搜索该日存档" />
-<input id="type_news" type="hidden" value="type_news" name="ftsearchType" checked />
-<button class="search-button" tabindex="1"><span>搜索</span></button>
-</form>
-</div>
-<div class="o-header__masthead-mobile">
-<a href="/" title="前往FT中文网首页"><span>FT中文网</span></a>
-</div>
-<nav class="o-nav__container" role="navigation">
-<button class="nav-toggle" data-o-nav-togglable><span>Menu</span></button>
-<ol class="o-nav__meganav">
-<li class="nav-section mobile">
-<button class="nav-section-head mobile" aria-selected="true">切换版本</button>
-<ol class="nav-items">
-<li class="nav-item">
-<a class="nav-link" href="http://big5.ftchinese.com/">繁体中文版</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="http://www.ft.com/">英文版</a>
-</li>
-</ol>
-</li>
-<li class="nav-section"
- data-section="home">
-<button class="nav-section-head mobile">首页</button>
-<a class="nav-section-head desktop" href="/">首页</a>
-</li>
-<li class="nav-section"
- aria-selected="true" data-section="china">
-<button class="nav-section-head mobile">中国</button>
-<a class="nav-section-head desktop" href="/channel/china.html">中国</a>
-<ol class="nav-items">
-<li class="nav-item mobile">
-<a class="nav-link" href="/channel/china.html">
-频道首页
-</a>
-</li>
-<li class="nav-item" aria-selected="true" data-channel="chinareport">
-<a class="nav-link" href="/channel/chinareport.html">政经</a>
-</li>
-<li class="nav-item"  data-channel="chinabusiness">
-<a class="nav-link" href="/channel/chinabusiness.html">商业</a>
-</li>
-<li class="nav-item"  data-channel="chinamarkets">
-<a class="nav-link" href="/channel/chinamarkets.html">金融市场</a>
-</li>
-<li class="nav-item"  data-channel="chinastock">
-<a class="nav-link" href="/channel/chinastock.html">股市</a>
-</li>
-<li class="nav-item"  data-channel="chinaproperty">
-<a class="nav-link" href="/channel/chinaproperty.html">房地产</a>
-</li>
-<li class="nav-item"  data-channel="culture">
-<a class="nav-link" href="/channel/culture.html">社会与文化</a>
-</li>
-<li class="nav-item"  data-channel="chinaopinion">
-<a class="nav-link" href="/channel/chinaopinion.html">观点</a>
-</li>
-</ol>
-</li>
-<li class="nav-section"
- data-section="world">
-<button class="nav-section-head mobile">全球</button>
-<a class="nav-section-head desktop" href="/channel/world.html">全球</a>
-</li>
-<li class="nav-section"
- data-section="economy">
-<button class="nav-section-head mobile">经济</button>
-<a class="nav-section-head desktop" href="/channel/economy.html">经济</a>
-</li>
-<li class="nav-section"
- data-section="markets">
-<button class="nav-section-head mobile">金融市场</button>
-<a class="nav-section-head desktop" href="/channel/markets.html">金融市场</a>
-</li>
-<li class="nav-section"
- data-section="business">
-<button class="nav-section-head mobile">商业</button>
-<a class="nav-section-head desktop" href="/channel/business.html">商业</a>
-</li>
-<li class="nav-section"
- data-section="innovation">
-<button class="nav-section-head mobile">创新经济</button>
-<a class="nav-section-head desktop" href="/channel/innovation.html">创新经济</a>
-</li>
-<li class="nav-section"
- data-section="opinion">
-<button class="nav-section-head mobile">观点</button>
-<a class="nav-section-head desktop" href="/channel/opinion.html">观点</a>
-</li>
-<li class="nav-section"
- data-section="management">
-<button class="nav-section-head mobile">管理</button>
-<a class="nav-section-head desktop" href="/channel/management.html">管理</a>
-</li>
-<li class="nav-section"
- data-section="lifestyle">
-<button class="nav-section-head mobile">生活时尚</button>
-<a class="nav-section-head desktop" href="/channel/lifestyle.html">生活时尚</a>
-</li>
-<li class="nav-section"
- data-section="stream">
-<button class="nav-section-head mobile">视频</button>
-<a class="nav-section-head desktop" href="/channel/stream.html">视频</a>
-</li>
-<li class="nav-section"
- data-section="english">
-<button class="nav-section-head mobile">每日英语</button>
-<a class="nav-section-head desktop" href="/channel/english.html">每日英语</a>
-</li>
-<li class="nav-section mobile login">
-<ul>
-<li class="nav-item">
-<a class="nav-link" href="http://user.ftchinese.com/login">登录</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="http://user.ftchinese.com/register">免费注册</a>
-</li>
-</ul>
-</li>
-<li class="nav-section mobile logout">
-<ul>
-<li class="nav-item">
-<a class="nav-link" href="/users/mystories">我的FT</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/users/setting/index">设置</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="http://user.ftchinese.com/logout">登出</a>
-</li>
-</ul>
-</li>
-</ol>
-</nav>
-<ul class="o-nav__extra-tools">
-<li class="tools-section" aria-haspopup="true">
-<a class="tools-section-head" href="http://www.ftchinese.com/m/corp/follow.html">关注我们</a>
-<ol class="tools-items">
-<li><a href="http://www.ftchinese.com/m/corp/follow.html" target="_blank">微信公众号</a></li>
-<li><a href="http://weibo.com/ftchinese" target="_blank">新浪微博</a></li>
-<li><a href="http://user.qzone.qq.com/622006290" target="_blank">QQ空间</a></li>
-<li><a href="http://www.ftchinese.com/m/corp/follow.html" target="_blank">读读日报</a></li>
-<li><a href="http://www.ftchinese.com/m/corp/follow.html" target="_blank">Flipboard</a></li>
-<li><a href="https://twitter.com/FTChinese" target="_blank">Twitter</a></li>
-<li><a href="https://www.facebook.com/financialtimeschinese" target="_blank">Facebook</a></li>
-<li><a href="https://www.linkedin.com/company/4865254?trk=hp-feed-company-name" target="_blank">LinkedIn</a></li>
-</ol>
-</li>
-<li class="tools-section" aria-haspopup="true">
-<span class="tools-section-head">工具</span>
-<ol class="tools-items">
-<li><a href="http://app.ftchinese.com/">移动应用大全</a></li>
-<li><a href="/users/setting/index">基本设置</a></li>
-<li><a href="/users/setting/changeicon">修改头像</a></li>
-<li><a href="/users/setting/maillist">邮件订阅</a></li>
-<li><a href="/index.php/snsapi/index">同步微博</a></li>
-<li><a href="/users/commentstory">我的评论</a></li>
-<li><a href="/users/favstorylist">管理收藏</a></li>
-</ol>
-</li>
-<li class="tools-section">
-<a class="tools-section-head follow__rss" href="http://www.ftchinese.com/channel/rss.html" title="RSS"><span>RSS</span></a>
-</li>
-</ul>
-</div><!-- o-nav__inner -->
-</div><!-- o-nav__outer -->
-<div class="o-nav__meganav-placeholder"></div>
-</div><!-- o-nav -->
-</div><!-- o-nav__placeholder -->
-<div class="site-map">
-<div class="site-map__container">
-<ul class="site-map__items">
-<li><a href="/channel/china.html">中国</a></li>
-<li><a href="/channel/chinareport.html">政经</a></li>
-</ul>
-</div>
-</div>
+
+
 <div class="bn-ph">
 <div class="banner-container">
 <div class="banner-inner">
@@ -426,45 +195,25 @@ document.write ('<div class="hide"><img src="https://www.ft.com/__origami/servic
 <div class="block-container has-side story-page"><div class="block-inner">
 <div class="content-container"><div class="content-inner">
 <div class="story-container">
-<div class="story-theme"><a target="_blank" href="/tag/难民">难民</a><button class="myft-follow plus" data-tag="难民" data-type="tag">关注</button></div>
-<h1 class="story-headline">以健康心态看待国际难民问题</h1>
-<div class="story-lead">刘波：各国在难民事务上拥有近乎绝对的自主权。可以有不主张帮助难民的人，但不同主张者之间不宜相互道德绑架。</div>
+    <div class="story-theme"><a target="_blank" href="/tag/{story-tag}">{story-tag}</a></div>
+<h1 class="story-headline">{story-headline}</h1>
+<div class="story-lead">{story-lead}</div>
 <div class=" story-image image"><figure data-url=http://i.ftimg.net/picture/9/000054809_piclink.jpg class="loading"></figure></div>
-<div class="story-action-placeholder" id="story-action-placeholder">
-<div class="story-action">
-<div class="action-inner">
-<a class="action-icon icon-wechat" href="/m/corp/qrshare.html?url=http%3A%2F%2Fwww.ftchinese.com%2Fstory%2F001073135%3Ffull%3Dy&title=以健康心态看待国际难民问题 - FT中文网" target="_blank"></a>
-<a class="action-icon icon-weibo" href="http://service.weibo.com/share/share.php?appkey=4221537403&url=http%3A%2F%2Fwww.ftchinese.com%2Fstory%2F001073135%3Ffull%3Dy?ccode=2G169001&title=【以健康心态看待国际难民问题】刘波：各国在难民事务上拥有近乎绝对的自主权。可以有不主张帮助难民的人，但不同主张者之间不宜相互道德绑架。（分享自 @FT中文网）&ralateUid=1698233740&source=&sourceUrl=&content=utf-8&pic=http://i.ftimg.net/picture/9/000054809_piclink.jpg&searchPic=false" target="_blank"></a>
-<a class="action-icon icon-linkedin" href="https://www.linkedin.com/cws/share?url=http%3A%2F%2Fwww.ftchinese.com%2Fstory%2F001073135%3Ffull%3Dy%3Fccode%3D2G169003&original_referer=https%3A%2F%2Fdeveloper.linkedin.com%2Fsites%2Fall%2Fthemes%2Fdlc%2Fsandbox.php%3F&token=&isFramed=true&lang=zh_CN&_ts=1422502780259.2795" target="_blank"></a>
-<a class="action-icon icon-twitter" href="http://twitter.com/home?status=【以健康心态看待国际难民问题】刘波：各国在难民事务上拥有近乎绝对的自主权。可以有不主张帮助难民的人，但不同主张者之间不宜相互道德绑架。（分享自 @FT中文网）...%20http%3A%2F%2Fwww.ftchinese.com%2Fstory%2F001073135%3Ffull%3Dy" target="_blank"></a>
-<a class="action-icon icon-facebook" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.ftchinese.com%2Fstory%2F001073135%3Ffull%3Dy&t=【以健康心态看待国际难民问题】刘波：各国在难民事务上拥有近乎绝对的自主权。可以有不主张帮助难民的人，但不同主张者之间不宜相互道德绑架。（分享自 @FT中文网）" target="_blank"></a>
 
-
-<div class="icon-right icon-save">
-<button id="addfavlink001073135">收藏</button>
-</div>
-<a class="icon-right icon-action icon-comments" href="/comments/index/001073135" target="_blank"></a>
-<a class="icon-right icon-action icon-print" href="/story/001073135?print=y" target="_blank"></a>
-<a class="icon-right icon-action icon-font-size" onclick="showOverlay('font-setting')"></a>
-<a class="icon-right icon-action icon-share" onclick="showOverlay('share-legacy')"></a>
-</div>
-</div>
-</div>
 <div class="story-byline">
-<span class="story-time">更新于2017年6月23日 15:02</span>
-<span class="story-author">FT中文网公共政策主编 <a href='/search/%E5%88%98%E6%B3%A2/relative_byline' target=_blank>刘波</a>  </span>
+    <span class="story-time">{story-time}</span>
+    <span class="story-author">{story-byline}</span>
 </div>
 <div class="story-body">
 
 
-<p>中国正在准备大规模接收国际难民吗？恰逢6月20日的“国际难民日”，这个问题在中国互联网上引爆了一轮讨论热潮。在新浪微博上，有的相关帖子有多达数万条转发或评论。联合国难民署的官方微博发布了联合国难民署中国亲善大使姚晨希望难民“再次成为普通人，享有一个普通人应当享有的权利”的言论。本文写作时，该条微博已吸引逾1万条留言。</p><p>当今世界是一个由主权国家组成的体系，虽然国际合作、国际治理已蔚然成型，但各国在难民事务上仍拥有近乎绝对的主权。即使在作为“超国家实体”的欧盟，情况也是如此：欧盟虽然希望通过讨论制定统一的难民政策，但各国仍然保留着近乎完全的自主权。根据相关国际公约，因为战争、冲突、迫害等原因而流离失所的难民，的确有得到国际救助的权利。但是各国的能力、资源和救助意愿是有限的，具体如何救助，相关责任如何分配，应通过国际讨论和协调来解决。在全球化的今天，各国在认定难民身份、决定是否给予庇护、接收多少难民、接收后的难民待遇政策等方面，仍然享有完全的、不可剥夺的自主权。</p><p>在中国国际影响力快速上升的情况下，也出现了一些主张中国更多参与国际难民治理、甚至接收一些难民的呼吁，但这样的建议，绝不能等同于强迫中国接收难民。和绝大多数国家一样，中国的移民政策、难民政策、庇护政策、边境管制政策等是完全自主的，是中国可以自行决定的。中国的正式媒体，也许有必要多介绍这方面的国际法治的相关常识，以利于提升公众对此问题的认识程度，形成健康、理性的心态，以避免出现可疑信息泛滥和许多人非理性恐慌的情况。当然，在任何国家，保持难民政策的透明性，及时公布难民救助工作方面的详细信息，缓解公众可能出现的疑虑，都是极为必要的，可以减少难民政策实行方面的阻力。</p><p>此外，中国参与一些国际公约、国际组织，加入到国际移民与难民治理中去，不能简单等同于接收难民。中国可以控制自己的参与力度，主要是形成一个国际性的治理框架，中国与别国分享经验，参与塑造未来的国际规则，这也有利于中国提升自己的国际地位，给世界展示更积极的国际形象。全球局势变化万千，各国都可能遭遇不测之灾，在包括难民在内的各项事务上，尽快完善一个互助性的国际治理架构，共同分担风险，符合包括中国在内的所有国家的利益。当然，国际难民治理也有一项原则是，对造成难民负责任的国家也要对难民救助负更大责任。这个原则也对包括中国在内的各国适用。此外，各个区域的国家，当然首先要各自集中力量解决本区域内的难民问题，对于其他区域的问题完全可以仅仅有限参与。</p><div id="story_main_mpu"><script type="text/javascript">document.write (writeAd('storympu'));</script></div><p>从伦理角度来看，现代社会价值多元，可以有视四海为兄弟的人，也可以有拔一毛以利天下而不为的人，可以有国际主义者、社群主义者、自由主义者、自由至上主义者等等，可以有主张帮助难民的人，也可以有不主张帮助难民的人，彼此尊重为好，不宜相互道德绑架。同情难民的人不应强求他人同情难民，但不同情难民的人，也不应诋毁和辱骂那些同情难民的人。更重要的是，在世界各地，许多难民生活非常凄惨，虽然对和自己无关的人，冷淡不顾也是一种选择，但如果对未影响自身利益的别国难民百般辱骂，对其他接收难民的国家、人士百般侮辱，那就未免过于可鄙。可以不主张帮助难民，但不应侮辱难民的人格尊严，这是一个底线。如果一国网络上广泛出现这样的情况，本国精英群体不仅不呼吁纠正，反而有的人为此推波助澜，那最终也可能影响其国际声誉和国际形象，何况这么做本来就是不道德的。</p>
+{story-body}
+
+
+
 <div class="clearfloat"></div>
 </div>
-<div class="pagination-container"><div class="pagination-inner">
-<span class="current">1</span><a href="/story/001073135?page=2">2</a><a href="/story/001073135?page=2">&rsaquo;&rsaquo;</a><a href="/story/001073135?page=2">下一页</a><a href="/story/001073135?page=rest">余下全文</a>
-<a href="/story/001073135?full=y">全文</a>
-</div></div>
-<div class="clearfloat"></div>
+
 </div>
 <div class="clearfloat block-bottom"></div>
 </div></div>

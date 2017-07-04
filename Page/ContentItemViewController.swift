@@ -134,11 +134,22 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         print ("there are HTML tags that cannot be handled, use webview to handle it instead")
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height - 44)
+        let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height)
         webView = WKWebView(frame: webViewFrame, configuration: config)
         webView?.isOpaque = true
         webView?.backgroundColor = UIColor.clear
         webView?.scrollView.backgroundColor = UIColor.clear
+        
+        // MARK: Get values for the content
+        let headline = dataObject?.headline ?? ""
+        let body = dataObject?.cbody ?? ""
+        let byline = dataObject?.cauthor ?? ""
+        let timeStamp = String(describing: dataObject?.timeStamp)
+        let lead = dataObject?.lead ?? ""
+        let tag = dataObject?.tag ?? ""
+        
+        
+        
         if let wv = self.webView {
             //self.textView.removeFromSuperview()
             // FIXME: add subview is not safe. What happens if there already is a webview?
@@ -165,7 +176,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
                     do {
                         let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                        let storyHTML = storyTemplate as String
+                        let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: body)
+                        .replacingOccurrences(of: "{story-headline}", with: headline)
+                        .replacingOccurrences(of: "{story-byline}", with: byline)
+                        .replacingOccurrences(of: "{story-time}", with: timeStamp)
+                        .replacingOccurrences(of: "{story-lead}", with: lead)
+                        .replacingOccurrences(of: "{story-tag}", with: tag)
+                        
                         self.webView?.loadHTMLString(storyHTML, baseURL:url)
                     } catch {
                         self.webView?.load(request)

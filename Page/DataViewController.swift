@@ -11,7 +11,7 @@ import UIKit
 
 class DataViewController: UICollectionViewController {
     var refreshControl = UIRefreshControl()
-   let flowLayout = PageCollectionViewLayout()
+    let flowLayout = PageCollectionViewLayout()
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
@@ -33,9 +33,9 @@ class DataViewController: UICollectionViewController {
     //            updateUI()
     //        }
     //    }
-//    var contentSection: ContentSection? = nil {
-//        
-//    }
+    //    var contentSection: ContentSection? = nil {
+    //
+    //    }
     
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
@@ -61,17 +61,17 @@ class DataViewController: UICollectionViewController {
                     }else{
                         layoutWay="home"
                     }
-
+                    
                     let resultsWithAds = ContentFetchResults(
                         apiUrl: results.apiUrl,
                         fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)
                     )
                     self?.fetches = resultsWithAds
-
                     
-//                    self?.fetches = results
                     
-//                    print("fetches : \(resultsWithAds)")
+                    //                    self?.fetches = results
+                    
+                    //                    print("fetches : \(resultsWithAds)")
                     
                     self?.collectionView?.reloadData()
                 }
@@ -103,29 +103,17 @@ class DataViewController: UICollectionViewController {
         
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         let horizontalClass = self.traitCollection.horizontalSizeClass
         let verticalCass = self.traitCollection.verticalSizeClass
         
         if horizontalClass == .regular && verticalCass == .regular {
-            
             collectionView?.collectionViewLayout=flowLayout
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
-            //            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-            //            let availableWidth = view.frame.width - paddingSpace
-            
-            
-        }else{
-            
+        } else {
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-                
-                
                 flowLayout.minimumInteritemSpacing = 0
                 flowLayout.minimumLineSpacing = 0
                 //FIXME: Why does this break scrolling?
@@ -142,7 +130,6 @@ class DataViewController: UICollectionViewController {
                     }
                     cellWidth = availableWidth
                 }
-                
             }
         }
         
@@ -159,14 +146,6 @@ class DataViewController: UICollectionViewController {
         // MARK: - Update Styles
         view.backgroundColor = UIColor(hex: Color.Content.border)
         collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
-        
-
-
-       
-        
-  
-
-        
         if #available(iOS 10.0, *) {
             refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
             collectionView?.refreshControl = refreshControl
@@ -174,9 +153,15 @@ class DataViewController: UICollectionViewController {
         
         // MARK: - Get Content Data for the Page
         requestNewContent()
-        //        if let tabName = (navigationController as? CustomNavigationController)?.tabName {
-        //            print (tabName)
-        //        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+        
+        
+        
     }
     
     
@@ -195,11 +180,6 @@ class DataViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-//         let fetchR = fetches.fetchResults.count
-//         print ("found \(fetches.fetchResults.count) numberOfSections")
-//        print ("fetchR-- \(fetchR) ----fetchR")
-        
         return fetches.fetchResults.count
     }
     
@@ -207,7 +187,7 @@ class DataViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-//        print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
+        //        print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
         
         return fetches.fetchResults[section].items.count
     }
@@ -215,7 +195,7 @@ class DataViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-//         print ("cellItem111---- \(cellItem) ----cellItem")
+        //         print ("cellItem111---- \(cellItem) ----cellItem")
         switch reuseIdentifier {
         case "CoverCell":
             if let cell = cellItem as? CoverCell {
@@ -231,20 +211,20 @@ class DataViewController: UICollectionViewController {
             }
         case "CoverCellRegular":
             if let cell = cellItem as? CoverCellRegular {
-//                cell.cellWidth = cellWidth
-//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-               cell.containerView.backgroundColor = UIColor.blue
-//                cell.backgroundColor = UIColor.blue
+                //                cell.cellWidth = cellWidth
+                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.containerView.backgroundColor = UIColor.blue
+                //                cell.backgroundColor = UIColor.blue
                 cell.layer.borderWidth = 1
                 return cell
             }
         case "ChannelCellRegular":
             if let cell = cellItem as? ChannelCellRegular {
-                 cell.cellWidth = cellWidth
-                  cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                 cell.containerView.backgroundColor = UIColor.yellow
-//                cell.backgroundColor = UIColor.yellow
-               cell.layer.borderWidth = 1
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.containerView.backgroundColor = UIColor.yellow
+                //                cell.backgroundColor = UIColor.yellow
+                cell.layer.borderWidth = 1
                 return cell
             }
         default:
@@ -254,7 +234,7 @@ class DataViewController: UICollectionViewController {
                 return cell
             }
         }
-//        print ("cellItem---- \(cellItem) ----cellItem")
+        //        print ("cellItem---- \(cellItem) ----cellItem")
         return cellItem
     }
     
@@ -270,10 +250,10 @@ class DataViewController: UICollectionViewController {
                 withReuseIdentifier: reuseIdentifier,
                 for: indexPath
             )
-//           let pageLayoutAttributes=PageLayoutAttributes()
-           
-//            let att = PageLayoutAttributes(forCellWith: indexPath)
-//            att.frame=CGRect(x: 0, y: 0, width: 100, height: 200)
+            //           let pageLayoutAttributes=PageLayoutAttributes()
+            
+            //            let att = PageLayoutAttributes(forCellWith: indexPath)
+            //            att.frame=CGRect(x: 0, y: 0, width: 100, height: 200)
             // MARK: - a common tag gesture for all kinds of headers
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
             headerView.isUserInteractionEnabled = true
@@ -282,9 +262,9 @@ class DataViewController: UICollectionViewController {
             case "Ad":
                 let adView = headerView as! Ad
                 adView.contentSection = fetches.fetchResults[indexPath.section]
-
+                
                 print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
-//                adView.apply(pageLayoutAttributes)
+                //                adView.apply(pageLayoutAttributes)
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView
@@ -294,7 +274,7 @@ class DataViewController: UICollectionViewController {
             default:
                 assert(false, "Unknown Identifier")
             }
-//            print ("headerView---- \(headerView) ----headerView")
+            //            print ("headerView---- \(headerView) ----headerView")
             return headerView
         default:
             assert(false, "Unexpected element kind")
@@ -338,7 +318,7 @@ class DataViewController: UICollectionViewController {
             let horizontalClass = self.traitCollection.horizontalSizeClass
             let verticalCass = self.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
-
+                
                 if isCover {
                     reuseIdentifier = "CoverCellRegular"
                 } else {
@@ -352,7 +332,7 @@ class DataViewController: UICollectionViewController {
                 }
             }
         }
-//        print ("reuseIdentifier---- \(reuseIdentifier) ----reuseIdentifier")
+        //        print ("reuseIdentifier---- \(reuseIdentifier) ----reuseIdentifier")
         return reuseIdentifier
     }
     
@@ -423,14 +403,14 @@ class DataViewController: UICollectionViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
-//        print ("prepare for segue here")
+        //        print ("prepare for segue here")
         
     }
     
     open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
         //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
         //performSegue(withIdentifier: "Show Detail Content", sender: self)
-//        print ("header view tapped")
+        //        print ("header view tapped")
         
         
     }
@@ -460,7 +440,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = widthPerItem * 0.618
         }
-
+        
         return CGSize(width: widthPerItem, height: heightPerItem)
     }
     

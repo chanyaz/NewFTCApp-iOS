@@ -249,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */,
+				F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */,
 				608C55241EF7A42D00AF27CB /* ContentItemViewController.swift */,
 				60FDA4FA1EFF9CA9003D4180 /* storybody.html */,
 				60FDA4F81EFF7FAA003D4180 /* story.html */,
@@ -388,7 +389,6 @@
 				60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */,
 				60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */,
 				60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */,
-				F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */,
 			);
 			name = Regular;
 			sourceTree = "<group>";

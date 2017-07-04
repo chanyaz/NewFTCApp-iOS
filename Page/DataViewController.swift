@@ -11,8 +11,7 @@ import UIKit
 
 class DataViewController: UICollectionViewController {
     var refreshControl = UIRefreshControl()
-    
-    
+   let flowLayout = PageCollectionViewLayout()
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
@@ -113,6 +112,40 @@ class DataViewController: UICollectionViewController {
         let horizontalClass = self.traitCollection.horizontalSizeClass
         let verticalCass = self.traitCollection.verticalSizeClass
         
+        if horizontalClass == .regular && verticalCass == .regular {
+            
+            collectionView?.collectionViewLayout=flowLayout
+            flowLayout.minimumInteritemSpacing = 0
+            flowLayout.minimumLineSpacing = 0
+            //            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+            //            let availableWidth = view.frame.width - paddingSpace
+            
+            
+        }else{
+            
+            if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+                
+                
+                flowLayout.minimumInteritemSpacing = 0
+                flowLayout.minimumLineSpacing = 0
+                //FIXME: Why does this break scrolling?
+                //flowLayout.sectionHeadersPinToVisibleBounds = true
+                let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+                let availableWidth = view.frame.width - paddingSpace
+                print("availableWidth : \(availableWidth)")
+                
+                if horizontalClass != .regular || verticalCass != .regular {
+                    if #available(iOS 10.0, *) {
+                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                    } else {
+                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+                    }
+                    cellWidth = availableWidth
+                }
+                
+            }
+        }
+        
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
         collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
@@ -129,39 +162,7 @@ class DataViewController: UICollectionViewController {
         
 
 
-        if horizontalClass == .regular && verticalCass == .regular {
-            let flowLayout = PageCollectionViewLayout()
-            collectionView?.collectionViewLayout=flowLayout
-            flowLayout.minimumInteritemSpacing = 0
-            flowLayout.minimumLineSpacing = 0
-//            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-//            let availableWidth = view.frame.width - paddingSpace
-
-        
-        }else{
-
-            if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-
- 
-                flowLayout.minimumInteritemSpacing = 0
-                flowLayout.minimumLineSpacing = 0
-                //FIXME: Why does this break scrolling?
-                //flowLayout.sectionHeadersPinToVisibleBounds = true
-                let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-                let availableWidth = view.frame.width - paddingSpace
-
-                
-                if horizontalClass != .regular || verticalCass != .regular {
-                    if #available(iOS 10.0, *) {
-                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-                    } else {
-                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-                    }
-                    cellWidth = availableWidth
-                }
-                
-            }
-        }
+       
         
   
 
@@ -206,8 +207,7 @@ class DataViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
-//        print ("section.type-- \(fetches.fetchResults[section].type) ----section.type")
+//        print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
         
         return fetches.fetchResults[section].items.count
     }
@@ -215,7 +215,6 @@ class DataViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        
 //         print ("cellItem111---- \(cellItem) ----cellItem")
         switch reuseIdentifier {
         case "CoverCell":
@@ -271,6 +270,10 @@ class DataViewController: UICollectionViewController {
                 withReuseIdentifier: reuseIdentifier,
                 for: indexPath
             )
+//           let pageLayoutAttributes=PageLayoutAttributes()
+           
+//            let att = PageLayoutAttributes(forCellWith: indexPath)
+//            att.frame=CGRect(x: 0, y: 0, width: 100, height: 200)
             // MARK: - a common tag gesture for all kinds of headers
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
             headerView.isUserInteractionEnabled = true
@@ -279,6 +282,9 @@ class DataViewController: UICollectionViewController {
             case "Ad":
                 let adView = headerView as! Ad
                 adView.contentSection = fetches.fetchResults[indexPath.section]
+
+                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
+//                adView.apply(pageLayoutAttributes)
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView
@@ -432,32 +438,6 @@ class DataViewController: UICollectionViewController {
 }
 
 
-// MARK: - Private
-//private extension DataViewController {
-//    func itemForIndexPath(indexPath: IndexPath) -> ContentItem {
-//        return fetches[(indexPath as NSIndexPath).section].fetchResults[(indexPath as IndexPath).row]
-//    }
-//}
-
-/*
- extension DataViewController {
- // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
- override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
- return true
- }
- 
- override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
- return true
- }
- 
- override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
- 
- print ("performAction called! ")
- }
- 
- }
- */
-
 
 fileprivate let itemsPerRow: CGFloat = 3
 fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -501,3 +481,29 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
     
 }
 
+
+// MARK: - Private
+//private extension DataViewController {
+//    func itemForIndexPath(indexPath: IndexPath) -> ContentItem {
+//        return fetches[(indexPath as NSIndexPath).section].fetchResults[(indexPath as IndexPath).row]
+//    }
+//}
+
+/*
+ extension DataViewController {
+ // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+ override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+ return true
+ }
+ 
+ override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+ return true
+ }
+ 
+ override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+ 
+ print ("performAction called! ")
+ }
+ 
+ }
+ */

@@ -93,7 +93,6 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
                 //获取广告section的高度给sectionHeight
                 sectionHeight=200
                 //把广告的attributes添加到attributesList1
-//                Ad()
 //                let indexPath = IndexPath(item: 0, section: 0)
 //                let att = PageLayoutAttributes(forCellWith: indexPath)
 //                att.height = 500
@@ -175,6 +174,7 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
        
         
     }
+//    As long as the rolling screen method is invoked
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
 //       print ("attribute1 size1111111----\(attributesList1)----111111")
 //       print ("attribute size222222----\(sectionCGRect)----22222")
@@ -187,7 +187,7 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
 //        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
         return attributesList[indexPath.row]
     }
-    
+//    As long as the layout of the page properties change will call again
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }

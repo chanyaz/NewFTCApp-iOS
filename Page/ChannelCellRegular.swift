@@ -18,10 +18,8 @@ class ChannelCellRegular: UICollectionViewCell {
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
-    @IBOutlet weak var lead: UILabel!
-    @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var border: UIView!
-    @IBOutlet weak var imageView: UIImageView!
+
     
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
@@ -32,7 +30,6 @@ class ChannelCellRegular: UICollectionViewCell {
     func updateUI() {
         containerView.backgroundColor = UIColor(hex: Color.Content.background)
         headline.textColor = UIColor(hex: Color.Content.headline)
-        lead.textColor = UIColor(hex: Color.Content.lead)
         layoutMargins.left = 0
         layoutMargins.right = 0
         layoutMargins.top = 0
@@ -51,27 +48,9 @@ class ChannelCellRegular: UICollectionViewCell {
         
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+       
         
-        // MARK: - Load the image of the item
-//        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
-//        if let loadedImage = itemCell?.largeImage {
-//            imageView.image = loadedImage
-//            //print ("image is already loaded, no need to download again. ")
-//        } else {
-//            itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-//                self?.imageView.image = cellContentItem.largeImage
-//            })
-//        }
-//        
-//        // MARK: - Use calculated cell width to diplay auto-sizing cells
-//        let cellMargins = layoutMargins.left + layoutMargins.right
-//        let containerViewMargins = containerView.layoutMargins.left + containerView.layoutMargins.right
-//        if let cellWidth = cellWidth {
-//            self.contentView.translatesAutoresizingMaskIntoConstraints = false
-//            let containerWidth = cellWidth - cellMargins - containerViewMargins
-//            containerViewWidthConstraint.constant = containerWidth
-//        }
+
 
     }
 

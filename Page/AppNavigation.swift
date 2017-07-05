@@ -34,8 +34,8 @@ struct AppNavigation {
             "isNavLightContent": false,
             "Channels": [
                 ["title": "头条",
-                 "api":"http://www.ftchinese.com/index.php/jsapi/home",
-                 "url":"http://www.ftchinese.com/"
+                 "api":"https://www.ftchinese.com/index.php/jsapi/home",
+                 "url":"https://www.ftchinese.com/"
                 ],
                 ["title": "中国",
                  "api":"https://www.ftchinese.com/channel/china.html?type=json",

@@ -55,13 +55,7 @@ class ContentFetch {
             }
             
             do {
-                guard let resultsDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: AnyObject] else {
-                    let APIError = NSError(domain: "ContentFetch", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey:"Unknown API response"])
-                    OperationQueue.main.addOperation({
-                        completion(nil, APIError)
-                    })
-                    return
-                }
+                let resultsDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
                 let contentSections = self.formatJSON(resultsDictionary)
                 OperationQueue.main.addOperation({
                     completion(ContentFetchResults(apiUrl: urlString, fetchResults: contentSections), nil)
@@ -83,48 +77,19 @@ class ContentFetch {
         return url
     }
     
-    func formatJSON(_ resultsDictionary: [String: Any]) -> [ContentSection] {
-        if let sections = resultsDictionary["sections"] as? [[String: Any]] {
-            return formatPageMakerJSON(sections)
-        } else if let _ = resultsDictionary["id"] as? String,
-            let _ = resultsDictionary["cbody"] as? String {
-            return formatFTCStoryJSON(resultsDictionary)
+    func formatJSON(_ resultsDictionary: Any) -> [ContentSection] {
+        if let resultsDictionary = resultsDictionary as? [String: Any] {
+            if let sections = resultsDictionary["sections"] as? [[String: Any]] {
+                return formatPageMakerJSON(sections)
+            } else if let _ = resultsDictionary["id"] as? String,
+                let _ = resultsDictionary["cbody"] as? String {
+                return formatFTCStoryJSON(resultsDictionary)
+            }
+        } else if let resultsDictionary = resultsDictionary as? [[String: String]] {
+            return formatFTCChannelJSON(resultsDictionary)
         }
+        print ("The API JSON Object is not a known format.")
         return [ContentSection]()
-    }
-    
-    func formatFTCStoryJSON(_ item: [String: Any]) -> [ContentSection] {
-        var contentSections = [ContentSection]()
-        var itemCollection = [ContentItem]()
-
-        
-        // MARK: Note that section may not be continuous
-        let oneItem = ContentItem(
-            id: "",
-            image: "",
-            headline: "",
-            lead: "",
-            type: "story",
-            preferSponsorImage: "",
-            tag: "",
-            customLink: "",
-            timeStamp: 0,
-            section: 0,
-            row:0
-        )
-        oneItem.cbody = item["cbody"] as? String
-        oneItem.ebody = item["ebody"] as? String
-        oneItem.cauthor = item["cauthor"] as? String
-        oneItem.eauthor = item["eauthor"] as? String
-        itemCollection.append(oneItem)
-        let contentSection = ContentSection(
-            title: "",
-            items: itemCollection,
-            type: "List",
-            adid: nil
-        )
-        contentSections.append(contentSection)
-        return contentSections
     }
     
     func formatPageMakerJSON(_ sections: [[String: Any]]) -> [ContentSection] {
@@ -180,4 +145,84 @@ class ContentFetch {
         }
         return contentSections
     }
+    
+    private func formatFTCChannelJSON(_ items: [[String: String]]) -> [ContentSection] {
+        var contentSections = [ContentSection]()
+        var itemCollection = [ContentItem]()
+        for (row, item) in items.enumerated() {
+            let id = item["id"] ?? ""
+            let image = item["image"] ?? ""
+            let headline = item["cheadline"] ?? ""
+            var lead = item["clongleadbody"] ?? ""
+            if lead == "" {
+                lead = item["cshortleadbody"] ?? ""
+            }
+            let type = "story"
+            let preferSponsorImage = ""
+            let tag = item["tag"] ?? ""
+            let customLink = ""
+            let timeStamp = Int(item["pubdate"] ?? "0") ?? 0
+            
+            // MARK: Note that section may not be continuous
+            let oneItem = ContentItem(
+                id: id,
+                image: image,
+                headline: headline,
+                lead: lead,
+                type: type,
+                preferSponsorImage: preferSponsorImage,
+                tag: tag,
+                customLink: customLink,
+                timeStamp: timeStamp,
+                section: 0,
+                row:row
+            )
+            itemCollection.append(oneItem)
+        }
+        let title = ""
+        let contentSection = ContentSection(
+            title: title,
+            items: itemCollection,
+            type: "List",
+            adid: nil
+        )
+        contentSections.append(contentSection)
+        return contentSections
+    }
+    
+    private func formatFTCStoryJSON(_ item: [String: Any]) -> [ContentSection] {
+        var contentSections = [ContentSection]()
+        var itemCollection = [ContentItem]()
+        
+        
+        // MARK: Note that section may not be continuous
+        let oneItem = ContentItem(
+            id: "",
+            image: "",
+            headline: "",
+            lead: "",
+            type: "story",
+            preferSponsorImage: "",
+            tag: "",
+            customLink: "",
+            timeStamp: 0,
+            section: 0,
+            row:0
+        )
+        oneItem.cbody = item["cbody"] as? String
+        oneItem.ebody = item["ebody"] as? String
+        oneItem.cauthor = item["cauthor"] as? String
+        oneItem.eauthor = item["eauthor"] as? String
+        itemCollection.append(oneItem)
+        let contentSection = ContentSection(
+            title: "",
+            items: itemCollection,
+            type: "List",
+            adid: nil
+        )
+        contentSections.append(contentSection)
+        return contentSections
+    }
+    
+    
 }

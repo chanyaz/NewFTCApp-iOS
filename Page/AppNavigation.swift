@@ -211,11 +211,6 @@ struct AppNavigation {
     }
     
     
-    // MARK: Ad Constants
-    private let adBaseUrl = "http://www.ftchinese.com/m/marketing/a.html"
-    public func getAdPageUrlForAdId(_ adid: String) -> String {
-        
-        return "\(adBaseUrl)#adid=\(adid)"
-    }
+
     
 }

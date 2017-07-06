@@ -157,10 +157,10 @@ class ContentFetch {
             if lead == "" {
                 lead = item["cshortleadbody"] ?? ""
             }
-            let type = "story"
+            let type = item["type"] ?? "story"
             let preferSponsorImage = ""
             let tag = item["tag"] ?? ""
-            let customLink = ""
+            let customLink = item["customlink"] ?? ""
             let timeStamp = Int(item["pubdate"] ?? "0") ?? 0
             
             // MARK: Note that section may not be continuous

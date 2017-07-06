@@ -149,14 +149,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let byline = dataObject?.cauthor ?? ""
         let timeStamp = String(describing: dataObject?.timeStamp)
         let lead = dataObject?.lead ?? ""
-        let tag = dataObject?.tag ?? ""
-        let imageTag:String
+        let tag = (dataObject?.tag ?? "")
+            .replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+        let imageHTML:String
         if let image = dataObject?.image {
-            imageTag = "<div class=\"story-image image\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+            imageHTML = "<div class=\"story-image image\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
         } else {
-            imageTag = ""
+            imageHTML = ""
         }
-        
         
         if let wv = self.webView {
             //self.textView.removeFromSuperview()
@@ -180,7 +180,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             if let url = URL(string: urlString) {
                 let request = URLRequest(url: url)
-                
                 if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
                     do {
                         let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
@@ -190,8 +189,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                             .replacingOccurrences(of: "{story-time}", with: timeStamp)
                             .replacingOccurrences(of: "{story-lead}", with: lead)
                             .replacingOccurrences(of: "{story-tag}", with: tag)
-                            .replacingOccurrences(of: "{story-image}", with: imageTag)
-                        
+                            .replacingOccurrences(of: "{story-image}", with: imageHTML)
                         self.webView?.loadHTMLString(storyHTML, baseURL:url)
                     } catch {
                         self.webView?.load(request)
@@ -254,8 +252,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
         return attrString
     }
-    
-    
 }
 
 

@@ -15,6 +15,8 @@ struct Color {
         static let lead = "#66605a"
         static let border = "#d4c9bc"
         static let background = "#FFF1E0"
+        static let tag = "#9E2F50"
+        static let time = "#8b572a"
     }
     struct Tab {
         static let text = "#333333"

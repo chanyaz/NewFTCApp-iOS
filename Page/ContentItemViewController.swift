@@ -35,8 +35,25 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     fileprivate let contentAPI = ContentFetch()
     
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    @IBOutlet weak var contentScrollView: UIScrollView!
     
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var topBanner: UIView!
+    
+    @IBOutlet weak var tag: UILabel!
+    
+    @IBOutlet weak var headline: UILabel!
+    
+    @IBOutlet weak var lead: UILabel!
+    
+    @IBOutlet weak var coverImage: UIImageView!
+    
+    @IBOutlet weak var byline: UILabel!
+    
+    @IBOutlet weak var bodyTextView: UITextView!
+    // TODO: https://stackoverflow.com/questions/38948904/calculating-contentsize-for-uiscrollview-when-using-auto-layout
+    
+    
+    //@IBOutlet weak var textView: UITextView!
     //    @IBOutlet weak var toolBar: UIToolbar!
     //
     //    @IBOutlet weak var languageSwitch: UISegmentedControl!
@@ -50,6 +67,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         navigationController?.delegate = self
         navigationItem.title = "another test from oliver"
+        headline.text = ""
+        tag.text = ""
+        lead.text = ""
+        byline.text = ""
     }
     
     override func viewDidLayoutSubviews() {
@@ -80,9 +101,12 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     private func initStyle() {
-        textView.backgroundColor = UIColor(hex: Color.Content.background)
-        // MARK: Make the text view uneditable
-        textView.isEditable = false
+        self.view.backgroundColor = UIColor(hex: Color.Content.background)
+        topBanner.backgroundColor = UIColor(hex: Color.Ad.background)
+        self.headline.textColor = UIColor(hex: Color.Content.headline)
+        self.tag.textColor = UIColor(hex: Color.Content.tag)
+        self.byline.textColor = UIColor(hex: Color.Content.time)
+        self.bodyTextView.backgroundColor = UIColor(hex: Color.Content.background)
     }
     
     
@@ -109,7 +133,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
     private func renderTextview(_ body: NSMutableAttributedString) {
         // MARK: Styles and Colors
-        let headlineColor = UIColor(hex: Color.Content.headline)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
         
@@ -117,24 +140,29 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         
         // MARK: Headline Style and Text
-        let headlineString = dataObject?.headline ?? ""
-        let headline = NSMutableAttributedString(
-            string: "\(headlineString)\n",
-            attributes: [
-                NSFontAttributeName: UIFont.preferredFont(forTextStyle: .title1).bold(),
-                NSParagraphStyleAttributeName: paragraphStyle,
-                NSForegroundColorAttributeName: headlineColor
-            ]
-        )
+        self.headline.text = dataObject?.headline ?? ""
+        
+        
+        // MARK: Tag
+        self.tag.text = (dataObject?.tag ?? "")
+            .replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+        
+        
+        // MARK: byline
+        self.byline.text = dataObject?.cauthor ?? ""
+        
+        
         
         let text = NSMutableAttributedString()
-        text.append(headline)
+        
         text.append(body)
-        textView?.attributedText = text
+        
+        
+        bodyTextView?.attributedText = text
         // MARK: - a workaround for the myterious scroll view bug
-        textView?.isScrollEnabled = false
-        textView?.isScrollEnabled = true
-        textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        bodyTextView?.isScrollEnabled = false
+        //        bodyTextView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        
     }
     
     private func renderWebView() {

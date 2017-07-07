@@ -108,9 +108,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     private func renderTextview(_ body: NSMutableAttributedString) {
+        // MARK: Styles and Colors
         let headlineColor = UIColor(hex: Color.Content.headline)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
+        
+        // MARK: Ad View
+        
         
         // MARK: Headline Style and Text
         let headlineString = dataObject?.headline ?? ""

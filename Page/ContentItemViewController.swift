@@ -23,6 +23,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         didSet {
             //            print ("data object changed")
             //            print ("id: \(dataObject?.id) type: \(dataObject?.type) body: \(dataObject?.cbody)")
+            print ("data object updated for \(dataObject?.headline)")
             initText()
         }
     }
@@ -67,15 +68,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         navigationController?.delegate = self
         navigationItem.title = "another test from oliver"
-        headline.text = ""
-        tag.text = ""
-        lead.text = ""
-        byline.text = ""
+
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         //print ("view did layout subviews")
+        headline.text = ""
+        tag.text = ""
+        lead.text = ""
+        byline.text = ""
         initText()
     }
     
@@ -116,14 +118,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         if let bodyString = dataObject?.cbody {
             // MARK: There are three ways to convert HTML body text into NSMutableAttributedString. Each has its merits and limits.
-            if let body = htmlToAttributedString(bodyString) {
+            if let body = htmlToAttributedString(bodyString){
                 // MARK: If we can handle all the HTML tags confidantly
-                if bodyString != "" {
+                //if bodyString != "" {
                     renderTextview(body)
-                }
-                //        } else if let body = bodyString.htmlAttributedString() {
-                //            // MARK: The above uses the string extension to convert string to data then to NSMutableAttributedString. Not sure if this is expensive in terms of computing resource. If there are images in the HTML, there might be delay after tapping as the image is not downloaded asyn.
-                //            renderTextview(body)
+                //}
             } else {
                 // MARK: Use WKWebView to display story
                 renderWebView()
@@ -138,30 +137,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         // MARK: Ad View
         
-        
-        // MARK: Headline Style and Text
-        self.headline.text = dataObject?.headline ?? ""
-        
-        
-        // MARK: Tag
-        self.tag.text = (dataObject?.tag ?? "")
+        // MARK: the outlets may not exist so "?" is necessary
+        headline?.text = dataObject?.headline ?? ""
+        tag?.text = (dataObject?.tag ?? "")
             .replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
-        
-        
-        // MARK: byline
-        self.byline.text = dataObject?.cauthor ?? ""
-        
-        
-        
+        byline?.text = dataObject?.cauthor ?? ""
+        lead?.text = dataObject?.lead ?? ""
         let text = NSMutableAttributedString()
-        
         text.append(body)
-        
-        
         bodyTextView?.attributedText = text
-        // MARK: - a workaround for the myterious scroll view bug
-        bodyTextView?.isScrollEnabled = false
-        //        bodyTextView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        //bodyTextView?.isScrollEnabled = false
         
     }
     
@@ -229,7 +214,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 } else {
                     self.webView?.load(request)
                 }
-                
             }
         }
     }

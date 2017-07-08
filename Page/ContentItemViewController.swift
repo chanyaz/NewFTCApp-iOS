@@ -10,23 +10,7 @@ import UIKit
 import WebKit
 
 class ContentItemViewController: UIViewController, UINavigationControllerDelegate{
-    
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
-    
-    var dataObject: ContentItem? {
-        didSet {
-            //            print ("data object changed")
-            //            print ("id: \(dataObject?.id) type: \(dataObject?.type) body: \(dataObject?.cbody)")
-            print ("data object updated for \(dataObject?.headline)")
-            initText()
-        }
-    }
+    var dataObject: ContentItem?
     var pageTitle: String = ""
     var themeColor: String?
     private var detailDisplayed = false
@@ -78,7 +62,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         tag.text = ""
         lead.text = ""
         byline.text = ""
-        initText()
+        updatePageContent()
     }
     
     private func getDetailInfo() {
@@ -95,8 +79,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     return
                 }
                 if let results = results {
+                    //print ("cbody is \(results.fetchResults[0].items[0].cbody)")
                     self?.dataObject?.cbody = results.fetchResults[0].items[0].cbody
                     self?.dataObject?.ebody = results.fetchResults[0].items[0].ebody
+                    self?.updatePageContent()
                 }
             }
         }
@@ -113,7 +99,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
     
     
-    private func initText() {
+    private func updatePageContent() {
         // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         if let bodyString = dataObject?.cbody {

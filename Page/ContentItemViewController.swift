@@ -97,8 +97,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         self.bodyTextView.backgroundColor = UIColor(hex: Color.Content.background)
     }
     
-    
-    
     private func updatePageContent() {
         // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
@@ -133,7 +131,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         text.append(body)
         bodyTextView?.attributedText = text
         //bodyTextView?.isScrollEnabled = false
-        
     }
     
     private func renderWebView() {
@@ -160,7 +157,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             imageHTML = ""
         }
-        
         if let wv = self.webView {
             //self.textView.removeFromSuperview()
             // FIXME: add subview is not safe. What happens if there already is a webview?

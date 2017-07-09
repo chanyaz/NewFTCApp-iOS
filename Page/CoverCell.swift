@@ -86,12 +86,12 @@ class CoverCell: UICollectionViewCell {
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
-        if let loadedImage = itemCell?.largeImage {
+        if let loadedImage = itemCell?.coverImage {
             imageView.image = loadedImage
             //print ("image is already loaded, no need to download again. ")
         } else {
-            itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-                self?.imageView.image = cellContentItem.largeImage
+            itemCell?.loadImage(type:"cover", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+                self?.imageView.image = cellContentItem.coverImage
             })
             //print ("should load image here")
         }

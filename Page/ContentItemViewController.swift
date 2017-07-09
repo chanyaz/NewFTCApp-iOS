@@ -121,6 +121,23 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         // MARK: Ad View
         
+        // MARK: Image View
+        if let loadedImage = dataObject?.detailImage {
+            coverImage.image = loadedImage
+            //print ("image is already loaded, no need to download again. ")
+        } else {
+            let imageWidth = Int(view.frame.width)
+            let imageHeight = imageWidth * 9 / 16
+//            dataObject?.loadImage(type: "detail", width: Int(imageWidth), height: Int(imageHeight), completion: { [weak self](cellContentItem, error) in
+//                    self?.coverImage.image = cellContentItem.largeImage
+//            })
+            
+            dataObject?.loadImage(type: "detail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+                self?.coverImage.image = cellContentItem.thumbnailImage
+            })
+            
+        }
+        
         // MARK: the outlets may not exist so "?" is necessary
         headline?.text = dataObject?.headline ?? ""
         tag?.text = (dataObject?.tag ?? "")

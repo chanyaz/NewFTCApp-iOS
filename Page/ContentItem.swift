@@ -3,8 +3,11 @@
 import UIKit
 
 class ContentItem{
-    var thumbnail : UIImage?
-    var largeImage : UIImage?
+    // MARK: Diffent types of iamges
+    var thumbnailImage: UIImage?
+    var coverImage: UIImage?
+    var detailImage: UIImage?
+    
     let id : String
     let image: String
     let headline : String
@@ -75,7 +78,7 @@ class ContentItem{
         return nil
     }
     
-    func loadLargeImage(width: Int, height: Int, completion: @escaping (_ contentItem:ContentItem, _ error: NSError?) -> Void) {
+    func loadImage(type: String, width: Int, height: Int, completion: @escaping (_ contentItem:ContentItem, _ error: NSError?) -> Void) {
         guard let loadURL = getImageURL(image, width: width, height: height) else {
             DispatchQueue.main.async {
                 completion(self, nil)
@@ -101,29 +104,18 @@ class ContentItem{
             }
             
             let returnedImage = UIImage(data: data)
-            self.largeImage = returnedImage
+            switch type {
+            case "thumbnail":
+                self.thumbnailImage = returnedImage
+            case "cover":
+                self.coverImage = returnedImage
+            default:
+                self.detailImage = returnedImage
+            }
             DispatchQueue.main.async {
                 completion(self, nil)
             }
         }).resume()
-    }
-    
-    func sizeToFillWidthOfSize(_ size:CGSize) -> CGSize {
-        guard let thumbnail = thumbnail else {
-            return size
-        }
-        let imageSize = thumbnail.size
-        var returnSize = size
-        
-        let aspectRatio = imageSize.width / imageSize.height
-        
-        returnSize.height = returnSize.width / aspectRatio
-        
-        if returnSize.height > size.height {
-            returnSize.height = size.height
-            returnSize.width = size.height * aspectRatio
-        }
-        return returnSize
     }
     
 }

@@ -31,7 +31,7 @@ class ContentItem{
     var ebody: String?
     var cauthor: String?
     var eauthor: String?
-    
+    var locations: String?
     
     
     

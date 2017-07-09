@@ -63,6 +63,15 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         lead.text = ""
         byline.text = ""
         updatePageContent()
+        
+        if let content = dataObject {
+            let attributedArticle = AttributedArticle(content: content, contentWidth: bodyTextView.contentSize.width)
+            // attributedArticle.chineseBody
+            // attributedArticle.englishBody
+            // attributedArticle.bilingualBody
+            bodyTextView.attributedText = attributedArticle.chineseBody
+        }
+        
     }
     
     private func getDetailInfo() {

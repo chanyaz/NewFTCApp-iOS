@@ -65,6 +65,9 @@
 		60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */; };
 		60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */; };
 		60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
+		AF8E93031F124844007CD6DE /* ArticleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93021F124844007CD6DE /* ArticleStyle.swift */; };
+		AF8E93071F125509007CD6DE /* ParseHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93061F125509007CD6DE /* ParseHtml.swift */; };
+		AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93081F125889007CD6DE /* AttributedArticle.swift */; };
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */; };
 		F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */; };
 		F2F92B181F0B6C0C00C4E043 /* AdCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */; };
@@ -152,6 +155,9 @@
 		60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCell.xib; sourceTree = "<group>"; };
 		60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlineCell.swift; sourceTree = "<group>"; };
 		60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeadlineCell.xib; sourceTree = "<group>"; };
+		AF8E93021F124844007CD6DE /* ArticleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleStyle.swift; sourceTree = "<group>"; };
+		AF8E93061F125509007CD6DE /* ParseHtml.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHtml.swift; sourceTree = "<group>"; };
+		AF8E93081F125889007CD6DE /* AttributedArticle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedArticle.swift; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayout.swift; sourceTree = "<group>"; };
 		F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCellRegular.swift; sourceTree = "<group>"; };
 		F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdCellRegular.xib; sourceTree = "<group>"; };
@@ -321,6 +327,9 @@
 			children = (
 				6093F1651EE90E81009F16EE /* CustomPopTransition.swift */,
 				60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */,
+				AF8E93021F124844007CD6DE /* ArticleStyle.swift */,
+				AF8E93061F125509007CD6DE /* ParseHtml.swift */,
+				AF8E93081F125889007CD6DE /* AttributedArticle.swift */,
 			);
 			name = StyleHelpers;
 			sourceTree = "<group>";
@@ -565,6 +574,7 @@
 			files = (
 				608C55211EF78FA100AF27CB /* DetailModelController.swift in Sources */,
 				60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */,
+				AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */,
 				60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */,
 				608C55231EF7973A00AF27CB /* ChannelModelController.swift in Sources */,
 				60FEBB511EF0CEAE00C3EBB6 /* CoverCell.swift in Sources */,
@@ -577,6 +587,7 @@
 				50E535C71F0729900082B181 /* ChannelModelDelegate.swift in Sources */,
 				60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */,
 				60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */,
+				AF8E93031F124844007CD6DE /* ArticleStyle.swift in Sources */,
 				60D4B8FD1EE7CB1F00A4506D /* AcademyNavigationController.swift in Sources */,
 				60F4C16D1EFCEBA500F21EB6 /* CoverCellRegular.swift in Sources */,
 				50EC3A631EF1E18E00BF17AD /* Ad.swift in Sources */,
@@ -585,6 +596,7 @@
 				50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */,
 				50A704C31EEB689900660022 /* ContentFetch.swift in Sources */,
 				F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */,
+				AF8E93071F125509007CD6DE /* ParseHtml.swift in Sources */,
 				60D4B8F91EE7C85A00A4506D /* NewsNavigationController.swift in Sources */,
 				60CA7BC11EF26251000CD9B4 /* AdLayout.swift in Sources */,
 				60B50D6A1EFBA4E000B29F3A /* Constants.swift in Sources */,

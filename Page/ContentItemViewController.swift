@@ -281,26 +281,26 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
 }
 
 
-extension String {
-    func htmlAttributedString() -> NSMutableAttributedString? {
-        print ("use html attributed string extension for: ")
-        print (self)
-        let storyHTML: String?
-        if let adHTMLPath = Bundle.main.path(forResource: "storybody", ofType: "html"){
-            do {
-                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body-text}", with: self)
-            } catch {
-                return nil
-            }
-        } else {
-            return nil
-        }
-        guard let text = storyHTML else {
-            return nil
-        }
-        guard let data = text.data(using: String.Encoding.utf16, allowLossyConversion: false) else { return nil }
-        guard let html = try? NSMutableAttributedString(data: data, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil) else { return nil }
-        return html
-    }
-}
+//extension String {
+//    func htmlAttributedString() -> NSMutableAttributedString? {
+//        print ("use html attributed string extension for: ")
+//        print (self)
+//        let storyHTML: String?
+//        if let adHTMLPath = Bundle.main.path(forResource: "storybody", ofType: "html"){
+//            do {
+//                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+//                storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body-text}", with: self)
+//            } catch {
+//                return nil
+//            }
+//        } else {
+//            return nil
+//        }
+//        guard let text = storyHTML else {
+//            return nil
+//        }
+//        guard let data = text.data(using: String.Encoding.utf16, allowLossyConversion: false) else { return nil }
+//        guard let html = try? NSMutableAttributedString(data: data, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil) else { return nil }
+//        return html
+//    }
+//}

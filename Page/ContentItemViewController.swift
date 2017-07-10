@@ -9,6 +9,8 @@
 import UIKit
 import WebKit
 
+
+
 class ContentItemViewController: UIViewController, UINavigationControllerDelegate{
     var dataObject: ContentItem?
     var pageTitle: String = ""
@@ -55,6 +57,23 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
     }
     
+    deinit {
+        //MARK: Some of the deinit might b e useful in the future
+//        self.webView?.removeObserver(self, forKeyPath: "estimatedProgress")
+//        self.webView?.removeObserver(self, forKeyPath: "canGoBack")
+//        self.webView?.removeObserver(self, forKeyPath: "canGoForward")
+//        
+//        // MARK: - Stop loading and remove message handlers to avoid leak
+//        self.webView?.stopLoading()
+//        self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
+//        self.webView?.configuration.userContentController.removeAllUserScripts()
+//        
+//        // MARK: - Remove delegate to deal with crashes on iOS 8
+//        self.webView?.navigationDelegate = nil
+        self.webView?.scrollView.delegate = nil
+        print ("deinit web view successfully")
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         //print ("view did layout subviews")
@@ -95,10 +114,12 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     private func initStyle() {
         self.view.backgroundColor = UIColor(hex: Color.Content.background)
         topBanner.backgroundColor = UIColor(hex: Color.Ad.background)
-        self.headline.textColor = UIColor(hex: Color.Content.headline)
-        self.tag.textColor = UIColor(hex: Color.Content.tag)
-        self.byline.textColor = UIColor(hex: Color.Content.time)
-        self.bodyTextView.backgroundColor = UIColor(hex: Color.Content.background)
+        headline.textColor = UIColor(hex: Color.Content.headline)
+        tag.textColor = UIColor(hex: Color.Content.tag)
+        tag.font = tag.font.bold()
+        byline.textColor = UIColor(hex: Color.Content.time)
+        lead.textColor = UIColor(hex: Color.Content.lead)
+        bodyTextView.backgroundColor = UIColor(hex: Color.Content.background)
     }
     
     private func updatePageContent() {
@@ -143,9 +164,37 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         // MARK: the outlets may not exist so "?" is necessary
         headline?.text = dataObject?.headline ?? ""
-        tag?.text = (dataObject?.tag ?? "")
-            .replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
-        byline?.text = dataObject?.cauthor ?? ""
+        
+        // MARK: Get the first tag using regular expression
+        let tagString = dataObject?.tag ?? ""
+        let firstTag = tagString.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+        tag?.text = firstTag
+        
+        
+        // MARK: Use NSMutableAttributedString to display byline
+        let publishingTime = dataObject?.publishTime ?? ""
+        let publishingTimeAttributedString = NSMutableAttributedString(string: publishingTime, attributes:nil)
+        
+        
+        // MARK: Set the author text style
+        let authorColor = UIColor(hex: Color.Content.body)
+        let authorAttributes:[String:AnyObject] = [
+            NSForegroundColorAttributeName: authorColor
+        ]
+        
+        
+        let bylineString = dataObject?.chineseByline ?? ""
+        let bylineAttrString = NSMutableAttributedString(string: " \(bylineString)", attributes:authorAttributes)
+        
+        
+        let bylineAttributedString = NSMutableAttributedString()
+        bylineAttributedString.append(publishingTimeAttributedString)
+        bylineAttributedString.append(bylineAttrString)
+        
+        byline?.attributedText = bylineAttributedString
+        
+        //byline?.text = dataObject?.publishTime ?? ""
+        
         lead?.text = dataObject?.lead ?? ""
         let text = NSMutableAttributedString()
         text.append(body)
@@ -173,6 +222,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         webView?.isOpaque = true
         webView?.backgroundColor = UIColor.clear
         webView?.scrollView.backgroundColor = UIColor.clear
+        
+        // MARK: This makes the web view scroll like native
+        webView?.scrollView.delegate = self
         
         // MARK: Get values for the content
         let headline = dataObject?.headline ?? ""
@@ -291,6 +343,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
 }
 
 
+
+extension ContentItemViewController: UIScrollViewDelegate {
+    // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
+    // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
+    }
+}
 
 
 //extension String {

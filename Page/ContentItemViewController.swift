@@ -80,9 +80,12 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     return
                 }
                 if let results = results {
-                    //print ("cbody is \(results.fetchResults[0].items[0].cbody)")
-                    self?.dataObject?.cbody = results.fetchResults[0].items[0].cbody
-                    self?.dataObject?.ebody = results.fetchResults[0].items[0].ebody
+                    let item = results.fetchResults[0].items[0]
+                    self?.dataObject?.cbody = item.cbody
+                    self?.dataObject?.ebody = item.ebody
+                    self?.dataObject?.publishTime = item.publishTime
+                    self?.dataObject?.chineseByline = item.chineseByline
+                    self?.dataObject?.englishByline = item.englishByline
                     self?.updatePageContent()
                 }
             }
@@ -174,8 +177,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Get values for the content
         let headline = dataObject?.headline ?? ""
         let body = dataObject?.cbody ?? ""
-        let byline = dataObject?.cauthor ?? ""
-        let timeStamp = String(describing: dataObject?.timeStamp)
+
         let lead = dataObject?.lead ?? ""
         let tag = (dataObject?.tag ?? "")
             .replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
@@ -185,6 +187,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             imageHTML = ""
         }
+    
+        // MARK: story byline
+        let byline = dataObject?.chineseByline ?? ""
+        
+        // MARK: Story Time
+        let timeStamp = dataObject?.publishTime ?? ""
+        
+        
         if let wv = self.webView {
             //self.textView.removeFromSuperview()
             // FIXME: add subview is not safe. What happens if there already is a webview?
@@ -279,6 +289,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         return attrString
     }
 }
+
+
 
 
 //extension String {

@@ -5,8 +5,7 @@
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * copies of the Software, and to permit persons to whom the Software ivar* furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
@@ -114,7 +113,8 @@ class ContentFetch {
                         let preferSponsorImage = item["preferSponsorImage"] as? String ?? ""
                         let tag = item["tag"] as? String ?? ""
                         let customLink = item["customLink"] as? String ?? ""
-                        let timeStamp = item["timeStamp"] as? Int ?? 0
+                        let timeStampString = item["timeStamp"] as? String ?? "0"
+                        let timeStamp = TimeInterval(timeStampString) ?? 0
                         
                         // MARK: Note that section may not be continuous
                         let oneItem = ContentItem(
@@ -161,7 +161,7 @@ class ContentFetch {
             let preferSponsorImage = ""
             let tag = item["tag"] ?? ""
             let customLink = item["customlink"] ?? ""
-            let timeStamp = Int(item["pubdate"] ?? "0") ?? 0
+            let timeStamp = TimeInterval(item["pubdate"] ?? "0") ?? 0
             
             // MARK: Note that section may not be continuous
             let oneItem = ContentItem(
@@ -193,7 +193,10 @@ class ContentFetch {
     private func formatFTCStoryJSON(_ item: [String: Any]) -> [ContentSection] {
         var contentSections = [ContentSection]()
         var itemCollection = [ContentItem]()
-        
+
+        // MARK: Get publish time of the content
+        let publishTimeString = item["last_publish_time"] as? String ?? "0"
+        let publishTime = TimeInterval(publishTimeString) ?? 0
         
         // MARK: Note that section may not be continuous
         let oneItem = ContentItem(
@@ -205,14 +208,29 @@ class ContentFetch {
             preferSponsorImage: "",
             tag: "",
             customLink: "",
-            timeStamp: 0,
+            timeStamp: publishTime,
             section: 0,
             row:0
         )
+
         oneItem.cbody = item["cbody"] as? String
         oneItem.ebody = item["ebody"] as? String
         oneItem.cauthor = item["cauthor"] as? String
         oneItem.eauthor = item["eauthor"] as? String
+        oneItem.publishTime = publishTime.unixToTimeStamp()
+        
+        // MARK: get story bylines
+        let cbyline_description = item["cbyline_description"] as? String ?? ""
+        let cauthor = item["cauthor"] as? String ?? ""
+        let cbyline_status = item["cbyline_status"] as? String ?? ""
+        oneItem.chineseByline = "\(cbyline_description) \(cauthor) \(cbyline_status)"
+        
+        let ebyline_description = item["ebyline_description"] as? String ?? ""
+        let eauthor = item["eauthor"] as? String ?? ""
+        let ebyline_status = item["ebyline_status"] as? String ?? ""
+        oneItem.englishByline = "\(ebyline_description) \(eauthor) \(ebyline_status)"
+        
+        //<%assign var="storyAuthor" value="`$story.ebyline_description` `$story.eauthor` `$story.ebyline_status`"%>
         itemCollection.append(oneItem)
         let contentSection = ContentSection(
             title: "",

@@ -204,7 +204,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lDK-8U-va4">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="458"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="474"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sgi-S8-jfa">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
@@ -231,19 +231,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hHb-1F-Eub">
-                                                <rect key="frame" x="14" y="192" width="347" height="195"/>
+                                                <rect key="frame" x="0.0" y="192" width="375" height="211"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="hHb-1F-Eub" secondAttribute="height" multiplier="16:9" id="Cb0-1Q-pPF"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="时间" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNP-Rk-sLb">
-                                                <rect key="frame" x="14" y="395" width="347" height="21"/>
+                                                <rect key="frame" x="14" y="411" width="347" height="21"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AVq-Gr-F2f" customClass="UITextViewFixed" customModule="Page" customModuleProvider="target">
-                                                <rect key="frame" x="14" y="424" width="347" height="14"/>
+                                                <rect key="frame" x="14" y="440" width="347" height="14"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <attributedString key="attributedText"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -258,7 +258,7 @@
                                             <constraint firstItem="BC5-Ds-r9x" firstAttribute="leading" secondItem="lDK-8U-va4" secondAttribute="leading" constant="14" id="Eav-BI-u15"/>
                                             <constraint firstItem="AVq-Gr-F2f" firstAttribute="leading" secondItem="lDK-8U-va4" secondAttribute="leading" constant="14" id="IOG-de-Qrm"/>
                                             <constraint firstAttribute="trailing" secondItem="MNP-Rk-sLb" secondAttribute="trailing" constant="14" id="PL6-kO-qTT"/>
-                                            <constraint firstAttribute="trailing" secondItem="hHb-1F-Eub" secondAttribute="trailing" constant="14" id="R2j-Tf-p7V"/>
+                                            <constraint firstAttribute="trailing" secondItem="hHb-1F-Eub" secondAttribute="trailing" id="R2j-Tf-p7V"/>
                                             <constraint firstItem="MNP-Rk-sLb" firstAttribute="top" secondItem="hHb-1F-Eub" secondAttribute="bottom" constant="8" symbolic="YES" id="SNg-DI-8a7"/>
                                             <constraint firstItem="nhl-8Z-LZB" firstAttribute="leading" secondItem="lDK-8U-va4" secondAttribute="leading" constant="14" id="ST7-Eu-Nl3"/>
                                             <constraint firstItem="Sgi-S8-jfa" firstAttribute="leading" secondItem="lDK-8U-va4" secondAttribute="leading" id="UC9-De-4Dp"/>
@@ -272,7 +272,7 @@
                                             <constraint firstAttribute="trailing" secondItem="nhl-8Z-LZB" secondAttribute="trailing" constant="14" id="eJW-LC-scN"/>
                                             <constraint firstItem="gdr-9l-V0g" firstAttribute="leading" secondItem="lDK-8U-va4" secondAttribute="leading" constant="14" id="lxA-cF-T8E"/>
                                             <constraint firstAttribute="trailing" secondItem="gdr-9l-V0g" secondAttribute="trailing" constant="14" id="sGG-AP-3wh"/>
-                                            <constraint firstItem="hHb-1F-Eub" firstAttribute="leading" secondItem="lDK-8U-va4" secondAttribute="leading" constant="14" id="z1f-91-fnv"/>
+                                            <constraint firstItem="hHb-1F-Eub" firstAttribute="leading" secondItem="lDK-8U-va4" secondAttribute="leading" id="z1f-91-fnv"/>
                                         </constraints>
                                     </view>
                                 </subviews>

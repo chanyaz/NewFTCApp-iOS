@@ -52,7 +52,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         navigationController?.delegate = self
         navigationItem.title = "another test from oliver"
-
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -63,14 +63,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         lead.text = ""
         byline.text = ""
         updatePageContent()
-        
-        if let content = dataObject {
-            let attributedArticle = AttributedArticle(content: content, contentWidth: bodyTextView.contentSize.width)
-            // attributedArticle.chineseBody
-            // attributedArticle.englishBody
-            // attributedArticle.bilingualBody
-            bodyTextView.attributedText = attributedArticle.chineseBody
-        }
         
     }
     
@@ -113,9 +105,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // MARK: There are three ways to convert HTML body text into NSMutableAttributedString. Each has its merits and limits.
             if let body = htmlToAttributedString(bodyString){
                 // MARK: If we can handle all the HTML tags confidantly
-                //if bodyString != "" {
-                    renderTextview(body)
-                //}
+                renderTextview(body)
             } else {
                 // MARK: Use WKWebView to display story
                 renderWebView()
@@ -124,6 +114,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     private func renderTextview(_ body: NSMutableAttributedString) {
+        print ("render the text view with native code")
         // MARK: Styles and Colors
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
@@ -137,9 +128,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             let imageWidth = Int(view.frame.width)
             let imageHeight = imageWidth * 9 / 16
-//            dataObject?.loadImage(type: "detail", width: Int(imageWidth), height: Int(imageHeight), completion: { [weak self](cellContentItem, error) in
-//                    self?.coverImage.image = cellContentItem.largeImage
-//            })
+            //            dataObject?.loadImage(type: "detail", width: Int(imageWidth), height: Int(imageHeight), completion: { [weak self](cellContentItem, error) in
+            //                    self?.coverImage.image = cellContentItem.largeImage
+            //            })
             
             dataObject?.loadImage(type: "detail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
                 self?.coverImage.image = cellContentItem.thumbnailImage
@@ -156,7 +147,18 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let text = NSMutableAttributedString()
         text.append(body)
         bodyTextView?.attributedText = text
-        //bodyTextView?.isScrollEnabled = false
+        bodyTextView?.isScrollEnabled = false
+        
+        
+        // FIXME: There's something wrong with this text, comment it for now
+        if let content = dataObject {
+            let attributedArticle = AttributedArticle(content: content, contentWidth: bodyTextView.contentSize.width)
+            // attributedArticle.chineseBody
+            // attributedArticle.englishBody
+            // attributedArticle.bilingualBody
+            print ("chinese body is: \(attributedArticle.chineseBody)")
+            bodyTextView.attributedText = attributedArticle.chineseBody
+        }
     }
     
     private func renderWebView() {

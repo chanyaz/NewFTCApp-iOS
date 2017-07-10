@@ -115,6 +115,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         self.view.backgroundColor = UIColor(hex: Color.Content.background)
         topBanner.backgroundColor = UIColor(hex: Color.Ad.background)
         headline.textColor = UIColor(hex: Color.Content.headline)
+        headline.font = headline.font.bold()
         tag.textColor = UIColor(hex: Color.Content.tag)
         tag.font = tag.font.bold()
         byline.textColor = UIColor(hex: Color.Content.time)
@@ -139,9 +140,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
     private func renderTextview(_ body: NSMutableAttributedString) {
         print ("render the text view with native code")
-        // MARK: Styles and Colors
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.paragraphSpacing = 12.0
+
+
         
         // MARK: Ad View
         
@@ -152,14 +152,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             let imageWidth = Int(view.frame.width)
             let imageHeight = imageWidth * 9 / 16
-            //            dataObject?.loadImage(type: "detail", width: Int(imageWidth), height: Int(imageHeight), completion: { [weak self](cellContentItem, error) in
-            //                    self?.coverImage.image = cellContentItem.largeImage
-            //            })
-            
             dataObject?.loadImage(type: "detail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
                 self?.coverImage.image = cellContentItem.thumbnailImage
             })
-            
         }
         
         // MARK: the outlets may not exist so "?" is necessary
@@ -195,7 +190,24 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         //byline?.text = dataObject?.publishTime ?? ""
         
-        lead?.text = dataObject?.lead ?? ""
+        //paragraphStyle.paragraphSpacing = 12.0
+        let paragraphStyle = NSMutableParagraphStyle()
+        //paragraphStyle.paragraphSpacing = 12.0
+        paragraphStyle.lineHeightMultiple = 1.0
+        paragraphStyle.lineSpacing = 5.0
+        //paragraphStyle.paragraphSpacing = 100.0
+        
+        let leadAttributes:[String:AnyObject] = [
+            NSParagraphStyleAttributeName: paragraphStyle
+        ]
+        
+        let leadString = dataObject?.lead ?? ""
+        let leadAttrString = NSMutableAttributedString(string: leadString, attributes:leadAttributes)
+        lead?.attributedText = leadAttrString
+        //lead?.backgroundColor = UIColor.yellow
+        //lead?.text = dataObject?.lead ?? ""
+        
+        
         let text = NSMutableAttributedString()
         text.append(body)
         bodyTextView?.attributedText = text
@@ -203,14 +215,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         
         // FIXME: There's something wrong with this text, comment it for now
-        if let content = dataObject {
-            let attributedArticle = AttributedArticle(content: content, contentWidth: bodyTextView.contentSize.width)
-            // attributedArticle.chineseBody
-            // attributedArticle.englishBody
-            // attributedArticle.bilingualBody
-            print ("chinese body is: \(attributedArticle.chineseBody)")
-            bodyTextView.attributedText = attributedArticle.chineseBody
-        }
+//        if let content = dataObject {
+//            let attributedArticle = AttributedArticle(content: content, contentWidth: bodyTextView.contentSize.width)
+//            // attributedArticle.chineseBody
+//            // attributedArticle.englishBody
+//            // attributedArticle.bilingualBody
+//            // print ("chinese body is: \(attributedArticle.chineseBody)")
+//            bodyTextView.attributedText = attributedArticle.chineseBody
+//        }
     }
     
     private func renderWebView() {

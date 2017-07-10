@@ -10,9 +10,9 @@ import Foundation
 struct Color {
 // Those nested structures are grouped mostly according to their functions
     struct Content {
-        static let headline = "#33302d"
+        static let headline = "#000000"
         static let body = "#333333"
-        static let lead = "#66605a"
+        static let lead = "#777777"
         static let border = "#d4c9bc"
         static let background = "#FFF1E0"
         static let tag = "#9E2F50"

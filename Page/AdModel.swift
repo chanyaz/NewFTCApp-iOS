@@ -22,20 +22,41 @@ struct AdParser {
     }
     
     public static func parseAdCode(_ adCode: String) -> AdModel {
-        let link = "some link"
-        let impressions = ["some impresion link"]
         let video = ""
     
+        //print ("ad code is now: \(adCode)")
+        // MARK: Extract Images
         let imagePatterns = [
             "'imageUrl': '(.+)'",
+            "var ImgSrc = '(.+)';",
+            "(https://creatives.ftimg.net/.+jpg)",
+            "(https://creatives.ftimg.net/.+gif)",
             "<img src=\"(.+)\" style"
         ]
         let image = adCode.matchingStrings(regexes: imagePatterns)
-        print (image ?? "")
         if image == nil {
-            print (adCode)
+            print ("the ad code: \(adCode)")
         }
-        //print ("prefix12 aaa3 prefix45".matchingStrings(regex: "fix([0-9])([0-9])"))
+        
+        // MARK: Extract Link
+        let linkPatterns = [
+            "'link': '(.+)'",
+            "href=\"([^\"]+)\""
+        ]
+        let link = adCode.matchingStrings(regexes: linkPatterns)
+        if link == nil {
+            print ("link is nil, the ad code is now: \(adCode)")
+        }
+        
+        // MARK: Impressions
+        let impressionPatterns = [
+            "var Imp = '(.+)';"
+        ]
+        
+        var impressions = [String]()
+        if let impression = adCode.matchingStrings(regexes: impressionPatterns) {
+            impressions.append(impression)
+        }
         
         let adModel = AdModel(
             image: image,
@@ -56,24 +77,11 @@ struct AdParser {
         return nil
     }
     
-    
-
-    
 }
 
 
 extension String {
-//    func matchingStrings(regex: String) -> [[String]] {
-//        guard let regex = try? NSRegularExpression(pattern: regex, options: []) else { return [] }
-//        let nsString = self as NSString
-//        let results  = regex.matches(in: self, options: [], range: NSMakeRange(0, nsString.length))
-//        return results.map { result in
-//            (0..<result.numberOfRanges).map { result.rangeAt($0).location != NSNotFound
-//                ? nsString.substring(with: result.rangeAt($0))
-//                : ""
-//            }
-//        }
-//    }
+    
     func matchingFirstString(regex: String) -> String? {
         guard let regex = try? NSRegularExpression(pattern: regex, options: []) else { return nil }
         let nsString = self as NSString
@@ -95,6 +103,7 @@ extension String {
         
         return nil
     }
+    
     func matchingStrings(regexes: [String]) -> String? {
         for regex in regexes {
             if let matchString = self.matchingFirstString(regex: regex) {
@@ -103,4 +112,5 @@ extension String {
         }
         return nil
     }
+    
 }

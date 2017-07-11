@@ -363,30 +363,49 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         for (index, tag) in tagsArray.enumerated() {
                             relatedTopics += "<li class=\"story-theme mp\(index+1)\"><a target=\"_blank\" href=\"/tag/\(tag)\">\(tag)</a><div class=\"icon-right\"><button class=\"myft-follow plus\" data-tag=\"\(tag)\" data-type=\"tag\">关注</button></div></li>"
                         }
+                        
+                        let bodyWithMPU = body.replacingOccurrences(
+                            of: "[\r\t\n]",
+                            with: "",
+                            options: .regularExpression
+                            ).replacingOccurrences(
+                                of: "^(<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
+                                with: "$1<div id=story_main_mpu><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div><p>",
+                                options: .regularExpression
+                        )
+                        
+                        // TODO: Premium user will not need to see the MPU ads
+                        let finalBody: String
+                        finalBody = bodyWithMPU.replacingOccurrences(
+                            of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
+                            with: "$1<div class=story_main_mpu_vw><script type=\"text/javascript\">document.write (writeAd('storympuVW'));</script></div><p>",
+                            options: .regularExpression
+                        )
+
+                        
+                        
+                        //print(bodyWithMPU)
+                        
+                        
                         /*
                          
                          
                          
-                         <li class="story-theme">
-                         <a target="_blank" href="/tag/难民危机">难民危机</a>
-                         <div class="icon-right">
-                         <button class="myft-follow plus" data-tag="难民危机" data-type="tag">关注</button>
-                         </div>
-                         </li>
+                         <%elseif $hideMPU3!="yes" && !preg_match("/活动页面/is",$keys) && $noAd != "true"%>
+                         <%*<!--在单页的情况下，如果文章没有插图，没有iframe，没有video，没有highcharts, 也没有被强制设为不显示MPU 3，则将MPU_3广告位插入到第五段开头。-->*%>
+                         <%assign var="story_content" value=$storyBody|regex_replace:"/[\r\t\n]/":""|regex_replace:"/^(\<p\>.*?\<p\>.*?\<p\>.*?\<p\>.*?)\<p\>/":"\\1<div id=story_main_mpu><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div><p>"%>
+                         <%else%>
+                         <%assign var="story_content" value=$storyBody%>
+                         <%/if%>
                          
-                         <li class="story-theme">
-                         <a target="_blank" href="/tag/伦理">伦理</a>
-                         <div class="icon-right">
-                         <button class="myft-follow plus" data-tag="伦理" data-type="tag">关注</button>
-                         </div>
-                         </li>
                          
-                         <li class="story-theme">
-                         <a target="_blank" href="/tag/国际治理">国际治理</a>
-                         <div class="icon-right">
-                         <button class="myft-follow plus" data-tag="国际治理" data-type="tag">关注</button>
-                         </div>
-                         </li>
+                         <%if $noAd != "true"%>
+                         <%if date("Ymd",$smarty.now) <= 20161230%>
+                         <%assign var="story_content" value=$story_content|regex_replace:"/[\r\t\n]/":""|regex_replace:"/^(\<p\>.*?)\<p\>/":"\\1<div class=story_main_mpu_vw><script type=\"text/javascript\">document.write (writeAd('storympuVW'));</script></div><p>"%>
+                         <%else%>
+                         <%assign var="story_content" value=$story_content|regex_replace:"/[\r\t\n]/":""|regex_replace:"/^(\<p\>.*?\<p\>.*?\<p\>.*?\<p\>.*?\<p\>.*?\<p\>.*?)\<p\>/":"\\1<div class=\"in-story-recommend P-only\" id=\"in-story-recommend\"></div><p>"%>
+                         <%/if%>
+                         <%/if%>
                          
                          */
                         
@@ -395,7 +414,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
                             do {
                                 let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                                let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: body)
+                                let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: finalBody)
                                     .replacingOccurrences(of: "{story-headline}", with: headline)
                                     .replacingOccurrences(of: "{story-byline}", with: byline)
                                     .replacingOccurrences(of: "{story-time}", with: timeStamp)
@@ -403,8 +422,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                     .replacingOccurrences(of: "{story-tag}", with: tag)
                                     .replacingOccurrences(of: "{story-id}", with: id)
                                     .replacingOccurrences(of: "{story-image}", with: imageHTML)
-                                .replacingOccurrences(of: "{related-stories}", with: relatedStories)
-                                .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
+                                    .replacingOccurrences(of: "{related-stories}", with: relatedStories)
+                                    .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
                                 self.webView?.loadHTMLString(storyHTML, baseURL:url)
                             } catch {
                                 self.webView?.load(request)

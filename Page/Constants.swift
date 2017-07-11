@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 struct Color {
 // Those nested structures are grouped mostly according to their functions
     struct Content {
@@ -43,6 +44,9 @@ struct Color {
     struct Ad {
         static let background = "#f6e9d8"
     }
+}
+struct FontSize {
+    static let bodyExtraSize: CGFloat = 3.0
 }
 struct APIs {
     static let story = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/"

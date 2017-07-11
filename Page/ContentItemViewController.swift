@@ -10,8 +10,6 @@ import UIKit
 import UIKit.NSTextAttachment
 import WebKit
 
-
-
 class ContentItemViewController: UIViewController, UINavigationControllerDelegate{
     var dataObject: ContentItem?
     var pageTitle: String = ""
@@ -383,32 +381,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         )
 
                         
-                        
-                        //print(bodyWithMPU)
-                        
-                        
-                        /*
-                         
-                         
-                         
-                         <%elseif $hideMPU3!="yes" && !preg_match("/活动页面/is",$keys) && $noAd != "true"%>
-                         <%*<!--在单页的情况下，如果文章没有插图，没有iframe，没有video，没有highcharts, 也没有被强制设为不显示MPU 3，则将MPU_3广告位插入到第五段开头。-->*%>
-                         <%assign var="story_content" value=$storyBody|regex_replace:"/[\r\t\n]/":""|regex_replace:"/^(\<p\>.*?\<p\>.*?\<p\>.*?\<p\>.*?)\<p\>/":"\\1<div id=story_main_mpu><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div><p>"%>
-                         <%else%>
-                         <%assign var="story_content" value=$storyBody%>
-                         <%/if%>
-                         
-                         
-                         <%if $noAd != "true"%>
-                         <%if date("Ymd",$smarty.now) <= 20161230%>
-                         <%assign var="story_content" value=$story_content|regex_replace:"/[\r\t\n]/":""|regex_replace:"/^(\<p\>.*?)\<p\>/":"\\1<div class=story_main_mpu_vw><script type=\"text/javascript\">document.write (writeAd('storympuVW'));</script></div><p>"%>
-                         <%else%>
-                         <%assign var="story_content" value=$story_content|regex_replace:"/[\r\t\n]/":""|regex_replace:"/^(\<p\>.*?\<p\>.*?\<p\>.*?\<p\>.*?\<p\>.*?\<p\>.*?)\<p\>/":"\\1<div class=\"in-story-recommend P-only\" id=\"in-story-recommend\"></div><p>"%>
-                         <%/if%>
-                         <%/if%>
-                         
-                         */
-                        
                         // MARK: Story Time
                         let timeStamp = dataObject?.publishTime ?? ""
                         if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
@@ -547,5 +519,6 @@ extension ContentItemViewController: UITextViewDelegate {
 //    }
 //}
 
-// TODO: 1. MPU ads in story page; 2. Sponsorship Ads in story page;
+// Done: 1. MPU ads in story page; 
+// TODO: 2. Sponsorship Ads in story page;
 

@@ -92,7 +92,7 @@ var adchIDNew = window.location.href.replace(/^.*adchannelID=([0-9]{4}).*$/g,'$1
 if (/^[0-9]{4}$/.test(adchIDNew)) {
 adchID = adchIDNew;
 }
-var FTStoryid = '001073135';
+var FTStoryid = '{story-id}';
 </script>
 <!-- MARK: Important: Need to add Google Analytics load events manually -->
 <script>
@@ -212,10 +212,8 @@ var gIsCurrentAdchFinal = false;
 <div class="story-box">
 <h2 class="box-title"><a href="/channel/weekly.html">相关文章</a></h2>
 <ul class="top10">
-<li class="mp1"><a target="_blank" href="/story/001071324">德国拟加大力度遣返申请庇护被拒者</a></li>
-<li class="mp2"><a target="_blank" href="/story/001071327">美联邦上诉法院维持冻结旅行禁令</a></li>
-<li class="mp3"><a target="_blank" href="/story/001072430">昂山素季拒绝联合国调查缅甸罗兴亚危机</a></li>
-<li class="mp4"><a target="_blank" href="/story/001071364">日本去年仅接纳28名难民</a></li>
+{related-stories}
+
 </ul>
 </div>
 <div class="mpu-container">
@@ -224,30 +222,7 @@ var gIsCurrentAdchFinal = false;
 <div class="story-box last-child">
 <h2 class="box-title"><a>相关话题</a></h2>
 <ul class="top10">
-<li class="story-theme mp1">
-<a target="_blank" href="/tag/难民">难民</a>
-<div class="icon-right">
-<button class="myft-follow plus" data-tag="难民" data-type="tag">关注</button>
-</div>
-</li>
-<li class="story-theme">
-<a target="_blank" href="/tag/难民危机">难民危机</a>
-<div class="icon-right">
-<button class="myft-follow plus" data-tag="难民危机" data-type="tag">关注</button>
-</div>
-</li>
-<li class="story-theme">
-<a target="_blank" href="/tag/伦理">伦理</a>
-<div class="icon-right">
-<button class="myft-follow plus" data-tag="伦理" data-type="tag">关注</button>
-</div>
-</li>
-<li class="story-theme">
-<a target="_blank" href="/tag/国际治理">国际治理</a>
-<div class="icon-right">
-<button class="myft-follow plus" data-tag="国际治理" data-type="tag">关注</button>
-</div>
-</li>
+{related-topics}
 </ul>
 </div>
 </div></div><div class="clearfloat"></div>

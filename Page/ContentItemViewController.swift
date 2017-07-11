@@ -98,6 +98,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     self?.dataObject?.publishTime = item.publishTime
                     self?.dataObject?.chineseByline = item.chineseByline
                     self?.dataObject?.englishByline = item.englishByline
+                    self?.dataObject?.relatedStories = item.relatedStories
+                    self?.dataObject?.relatedVideos = item.relatedVideos
                     self?.updatePageContent()
                 }
             }
@@ -304,7 +306,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     private func renderWebView() {
-        print ("there are HTML tags that cannot be handled, use webview to handle it instead")
+        //print ("there are HTML tags that cannot be handled, use webview to handle it instead")
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height)
@@ -316,27 +318,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: This makes the web view scroll like native
         webView?.scrollView.delegate = self
         
-        // MARK: Get values for the content
-        let headline = dataObject?.headline ?? ""
-        let body = dataObject?.cbody ?? ""
-        
-        let lead = dataObject?.lead ?? ""
-        let tag = (dataObject?.tag ?? "")
-            .replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
-        let imageHTML:String
-        if let image = dataObject?.image {
-            imageHTML = "<div class=\"story-image image\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
-        } else {
-            imageHTML = ""
-        }
-        
-        // MARK: story byline
-        let byline = dataObject?.chineseByline ?? ""
-        
-        // MARK: Story Time
-        let timeStamp = dataObject?.publishTime ?? ""
-        
-        
         if let wv = self.webView {
             //self.textView.removeFromSuperview()
             // FIXME: add subview is not safe. What happens if there already is a webview?
@@ -346,43 +327,102 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             }
             self.view.clipsToBounds = true
             webView?.scrollView.bounces = false
-            let urlString: String
+            //let urlString: String
             if dataObject?.type == "story" {
+                // MARK: If it is a story
                 if let id = dataObject?.id {
-                    urlString = "http://www.ftchinese.com/story/\(id)?full=y"
-                } else {
-                    urlString = "http://www.ftchinese.com/"
+                    let urlString = "http://www.ftchinese.com/story/\(id)?full=y"
+                    if let url = URL(string: urlString) {
+                        let request = URLRequest(url: url)
+                        // MARK: Get values for the story content
+                        let headline = dataObject?.headline ?? ""
+                        let body = dataObject?.cbody ?? ""
+                        let lead = dataObject?.lead ?? ""
+                        let tags = dataObject?.tag ?? ""
+                        let tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+                        let imageHTML:String
+                        if let image = dataObject?.image {
+                            imageHTML = "<div class=\"story-image image\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+                        } else {
+                            imageHTML = ""
+                        }
+                        
+                        // MARK: story byline
+                        let byline = dataObject?.chineseByline ?? ""
+                        var relatedStories = ""
+                        if let relatedStoriesData = dataObject?.relatedStories {
+                            for (index, story) in relatedStoriesData.enumerated() {
+                                if let id = story["id"] as? String,
+                                    let headline = story["cheadline"] as? String {
+                                    relatedStories += "<li class=\"mp\(index+1)\"><a target=\"_blank\" href=\"/story/\(id)\">\(headline)</a></li>"
+                                }
+                            }
+                        }
+                        let tagsArray = tags.components(separatedBy: ",")
+                        var relatedTopics = ""
+                        for (index, tag) in tagsArray.enumerated() {
+                            relatedTopics += "<li class=\"story-theme mp\(index+1)\"><a target=\"_blank\" href=\"/tag/\(tag)\">\(tag)</a><div class=\"icon-right\"><button class=\"myft-follow plus\" data-tag=\"\(tag)\" data-type=\"tag\">关注</button></div></li>"
+                        }
+                        /*
+                         
+                         
+                         
+                         <li class="story-theme">
+                         <a target="_blank" href="/tag/难民危机">难民危机</a>
+                         <div class="icon-right">
+                         <button class="myft-follow plus" data-tag="难民危机" data-type="tag">关注</button>
+                         </div>
+                         </li>
+                         
+                         <li class="story-theme">
+                         <a target="_blank" href="/tag/伦理">伦理</a>
+                         <div class="icon-right">
+                         <button class="myft-follow plus" data-tag="伦理" data-type="tag">关注</button>
+                         </div>
+                         </li>
+                         
+                         <li class="story-theme">
+                         <a target="_blank" href="/tag/国际治理">国际治理</a>
+                         <div class="icon-right">
+                         <button class="myft-follow plus" data-tag="国际治理" data-type="tag">关注</button>
+                         </div>
+                         </li>
+                         
+                         */
+                        
+                        // MARK: Story Time
+                        let timeStamp = dataObject?.publishTime ?? ""
+                        if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
+                            do {
+                                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                                let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: body)
+                                    .replacingOccurrences(of: "{story-headline}", with: headline)
+                                    .replacingOccurrences(of: "{story-byline}", with: byline)
+                                    .replacingOccurrences(of: "{story-time}", with: timeStamp)
+                                    .replacingOccurrences(of: "{story-lead}", with: lead)
+                                    .replacingOccurrences(of: "{story-tag}", with: tag)
+                                    .replacingOccurrences(of: "{story-id}", with: id)
+                                    .replacingOccurrences(of: "{story-image}", with: imageHTML)
+                                .replacingOccurrences(of: "{related-stories}", with: relatedStories)
+                                .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
+                                self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                            } catch {
+                                self.webView?.load(request)
+                            }
+                        } else {
+                            self.webView?.load(request)
+                        }
+                    }
                 }
             } else {
+                // MARK: - If it is other types of content such video and interacrtive features
                 if let id = dataObject?.id, let type = dataObject?.type {
-                urlString = "http://www.ftchinese.com/\(type)/\(id)?from=swiftapp"
+                    let urlString = "http://www.ftchinese.com/\(type)/\(id)?from=swiftapp"
                     print ("loading \(urlString)")
-                if let url = URL(string: urlString) {
-                    let request = URLRequest(url: url)
-                    wv.load(request)
-                }
-                }
-                return
-            }
-            
-            if let url = URL(string: urlString) {
-                let request = URLRequest(url: url)
-                if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
-                    do {
-                        let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                        let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: body)
-                            .replacingOccurrences(of: "{story-headline}", with: headline)
-                            .replacingOccurrences(of: "{story-byline}", with: byline)
-                            .replacingOccurrences(of: "{story-time}", with: timeStamp)
-                            .replacingOccurrences(of: "{story-lead}", with: lead)
-                            .replacingOccurrences(of: "{story-tag}", with: tag)
-                            .replacingOccurrences(of: "{story-image}", with: imageHTML)
-                        self.webView?.loadHTMLString(storyHTML, baseURL:url)
-                    } catch {
-                        self.webView?.load(request)
+                    if let url = URL(string: urlString) {
+                        let request = URLRequest(url: url)
+                        wv.load(request)
                     }
-                } else {
-                    self.webView?.load(request)
                 }
             }
         }

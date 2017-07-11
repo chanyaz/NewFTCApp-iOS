@@ -35,8 +35,8 @@ class ContentItem{
     var cauthor: String?
     var eauthor: String?
     var locations: String?
-    
-    
+    var relatedStories: [[String: Any]]?
+    var relatedVideos: [[String: Any]]?
     
     
     init (id: String,

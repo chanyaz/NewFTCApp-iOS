@@ -37,6 +37,18 @@ class DataViewController: UICollectionViewController {
     //
     //    }
     
+    
+    deinit {
+        //MARK: Some of the deinit might b e useful in the future
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name.UIDeviceOrientationDidChange,
+            object: nil
+        )
+        print ("deinit channel view successfully")
+    }
+    
+    
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
         let horizontalClass = self.traitCollection.horizontalSizeClass
@@ -78,9 +90,6 @@ class DataViewController: UICollectionViewController {
             }
         }
     }
-    
-    
-    
     
     
     //    private func updateUI() {
@@ -161,10 +170,18 @@ class DataViewController: UICollectionViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
-        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(orientationChanged),
+            name: Notification.Name.UIDeviceOrientationDidChange,
+            object: nil
+        )
         
     }
     
+    public func orientationChanged() {
+        print ("orientation changed! ")
+    }
     
     func refreshControlDidFire(sender:AnyObject) {
         print ("pull to refresh fired")
@@ -230,11 +247,11 @@ class DataViewController: UICollectionViewController {
             }
         case "AdCellRegular":
             if let cell = cellItem as? AdCellRegular {
-//                cell.cellWidth = cellWidth
-//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-//                cell.containerView.backgroundColor = UIColor.yellow
+                //                cell.cellWidth = cellWidth
+                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                //                cell.containerView.backgroundColor = UIColor.yellow
                 cell.backgroundColor = UIColor.red
-//                cell.layer.borderWidth = 1
+                //                cell.layer.borderWidth = 1
                 return cell
             }
         default:
@@ -260,7 +277,7 @@ class DataViewController: UICollectionViewController {
                 withReuseIdentifier: reuseIdentifier,
                 for: indexPath
             )
-
+            
             // MARK: - a common tag gesture for all kinds of headers
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
             headerView.isUserInteractionEnabled = true
@@ -269,7 +286,7 @@ class DataViewController: UICollectionViewController {
             case "Ad":
                 let adView = headerView as! Ad
                 adView.contentSection = fetches.fetchResults[indexPath.section]
-//                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
+                //                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView

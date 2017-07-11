@@ -218,7 +218,9 @@ class ContentFetch {
         oneItem.cauthor = item["cauthor"] as? String
         oneItem.eauthor = item["eauthor"] as? String
         oneItem.publishTime = publishTime.unixToTimeStamp()
-        
+        oneItem.relatedStories = item["relative_story"] as? [[String: Any]]
+        oneItem.relatedVideos = item["relative_vstory"] as? [[String: Any]]
+
         // MARK: get story bylines
         let cbyline_description = item["cbyline_description"] as? String ?? ""
         let cauthor = item["cauthor"] as? String ?? ""

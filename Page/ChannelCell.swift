@@ -20,7 +20,7 @@ class ChannelCell: UICollectionViewCell {
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var border: UIView!
     @IBOutlet weak var imageView: UIImageView!
-
+    
     // MARK: - Cell width set by collection view controller
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
@@ -57,13 +57,13 @@ class ChannelCell: UICollectionViewCell {
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
-        if let loadedImage = itemCell?.largeImage {
+        if let loadedImage = itemCell?.thumbnailImage {
             imageView.image = loadedImage
             //print ("image is already loaded, no need to download again. ")
         } else {
-        itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-            self?.imageView.image = cellContentItem.largeImage
-        })
+            itemCell?.loadImage(type: "thumbnail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+                self?.imageView.image = cellContentItem.thumbnailImage
+            })
         }
         
         // MARK: - Use calculated cell width to diplay auto-sizing cells

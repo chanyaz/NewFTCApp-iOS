@@ -78,3 +78,13 @@ extension UIFont {
     }
     
 }
+
+extension TimeInterval{
+    func unixToTimeStamp() -> String {
+        let time = Date(timeIntervalSince1970: self)
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateFormat = "YYYY年MM月dd日 hh:mm"
+        let timeString = dayTimePeriodFormatter.string(from: time)
+        return timeString
+    }
+}

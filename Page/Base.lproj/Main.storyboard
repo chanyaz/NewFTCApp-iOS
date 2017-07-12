@@ -199,28 +199,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="456-ll-82O">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AVq-Gr-F2f" customClass="UITextViewFixed" customModule="Page" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <attributedString key="attributedText"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="456-ll-82O" firstAttribute="top" secondItem="vI6-SU-Y0Z" secondAttribute="top" id="OUR-Bc-EB5"/>
-                            <constraint firstItem="456-ll-82O" firstAttribute="leading" secondItem="vI6-SU-Y0Z" secondAttribute="leading" id="W2c-jA-bj0"/>
-                            <constraint firstItem="PRi-H5-eiu" firstAttribute="top" secondItem="456-ll-82O" secondAttribute="bottom" id="kzu-Cm-h1y"/>
-                            <constraint firstAttribute="trailing" secondItem="456-ll-82O" secondAttribute="trailing" id="oc9-JN-FLA"/>
+                            <constraint firstItem="AVq-Gr-F2f" firstAttribute="leading" secondItem="vI6-SU-Y0Z" secondAttribute="leading" id="3Do-em-cmY"/>
+                            <constraint firstAttribute="trailing" secondItem="AVq-Gr-F2f" secondAttribute="trailing" id="6rW-Ni-SXB"/>
+                            <constraint firstItem="PRi-H5-eiu" firstAttribute="top" secondItem="AVq-Gr-F2f" secondAttribute="bottom" id="Wc0-zh-W8g"/>
+                            <constraint firstItem="AVq-Gr-F2f" firstAttribute="top" secondItem="vI6-SU-Y0Z" secondAttribute="top" id="ql1-Rh-glb"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="textView" destination="456-ll-82O" id="95k-Oz-12l"/>
+                        <outlet property="bodyTextView" destination="AVq-Gr-F2f" id="fMX-vK-FQb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dck-Gk-Dsj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2882" y="-244"/>
+            <point key="canvasLocation" x="-2882.4000000000001" y="-244.22788605697153"/>
         </scene>
         <!--新闻-->
         <scene sceneID="UVA-jQ-V7K">

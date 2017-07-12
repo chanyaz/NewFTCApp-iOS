@@ -5,8 +5,7 @@
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * copies of the Software, and to permit persons to whom the Software ivar* furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
@@ -55,13 +54,7 @@ class ContentFetch {
             }
             
             do {
-                guard let resultsDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: AnyObject] else {
-                    let APIError = NSError(domain: "ContentFetch", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey:"Unknown API response"])
-                    OperationQueue.main.addOperation({
-                        completion(nil, APIError)
-                    })
-                    return
-                }
+                let resultsDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
                 let contentSections = self.formatJSON(resultsDictionary)
                 OperationQueue.main.addOperation({
                     completion(ContentFetchResults(apiUrl: urlString, fetchResults: contentSections), nil)
@@ -83,48 +76,19 @@ class ContentFetch {
         return url
     }
     
-    func formatJSON(_ resultsDictionary: [String: Any]) -> [ContentSection] {
-        if let sections = resultsDictionary["sections"] as? [[String: Any]] {
-            return formatPageMakerJSON(sections)
-        } else if let _ = resultsDictionary["id"] as? String,
-            let _ = resultsDictionary["cbody"] as? String {
-            return formatFTCStoryJSON(resultsDictionary)
+    func formatJSON(_ resultsDictionary: Any) -> [ContentSection] {
+        if let resultsDictionary = resultsDictionary as? [String: Any] {
+            if let sections = resultsDictionary["sections"] as? [[String: Any]] {
+                return formatPageMakerJSON(sections)
+            } else if let _ = resultsDictionary["id"] as? String,
+                let _ = resultsDictionary["cbody"] as? String {
+                return formatFTCStoryJSON(resultsDictionary)
+            }
+        } else if let resultsDictionary = resultsDictionary as? [[String: String]] {
+            return formatFTCChannelJSON(resultsDictionary)
         }
+        print ("The API JSON Object is not a known format.")
         return [ContentSection]()
-    }
-    
-    func formatFTCStoryJSON(_ item: [String: Any]) -> [ContentSection] {
-        var contentSections = [ContentSection]()
-        var itemCollection = [ContentItem]()
-
-        
-        // MARK: Note that section may not be continuous
-        let oneItem = ContentItem(
-            id: "",
-            image: "",
-            headline: "",
-            lead: "",
-            type: "story",
-            preferSponsorImage: "",
-            tag: "",
-            customLink: "",
-            timeStamp: 0,
-            section: 0,
-            row:0
-        )
-        oneItem.cbody = item["cbody"] as? String
-        oneItem.ebody = item["ebody"] as? String
-        oneItem.cauthor = item["cauthor"] as? String
-        oneItem.eauthor = item["eauthor"] as? String
-        itemCollection.append(oneItem)
-        let contentSection = ContentSection(
-            title: "",
-            items: itemCollection,
-            type: "List",
-            adid: nil
-        )
-        contentSections.append(contentSection)
-        return contentSections
     }
     
     func formatPageMakerJSON(_ sections: [[String: Any]]) -> [ContentSection] {
@@ -149,7 +113,8 @@ class ContentFetch {
                         let preferSponsorImage = item["preferSponsorImage"] as? String ?? ""
                         let tag = item["tag"] as? String ?? ""
                         let customLink = item["customLink"] as? String ?? ""
-                        let timeStamp = item["timeStamp"] as? Int ?? 0
+                        let timeStampString = item["timeStamp"] as? String ?? "0"
+                        let timeStamp = TimeInterval(timeStampString) ?? 0
                         
                         // MARK: Note that section may not be continuous
                         let oneItem = ContentItem(
@@ -180,4 +145,104 @@ class ContentFetch {
         }
         return contentSections
     }
+    
+    private func formatFTCChannelJSON(_ items: [[String: String]]) -> [ContentSection] {
+        var contentSections = [ContentSection]()
+        var itemCollection = [ContentItem]()
+        for (row, item) in items.enumerated() {
+            let id = item["id"] ?? ""
+            let image = item["image"] ?? ""
+            let headline = item["cheadline"] ?? ""
+            var lead = item["clongleadbody"] ?? ""
+            if lead == "" {
+                lead = item["cshortleadbody"] ?? ""
+            }
+            let type = item["type"] ?? "story"
+            let preferSponsorImage = ""
+            let tag = item["tag"] ?? ""
+            let customLink = item["customlink"] ?? ""
+            let timeStamp = TimeInterval(item["pubdate"] ?? "0") ?? 0
+            
+            // MARK: Note that section may not be continuous
+            let oneItem = ContentItem(
+                id: id,
+                image: image,
+                headline: headline,
+                lead: lead,
+                type: type,
+                preferSponsorImage: preferSponsorImage,
+                tag: tag,
+                customLink: customLink,
+                timeStamp: timeStamp,
+                section: 0,
+                row:row
+            )
+            itemCollection.append(oneItem)
+        }
+        let title = ""
+        let contentSection = ContentSection(
+            title: title,
+            items: itemCollection,
+            type: "List",
+            adid: nil
+        )
+        contentSections.append(contentSection)
+        return contentSections
+    }
+    
+    private func formatFTCStoryJSON(_ item: [String: Any]) -> [ContentSection] {
+        var contentSections = [ContentSection]()
+        var itemCollection = [ContentItem]()
+
+        // MARK: Get publish time of the content
+        let publishTimeString = item["last_publish_time"] as? String ?? "0"
+        let publishTime = TimeInterval(publishTimeString) ?? 0
+        
+        // MARK: Note that section may not be continuous
+        let oneItem = ContentItem(
+            id: "",
+            image: "",
+            headline: "",
+            lead: "",
+            type: "story",
+            preferSponsorImage: "",
+            tag: "",
+            customLink: "",
+            timeStamp: publishTime,
+            section: 0,
+            row:0
+        )
+
+        oneItem.cbody = item["cbody"] as? String
+        oneItem.ebody = item["ebody"] as? String
+        oneItem.cauthor = item["cauthor"] as? String
+        oneItem.eauthor = item["eauthor"] as? String
+        oneItem.publishTime = publishTime.unixToTimeStamp()
+        oneItem.relatedStories = item["relative_story"] as? [[String: Any]]
+        oneItem.relatedVideos = item["relative_vstory"] as? [[String: Any]]
+
+        // MARK: get story bylines
+        let cbyline_description = item["cbyline_description"] as? String ?? ""
+        let cauthor = item["cauthor"] as? String ?? ""
+        let cbyline_status = item["cbyline_status"] as? String ?? ""
+        oneItem.chineseByline = "\(cbyline_description) \(cauthor) \(cbyline_status)"
+        
+        let ebyline_description = item["ebyline_description"] as? String ?? ""
+        let eauthor = item["eauthor"] as? String ?? ""
+        let ebyline_status = item["ebyline_status"] as? String ?? ""
+        oneItem.englishByline = "\(ebyline_description) \(eauthor) \(ebyline_status)"
+        
+        //<%assign var="storyAuthor" value="`$story.ebyline_description` `$story.eauthor` `$story.ebyline_status`"%>
+        itemCollection.append(oneItem)
+        let contentSection = ContentSection(
+            title: "",
+            items: itemCollection,
+            type: "List",
+            adid: nil
+        )
+        contentSections.append(contentSection)
+        return contentSections
+    }
+    
+    
 }

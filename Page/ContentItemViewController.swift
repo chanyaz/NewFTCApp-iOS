@@ -7,25 +7,11 @@
 //
 
 import UIKit
+import UIKit.NSTextAttachment
 import WebKit
 
 class ContentItemViewController: UIViewController, UINavigationControllerDelegate{
-    
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
-    
-    var dataObject: ContentItem? {
-        didSet {
-            //            print ("data object changed")
-            //            print ("id: \(dataObject?.id) type: \(dataObject?.type) body: \(dataObject?.cbody)")
-            initText()
-        }
-    }
+    var dataObject: ContentItem?
     var pageTitle: String = ""
     var themeColor: String?
     private var detailDisplayed = false
@@ -35,13 +21,22 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     fileprivate let contentAPI = ContentFetch()
     
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    //    @IBOutlet weak var contentScrollView: UIScrollView!
+    //
+    //    @IBOutlet weak var topBanner: UIView!
+    //
+    //    @IBOutlet weak var tag: UILabel!
+    //
+    //    @IBOutlet weak var headline: UILabel!
+    //
+    //    @IBOutlet weak var lead: UILabel!
+    //
+    //    @IBOutlet weak var coverImage: UIImageView!
+    //
+    //    @IBOutlet weak var byline: UILabel!
     
-    @IBOutlet weak var textView: UITextView!
-//    @IBOutlet weak var toolBar: UIToolbar!
-//    
-//    @IBOutlet weak var languageSwitch: UISegmentedControl!
-//    @IBOutlet weak var actionButton: UIBarButtonItem!
-//    @IBOutlet weak var bookMark: UIBarButtonItem!
+    @IBOutlet weak var bodyTextView: UITextView!
+    // TODO: https://stackoverflow.com/questions/38948904/calculating-contentsize-for-uiscrollview-when-using-auto-layout
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,13 +44,36 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         initStyle()
         
         navigationController?.delegate = self
-        navigationItem.title = "another test from oliver"
+        //navigationItem.title = "another test from oliver"
+        
+    }
+    
+    deinit {
+        //MARK: Some of the deinit might b e useful in the future
+        //        self.webView?.removeObserver(self, forKeyPath: "estimatedProgress")
+        //        self.webView?.removeObserver(self, forKeyPath: "canGoBack")
+        //        self.webView?.removeObserver(self, forKeyPath: "canGoForward")
+        //
+        //        // MARK: - Stop loading and remove message handlers to avoid leak
+        //        self.webView?.stopLoading()
+        //        self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
+        //        self.webView?.configuration.userContentController.removeAllUserScripts()
+        //
+        //        // MARK: - Remove delegate to deal with crashes on iOS 8
+        //        self.webView?.navigationDelegate = nil
+        self.webView?.scrollView.delegate = nil
+        print ("deinit web view successfully")
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         //print ("view did layout subviews")
-        initText()
+        //        headline.text = ""
+        //        tag.text = ""
+        //        lead.text = ""
+        //        byline.text = ""
+        updatePageContent()
+        
     }
     
     private func getDetailInfo() {
@@ -72,73 +90,232 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     return
                 }
                 if let results = results {
-                    self?.dataObject?.cbody = results.fetchResults[0].items[0].cbody
-                    self?.dataObject?.ebody = results.fetchResults[0].items[0].ebody
+                    let item = results.fetchResults[0].items[0]
+                    self?.dataObject?.cbody = item.cbody
+                    self?.dataObject?.ebody = item.ebody
+                    self?.dataObject?.publishTime = item.publishTime
+                    self?.dataObject?.chineseByline = item.chineseByline
+                    self?.dataObject?.englishByline = item.englishByline
+                    self?.dataObject?.relatedStories = item.relatedStories
+                    self?.dataObject?.relatedVideos = item.relatedVideos
+                    self?.updatePageContent()
                 }
             }
         }
     }
     
     private func initStyle() {
-        textView.backgroundColor = UIColor(hex: Color.Content.background)
-        // MARK: Make the text view uneditable
-        textView.isEditable = false
+        self.view.backgroundColor = UIColor(hex: Color.Content.background)
+        //        topBanner.backgroundColor = UIColor(hex: Color.Ad.background)
+        //        headline.textColor = UIColor(hex: Color.Content.headline)
+        //        headline.font = headline.font.bold()
+        //        tag.textColor = UIColor(hex: Color.Content.tag)
+        //        tag.font = tag.font.bold()
+        //        byline.textColor = UIColor(hex: Color.Content.time)
+        //        lead.textColor = UIColor(hex: Color.Content.lead)
+        bodyTextView.backgroundColor = UIColor(hex: Color.Content.background)
+        bodyTextView.isScrollEnabled = false
+        bodyTextView.isScrollEnabled = true
     }
     
-    
-    
-    private func initText() {
+    private func updatePageContent() {
         // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
-        let bodyString = dataObject?.cbody ?? dataObject?.lead ?? "body"
-        // MARK: There are three ways to convert HTML body text into NSMutableAttributedString. Each has its merits and limits. 
-        if let body = htmlToAttributedString(bodyString) {
-            // MARK: If we can handle all the HTML tags confidantly
-            renderTextview(body)
-//        } else if let body = bodyString.htmlAttributedString() {
-//            // MARK: The above uses the string extension to convert string to data then to NSMutableAttributedString. Not sure if this is expensive in terms of computing resource. If there are images in the HTML, there might be delay after tapping as the image is not downloaded asyn.
-//            renderTextview(body)
-        } else {
-            // MARK: Use WKWebView to display story
-            renderWebView()
+        if let type = dataObject?.type {
+            switch type {
+            case "video":
+                renderWebView()
+            case "story":
+                if (dataObject?.cbody) != nil {
+                    renderWebView()
+                    // MARK: There are three ways to convert HTML body text into NSMutableAttributedString. Each has its merits and limits.
+                    //            if let body = htmlToAttributedString(bodyString){
+                    //                // MARK: If we can handle all the HTML tags confidantly
+                    //                renderTextview(body)
+                    //            } else {
+                    //                // MARK: Use WKWebView to display story
+                    //                renderWebView()
+                    //            }
+                }
+            default:
+                return
+            }
         }
+        
     }
     
+    // create our NSTextAttachment
+    let coverImageAttachment = NSTextAttachment()
+    
+    // wrap the attachment in its own attributed string so we can append it
+    var coverImageString: NSAttributedString = NSAttributedString(string: "")
+    
     private func renderTextview(_ body: NSMutableAttributedString) {
-        let headlineColor = UIColor(hex: Color.Content.headline)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.paragraphSpacing = 12.0
+        print ("render the text view with native code")
+        // MARK: Ad View
         
-        // MARK: Headline Style and Text
+        
+        
+        
+        // MARK: Image View
+        
+        // = NSAttributedString(attachment: coverImageAttachment)
+        if let loadedImage = dataObject?.detailImage {
+            //coverImage.image = loadedImage
+            coverImageAttachment.image = loadedImage
+            coverImageString = NSAttributedString(attachment: coverImageAttachment)
+        } else {
+            let imageWidth = Int(bodyTextView.frame.width - bodyTextView.textContainer.lineFragmentPadding * 2)
+            let imageHeight = imageWidth * 9 / 16
+            if let imageString = dataObject?.image {
+                let imageURL = dataObject?.getImageURL(imageString, width: imageWidth, height: imageHeight)
+                let attachment = AsyncTextAttachment(imageURL: imageURL)
+                let imageSize = CGSize(width: imageWidth, height: imageHeight)
+                attachment.displaySize = imageSize
+                //attachment.image = UIImage.placeholder(UIColor.gray, size: imageSize)
+                coverImageString = NSAttributedString(attachment: attachment)
+            }
+            
+        }
+        
+        
+        //        let imageURL = URL(string: (dataObject?.image)!)
+        //        let attachment = AsyncTextAttachment(imageURL: imageURL)
+        //        attachment.displaySize = CGSize(width: 160, height: 90)
+        //        //attachment.image = UIImage.placeholder(UIColor.gray, size: attachment.displaySize!)
+        //        let coverImageAttrString = NSAttributedString(attachment: attachment)
+        
+        //textView.attributedText = attachmentStr
+        
+        
+        
+        // MARK: the outlets may not exist so "?" is necessary
+        // headline?.text = dataObject?.headline ?? ""
+        
+        // MARK: paragraph styles
+        let paragraphStyle = NSMutableParagraphStyle()
+        //paragraphStyle.paragraphSpacing = 12.0
+        paragraphStyle.lineHeightMultiple = 1.0
+        paragraphStyle.lineSpacing = 8.0
+        //paragraphStyle.paragraphSpacing = 100.0
+        
+        // MARK: Get the first tag using regular expression
+        let tagParagraphStyle = NSMutableParagraphStyle()
+        tagParagraphStyle.lineHeightMultiple = 1.4
+        tagParagraphStyle.lineSpacing = 5.0
+        let tagColor = UIColor(hex: Color.Content.tag)
+        let tagAttributes:[String:AnyObject] = [
+            NSForegroundColorAttributeName: tagColor,
+            NSParagraphStyleAttributeName: tagParagraphStyle,
+            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title3)
+        ]
+        let tagString = dataObject?.tag ?? ""
+        let firstTag = tagString.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+        let tagAttrString = NSMutableAttributedString(
+            string: "\(firstTag)\r\n",
+            attributes:tagAttributes
+        )
+        //tag?.text = firstTag
+        
+        // MARK: Handle Headline
+        let headlineColor = UIColor(hex: Color.Content.headline)
+        let headlineAttributes:[String:AnyObject] = [
+            NSForegroundColorAttributeName: headlineColor,
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title2)
+        ]
         let headlineString = dataObject?.headline ?? ""
-        let headline = NSMutableAttributedString(
-            string: "\(headlineString)\n",
-            attributes: [
-                NSFontAttributeName: UIFont.preferredFont(forTextStyle: .title1).bold(),
-                NSParagraphStyleAttributeName: paragraphStyle,
-                NSForegroundColorAttributeName: headlineColor
-            ]
+        let headlineAttrString = NSMutableAttributedString(
+            string: "\(headlineString)\r\n",
+            attributes:headlineAttributes
         )
         
+        // MARK: Lead
+        let leadColor = UIColor(hex: Color.Content.lead)
+        let leadAttributes:[String:AnyObject] = [
+            NSForegroundColorAttributeName: leadColor,
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title3)
+        ]
+        let leadString = dataObject?.lead ?? ""
+        let leadAttrString = NSMutableAttributedString(
+            string: "\(leadString)\r\n",
+            attributes:leadAttributes
+        )
+        //lead?.attributedText = leadAttrString
+        
+        
+        // MARK: Publishing Time
+        let bylineParagraphStyle = NSMutableParagraphStyle()
+        bylineParagraphStyle.lineHeightMultiple = 1.4
+        bylineParagraphStyle.lineSpacing = 5.0
+        let timeColor = UIColor(hex: Color.Content.time)
+        let timeAttributes:[String:AnyObject] = [
+            NSForegroundColorAttributeName: timeColor,
+            NSParagraphStyleAttributeName: bylineParagraphStyle,
+            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .footnote)
+        ]
+        let publishingTime = dataObject?.publishTime ?? ""
+        let publishingTimeAttributedString = NSMutableAttributedString(
+            string: "\r\n\(publishingTime) ",
+            attributes:timeAttributes
+        )
+        
+        
+        // MARK: Set the byline/author text style
+        let authorColor = UIColor(hex: Color.Content.body)
+        let authorAttributes:[String:AnyObject] = [
+            NSForegroundColorAttributeName: authorColor,
+            NSParagraphStyleAttributeName: bylineParagraphStyle,
+            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .footnote)
+        ]
+        let bylineString = dataObject?.chineseByline ?? ""
+        let bylineAttrString = NSMutableAttributedString(
+            string: "\(bylineString)\r\n",
+            attributes:authorAttributes
+        )
+        let bylineAttributedString = NSMutableAttributedString()
+        bylineAttributedString.append(publishingTimeAttributedString)
+        bylineAttributedString.append(bylineAttrString)
+        //byline?.attributedText = bylineAttributedString
+        
+        
         let text = NSMutableAttributedString()
-        text.append(headline)
+        text.append(tagAttrString)
+        text.append(headlineAttrString)
+        text.append(leadAttrString)
+        text.append(coverImageString)
+        text.append(publishingTimeAttributedString)
+        text.append(bylineAttrString)
         text.append(body)
-        textView?.attributedText = text
-        // MARK: - a workaround for the myterious scroll view bug
-        textView?.isScrollEnabled = false
-        textView?.isScrollEnabled = true
-        textView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        bodyTextView?.attributedText = text
+        //bodyTextView?.isScrollEnabled = false
+        
+        
+        // FIXME: There's something wrong with this text, comment it for now
+        //        if let content = dataObject {
+        //            let attributedArticle = AttributedArticle(content: content, contentWidth: bodyTextView.contentSize.width)
+        //            // attributedArticle.chineseBody
+        //            // attributedArticle.englishBody
+        //            // attributedArticle.bilingualBody
+        //            // print ("chinese body is: \(attributedArticle.chineseBody)")
+        //            bodyTextView.attributedText = attributedArticle.chineseBody
+        //        }
     }
     
     private func renderWebView() {
-        print ("there are HTML tags that cannot be handled, use webview to handle it instead")
+        //print ("there are HTML tags that cannot be handled, use webview to handle it instead")
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height - 44)
+        let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height)
         webView = WKWebView(frame: webViewFrame, configuration: config)
         webView?.isOpaque = true
         webView?.backgroundColor = UIColor.clear
         webView?.scrollView.backgroundColor = UIColor.clear
+        
+        // MARK: This makes the web view scroll like native
+        webView?.scrollView.delegate = self
+        
         if let wv = self.webView {
             //self.textView.removeFromSuperview()
             // FIXME: add subview is not safe. What happens if there already is a webview?
@@ -148,32 +325,96 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             }
             self.view.clipsToBounds = true
             webView?.scrollView.bounces = false
-            let urlString: String
+            //let urlString: String
             if dataObject?.type == "story" {
+                // MARK: If it is a story
                 if let id = dataObject?.id {
-                    urlString = "http://www.ftchinese.com/story/\(id)?full=y"
-                } else {
-                    urlString = "http://www.ftchinese.com/"
+                    let urlString = "http://www.ftchinese.com/story/\(id)?full=y"
+                    if let url = URL(string: urlString) {
+                        let request = URLRequest(url: url)
+                        // MARK: Get values for the story content
+                        let headline = dataObject?.headline ?? ""
+                        let body = dataObject?.cbody ?? ""
+                        let lead = dataObject?.lead ?? ""
+                        let tags = dataObject?.tag ?? ""
+                        let tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+                        let imageHTML:String
+                        if let image = dataObject?.image {
+                            imageHTML = "<div class=\"story-image image\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+                        } else {
+                            imageHTML = ""
+                        }
+                        
+                        // MARK: story byline
+                        let byline = dataObject?.chineseByline ?? ""
+                        var relatedStories = ""
+                        if let relatedStoriesData = dataObject?.relatedStories {
+                            for (index, story) in relatedStoriesData.enumerated() {
+                                if let id = story["id"] as? String,
+                                    let headline = story["cheadline"] as? String {
+                                    relatedStories += "<li class=\"mp\(index+1)\"><a target=\"_blank\" href=\"/story/\(id)\">\(headline)</a></li>"
+                                }
+                            }
+                        }
+                        let tagsArray = tags.components(separatedBy: ",")
+                        var relatedTopics = ""
+                        for (index, tag) in tagsArray.enumerated() {
+                            relatedTopics += "<li class=\"story-theme mp\(index+1)\"><a target=\"_blank\" href=\"/tag/\(tag)\">\(tag)</a><div class=\"icon-right\"><button class=\"myft-follow plus\" data-tag=\"\(tag)\" data-type=\"tag\">关注</button></div></li>"
+                        }
+                        
+                        let bodyWithMPU = body.replacingOccurrences(
+                            of: "[\r\t\n]",
+                            with: "",
+                            options: .regularExpression
+                            ).replacingOccurrences(
+                                of: "^(<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
+                                with: "$1<div id=story_main_mpu><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div><p>",
+                                options: .regularExpression
+                        )
+                        
+                        // TODO: Premium user will not need to see the MPU ads
+                        let finalBody: String
+                        finalBody = bodyWithMPU.replacingOccurrences(
+                            of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
+                            with: "$1<div class=story_main_mpu_vw><script type=\"text/javascript\">document.write (writeAd('storympuVW'));</script></div><p>",
+                            options: .regularExpression
+                        )
+
+                        
+                        // MARK: Story Time
+                        let timeStamp = dataObject?.publishTime ?? ""
+                        if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
+                            do {
+                                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                                let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: finalBody)
+                                    .replacingOccurrences(of: "{story-headline}", with: headline)
+                                    .replacingOccurrences(of: "{story-byline}", with: byline)
+                                    .replacingOccurrences(of: "{story-time}", with: timeStamp)
+                                    .replacingOccurrences(of: "{story-lead}", with: lead)
+                                    .replacingOccurrences(of: "{story-tag}", with: tag)
+                                    .replacingOccurrences(of: "{story-id}", with: id)
+                                    .replacingOccurrences(of: "{story-image}", with: imageHTML)
+                                    .replacingOccurrences(of: "{related-stories}", with: relatedStories)
+                                    .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
+                                self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                            } catch {
+                                self.webView?.load(request)
+                            }
+                        } else {
+                            self.webView?.load(request)
+                        }
+                    }
                 }
             } else {
-                urlString = "http://www.ftchinese.com/"
-            }
-            
-            if let url = URL(string: urlString) {
-                let request = URLRequest(url: url)
-                
-                if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
-                    do {
-                        let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                        let storyHTML = storyTemplate as String
-                        self.webView?.loadHTMLString(storyHTML, baseURL:url)
-                    } catch {
-                        self.webView?.load(request)
+                // MARK: - If it is other types of content such video and interacrtive features
+                if let id = dataObject?.id, let type = dataObject?.type {
+                    let urlString = "http://www.ftchinese.com/\(type)/\(id)?from=swiftapp"
+                    print ("loading \(urlString)")
+                    if let url = URL(string: urlString) {
+                        let request = URLRequest(url: url)
+                        wv.load(request)
                     }
-                } else {
-                    self.webView?.load(request)
                 }
-                
             }
         }
     }
@@ -184,14 +425,20 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let text = htmltext.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
             .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
             .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
-        
+        // text = "some text"
         // MARK: Set the overall text style
         let bodyColor = UIColor(hex: Color.Content.body)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 12.0
         paragraphStyle.lineHeightMultiple = 1.2
+        
+        let defaultBodyDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+        let bodySize = defaultBodyDescriptor.pointSize + FontSize.bodyExtraSize
+        let bodyFont = UIFont(descriptor: defaultBodyDescriptor, size: bodySize)
+        
         let bodyAttributes:[String:AnyObject] = [
-            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
+            NSFontAttributeName: bodyFont,
+            //NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
             NSForegroundColorAttributeName: bodyColor,
             NSParagraphStyleAttributeName: paragraphStyle
         ]
@@ -204,7 +451,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let boldParagraphStyle = NSMutableParagraphStyle()
         boldParagraphStyle.paragraphSpacing = 6.0
         let boldAttributes:[String:AnyObject] = [
-            NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body).bold(),
+            //NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body).bold(),
+            NSFontAttributeName: bodyFont.bold(),
             NSParagraphStyleAttributeName: boldParagraphStyle
         ]
         
@@ -228,31 +476,49 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
         return attrString
     }
-    
-    
 }
 
 
-extension String {
-    func htmlAttributedString() -> NSMutableAttributedString? {
-        print ("use html attributed string extension for: ")
-        print (self)
-        let storyHTML: String?
-        if let adHTMLPath = Bundle.main.path(forResource: "storybody", ofType: "html"){
-            do {
-                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body-text}", with: self)
-            } catch {
-                return nil
-            }
-        } else {
-            return nil
-        }
-        guard let text = storyHTML else {
-            return nil
-        }
-        guard let data = text.data(using: String.Encoding.utf16, allowLossyConversion: false) else { return nil }
-        guard let html = try? NSMutableAttributedString(data: data, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil) else { return nil }
-        return html
+
+extension ContentItemViewController: UIScrollViewDelegate {
+    // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
+    // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
     }
 }
+
+extension ContentItemViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange) -> Bool
+    {
+        return true
+    }
+}
+
+//extension String {
+//    func htmlAttributedString() -> NSMutableAttributedString? {
+//        print ("use html attributed string extension for: ")
+//        print (self)
+//        let storyHTML: String?
+//        if let adHTMLPath = Bundle.main.path(forResource: "storybody", ofType: "html"){
+//            do {
+//                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+//                storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body-text}", with: self)
+//            } catch {
+//                return nil
+//            }
+//        } else {
+//            return nil
+//        }
+//        guard let text = storyHTML else {
+//            return nil
+//        }
+//        guard let data = text.data(using: String.Encoding.utf16, allowLossyConversion: false) else { return nil }
+//        guard let html = try? NSMutableAttributedString(data: data, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil) else { return nil }
+//        return html
+//    }
+//}
+
+// Done: 1. MPU ads in story page; 
+// TODO: 2. Sponsorship Ads in story page;
+

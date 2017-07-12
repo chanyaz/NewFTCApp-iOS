@@ -190,14 +190,4 @@ extension ChannelViewController: ChannelModelDelegate {
         print ("panning to \(pageInfoObject.title): \(index)")
         goToPage(index, isUserPanningEnd: true)
     }
-    
-    // TODO: 5 Channel View Controllers might get this notification. For example, if you swipe to the second page in one of the tabs, all the other tabs will also swipe to the second page.
-//    func pagePanningEnd(_ notification: Notification) {
-//        if let object = notification.object as? (index: Array.Index, title: String) {
-//            let index = object.index as Int
-//            print ("panning to \(object.title): \(index)")
-//            goToPage(index, isUserPanningEnd: true)
-//        }
-//    }
-    
 }

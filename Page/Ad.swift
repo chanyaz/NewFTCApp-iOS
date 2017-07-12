@@ -71,7 +71,10 @@ class Ad: UICollectionReusableView {
                                 return
                             }
                             let adModel = AdParser.parseAdCode(adCode)
-                            print (adModel.image ?? "")
+                            print ("ad model is \(adModel)")
+                            //if adModel.image == "' + ImgSrc + '" {
+                                print ("ad code is now: \(adCode)")
+                            //}
                         }
                     }
                 }

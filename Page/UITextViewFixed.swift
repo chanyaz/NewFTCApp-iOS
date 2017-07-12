@@ -20,7 +20,7 @@ class UITextViewFixed: UITextView {
     
     func setup() {
         textContainerInset = UIEdgeInsets.zero
-        textContainer.lineFragmentPadding = 0
+        textContainer.lineFragmentPadding = 14
     }
 
 }

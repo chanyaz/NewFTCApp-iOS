@@ -10,6 +10,7 @@ import UIKit
 
 
 class DataViewController: UICollectionViewController {
+    var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayout()
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -36,6 +37,18 @@ class DataViewController: UICollectionViewController {
     //    var contentSection: ContentSection? = nil {
     //
     //    }
+    
+    
+    deinit {
+        //MARK: Some of the deinit might b e useful in the future
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name.UIDeviceOrientationDidChange,
+            object: nil
+        )
+        print ("deinit channel view successfully")
+    }
+    
     
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
@@ -78,9 +91,6 @@ class DataViewController: UICollectionViewController {
             }
         }
     }
-    
-    
-    
     
     
     //    private func updateUI() {
@@ -161,10 +171,28 @@ class DataViewController: UICollectionViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
-        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(orientationChanged),
+            name: Notification.Name.UIDeviceOrientationDidChange,
+            object: nil
+        )
         
     }
     
+    public func orientationChanged() {
+        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+            isLandscape = true
+            //            print("Landscape\(isLandscape)")
+            
+        }
+        
+        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+            isLandscape = false
+            //            print("Portrait\(isLandscape)")
+        }
+        
+    }
     
     func refreshControlDidFire(sender:AnyObject) {
         print ("pull to refresh fired")
@@ -212,29 +240,29 @@ class DataViewController: UICollectionViewController {
             }
         case "CoverCellRegular":
             if let cell = cellItem as? CoverCellRegular {
-                //                cell.cellWidth = cellWidth
-                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.containerView.backgroundColor = UIColor.blue
-                //                cell.backgroundColor = UIColor.blue
-                cell.layer.borderWidth = 1
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
         case "ChannelCellRegular":
             if let cell = cellItem as? ChannelCellRegular {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.containerView.backgroundColor = UIColor.yellow
-                //                cell.backgroundColor = UIColor.yellow
-                cell.layer.borderWidth = 1
                 return cell
             }
         case "AdCellRegular":
             if let cell = cellItem as? AdCellRegular {
-//                cell.cellWidth = cellWidth
-//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-//                cell.containerView.backgroundColor = UIColor.yellow
-                cell.backgroundColor = UIColor.red
-//                cell.layer.borderWidth = 1
+                cell.cellWidth = cellWidth
+                //when itemCell change in AdCellRegular, updateUI() will be executed.After adding ad,comment the code
+                cell.containerView.backgroundColor = UIColor(hex: "#e9decf")
+                
+                cell.backgroundColor = UIColor(hex: Color.Content.background)
+                cell.border.backgroundColor = UIColor(hex: Color.Content.border)
+                if cell.bounds.height<330{
+                    cell.adHint.isHidden=true
+                }else{
+                    cell.adHint.isHidden=false
+                }
                 return cell
             }
         default:
@@ -260,7 +288,7 @@ class DataViewController: UICollectionViewController {
                 withReuseIdentifier: reuseIdentifier,
                 for: indexPath
             )
-
+            
             // MARK: - a common tag gesture for all kinds of headers
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
             headerView.isUserInteractionEnabled = true
@@ -269,7 +297,7 @@ class DataViewController: UICollectionViewController {
             case "Ad":
                 let adView = headerView as! Ad
                 adView.contentSection = fetches.fetchResults[indexPath.section]
-//                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
+                //                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView
@@ -325,6 +353,13 @@ class DataViewController: UICollectionViewController {
             let verticalCass = self.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
                 
+                var isAd = false
+                if UIDevice.current.orientation.isPortrait{
+                    if indexPath.row == 6 {isAd = true}else{isAd = false}
+                }else if UIDevice.current.orientation.isLandscape {
+                    isAd = (indexPath.row == 5)
+                }
+                
                 if isCover && !isAd{
                     reuseIdentifier = "CoverCellRegular"
                 } else if isAd && !isCover{
@@ -332,6 +367,7 @@ class DataViewController: UICollectionViewController {
                 }else {
                     reuseIdentifier = "ChannelCellRegular"
                 }
+
                 
             } else {
                 if isCover {

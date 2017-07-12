@@ -17,12 +17,15 @@ class ContentItem{
     let preferSponsorImage: String
     let tag: String
     let customLink: String
-    let timeStamp: Int
+    let timeStamp: TimeInterval
     
     var section: Int
     var row: Int
     
     var isCover = false
+    var englishByline: String?
+    var chineseByline: String?
+    var publishTime: String?
     
     
     
@@ -32,8 +35,8 @@ class ContentItem{
     var cauthor: String?
     var eauthor: String?
     var locations: String?
-    
-    
+    var relatedStories: [[String: Any]]?
+    var relatedVideos: [[String: Any]]?
     
     
     init (id: String,
@@ -44,7 +47,7 @@ class ContentItem{
           preferSponsorImage: String,
           tag: String,
           customLink: String,
-          timeStamp: Int,
+          timeStamp: TimeInterval,
           section: Int,
           row: Int) {
         self.id = id

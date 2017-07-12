@@ -8,7 +8,7 @@
 
 import Foundation
 struct AdModel {
-    let image: String?
+    let imageString: String?
     let link: String?
     let video: String?
     let impressions: [String]
@@ -34,7 +34,9 @@ struct AdParser {
             "<img src=\"(.+)\" style"
         ]
         let image = adCode.matchingStrings(regexes: imagePatterns)
-        if image == nil {
+        if let image = image {
+            Download.downloadUrl(image, to: .cachesDirectory)
+        } else {
             print ("the ad code: \(adCode)")
         }
         
@@ -59,7 +61,7 @@ struct AdParser {
         }
         
         let adModel = AdModel(
-            image: image,
+            imageString: image,
             link: link,
             video: video,
             impressions: impressions

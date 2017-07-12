@@ -285,6 +285,7 @@ class DataViewController: UICollectionViewController {
             switch reuseIdentifier {
             case "Ad":
                 let adView = headerView as! Ad
+                print ("will update ad header view for section \(indexPath.section)")
                 adView.contentSection = fetches.fetchResults[indexPath.section]
                 //                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
                 return adView
@@ -362,6 +363,7 @@ class DataViewController: UICollectionViewController {
         return reuseIdentifier
     }
     
+    // MARK: Get Header and Ad Size
     private func getReuseIdentifierForSectionHeader(_ sectionIndex: Int) -> (reuseId: String?, sectionSize: CGSize) {
         let reuseIdentifier: String?
         let sectionSize: CGSize

@@ -26,6 +26,7 @@
 		605750F51F1499AD00552DAC /* AsyncTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */; };
 		605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */; };
 		605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F81F1499F000552DAC /* UIImage+Attachments.swift */; };
+		605750FB1F15B06700552DAC /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750FA1F15B06700552DAC /* AdView.swift */; };
 		607094AD1EE9436900760A60 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AC1EE9436900760A60 /* Tabs.swift */; };
 		607094AF1EE943A900760A60 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AE1EE943A900760A60 /* Channels.swift */; };
 		6087E3D71EF212960034A92F /* ad.html in Resources */ = {isa = PBXBuildFile; fileRef = 6087E3D61EF212960034A92F /* ad.html */; };
@@ -114,6 +115,7 @@
 		605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncTextAttachment.swift; sourceTree = "<group>"; };
 		605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutManager+Attachments.swift"; sourceTree = "<group>"; };
 		605750F81F1499F000552DAC /* UIImage+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Attachments.swift"; sourceTree = "<group>"; };
+		605750FA1F15B06700552DAC /* AdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
 		607094AC1EE9436900760A60 /* Tabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		607094AE1EE943A900760A60 /* Channels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
 		6087E3D61EF212960034A92F /* ad.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ad.html; sourceTree = "<group>"; };
@@ -314,10 +316,11 @@
 		6087E3D81EF212A30034A92F /* Ad */ = {
 			isa = PBXGroup;
 			children = (
+				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
+				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
 				60CA7BC01EF26251000CD9B4 /* AdLayout.swift */,
 				609763AF1F0DCFC100088280 /* AdModel.swift */,
-				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
-				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
+				605750FA1F15B06700552DAC /* AdView.swift */,
 				6087E3D61EF212960034A92F /* ad.html */,
 				6087E3D91EF2294C0034A92F /* ga.js */,
 			);
@@ -586,6 +589,7 @@
 				608C55211EF78FA100AF27CB /* DetailModelController.swift in Sources */,
 				60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */,
 				605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */,
+				605750FB1F15B06700552DAC /* AdView.swift in Sources */,
 				AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */,
 				60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */,
 				608C55231EF7973A00AF27CB /* ChannelModelController.swift in Sources */,

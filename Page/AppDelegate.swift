@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 import CoreData
 
 @UIApplicationMain
@@ -22,15 +23,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: - Set the default background overall color
         window?.tintColor = UIColor(hex: Color.Content.background)
         
-        print("register for remote notifications")
-        UIApplication.shared.registerForRemoteNotifications()
+        if #available(iOS 10.0, *) {
+            let center = UNUserNotificationCenter.current()
+            center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+                print(granted)
+                print("register for remote notifications")
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        } else {
+            // Fallback on earlier versions
+        }
         
         return true
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("received device token")
-        print(deviceToken)
+        print("device token length: \(deviceToken.count)")
+        print("description: \(deviceToken.description)")
+        
+        let hexEncodedToken = deviceToken.map { String(format: "%02hhX", $0) }.joined()
+        print(hexEncodedToken)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

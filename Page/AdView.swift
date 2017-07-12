@@ -54,6 +54,8 @@ class AdView: UIView {
         let frameHeight = self.frame.height
         if let adModel = self.adModel {
             if let imageString = adModel.imageString {
+                // TODO: If the asset is already downloaded, no need to request from the Internet
+                
                 if let url = URL(string: imageString) {
                 Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                     guard let data = data else {
@@ -105,6 +107,9 @@ class AdView: UIView {
             webView.isOpaque = true
             webView.backgroundColor = UIColor.clear
             webView.scrollView.backgroundColor = UIColor.clear
+            self.subviews.forEach {
+                $0.removeFromSuperview()
+            }
             self.addSubview(webView)
             let urlString = AdParser.getAdPageUrlForAdId(adid)
             if let url = URL(string: urlString) {

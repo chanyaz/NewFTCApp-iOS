@@ -10,15 +10,25 @@ import UIKit
 
 class CoverCellRegular: UICollectionViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+    let imageWidth = 1344  // 16 * 52
+    let imageHeight = 756  // 9 * 52
+    
+
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
-
-
+    @IBOutlet weak var lead: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var border: UIView!
+    @IBOutlet weak var tagLable: UILabel!
+    @IBOutlet weak var time: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        tagLable.textColor = UIColor(hex: "#9E2F50")
+        time.textColor =  UIColor(hex: "##9e2f50")
+    }
+    
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
         didSet {
@@ -26,36 +36,57 @@ class CoverCellRegular: UICollectionViewCell {
         }
     }
     func updateUI() {
-
+        containerView.backgroundColor = UIColor(hex: Color.Content.background)
+        headline.textColor = UIColor(hex: Color.Content.headline)
+        headline.font = headline.font.bold()
+        lead.textColor = UIColor(hex: Color.Content.lead)
+        layoutMargins.left = 0
+        layoutMargins.right = 0
+        layoutMargins.top = 0
+        layoutMargins.bottom = 0
+        containerView.layoutMargins.left = 0
+        containerView.layoutMargins.right = 0
         
+        if let row = itemCell?.row,
+            row == 0 {
+            border.backgroundColor = UIColor(hex: Color.Content.border)
+        } else {
+            // MARK: - set first item's border color to transparent
+            border.backgroundColor = nil
+        }
+        let headlineString = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
 
+        headline.text = headlineString
+ 
+        
+        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 10
+        let setStr = NSMutableAttributedString.init(string: lead.text!)
+        setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (lead.text!.characters.count)))
+        lead.attributedText = setStr
+        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        
+        if let loadedImage = itemCell?.coverImage {
+            imageView.image = loadedImage
+            //print ("image is already loaded, no need to download again. ")
+        } else {
+            itemCell?.loadImage(type:"cover", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+                self?.imageView.image = cellContentItem.coverImage
+            })
+            //print ("should load image here")
+        }
+        
+//        if let loadedImage = itemCell?.largeImage {
+//            imageView.image = loadedImage
+//        } else {
+//            itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+//                self?.imageView.image = cellContentItem.largeImage
+//            })
+//        }
     
     }
 }
 
-//extension UILabel {
-//    func hasWidowInSecondLine(_ labelActuralWidth: CGFloat) -> Bool {
-//        guard let text = self.text else { return false }
-//        guard let font = self.font else { return false }
-//        //let rect = self.frame
-//        let rect = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: labelActuralWidth, height: self.frame.height)
-//        
-//        let attStr = NSMutableAttributedString(string: text)
-//        attStr.addAttribute(String(kCTFontAttributeName), value: CTFontCreateWithName(font.fontName as CFString, font.pointSize, nil), range: NSMakeRange(0, attStr.length))
-//        
-//        let frameSetter = CTFramesetterCreateWithAttributedString(attStr as CFAttributedString)
-//        let path = CGMutablePath()
-//        path.addRect(CGRect(x: 0, y: 0, width: rect.size.width, height: 100))
-//        let frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), path, nil)
-//        
-//        guard let line = (CTFrameGetLines(frame) as! [CTLine]).first else { return false }
-//        let lineString = text[text.startIndex...text.index(text.startIndex, offsetBy: CTLineGetStringRange(line).length-2)]
-//        let firstLineLenth = lineString.characters.count
-//        let textLength = text.characters.count
-//        if (textLength - firstLineLenth) <= 2 {
-//            return true
-//        }
-//        return false
-//    }
-//    
-//}
+

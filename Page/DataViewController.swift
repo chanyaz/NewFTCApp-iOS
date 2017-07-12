@@ -7,9 +7,10 @@
 //
 
 import UIKit
-
+import Foundation
 
 class DataViewController: UICollectionViewController {
+    var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayout()
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -43,6 +44,7 @@ class DataViewController: UICollectionViewController {
         let verticalCass = self.traitCollection.verticalSizeClass
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
+        //         print("view.bounds : \(view.bounds)")
         activityIndicator.startAnimating()
         contentAPI.fetchContentForUrl(urlString) {
             [weak self] results, error in
@@ -105,10 +107,17 @@ class DataViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(orientationChanged),
+            name: Notification.Name.UIDeviceOrientationDidChange,
+            object: nil
+        )
         let horizontalClass = self.traitCollection.horizontalSizeClass
-        let verticalCass = self.traitCollection.verticalSizeClass
+        let verticalClass = self.traitCollection.verticalSizeClass
         
-        if horizontalClass == .regular && verticalCass == .regular {
+        if horizontalClass == .regular && verticalClass == .regular {
             collectionView?.collectionViewLayout=flowLayout
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
@@ -122,7 +131,7 @@ class DataViewController: UICollectionViewController {
                 let availableWidth = view.frame.width - paddingSpace
                 print("availableWidth : \(availableWidth)")
                 
-                if horizontalClass != .regular || verticalCass != .regular {
+                if horizontalClass != .regular || verticalClass != .regular {
                     if #available(iOS 10.0, *) {
                         flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
                     } else {
@@ -164,6 +173,22 @@ class DataViewController: UICollectionViewController {
         
         
     }
+    public func orientationChanged() {
+        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+            isLandscape = true
+            //            print("Landscape\(isLandscape)")
+            
+        }
+        
+        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+            isLandscape = false
+            //            print("Portrait\(isLandscape)")
+        }
+        
+        
+    }
+    
+    
     
     
     func refreshControlDidFire(sender:AnyObject) {
@@ -196,7 +221,6 @@ class DataViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        //         print ("cellItem111---- \(cellItem) ----cellItem")
         switch reuseIdentifier {
         case "CoverCell":
             if let cell = cellItem as? CoverCell {
@@ -212,29 +236,29 @@ class DataViewController: UICollectionViewController {
             }
         case "CoverCellRegular":
             if let cell = cellItem as? CoverCellRegular {
-                //                cell.cellWidth = cellWidth
-                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.containerView.backgroundColor = UIColor.blue
-                //                cell.backgroundColor = UIColor.blue
-                cell.layer.borderWidth = 1
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
         case "ChannelCellRegular":
             if let cell = cellItem as? ChannelCellRegular {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.containerView.backgroundColor = UIColor.yellow
-                //                cell.backgroundColor = UIColor.yellow
-                cell.layer.borderWidth = 1
                 return cell
             }
         case "AdCellRegular":
             if let cell = cellItem as? AdCellRegular {
-//                cell.cellWidth = cellWidth
-//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-//                cell.containerView.backgroundColor = UIColor.yellow
-                cell.backgroundColor = UIColor.red
-//                cell.layer.borderWidth = 1
+                cell.cellWidth = cellWidth
+                //when itemCell change in AdCellRegular, updateUI() will be executed.After adding ad,comment the code
+                cell.containerView.backgroundColor = UIColor(hex: "#e9decf")
+                
+                cell.backgroundColor = UIColor(hex: Color.Content.background)
+                cell.border.backgroundColor = UIColor(hex: Color.Content.border)
+                if cell.bounds.height<330{
+                    cell.adHint.isHidden=true
+                }else{
+                    cell.adHint.isHidden=false
+                }
                 return cell
             }
         default:
@@ -244,7 +268,6 @@ class DataViewController: UICollectionViewController {
                 return cell
             }
         }
-        //        print ("cellItem---- \(cellItem) ----cellItem")
         return cellItem
     }
     
@@ -260,7 +283,7 @@ class DataViewController: UICollectionViewController {
                 withReuseIdentifier: reuseIdentifier,
                 for: indexPath
             )
-
+            
             // MARK: - a common tag gesture for all kinds of headers
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
             headerView.isUserInteractionEnabled = true
@@ -269,7 +292,7 @@ class DataViewController: UICollectionViewController {
             case "Ad":
                 let adView = headerView as! Ad
                 adView.contentSection = fetches.fetchResults[indexPath.section]
-//                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
+                //                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
                 return adView
             case "HeaderView":
                 let headerView = headerView as! HeaderView
@@ -304,7 +327,7 @@ class DataViewController: UICollectionViewController {
         let sectionTitle = section.title
         let item = section.items[indexPath.row]
         let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
-        let isAd = (sectionTitle == "" && indexPath.row == 1)
+        
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {
@@ -320,10 +343,18 @@ class DataViewController: UICollectionViewController {
             } else {
                 reuseIdentifier = "HeadlineCell"
             }
+            
         } else {
             let horizontalClass = self.traitCollection.horizontalSizeClass
             let verticalCass = self.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
+                
+                var isAd = false
+                if UIDevice.current.orientation.isPortrait{
+                    if indexPath.row == 6 {isAd = true}else{isAd = false}
+                }else if UIDevice.current.orientation.isLandscape {
+                    isAd = (indexPath.row == 5)
+                }
                 
                 if isCover && !isAd{
                     reuseIdentifier = "CoverCellRegular"
@@ -341,7 +372,7 @@ class DataViewController: UICollectionViewController {
                 }
             }
         }
-        //        print ("reuseIdentifier---- \(reuseIdentifier) ----reuseIdentifier")
+        
         return reuseIdentifier
     }
     

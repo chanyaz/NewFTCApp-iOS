@@ -9,25 +9,33 @@
 import UIKit
 
 class ChannelCellRegular: UICollectionViewCell {
-    let imageWidth = 160
-    let imageHeight = 90
+    
+    let imageWidth = 480
+    let imageHeight = 270
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
     @IBOutlet weak var border: UIView!
-
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var lead: UILabel!
     
+   
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
         didSet {
             updateUI()
         }
     }
+   
+    
     func updateUI() {
+        
         containerView.backgroundColor = UIColor(hex: Color.Content.background)
         headline.textColor = UIColor(hex: Color.Content.headline)
         layoutMargins.left = 0
@@ -48,8 +56,17 @@ class ChannelCellRegular: UICollectionViewCell {
         
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-       
+        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         
+        // MARK: - Load the image of the item
+        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        if let loadedImage = itemCell?.largeImage {
+            imageView.image = loadedImage
+        } else {
+            itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+                self?.imageView.image = cellContentItem.largeImage
+            })
+        }
 
 
     }

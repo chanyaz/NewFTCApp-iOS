@@ -22,10 +22,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: - Set the default background overall color
         window?.tintColor = UIColor(hex: Color.Content.background)
         
+        print("register for remote notifications")
+        UIApplication.shared.registerForRemoteNotifications()
         
         return true
     }
-
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("received device token")
+        print(deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Remote notification support is unavailable due to error: \(error)")
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

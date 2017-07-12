@@ -30,7 +30,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="headline" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TiY-s3-xIJ">
-                                <rect key="frame" x="14" y="166.5" width="196" height="20.5"/>
+                                <rect key="frame" x="14" y="167.5" width="196" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -42,13 +42,13 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="756" text="阿里巴巴" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQf-7o-uGG">
-                                <rect key="frame" x="14" y="140.5" width="196" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <rect key="frame" x="14" y="140.5" width="196" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="1" green="0.3816322942" blue="0.38209856850000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="lead" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ry-gB-47n">
-                                <rect key="frame" x="14" y="197" width="196" height="18"/>
+                                <rect key="frame" x="14" y="198" width="196" height="18"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -98,6 +98,8 @@
                 <outlet property="headline" destination="TiY-s3-xIJ" id="ZKN-Zq-4to"/>
                 <outlet property="imageView" destination="YOr-ix-bG0" id="ABa-CH-7ej"/>
                 <outlet property="lead" destination="0Ry-gB-47n" id="z5b-cx-HPv"/>
+                <outlet property="tagLable" destination="dQf-7o-uGG" id="f2U-ct-K06"/>
+                <outlet property="time" destination="vxP-oO-isM" id="9Im-TI-2vZ"/>
             </connections>
             <point key="canvasLocation" x="30" y="125"/>
         </collectionViewCell>

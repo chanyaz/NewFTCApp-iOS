@@ -12,11 +12,7 @@ class ChannelCellRegular: UICollectionViewCell {
     
     let imageWidth = 480
     let imageHeight = 270
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
+ 
     
 
     @IBOutlet weak var containerView: UIView!
@@ -25,7 +21,15 @@ class ChannelCellRegular: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var lead: UILabel!
     
-   
+    @IBOutlet weak var tagLable: UILabel!
+    @IBOutlet weak var time: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        tagLable.textColor = UIColor(hex: "#9E2F50")
+        time.textColor =  UIColor(hex: "##9e2f50")
+    }
+    
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
         didSet {

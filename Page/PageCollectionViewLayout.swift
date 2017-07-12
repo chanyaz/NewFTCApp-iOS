@@ -13,7 +13,7 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
     let adHeight = [CGFloat]();
     var cellPadding: CGFloat = 6.0
     let screenOrientation:UIDeviceOrientation=UIDevice.current.orientation
-
+    
     fileprivate var contentHeight:CGFloat  = 0.0
     fileprivate var contentWidth: CGFloat
     {
@@ -41,17 +41,16 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
     }
     
     override func prepare() {
-//        collectionView?.isPagingEnabled = true
+        //        collectionView?.isPagingEnabled = true
         
         var preSectionHeight = CGFloat(0);
- 
-//        let adWidth: CGFloat = 0
+        
         var adHeight: CGFloat = 0
-        let adWidth: CGFloat = 328
+        let adWidth: CGFloat = 356
         let collectionViewHeight = collectionView!.bounds.height
         let contentWidth = self.contentWidth
         let numSections = collectionView!.numberOfSections - 1
-
+        
         if screenOrientation.isPortrait{
             print ("screen --\(contentWidth)--")
             
@@ -60,116 +59,145 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
             }else{
                 adHeight = 380
             }
-        //The first cell
-        let widthItem1 = contentWidth
-        let heightItem1 = widthItem1*0.35
-       
-        //with ad line
-        let widthItemWithAd = (contentWidth - adWidth)/2
-
-       
-        
-        let heightItemWithAd = adHeight
-        //middle line
-        let widthItem2 = contentWidth/CGFloat(numberOfColumns)
-//        let heightItem2 = collectionViewHeight - heightItemWithAd - heightItem1
-        var heightItem2: CGFloat = 0
+            //The first cell
+            let widthItem1 = contentWidth
+            let heightItem1 = widthItem1*0.35
+            
+            //with ad line
+            let widthItemWithAd = (contentWidth - adWidth)/2
+  
+            let heightItemWithAd = adHeight
+            //middle line
+            let widthItem2 = contentWidth/CGFloat(numberOfColumns)
+            //        let heightItem2 = collectionViewHeight - heightItemWithAd - heightItem1
+            var heightItem2: CGFloat = 0
             if contentWidth<1200{
                 heightItem2 = heightItemWithAd*1.0
             }else{
                 heightItem2 = heightItemWithAd
             }
-        
+            let widthItem789 = contentWidth/CGFloat(numberOfColumns)
+            let heightItem789 = collectionViewHeight/CGFloat(3)*1.1
             
-        let widthItemWithSmall = contentWidth/CGFloat(numberOfColumns4)
-        let heightItemWithSmall = collectionViewHeight/CGFloat(3)*1.1
-        
-        //Define the size of the Offset
-        var xOffset = [CGFloat]()
-        for column in 0 ..< 4 {
-            xOffset.append(CGFloat(column) * widthItemWithSmall )
-        }
-        let sectionHeight=CGFloat(0);
-        
-//        print ("screen --\(UIScreen.main.bounds)--")
-        if numSections != -1{
 
-          for j in 0...numSections {
-
-            let endIndex = collectionView!.numberOfItems(inSection: j)
-           
-//            print ("collectionView!.contentInset --\(collectionView!.bounds.height)--")
- 
-
-            if endIndex != 0{
-
-//                    let sectionHeight0 = Int((endIndex-3)/3)+1
-//                     sectionHeight = CGFloat(sectionHeight0)*heightPerItem/2+heightItem1/2
-//         
-
-  
-                var column = 0
-                var yOffset = [CGFloat](repeating: preSectionHeight+heightItem1+heightItemWithAd+heightItem2, count: numberOfColumns4)
+            
+            let widthHotItem = adWidth
+            let heightHotItem = heightItemWithAd * 2
+            
+            let widthItemWithSmall = contentWidth/CGFloat(numberOfColumns)
+            let heightItemWithSmall = collectionViewHeight/CGFloat(3)*1.1
+            
+            //Define the size of the Offset
+            var xOffset = [CGFloat]()
+            for column in 0 ..< 4 {
+                xOffset.append(CGFloat(column) * widthItemWithSmall )
+            }
+            let sectionHeight=CGFloat(0);
+            
+            //        print ("screen --\(UIScreen.main.bounds)--")
+            if numSections != -1{
                 
-                attributesList = (0...endIndex-1).map { (i) ->UICollectionViewLayoutAttributes in
+                for j in 0...numSections {
                     
-                    let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(item: i, section: j))
-
+                    let endIndex = collectionView!.numberOfItems(inSection: j)
+                    
+                    //            print ("collectionView!.contentInset --\(collectionView!.bounds.height)--")
+                    
+                    
+                    if endIndex != 0{
+                        
+                        //                    let sectionHeight0 = Int((endIndex-3)/3)+1
+                        //                     sectionHeight = CGFloat(sectionHeight0)*heightPerItem/2+heightItem1/2
+                        //
+                        
+                        
+                        var column = 0
+                        var yOffset = [CGFloat](repeating: preSectionHeight+heightItem1+heightItemWithAd+heightItem2+heightHotItem+heightItem789, count: numberOfColumns)
+                        
+                        attributesList = (0...endIndex-1).map { (i) ->UICollectionViewLayoutAttributes in
+                            
+                            let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(item: i, section: j))
+                            
+                            
+                            if   i == 0{
+                                
+                                let frame = CGRect(x: 0, y: preSectionHeight, width: widthItem1, height: heightItem1)
+                                attributes.frame = frame
+                                
+                            }else if   i==1 {
+                                
+                                let frame = CGRect(x: 0, y: preSectionHeight+heightItem1, width: widthItem2, height: heightItem2)
+                                attributes.frame = frame
+                            }else if i==2 {
+                                
+                                let frame = CGRect(x: widthItem2, y: preSectionHeight+heightItem1, width: widthItem2, height: heightItem2)
+                                attributes.frame = frame
+                                
+                            }else if i==3 {
+                                let frame = CGRect(x: widthItem2*2, y: preSectionHeight+heightItem1, width: widthItem2, height: heightItem2)
+                                attributes.frame = frame
+                            }else if i==4 {
+                                let frame = CGRect(x: 0, y: preSectionHeight+heightItem1+heightItem2, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }else if i==5{
+                                let frame = CGRect(x: widthItemWithAd, y: preSectionHeight+heightItem1+heightItem2, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }else if i==6{
+                                let frame = CGRect(x: widthItemWithAd*2, y: heightItem1+heightItem2, width: adWidth, height: adHeight)
+                                attributes.frame = frame
+                            }else if i==7{
+                                let frame = CGRect(x: 0, y: heightItem1+heightItem2+heightItemWithAd, width: widthItem789, height: heightItem789)
+                                attributes.frame = frame
+                            }else if i==8{
+                                let frame = CGRect(x: widthItem789, y: heightItem1+heightItem2+heightItemWithAd, width: widthItem789, height: heightItem789)
+                                attributes.frame = frame
+                            }else if i==9{
+                                let frame = CGRect(x: widthItem789*2, y: heightItem1+heightItem2+heightItemWithAd, width: widthItem789, height: heightItem789)
+                                attributes.frame = frame
+                            }else if i==10{
+                                let frame = CGRect(x: 0, y: heightItem1+heightItem2+heightItemWithAd+heightItem789, width: widthHotItem, height: heightHotItem)
+                                attributes.frame = frame
+                            }else if i==11{
+                                let frame = CGRect(x: widthHotItem, y: heightItem1+heightItem2+heightItemWithAd+heightItem789, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }else if i==12{
+                                let frame = CGRect(x: widthHotItem+widthItemWithAd, y: heightItem1+heightItem2+heightItemWithAd+heightItem789, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }else if i==13{
+                                let frame = CGRect(x: widthHotItem, y: heightItem1+heightItem2+heightItemWithAd*2+heightItem789, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }else if i==14{
+                                let frame = CGRect(x: widthHotItem+widthItemWithAd, y: heightItem1+heightItem2+heightItemWithAd*2+heightItem789, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }
+                                
+                            else{
+                                
+                                let frame = CGRect(x: xOffset[column], y: yOffset[column], width: widthItemWithSmall, height: heightItemWithSmall)
+                                
+                                attributes.frame = frame
+                                
+                                yOffset[column] = yOffset[column] + heightItemWithSmall
+                                contentHeight = max(contentHeight, frame.maxY)
+                                
+                                if column >= numberOfColumns - 1{
+                                    column = 0
+                                }else{
+                                    column = column + 1
+                                }
+                            }
+                            attributesList1.append(attributes)
+                            return attributes
+                        }//map循坏
+                    }//if endIndex != -1
+                    preSectionHeight = preSectionHeight + sectionHeight
+                    //          print ("attribute size1111111----\(attributesList1)----111111")
+                }//for j in 0...numSections
                 
-                    if   i == 0{
-                        
-                        let frame = CGRect(x: 0, y: preSectionHeight, width: widthItem1, height: heightItem1)
-                        attributes.frame = frame
-                        
-                    }else if   i==1 {
-                        
-                        let frame = CGRect(x: 0, y: preSectionHeight+heightItem1, width: widthItem2, height: heightItem2)
-                        attributes.frame = frame
-                    }else if i==2 {
-                        
-                        let frame = CGRect(x: widthItem2, y: preSectionHeight+heightItem1, width: widthItem2, height: heightItem2)
-                        attributes.frame = frame
-                        
-                    }else if i==3 {
-                        let frame = CGRect(x: widthItem2*2, y: preSectionHeight+heightItem1, width: widthItem2, height: heightItem2)
-                        attributes.frame = frame
-                    }else if i==4 {
-                        let frame = CGRect(x: 0, y: preSectionHeight+heightItem1+heightItem2, width: widthItemWithAd, height: heightItemWithAd)
-                        attributes.frame = frame
-                    }else if i==5{
-                        let frame = CGRect(x: widthItemWithAd, y: preSectionHeight+heightItem1+heightItem2, width: widthItemWithAd, height: heightItemWithAd)
-                        attributes.frame = frame
-                    }else if i==6{
-                        let frame = CGRect(x: widthItemWithAd*2, y: preSectionHeight+heightItem1+heightItem2, width: adWidth, height: adHeight)
-                        attributes.frame = frame
-                    }else{
-
-                        let frame = CGRect(x: xOffset[column], y: yOffset[column], width: widthItemWithSmall, height: heightItemWithSmall)
-                        
-                        attributes.frame = frame
-                        
-                        yOffset[column] = yOffset[column] + heightItemWithSmall
-                        contentHeight = max(contentHeight, frame.maxY)
-
-                        if column >= numberOfColumns4 - 1{
-                            column = 0
-                        }else{
-                            column = column + 1
-                        }
-                    }
-                    attributesList1.append(attributes)
-                    return attributes
-                }//map循坏
-            }//if endIndex != -1
-            preSectionHeight = preSectionHeight + sectionHeight
-//          print ("attribute size1111111----\(attributesList1)----111111")
-            }//for j in 0...numSections
-
-
-        }//if numSections != -1
-
+                
+            }//if numSections != -1
+            
         }else if screenOrientation.isLandscape {
-//            }else if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight{
             let collectionViewHeight = collectionView!.bounds.height
             let contentWidth1 = collectionView!.bounds.width - (collectionView!.contentInset.left + collectionView!.contentInset.right)
             print ("screen1 --\(collectionViewHeight)--")
@@ -183,36 +211,42 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
             //with ad line
             let widthItemWithAd: CGFloat = (contentWidth1 - adWidth)/3
             let heightItemWithAd = adHeight
-//paging data
+            //paging data
             //The first cell
-//            let widthItem1 = contentWidth1 * 0.8
-//            let heightItem1 = collectionViewHeight - heightItemWithAd
+            //            let widthItem1 = contentWidth1 * 0.8
+            //            let heightItem1 = collectionViewHeight - heightItemWithAd
             //The second cell
-//            let widthItem2 = contentWidth1-widthItem1
-//            let heightItem2 = heightItem1
+            //            let widthItem2 = contentWidth1-widthItem1
+            //            let heightItem2 = heightItem1
             
             //9.7寸下的调整高度
-//            let widthItem2 = CGFloat(328)
-//            let heightItem2 = (collectionViewHeight - heightItemWithAd)+CGFloat(30)
+            //            let widthItem2 = CGFloat(328)
+            //            let heightItem2 = (collectionViewHeight - heightItemWithAd)+CGFloat(30)
             
             let widthItem2: CGFloat = 328
             var heightItem2: CGFloat = 0
             var heightItem1: CGFloat = 0
             
             if collectionView!.bounds.width<1050{
-                 heightItem2 = (collectionViewHeight - heightItemWithAd)+CGFloat(30)
+                heightItem2 = (collectionViewHeight - heightItemWithAd)+CGFloat(30)
             }else if collectionView!.bounds.width>1050 && collectionView!.bounds.width<1300{
                 heightItem2 = (collectionViewHeight - heightItemWithAd)-CGFloat(30)
             }else{
-                 heightItem2 = (collectionViewHeight - heightItemWithAd)-CGFloat(50)
+                heightItem2 = (collectionViewHeight - heightItemWithAd)-CGFloat(50)
             }
             
             
             let widthItem1 = contentWidth1 - widthItem2
-             heightItem1 = heightItem2
+            heightItem1 = heightItem2
+            
+            let widthHotItem = adWidth
+            let heightHotItem = heightItemWithAd*2
+            
+            let widthItemWithHot = widthItemWithAd
+            let heightItemWithHot = heightItemWithAd
             
             let widthItemWithSmall = contentWidth1/CGFloat(numberOfColumns4)
-//            let heightItemWithSmall = (collectionViewHeight/CGFloat(2))*1.2
+            //            let heightItemWithSmall = (collectionViewHeight/CGFloat(2))*1.2
             var heightItemWithSmall: CGFloat = 0
             if collectionView!.bounds.width<1150{
                 heightItemWithSmall = (collectionViewHeight/CGFloat(2))*1.2
@@ -226,21 +260,21 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
                 xOffset.append(CGFloat(column) * widthItemWithSmall )
             }
             let sectionHeight=CGFloat(0);
-
+            
             if numSections != -1{
                 
                 for j in 0...numSections {
                     
                     let endIndex = collectionView!.numberOfItems(inSection: j)
                     
-//                    print ("collectionView!.contentInset --\(collectionView!.bounds.height)--")
+                    //                    print ("collectionView!.contentInset --\(collectionView!.bounds.height)--")
                     
                     
                     if endIndex != 0{
-
+                        
                         
                         var column = 0
-                        var yOffset = [CGFloat](repeating: preSectionHeight+heightItem1+heightItemWithAd, count: numberOfColumns4)
+                        var yOffset = [CGFloat](repeating: preSectionHeight+heightItem1+heightItemWithAd+heightHotItem, count: numberOfColumns4)
                         
                         attributesList = (0...endIndex-1).map { (i) ->UICollectionViewLayoutAttributes in
                             
@@ -270,7 +304,31 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
                             }else if i==5{
                                 let frame = CGRect(x: widthItemWithAd*3, y: preSectionHeight+heightItem1, width: adWidth, height: adHeight)
                                 attributes.frame = frame
-                            }else{
+                            }else if i==6 {
+                                let frame = CGRect(x: 0, y: preSectionHeight+heightItem1+heightItemWithAd, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }else if i==7 {
+                                let frame = CGRect(x: widthItemWithAd, y: preSectionHeight+heightItem1+heightItemWithAd, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }else if i==8 {
+                                let frame = CGRect(x: widthItemWithAd*2, y:preSectionHeight+heightItem1+heightItemWithAd, width: widthItemWithAd, height: heightItemWithAd)
+                                attributes.frame = frame
+                            }else if i==9 {
+                                let frame = CGRect(x: widthItemWithAd*3, y:preSectionHeight+heightItem1+heightItemWithAd, width: widthHotItem, height: heightHotItem)
+                                attributes.frame = frame
+                            }else if i==10 {
+                                let frame = CGRect(x: 0, y: preSectionHeight+heightItem1+heightItemWithAd*2, width: widthItemWithHot, height: heightItemWithHot)
+                                attributes.frame = frame
+                            }else if i==11 {
+                                let frame = CGRect(x: widthItemWithAd, y: preSectionHeight+heightItem1+heightItemWithAd*2, width: widthItemWithHot, height: heightItemWithHot)
+                                attributes.frame = frame
+                            }else if i==12 {
+                                let frame = CGRect(x: widthItemWithAd*2, y:preSectionHeight+heightItem1+heightItemWithAd*2, width: widthItemWithHot, height: heightItemWithHot)
+                                attributes.frame = frame
+                            }
+
+                            
+                            else{
                                 
                                 let frame = CGRect(x: xOffset[column], y: yOffset[column], width: widthItemWithSmall, height: heightItemWithSmall)
                                 
@@ -294,18 +352,18 @@ class PageCollectionViewLayout: UICollectionViewFlowLayout{
                 
                 
             }//if numSections != -1
-
+            
         }
         
     }
-//    As long as the rolling screen method is invoked
+    //    As long as the rolling screen method is invoked
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-            return attributesList1
+        return attributesList1
     }
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes?{
         return attributesList[indexPath.row]
     }
-//    As long as the layout of the page properties change will call again
+    //    As long as the layout of the page properties change will call again
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }

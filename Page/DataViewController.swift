@@ -10,6 +10,7 @@ import UIKit
 
 
 class DataViewController: UICollectionViewController {
+    var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayout()
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -180,7 +181,17 @@ class DataViewController: UICollectionViewController {
     }
     
     public func orientationChanged() {
-        print ("orientation changed! ")
+        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+            isLandscape = true
+            //            print("Landscape\(isLandscape)")
+            
+        }
+        
+        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+            isLandscape = false
+            //            print("Portrait\(isLandscape)")
+        }
+        
     }
     
     func refreshControlDidFire(sender:AnyObject) {
@@ -247,11 +258,17 @@ class DataViewController: UICollectionViewController {
             }
         case "AdCellRegular":
             if let cell = cellItem as? AdCellRegular {
-                //                cell.cellWidth = cellWidth
-                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                //                cell.containerView.backgroundColor = UIColor.yellow
-                cell.backgroundColor = UIColor.red
-                //                cell.layer.borderWidth = 1
+                cell.cellWidth = cellWidth
+                //when itemCell change in AdCellRegular, updateUI() will be executed.After adding ad,comment the code
+                cell.containerView.backgroundColor = UIColor(hex: "#e9decf")
+                
+                cell.backgroundColor = UIColor(hex: Color.Content.background)
+                cell.border.backgroundColor = UIColor(hex: Color.Content.border)
+                if cell.bounds.height<330{
+                    cell.adHint.isHidden=true
+                }else{
+                    cell.adHint.isHidden=false
+                }
                 return cell
             }
         default:

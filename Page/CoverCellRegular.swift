@@ -62,13 +62,24 @@ class CoverCellRegular: UICollectionViewCell {
         setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (lead.text!.characters.count)))
         lead.attributedText = setStr
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
-        if let loadedImage = itemCell?.largeImage {
+        
+        if let loadedImage = itemCell?.coverImage {
             imageView.image = loadedImage
+            //print ("image is already loaded, no need to download again. ")
         } else {
-            itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-                self?.imageView.image = cellContentItem.largeImage
+            itemCell?.loadImage(type:"cover", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+                self?.imageView.image = cellContentItem.coverImage
             })
+            //print ("should load image here")
         }
+        
+//        if let loadedImage = itemCell?.largeImage {
+//            imageView.image = loadedImage
+//        } else {
+//            itemCell?.loadLargeImage(width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+//                self?.imageView.image = cellContentItem.largeImage
+//            })
+//        }
     
     }
 }

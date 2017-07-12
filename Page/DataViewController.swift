@@ -240,20 +240,14 @@ class DataViewController: UICollectionViewController {
             }
         case "CoverCellRegular":
             if let cell = cellItem as? CoverCellRegular {
-                //                cell.cellWidth = cellWidth
-                //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.containerView.backgroundColor = UIColor.blue
-                //                cell.backgroundColor = UIColor.blue
-                cell.layer.borderWidth = 1
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
         case "ChannelCellRegular":
             if let cell = cellItem as? ChannelCellRegular {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.containerView.backgroundColor = UIColor.yellow
-                //                cell.backgroundColor = UIColor.yellow
-                cell.layer.borderWidth = 1
                 return cell
             }
         case "AdCellRegular":
@@ -359,6 +353,13 @@ class DataViewController: UICollectionViewController {
             let verticalCass = self.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
                 
+                var isAd = false
+                if UIDevice.current.orientation.isPortrait{
+                    if indexPath.row == 6 {isAd = true}else{isAd = false}
+                }else if UIDevice.current.orientation.isLandscape {
+                    isAd = (indexPath.row == 5)
+                }
+                
                 if isCover && !isAd{
                     reuseIdentifier = "CoverCellRegular"
                 } else if isAd && !isCover{
@@ -366,6 +367,7 @@ class DataViewController: UICollectionViewController {
                 }else {
                     reuseIdentifier = "ChannelCellRegular"
                 }
+
                 
             } else {
                 if isCover {

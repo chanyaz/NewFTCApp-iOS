@@ -12,7 +12,8 @@ import UIKit
 class DataViewController: UICollectionViewController {
     var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
-    let flowLayout = PageCollectionViewLayout()
+    let flowLayout = PageCollectionViewLayoutV()
+    let flowLayoutH = PageCollectionViewLayoutH()
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
@@ -115,34 +116,80 @@ class DataViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+      
+        
+    }
+    override func viewWillLayoutSubviews() {
+//         print("33333")//第一次启动出现3次，转屏出现一次
         let horizontalClass = self.traitCollection.horizontalSizeClass
         let verticalCass = self.traitCollection.verticalSizeClass
         
         if horizontalClass == .regular && verticalCass == .regular {
-            collectionView?.collectionViewLayout=flowLayout
-            flowLayout.minimumInteritemSpacing = 0
-            flowLayout.minimumLineSpacing = 0
-        } else {
-            if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+                isLandscape = true
+                collectionView?.collectionViewLayout=flowLayoutH
+                flowLayoutH.minimumInteritemSpacing = 0
+                flowLayoutH.minimumLineSpacing = 0
+            }
+            
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+                isLandscape = false
+                collectionView?.collectionViewLayout=flowLayout
                 flowLayout.minimumInteritemSpacing = 0
                 flowLayout.minimumLineSpacing = 0
-                //FIXME: Why does this break scrolling?
-                //flowLayout.sectionHeadersPinToVisibleBounds = true
-                let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-                let availableWidth = view.frame.width - paddingSpace
-                print("availableWidth : \(availableWidth)")
-                
-                if horizontalClass != .regular || verticalCass != .regular {
-                    if #available(iOS 10.0, *) {
-                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-                    } else {
-                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-                    }
-                    cellWidth = availableWidth
+            }
+        }
+    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        print("22222")//第一次启动不运行，转屏出现一次
+        collectionView?.reloadData()
+
+    }
+
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+       
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(orientationChanged),
+            name: Notification.Name.UIDeviceOrientationDidChange,
+            object: nil
+        )
+        
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+        
+        //        if horizontalClass == .regular && verticalCass == .regular {
+        ////            collectionView?.collectionViewLayout=flowLayout
+        ////            flowLayout.minimumInteritemSpacing = 0
+        ////            flowLayout.minimumLineSpacing = 0
+        //             print("availableWidth : test")
+        //        } else {
+        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.minimumInteritemSpacing = 0
+            flowLayout.minimumLineSpacing = 0
+            //FIXME: Why does this break scrolling?
+            //flowLayout.sectionHeadersPinToVisibleBounds = true
+            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+            let availableWidth = view.frame.width - paddingSpace
+            print("availableWidth : \(availableWidth)")
+            
+            if horizontalClass != .regular || verticalCass != .regular {
+                if #available(iOS 10.0, *) {
+                    flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                } else {
+                    flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
                 }
+                cellWidth = availableWidth
             }
         }
         
+        //        }
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
         collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
@@ -164,19 +211,6 @@ class DataViewController: UICollectionViewController {
         
         // MARK: - Get Content Data for the Page
         requestNewContent()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(orientationChanged),
-            name: Notification.Name.UIDeviceOrientationDidChange,
-            object: nil
-        )
         
     }
     
@@ -254,11 +288,11 @@ class DataViewController: UICollectionViewController {
             if let cell = cellItem as? AdCellRegular {
                 cell.cellWidth = cellWidth
                 //when itemCell change in AdCellRegular, updateUI() will be executed.After adding ad,comment the code
-                if cell.bounds.height<330{
-                    cell.adHint.isHidden=true
-                }else{
-                    cell.adHint.isHidden=false
-                }
+//                if cell.bounds.height<330{
+//                    cell.adHint.isHidden=true
+//                }else{
+//                    cell.adHint.isHidden=false
+//                }
                 return cell
             }
         case "HotArticleCellRegular":
@@ -333,7 +367,6 @@ class DataViewController: UICollectionViewController {
         let sectionTitle = section.title
         let item = section.items[indexPath.row]
         let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
-//        let isAd = (sectionTitle == "" && indexPath.row == 1)
         
         let layoutKey = layoutType()
         let layoutStrategy: String?
@@ -357,21 +390,26 @@ class DataViewController: UICollectionViewController {
                 
                 var isAd = false
                 var isHot = false
-//                if  indexPath.row == 10 {
-//                    isHot = true
-//                }
-                if UIDevice.current.orientation.isPortrait{
+                let isCover = ((indexPath.row == 0 ) )
+
+//                print("isLandscape----\(isLandscape)")
+                
+                if !isLandscape{
                     if indexPath.row == 6 {isAd = true}else{isAd = false}
                     if indexPath.row == 10 {isHot = true}else{isHot = false}
-                }else if UIDevice.current.orientation.isLandscape {
+                }else if isLandscape {
                     isAd = (indexPath.row == 5)
                     isHot = (indexPath.row == 9)
                 }
                 
-                
-//                if isHot {
-//                    reuseIdentifier = "HotArticleCellRegular"
+//                if UIDevice.current.orientation.isPortrait{
+//                    if indexPath.row == 6 {isAd = true}else{isAd = false}
+//                    if indexPath.row == 10 {isHot = true}else{isHot = false}
+//                }else if UIDevice.current.orientation.isLandscape {
+//                    isAd = (indexPath.row == 5)
+//                    isHot = (indexPath.row == 9)
 //                }
+
                 
                 if isCover && !isAd && !isHot {
                     reuseIdentifier = "CoverCellRegular"

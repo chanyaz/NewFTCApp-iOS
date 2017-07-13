@@ -14,6 +14,21 @@
         <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Ad" id="U6b-Vx-4bR" customClass="Ad" customModule="Page" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o1J-CI-Ndm" customClass="AdView" customModule="Page" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="o1J-CI-Ndm" secondAttribute="bottom" id="73g-v1-t5Q"/>
+                <constraint firstItem="o1J-CI-Ndm" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="cUu-gu-gAZ"/>
+                <constraint firstItem="o1J-CI-Ndm" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="nsq-np-fWi"/>
+                <constraint firstAttribute="trailing" secondItem="o1J-CI-Ndm" secondAttribute="trailing" id="v8H-VY-YfK"/>
+            </constraints>
+            <connections>
+                <outlet property="adView" destination="o1J-CI-Ndm" id="3GV-Bd-dB9"/>
+            </connections>
         </collectionReusableView>
     </objects>
 </document>

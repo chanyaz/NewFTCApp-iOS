@@ -153,7 +153,7 @@ class DataViewController: UICollectionViewController {
         collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
         collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
         collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
-        
+        collectionView?.register(UINib.init(nibName: "HotArticleCellRegular", bundle: nil), forCellWithReuseIdentifier: "HotArticleCellRegular")
         // MARK: - Update Styles
         view.backgroundColor = UIColor(hex: Color.Content.border)
         collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
@@ -254,15 +254,17 @@ class DataViewController: UICollectionViewController {
             if let cell = cellItem as? AdCellRegular {
                 cell.cellWidth = cellWidth
                 //when itemCell change in AdCellRegular, updateUI() will be executed.After adding ad,comment the code
-                cell.containerView.backgroundColor = UIColor(hex: "#e9decf")
-                
-                cell.backgroundColor = UIColor(hex: Color.Content.background)
-                cell.border.backgroundColor = UIColor(hex: Color.Content.border)
                 if cell.bounds.height<330{
                     cell.adHint.isHidden=true
                 }else{
                     cell.adHint.isHidden=false
                 }
+                return cell
+            }
+        case "HotArticleCellRegular":
+            if let cell = cellItem as? HotArticleCellRegular {
+                cell.cellWidth = cellWidth
+//              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
         default:
@@ -272,7 +274,6 @@ class DataViewController: UICollectionViewController {
                 return cell
             }
         }
-        //        print ("cellItem---- \(cellItem) ----cellItem")
         return cellItem
     }
     
@@ -296,6 +297,7 @@ class DataViewController: UICollectionViewController {
             switch reuseIdentifier {
             case "Ad":
                 let adView = headerView as! Ad
+                print ("will update ad header view for section \(indexPath.section)")
                 adView.contentSection = fetches.fetchResults[indexPath.section]
                 //                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
                 return adView
@@ -332,7 +334,8 @@ class DataViewController: UICollectionViewController {
         let sectionTitle = section.title
         let item = section.items[indexPath.row]
         let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
-        let isAd = (sectionTitle == "" && indexPath.row == 1)
+//        let isAd = (sectionTitle == "" && indexPath.row == 1)
+        
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {
@@ -354,20 +357,34 @@ class DataViewController: UICollectionViewController {
             if horizontalClass == .regular && verticalCass == .regular {
                 
                 var isAd = false
+                var isHot = false
+//                if  indexPath.row == 10 {
+//                    isHot = true
+//                }
                 if UIDevice.current.orientation.isPortrait{
                     if indexPath.row == 6 {isAd = true}else{isAd = false}
+                    if indexPath.row == 10 {isHot = true}else{isHot = false}
                 }else if UIDevice.current.orientation.isLandscape {
                     isAd = (indexPath.row == 5)
+                    isHot = (indexPath.row == 9)
                 }
                 
-                if isCover && !isAd{
+                
+//                if isHot {
+//                    reuseIdentifier = "HotArticleCellRegular"
+//                }
+                
+                if isCover && !isAd && !isHot {
                     reuseIdentifier = "CoverCellRegular"
-                } else if isAd && !isCover{
+                } else if isAd && !isCover && !isHot {
                     reuseIdentifier = "AdCellRegular"
-                }else {
+                } else if !isAd && !isCover && isHot {
+                   reuseIdentifier = "HotArticleCellRegular"
+                }
+                else {
                     reuseIdentifier = "ChannelCellRegular"
                 }
-
+                
                 
             } else {
                 if isCover {
@@ -381,6 +398,7 @@ class DataViewController: UICollectionViewController {
         return reuseIdentifier
     }
     
+    // MARK: Get Header and Ad Size
     private func getReuseIdentifierForSectionHeader(_ sectionIndex: Int) -> (reuseId: String?, sectionSize: CGSize) {
         let reuseIdentifier: String?
         let sectionSize: CGSize

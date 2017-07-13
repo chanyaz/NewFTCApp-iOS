@@ -15,4 +15,64 @@ struct Download {
         })
         listTask.resume()
     }
+    
+    public static func downloadUrl(_ urlString: String, to: FileManager.SearchPathDirectory) {
+        if let url = URL(string: urlString) {
+            getDataFromUrl(url) {(data, response, error)  in
+                if let data = data, error == nil {
+                    saveFile(data, filename: urlString, to: to)
+                }
+            }
+        }
+    }
+    
+    public static func saveFile(_ data: Data, filename: String, to: FileManager.SearchPathDirectory) {
+        if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
+            if let directoryPath = URL(string: directoryPathString) {
+                let realFileName = getFileNameFromUrlString(filename)
+                let filePath = directoryPath.appendingPathComponent(realFileName)
+                let fileManager = FileManager.default
+                let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
+                if created {
+                    print("\(realFileName) created ")
+                } else {
+                    print("Couldn't create file for some reason")
+                }
+                // Write that JSON to the file created earlier
+                do {
+                    let file = try FileHandle(forWritingTo: filePath)
+                    file.write(data)
+                    print("File data was written to the \(realFileName) successfully!")
+                } catch let error as NSError {
+                    print("Couldn't write to file: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    public static func readFile(_ urlString: String, for directory: FileManager.SearchPathDirectory) -> Data? {
+        let fileName = getFileNameFromUrlString(urlString)
+        do {
+            let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileURL = DocumentDirURL.appendingPathComponent(fileName)
+            return (try? Data(contentsOf: fileURL))
+        } catch {
+            return nil
+        }
+    }
+    
+    private static func getFileNameFromUrlString(_ urlString: String) -> String {
+        let fileName = urlString.replacingOccurrences(
+            of: "^http[s]*://[^/]+/",
+            with: "",
+            options: .regularExpression
+            ).replacingOccurrences(
+                of: "/",
+                with: "-"
+        )
+        return fileName
+    }
+    
+
+    
 }

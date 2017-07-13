@@ -26,6 +26,7 @@
 		605750F51F1499AD00552DAC /* AsyncTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */; };
 		605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */; };
 		605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F81F1499F000552DAC /* UIImage+Attachments.swift */; };
+		605750FB1F15B06700552DAC /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750FA1F15B06700552DAC /* AdView.swift */; };
 		607094AD1EE9436900760A60 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AC1EE9436900760A60 /* Tabs.swift */; };
 		607094AF1EE943A900760A60 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AE1EE943A900760A60 /* Channels.swift */; };
 		6087E3D71EF212960034A92F /* ad.html in Resources */ = {isa = PBXBuildFile; fileRef = 6087E3D61EF212960034A92F /* ad.html */; };
@@ -73,6 +74,8 @@
 		AF8E93071F125509007CD6DE /* ParseHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93061F125509007CD6DE /* ParseHtml.swift */; };
 		AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93081F125889007CD6DE /* AttributedArticle.swift */; };
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */; };
+		F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */; };
+		F234EC741F15D1DB003F6DD0 /* HotArticleCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */; };
 		F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */; };
 		F2F92B181F0B6C0C00C4E043 /* AdCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */; };
 /* End PBXBuildFile section */
@@ -114,6 +117,7 @@
 		605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncTextAttachment.swift; sourceTree = "<group>"; };
 		605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutManager+Attachments.swift"; sourceTree = "<group>"; };
 		605750F81F1499F000552DAC /* UIImage+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Attachments.swift"; sourceTree = "<group>"; };
+		605750FA1F15B06700552DAC /* AdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
 		607094AC1EE9436900760A60 /* Tabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		607094AE1EE943A900760A60 /* Channels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
 		6087E3D61EF212960034A92F /* ad.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ad.html; sourceTree = "<group>"; };
@@ -168,6 +172,8 @@
 		AF8E93061F125509007CD6DE /* ParseHtml.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHtml.swift; sourceTree = "<group>"; };
 		AF8E93081F125889007CD6DE /* AttributedArticle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedArticle.swift; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayout.swift; sourceTree = "<group>"; };
+		F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotArticleCellRegular.swift; sourceTree = "<group>"; };
+		F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotArticleCellRegular.xib; sourceTree = "<group>"; };
 		F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCellRegular.swift; sourceTree = "<group>"; };
 		F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdCellRegular.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -315,10 +321,11 @@
 		6087E3D81EF212A30034A92F /* Ad */ = {
 			isa = PBXGroup;
 			children = (
+				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
+				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
 				60CA7BC01EF26251000CD9B4 /* AdLayout.swift */,
 				609763AF1F0DCFC100088280 /* AdModel.swift */,
-				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
-				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
+				605750FA1F15B06700552DAC /* AdView.swift */,
 				6087E3D61EF212960034A92F /* ad.html */,
 				6087E3D91EF2294C0034A92F /* ga.js */,
 			);
@@ -421,6 +428,8 @@
 				60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */,
 				F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */,
 				F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */,
+				F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */,
+				F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */,
 			);
 			name = Regular;
 			sourceTree = "<group>";
@@ -562,6 +571,7 @@
 				60D3C8CC1EBFF5DC0085BEF6 /* Assets.xcassets in Resources */,
 				F2F92B181F0B6C0C00C4E043 /* AdCellRegular.xib in Resources */,
 				60CA7BC51EF28AD4000CD9B4 /* HeaderView.xib in Resources */,
+				F234EC741F15D1DB003F6DD0 /* HotArticleCellRegular.xib in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
 				60D3C8CA1EBFF5DC0085BEF6 /* Main.storyboard in Resources */,
 				60FDA4F91EFF7FAA003D4180 /* story.html in Resources */,
@@ -593,6 +603,7 @@
 				608C55211EF78FA100AF27CB /* DetailModelController.swift in Sources */,
 				60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */,
 				605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */,
+				605750FB1F15B06700552DAC /* AdView.swift in Sources */,
 				AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */,
 				60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */,
 				608C55231EF7973A00AF27CB /* ChannelModelController.swift in Sources */,
@@ -601,6 +612,7 @@
 				605750F31F1461F400552DAC /* WKWebPage.swift in Sources */,
 				60D4B9011EE7D92500A4506D /* MyFTNavigationController.swift in Sources */,
 				60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */,
+				F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */,
 				F215331C1F07691900DCA7C8 /* PageCollectionViewLayout.swift in Sources */,
 				607094AD1EE9436900760A60 /* Tabs.swift in Sources */,
 				60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */,

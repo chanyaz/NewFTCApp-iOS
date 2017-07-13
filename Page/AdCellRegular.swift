@@ -12,16 +12,20 @@ import WebKit
 
 class AdCellRegular: UICollectionViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+   
+    @IBOutlet weak var view: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var border: UIView!
     @IBOutlet weak var ad: UILabel!
     //small screen need hide adHint,big screen need keep adHint
     @IBOutlet weak var adHint: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        containerView.backgroundColor = UIColor(hex: "#fff1e0")
+        view.backgroundColor = UIColor(hex: "#f6e9d8")
+        border.backgroundColor = UIColor(hex: Color.Content.border)
+    }
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {
         didSet {

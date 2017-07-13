@@ -95,6 +95,8 @@
                 <outlet property="headline" destination="JcO-nN-dFm" id="UOl-xI-4w4"/>
                 <outlet property="imageView" destination="Bzk-eO-Io5" id="CkO-R0-Vbp"/>
                 <outlet property="lead" destination="66G-qF-uSa" id="X7b-5f-9qX"/>
+                <outlet property="tagLable" destination="hyr-3r-2fl" id="XHv-Yh-IAO"/>
+                <outlet property="time" destination="fDq-1J-fC8" id="zQc-Xb-EzC"/>
             </connections>
             <point key="canvasLocation" x="302" y="253"/>
         </collectionViewCell>

@@ -13,16 +13,21 @@ class CoverCellRegular: UICollectionViewCell {
     let imageWidth = 1344  // 16 * 52
     let imageHeight = 756  // 9 * 52
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
     @IBOutlet weak var lead: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var border: UIView!
+    @IBOutlet weak var tagLable: UILabel!
+    @IBOutlet weak var time: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        tagLable.textColor = UIColor(hex: "#9E2F50")
+        time.textColor =  UIColor(hex: "##9e2f50")
+    }
     
     var cellWidth: CGFloat?
     var itemCell: ContentItem? {

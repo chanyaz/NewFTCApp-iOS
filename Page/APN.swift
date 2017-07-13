@@ -8,7 +8,11 @@
 
 import Foundation
 
-struct PostData {
+struct Payload {
+    
+}
+
+struct APN {
     private static let deviceTokenCollector = "https://noti.ftimg.net/iphone-collect.php"
     
     static func sendDeviceToken(body: String) {
@@ -26,13 +30,10 @@ struct PostData {
         
         let dataTask = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let data = data, let res = String(data: data, encoding: .utf8) {
-                print(res)
-            }
-            if let res = response {
-                print(res)
+                print("Post device token result: \(res)")
             }
             if let err = error {
-                print(err)
+                print("Post device token error: \(err)")
             }
         }
         dataTask.resume()

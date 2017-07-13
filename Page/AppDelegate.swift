@@ -26,28 +26,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 10.0, *) {
             let center = UNUserNotificationCenter.current()
             center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-                print(granted)
-                print("register for remote notifications")
-                UIApplication.shared.registerForRemoteNotifications()
+                print("authorization granted: \(granted)")
+                
             }
+            print("register for remote notifications")
+            UIApplication.shared.registerForRemoteNotifications()
         } else {
             // Fallback on earlier versions
+            let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(notificationSettings)
         }
         
         return true
     }
     
+    // MARK: - Received device token
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("received device token")
-        print("device token length: \(deviceToken.count)")
-        print("description: \(deviceToken.description)")
         
-        let hexEncodedToken = deviceToken.map { String(format: "%02hhX", $0) }.joined()
-        print(hexEncodedToken)
+        self.forwardTokenToServer(deviceToken: deviceToken)
     }
     
+    // MARK: - Post device token to server
+    func forwardTokenToServer(deviceToken token: Data) {
+        let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
+        print("device token: \(hexEncodedToken)")
+        
+        var appNumber: String
+        var deviceType: String
+        
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            deviceType = "pad"
+            appNumber = "1"
+            
+        case .phone:
+            deviceType = "phone"
+            appNumber = "2"
+            
+        default:
+            deviceType = "unspecified"
+            appNumber = "0"
+        }
+        
+        let timeZone = TimeZone.current.abbreviation() ?? ""
+        
+        let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
+        
+        PostData.sendDeviceToken(body: urlEncoded)
+    }
+    
+    // MARK: - Register device errorred.
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Remote notification support is unavailable due to error: \(error)")
+    }
+    
+    // MARK: - Register notification settings
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        print(notificationSettings)
+    }
+    
+    // MARK: - Received remote notification
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        print(userInfo)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

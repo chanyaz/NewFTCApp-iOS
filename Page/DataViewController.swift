@@ -29,16 +29,6 @@ class DataViewController: UICollectionViewController {
     var dataObject = [String: String]()
     var pageTitle: String = ""
     
-    //    var pageContent = [String: Any]() {
-    //        didSet {
-    //            updateUI()
-    //        }
-    //    }
-    //    var contentSection: ContentSection? = nil {
-    //
-    //    }
-    
-    
     deinit {
         //MARK: Some of the deinit might b e useful in the future
         NotificationCenter.default.removeObserver(
@@ -52,8 +42,8 @@ class DataViewController: UICollectionViewController {
     
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
-        let horizontalClass = self.traitCollection.horizontalSizeClass
-        let verticalCass = self.traitCollection.verticalSizeClass
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
@@ -81,10 +71,8 @@ class DataViewController: UICollectionViewController {
                     )
                     self?.fetches = resultsWithAds
                     
-                    
-                    //                    self?.fetches = results
-                    
-                    //                    print("fetches : \(resultsWithAds)")
+//                    self?.fetches = results
+//                    print("fetches : \(resultsWithAds)")
                     
                     self?.collectionView?.reloadData()
                 }
@@ -115,9 +103,25 @@ class DataViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let horizontalClass = self.traitCollection.horizontalSizeClass
-        let verticalCass = self.traitCollection.verticalSizeClass
+        print ("view will appear is called")
+
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(orientationChanged),
+            name: Notification.Name.UIDeviceOrientationDidChange,
+            object: nil
+        )
+        
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+
         if horizontalClass == .regular && verticalCass == .regular {
             collectionView?.collectionViewLayout=flowLayout
             flowLayout.minimumInteritemSpacing = 0
@@ -164,19 +168,6 @@ class DataViewController: UICollectionViewController {
         
         // MARK: - Get Content Data for the Page
         requestNewContent()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(orientationChanged),
-            name: Notification.Name.UIDeviceOrientationDidChange,
-            object: nil
-        )
         
     }
     
@@ -264,7 +255,7 @@ class DataViewController: UICollectionViewController {
         case "HotArticleCellRegular":
             if let cell = cellItem as? HotArticleCellRegular {
                 cell.cellWidth = cellWidth
-//              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
         default:
@@ -334,7 +325,7 @@ class DataViewController: UICollectionViewController {
         let sectionTitle = section.title
         let item = section.items[indexPath.row]
         let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
-//        let isAd = (sectionTitle == "" && indexPath.row == 1)
+        //        let isAd = (sectionTitle == "" && indexPath.row == 1)
         
         let layoutKey = layoutType()
         let layoutStrategy: String?
@@ -352,15 +343,15 @@ class DataViewController: UICollectionViewController {
                 reuseIdentifier = "HeadlineCell"
             }
         } else {
-            let horizontalClass = self.traitCollection.horizontalSizeClass
-            let verticalCass = self.traitCollection.verticalSizeClass
+            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
                 
                 var isAd = false
                 var isHot = false
-//                if  indexPath.row == 10 {
-//                    isHot = true
-//                }
+                //                if  indexPath.row == 10 {
+                //                    isHot = true
+                //                }
                 if UIDevice.current.orientation.isPortrait{
                     if indexPath.row == 6 {isAd = true}else{isAd = false}
                     if indexPath.row == 10 {isHot = true}else{isHot = false}
@@ -370,16 +361,16 @@ class DataViewController: UICollectionViewController {
                 }
                 
                 
-//                if isHot {
-//                    reuseIdentifier = "HotArticleCellRegular"
-//                }
+                //                if isHot {
+                //                    reuseIdentifier = "HotArticleCellRegular"
+                //                }
                 
                 if isCover && !isAd && !isHot {
                     reuseIdentifier = "CoverCellRegular"
                 } else if isAd && !isCover && !isHot {
                     reuseIdentifier = "AdCellRegular"
                 } else if !isAd && !isCover && isHot {
-                   reuseIdentifier = "HotArticleCellRegular"
+                    reuseIdentifier = "HotArticleCellRegular"
                 }
                 else {
                     reuseIdentifier = "ChannelCellRegular"

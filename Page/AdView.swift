@@ -10,12 +10,50 @@ import UIKit
 import WebKit
 class AdView: UIView {
     
-    var adid: String?
-    var adWidth: String?
-    var adModel: AdModel?
+    private var adid: String?
+    private var adWidth: String?
+    private var adModel: AdModel?
 
-    public func loadAdView() {
-
+    public var contentSection: ContentSection? = nil {
+        didSet {
+            updateUI()
+        }
+    }
+    
+    public func updateUI() {
+        if let adType = contentSection?.type, adType == "MPU" {
+            adWidth = "300px"
+        } else {
+            adWidth = "100%"
+        }
+        //TODO: - We should preload the ad information to avoid decreasing our ad inventory
+        if let adid = contentSection?.adid {
+            self.adid = adid
+            if let url = AdParser.getAdUrlFromDolphin(adid) {
+                clean()
+                Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
+                    DispatchQueue.main.async { () -> Void in
+                        guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
+                            self?.handleAdModel()
+                            return
+                        }
+                        let adModel = AdParser.parseAdCode(adCode)
+                        self?.adModel = adModel
+                        self?.handleAdModel()
+                    }
+                }
+            }
+        }
+    }
+    
+    private func clean() {
+        // MARK: remove subviews before loading new creatives
+        self.subviews.forEach {
+            $0.removeFromSuperview()
+        }
+    }
+    
+    private func handleAdModel() {
         if let adModel = self.adModel {
             if let imageString = adModel.imageString {
                 // TODO: If the asset is already downloaded, no need to request from the Internet
@@ -24,10 +62,11 @@ class AdView: UIView {
                     print ("image already in cache:\(imageString)")
                     return
                 }
+                print ("continue to get the image file")
                 if let url = URL(string: imageString) {
                 Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                     guard let data = data else {
-                        self?.loadAdWebView()
+                        self?.loadWebView()
                         return
                     }
                     DispatchQueue.main.async { () -> Void in
@@ -37,10 +76,10 @@ class AdView: UIView {
                 }
                 }
             } else {
-                loadAdWebView()
+                loadWebView()
             }
         } else {
-            loadAdWebView()
+            loadWebView()
         }
     }
     
@@ -64,16 +103,13 @@ class AdView: UIView {
             let imageFrame = CGRect(x: imageX, y: 0, width: imageWidth, height: frameHeight)
             let imageView = UIImageView(frame: imageFrame)
             imageView.image = image
-            self.subviews.forEach {
-                $0.removeFromSuperview()
-            }
             self.addSubview(imageView)
         } else {
-            self.loadAdWebView()
+            self.loadWebView()
         }
     }
     
-    private func loadAdWebView() {
+    private func loadWebView() {
         if let adid = self.adid, let adWidth = self.adWidth {
             let config = WKWebViewConfiguration()
             config.allowsInlineMediaPlayback = true
@@ -81,9 +117,6 @@ class AdView: UIView {
             webView.isOpaque = true
             webView.backgroundColor = UIColor.clear
             webView.scrollView.backgroundColor = UIColor.clear
-            self.subviews.forEach {
-                $0.removeFromSuperview()
-            }
             self.addSubview(webView)
             let urlString = AdParser.getAdPageUrlForAdId(adid)
             if let url = URL(string: urlString) {

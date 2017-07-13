@@ -10,52 +10,20 @@ import UIKit
 import WebKit
 class AdView: UIView {
     
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
     var adid: String?
     var adWidth: String?
     var adModel: AdModel?
-    
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        loadAdView()
-//    }
-    
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        loadAdView()
-//    }
-    
-//    // MARK: If Ad Parser can not get the correct adModel
-//    init(adid: String, adWidth: String, adFrame: CGRect) {
-//        self.adid = adid
-//        self.adWidth = adWidth
-//        super.init(frame: adFrame)
-//        loadAdWebView()
-//    }
-//    
-//    // MARK: If Ad Parser gets the correct adModel
-//    init(adModel: AdModel, adid: String, adWidth: String, adFrame: CGRect) {
-//        self.adModel = adModel
-//        self.adid = adid
-//        self.adWidth = adWidth
-//        super.init(frame: adFrame)
-//        loadAdView()
-//    }
-    
 
     public func loadAdView() {
-        let frameWidth = self.frame.width
-        let frameHeight = self.frame.height
+
         if let adModel = self.adModel {
             if let imageString = adModel.imageString {
                 // TODO: If the asset is already downloaded, no need to request from the Internet
-                
+                if let data = Download.readFile(imageString, for: .cachesDirectory) {
+                    showAdImage(data)
+                    print ("image already in cache:\(imageString)")
+                    return
+                }
                 if let url = URL(string: imageString) {
                 Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                     guard let data = data else {
@@ -63,30 +31,7 @@ class AdView: UIView {
                         return
                     }
                     DispatchQueue.main.async { () -> Void in
-                        if let image = UIImage(data: data),
-                            let adWidth = self?.adWidth {
-                            let imageWidth: CGFloat
-                            if adWidth.hasSuffix("px") {
-                                let adWidthString = adWidth.replacingOccurrences(of: "px", with: "")
-                                if let adWidthInt = Int(adWidthString) {
-                                    imageWidth = CGFloat(adWidthInt)
-                                } else {
-                                    imageWidth = frameWidth
-                                }
-                            } else {
-                                imageWidth = frameWidth
-                            }
-                            let imageX = min(max((frameWidth - imageWidth)/2,0), frameWidth)
-                            let imageFrame = CGRect(x: imageX, y: 0, width: imageWidth, height: frameHeight)
-                            let imageView = UIImageView(frame: imageFrame)
-                            imageView.image = image
-                            self?.subviews.forEach {
-                                $0.removeFromSuperview()
-                            }
-                            self?.addSubview(imageView)
-                        } else {
-                            self?.loadAdWebView()
-                        }
+                        self?.showAdImage(data)
                     }
                     Download.saveFile(data, filename: imageString, to: .cachesDirectory)
                 }
@@ -96,6 +41,35 @@ class AdView: UIView {
             }
         } else {
             loadAdWebView()
+        }
+    }
+    
+    private func showAdImage(_ data: Data) {
+        let frameWidth = self.frame.width
+        let frameHeight = self.frame.height
+        if let image = UIImage(data: data),
+            let adWidth = self.adWidth {
+            let imageWidth: CGFloat
+            if adWidth.hasSuffix("px") {
+                let adWidthString = adWidth.replacingOccurrences(of: "px", with: "")
+                if let adWidthInt = Int(adWidthString) {
+                    imageWidth = CGFloat(adWidthInt)
+                } else {
+                    imageWidth = frameWidth
+                }
+            } else {
+                imageWidth = frameWidth
+            }
+            let imageX = min(max((frameWidth - imageWidth)/2,0), frameWidth)
+            let imageFrame = CGRect(x: imageX, y: 0, width: imageWidth, height: frameHeight)
+            let imageView = UIImageView(frame: imageFrame)
+            imageView.image = image
+            self.subviews.forEach {
+                $0.removeFromSuperview()
+            }
+            self.addSubview(imageView)
+        } else {
+            self.loadAdWebView()
         }
     }
     

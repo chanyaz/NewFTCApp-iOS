@@ -50,6 +50,17 @@ struct Download {
         }
     }
     
+    public static func readFile(_ urlString: String, for directory: FileManager.SearchPathDirectory) -> Data? {
+        let fileName = getFileNameFromUrlString(urlString)
+        do {
+            let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileURL = DocumentDirURL.appendingPathComponent(fileName)
+            return (try? Data(contentsOf: fileURL))
+        } catch {
+            return nil
+        }
+    }
+    
     private static func getFileNameFromUrlString(_ urlString: String) -> String {
         let fileName = urlString.replacingOccurrences(
             of: "^http[s]*://[^/]+/",
@@ -61,5 +72,7 @@ struct Download {
         )
         return fileName
     }
+    
+
     
 }

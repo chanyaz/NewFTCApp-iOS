@@ -232,7 +232,6 @@ class ContentFetch {
         let ebyline_status = item["ebyline_status"] as? String ?? ""
         oneItem.englishByline = "\(ebyline_description) \(eauthor) \(ebyline_status)"
         
-        //<%assign var="storyAuthor" value="`$story.ebyline_description` `$story.eauthor` `$story.ebyline_status`"%>
         itemCollection.append(oneItem)
         let contentSection = ContentSection(
             title: "",

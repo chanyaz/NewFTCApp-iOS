@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 10.0, *) {
             let center = UNUserNotificationCenter.current()
             center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-                print(granted)
+                print("authorization granted: \(granted)")
                 
             }
             print("register for remote notifications")
@@ -43,8 +43,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Received device token
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
-        let hexEncodedToken = deviceToken.map { String(format: "%02hhX", $0) }.joined()
+        self.forwardTokenToServer(deviceToken: deviceToken)
+    }
+    
+    // MARK: - Post device token to server
+    func forwardTokenToServer(deviceToken token: Data) {
+        let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
         print("device token: \(hexEncodedToken)")
+        
+        var appNumber: String
+        var deviceType: String
+        
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            deviceType = "pad"
+            appNumber = "1"
+            
+        case .phone:
+            deviceType = "phone"
+            appNumber = "2"
+            
+        default:
+            deviceType = "unspecified"
+            appNumber = "0"
+        }
+        
+        let timeZone = TimeZone.current.abbreviation() ?? ""
+        
+        let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
+        
+        PostData.sendDeviceToken(body: urlEncoded)
     }
     
     // MARK: - Register device errorred.

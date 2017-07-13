@@ -41,6 +41,8 @@
 		60B2EF141EE694BC00B8C6DA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */; };
 		60B50D6A1EFBA4E000B29F3A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B50D691EFBA4E000B29F3A /* Constants.swift */; };
 		60C03D6A1EFE4470003ABDE4 /* DetailModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C03D691EFE4470003ABDE4 /* DetailModelDelegate.swift */; };
+		60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65A1F17402500E6F77D /* HappyUser.swift */; };
+		60C0D65E1F17415A00E6F77D /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */; };
 		60CA7BC11EF26251000CD9B4 /* AdLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC01EF26251000CD9B4 /* AdLayout.swift */; };
 		60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */; };
 		60CA7BC51EF28AD4000CD9B4 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60CA7BC31EF28AD4000CD9B4 /* HeaderView.xib */; };
@@ -132,6 +134,8 @@
 		60B2EF131EE694BC00B8C6DA /* AppNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		60B50D691EFBA4E000B29F3A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		60C03D691EFE4470003ABDE4 /* DetailModelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailModelDelegate.swift; sourceTree = "<group>"; };
+		60C0D65A1F17402500E6F77D /* HappyUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HappyUser.swift; sourceTree = "<group>"; };
+		60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		60CA7BC01EF26251000CD9B4 /* AdLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdLayout.swift; sourceTree = "<group>"; };
 		60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		60CA7BC31EF28AD4000CD9B4 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
@@ -347,11 +351,20 @@
 			children = (
 				6093F1651EE90E81009F16EE /* CustomPopTransition.swift */,
 				60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */,
+				60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */,
 				AF8E93021F124844007CD6DE /* ArticleStyle.swift */,
 				AF8E93061F125509007CD6DE /* ParseHtml.swift */,
 				AF8E93081F125889007CD6DE /* AttributedArticle.swift */,
 			);
 			name = StyleHelpers;
+			sourceTree = "<group>";
+		};
+		60C0D65C1F17405300E6F77D /* Growth Hack */ = {
+			isa = PBXGroup;
+			children = (
+				60C0D65A1F17402500E6F77D /* HappyUser.swift */,
+			);
+			name = "Growth Hack";
 			sourceTree = "<group>";
 		};
 		60D3C8B41EBFF5DC0085BEF6 = {
@@ -383,6 +396,7 @@
 				60D3C8D01EBFF5DC0085BEF6 /* Info.plist */,
 				50057FC91EE9752D0092180A /* Layouts */,
 				601418091EEA91BA00DC3EF9 /* Networks */,
+				60C0D65C1F17405300E6F77D /* Growth Hack */,
 				60B2EF071EE680DE00B8C6DA /* StyleHelpers */,
 				607094B01EE948D700760A60 /* Core Data */,
 				60D4B9021EE7D95800A4506D /* Customizations */,
@@ -604,6 +618,7 @@
 				60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */,
 				605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */,
 				605750FB1F15B06700552DAC /* AdView.swift in Sources */,
+				60C0D65E1F17415A00E6F77D /* DeviceInfo.swift in Sources */,
 				AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */,
 				60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */,
 				608C55231EF7973A00AF27CB /* ChannelModelController.swift in Sources */,
@@ -643,6 +658,7 @@
 				60C03D6A1EFE4470003ABDE4 /* DetailModelDelegate.swift in Sources */,
 				6093F1691EE937E8009F16EE /* Model.xcdatamodeld in Sources */,
 				60D4B8FB1EE7CA7800A4506D /* EnglishNavigationController.swift in Sources */,
+				60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */,
 				604FF94B1EEF7649005D2A41 /* ChannelCell.swift in Sources */,
 				5070EDF51EEBD425008A10CE /* ContentSection.swift in Sources */,
 				6093F1661EE90E81009F16EE /* CustomPopTransition.swift in Sources */,

@@ -13,7 +13,7 @@ class AdView: UIView {
     private var adid: String?
     private var adWidth: String?
     private var adModel: AdModel?
-
+    
     public var contentSection: ContentSection? = nil {
         didSet {
             updateUI()
@@ -54,6 +54,7 @@ class AdView: UIView {
     }
     
     private func handleAdModel() {
+        //loadWebView()
         if let adModel = self.adModel {
             if let imageString = adModel.imageString {
                 // TODO: If the asset is already downloaded, no need to request from the Internet
@@ -64,16 +65,16 @@ class AdView: UIView {
                 }
                 print ("continue to get the image file")
                 if let url = URL(string: imageString) {
-                Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
-                    guard let data = data else {
-                        self?.loadWebView()
-                        return
+                    Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
+                        guard let data = data else {
+                            self?.loadWebView()
+                            return
+                        }
+                        DispatchQueue.main.async { () -> Void in
+                            self?.showAdImage(data)
+                        }
+                        Download.saveFile(data, filename: imageString, to: .cachesDirectory)
                     }
-                    DispatchQueue.main.async { () -> Void in
-                        self?.showAdImage(data)
-                    }
-                    Download.saveFile(data, filename: imageString, to: .cachesDirectory)
-                }
                 }
             } else {
                 loadWebView()
@@ -84,6 +85,9 @@ class AdView: UIView {
     }
     
     private func showAdImage(_ data: Data) {
+        // MARK: Report Impressions First
+        reportImpressions()
+        
         let frameWidth = self.frame.width
         let frameHeight = self.frame.height
         if let image = UIImage(data: data),
@@ -139,5 +143,46 @@ class AdView: UIView {
             }
         }
     }
-
+    
+    // MARK: report ad impressions
+    private func reportImpressions() {
+        if let impressions = adModel?.impressions {
+            //print ("found \(impressions.count) impressions callings")
+            let deviceType = DeviceInfo.checkDeviceType()
+            let unixDateStamp = Date().timeIntervalSince1970
+            let timeStamp = String(unixDateStamp).replacingOccurrences(of: ".", with: "")
+            for impressionUrlString in impressions {
+                let impressionUrlStringWithTimestamp = impressionUrlString.replacingOccurrences(of: "[timestamp]", with: timeStamp)
+                print ("send to \(impressionUrlStringWithTimestamp)")
+                if var urlComponents = URLComponents(string: impressionUrlStringWithTimestamp) {
+                    let newQuery = URLQueryItem(name: "fttime", value: timeStamp)
+                    if urlComponents.queryItems != nil {
+                        urlComponents.queryItems?.append(newQuery)
+                    } else {
+                        urlComponents.queryItems = [newQuery]
+                    }
+                    if let url = urlComponents.url {
+                        Download.getDataFromUrl(url) { (data, response, error)  in
+                            DispatchQueue.main.async { () -> Void in
+                                guard let _ = data , error == nil else {
+                                    // MARK: Use the original impressionUrlString for Google Analytics
+                                    //let jsCode = "try{ga('send','event', '\(deviceType) Launch Ad', 'Fail', '\(impressionUrlString)', {'nonInteraction':1});}catch(ignore){}"
+                                    //self.webView.evaluateJavaScript(jsCode) { (result, error) in
+                                    //}
+                                    // MARK: The string should have the parameter
+                                    print ("Fail to send impression to \(deviceType) \(url.absoluteString)")
+                                    return
+                                }
+                                //let jsCode = "try{ga('send','event', '\(deviceType) Launch Ad', 'Sent', '\(impressionUrlString)', {'nonInteraction':1});}catch(ignore){}"
+                                //self.webView.evaluateJavaScript(jsCode) { (result, error) in
+                                //}
+                                print("sent impression to \(deviceType) \(url.absoluteString)")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 }

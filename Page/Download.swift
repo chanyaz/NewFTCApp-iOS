@@ -61,6 +61,32 @@ struct Download {
         }
     }
     
+    public static func cleanFile(_ types: [String], for directory: FileManager.SearchPathDirectory) {
+        if let documentsUrl =  FileManager.default.urls(for: directory, in: .userDomainMask).first {
+            do {
+                // MARK: Get the directory contents urls (including subfolders urls)
+                let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
+                
+                // MARK: Filter the directory contents
+                let files: [URL]
+                if types.count > 0 {
+                    files = directoryContents.filter{ types.contains($0.pathExtension) }
+                } else {
+                    files = directoryContents
+                }
+
+                for file in files {
+                    print("found file \(file.lastPathComponent) in \(directory) folder")
+                    let fileName = file.lastPathComponent
+                    try FileManager.default.removeItem(at: file)
+                    print("remove file from \(directory) folder: \(fileName)")
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     private static func getFileNameFromUrlString(_ urlString: String) -> String {
         let fileName = urlString.replacingOccurrences(
             of: "^http[s]*://[^/]+/",

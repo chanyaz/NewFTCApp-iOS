@@ -38,38 +38,11 @@ class Ad: UICollectionReusableView {
         let adBackgroundColor = UIColor(hex: Color.Ad.background)
         self.backgroundColor = adBackgroundColor
         adView?.backgroundColor = adBackgroundColor
-        let adWidth: String
-        if let adType = contentSection?.type,
-            adType == "MPU" {
-            adWidth = "300px"
-        } else {
-            adWidth = "100%"
-        }
-        //TODO: - We should preload the ad information to avoid decreasing our ad inventory
-        if let adid = contentSection?.adid {
-            if let url = AdParser.getAdUrlFromDolphin(adid) {
-                Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
-                    DispatchQueue.main.async { () -> Void in
-                        guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
-                            self?.adView?.adid = adid
-                            self?.adView?.adWidth = adWidth
-                            self?.adView?.loadAdView()
-                            return
-                        }
-                        let adModel = AdParser.parseAdCode(adCode)
-                        self?.adView?.adid = adid
-                        self?.adView?.adWidth = adWidth
-                        self?.adView?.adModel = adModel
-                        self?.adView?.loadAdView()
-                    }
-                }
-            }
-        }
+        adView?.contentSection = self.contentSection
     }
     
     // TODO: Need to implement url click in wkwebview
     // TODO: Need to come up with a Ad View Class, which is a subclass of UIView
     // TODO: Upgrade to native for default templates
-    
-    
+
 }

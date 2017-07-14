@@ -37,3 +37,12 @@ extension UIApplication {
         return controller
     }
 }
+
+extension Date {
+    func getDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        let dateString = formatter.string(from: self)
+        return dateString
+    }
+}

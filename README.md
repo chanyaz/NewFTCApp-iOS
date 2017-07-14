@@ -21,7 +21,10 @@ The aim of this project is to create a "mother of all news apps". When the proje
 ### In Progress: Newspaper experience on iPad
 
 ## Development Milestones
-Current Working: Offline and Caches. 
+Today's Tasks: 
+1. Video Page Take Full Screen Width 
+2. Send third party impressions until they are confirmed
+3. Tap link for Ad Views
 
 
 ### Done: Static Color Management: Constants and Naming: Weiguo
@@ -40,10 +43,16 @@ Current Working: Offline and Caches.
 3. Done: Video. 
 4. Interactive Features. 
 5. custom link
+6. Handle Links
+7. Offline and Caches for Content
+
 
 
 ### Advertising: 
 1. In Progress: retrieve Ad info from Dolphin's script string
+2. Send third party impressions until they are confirmed
+3. Tap link for Ad Views
+
 
 ### Offline and Caches
 
@@ -67,4 +76,5 @@ Current Working: Offline and Caches.
 
 ### Store
 
+### Login and Registration
 

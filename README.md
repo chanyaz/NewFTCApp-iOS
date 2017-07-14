@@ -11,43 +11,50 @@ The aim of this project is to create a "mother of all news apps". When the proje
 ### In-app Purchase
 
 ## Enhancement to existing hybrid app
-### All possible customizations in one place
-### Smooth Panning between content
-### Pull to refresh
+### Done: All possible customizations in one place
+### Done: Smooth Panning between content
+### Done: Pull to refresh
 ### Infinite Scrolling in Home and Channel Pages
-### Dynamic Type Support
+### In Progress: Dynamic Type Support
 ### Autorenewing Subscription
 ### JSON formating that supports as many as possible APIs
-### Newspaper experience on iPad
+### In Progress: Newspaper experience on iPad
 
-## Work that can be delegated
-### Static Color Management: Constants and Naming: Weiguo
+## Development Milestones
+Current Working: Offline and Caches. 
 
 
-### Channel Structure: Xiangyun
+### Done: Static Color Management: Constants and Naming: Weiguo
+
+### In Progress: Channel Structure: Xiangyun
 1. The final correct channel structure. 
 2. Retrieve and convert other types of API. 
 
 
-### Channel Page Collection View on iPad: 
+### In Progress: Channel Page Collection View on iPad: 
 1. Stop using auto-resizing cells on Regular size. 
-2. Paginated Scroller
 
 ### Story Page: 
-1. Decide what additional properties are needed. 
-2. Use TextKit to display good layout both on phone and pad. 
-3. Consider split view. 
-4. Come up with bilingual and english switch. 
-5. Functionalities and buttons. 
-6. Handle Video. 
-7. Handle Interactive Features. 
-8. Handle custom link
+1. In Progress: Come up with bilingual and english switch. 
+2. In Progress: Functionalities and buttons. 
+3. Done: Video. 
+4. Interactive Features. 
+5. custom link
 
 
 ### Advertising: 
-1. retrieve Ad info from Dolphin's script string
+1. In Progress: retrieve Ad info from Dolphin's script string
 
-## Work that cannot be delegated
+### Offline and Caches
+
+### Sharing
+
+### Tracking
+
+### Audio
+
+### AI
+
 ### Core data
 
 

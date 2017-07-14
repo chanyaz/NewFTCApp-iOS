@@ -22,9 +22,9 @@ The aim of this project is to create a "mother of all news apps". When the proje
 
 ## Development Milestones
 Today's Tasks: 
-1. Done: Video Page Take Full Screen Width 
-2. Done: Send third party impressions until they are confirmed
-3. Done: Tap link for Ad Views
+1. Workspace
+2. Cocoa Pod
+3. Google Analytics
 
 
 ### Done: Static Color Management: Constants and Naming: Weiguo
@@ -78,4 +78,10 @@ Today's Tasks:
 ### Store
 
 ### Login and Registration
+
+## Completed Tasks
+1. Video Page Take Full Screen Width 
+2. Done: Send third party impressions until they are confirmed
+3. Done: Tap link for Ad Views
+
 

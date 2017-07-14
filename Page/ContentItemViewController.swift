@@ -408,7 +408,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             } else {
                 // MARK: - If it is other types of content such video and interacrtive features
                 if let id = dataObject?.id, let type = dataObject?.type {
-                    let urlString = "http://www.ftchinese.com/\(type)/\(id)?from=swiftapp"
+                    let urlString = "http://www.ftchinese.com/\(type)/\(id)?webview=ftcapp&001"
                     print ("loading \(urlString)")
                     if let url = URL(string: urlString) {
                         let request = URLRequest(url: url)

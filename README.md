@@ -22,9 +22,9 @@ The aim of this project is to create a "mother of all news apps". When the proje
 
 ## Development Milestones
 Today's Tasks: 
-1. Video Page Take Full Screen Width 
+1. Done: Video Page Take Full Screen Width 
 2. Send third party impressions until they are confirmed
-3. Tap link for Ad Views
+3. Done: Tap link for Ad Views
 
 
 ### Done: Static Color Management: Constants and Naming: Weiguo
@@ -36,6 +36,7 @@ Today's Tasks:
 
 ### In Progress: Channel Page Collection View on iPad: 
 1. Stop using auto-resizing cells on Regular size. 
+2. Use prefetch to make scrolling smooth. 
 
 ### Story Page: 
 1. In Progress: Come up with bilingual and english switch. 
@@ -45,7 +46,7 @@ Today's Tasks:
 5. custom link
 6. Handle Links
 7. Offline and Caches for Content
-
+8. A progress indicator untill web page is completely updated
 
 
 ### Advertising: 

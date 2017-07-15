@@ -356,6 +356,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 }
                             }
                         }
+                        
+                        if relatedStories != "" {
+                            relatedStories = "<div class=\"story-box\"><h2 class=\"box-title\"><a>相关文章</a></h2><ul class=\"top10\">\(relatedStories)</ul></div>"
+                        }
+                                                
                         let tagsArray = tags.components(separatedBy: ",")
                         var relatedTopics = ""
                         for (index, tag) in tagsArray.enumerated() {

@@ -176,7 +176,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         checkImpressions()
         if checkImpressionTimer == nil || checkImpressionTimer?.isValid == false {
             checkImpressionTimer = Timer.scheduledTimer(
-                timeInterval: 5,
+                timeInterval: 30,
                 target: self,
                 selector: #selector(checkImpressions),
                 userInfo: nil,

@@ -108,6 +108,23 @@ class DataViewController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if (GAI.sharedInstance().defaultTracker) != nil {
+            #if DEBUG
+                
+                print("default tracker")
+                
+            #endif
+        }
+        
+        //        let tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().tracker(withTrackingId: "UA-1608715-1")
+        
+        tracker?.set(kGAIScreenName, value: "Channel View")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        if let obj = builder?.build() as [NSObject : AnyObject]? {
+            tracker?.send(obj)
+            print ("sent screen view for the first time")
+        }
         
     }
     override func viewWillLayoutSubviews() {

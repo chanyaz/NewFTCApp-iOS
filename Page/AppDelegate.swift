@@ -9,6 +9,7 @@
 import UIKit
 import UserNotifications
 import CoreData
+import Google
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -40,7 +41,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         startCheckImpressionTimer()
+        
+        setupGoogleAnalytics()
+        
         return true
+    }
+    
+    
+    private func setupGoogleAnalytics() {
+        
+        // Configure tracker from GoogleService-Info.plist.
+        var configureError:NSError? = nil
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(String(describing: configureError))")
+        
+        let gai = GAI.sharedInstance()
+        gai?.trackUncaughtExceptions = true  // report uncaught exceptions
+        gai?.logger.logLevel = GAILogLevel.verbose  // remove before app release
     }
     
     

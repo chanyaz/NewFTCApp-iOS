@@ -1,5 +1,12 @@
 # New FTChinese Native iOS App
 
+## How To Start
+$ sudo gem install cocoapods
+$ pod install
+$ open Page.xcworkspace
+For more, check out [Cocoa Pod](https://cocoapods.org/)
+
+
 ## Overall Goal
 The aim of this project is to create a "mother of all news apps". When the project is finished, anyone who knows the basics of iOS development should be able to build a decent news app in a few minutes. For now, we have two milestones. 
 

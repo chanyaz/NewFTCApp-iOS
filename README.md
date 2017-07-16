@@ -2,8 +2,11 @@
 
 ## How To Start
 $ sudo gem install cocoapods
+
 $ pod install
+
 $ open Page.xcworkspace
+
 For more, check out [Cocoa Pod](https://cocoapods.org/)
 
 

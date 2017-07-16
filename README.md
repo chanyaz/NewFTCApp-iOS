@@ -1,4 +1,4 @@
-# New FTChinese Native iOS App
+# New FTChinese iOS App
 
 ## How To Start
 $ sudo gem install cocoapods
@@ -11,9 +11,9 @@ For more, check out [Cocoa Pod](https://cocoapods.org/)
 
 
 ## Overall Goal
-The aim of this project is to create a "mother of all news apps". When the project is finished, anyone who knows the basics of iOS development should be able to build a decent news app in a few minutes. For now, we have two milestones. 
+The aim of this project is to create a "mother of all news apps". With this project as a "scalfold", anyone who knows the basics of iOS development should be able to build a decent news app in a few minutes. For now, we have two milestones. 
 
-## Migrate the current FTChinese hybrid app into a pure native app
+## Migrate the current FTChinese hybrid app to a pure native app
 ### News Reader
 ### Billigual Support
 ### Channels

@@ -10,6 +10,10 @@ import Foundation
 struct AdLayout {
     func insertAds(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
         var newContentSections = contentSections
+        // MARK: It is possible that the JSON Format is broken. Check it here.
+        if newContentSections.count < 1 {
+            return newContentSections
+        }
         switch layout {
         case "home":
             let topBanner = ContentSection(
@@ -30,10 +34,12 @@ struct AdLayout {
                 type: "Banner",
                 adid: "20220114"
             )
-            
-            
-            // MARK: - The first item in the first section should be marked as Cover
-            newContentSections[0].items[0].isCover = true
+
+            // MARK: - The first item in the first section should be marked as Cover.
+            // MARk: - Make sure items has a least one child to avoid potential run time error.
+            if newContentSections[0].items.count > 0 {
+                newContentSections[0].items[0].isCover = true
+            }
             
             // MARK: - Break up the first section into two or more, depending on how you want to layout ads
             let sectionToSplit = newContentSections[0]
@@ -48,14 +54,11 @@ struct AdLayout {
                 newContentSections[0].items = Array(newContentSections[0].items[0..<9])
             }
             
-            
             // MARK: Insert ads into sections that has larger index so that you don't have to constantly recalculate the new index
             newContentSections.insert(MPU1, at: 1)
             newContentSections.insert(topBanner, at: 0)
             newContentSections.append(bottomBanner)
             newContentSections = updateSectionRowIndex(newContentSections)
-            
-            
             return newContentSections
         case "ipadhome":
             // MARK: - The first item in the first section should be marked as Cover

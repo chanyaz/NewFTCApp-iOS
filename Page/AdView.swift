@@ -8,7 +8,8 @@
 
 import UIKit
 import WebKit
-class AdView: UIView {
+import SafariServices
+class AdView: UIView, SFSafariViewControllerDelegate {
     
     private var adid: String?
     private var adWidth: String?
@@ -54,7 +55,6 @@ class AdView: UIView {
     }
     
     private func handleAdModel() {
-        //loadWebView()
         if let adModel = self.adModel {
             if let imageString = adModel.imageString {
                 // TODO: If the asset is already downloaded, no need to request from the Internet
@@ -86,7 +86,10 @@ class AdView: UIView {
     
     private func showAdImage(_ data: Data) {
         // MARK: Report Impressions First
-        reportImpressions()
+        //reportImpressions()
+        if let impressions = adModel?.impressions {
+            Impressions.report(impressions)
+        }
         
         let frameWidth = self.frame.width
         let frameHeight = self.frame.height
@@ -111,6 +114,26 @@ class AdView: UIView {
         } else {
             self.loadWebView()
         }
+        addTap()
+    }
+    
+    private func addTap() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
+        self.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
+        if let link = self.adModel?.link, let url = URL(string: link) {
+            openLink(url)
+        }
+    }
+    
+    fileprivate func openLink(_ url: URL) {
+        let webVC = SFSafariViewController(url: url)
+        webVC.delegate = self
+        if let topController = UIApplication.topViewController() {
+            topController.present(webVC, animated: true, completion: nil)
+        }
     }
     
     private func loadWebView() {
@@ -121,6 +144,7 @@ class AdView: UIView {
             webView.isOpaque = true
             webView.backgroundColor = UIColor.clear
             webView.scrollView.backgroundColor = UIColor.clear
+            webView.navigationDelegate = self
             self.addSubview(webView)
             let urlString = AdParser.getAdPageUrlForAdId(adid)
             if let url = URL(string: urlString) {
@@ -143,46 +167,23 @@ class AdView: UIView {
             }
         }
     }
-    
-    // MARK: report ad impressions
-    private func reportImpressions() {
-        if let impressions = adModel?.impressions {
-            //print ("found \(impressions.count) impressions callings")
-            let deviceType = DeviceInfo.checkDeviceType()
-            let unixDateStamp = Date().timeIntervalSince1970
-            let timeStamp = String(unixDateStamp).replacingOccurrences(of: ".", with: "")
-            for impressionUrlString in impressions {
-                let impressionUrlStringWithTimestamp = impressionUrlString.replacingOccurrences(of: "[timestamp]", with: timeStamp)
-                print ("send to \(impressionUrlStringWithTimestamp)")
-                if var urlComponents = URLComponents(string: impressionUrlStringWithTimestamp) {
-                    let newQuery = URLQueryItem(name: "fttime", value: timeStamp)
-                    if urlComponents.queryItems != nil {
-                        urlComponents.queryItems?.append(newQuery)
-                    } else {
-                        urlComponents.queryItems = [newQuery]
-                    }
-                    if let url = urlComponents.url {
-                        Download.getDataFromUrl(url) { (data, response, error)  in
-                            DispatchQueue.main.async { () -> Void in
-                                guard let _ = data , error == nil else {
-                                    // MARK: Use the original impressionUrlString for Google Analytics
-                                    //let jsCode = "try{ga('send','event', '\(deviceType) Launch Ad', 'Fail', '\(impressionUrlString)', {'nonInteraction':1});}catch(ignore){}"
-                                    //self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                                    //}
-                                    // MARK: The string should have the parameter
-                                    print ("Fail to send impression to \(deviceType) \(url.absoluteString)")
-                                    return
-                                }
-                                //let jsCode = "try{ga('send','event', '\(deviceType) Launch Ad', 'Sent', '\(impressionUrlString)', {'nonInteraction':1});}catch(ignore){}"
-                                //self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                                //}
-                                print("sent impression to \(deviceType) \(url.absoluteString)")
-                            }
-                        }
-                    }
+
+}
+
+extension AdView: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: (@escaping (WKNavigationActionPolicy) -> Void)) {
+        if let url = navigationAction.request.url {
+            let urlString = url.absoluteString
+            if navigationAction.navigationType == .linkActivated{
+                if urlString.range(of: "mailto:") != nil{
+                    UIApplication.shared.openURL(url)
+                } else {
+                    openLink(url)
                 }
+                decisionHandler(.cancel)
+            }  else {
+                decisionHandler(.allow)
             }
         }
     }
-    
 }

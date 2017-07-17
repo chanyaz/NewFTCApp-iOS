@@ -11,7 +11,7 @@ struct AdModel {
     let imageString: String?
     let link: String?
     let video: String?
-    let impressions: [String]
+    let impressions: [Impression]
 }
 
 struct AdParser {
@@ -50,10 +50,17 @@ struct AdParser {
             "var Imp = '(.+)';"
         ]
         
-        var impressions = [String]()
-        if let impression = adCode.matchingStrings(regexes: impressionPatterns) {
+        var impressions = [Impression]()
+        if let impressionUrlString = adCode.matchingStrings(regexes: impressionPatterns) {
+            let adName = "Some Ad Name"
+            let impression = Impression(urlString: impressionUrlString, adName: adName)
             impressions.append(impression)
         }
+        
+        // MARK: Test Impressions
+//        impressions = [
+//            Impression(urlString: "https://www.ft.com/", adName: "Some Ad Name")
+//        ]
         
         let adModel = AdModel(
             imageString: image,

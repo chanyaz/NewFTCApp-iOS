@@ -38,6 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.registerUserNotificationSettings(notificationSettings)
         }
         
+        if let userInfo = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] {
+            print("Launched by remote notification")
+            print(userInfo)
+        }
         
         
         startCheckImpressionTimer()
@@ -97,8 +101,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let timeZone = TimeZone.current.abbreviation() ?? ""
         
         let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
-        
-        PostData.sendDeviceToken(body: urlEncoded)
+        print("Forward device token to server")
+        APN.sendDeviceToken(body: urlEncoded)
     }
     
     // MARK: - Register device errorred.
@@ -113,6 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Received remote notification
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        print("Received remote notification")
         print(userInfo)
     }
     

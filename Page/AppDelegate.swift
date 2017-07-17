@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let gai = GAI.sharedInstance()
         gai?.trackUncaughtExceptions = true  // report uncaught exceptions
-        gai?.logger.logLevel = GAILogLevel.verbose  // remove before app release
+        //gai?.logger.logLevel = GAILogLevel.verbose  // remove before app release
     }
     
     

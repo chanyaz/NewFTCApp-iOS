@@ -28,44 +28,44 @@ struct AppNavigation {
                  "url":"http://www.ftchinese.com/channel/china.html",
                  "compactLayout": "Simple Headline",
                  "regularLayout": "",
-                 "screenName":"china"
+                 "screenName":"homepage/china"
                 ],
                 ["title": "全球",
                  "api":"https://m.ftimg.net/channel/world.html?type=json",
                  "url":"http://www.ftchinese.com/channel/world.html",
-                 "screenName":"world"
+                 "screenName":"homepage/world"
                 ],
                 ["title": "金融市场",
                  "api":"https://m.ftimg.net/channel/markets.html?type=json",
                  "url":"http://www.ftchinese.com/channel/markets.html",
-                 "screenName":"markets"
+                 "screenName":"homepage/markets"
                 ],
                 ["title": "管理",
                  "api":"https://m.ftimg.net/channel/management.html?type=json",
                  "url":"http://www.ftchinese.com/channel/management.html",
-                 "screenName":"management"
+                 "screenName":"homepage/management"
                 ],
                 ["title": "生活时尚",
                  "api":"https://m.ftimg.net/channel/lifestyle.html?type=json",
                  "url":"http://www.ftchinese.com/channel/lifestyle.html",
-                 "screenName":"lifestyle"
+                 "screenName":"homepage/lifestyle"
                 ],
                 ["title": "专栏",
                  "api":"https://m.ftimg.net/channel/column.html?type=json",
                  "url":"http://www.ftchinese.com/channel/column.html",
-                 "screenName":"column"
+                 "screenName":"homepage/column"
                 ],
                 ["title": "热门文章",
                  "api":"https://m.ftimg.net/channel/weekly.html?type=json",
                  "url":"http://www.ftchinese.com/channel/weekly.html",
                  "compactLayout": "Simple Headline",
                  "regularLayout": "",
-                 "screenName":"mostpopular"
+                 "screenName":"homepage/mostpopular"
                 ],
                 ["title": "数据新闻",
                  "api":"https://m.ftimg.net/channel/datanews.html?type=json",
                  "url":"http://www.ftchinese.com/channel/datanews.html",
-                 "screenName":"datanews"
+                 "screenName":"homepage/datanews"
                 ]
             ]
         ],

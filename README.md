@@ -33,7 +33,7 @@ The aim of this project is to create a "mother of all news apps". With this proj
 ## Development Milestones
 Today's Tasks: 
 1. Tracking Code for www1.ftchinese.com log
-2. Tracking Third Party Ad impression with native code
+2. Done: Tracking Third Party Ad impression with native code
 3. WeChat Share and Login
 4. Home Page Font Size Review
 

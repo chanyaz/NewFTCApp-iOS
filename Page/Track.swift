@@ -10,6 +10,7 @@ import Foundation
 struct Track {
     
     public static func screenView(_ name: String) {
+        // MARK: Google Analytics
         for trackingId in GA.trackingIds {
             let tracker = GAI.sharedInstance().tracker(withTrackingId: trackingId)
             tracker?.set(kGAIScreenName, value: name)
@@ -18,6 +19,8 @@ struct Track {
                 tracker?.send(obj)
             }
         }
+        // TODO: Send to FTChinese Log
+        
     }
     
     public static func event(category: String, action: String, label: String) {

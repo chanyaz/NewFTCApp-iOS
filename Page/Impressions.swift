@@ -56,9 +56,6 @@ struct Impressions {
                     DispatchQueue.main.async { () -> Void in
                         guard let _ = data , error == nil else {
                             // MARK: Use the original impressionUrlString for Google Analytics
-                            //let jsCode = "try{ga('send','event', '\(deviceType) Launch Ad', 'Fail', '\(impressionUrlString)', {'nonInteraction':1});}catch(ignore){}"
-                            //self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                            //}
                             // MARK: The string should have the parameter
                             print ("Fail to send \(adName) impression to \(deviceType) \(url.absoluteString)")
                             let failAction: String
@@ -70,9 +67,6 @@ struct Impressions {
                             Track.event(category: adName, action: failAction, label: impressionUrlString)
                             return
                         }
-                        //let jsCode = "try{ga('send','event', '\(deviceType) Launch Ad', 'Sent', '\(impressionUrlString)', {'nonInteraction':1});}catch(ignore){}"
-                        //self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                        //}
                         Track.event(category: adName, action: "Success", label: impressionUrlString)
                         remove(impressionId)
                         print("sent \(adName) impression to \(deviceType) \(url.absoluteString)")

@@ -8,12 +8,13 @@
 
 import UIKit
 import WebKit
-class AdView: UIView {
+import SafariServices
+class AdView: UIView, SFSafariViewControllerDelegate {
     
     private var adid: String?
     private var adWidth: String?
     private var adModel: AdModel?
-
+    
     public var contentSection: ContentSection? = nil {
         didSet {
             updateUI()
@@ -64,16 +65,16 @@ class AdView: UIView {
                 }
                 print ("continue to get the image file")
                 if let url = URL(string: imageString) {
-                Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
-                    guard let data = data else {
-                        self?.loadWebView()
-                        return
+                    Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
+                        guard let data = data else {
+                            self?.loadWebView()
+                            return
+                        }
+                        DispatchQueue.main.async { () -> Void in
+                            self?.showAdImage(data)
+                        }
+                        Download.saveFile(data, filename: imageString, to: .cachesDirectory)
                     }
-                    DispatchQueue.main.async { () -> Void in
-                        self?.showAdImage(data)
-                    }
-                    Download.saveFile(data, filename: imageString, to: .cachesDirectory)
-                }
                 }
             } else {
                 loadWebView()
@@ -84,6 +85,12 @@ class AdView: UIView {
     }
     
     private func showAdImage(_ data: Data) {
+        // MARK: Report Impressions First
+        //reportImpressions()
+        if let impressions = adModel?.impressions {
+            Impressions.report(impressions)
+        }
+        
         let frameWidth = self.frame.width
         let frameHeight = self.frame.height
         if let image = UIImage(data: data),
@@ -107,6 +114,26 @@ class AdView: UIView {
         } else {
             self.loadWebView()
         }
+        addTap()
+    }
+    
+    private func addTap() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
+        self.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
+        if let link = self.adModel?.link, let url = URL(string: link) {
+            openLink(url)
+        }
+    }
+    
+    fileprivate func openLink(_ url: URL) {
+        let webVC = SFSafariViewController(url: url)
+        webVC.delegate = self
+        if let topController = UIApplication.topViewController() {
+            topController.present(webVC, animated: true, completion: nil)
+        }
     }
     
     private func loadWebView() {
@@ -117,6 +144,7 @@ class AdView: UIView {
             webView.isOpaque = true
             webView.backgroundColor = UIColor.clear
             webView.scrollView.backgroundColor = UIColor.clear
+            webView.navigationDelegate = self
             self.addSubview(webView)
             let urlString = AdParser.getAdPageUrlForAdId(adid)
             if let url = URL(string: urlString) {
@@ -139,5 +167,25 @@ class AdView: UIView {
             }
         }
     }
+    
 
+    
+}
+
+extension AdView: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: (@escaping (WKNavigationActionPolicy) -> Void)) {
+        if let url = navigationAction.request.url {
+            let urlString = url.absoluteString
+            if navigationAction.navigationType == .linkActivated{
+                if urlString.range(of: "mailto:") != nil{
+                    UIApplication.shared.openURL(url)
+                } else {
+                    openLink(url)
+                }
+                decisionHandler(.cancel)
+            }  else {
+                decisionHandler(.allow)
+            }
+        }
+    }
 }

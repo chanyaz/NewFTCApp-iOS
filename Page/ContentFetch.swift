@@ -84,7 +84,7 @@ class ContentFetch {
                 let _ = resultsDictionary["cbody"] as? String {
                 return formatFTCStoryJSON(resultsDictionary)
             }
-        } else if let resultsDictionary = resultsDictionary as? [[String: String]] {
+        } else if let resultsDictionary = resultsDictionary as? [[String: Any]] {
             return formatFTCChannelJSON(resultsDictionary)
         }
         print ("The API JSON Object is not a known format.")
@@ -146,22 +146,28 @@ class ContentFetch {
         return contentSections
     }
     
-    private func formatFTCChannelJSON(_ items: [[String: String]]) -> [ContentSection] {
+    private func formatFTCChannelJSON(_ items: [[String: Any]]) -> [ContentSection] {
         var contentSections = [ContentSection]()
         var itemCollection = [ContentItem]()
         for (row, item) in items.enumerated() {
-            let id = item["id"] ?? ""
-            let image = item["image"] ?? ""
-            let headline = item["cheadline"] ?? ""
-            var lead = item["clongleadbody"] ?? ""
-            if lead == "" {
-                lead = item["cshortleadbody"] ?? ""
+            let id = item["id"] as? String ?? ""
+            // MARK: if API return a "image" key value, use it directly. If not, check for the "story_pic" key. 
+            var image = item["image"] as? String ?? ""
+            if image == "" {
+                if let storyPic = item["story_pic"] as? [String: String] {
+                    image = storyPic["smallbutton"] ?? storyPic["cover"] ?? storyPic["bigbutton"] ??  ""
+                }
             }
-            let type = item["type"] ?? "story"
+            let headline = item["cheadline"] as? String ?? ""
+            var lead = item["clongleadbody"] as? String ?? ""
+            if lead == "" {
+                lead = item["cshortleadbody"] as? String ?? ""
+            }
+            let type = item["type"] as? String ?? "story"
             let preferSponsorImage = ""
-            let tag = item["tag"] ?? ""
-            let customLink = item["customlink"] ?? ""
-            let timeStamp = TimeInterval(item["pubdate"] ?? "0") ?? 0
+            let tag = item["tag"] as? String ?? ""
+            let customLink = item["customlink"] as? String ?? ""
+            let timeStamp = TimeInterval(item["pubdate"] as? String ?? "0") ?? 0
             
             // MARK: Note that section may not be continuous
             let oneItem = ContentItem(

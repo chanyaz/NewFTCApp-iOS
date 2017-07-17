@@ -12,7 +12,8 @@ import UIKit
 class DataViewController: UICollectionViewController {
     var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
-    let flowLayout = PageCollectionViewLayout()
+    let flowLayout = PageCollectionViewLayoutV()
+    let flowLayoutH = PageCollectionViewLayoutH()
     //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
@@ -29,21 +30,25 @@ class DataViewController: UICollectionViewController {
     var dataObject = [String: String]()
     var pageTitle: String = ""
     
+    //    var pageContent = [String: Any]() {
+    //        didSet {
+    //            updateUI()
+    //        }
+    //    }
+    //    var contentSection: ContentSection? = nil {
+    //
+    //    }
+    
+    
     deinit {
         //MARK: Some of the deinit might b e useful in the future
-        NotificationCenter.default.removeObserver(
-            self,
-            name: Notification.Name.UIDeviceOrientationDidChange,
-            object: nil
-        )
-        print ("deinit channel view successfully")
     }
     
     
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
-        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+        let horizontalClass = self.traitCollection.horizontalSizeClass
+        let verticalCass = self.traitCollection.verticalSizeClass
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
@@ -71,8 +76,10 @@ class DataViewController: UICollectionViewController {
                     )
                     self?.fetches = resultsWithAds
                     
-//                    self?.fetches = results
-//                    print("fetches : \(resultsWithAds)")
+                    
+                    //                    self?.fetches = results
+                    
+                    //                    print("fetches : \(resultsWithAds)")
                     
                     self?.collectionView?.reloadData()
                 }
@@ -81,9 +88,6 @@ class DataViewController: UICollectionViewController {
     }
     
     
-    //    private func updateUI() {
-    //        //print (pageContent)
-    //    }
     
     private func requestNewContent() {
         // MARK: - Request Data from Server
@@ -103,50 +107,90 @@ class DataViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print ("view will appear is called")
-
+        
+        if (GAI.sharedInstance().defaultTracker) != nil {
+            #if DEBUG
+                
+                print("default tracker")
+                
+            #endif
+        }
+        
+        //        let tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().tracker(withTrackingId: "UA-1608715-1")
+        
+        tracker?.set(kGAIScreenName, value: "Channel View")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        if let obj = builder?.build() as [NSObject : AnyObject]? {
+            tracker?.send(obj)
+            print ("sent screen view for the first time")
+        }
+        
     }
+    override func viewWillLayoutSubviews() {
+        //         print("33333")//第一次启动出现3次，转屏出现一次
+        let horizontalClass = self.traitCollection.horizontalSizeClass
+        let verticalCass = self.traitCollection.verticalSizeClass
+        
+        if horizontalClass == .regular && verticalCass == .regular {
+            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+                isLandscape = true
+                collectionView?.collectionViewLayout=flowLayoutH
+                flowLayoutH.minimumInteritemSpacing = 0
+                flowLayoutH.minimumLineSpacing = 0
+            }
+            
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+                isLandscape = false
+                collectionView?.collectionViewLayout=flowLayout
+                flowLayout.minimumInteritemSpacing = 0
+                flowLayout.minimumLineSpacing = 0
+            }
+        }
+    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        print("22222")//第一次启动不运行，转屏出现一次
+        collectionView?.reloadData()
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(orientationChanged),
-            name: Notification.Name.UIDeviceOrientationDidChange,
-            object: nil
-        )
+
         
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-
-        if horizontalClass == .regular && verticalCass == .regular {
-            collectionView?.collectionViewLayout=flowLayout
+        
+        //        if horizontalClass == .regular && verticalCass == .regular {
+        ////            collectionView?.collectionViewLayout=flowLayout
+        ////            flowLayout.minimumInteritemSpacing = 0
+        ////            flowLayout.minimumLineSpacing = 0
+        //             print("availableWidth : test")
+        //        } else {
+        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
-        } else {
-            if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-                flowLayout.minimumInteritemSpacing = 0
-                flowLayout.minimumLineSpacing = 0
-                //FIXME: Why does this break scrolling?
-                //flowLayout.sectionHeadersPinToVisibleBounds = true
-                let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-                let availableWidth = view.frame.width - paddingSpace
-                print("availableWidth : \(availableWidth)")
-                
-                if horizontalClass != .regular || verticalCass != .regular {
-                    if #available(iOS 10.0, *) {
-                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-                    } else {
-                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
-                    }
-                    cellWidth = availableWidth
+            //FIXME: Why does this break scrolling?
+            //flowLayout.sectionHeadersPinToVisibleBounds = true
+            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+            let availableWidth = view.frame.width - paddingSpace
+            print("availableWidth : \(availableWidth)")
+            
+            if horizontalClass != .regular || verticalCass != .regular {
+                if #available(iOS 10.0, *) {
+                    flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                } else {
+                    flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
                 }
+                cellWidth = availableWidth
             }
         }
         
+        //        }
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
         collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
@@ -171,19 +215,6 @@ class DataViewController: UICollectionViewController {
         
     }
     
-    public func orientationChanged() {
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
-            isLandscape = true
-            //            print("Landscape\(isLandscape)")
-            
-        }
-        
-        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
-            isLandscape = false
-            //            print("Portrait\(isLandscape)")
-        }
-        
-    }
     
     func refreshControlDidFire(sender:AnyObject) {
         print ("pull to refresh fired")
@@ -245,11 +276,11 @@ class DataViewController: UICollectionViewController {
             if let cell = cellItem as? AdCellRegular {
                 cell.cellWidth = cellWidth
                 //when itemCell change in AdCellRegular, updateUI() will be executed.After adding ad,comment the code
-                if cell.bounds.height<330{
-                    cell.adHint.isHidden=true
-                }else{
-                    cell.adHint.isHidden=false
-                }
+                //                if cell.bounds.height<330{
+                //                    cell.adHint.isHidden=true
+                //                }else{
+                //                    cell.adHint.isHidden=false
+                //                }
                 return cell
             }
         case "HotArticleCellRegular":
@@ -288,7 +319,6 @@ class DataViewController: UICollectionViewController {
             switch reuseIdentifier {
             case "Ad":
                 let adView = headerView as! Ad
-                print ("will update ad header view for section \(indexPath.section)")
                 adView.contentSection = fetches.fetchResults[indexPath.section]
                 //                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
                 return adView
@@ -325,7 +355,6 @@ class DataViewController: UICollectionViewController {
         let sectionTitle = section.title
         let item = section.items[indexPath.row]
         let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
-        //        let isAd = (sectionTitle == "" && indexPath.row == 1)
         
         let layoutKey = layoutType()
         let layoutStrategy: String?
@@ -343,27 +372,32 @@ class DataViewController: UICollectionViewController {
                 reuseIdentifier = "HeadlineCell"
             }
         } else {
-            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            let horizontalClass = self.traitCollection.horizontalSizeClass
+            let verticalCass = self.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
                 
                 var isAd = false
                 var isHot = false
-                //                if  indexPath.row == 10 {
-                //                    isHot = true
-                //                }
-                if UIDevice.current.orientation.isPortrait{
+                let isCover = ((indexPath.row == 0 ) )
+                
+                //                print("isLandscape----\(isLandscape)")
+                
+                if !isLandscape{
                     if indexPath.row == 6 {isAd = true}else{isAd = false}
                     if indexPath.row == 10 {isHot = true}else{isHot = false}
-                }else if UIDevice.current.orientation.isLandscape {
+                }else if isLandscape {
                     isAd = (indexPath.row == 5)
                     isHot = (indexPath.row == 9)
                 }
                 
-                
-                //                if isHot {
-                //                    reuseIdentifier = "HotArticleCellRegular"
+                //                if UIDevice.current.orientation.isPortrait{
+                //                    if indexPath.row == 6 {isAd = true}else{isAd = false}
+                //                    if indexPath.row == 10 {isHot = true}else{isHot = false}
+                //                }else if UIDevice.current.orientation.isLandscape {
+                //                    isAd = (indexPath.row == 5)
+                //                    isHot = (indexPath.row == 9)
                 //                }
+                
                 
                 if isCover && !isAd && !isHot {
                     reuseIdentifier = "CoverCellRegular"
@@ -389,7 +423,6 @@ class DataViewController: UICollectionViewController {
         return reuseIdentifier
     }
     
-    // MARK: Get Header and Ad Size
     private func getReuseIdentifierForSectionHeader(_ sectionIndex: Int) -> (reuseId: String?, sectionSize: CGSize) {
         let reuseIdentifier: String?
         let sectionSize: CGSize

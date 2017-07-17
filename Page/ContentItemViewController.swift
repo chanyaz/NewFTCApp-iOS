@@ -356,6 +356,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 }
                             }
                         }
+                        
+                        if relatedStories != "" {
+                            relatedStories = "<div class=\"story-box\"><h2 class=\"box-title\"><a>相关文章</a></h2><ul class=\"top10\">\(relatedStories)</ul></div>"
+                        }
+                                                
                         let tagsArray = tags.components(separatedBy: ",")
                         var relatedTopics = ""
                         for (index, tag) in tagsArray.enumerated() {
@@ -408,7 +413,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             } else {
                 // MARK: - If it is other types of content such video and interacrtive features
                 if let id = dataObject?.id, let type = dataObject?.type {
-                    let urlString = "http://www.ftchinese.com/\(type)/\(id)?from=swiftapp"
+                    let urlString = "http://www.ftchinese.com/\(type)/\(id)?webview=ftcapp&001"
                     print ("loading \(urlString)")
                     if let url = URL(string: urlString) {
                         let request = URLRequest(url: url)

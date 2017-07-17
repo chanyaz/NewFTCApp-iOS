@@ -43,6 +43,7 @@ struct ShareHelper {
             let shareData = DataForShare()
             let image = ShareImageActivityProvider(placeholderItem: iconImage)
             let objectsToShare = [shareData, myWebsite, image] as [Any]
+            print ("Is WXApi supported? \(WXApi.isWXAppSupport())")
             let activityVC: UIActivityViewController
             if WXApi.isWXAppSupport() == true {
                 activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: [wcActivity, wcCircle, openInSafari])

@@ -64,6 +64,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""
         
+        let actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
+        self.navigationItem.rightBarButtonItem = actionButton
+        
         // MARK: - Color Scheme for the view
         initStyle()
         
@@ -75,6 +78,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
          gestureRecognizer.delegate = self
          view.addGestureRecognizer(gestureRecognizer)
 */
+    }
+    
+    public func share() {
+        print ("share")
+        let share = ShareHelper()
+        let url = share.getUrl("iosaction://?title=OliverTest&url=http://www.ft.com&description=daf&img=http://www.ft.ocm")
+        share.popupActionSheet(self as UIViewController, url: url)
     }
     
     override func didReceiveMemoryWarning() {

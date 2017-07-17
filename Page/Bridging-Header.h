@@ -22,6 +22,11 @@
  #import "GoogleConversionPing.h"
  */
 
+
 #import <Google/Analytics.h>
+
+//MARK: wechat sdk
+#import "WXApi.h"
+#import "WXApiObject.h"
 
 #endif /* Bridging_Header_h */

@@ -5,4 +5,5 @@ use_frameworks!
 
 target 'Page' do
 pod 'Google/Analytics'
+pod 'WechatOpenSDK'
 end

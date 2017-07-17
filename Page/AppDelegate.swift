@@ -11,6 +11,7 @@ import UserNotifications
 import CoreData
 import Google
 
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -43,6 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         startCheckImpressionTimer()
         
         setupGoogleAnalytics()
+        
+        // WeChat API
+        WXApi.registerApp(WeChat.appId)
         
         return true
     }
@@ -202,6 +206,81 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    
 }
+
+// MARK: - WeChat authorized login
+extension AppDelegate: WXApiDelegate {
+    
+    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
+        return WXApi.handleOpen(url, delegate: self)
+    }
+    
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return WXApi.handleOpen(url, delegate: self)
+    }
+    
+    func onReq(_ req: BaseReq!) {
+        // do optional stuff
+    }
+    
+    func onResp(_ resp: BaseResp!) {
+        if let authResp = resp as? SendAuthResp {
+            if let wechatAuthCode = authResp.code {
+                let wechatAccessTokenLink = WeChat.accessTokenPrefix + "appid=" + WeChat.appId + "&secret=" + WeChat.appSecret + "&code=" + wechatAuthCode + "&grant_type=authorization_code"
+                if let url = URL(string: wechatAccessTokenLink) {
+                    Download.getDataFromUrl(url) { (data, response, error)  in
+                        DispatchQueue.main.async { () -> Void in
+                            guard let data = data , error == nil else { return }
+                            do {
+                                let JSON = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
+                                guard let JSONDictionary = JSON as? NSDictionary else  {
+                                    print ("WeChat Return Value is Wrong")
+                                    return
+                                }
+                                guard let accessToken = JSONDictionary["access_token"] as? String else {
+                                    print ("WeChat Access Token is not a string")
+                                    return
+                                }
+                                guard let openId = JSONDictionary["openid"] as? String else {
+                                    print ("WeChat Open Id is not a string")
+                                    return
+                                }
+                                let userInfoUrlString = "\(WeChat.userInfoPrefix)access_token=\(accessToken)&openid=\(openId)"
+                                if let userInfoUrl = URL(string: userInfoUrlString) {
+                                    Download.getDataFromUrl(userInfoUrl) { (data, response, error)  in
+                                        DispatchQueue.main.async { () -> Void in
+                                            guard let data = data , error == nil else { return }
+                                            print ("Get Wechat Login Data \(data)")
+                                            if let JSONString = String(data: data, encoding: .utf8) {
+                                                print ("json strying is \(JSONString)")
+//                                                if let rootViewController = self.window?.rootViewController as? ViewController {
+//                                                    let jsCode = "socialLogin('wechat', '\(JSONString)');"
+//                                                    print(jsCode)
+//                                                    rootViewController.webView.evaluateJavaScript(jsCode) { (result, error) in
+//                                                        if result != nil {
+//                                                            print (result ?? "unprintable JS result")
+//                                                        }
+//                                                        if error != nil {
+//                                                            print (error ?? "unprintable error")
+//                                                        }
+//                                                    }
+//                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch let JSONError as NSError {
+                                print("\(JSONError)")
+                            }
+                        }
+                    }
+                }
+            } else {
+            }
+        } else {
+        }
+    }
+    // code related to wechat authorization end
+}
+
 

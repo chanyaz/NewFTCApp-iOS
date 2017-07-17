@@ -107,26 +107,11 @@ class DataViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if (GAI.sharedInstance().defaultTracker) != nil {
-            #if DEBUG
-                
-                print("default tracker")
-                
-            #endif
-        }
-        
-        //        let tracker = GAI.sharedInstance().defaultTracker
-        let tracker = GAI.sharedInstance().tracker(withTrackingId: "UA-1608715-1")
-        
-        tracker?.set(kGAIScreenName, value: "Channel View")
-        let builder = GAIDictionaryBuilder.createScreenView()
-        if let obj = builder?.build() as [NSObject : AnyObject]? {
-            tracker?.send(obj)
-            print ("sent screen view for the first time")
-        }
-        
+        if let screeName = dataObject["screenName"] {
+            Track.screenView(screeName)
+        }        
     }
+    
     override func viewWillLayoutSubviews() {
         //         print("33333")//第一次启动出现3次，转屏出现一次
         let horizontalClass = self.traitCollection.horizontalSizeClass
@@ -148,13 +133,13 @@ class DataViewController: UICollectionViewController {
             }
         }
     }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         print("22222")//第一次启动不运行，转屏出现一次
         collectionView?.reloadData()
         
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

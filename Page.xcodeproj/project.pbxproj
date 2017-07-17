@@ -57,6 +57,7 @@
 		60D3C8CF1EBFF5DC0085BEF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */; };
 		60D3C8DA1EBFF5DC0085BEF6 /* PageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8D91EBFF5DC0085BEF6 /* PageTests.swift */; };
 		60D3C8E51EBFF5DC0085BEF6 /* PageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8E41EBFF5DC0085BEF6 /* PageUITests.swift */; };
+		60D461C41F1C4F79009B7196 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D461C31F1C4F79009B7196 /* Track.swift */; };
 		60D4B8F31EE7A22C00A4506D /* StyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */; };
 		60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */; };
 		60D4B8F71EE7C59900A4506D /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */; };
@@ -163,6 +164,7 @@
 		60D3C8E01EBFF5DC0085BEF6 /* PageUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PageUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D3C8E41EBFF5DC0085BEF6 /* PageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageUITests.swift; sourceTree = "<group>"; };
 		60D3C8E61EBFF5DC0085BEF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60D461C31F1C4F79009B7196 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleExtensions.swift; sourceTree = "<group>"; };
 		60D4B8F41EE7BC3800A4506D /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		60D4B8F61EE7C59900A4506D /* CustomNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 				500139E01F1A7188009EC29D /* GoogleService-Info.plist */,
 				500139E21F1A7436009EC29D /* Bridging-Header.h */,
 				50057FC91EE9752D0092180A /* Layouts */,
+				60D461C51F1C4F80009B7196 /* Track */,
 				601418091EEA91BA00DC3EF9 /* Networks */,
 				60C0D65C1F17405300E6F77D /* Growth Hack */,
 				60B2EF071EE680DE00B8C6DA /* StyleHelpers */,
@@ -445,6 +448,14 @@
 				60D3C8E61EBFF5DC0085BEF6 /* Info.plist */,
 			);
 			path = PageUITests;
+			sourceTree = "<group>";
+		};
+		60D461C51F1C4F80009B7196 /* Track */ = {
+			isa = PBXGroup;
+			children = (
+				60D461C31F1C4F79009B7196 /* Track.swift */,
+			);
+			name = Track;
 			sourceTree = "<group>";
 		};
 		60D4B9021EE7D95800A4506D /* Customizations */ = {
@@ -668,7 +679,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		BE0979D002260C5C3C5434BB /* [CP] Copy Pods Resources */ = {
@@ -728,6 +739,7 @@
 				50E535C71F0729900082B181 /* ChannelModelDelegate.swift in Sources */,
 				60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */,
 				60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */,
+				60D461C41F1C4F79009B7196 /* Track.swift in Sources */,
 				AF15D6EE1F1743CB0034CE6E /* PostData.swift in Sources */,
 				AF8E93031F124844007CD6DE /* ArticleStyle.swift in Sources */,
 				60D4B8FD1EE7CB1F00A4506D /* AcademyNavigationController.swift in Sources */,

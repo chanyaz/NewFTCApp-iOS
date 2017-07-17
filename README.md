@@ -3,7 +3,7 @@
 ## How To Start
 $ sudo gem install cocoapods
 
-$ pod install
+$ pod install --repo-update
 
 $ open Page.xcworkspace
 

@@ -40,7 +40,8 @@ struct Impressions {
                              timeStamp: String,
                              adName: String,
                              deviceType: String,
-                             impressionId: String) {
+                             impressionId: String,
+                             action: String) {
         let impressionUrlStringWithTimestamp = impressionUrlString.replacingOccurrences(of: "[timestamp]", with: timeStamp)
         print ("send to \(impressionUrlStringWithTimestamp)")
         if var urlComponents = URLComponents(string: impressionUrlStringWithTimestamp) {
@@ -60,11 +61,19 @@ struct Impressions {
                             //}
                             // MARK: The string should have the parameter
                             print ("Fail to send \(adName) impression to \(deviceType) \(url.absoluteString)")
+                            let failAction: String
+                            if (action == "Retry") {
+                                failAction = "Fail on Retry"
+                            } else {
+                                failAction = "Fail"
+                            }
+                            Track.event(category: adName, action: failAction, label: impressionUrlString)
                             return
                         }
                         //let jsCode = "try{ga('send','event', '\(deviceType) Launch Ad', 'Sent', '\(impressionUrlString)', {'nonInteraction':1});}catch(ignore){}"
                         //self.webView.evaluateJavaScript(jsCode) { (result, error) in
                         //}
+                        Track.event(category: adName, action: "Success", label: impressionUrlString)
                         remove(impressionId)
                         print("sent \(adName) impression to \(deviceType) \(url.absoluteString)")
                         let impressions = UserDefaults.standard.dictionary(forKey: key) as? [String: [String:String]]
@@ -82,17 +91,17 @@ struct Impressions {
         let unixDateStamp = Date().timeIntervalSince1970
         let timeStamp = String(unixDateStamp).replacingOccurrences(of: ".", with: "")
         for impression in impressions {
-            // TODO: How can I remove it from record if sent successfully?
             let impressionId = UUID().uuidString
-            //print("uuid: \(uuid)")
             add(impressionId, impression: impression)
             let impressionUrlString = impression.urlString
             let adName = impression.adName
-            // TODO: Report a request event
+            // MARK: Report a request event
+            Track.event(category: adName, action: "Request", label: impressionUrlString)
             send(impressionUrlString: impressionUrlString,
                  timeStamp: timeStamp, adName: adName,
                  deviceType: deviceType,
-                 impressionId: impressionId)
+                 impressionId: impressionId,
+                 action: "Request")
         }
     }
     
@@ -103,7 +112,6 @@ struct Impressions {
             let unixDateStamp = Date().timeIntervalSince1970
             let timeStamp = String(unixDateStamp).replacingOccurrences(of: ".", with: "")
             for (impressionId, impression) in impressions {
-                // TODO: How can I remove it from record if sent successfully?
                 if let impressionUrlString = impression["urlString"],
                     let adName = impression["adName"] {
                     // MARK: If the date is from yesterday, remove it
@@ -112,11 +120,13 @@ struct Impressions {
                         remove(impressionId)
                         return
                     }
-                    // TODO: Report a retry event
+                    // MARK: Report a retry event
+                    Track.event(category: adName, action: "Retry", label: impressionUrlString)
                     send(impressionUrlString: impressionUrlString,
                          timeStamp: timeStamp, adName: adName,
                          deviceType: deviceType,
-                         impressionId: impressionId)
+                         impressionId: impressionId,
+                         action: "Retry")
                 }
             }
         }

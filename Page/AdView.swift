@@ -167,9 +167,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
             }
         }
     }
-    
 
-    
 }
 
 extension AdView: WKNavigationDelegate {

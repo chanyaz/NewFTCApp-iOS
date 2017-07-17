@@ -42,6 +42,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Launched by remote notification")
             print(userInfo)
         }
+        
+        
+        startCheckImpressionTimer()
+        
+        setupGoogleAnalytics()
+        
         return true
     }
     

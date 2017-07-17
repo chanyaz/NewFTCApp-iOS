@@ -11,6 +11,7 @@ struct AppNavigation {
     
     // MARK: - Use singleton pattern to pass speech data between view controllers.
     static let sharedInstance = AppNavigation()
+    private static let hostName = "https://www.ftchinese.com"
     private static let appMap = [
         "News": [
             "title": "FT中文网",
@@ -19,53 +20,44 @@ struct AppNavigation {
             "isNavLightContent": false,
             "Channels": [
                 ["title": "首页",
-                 "api":"https://m.ftimg.net/index.php/jsapi/home",
-                 "url":"http://www.ftchinese.com/",
-                 "screenName":"homepage"
+                 "api":"https://www.ftchinese.com/index.php/jsapi/home",
+                 "url":"http://www.ftchinese.com/"
                 ],
                 ["title": "中国",
-                 "api":"https://m.ftimg.net/channel/china.html?type=json",
+                 "api":"https://www.ftchinese.com/channel/china.html?type=json",
                  "url":"http://www.ftchinese.com/channel/china.html",
                  "compactLayout": "Simple Headline",
-                 "regularLayout": "",
-                 "screenName":"china"
+                 "regularLayout": ""
                 ],
                 ["title": "全球",
-                 "api":"https://m.ftimg.net/channel/world.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/world.html",
-                 "screenName":"world"
+                 "api":"https://www.ftchinese.com/channel/world.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/world.html"
                 ],
                 ["title": "金融市场",
-                 "api":"https://m.ftimg.net/channel/markets.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/markets.html",
-                 "screenName":"markets"
+                 "api":"https://www.ftchinese.com/channel/markets.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/markets.html"
                 ],
                 ["title": "管理",
-                 "api":"https://m.ftimg.net/channel/management.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/management.html",
-                 "screenName":"management"
+                 "api":"https://www.ftchinese.com/channel/management.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/management.html"
                 ],
                 ["title": "生活时尚",
-                 "api":"https://m.ftimg.net/channel/lifestyle.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/lifestyle.html",
-                 "screenName":"lifestyle"
+                 "api":"https://www.ftchinese.com/channel/lifestyle.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/lifestyle.html"
                 ],
                 ["title": "专栏",
-                 "api":"https://m.ftimg.net/channel/column.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/column.html",
-                 "screenName":"column"
+                 "api":"https://www.ftchinese.com/channel/column.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/column.html"
                 ],
                 ["title": "热门文章",
-                 "api":"https://m.ftimg.net/channel/weekly.html?type=json",
+                 "api":"https://www.ftchinese.com/channel/weekly.html?type=json",
                  "url":"http://www.ftchinese.com/channel/weekly.html",
                  "compactLayout": "Simple Headline",
-                 "regularLayout": "",
-                 "screenName":"mostpopular"
+                 "regularLayout": ""
                 ],
                 ["title": "数据新闻",
-                 "api":"https://m.ftimg.net/channel/datanews.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/datanews.html",
-                 "screenName":"datanews"
+                 "api":"https://www.ftchinese.com/channel/datanews.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/datanews.html"
                 ]
             ]
         ],
@@ -76,29 +68,24 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://m.ftimg.net/channel/english.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/english.html",
-                 "screenName":"english"
+                 "api":"https://www.ftchinese.com/channel/english.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/english.html"
                 ],
                 ["title": "英语电台",
-                 "api":"https://m.ftimg.net/channel/radio.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/radio.html",
-                 "screenName":"english/radio"
+                 "api":"https://www.ftchinese.com/channel/radio.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/radio.html"
                 ],
                 ["title": "双语阅读",
-                 "api":"https://m.ftimg.net/channel/ce.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/ce.html",
-                 "screenName":"english/read"
+                 "api":"https://www.ftchinese.com/channel/ce.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/ce.html"
                 ],
                 ["title": "金融英语速读",
-                 "api":"https://m.ftimg.net/channel/speedread.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/speedread.html",
-                 "screenName":"english/speedread"
+                 "api":"https://www.ftchinese.com/channel/speedread.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/speedread.html"
                 ],
                 ["title": "原声视频",
-                 "api":"https://m.ftimg.net/channel/ev.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/ev.html",
-                 "screenName":"english/video"
+                 "api":"https://www.ftchinese.com/channel/ev.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/ev.html"
                 ]
             ]
         ],
@@ -109,29 +96,24 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://m.ftimg.net/channel/mba.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/mba.html",
-                 "screenName":"ftacademy"
+                 "api":"https://www.ftchinese.com/channel/mba.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/mba.html"
                 ],
                 ["title": "热点观察",
-                 "api":"https://m.ftimg.net/channel/mba.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/mba.html",
-                 "screenName":"ftacademy/hottopic"
+                 "api":"https://www.ftchinese.com/channel/mba.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/mba.html"
                 ],
                 ["title": "MBA训练营",
-                 "api":"https://m.ftimg.net/channel/mbagym.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/mbagym.html",
-                 "screenName":"ftacademy/mbagym"
+                 "api":"https://www.ftchinese.com/channel/mbagym.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/mbagym.html"
                 ],
                 ["title": "互动小测",
-                 "api":"https://m.ftimg.net/channel/mba.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/mba.html",
-                 "screenName":"ftacademy/quiz"
+                 "api":"https://www.ftchinese.com/channel/mba.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/mba.html"
                 ],
                 ["title": "深度阅读",
-                 "api":"https://m.ftimg.net/channel/mba.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/mba.html",
-                 "screenName":"ftacademy/read"
+                 "api":"https://www.ftchinese.com/channel/mba.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/mba.html"
                 ]
             ]
         ],
@@ -142,24 +124,20 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://m.ftimg.net/channel/stream.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/stream.html",
-                 "screenName":"video"
+                 "api":"https://www.ftchinese.com/channel/stream.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/stream.html"
                 ],
                 ["title": "商业",
-                 "api":"https://m.ftimg.net/channel/business.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/business.html",
-                 "screenName":"ftacademy/business"
+                 "api":"https://www.ftchinese.com/channel/business.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/business.html"
                 ],
                 ["title": "政经",
-                 "api":"https://m.ftimg.net/channel/vpolitics.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/vpolitics.html",
-                 "screenName":"ftacademy/politics"
+                 "api":"https://www.ftchinese.com/channel/vpolitics.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/vpolitics.html"
                 ],
                 ["title": "有色眼镜",
-                 "api":"https://m.ftimg.net/channel/videotinted.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/videotinted.html",
-                 "screenName":"ftacademy/tinted"
+                 "api":"https://www.ftchinese.com/channel/videotinted.html?type=json",
+                 "url":"http://www.ftchinese.com/channel/videotinted.html"
                 ]
             ]
         ],
@@ -170,24 +148,20 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://m.ftimg.net/users/mystories?type=json",
-                 "url":"http://www.ftchinese.com/users/mystories",
-                 "screenName":"myft"
+                 "api":"https://www.ftchinese.com/users/mystories?type=json",
+                 "url":"http://www.ftchinese.com/users/mystories"
                 ],
                 ["title": "阅读偏好",
-                 "api":"https://m.ftimg.net/users/mytopics?type=json",
-                 "url":"http://www.ftchinese.com/users/mytopics",
-                 "screenName":"myft/preference"
+                 "api":"https://www.ftchinese.com/users/mytopics?type=json",
+                 "url":"http://www.ftchinese.com/users/mytopics"
                 ],
                 ["title": "订阅",
-                 "api":"https://m.ftimg.net/users/favstorylist?type=json",
-                 "url":"http://www.ftchinese.com/users/favstorylist",
-                 "screenName":"myft/subscription"
+                 "api":"https://www.ftchinese.com/users/favstorylist?type=json",
+                 "url":"http://www.ftchinese.com/users/favstorylist"
                 ],
                 ["title": "账号",
-                 "api":"https://m.ftimg.net/users/discover?type=json",
-                 "url":"http://www.ftchinese.com/users/discover",
-                 "screenName":"myft/account"
+                 "api":"https://www.ftchinese.com/users/discover?type=json",
+                 "url":"http://www.ftchinese.com/users/discover"
                 ]
             ]
         ]
@@ -223,6 +197,6 @@ struct AppNavigation {
     }
     
     
-    
+
     
 }

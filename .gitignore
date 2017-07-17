@@ -40,17 +40,13 @@ playground.xcworkspace
 # Package.pins
 .build/
 
-
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
 # you should judge for yourself, the pros and cons are mentioned at:
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-# The Pods are too big, ignore and ask the user to install pods
-Pods
-!Podfile
-!Podfile.lock
-
+#
+# Pods/
 
 # Carthage
 #

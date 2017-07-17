@@ -12,6 +12,7 @@ class CustomTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // MARK: Customize Tab Bar Styles
         if #available(iOS 10.0, *) {
             self.tabBar.unselectedItemTintColor = UIColor(hex: Color.Tab.normalText)
@@ -35,9 +36,6 @@ class CustomTabBarController: UITabBarController {
         }
 
     }
-    
-    
-
     
     
     func getTabBarImages() -> [UIImage?] {

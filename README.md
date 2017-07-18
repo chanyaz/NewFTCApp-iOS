@@ -32,10 +32,12 @@ The aim of this project is to create a "mother of all news apps". With this proj
 
 ## Development Milestones
 Today's Tasks: 
-1. Tracking Code for www1.ftchinese.com log
-2. Done: Tracking Third Party Ad impression with native code
-3. WeChat Share and Login
-4. Home Page Font Size Review
+
+
+
+Delegated Tasks (Check on Monday):
+
+1. Xiangyun: Tracking Code for www1.ftchinese.com log
 
 
 ### Done: Static Color Management: Constants and Naming: Weiguo
@@ -89,6 +91,9 @@ Today's Tasks:
 ### Store
 
 ### Login and Registration
+#### WeChat Login
+#### Registration
+#### Login
 
 ## Completed Tasks
 1. Video Page Take Full Screen Width 
@@ -97,4 +102,6 @@ Today's Tasks:
 1. Workspace
 2. Cocoa Pod
 3. Google Analytics
-
+2. Done: Tracking Third Party Ad impression with native code
+3. WeChat Share 
+3. Home Page Font Size Review

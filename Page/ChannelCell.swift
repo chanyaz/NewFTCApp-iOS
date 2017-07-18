@@ -11,8 +11,8 @@ import UIKit
 class ChannelCell: UICollectionViewCell {
     
     // MARK: - Style settings for this class
-    let imageWidth = 160
-    let imageHeight = 90
+    let imageWidth = 152
+    let imageHeight = 114
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
@@ -34,6 +34,7 @@ class ChannelCell: UICollectionViewCell {
         // MARK: - Update Styles and Layouts
         containerView.backgroundColor = UIColor(hex: Color.Content.background)
         headline.textColor = UIColor(hex: Color.Content.headline)
+        headline.font = headline.font.bold()
         lead.textColor = UIColor(hex: Color.Content.lead)
         layoutMargins.left = 0
         layoutMargins.right = 0

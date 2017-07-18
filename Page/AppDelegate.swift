@@ -20,10 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        
-        // MARK: - Set the default background overall color
-        window?.tintColor = UIColor(hex: Color.Content.background)
+
+        // MARK: - Don't Set the default background overall color. It will affect the action sheet
+        // window?.tintColor = UIColor(hex: Color.Content.background)
         
         if #available(iOS 10.0, *) {
             let center = UNUserNotificationCenter.current()

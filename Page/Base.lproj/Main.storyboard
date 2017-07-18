@@ -135,7 +135,11 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kpf-ts-v6Y"/>
                                     <barButtonItem systemItem="compose" id="x2W-Ox-VaF"/>
                                     <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="z2W-UJ-syG"/>
-                                    <barButtonItem systemItem="action" id="QUo-79-Rea"/>
+                                    <barButtonItem systemItem="action" id="QUo-79-Rea">
+                                        <connections>
+                                            <action selector="actionSheet:" destination="naC-T6-XIm" id="wI9-XR-8SL"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -149,7 +153,7 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="Izp-uS-eCX"/>
                     <connections>
-                        <outlet property="actionButton" destination="QUo-79-Rea" id="bfj-Vu-7Ia"/>
+                        <outlet property="actionButton" destination="QUo-79-Rea" id="RkP-Hh-BaA"/>
                         <outlet property="bookMark" destination="x2W-Ox-VaF" id="qi4-DH-MB1"/>
                         <outlet property="languageSwitch" destination="HaZ-Fo-lHu" id="KVE-gh-o7Y"/>
                         <outlet property="toolBar" destination="bc2-gr-Zq9" id="5gL-RI-qW5"/>

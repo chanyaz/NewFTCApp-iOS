@@ -32,6 +32,8 @@ The aim of this project is to create a "mother of all news apps". With this proj
 
 ## Development Milestones
 Today's Tasks: 
+2. Article Switch to English and Billingual
+3. Article Text-To-Speech
 
 
 
@@ -105,3 +107,4 @@ Delegated Tasks (Check on Monday):
 2. Done: Tracking Third Party Ad impression with native code
 3. WeChat Share 
 3. Home Page Font Size Review
+1. Article Share Button

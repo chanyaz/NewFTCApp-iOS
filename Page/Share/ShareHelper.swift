@@ -62,10 +62,12 @@ extension UIViewController {
                 activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: [openInSafari])
             }
             activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
-            
+
             //TODO: - This might fail in iPad
             self.present(activityVC, animated: true, completion: nil)
             
+            
+
             
             //            if UIDevice.current.userInterfaceIdiom == .pad {
             //                //self.presentViewController(controller, animated: true, completion: nil)

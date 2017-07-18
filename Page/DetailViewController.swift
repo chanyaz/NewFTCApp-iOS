@@ -16,9 +16,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var languageSwitch: UISegmentedControl!
-    @IBOutlet weak var actionButton: UIBarButtonItem!
     @IBOutlet weak var bookMark: UIBarButtonItem!
     
+    @IBOutlet weak var actionButton: UIBarButtonItem!
+    @IBAction func actionSheet(_ sender: Any) {
+        let item = contentPageData[currentPageIndex]
+        self.launchActionSheet(for: item)
+    }
     
     
     // @IBOutlet weak var bottomBar: UIToolbar!

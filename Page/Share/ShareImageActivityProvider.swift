@@ -13,7 +13,7 @@ class ShareImageActivityProvider: UIActivityItemProvider {
     
     override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any?
     {
-        return weChatShareIcon
+        return ShareHelper.sharedInstance.thumbnail
     }
     
 }

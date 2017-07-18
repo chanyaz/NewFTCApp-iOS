@@ -43,7 +43,7 @@ class OpenInSafari : UIActivity{
     }
     
     override func perform() {
-        if let url = URL(string: webPageUrl) {
+        if let url = URL(string: ShareHelper.sharedInstance.webPageUrl) {
             UIApplication.shared.openURL(url)
         }
     }

@@ -81,12 +81,14 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     }
     
     public func share() {
-        print ("share")
-        let itemToShare = contentPageData[currentPageIndex]
-        print ("share the item: \(itemToShare.headline), id: \(itemToShare.id)")
-        let share = ShareHelper()
-        let url = share.getUrl("iosaction://?title=OliverTest&url=http://www.ft.com&description=daf&img=http://www.ft.ocm")
-        share.popupActionSheet(self as UIViewController, url: url)
+//        print ("share")
+//        let itemToShare = contentPageData[currentPageIndex]
+//        print ("share the item: \(itemToShare.headline), id: \(itemToShare.id)")
+//        let share = ShareHelper()
+//        let url = share.getUrl("iosaction://?title=OliverTest&url=http://www.ft.com&description=daf&img=http://www.ft.ocm")
+//        share.popupActionSheet(self as UIViewController, url: url)
+        let item = contentPageData[currentPageIndex]
+        self.launchActionSheet(for: item)
     }
     
     override func didReceiveMemoryWarning() {

@@ -11,21 +11,21 @@ import UIKit
 
 
 class DataForShare: NSObject, UIActivityItemSource {
-    var url: String = webPageUrl
-    var lead: String = webPageDescription
-    var imageCover: String = webPageImage
+    var url: String = ShareHelper.sharedInstance.webPageUrl
+    var lead: String = ShareHelper.sharedInstance.webPageDescription
+    var imageCover: String = ShareHelper.sharedInstance.webPageImage
     
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        return webPageTitle;
+        return ShareHelper.sharedInstance.webPageTitle;
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any? {
         //Sina Weibo cannot handle arrays. It's either text or image
         var textForShare = ""
         if activityType == UIActivityType.mail {
-            textForShare = webPageDescription
+            textForShare = ShareHelper.sharedInstance.webPageDescription
         } else if activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter {
-            textForShare = "【" + webPageTitle + "】" + webPageDescription
+            textForShare = "【" + ShareHelper.sharedInstance.webPageTitle + "】" + ShareHelper.sharedInstance.webPageDescription
             let textForShareCredit = "（分享自 @FT中文网）"
             let textForShareLimit = 140
             let textForShareTailCount = textForShareCredit.characters.count + url.characters.count
@@ -35,7 +35,7 @@ class DataForShare: NSObject, UIActivityItemSource {
             }
             textForShare = textForShare + "（分享自 @FT中文网）"
         } else {
-            textForShare = webPageTitle
+            textForShare = ShareHelper.sharedInstance.webPageTitle
         }
         return textForShare
     }
@@ -43,9 +43,9 @@ class DataForShare: NSObject, UIActivityItemSource {
     func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivityType?) -> String {
         
         if(activityType == UIActivityType.mail){
-            return webPageTitle
+            return ShareHelper.sharedInstance.webPageTitle
         } else {
-            return webPageTitle
+            return ShareHelper.sharedInstance.webPageTitle
         }
     }
     

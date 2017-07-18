@@ -8,42 +8,53 @@
 
 import Foundation
 struct ShareHelper {
-    // MARK: - Update some global variables and return the url with campaign code
-    public func getUrl(_ from: String) -> URL? {
-        let originalURL = from
-        var queryStringDictionary = ["url":""]
-        let urlComponents = originalURL.replacingOccurrences(of: "iosaction://?", with: "").components(separatedBy: "&")
-        for keyValuePair in urlComponents {
-            let stringSeparate = (keyValuePair as AnyObject).range(of: "=").location
-            if (stringSeparate>0 && stringSeparate < 100) {
-                let pairKey = (keyValuePair as NSString).substring(to: stringSeparate)
-                let pairValue = (keyValuePair as NSString).substring(from: stringSeparate+1)
-                queryStringDictionary[pairKey] = pairValue.removingPercentEncoding
+    static var sharedInstance = ShareHelper()
+    private init() {
+        thumbnail = UIImage(named: Share.shareIconName)
+        webPageUrl = ""
+        webPageTitle = ""
+        webPageDescription = ""
+        webPageImage = ""
+        webPageImageIcon = ""
+    }
+    var thumbnail: UIImage?
+    var webPageUrl: String
+    var webPageTitle: String
+    var webPageDescription: String
+    var webPageImage: String
+    var webPageImageIcon: String
+    
+    static func updateThubmnail(_ url: URL) {
+        print("Start downloading \(url) for WeChat Shareing. lastPathComponent: \(url.absoluteString)")
+        ShareHelper.sharedInstance.thumbnail = UIImage(named: "ftcicon.jpg")
+        Download.getDataFromUrl(url) { (data, response, error)  in
+            DispatchQueue.main.async { () -> Void in
+                guard let data = data , error == nil else {return}
+                ShareHelper.sharedInstance.thumbnail = UIImage(data: data)
+                print("finished downloading wechat share icon: \(url.absoluteString)")
             }
         }
-        // MARK: - update some global variables
-        webPageUrl = queryStringDictionary["url"]?.removingPercentEncoding ?? webPageUrl
-        webPageTitle = queryStringDictionary["title"] ?? webPageTitle
-        webPageDescription = queryStringDictionary["description"] ?? webPageDescription0
-        webPageImage = queryStringDictionary["img"] ?? webPageImageIcon0
-        webPageImageIcon = webPageImage
-        
-        let ccodeInActionSheet = ccode["actionsheet"] ?? "iosaction"
-        let urlWithCCode = "\(webPageUrl)#ccode=\(ccodeInActionSheet)"
-        let url = URL(string: urlWithCCode)
-        return url
     }
-    
-    // MARK: - Pop up the action sheet for share
-    public func popupActionSheet(_ fromViewController: UIViewController, url: URL?) {
-        let wcActivity = WeChatShare(to: "chat")
-        let wcCircle = WeChatShare(to: "moment")
-        let openInSafari = OpenInSafari()
-        if let myWebsite = url, let iconImage = UIImage(named: "ShareIcon.jpg") {
+}
+
+
+
+extension UIViewController {
+    func launchActionSheet(for item: ContentItem) {
+        print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
+        // MARK: - update some global variables
+        ShareHelper.sharedInstance.webPageUrl = "\(Share.base)\(item.type)/\(item.id)?full=y#ccode=\(Share.CampaignCode.actionsheet)"
+        ShareHelper.sharedInstance.webPageTitle = item.headline
+        ShareHelper.sharedInstance.webPageDescription = item.lead
+        ShareHelper.sharedInstance.webPageImage = item.image
+        ShareHelper.sharedInstance.webPageImageIcon = ShareHelper.sharedInstance.webPageImage
+        if let url = URL(string: ShareHelper.sharedInstance.webPageUrl), let iconImage = UIImage(named: "ShareIcon.jpg") {
+            let wcActivity = WeChatShare(to: "chat")
+            let wcCircle = WeChatShare(to: "moment")
+            let openInSafari = OpenInSafari()
             let shareData = DataForShare()
             let image = ShareImageActivityProvider(placeholderItem: iconImage)
-            let objectsToShare = [shareData, myWebsite, image] as [Any]
-            print ("Is WXApi supported? \(WXApi.isWXAppSupport())")
+            let objectsToShare = [shareData, url, image] as [Any]
             let activityVC: UIActivityViewController
             if WXApi.isWXAppSupport() == true {
                 activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: [wcActivity, wcCircle, openInSafari])
@@ -53,23 +64,24 @@ struct ShareHelper {
             activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
             
             //TODO: - This might fail in iPad
-            fromViewController.present(activityVC, animated: true, completion: nil)
-
+            self.present(activityVC, animated: true, completion: nil)
             
-//            if UIDevice.current.userInterfaceIdiom == .pad {
-//                //self.presentViewController(controller, animated: true, completion: nil)
-//                let popup: UIPopoverController = UIPopoverController(contentViewController: activityVC)
-//                popup.present(from: CGRect(x: fromViewController.view.frame.size.width / 2, y: fromViewController.view.frame.size.height / 4, width: 0, height: 0), in: fromViewController.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
-//            } else {
-//            }
+            
+            //            if UIDevice.current.userInterfaceIdiom == .pad {
+            //                //self.presentViewController(controller, animated: true, completion: nil)
+            //                let popup: UIPopoverController = UIPopoverController(contentViewController: activityVC)
+            //                popup.present(from: CGRect(x: fromViewController.view.frame.size.width / 2, y: fromViewController.view.frame.size.height / 4, width: 0, height: 0), in: fromViewController.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
+            //            } else {
+            //            }
             
             // MARK: - Use the time between action sheet popped and share action clicked to grab the image icon
-            if webPageImageIcon.range(of: "https://image.webservices.ft.com") == nil{
-                webPageImageIcon = "https://image.webservices.ft.com/v1/images/raw/\(webPageImageIcon)?source=ftchinese&width=72&height=72"
+            if ShareHelper.sharedInstance.webPageImageIcon.range(of: "https://image.webservices.ft.com") == nil{
+                ShareHelper.sharedInstance.webPageImageIcon = "https://image.webservices.ft.com/v1/images/raw/\(ShareHelper.sharedInstance.webPageImageIcon)?source=ftchinese&width=72&height=72"
             }
-            if let imgUrl = URL(string: webPageImageIcon) {
-                updateWeChatShareIcon(imgUrl)
+            if let imgUrl = URL(string: ShareHelper.sharedInstance.webPageImageIcon) {
+                ShareHelper.updateThubmnail(imgUrl)
             }
+            
         }
     }
 }

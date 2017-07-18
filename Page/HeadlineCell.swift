@@ -10,8 +10,8 @@ import UIKit
 
 class HeadlineCell: UICollectionViewCell {
 
-    let imageWidth = 530
-    let imageHeight = 300
+    let imageWidth = 152
+    let imageHeight = 114
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
@@ -34,8 +34,11 @@ class HeadlineCell: UICollectionViewCell {
     func updateUI() {
         // MARK: - Update Styles and Layouts
         //    print ("headline should load image here")
-        containerView.backgroundColor = UIColor(hex: Color.Content.background)
-        headline.textColor = UIColor(hex: Color.Content.headline)
+        let leadColor = UIColor(hex: Color.Content.lead)
+        containerView?.backgroundColor = UIColor(hex: Color.Content.background)
+        headline?.textColor = UIColor(hex: Color.Content.headline)
+        theme?.textColor = leadColor
+        time?.textColor = leadColor
         //    lead.textColor = UIColor(hex: Color.Content.lead)
         layoutMargins.left = 0
         layoutMargins.right = 0
@@ -63,7 +66,7 @@ class HeadlineCell: UICollectionViewCell {
             imageView.image = loadedImage
             //        print ("headline image is already loaded, no need to download again. ")
         } else {
-            itemCell?.loadImage(type:"thumbnail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+            itemCell?.loadImage(type:"thumbnail", width: imageWidth * 2, height: imageHeight * 2, completion: { [weak self](cellContentItem, error) in
                 self?.imageView.image = cellContentItem.thumbnailImage
             })
             //      print ("headline should load image here")

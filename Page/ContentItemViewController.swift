@@ -78,6 +78,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
     private func getDetailInfo() {
         let urlString = "\(APIs.story)\(dataObject?.id ?? "")"
+        let id = dataObject?.id
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
@@ -91,8 +92,22 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 }
                 if let results = results {
                     let item = results.fetchResults[0].items[0]
+                    let eBody = item.ebody
+                    // MARK: Whether eBody is empty string
+                    let type = item.type
+                    if type == "story", let id = id {
+                        if let eBody = eBody, eBody != "" {
+                            English.sharedInstance.has[id] = true
+                        } else {
+                            English.sharedInstance.has[id] = false
+                        }
+                        // MARK: Post a notification about English status change
+                        let object = ""
+                        let name = Notification.Name(rawValue: Event.englishStatusChange)
+                        NotificationCenter.default.post(name: name, object: object)
+                    }
                     self?.dataObject?.cbody = item.cbody
-                    self?.dataObject?.ebody = item.ebody
+                    self?.dataObject?.ebody = eBody
                     self?.dataObject?.publishTime = item.publishTime
                     self?.dataObject?.chineseByline = item.chineseByline
                     self?.dataObject?.englishByline = item.englishByline

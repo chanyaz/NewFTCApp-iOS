@@ -12,10 +12,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     var contentPageData = [ContentItem]()
     var currentPageIndex = 0
-    
+    var languages: UISegmentedControl?
     
     @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet weak var languageSwitch: UISegmentedControl!
     @IBOutlet weak var bookMark: UIBarButtonItem!
     
     @IBOutlet weak var actionButton: UIBarButtonItem!
@@ -71,26 +70,63 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         let actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
         self.navigationItem.rightBarButtonItem = actionButton
         
+
+        
+        // MARK: - Segmented Control
+        let items = ["中文", "英文", "对照"]
+        languages = UISegmentedControl(items: items)
+        languages?.selectedSegmentIndex = 0
+
+        // MARK: Add target action method
+        languages?.addTarget(self, action: #selector(switchLanguage(_:)), for: .valueChanged)
+        
+        self.navigationItem.titleView = languages
+        
+        // Add this custom Segmented Control to our view
+        //self.view.addSubview(customSC)
+        
+        
+        updateEnglishStatus()
+        
+        // MARK: - Notification For English Status Change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateEnglishStatus),
+            name: Notification.Name(rawValue: Event.englishStatusChange),
+            object: nil
+        )
+        
         // MARK: - Color Scheme for the view
         initStyle()
         
-/*
+        /*
          // MARK: - Delegate navigation controller to self
          navigationController?.delegate = self
          
          let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handler))
          gestureRecognizer.delegate = self
          view.addGestureRecognizer(gestureRecognizer)
-*/
+         */
+    }
+    
+    public func switchLanguage(_ sender: UISegmentedControl) {
+        print ("switch to language: \(sender.selectedSegmentIndex)")
+    }
+    
+    public func updateEnglishStatus() {
+        //print ("English Status Change Received: \(English.sharedInstance.has)")
+        let id = contentPageData[currentPageIndex].id
+        let type = contentPageData[currentPageIndex].type
+        if type == "story", let hasEnglish = English.sharedInstance.has[id], hasEnglish == true {
+            print ("current view should display English Switch")
+            languages?.isHidden = false
+        } else {
+            print ("current view should hide English Switch")
+            languages?.isHidden = true
+        }
     }
     
     public func share() {
-//        print ("share")
-//        let itemToShare = contentPageData[currentPageIndex]
-//        print ("share the item: \(itemToShare.headline), id: \(itemToShare.id)")
-//        let share = ShareHelper()
-//        let url = share.getUrl("iosaction://?title=OliverTest&url=http://www.ft.com&description=daf&img=http://www.ft.ocm")
-//        share.popupActionSheet(self as UIViewController, url: url)
         let item = contentPageData[currentPageIndex]
         self.launchActionSheet(for: item)
     }
@@ -100,33 +136,24 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     }
     
     private func initStyle() {
-        toolBar.backgroundColor = UIColor(hex: Color.Tab.background)
-        toolBar.barTintColor = UIColor(hex: Color.Tab.background)
+        let tabBackGround = UIColor(hex: Color.Tab.background)
+        let buttonTint = UIColor(hex: Color.Button.tint)
+        toolBar.backgroundColor = tabBackGround
+        toolBar.barTintColor = tabBackGround
         toolBar.isTranslucent = false
         
-        let buttonTint = UIColor(hex: Color.Button.tint)
-        
         // MARK: Set style for the language switch
-        languageSwitch.backgroundColor = UIColor(hex: Color.Content.background)
-        languageSwitch.tintColor = buttonTint
+        languages?.backgroundColor = UIColor(hex: Color.Content.background)
+        languages?.tintColor = buttonTint
         
         // MARK: Set style for the bottom buttons
         actionButton.tintColor = buttonTint
         bookMark.tintColor = buttonTint
-        
-        
-        //        self.view.backgroundColor = UIColor.clear
-        //        self.view.isOpaque = false
-        
     }
     
     
-    
-    
-
-     
-     /*
-     // TODO: - For now, our mastery of iOS is not enough for us to come up with the proper code to let users pop the current view by swiping from anywhere in the screen, not just from the edge of the screen. It's totally achievable though, as can be seen in countless other apps. 
+    /*
+     // TODO: - For now, our mastery of iOS is not enough for us to come up with the proper code to let users pop the current view by swiping from anywhere in the screen, not just from the edge of the screen. It's totally achievable though, as can be seen in countless other apps.
      // MARK: - https://stackoverflow.com/questions/28949537/uipageviewcontroller-detecting-pan-gestures
      // MARK: Test custom popping
      var interactivePopTransition: UIPercentDrivenInteractiveTransition!
@@ -163,7 +190,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
      return true
      }
      
- 
+     
      func handler(_ recognizer: UIPanGestureRecognizer) {
      var progress = recognizer.translation(in: self.view).x / self.view.bounds.size.width
      progress = min(1, max(0, progress))
@@ -203,7 +230,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
      
      // MARK: test custom popping end
      
-*/
+     */
     
 }
 

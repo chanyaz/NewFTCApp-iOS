@@ -20,6 +20,7 @@
 		50EC3A631EF1E18E00BF17AD /* Ad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC3A611EF1E18E00BF17AD /* Ad.swift */; };
 		50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50EC3A621EF1E18E00BF17AD /* Ad.xib */; };
 		600BD69F1F1DBAFF0077C104 /* PushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD69E1F1DBAFF0077C104 /* PushHelper.swift */; };
+		600BD6A21F1EF20B0077C104 /* English.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6A11F1EF20B0077C104 /* English.swift */; };
 		601417701EEA3F7600DC3EF9 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */; };
 		601418081EEA919300DC3EF9 /* IJReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601418071EEA919300DC3EF9 /* IJReachability.swift */; };
 		6014180B1EEA9CC000DC3EF9 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6014180A1EEA9CC000DC3EF9 /* Download.swift */; };
@@ -127,6 +128,7 @@
 		50EC3A611EF1E18E00BF17AD /* Ad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ad.swift; sourceTree = "<group>"; };
 		50EC3A621EF1E18E00BF17AD /* Ad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Ad.xib; sourceTree = "<group>"; };
 		600BD69E1F1DBAFF0077C104 /* PushHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushHelper.swift; sourceTree = "<group>"; };
+		600BD6A11F1EF20B0077C104 /* English.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = English.swift; sourceTree = "<group>"; };
 		6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
 		601418071EEA919300DC3EF9 /* IJReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IJReachability.swift; sourceTree = "<group>"; };
 		6014180A1EEA9CC000DC3EF9 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 				F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */,
 				F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */,
 				608C55241EF7A42D00AF27CB /* ContentItemViewController.swift */,
+				600BD6A11F1EF20B0077C104 /* English.swift */,
 				605750F21F1461F400552DAC /* WKWebPage.swift */,
 				AF34DB891F127405007DE4D1 /* UITextViewFixed.swift */,
 				60FDA4F81EFF7FAA003D4180 /* story.html */,
@@ -769,6 +772,7 @@
 				60986A461F1CAC5300583157 /* DataForShare.swift in Sources */,
 				60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */,
 				605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */,
+				600BD6A21F1EF20B0077C104 /* English.swift in Sources */,
 				605750FB1F15B06700552DAC /* AdView.swift in Sources */,
 				60C0D65E1F17415A00E6F77D /* DeviceInfo.swift in Sources */,
 				AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */,

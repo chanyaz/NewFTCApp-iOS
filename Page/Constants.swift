@@ -56,8 +56,10 @@ struct FontSize {
     static let bodyExtraSize: CGFloat = 3.0
 }
 
+
 struct APIs {
-    static let story = "https://m.ftimg.net/index.php/jsapi/get_story_more_info/"
+    // TODO: This should be a function rather than a constant, because other news organization might use different way to construct API
+    static let story = "https://www.ftchinese.com/index.php/jsapi/get_story_more_info/"
 }
 
 struct Event {
@@ -65,6 +67,7 @@ struct Event {
     //        let pagePanningEndName = "Page Panning End"
     //        return "\(pagePanningEndName) for \(tab)"
     //    }
+    static let englishStatusChange = "English Status Change"
 }
 
 struct GA {

@@ -193,9 +193,9 @@ var gIsCurrentAdchFinal = false;
 
 
 
-
+<div id="ios-story-body">
 {story-body}
-
+</div>
 
 
 <div class="clearfloat"></div>
@@ -313,13 +313,17 @@ var gIsCurrentAdchFinal = false;
 
 <script>
     function updateHeadline(headline) {
-        let allHeadlines = document.querySelectorAll('.story-headline');
-        for (var i=0; i<allHeadlines.length; i++) {
-            allHeadlines[i].innerHTML = headline;
-        }
-        return 'found ' + allHeadlines.length + ' story headlines';
+        var headlineEle = document.querySelector('.story-headline');
+        //var before = 'before story headlines: ' + headlineEle.innerHTML;
+        headlineEle.innerHTML = headline;
+        //var after = 'after story headlines: ' + headlineEle.innerHTML;
+        　//return before + after;
         //document.getElementById('story-headline-ios').innerHTML = headline;
         //return "story headline printed as: " + document.getElementById('story-headline-ios').innerHTML
     }
+function updateBody(body) {
+    var bodyEle = document.getElementById('ios-story-body');
+    bodyEle.innerHTML = body;
+}
 </script>
 </html>

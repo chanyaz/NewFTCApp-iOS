@@ -72,32 +72,29 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         print ("deinit web view successfully")
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        //print ("view did layout subviews")
-        //        headline.text = ""
-        //        tag.text = ""
-        //        lead.text = ""
-        //        byline.text = ""
-        updatePageContent()
-        
-    }
-    
     public func handleLanguagePreferenceChange() {
         let headlineBody = getHeadlineBody(dataObject)
-        let headline = headlineBody.headline.replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
-        let finalBody = headlineBody.finalBody.replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
-        let jsCodeHeadline = "document.querySelector('.story-headline').innerHTML = '\(headline)';"
-        let jsCodeBody = "document.querySelector('.story-body').innerHTML = '\(finalBody)';"
+        let headline = headlineBody.headline
+            .replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "'", with: "\'")
+        let finalBody = headlineBody.finalBody
+            .replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "'", with: "{singlequote}")
+        .replacingOccurrences(of: "<script type=\"text/javascript\">", with: "{JSScriptTagStart}")
+        .replacingOccurrences(of: "</script>", with: "{JSScriptTagEnd}")
+        let jsCodeHeadline = "updateHeadline('\(finalBody)');"
+        let jsCodeBody = "updateBody('\(finalBody)');"
+        print (jsCodeBody)
         //let jsCode = jsCodeHeadline + jsCodeBody
-        let jsCode = "updateHeadline('\(headline)');"
-        print (jsCode)
+        let jsCode = jsCodeBody
+        //let jsCode = "updateHeadline('\(headline)');"
+        //print (jsCode)
         self.webView?.evaluateJavaScript(jsCode) { (result, error) in
             if error != nil {
                 print ("some thing wrong with javascript: \(String(describing: error))")
-                return
+            } else {
+                print ("javascript result is \(String(describing: result))")
             }
-            print ("javascript result is \(String(describing: result))")
         }
     }
     

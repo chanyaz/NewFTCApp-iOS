@@ -32,6 +32,7 @@ class ContentItem{
     // MARK: detail data that only comes with detail content API
     var cbody: String?
     var ebody: String?
+    var eheadline: String?
     var cauthor: String?
     var eauthor: String?
     var locations: String?

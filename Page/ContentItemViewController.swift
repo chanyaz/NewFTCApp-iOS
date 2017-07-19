@@ -46,6 +46,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         navigationController?.delegate = self
         //navigationItem.title = "another test from oliver"
         
+        // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleLanguagePreferenceChange),
+            name: Notification.Name(rawValue: Event.languagePreferenceChanged),
+            object: nil
+        )
     }
     
     deinit {
@@ -76,6 +83,24 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
     }
     
+    public func handleLanguagePreferenceChange() {
+        let headlineBody = getHeadlineBody(dataObject)
+        let headline = headlineBody.headline.replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
+        let finalBody = headlineBody.finalBody.replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
+        let jsCodeHeadline = "document.querySelector('.story-headline').innerHTML = '\(headline)';"
+        let jsCodeBody = "document.querySelector('.story-body').innerHTML = '\(finalBody)';"
+        //let jsCode = jsCodeHeadline + jsCodeBody
+        let jsCode = "updateHeadline('\(headline)');"
+        print (jsCode)
+        self.webView?.evaluateJavaScript(jsCode) { (result, error) in
+            if error != nil {
+                print ("some thing wrong with javascript: \(String(describing: error))")
+                return
+            }
+            print ("javascript result is \(String(describing: result))")
+        }
+    }
+    
     private func getDetailInfo() {
         let urlString = "\(APIs.story)\(dataObject?.id ?? "")"
         let id = dataObject?.id
@@ -102,12 +127,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                             English.sharedInstance.has[id] = false
                         }
                         // MARK: Post a notification about English status change
-                        let object = ""
-                        let name = Notification.Name(rawValue: Event.englishStatusChange)
-                        NotificationCenter.default.post(name: name, object: object)
+                        self?.postEnglishStatusChange()
                     }
-                    self?.dataObject?.cbody = item.cbody
                     self?.dataObject?.ebody = eBody
+                    self?.dataObject?.cbody = item.cbody
+                    self?.dataObject?.eheadline = item.eheadline
                     self?.dataObject?.publishTime = item.publishTime
                     self?.dataObject?.chineseByline = item.chineseByline
                     self?.dataObject?.englishByline = item.englishByline
@@ -117,6 +141,18 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 }
             }
         }
+    }
+    
+    private func postEnglishStatusChange() {
+        let object = ""
+        let name = Notification.Name(rawValue: Event.englishStatusChange)
+        NotificationCenter.default.post(name: name, object: object)
+    }
+    
+    private func postLanguageChoice(_ languageIndex: Int) {
+        let object = languageIndex
+        let name = Notification.Name(rawValue: Event.languageSelected)
+        NotificationCenter.default.post(name: name, object: object)
     }
     
     private func initStyle() {
@@ -133,7 +169,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         bodyTextView.isScrollEnabled = true
     }
     
-    private func updatePageContent() {
+    public func updatePageContent() {
         // MARK: https://makeapppie.com/2016/07/05/using-attributed-strings-in-swift-3-0/
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         if let type = dataObject?.type {
@@ -319,7 +355,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     private func renderWebView() {
-        //print ("there are HTML tags that cannot be handled, use webview to handle it instead")
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height)
@@ -347,9 +382,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     let urlString = "http://www.ftchinese.com/story/\(id)?full=y"
                     if let url = URL(string: urlString) {
                         let request = URLRequest(url: url)
-                        // MARK: Get values for the story content
-                        let headline = dataObject?.headline ?? ""
-                        let body = dataObject?.cbody ?? ""
                         let lead = dataObject?.lead ?? ""
                         let tags = dataObject?.tag ?? ""
                         let tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
@@ -375,31 +407,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         if relatedStories != "" {
                             relatedStories = "<div class=\"story-box\"><h2 class=\"box-title\"><a>相关文章</a></h2><ul class=\"top10\">\(relatedStories)</ul></div>"
                         }
-                                                
+                        
                         let tagsArray = tags.components(separatedBy: ",")
                         var relatedTopics = ""
                         for (index, tag) in tagsArray.enumerated() {
                             relatedTopics += "<li class=\"story-theme mp\(index+1)\"><a target=\"_blank\" href=\"/tag/\(tag)\">\(tag)</a><div class=\"icon-right\"><button class=\"myft-follow plus\" data-tag=\"\(tag)\" data-type=\"tag\">关注</button></div></li>"
                         }
                         
-                        let bodyWithMPU = body.replacingOccurrences(
-                            of: "[\r\t\n]",
-                            with: "",
-                            options: .regularExpression
-                            ).replacingOccurrences(
-                                of: "^(<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
-                                with: "$1<div id=story_main_mpu><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div><p>",
-                                options: .regularExpression
-                        )
-                        
-                        // TODO: Premium user will not need to see the MPU ads
-                        let finalBody: String
-                        finalBody = bodyWithMPU.replacingOccurrences(
-                            of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
-                            with: "$1<div class=story_main_mpu_vw><script type=\"text/javascript\">document.write (writeAd('storympuVW'));</script></div><p>",
-                            options: .regularExpression
-                        )
-
+                        let headlineBody = getHeadlineBody(dataObject)
+                        let headline = headlineBody.headline
+                        let finalBody = headlineBody.finalBody
                         
                         // MARK: Story Time
                         let timeStamp = dataObject?.publishTime ?? ""
@@ -440,6 +457,48 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
     }
     
+    private func getHeadlineBody(_ dataObject: ContentItem?) -> (headline: String, finalBody: String) {
+        // MARK: Get values for the story content
+        let headline: String
+        let body: String
+        let languagePreference = UserDefaults.standard.integer(forKey: Key.languagePreference)
+        let eHeadline = dataObject?.eheadline ?? ""
+        let eBody = dataObject?.ebody ?? ""
+        let languageChoice: Int
+        if eBody != "" && languagePreference == 1 {
+            headline = eHeadline
+            body = eBody
+            languageChoice = 1
+        } else if eBody != "" && languagePreference == 2 {
+            headline = eHeadline
+            body = eBody
+            languageChoice = 2
+        } else {
+            headline = dataObject?.headline ?? ""
+            body = dataObject?.cbody ?? ""
+            languageChoice = 0
+        }
+        postLanguageChoice(languageChoice)
+        let bodyWithMPU = body.replacingOccurrences(
+            of: "[\r\t\n]",
+            with: "",
+            options: .regularExpression
+            ).replacingOccurrences(
+                of: "^(<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
+                with: "$1<div id=story_main_mpu><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div><p>",
+                options: .regularExpression
+        )
+        
+        // TODO: Premium user will not need to see the MPU ads
+        let finalBody: String
+        finalBody = bodyWithMPU.replacingOccurrences(
+            of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
+            with: "$1<div class=story_main_mpu_vw><script type=\"text/javascript\">document.write (writeAd('storympuVW'));</script></div><p>",
+            options: .regularExpression
+        )
+        return (headline, finalBody)
+        
+    }
     
     fileprivate func htmlToAttributedString(_ htmltext: String) -> NSMutableAttributedString? {
         // MARK: remove p tags in text
@@ -540,6 +599,6 @@ extension ContentItemViewController: UITextViewDelegate {
 //    }
 //}
 
-// Done: 1. MPU ads in story page; 
+// Done: 1. MPU ads in story page;
 // TODO: 2. Sponsorship Ads in story page;
 

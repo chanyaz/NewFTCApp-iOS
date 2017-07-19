@@ -221,6 +221,7 @@ class ContentFetch {
 
         oneItem.cbody = item["cbody"] as? String
         oneItem.ebody = item["ebody"] as? String
+        oneItem.eheadline = item["eheadline"] as? String
         oneItem.cauthor = item["cauthor"] as? String
         oneItem.eauthor = item["eauthor"] as? String
         oneItem.publishTime = publishTime.unixToTimeStamp()

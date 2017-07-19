@@ -59,7 +59,7 @@ struct FontSize {
 
 struct APIs {
     // TODO: This should be a function rather than a constant, because other news organization might use different way to construct API
-    static let story = "https://www.ftchinese.com/index.php/jsapi/get_story_more_info/"
+    static let story = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/get_story_more_info/"
 }
 
 struct Event {
@@ -68,6 +68,8 @@ struct Event {
     //        return "\(pagePanningEndName) for \(tab)"
     //    }
     static let englishStatusChange = "English Status Change"
+    static let languageSelected = "Language Selected in Story Page"
+    static let languagePreferenceChanged = "Language Preference Changed By User Tap"
 }
 
 struct GA {
@@ -98,6 +100,10 @@ struct Push {
 
 struct AppGroup {
     static let name = "group.com.ft.ftchinese.mobile"
+}
+
+struct Key {
+    static let languagePreference = "Language Preference"
 }
 
 /*

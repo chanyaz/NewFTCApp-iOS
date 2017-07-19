@@ -96,6 +96,14 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             object: nil
         )
         
+        // MARK: - Notification For Actual Language Select in Story
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateLanguageSwitch(_:)),
+            name: Notification.Name(rawValue: Event.languageSelected),
+            object: nil
+        )
+        
         // MARK: - Color Scheme for the view
         initStyle()
         
@@ -109,8 +117,28 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
          */
     }
     
+    public func updateLanguageSwitch(_ notification: Notification) {
+        print ("update language switch to \(notification.object ?? 0)")
+        if let actualIndex = notification.object as? Int, let displayedIndex = languages?.selectedSegmentIndex {
+            if actualIndex != 0 && actualIndex != displayedIndex {
+                print ("should set languages to \(actualIndex)")
+                languages?.selectedSegmentIndex = actualIndex
+            }
+        }
+        
+    }
+    
+    //MARK: This is only triggerd when user actual taps the UISegmentedControl
     public func switchLanguage(_ sender: UISegmentedControl) {
-        print ("switch to language: \(sender.selectedSegmentIndex)")
+        // MARK: Save Language Preference
+        let languageIndex = sender.selectedSegmentIndex
+        UserDefaults.standard.set(languageIndex, forKey: Key.languagePreference)
+        print ("language is switched manually to \(languageIndex)")
+        // MARK: Posting a notification is the best way to update content as there might be more than one ContentItemController that needs to update display
+        let object = languageIndex
+        let name = Notification.Name(rawValue: Event.languagePreferenceChanged)
+        NotificationCenter.default.post(name: name, object: object)
+        
     }
     
     public func updateEnglishStatus() {

@@ -314,16 +314,15 @@ var gIsCurrentAdchFinal = false;
 <script>
     function updateHeadline(headline) {
         var headlineEle = document.querySelector('.story-headline');
-        //var before = 'before story headlines: ' + headlineEle.innerHTML;
-        headlineEle.innerHTML = headline;
-        //var after = 'after story headlines: ' + headlineEle.innerHTML;
-        　//return before + after;
-        //document.getElementById('story-headline-ios').innerHTML = headline;
-        //return "story headline printed as: " + document.getElementById('story-headline-ios').innerHTML
+        headlineEle.innerHTML = headline.replace("{singlequote}", "'");
     }
 function updateBody(body) {
     var bodyEle = document.getElementById('ios-story-body');
-    bodyEle.innerHTML = body;
+    var bodyHTML = body.replace("{singlequote}", "'");
+    bodyEle.innerHTML = bodyHTML;
+    window.scrollTo(0, 0);
 }
 </script>
 </html>
+
+

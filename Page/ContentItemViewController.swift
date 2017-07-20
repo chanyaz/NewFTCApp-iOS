@@ -74,20 +74,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
     public func handleLanguagePreferenceChange() {
         let headlineBody = getHeadlineBody(dataObject)
-        let headline = headlineBody.headline
-            .replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
-            .replacingOccurrences(of: "'", with: "\'")
-        let finalBody = headlineBody.finalBody
-            .replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
-            .replacingOccurrences(of: "'", with: "{singlequote}")
-        .replacingOccurrences(of: "<script type=\"text/javascript\">", with: "{JSScriptTagStart}")
-        .replacingOccurrences(of: "</script>", with: "{JSScriptTagEnd}")
-        let jsCodeHeadline = "updateHeadline('\(finalBody)');"
+        let headline = headlineBody.headline.cleanHTMLTags()
+        let finalBody = headlineBody.finalBody.cleanHTMLTags()
+        let jsCodeHeadline = "updateHeadline('\(headline)');"
         let jsCodeBody = "updateBody('\(finalBody)');"
-        print (jsCodeBody)
-        //let jsCode = jsCodeHeadline + jsCodeBody
-        let jsCode = jsCodeBody
-        //let jsCode = "updateHeadline('\(headline)');"
+        let jsCode = jsCodeHeadline + jsCodeBody
         //print (jsCode)
         self.webView?.evaluateJavaScript(jsCode) { (result, error) in
             if error != nil {
@@ -569,6 +560,18 @@ extension ContentItemViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange) -> Bool
     {
         return true
+    }
+}
+
+extension String {
+    func cleanHTMLTags() -> String {
+        let newString = self.replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "'", with: "{singlequote}")
+            .replacingOccurrences(of: "<div [classid]+=story_main_mpu.*</div>", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "<script type=\"text/javascript\">", with: "{JSScriptTagStart}")
+            .replacingOccurrences(of: "</script>", with: "{JSScriptTagEnd}")
+            .replacingOccurrences(of: "<script>", with: "{JSScriptTagStart}")
+        return newString
     }
 }
 

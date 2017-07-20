@@ -452,18 +452,20 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let languagePreference = UserDefaults.standard.integer(forKey: Key.languagePreference)
         let eHeadline = dataObject?.eheadline ?? ""
         let eBody = dataObject?.ebody ?? ""
+        let cBody = dataObject?.cbody ?? ""
         let languageChoice: Int
+        let cHeadline = dataObject?.headline ?? ""
         if eBody != "" && languagePreference == 1 {
             headline = eHeadline
             body = eBody
             languageChoice = 1
         } else if eBody != "" && languagePreference == 2 {
-            headline = eHeadline
-            body = eBody
+            headline = "<div>\(eHeadline)</div><div>\(cHeadline)</div>"
+            body = getCEbodyHTML(eBody: eBody, cBody: cBody)
             languageChoice = 2
         } else {
-            headline = dataObject?.headline ?? ""
-            body = dataObject?.cbody ?? ""
+            headline = cHeadline
+            body = cBody
             languageChoice = 0
         }
         postLanguageChoice(languageChoice)
@@ -487,6 +489,91 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         return (headline, finalBody)
         
     }
+    
+    private func getCEbodyHTML(eBody ebody: String, cBody cbody: String) -> String {
+        func getHTML(_ htmls:[String], for index: Int, in className: String) -> String {
+            let text: String
+            if index < htmls.count {
+                text = htmls[index]
+            } else {
+                text = ""
+            }
+            let html = "<div class=\(className)><p>\(text)</p></div>"
+            return html
+        }
+        let paragraphPattern = "<p>(.*)</p>"
+        let ebodyParapraphs = ebody.matchingArrays(regex: paragraphPattern)
+        let cbodyParapraphs = cbody.matchingArrays(regex: paragraphPattern)
+        let ebodyLength = ebodyParapraphs?.count ?? 0
+        let cbodyLength = cbodyParapraphs?.count ?? 0
+        let contentLength = max(ebodyLength, cbodyLength)
+        var combinedText = ""
+        
+        // MARK: Use the pure text in the matching array. Filter out paragraphs that has html tags like img and div
+        let ebodysHTML = ebodyParapraphs?.map { (value) -> String in
+            let text = value[1]
+            return text
+            }.filter{
+                !$0.contains("<img") && !$0.contains("<div")
+        }
+        
+        let cbodysHTML = cbodyParapraphs?.map { (value) -> String in
+            let text = value[1]
+            return text
+            }.filter{
+                !$0.contains("<img") && !$0.contains("<div")
+        }
+        
+        if let ebodysHTML = ebodysHTML, let cbodysHTML = cbodysHTML {
+        for i in 0..<contentLength {
+            let ebodyHTML = getHTML(ebodysHTML, for: i, in: "leftp")
+            let cbodyHTML = getHTML(cbodysHTML, for: i, in: "rightp")
+            combinedText += "\(ebodyHTML)\(cbodyHTML)<div class=clearfloat></div>"
+        }
+        }
+        return combinedText
+    }
+    
+    
+    
+    //    eText = allId.ebody.match(/<p>.*<\/p>/gi);
+    //    cText = allId.cbody.match(/<p>.*<\/p>/gi);
+    //    eLen = (eText !== null) ? eText.length : 0;
+    //    cLen = (cText !== null) ? cText.length : 0;
+    //    contentnumber = Math.max(eLen, cLen);
+    //    //ceDiff = cLen - eLen;
+    //    ct = '';
+    //    //alert (cText);
+    //    for (i = 0; i < contentnumber; i++) {
+    //    leftc = eText[ebodyCount] || '';
+    //    //remove p tag and img tag
+    //    //if leftc or right c is empty, it means it probably is an img in a p
+    //    //then check the next p
+    //    //the check is needed only once
+    //    //assuming editors don't attach two images without text between
+    //    leftc = removeTag(leftc);
+    //    if (leftc.length <= 2) { //short code means no need to display
+    //    ebodyCount += 1;
+    //    leftc = eText[ebodyCount] || '';
+    //    leftc = removeTag(leftc);
+    //    }
+    //    ebodyTotal += 1;
+    //    ebodyCount += 1;
+    //    rightc = cText[cbodyCount] || '';
+    //    rightc = removeTag(rightc);
+    //    if (rightc.length <= 2) { //short code means no need to display
+    //    cbodyCount += 1;
+    //    rightc = cText[cbodyCount] || '';
+    //    rightc = removeTag(rightc);
+    //    }
+    //    cbodyTotal += 1;
+    //    cbodyCount += 1;
+    //    ct += '<div class=ebodyt title="'+ ebodyTotal +'">'+ leftc + '</div><div class=cbodyt title="'+ cbodyTotal +'">' + rightc + '</div><div class=clearfloat></div>';
+    //    //console.log ("i: " + i + " ebodyTotal: " + ebodyTotal + ' cbodyTotal: ' + cbodyTotal);
+    //    }
+    //    ceDiff = cbodyTotal - ebodyTotal;
+    //    $('#storyview .storybody').html('<div class=ce>' + ct + '</div>');
+    //    $('#storyview .storybody').prepend('<div id="ceTwoColumn" class=centerButton><button class="ui-light-btn">中英文并排</button></div>');
     
     fileprivate func htmlToAttributedString(_ htmltext: String) -> NSMutableAttributedString? {
         // MARK: remove p tags in text

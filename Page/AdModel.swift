@@ -58,9 +58,9 @@ struct AdParser {
         }
         
         // MARK: Test Impressions
-//        impressions = [
-//            Impression(urlString: "https://www.ft.com/", adName: "Some Ad Name")
-//        ]
+        //        impressions = [
+        //            Impression(urlString: "https://www.ft.com/", adName: "Some Ad Name")
+        //        ]
         
         let adModel = AdModel(
             imageString: image,
@@ -87,6 +87,31 @@ struct AdParser {
 extension String {
     
     func matchingFirstString(regex: String) -> String? {
+        //        guard let regex = try? NSRegularExpression(pattern: regex, options: []) else { return nil }
+        //        let nsString = self as NSString
+        //        let results  = regex.matches(in: self, options: [], range: NSMakeRange(0, nsString.length))
+        //        let matches = results.map { result in
+        //            (0..<result.numberOfRanges).map { result.rangeAt($0).location != NSNotFound
+        //                ? nsString.substring(with: result.rangeAt($0))
+        //                : ""
+        //            }
+        //        }
+        
+        let matches = self.matchingArrays(regex: regex)
+        if let matches = matches {
+            if matches.count > 0 {
+                let firstMatch = matches[0]
+                let firstMatchCount = firstMatch.count
+                if firstMatchCount > 0 {
+                    return firstMatch[firstMatchCount-1]
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    func matchingArrays(regex: String) -> [[String]]? {
         guard let regex = try? NSRegularExpression(pattern: regex, options: []) else { return nil }
         let nsString = self as NSString
         let results  = regex.matches(in: self, options: [], range: NSMakeRange(0, nsString.length))
@@ -96,16 +121,7 @@ extension String {
                 : ""
             }
         }
-        
-        if matches.count > 0 {
-            let firstMatch = matches[0]
-            let firstMatchCount = firstMatch.count
-            if firstMatchCount > 0 {
-                return firstMatch[firstMatchCount-1]
-            }
-        }
-        
-        return nil
+        return matches
     }
     
     func matchingStrings(regexes: [String]) -> String? {

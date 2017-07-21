@@ -10,34 +10,19 @@ import Foundation
 import UIKit
 class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate {
     
-    let englishVoice = [
-        "英国":"en-GB",
-        "美国":"en-US",
-        "澳大利亚":"en-AU",
-        "南非":"en-ZA",
-        "爱尔兰":"en-IE"
-    ]
+    let englishVoice = SpeechDefaultVoice.englishVoice
     var englishVoiceData = [String]()
-    let chineseVoice = [
-        "中国大陆":"zh-CN",
-        "香港":"zh-HK",
-        "台湾":"zh-TW"
-    ]
+    let chineseVoice = SpeechDefaultVoice.chineseVoice
     var chineseVoiceData = [String]()
     let speechDefaultVoice = SpeechDefaultVoice()
-    
     private var currentEnglishVoice = "en-GB"
     private var newEnglishVoice = "en-GB"
     private var currentChineseVoice = "zh-CN"
     private var newChineseVoice = "zh-CN"
     
-//    @IBAction func closeSettings(_ sender: Any) {
-//        self.dismiss(animated: true, completion: nil)
-//    }
-    
     @IBOutlet weak var englishVoicePicker: UIPickerView!
-    
     @IBOutlet weak var chineseVoicePicker: UIPickerView!
+    @IBOutlet weak var saveButton: UIButton!
     
     @IBAction func saveChanges(_ sender: Any) {
         UserDefaults.standard.set(newEnglishVoice, forKey: speechDefaultVoice.englishVoiceKey)
@@ -59,12 +44,12 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     deinit {
         print ("deinit SpeechSettings successfully")
     }
     
-
+    
     override func loadView() {
         super.loadView()
         // MARK: - Set up default voice preference
@@ -83,6 +68,17 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         let defaultRowForChinese = getPickerRowByValue(chineseVoice, value: currentChineseVoice)
         chineseVoicePicker.selectRow(defaultRowForChinese, inComponent: 0, animated: false)
         self.navigationItem.title = "语音设置"
+        initStyle()
+    }
+    
+    private func initStyle() {
+        let defaultBackGroundColor = UIColor(hex: Color.Content.background)
+        let tabBackGround = UIColor(hex: Color.Tab.background)
+        let buttonTint = UIColor(hex: Color.Button.tint)
+        view?.backgroundColor = defaultBackGroundColor
+        saveButton?.backgroundColor = buttonTint
+        saveButton?.tintColor = UIColor.white
+        
     }
     
     private func getPickerRowByValue(_ voices: [String: String], value: String) -> Int {

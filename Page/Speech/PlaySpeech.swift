@@ -77,23 +77,14 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func setSpeechOptions(_ sender: UIBarButtonItem) {
-        //self.performSegue(withIdentifier: "Speech Settings", sender: sender)
-        
-        // MARK: Use story board to avoid memory leak
-//        let popoverVC = storyboard?.instantiateViewController(withIdentifier: "Speech Settings")
-//        if let popover = popoverVC {
-//            popover.modalPresentationStyle = .popover
-//            present(popover, animated: true, completion: {
-//                // MARK: - Setting the iPad popover arrow to pink. Only works in a completion handler. 
-//                self.popoverPresentationController?.backgroundColor = UIColor.white
-//            })
-//        }
+    
+    func setting() {
         if let SpeechSettingsViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SpeechSettings") as? SpeechSettings {
             navigationController?.pushViewController(SpeechSettingsViewController, animated: true)
         }
     }
     
+    @IBOutlet weak var toolbar: UIToolbar!
 
     @IBOutlet weak var bodytext: UITextView!
     
@@ -135,6 +126,32 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        initStyle()
+//        let settingsIcon = UIImage(named: "SettingsButton")
+//        let settingsButton = UIBarButtonItem(image: settingsIcon, style: .plain, target: self, action: #selector(setting))
+        let settingsButton = UIBarButtonItem(title: "设置", style: .plain, target: self, action: #selector(setting))
+        self.navigationItem.rightBarButtonItem = settingsButton
+        
+        // MARK: Set the back button to empty for pushed views
+        let title = ""
+        let backItem = UIBarButtonItem()
+        backItem.title = title
+        navigationItem.backBarButtonItem = backItem
+        
+    }
+    
+    private func initStyle() {
+        let defaultBackGroundColor = UIColor(hex: Color.Content.background)
+        let tabBackGround = UIColor(hex: Color.Tab.background)
+        let buttonTint = UIColor(hex: Color.Button.tint)
+        view?.backgroundColor = defaultBackGroundColor
+        bodytext?.backgroundColor = defaultBackGroundColor
+        toolbar?.backgroundColor = tabBackGround
+        toolbar?.barTintColor = tabBackGround
+        toolbar?.isTranslucent = false
+
+        // MARK: Set style for the bottom buttons
+        buttonPlayPause?.tintColor = buttonTint
     }
     
     private func replay(notification:Notification) -> Void {
@@ -153,6 +170,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
         if let language = body["language"], let text = body["text"], let title = body["title"], let eventCategory = body["eventCategory"] {
             let speechLanguage = speechDefaultVoice.getVoiceByLanguage(language)
             self.audioLanguage = speechLanguage
+            navigationItem.title = "当前语音：\(SpeechDefaultVoice.getLanguageName(speechLanguage))"
             self.eventCategory = eventCategory
             self.audioTitle = title
             let titleParagraphStyle = NSMutableParagraphStyle()

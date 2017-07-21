@@ -121,26 +121,23 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     public func listen() {
         if let playSpeechViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlaySpeech") as? PlaySpeech {
-//            var pageData1 = [ContentItem]()
-//            var pageData2 = [ContentItem]()
-//            for (sectionIndex, section) in fetches.fetchResults.enumerated() {
-//                for (itemIndex, item) in section.items.enumerated() {
-//                    if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
-//                        pageData1.append(item)
-//                    } else {
-//                        pageData2.append(item)
-//                    }
-//                }
-//            }
-//            let pageData = pageData1 + pageData2
-//            detailViewController.contentPageData = pageData
-            // TODO: Prepare for speech body data
+            // MARK: Prepare for speech body data
             let currentContentItemView = modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!)
             if let dataObject = currentContentItemView?.dataObject {
-                let title = dataObject.headline 
-                let language = "ch"
-                let text = dataObject.cbody ?? ""
+                let title: String
+                let language: String
+                let text: String
                 let eventCategory = "Listen To Story"
+                // MARK: 0 means Chinese
+                if actualLanguageIndex == 0 {
+                    title = dataObject.headline
+                    language = "ch"
+                    text = dataObject.cbody ?? ""
+                } else {
+                    title = dataObject.eheadline ?? ""
+                    language = "en"
+                    text = dataObject.ebody ?? ""
+                }
                 let body = [
                     "title": title,
                     "language": language,
@@ -150,12 +147,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 SpeechContent.sharedInstance.body = body
                 navigationController?.pushViewController(playSpeechViewController, animated: true)
             }
-
         } else {
             print ("cannot play the speech")
         }
         
     }
+    
+    private var actualLanguageIndex = 0
     
     public func updateLanguageSwitch(_ notification: Notification) {
         print ("update language switch to \(notification.object ?? 0)")
@@ -164,8 +162,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 print ("should set languages to \(actualIndex)")
                 languages?.selectedSegmentIndex = actualIndex
             }
+            actualLanguageIndex = actualIndex
         }
-        
     }
     
     //MARK: This is only triggerd when user actual taps the UISegmentedControl

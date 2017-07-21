@@ -67,8 +67,10 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""
         
-        let actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
-        self.navigationItem.rightBarButtonItem = actionButton
+        //let audioButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(listen))
+        let audioIcon = UIImage(named: "Audio")
+        let audioButton = UIBarButtonItem(image: audioIcon, style: .plain, target: self, action: #selector(listen))
+        self.navigationItem.rightBarButtonItem = audioButton
         
 
         
@@ -117,6 +119,44 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
          */
     }
     
+    public func listen() {
+        if let playSpeechViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlaySpeech") as? PlaySpeech {
+//            var pageData1 = [ContentItem]()
+//            var pageData2 = [ContentItem]()
+//            for (sectionIndex, section) in fetches.fetchResults.enumerated() {
+//                for (itemIndex, item) in section.items.enumerated() {
+//                    if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
+//                        pageData1.append(item)
+//                    } else {
+//                        pageData2.append(item)
+//                    }
+//                }
+//            }
+//            let pageData = pageData1 + pageData2
+//            detailViewController.contentPageData = pageData
+            // TODO: Prepare for speech body data
+            let currentContentItemView = modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!)
+            if let dataObject = currentContentItemView?.dataObject {
+                let title = dataObject.headline 
+                let language = "ch"
+                let text = dataObject.cbody ?? ""
+                let eventCategory = "Listen To Story"
+                let body = [
+                    "title": title,
+                    "language": language,
+                    "eventCategory": eventCategory,
+                    "text": text
+                ]
+                SpeechContent.sharedInstance.body = body
+                navigationController?.pushViewController(playSpeechViewController, animated: true)
+            }
+
+        } else {
+            print ("cannot play the speech")
+        }
+        
+    }
+    
     public func updateLanguageSwitch(_ notification: Notification) {
         print ("update language switch to \(notification.object ?? 0)")
         if let actualIndex = notification.object as? Int, let displayedIndex = languages?.selectedSegmentIndex {
@@ -153,11 +193,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             languages?.isHidden = true
         }
     }
-    
-    public func share() {
-        let item = contentPageData[currentPageIndex]
-        self.launchActionSheet(for: item)
-    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

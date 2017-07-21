@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -179,6 +180,135 @@
             </objects>
             <point key="canvasLocation" x="-2138" y="484"/>
         </scene>
+        <!--Play Speech-->
+        <scene sceneID="b06-1O-kvA">
+            <objects>
+                <viewController storyboardIdentifier="PlaySpeech" id="7xM-hb-7d9" customClass="PlaySpeech" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="a9E-yi-mwB"/>
+                        <viewControllerLayoutGuide type="bottom" id="ESg-DH-Oky"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wyw-aX-ux8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="CHj-HC-3gh">
+                                <rect key="frame" x="14" y="14" width="347" height="609"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UFn-g8-Vae">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Jqa-HN-aMP"/>
+                                    <barButtonItem image="PauseButton" id="ij1-hj-F9w">
+                                        <connections>
+                                            <action selector="pauseSpeech:" destination="7xM-hb-7d9" id="x6Q-94-VmF"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="jqB-e4-C00"/>
+                                    <barButtonItem image="SettingsButton" id="buE-jR-HUV">
+                                        <connections>
+                                            <action selector="setSpeechOptions:" destination="7xM-hb-7d9" id="WVL-Zh-6xZ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="P7c-Uy-hlM"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="UFn-g8-Vae" secondAttribute="trailing" id="ElB-h6-hT9"/>
+                            <constraint firstItem="ESg-DH-Oky" firstAttribute="top" secondItem="UFn-g8-Vae" secondAttribute="bottom" id="NMk-fk-yQs"/>
+                            <constraint firstItem="UFn-g8-Vae" firstAttribute="top" secondItem="CHj-HC-3gh" secondAttribute="bottom" id="UCQ-dv-v6C"/>
+                            <constraint firstAttribute="trailing" secondItem="CHj-HC-3gh" secondAttribute="trailing" constant="14" id="dDq-4D-ohL"/>
+                            <constraint firstItem="CHj-HC-3gh" firstAttribute="leading" secondItem="wyw-aX-ux8" secondAttribute="leading" constant="14" id="da2-7j-uGT"/>
+                            <constraint firstItem="CHj-HC-3gh" firstAttribute="top" secondItem="wyw-aX-ux8" secondAttribute="top" constant="14" id="dyQ-OF-fFc"/>
+                            <constraint firstItem="UFn-g8-Vae" firstAttribute="leading" secondItem="wyw-aX-ux8" secondAttribute="leading" id="m5D-nZ-lDL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bodytext" destination="CHj-HC-3gh" id="HEL-T9-MnO"/>
+                        <outlet property="buttonPlayPause" destination="ij1-hj-F9w" id="Uzm-Gg-PqR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="97w-hL-HRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2130" y="1227"/>
+        </scene>
+        <!--Speech Settings-->
+        <scene sceneID="7Ve-2f-74J">
+            <objects>
+                <viewController storyboardIdentifier="SpeechSettings" id="AOk-ko-2Qj" customClass="SpeechSettings" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wwv-J0-hZR"/>
+                        <viewControllerLayoutGuide type="bottom" id="xaW-22-fTz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aih-6J-XkN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="英文语音" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVe-97-X9c">
+                                <rect key="frame" x="16" y="28" width="343" height="24"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" restorationIdentifier="English Accent Picker" translatesAutoresizingMaskIntoConstraints="NO" id="Y8g-HM-R00">
+                                <rect key="frame" x="14" y="60" width="347" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="vqm-qL-F8n"/>
+                                </constraints>
+                            </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="中文语音" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a92-jp-bp9">
+                                <rect key="frame" x="16" y="168" width="343" height="24"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" restorationIdentifier="Chinese Accent Picker" translatesAutoresizingMaskIntoConstraints="NO" id="dOR-xj-t9y">
+                                <rect key="frame" x="14" y="200" width="347" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="n7K-jn-9pC"/>
+                                </constraints>
+                            </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uk7-Uk-fzg">
+                                <rect key="frame" x="159" y="613" width="57" height="46"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <state key="normal" title="保存"/>
+                                <connections>
+                                    <action selector="saveChanges:" destination="AOk-ko-2Qj" eventType="touchUpInside" id="K6b-6P-B1c"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dOR-xj-t9y" firstAttribute="leading" secondItem="aih-6J-XkN" secondAttribute="leading" constant="14" id="37Z-ct-E8A"/>
+                            <constraint firstItem="fVe-97-X9c" firstAttribute="top" secondItem="wwv-J0-hZR" secondAttribute="bottom" constant="8" symbolic="YES" id="9oQ-Ga-ips"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="a92-jp-bp9" secondAttribute="trailing" id="FlO-XC-gze"/>
+                            <constraint firstItem="a92-jp-bp9" firstAttribute="top" secondItem="Y8g-HM-R00" secondAttribute="bottom" constant="8" symbolic="YES" id="Hqk-hY-tIv"/>
+                            <constraint firstItem="xaW-22-fTz" firstAttribute="top" secondItem="Uk7-Uk-fzg" secondAttribute="bottom" constant="8" symbolic="YES" id="IMi-cR-FJW"/>
+                            <constraint firstAttribute="trailing" secondItem="dOR-xj-t9y" secondAttribute="trailing" constant="14" id="MRW-Ko-cBC"/>
+                            <constraint firstItem="a92-jp-bp9" firstAttribute="leading" secondItem="aih-6J-XkN" secondAttribute="leadingMargin" id="QOa-xh-DRv"/>
+                            <constraint firstItem="fVe-97-X9c" firstAttribute="leading" secondItem="aih-6J-XkN" secondAttribute="leadingMargin" id="Vca-vi-tRE"/>
+                            <constraint firstItem="dOR-xj-t9y" firstAttribute="top" secondItem="a92-jp-bp9" secondAttribute="bottom" constant="8" symbolic="YES" id="buA-en-RfB"/>
+                            <constraint firstItem="Y8g-HM-R00" firstAttribute="leading" secondItem="aih-6J-XkN" secondAttribute="leading" constant="14" id="jKM-yS-9rj"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fVe-97-X9c" secondAttribute="trailing" id="o63-OW-89n"/>
+                            <constraint firstItem="Uk7-Uk-fzg" firstAttribute="centerX" secondItem="aih-6J-XkN" secondAttribute="centerX" id="ooj-0R-obp"/>
+                            <constraint firstAttribute="trailing" secondItem="Y8g-HM-R00" secondAttribute="trailing" constant="14" id="vEC-6V-4GL"/>
+                            <constraint firstItem="Y8g-HM-R00" firstAttribute="top" secondItem="fVe-97-X9c" secondAttribute="bottom" constant="8" symbolic="YES" id="xe9-uC-bEz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="chineseVoicePicker" destination="dOR-xj-t9y" id="hH0-bi-eGk"/>
+                        <outlet property="englishVoicePicker" destination="Y8g-HM-R00" id="7gB-w4-RmD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g3P-HD-xAv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2140" y="1925.4872563718143"/>
+        </scene>
         <!--Content Item View Controller-->
         <scene sceneID="0Z7-4z-qGB">
             <objects>
@@ -341,6 +471,8 @@
         <image name="MyFTDim" width="25" height="25"/>
         <image name="News" width="25" height="25"/>
         <image name="NewsDim" width="25" height="25"/>
+        <image name="PauseButton" width="36" height="36"/>
+        <image name="SettingsButton" width="36" height="36"/>
         <image name="Video" width="25" height="25"/>
         <image name="VideoDim" width="25" height="25"/>
     </resources>

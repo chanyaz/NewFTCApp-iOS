@@ -109,6 +109,7 @@ class ContentFetch {
                         let image = item["image"] as? String ?? ""
                         let headline = item["headline"] as? String ?? ""
                         let lead = item["longlead"] as? String ?? ""
+                        let shortlead = item["shortlead"] as? String ?? ""
                         let type = item["type"] as? String ?? ""
                         let preferSponsorImage = item["preferSponsorImage"] as? String ?? ""
                         let tag = item["tag"] as? String ?? ""
@@ -130,6 +131,10 @@ class ContentFetch {
                             section: section,
                             row:row
                         )
+                        // MARK: If short lead is an mp3 url address, then it is an audio
+                        if shortlead.range(of: ".mp3$", options: .regularExpression) != nil {
+                            oneItem.audioFileUrl = shortlead
+                        }
                         itemCollection.append(oneItem)
                     }
                     let title = list["title"] as? String ?? ""

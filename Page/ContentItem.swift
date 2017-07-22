@@ -38,6 +38,7 @@ class ContentItem{
     var locations: String?
     var relatedStories: [[String: Any]]?
     var relatedVideos: [[String: Any]]?
+    var audioFileUrl: String?
     
     
     init (id: String,

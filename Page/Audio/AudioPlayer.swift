@@ -6,7 +6,7 @@
 //  Copyright © 2017年 Financial Times Ltd. All rights reserved.
 //
 
-/*
+
 import UIKit
 import AVKit
 import AVFoundation
@@ -100,10 +100,12 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     @IBAction func share(_ sender: UIBarButtonItem) {
+        /*
         let share = ShareHelper()
         let ccodeInActionSheet = ccode["actionsheet"] ?? "iosaction"
         let url = URL(string: "http://www.ftchinese.com/interactive/\(audioId)#ccode=\(ccodeInActionSheet)")
         share.popupActionSheet(self as UIViewController, url: url)
+ */
     }
     
     @IBAction func download(_ sender: Any) {
@@ -170,10 +172,10 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     override func loadView() {
         super.loadView()
-        webPageTitle = webPageTitle0
-        webPageDescription = webPageDescription0
-        webPageImage = webPageImage0
-        webPageImageIcon = webPageImageIcon0
+        ShareHelper.sharedInstance.webPageTitle = ""
+        ShareHelper.sharedInstance.webPageDescription = ""
+        ShareHelper.sharedInstance.webPageImage = ""
+        ShareHelper.sharedInstance.webPageImageIcon = ""
         parseAudioMessage()
         prepareAudioPlay()
         enableBackGroundMode()
@@ -203,8 +205,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
-        let url = "\(webPageUrl)?hideheader=yes"
+        ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
+        let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes"
         if let url = URL(string:url) {
             let req = URLRequest(url:url)
             webView?.load(req)
@@ -220,16 +222,16 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             if let infoForShare = message.body as? String{
                 print(infoForShare)
                 let toArray = infoForShare.components(separatedBy: "|")
-                webPageDescription = toArray[2]
-                webPageImage = toArray[0]
-                webPageImageIcon = toArray[1]
-                print("get image icon from web page: \(webPageImageIcon)")
+                ShareHelper.sharedInstance.webPageDescription = toArray[2]
+                ShareHelper.sharedInstance.webPageImage = toArray[0]
+                ShareHelper.sharedInstance.webPageImageIcon = toArray[1]
+                print("get image icon from web page: \(ShareHelper.sharedInstance.webPageImageIcon)")
             }
         }
     }
     
     func removeAllAudios() {
-        FileManagerHelper().removeFiles(["mp3"])
+        Download.removeFiles(["mp3"])
         downloadButton.status = .remote
     }
     
@@ -256,7 +258,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     // FIXME: - This is very simlar to the same func in ViewController. Consider optimize the code.
     func openInView(_ urlString : String) {
-        webPageUrl = urlString
+        ShareHelper.sharedInstance.webPageUrl = urlString
         let segueId = "Audio To WKWebView"
         if #available(iOS 9.0, *) {
             // MARK: - Use Safariview for iOS 9 and above
@@ -296,7 +298,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 with: "$1",
                 options: .regularExpression
             )
-            webPageTitle = title
+            ShareHelper.sharedInstance.webPageTitle = title
         }
     }
     
@@ -544,7 +546,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
 
 
 
-*/
 
 // MARK: - Done: Share
 // MARK: - Done: Download Management: Download or Delete

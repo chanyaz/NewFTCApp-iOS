@@ -180,6 +180,24 @@
             </objects>
             <point key="canvasLocation" x="-2138" y="484"/>
         </scene>
+        <!--Audio Player-->
+        <scene sceneID="FwY-pt-Ryh">
+            <objects>
+                <viewController storyboardIdentifier="AudioPlayer" id="gY2-k9-D8v" customClass="AudioPlayer" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MdV-CM-Sqs"/>
+                        <viewControllerLayoutGuide type="bottom" id="IbY-Zs-YaT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="IgD-Pk-0Ef">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="POf-At-iiY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2909" y="1229"/>
+        </scene>
         <!--Play Speech-->
         <scene sceneID="b06-1O-kvA">
             <objects>

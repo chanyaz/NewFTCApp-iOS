@@ -19,11 +19,9 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     private var newEnglishVoice = "en-GB"
     private var currentChineseVoice = "zh-CN"
     private var newChineseVoice = "zh-CN"
-    
     @IBOutlet weak var englishVoicePicker: UIPickerView!
     @IBOutlet weak var chineseVoicePicker: UIPickerView!
     @IBOutlet weak var saveButton: UIButton!
-    
     @IBAction func saveChanges(_ sender: Any) {
         UserDefaults.standard.set(newEnglishVoice, forKey: speechDefaultVoice.englishVoiceKey)
         UserDefaults.standard.set(newChineseVoice, forKey: speechDefaultVoice.chineseVoiceKey)
@@ -44,12 +42,11 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     deinit {
         print ("deinit SpeechSettings successfully")
     }
-    
-    
+
     override func loadView() {
         super.loadView()
         // MARK: - Set up default voice preference
@@ -70,7 +67,7 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         self.navigationItem.title = "语音设置"
         initStyle()
     }
-    
+
     private func initStyle() {
         let defaultBackGroundColor = UIColor(hex: Color.Content.background)
         //let tabBackGround = UIColor(hex: Color.Tab.background)
@@ -79,17 +76,17 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         saveButton?.backgroundColor = buttonTint
         saveButton?.tintColor = UIColor.white
     }
-    
+
     private func getPickerRowByValue(_ voices: [String: String], value: String) -> Int {
         let voicesArray = Array(voices.values)
         let voiceIndex = voicesArray.index(of: value)
         return voiceIndex ?? 0
     }
-    
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView.restorationIdentifier == "English Accent Picker" {
             return englishVoiceData.count
@@ -97,7 +94,7 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             return chineseVoiceData.count
         }
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView.restorationIdentifier == "English Accent Picker" {
             return englishVoiceData[row]
@@ -105,7 +102,7 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             return chineseVoiceData[row]
         }
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         var language = "en"
         var accent = "en-GB"
@@ -118,7 +115,7 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
         changeVoice(language, voice: accent)
     }
-    
+
     func changeVoice (_ language: String, voice: String) {
         // MARK: - Update Parent View's Accent and Save
         if language == "en" {
@@ -127,5 +124,5 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             newChineseVoice = voice
         }
     }
-    
+
 }

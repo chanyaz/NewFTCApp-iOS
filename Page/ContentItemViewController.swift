@@ -90,45 +90,49 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     private func getDetailInfo() {
-        let id = dataObject?.id ?? ""
-        let urlString = APIs.get(id, type: "story")
-        //let urlString = "\(APIs.story)\(dataObject?.id ?? "")"
-        view.addSubview(activityIndicator)
-        activityIndicator.frame = view.bounds
-        activityIndicator.startAnimating()
-        contentAPI.fetchContentForUrl(urlString) {
-            [weak self] results, error in
-            DispatchQueue.main.async {
-                self?.activityIndicator.removeFromSuperview()
-                if let error = error {
-                    print("Error searching : \(error)")
-                    return
-                }
-                if let results = results {
-                    let item = results.fetchResults[0].items[0]
-                    let eBody = item.ebody
-                    // MARK: Whether eBody is empty string
-                    let type = item.type
-                    if type == "story" {
-                        if let eBody = eBody, eBody != "" {
-                            English.sharedInstance.has[id] = true
-                        } else {
-                            English.sharedInstance.has[id] = false
-                        }
-                        // MARK: Post a notification about English status change
-                        self?.postEnglishStatusChange()
+        if let id = dataObject?.id, dataObject?.type == "story" {
+            //MARK: if it is a story, get the API
+            let urlString = APIs.get(id, type: "story")
+            view.addSubview(activityIndicator)
+            activityIndicator.frame = view.bounds
+            activityIndicator.startAnimating()
+            contentAPI.fetchContentForUrl(urlString) {
+                [weak self] results, error in
+                DispatchQueue.main.async {
+                    self?.activityIndicator.removeFromSuperview()
+                    if let error = error {
+                        print("Error searching : \(error)")
+                        return
                     }
-                    self?.dataObject?.ebody = eBody
-                    self?.dataObject?.cbody = item.cbody
-                    self?.dataObject?.eheadline = item.eheadline
-                    self?.dataObject?.publishTime = item.publishTime
-                    self?.dataObject?.chineseByline = item.chineseByline
-                    self?.dataObject?.englishByline = item.englishByline
-                    self?.dataObject?.relatedStories = item.relatedStories
-                    self?.dataObject?.relatedVideos = item.relatedVideos
-                    self?.updatePageContent()
+                    if let results = results {
+                        let item = results.fetchResults[0].items[0]
+                        let eBody = item.ebody
+                        // MARK: Whether eBody is empty string
+                        let type = item.type
+                        if type == "story" {
+                            if let eBody = eBody, eBody != "" {
+                                English.sharedInstance.has[id] = true
+                            } else {
+                                English.sharedInstance.has[id] = false
+                            }
+                            // MARK: Post a notification about English status change
+                            self?.postEnglishStatusChange()
+                        }
+                        self?.dataObject?.ebody = eBody
+                        self?.dataObject?.cbody = item.cbody
+                        self?.dataObject?.eheadline = item.eheadline
+                        self?.dataObject?.publishTime = item.publishTime
+                        self?.dataObject?.chineseByline = item.chineseByline
+                        self?.dataObject?.englishByline = item.englishByline
+                        self?.dataObject?.relatedStories = item.relatedStories
+                        self?.dataObject?.relatedVideos = item.relatedVideos
+                        self?.updatePageContent()
+                    }
                 }
             }
+        } else {
+            // MARK: If it's not a story, no need to get the API
+            updatePageContent()
         }
     }
     
@@ -526,11 +530,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
         
         if let ebodysHTML = ebodysHTML, let cbodysHTML = cbodysHTML {
-        for i in 0..<contentLength {
-            let ebodyHTML = getHTML(ebodysHTML, for: i, in: "leftp")
-            let cbodyHTML = getHTML(cbodysHTML, for: i, in: "rightp")
-            combinedText += "\(ebodyHTML)\(cbodyHTML)<div class=clearfloat></div>"
-        }
+            for i in 0..<contentLength {
+                let ebodyHTML = getHTML(ebodysHTML, for: i, in: "leftp")
+                let cbodyHTML = getHTML(cbodysHTML, for: i, in: "rightp")
+                combinedText += "\(ebodyHTML)\(cbodyHTML)<div class=clearfloat></div>"
+            }
         }
         return combinedText
     }

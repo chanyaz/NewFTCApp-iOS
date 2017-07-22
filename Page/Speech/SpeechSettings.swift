@@ -73,12 +73,11 @@ class SpeechSettings: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
     private func initStyle() {
         let defaultBackGroundColor = UIColor(hex: Color.Content.background)
-        let tabBackGround = UIColor(hex: Color.Tab.background)
+        //let tabBackGround = UIColor(hex: Color.Tab.background)
         let buttonTint = UIColor(hex: Color.Button.tint)
         view?.backgroundColor = defaultBackGroundColor
         saveButton?.backgroundColor = buttonTint
         saveButton?.tintColor = UIColor.white
-        
     }
     
     private func getPickerRowByValue(_ voices: [String: String], value: String) -> Int {

@@ -90,8 +90,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     private func getDetailInfo() {
-        let urlString = "\(APIs.story)\(dataObject?.id ?? "")"
-        let id = dataObject?.id
+        let id = dataObject?.id ?? ""
+        let urlString = APIs.get(id, type: "story")
+        //let urlString = "\(APIs.story)\(dataObject?.id ?? "")"
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
@@ -108,7 +109,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     let eBody = item.ebody
                     // MARK: Whether eBody is empty string
                     let type = item.type
-                    if type == "story", let id = id {
+                    if type == "story" {
                         if let eBody = eBody, eBody != "" {
                             English.sharedInstance.has[id] = true
                         } else {

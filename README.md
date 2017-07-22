@@ -32,9 +32,8 @@ The aim of this project is to create a "mother of all news apps". With this proj
 
 ## Development Milestones
 Today's Tasks: 
-
-1. Article Text-To-Speech
-2. API as func rather than constant
+1. API as func rather than constant
+2. Audio
 
 
 Delegated Tasks (Check on Monday):
@@ -109,3 +108,4 @@ Delegated Tasks (Check on Monday):
 3. Home Page Font Size Review
 1. Article Share Button
 2. Article Switch to English and Billingual
+1. Article Text-To-Speech

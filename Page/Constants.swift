@@ -59,7 +59,16 @@ struct FontSize {
 
 struct APIs {
     // TODO: This should be a function rather than a constant, because other news organization might use different way to construct API
-    static let story = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/get_story_more_info/"
+    private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
+    static func get(_ id: String, type: String) -> String {
+        let actionType: String
+        switch type {
+            case "story": actionType = "get_story_more_info/"
+        default:
+            actionType = "get_story_more_info/"
+        }
+        return "\(base)\(actionType)\(id)"
+    }
 }
 
 struct Event {

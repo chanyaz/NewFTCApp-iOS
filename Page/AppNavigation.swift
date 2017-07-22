@@ -76,7 +76,7 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://danla2f5eudt1.cloudfront.net/channel/english.html?type=json",
+                 "api":"https://danla2f5eudt1.cloudfront.net/index.php/jsapi/publish/test",
                  "url":"http://www.ftchinese.com/channel/english.html",
                  "screenName":"english"
                 ],

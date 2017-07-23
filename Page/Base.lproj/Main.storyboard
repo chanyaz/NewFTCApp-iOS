@@ -601,8 +601,10 @@
                         <outlet property="playDuration" destination="XHu-UA-NBY" id="Anc-KS-OUn"/>
                         <outlet property="playStatus" destination="blY-Ma-aQj" id="Jvh-7f-e8u"/>
                         <outlet property="playTime" destination="5Oc-HK-ovk" id="Qok-kF-jCd"/>
+                        <outlet property="playerView" destination="YeH-ia-5vW" id="TTi-Pf-DDm"/>
                         <outlet property="progressSlider" destination="qcv-oT-wIb" id="kMr-zP-xbl"/>
                         <outlet property="toolBar" destination="f3g-8R-H03" id="8T4-0j-URX"/>
+                        <outlet property="visualEffectView" destination="UGt-dm-kTe" id="0Kj-Yz-lT0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R35-Eh-XrX" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -391,19 +391,17 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     private func prepareAudioPlay() {
-        
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
         audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://creatives.ftimg.net/album/")
-        
-        print(audioUrlString)
-        
         // MARK: - Remove toolBar's top border. This cannot be done in interface builder.
         toolBar.clipsToBounds = true
         
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
             var audioUrl = url
-            if let localAudioFile = download.checkDownloadedFileInDirectory(audioUrlString) {
+            //print ("checking the file in documents: \(audioUrlString)")
+            let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: "")
+            if let localAudioFile = download.checkDownloadedFileInDirectory(cleanAudioUrl) {
                 print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 downloadButton.status = .success
@@ -560,8 +558,9 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 let status = object.status
                 let id = object.id
                 // MARK: The Player Need to verify that the current file matches status change
-                print ("\(self.audioUrlString) =? \(id)")
-                if self.audioUrlString.contains(id) == true {
+                let cleanAudioUrl = self.audioUrlString.replacingOccurrences(of: "%20", with: "")
+                print ("Handle download Status Change: \(cleanAudioUrl) =? \(id)")
+                if cleanAudioUrl.contains(id) == true {
                     switch status {
                     case .downloading, .remote:
                         self.downloadButton.progress = 0
@@ -586,7 +585,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 let id = object.id
                 let percentage = object.percentage
                 // MARK: The Player Need to verify that the current file matches status change
-                if self.audioUrlString.contains(id) == true {
+                let cleanAudioUrl = self.audioUrlString.replacingOccurrences(of: "%20", with: "")
+                if cleanAudioUrl.contains(id) == true {
                     self.downloadButton.progress = percentage/100
                     self.downloadButton.status = .resumed
                 }

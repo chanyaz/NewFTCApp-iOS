@@ -58,26 +58,26 @@ class DownloadHelper: NSObject,URLSessionDownloadDelegate {
     
     //TODO: Deal with space in the file url
     public func startDownload(_ url: String) {
+        let urlString = url.replacingOccurrences(of: "%20", with: "")
         if let u = URL(string: url) {
             let fileName = u.lastPathComponent.replacingOccurrences(of: " ", with: "")
-            if checkDownloadedFileInDirectory(url) == nil {
+            if checkDownloadedFileInDirectory(urlString) == nil {
                 // MARK: - Download the file through the internet
                 print ("The file does not exist. Download from \(url)")
                 let backgroundSessionConfiguration = URLSessionConfiguration.background(withIdentifier: fileName)
                 let backgroundSession = URLSession(configuration: backgroundSessionConfiguration, delegate: self, delegateQueue: downloadQueue)
                 let request = URLRequest(url: u)
-                let urlString = url.replacingOccurrences(of: "%20", with: "")
-                downloadTasks[urlString] = backgroundSession.downloadTask(with: request)
-                downloadTasks[urlString]?.resume()
+                downloadTasks[fileName] = backgroundSession.downloadTask(with: request)
+                downloadTasks[fileName]?.resume()
                 postStatusChange(fileName, status: .downloading)
                 // TODO: track the action of download
             } else {
-                print ("file already exists. No need to download. ")
+                print ("file already exists as \(fileName). No need to download. ")
                 postStatusChange(fileName, status: .success)
             }
         } else {
             // TODO: the url is not the right format, do some error handling
-            print ("the file is already downloaded, update the ui to reflect that")
+            print ("the url is not the right format, do some error handling")
             postStatusChange("unknown", status: .remote)
         }
     }
@@ -116,9 +116,10 @@ class DownloadHelper: NSObject,URLSessionDownloadDelegate {
     }
     
     public func removeDownload(_ url: String) {
-        if let u = URL(string: url) {
+        let urlString = url.replacingOccurrences(of: "%20", with: "")
+        if let u = URL(string: urlString) {
             let fileName = u.lastPathComponent
-            if let localFileLocation = checkDownloadedFileInDirectory(url) {
+            if let localFileLocation = checkDownloadedFileInDirectory(urlString) {
                 // TODO: the file is already downloaded, delete it
                 removeDownloadedFile(localFileLocation)
                 postStatusChange(fileName, status: .remote)
@@ -127,17 +128,19 @@ class DownloadHelper: NSObject,URLSessionDownloadDelegate {
     }
     
     public func pauseDownload(_ url: String) {
-        if let u = URL(string: url) {
+        let urlString = url.replacingOccurrences(of: "%20", with: "")
+        if let u = URL(string: urlString) {
             let fileName = u.lastPathComponent
-            downloadTasks[url]?.suspend()
+            downloadTasks[fileName]?.suspend()
             postStatusChange(fileName, status: .paused)
         }
     }
     
     public func resumeDownload(_ url: String) {
-        if let u = URL(string: url) {
+        let urlString = url.replacingOccurrences(of: "%20", with: "")
+        if let u = URL(string: urlString) {
             let fileName = u.lastPathComponent
-            downloadTasks[url]?.resume()
+            downloadTasks[fileName]?.resume()
             postStatusChange(fileName, status: .resumed)
         }
     }

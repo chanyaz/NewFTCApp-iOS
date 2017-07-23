@@ -226,6 +226,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             let req = URLRequest(url:url)
             webView?.load(req)
         }
+        navigationItem.title = item?.headline
         initStyle()
     }
     

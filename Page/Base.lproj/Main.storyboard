@@ -461,7 +461,7 @@
         <!--Audio Player-->
         <scene sceneID="qZR-kJ-lfW">
             <objects>
-                <viewController storyboardIdentifier="AudioPlayer" id="dQw-7K-qie" customClass="AudioPlayer" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AudioPlayer" hidesBottomBarWhenPushed="YES" id="dQw-7K-qie" customClass="AudioPlayer" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9J7-PW-Dnb"/>
                         <viewControllerLayoutGuide type="bottom" id="DW0-Mw-Jwo"/>
@@ -513,7 +513,6 @@
                                     </constraints>
                                 </view>
                                 <color key="backgroundColor" red="0.14901960780000001" green="0.4549019608" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <color key="tintColor" red="0.14901960780000001" green="0.4549019608" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="1LI-eY-088"/>
                                     <constraint firstItem="blY-Ma-aQj" firstAttribute="centerX" secondItem="UGt-dm-kTe" secondAttribute="centerX" id="3LD-dc-EV1"/>
@@ -542,7 +541,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="1Xc-nj-nFS"/>
                                     <barButtonItem title="Item" style="plain" id="VTh-Yh-dFl">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="c1b-Uo-59M" customClass="UIButtonEnhanced" customModule="Page" customModuleProvider="target">
-                                            <rect key="frame" x="90" y="4" width="36" height="36"/>
+                                            <rect key="frame" x="82" y="4" width="36" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <state key="normal" image="DownloadButton"/>
@@ -614,8 +613,8 @@
     <resources>
         <image name="Academy" width="25" height="25"/>
         <image name="AcademyDim" width="25" height="25"/>
-        <image name="BigPlayButton" width="16" height="16"/>
-        <image name="DownloadButton" width="16" height="16"/>
+        <image name="BigPlayButton" width="48" height="48"/>
+        <image name="DownloadButton" width="36" height="36"/>
         <image name="English" width="25" height="25"/>
         <image name="EnglishDim" width="25" height="25"/>
         <image name="MyFT" width="25" height="25"/>

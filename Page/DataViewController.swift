@@ -109,7 +109,7 @@ class DataViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         if let screeName = dataObject["screenName"] {
             Track.screenView(screeName)
-        }        
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -145,7 +145,7 @@ class DataViewController: UICollectionViewController {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
@@ -394,8 +394,6 @@ class DataViewController: UICollectionViewController {
                 else {
                     reuseIdentifier = "ChannelCellRegular"
                 }
-                
-                
             } else {
                 if isCover {
                     reuseIdentifier = "CoverCell"
@@ -450,21 +448,40 @@ class DataViewController: UICollectionViewController {
     // MARK: - Handle user tapping on a cell
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
-        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-            var pageData1 = [ContentItem]()
-            var pageData2 = [ContentItem]()
-            for (sectionIndex, section) in fetches.fetchResults.enumerated() {
-                for (itemIndex, item) in section.items.enumerated() {
-                    if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
-                        pageData1.append(item)
-                    } else {
-                        pageData2.append(item)
+        let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
+        // MARK: if it is an audio file, push the audio view controller
+        if let audioFileUrl = selectedItem.audioFileUrl {
+            print ("this is an audio")
+            
+            //            let body = AudioContent.sharedInstance.body
+            //            if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"]
+            if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
+                AudioContent.sharedInstance.body["title"] = selectedItem.headline
+                AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(selectedItem.id)"
+                audioPlayer.item = selectedItem
+                audioPlayer.themeColor = themeColor
+                navigationController?.pushViewController(audioPlayer, animated: true)
+            }
+            
+        } else {
+            //MARK: if it is a story, video or other types of HTML based content, push the detailViewController
+            if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+                var pageData1 = [ContentItem]()
+                var pageData2 = [ContentItem]()
+                for (sectionIndex, section) in fetches.fetchResults.enumerated() {
+                    for (itemIndex, item) in section.items.enumerated() {
+                        if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
+                            pageData1.append(item)
+                        } else {
+                            pageData2.append(item)
+                        }
                     }
                 }
+                let pageData = pageData1 + pageData2
+                detailViewController.contentPageData = pageData
+                navigationController?.pushViewController(detailViewController, animated: true)
             }
-            let pageData = pageData1 + pageData2
-            detailViewController.contentPageData = pageData
-            navigationController?.pushViewController(detailViewController, animated: true)
         }
         return true
     }

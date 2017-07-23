@@ -33,6 +33,9 @@ The aim of this project is to create a "mother of all news apps". With this proj
 ## Development Milestones
 Today's Tasks: 
 2. Audio: Replicate the story board; Get a test page; Run
+Advertisement Popped Out
+Close Button Need to Pop
+Some audios are not playable
 
 
 

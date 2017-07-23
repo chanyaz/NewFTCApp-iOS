@@ -32,6 +32,9 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = DownloadHelper(directory: "audio")
     
+    var item: ContentItem?
+    var themeColor: String?
+    
     @IBOutlet weak var containerView: UIWebView!
     @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var buttonPlayAndPause: UIBarButtonItem!
@@ -43,7 +46,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     @IBAction func ButtonPlayPause(_ sender: UIBarButtonItem) {
         if let player = player {
-            if (player.rate != 0) && (player.error == nil) {
+            if player.rate != 0 && player.error == nil {
                 player.pause()
                 buttonPlayAndPause.image = UIImage(named:"BigPlayButton")
             } else {
@@ -85,12 +88,19 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
     }
     
+    
+
+    
     @IBAction func StopAudio(_ sender: UIBarButtonItem) {
         if let player = player {
             player.pause()
             self.player = nil
         }
-        self.dismiss(animated: true, completion: nil)
+        if let navController = self.navigationController {
+            navController.popViewController(animated: true)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
@@ -101,11 +111,14 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     @IBAction func share(_ sender: UIBarButtonItem) {
         /*
-        let share = ShareHelper()
-        let ccodeInActionSheet = ccode["actionsheet"] ?? "iosaction"
-        let url = URL(string: "http://www.ftchinese.com/interactive/\(audioId)#ccode=\(ccodeInActionSheet)")
-        share.popupActionSheet(self as UIViewController, url: url)
- */
+         let share = ShareHelper()
+         let ccodeInActionSheet = ccode["actionsheet"] ?? "iosaction"
+         let url = URL(string: "http://www.ftchinese.com/interactive/\(audioId)#ccode=\(ccodeInActionSheet)")
+         share.popupActionSheet(self as UIViewController, url: url)
+         */
+        if let item = item {
+            self.launchActionSheet(for: item)
+        }
     }
     
     @IBAction func download(_ sender: Any) {
@@ -131,7 +144,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     deinit {
         removePlayerItemObservers()
-
+        
         // MARK: - Remove Observe download status change
         NotificationCenter.default.removeObserver(
             self,
@@ -154,7 +167,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             object: nil
         )
         
-
+        
         
         NotificationCenter.default.removeObserver(self)
         
@@ -206,10 +219,30 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
-        let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes"
+        let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
         if let url = URL(string:url) {
             let req = URLRequest(url:url)
             webView?.load(req)
+        }
+        initStyle()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        if self.isMovingFromParentViewController {
+            if let player = player {
+                player.pause()
+                self.player = nil
+            }
+        } else {
+            print ("Audio is not being popped")
+        }
+    }
+    
+    private func initStyle() {
+        if let themeColor = themeColor {
+            let theme = UIColor(hex: themeColor)
+            print ("current theme color is \(theme)")
         }
     }
     
@@ -344,6 +377,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
         audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://creatives.ftimg.net/album/")
+        
+        print(audioUrlString)
         
         // MARK: - Remove toolBar's top border. This cannot be done in interface builder.
         toolBar.clipsToBounds = true

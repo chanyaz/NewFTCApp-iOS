@@ -56,19 +56,20 @@ class DownloadHelper: NSObject,URLSessionDownloadDelegate {
 //        }
 //    }
     
+    //TODO: Deal with space in the file url
     public func startDownload(_ url: String) {
         if let u = URL(string: url) {
-            let fileName = u.lastPathComponent
+            let fileName = u.lastPathComponent.replacingOccurrences(of: " ", with: "")
             if checkDownloadedFileInDirectory(url) == nil {
                 // MARK: - Download the file through the internet
                 print ("The file does not exist. Download from \(url)")
                 let backgroundSessionConfiguration = URLSessionConfiguration.background(withIdentifier: fileName)
                 let backgroundSession = URLSession(configuration: backgroundSessionConfiguration, delegate: self, delegateQueue: downloadQueue)
                 let request = URLRequest(url: u)
-                downloadTasks[url] = backgroundSession.downloadTask(with: request)
-                downloadTasks[url]?.resume()
+                let urlString = url.replacingOccurrences(of: "%20", with: "")
+                downloadTasks[urlString] = backgroundSession.downloadTask(with: request)
+                downloadTasks[urlString]?.resume()
                 postStatusChange(fileName, status: .downloading)
-
                 // TODO: track the action of download
             } else {
                 print ("file already exists. No need to download. ")

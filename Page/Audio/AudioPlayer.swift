@@ -257,6 +257,9 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             visualEffectView.backgroundColor = theme
             playerView.backgroundColor = theme
             toolBar.backgroundColor = theme
+            toolBar.barTintColor = theme
+            //toolBar.tintColor = theme
+            //toolBar.isHidden = true
         }
     }
     
@@ -339,7 +342,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
             print (title)
             audioTitle = title
-            audioUrlString = audioFileUrl
+            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
             audioId = interactiveUrl.replacingOccurrences(
                 of: "^.*interactive/([0-9]+).*$",
                 with: "$1",

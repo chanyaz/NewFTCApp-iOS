@@ -336,8 +336,8 @@
 		600BD6AB1F21A65E0077C104 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				600BD6A31F21A6560077C104 /* AudioHelper.swift */,
 				600BD6A41F21A6560077C104 /* AudioPlayer.swift */,
+				600BD6A31F21A6560077C104 /* AudioHelper.swift */,
 				600BD6A51F21A6560077C104 /* DownloadHelper.swift */,
 				600BD6A61F21A6570077C104 /* NowPlayingCenter.swift */,
 			);

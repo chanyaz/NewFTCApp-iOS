@@ -32,11 +32,9 @@ The aim of this project is to create a "mother of all news apps". With this proj
 
 ## Development Milestones
 Today's Tasks: 
-2. Audio: Replicate the story board; Get a test page; Run
-Advertisement Popped Out
-Close Button Need to Pop
-Some audios are not playable
-
+1. Cache the current page apis
+2. Cache stories
+3. Add Tracker to Detail Page
 
 
 Delegated Tasks (Check on Monday):
@@ -113,3 +111,7 @@ Delegated Tasks (Check on Monday):
 2. Article Switch to English and Billingual
 1. Article Text-To-Speech
 1. API as func rather than constant
+2. Audio: Replicate the story board; Get a test page; Run
+Advertisement Popped Out
+Close Button Need to Pop
+Some audios are not playable

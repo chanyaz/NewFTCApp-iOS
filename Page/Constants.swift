@@ -56,18 +56,34 @@ struct FontSize {
     static let bodyExtraSize: CGFloat = 3.0
 }
 
-
+// MARK: Different organization might use different way to construct API and urls
 struct APIs {
-    // TODO: This should be a function rather than a constant, because other news organization might use different way to construct API
     private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
     static func get(_ id: String, type: String) -> String {
         let actionType: String
         switch type {
-            case "story": actionType = "get_story_more_info/"
+        case "story": actionType = "get_story_more_info/"
         default:
             actionType = "get_story_more_info/"
         }
-        return "\(base)\(actionType)\(id)"
+        let urlString = "\(base)\(actionType)\(id)"
+        //print (urlString)
+        return urlString
+    }
+    
+    static func getUrl(_ id: String, type: String) -> String {
+        let urlString: String
+        // MARK: Use different domains for different types of content
+        switch type {
+        // MARK: If there are http resources that you rely on in your page, don't use https as the url base
+        case "video": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&001"
+        case "interactive": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&001"
+        case "story": urlString = "http://www.ftchinese.com/story/\(id)?full=y"
+        default:
+            urlString = "http://danla2f5eudt1.cloudfront.net/"
+        }
+        print ("open in web view: \(urlString)")
+        return urlString
     }
 }
 
@@ -94,13 +110,12 @@ struct WeChat {
 }
 
 struct Share {
-    static let base = "https://m.ftimg.net/"
+    static let base = "http://www.ftchinese.com/"
     static let shareIconName = "ShareIcon.jpg"
     struct CampaignCode {
         static let wechat = "2G178002"
         static let actionsheet = "iosaction"
     }
-    
 }
 
 struct Push {

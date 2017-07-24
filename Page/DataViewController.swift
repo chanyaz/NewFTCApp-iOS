@@ -62,31 +62,28 @@ class DataViewController: UICollectionViewController {
                     return
                 }
                 if let results = results {
-                    // MARK: - Insert Ads into the fetch results
-                    let layoutWay:String
-                    if horizontalClass == .regular && verticalCass == .regular {
-                        layoutWay="ipadhome"
-                    }else{
-                        layoutWay="home"
-                    }
-                    
-                    let resultsWithAds = ContentFetchResults(
-                        apiUrl: results.apiUrl,
-                        fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)
-                    )
-                    self?.fetches = resultsWithAds
-                    
-                    
-                    //                    self?.fetches = results
-                    
-                    //                    print("fetches : \(resultsWithAds)")
-                    
-                    self?.collectionView?.reloadData()
+                    self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
                 }
             }
         }
     }
     
+    private func updateUI(with results: ContentFetchResults, horizontalClass: UIUserInterfaceSizeClass, verticalCass: UIUserInterfaceSizeClass) {
+        // MARK: - Insert Ads into the fetch results
+        let layoutWay:String
+        if horizontalClass == .regular && verticalCass == .regular {
+            layoutWay="ipadhome"
+        }else{
+            layoutWay="home"
+        }
+        
+        let resultsWithAds = ContentFetchResults(
+            apiUrl: results.apiUrl,
+            fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)
+        )
+        self.fetches = resultsWithAds        
+        self.collectionView?.reloadData()
+    }
     
     
     private func requestNewContent() {

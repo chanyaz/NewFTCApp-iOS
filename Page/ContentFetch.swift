@@ -59,7 +59,6 @@ class ContentFetch {
                 OperationQueue.main.addOperation({
                     completion(ContentFetchResults(apiUrl: urlString, fetchResults: contentSections), nil)
                 })
-                
             } catch _ {
                 completion(nil, nil)
                 return
@@ -156,7 +155,7 @@ class ContentFetch {
         var itemCollection = [ContentItem]()
         for (row, item) in items.enumerated() {
             let id = item["id"] as? String ?? ""
-            // MARK: if API return a "image" key value, use it directly. If not, check for the "story_pic" key. 
+            // MARK: if API return a "image" key value, use it directly. If not, check for the "story_pic" key.
             var image = item["image"] as? String ?? ""
             if image == "" {
                 if let storyPic = item["story_pic"] as? [String: String] {
@@ -204,7 +203,7 @@ class ContentFetch {
     private func formatFTCStoryJSON(_ item: [String: Any]) -> [ContentSection] {
         var contentSections = [ContentSection]()
         var itemCollection = [ContentItem]()
-
+        
         // MARK: Get publish time of the content
         let publishTimeString = item["last_publish_time"] as? String ?? "0"
         let publishTime = TimeInterval(publishTimeString) ?? 0
@@ -223,7 +222,7 @@ class ContentFetch {
             section: 0,
             row:0
         )
-
+        
         oneItem.cbody = item["cbody"] as? String
         oneItem.ebody = item["ebody"] as? String
         oneItem.eheadline = item["eheadline"] as? String
@@ -232,7 +231,7 @@ class ContentFetch {
         oneItem.publishTime = publishTime.unixToTimeStamp()
         oneItem.relatedStories = item["relative_story"] as? [[String: Any]]
         oneItem.relatedVideos = item["relative_vstory"] as? [[String: Any]]
-
+        
         // MARK: get story bylines
         let cbyline_description = item["cbyline_description"] as? String ?? ""
         let cauthor = item["cauthor"] as? String ?? ""

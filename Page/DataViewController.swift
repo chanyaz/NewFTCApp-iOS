@@ -63,10 +63,13 @@ class DataViewController: UICollectionViewController {
                 }
                 if let results = results {
                     self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+                    print ("should save the url \(urlString) as a file in cache")
+                    //Download.saveFile(results, filename: urlString, to: .cachesDirectory)
                 }
             }
         }
     }
+    
     
     private func updateUI(with results: ContentFetchResults, horizontalClass: UIUserInterfaceSizeClass, verticalCass: UIUserInterfaceSizeClass) {
         // MARK: - Insert Ads into the fetch results

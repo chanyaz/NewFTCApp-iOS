@@ -245,22 +245,10 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     private func initStyle() {
         if let themeColor = themeColor {
             let theme = UIColor(hex: themeColor)
-            print ("current theme color is \(theme)")
-//            @IBOutlet weak var containerView: UIWebView!
-//            @IBOutlet weak var toolBar: UIToolbar!
-//            @IBOutlet weak var buttonPlayAndPause: UIBarButtonItem!
-//            @IBOutlet weak var progressSlider: UISlider!
-//            @IBOutlet weak var downloadButton: UIButtonEnhanced!
-//            @IBOutlet weak var playTime: UILabel!
-//            @IBOutlet weak var playDuration: UILabel!
-//            @IBOutlet weak var playStatus: UILabel!
-//            @IBOutlet weak var visualEffectView: UIVisualEffectView!
             visualEffectView.backgroundColor = theme
             playerView.backgroundColor = theme
             toolBar.backgroundColor = theme
             toolBar.barTintColor = theme
-            //toolBar.tintColor = theme
-            //toolBar.isHidden = true
         }
     }
     
@@ -393,7 +381,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     private func prepareAudioPlay() {
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
-        audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://creatives.ftimg.net/album/")
+        audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
         // MARK: - Remove toolBar's top border. This cannot be done in interface builder.
         toolBar.clipsToBounds = true
         

@@ -32,14 +32,15 @@ class AdView: UIView, SFSafariViewControllerDelegate {
             self.adid = adid
             if let url = AdParser.getAdUrlFromDolphin(adid) {
                 clean()
-                print ("Will Request Ad From \(url)")
+                print ("Request Ad From \(url)")
                 Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                     DispatchQueue.main.async { () -> Void in
                         guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
-                            print ("Fail to Request Ad From \(url)")
+                            print ("Fail: Request Ad From \(url)")
                             self?.handleAdModel()
                             return
                         }
+                        print ("Success: Request Ad From \(url)")
                         let adModel = AdParser.parseAdCode(adCode)
                         self?.adModel = adModel
                         self?.handleAdModel()

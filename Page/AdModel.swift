@@ -24,7 +24,7 @@ struct AdParser {
     public static func parseAdCode(_ adCode: String) -> AdModel {
         let video = ""
         
-        //print ("ad code is now: \(adCode)")
+        print ("ad code is now: \(adCode)")
         // MARK: Extract Images
         let imagePatterns = [
             "'imageUrl': '(.+)'",
@@ -73,7 +73,7 @@ struct AdParser {
     }
     
     public static func getAdUrlFromDolphin(_ adid: String) -> URL? {
-        let base = "http://dolphin4.ftimg.net/s?z=ft&slot=676544&_sex=101&_cs=1&_csp=1&_dc=2&_mm=2&_sz=2&_am=2&_ut=member&_fallback=0" //10000001
+        let base = "https://dolphin3.ftimg.net/s?z=ft&slot=676544&_sex=101&_cs=1&_csp=1&_dc=2&_mm=2&_sz=2&_am=2&_ut=member&_fallback=0" //10000001
         let urlString =  "\(base)&c=\(adid)"
         if let url = URL(string: urlString) {
             return url

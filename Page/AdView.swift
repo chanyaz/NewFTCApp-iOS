@@ -36,6 +36,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                 Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                     DispatchQueue.main.async { () -> Void in
                         guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
+                            print ("Fail to Request Ad From \(url)")
                             self?.handleAdModel()
                             return
                         }

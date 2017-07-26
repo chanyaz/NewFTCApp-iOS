@@ -52,7 +52,20 @@ class DataViewController: UICollectionViewController {
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
-        contentAPI.fetchContentForUrl(urlString) {
+        // TODO: Check the local file
+        if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
+            print ("found \(urlString) in caches directory)")
+            if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
+            {
+                let contentSections = contentAPI.formatJSON(resultsDictionary)
+                let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
+                updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+                print ("update UI from local file with \(urlString)")
+            }
+        }
+        
+        // MARK: Get the updated API from Internet
+        contentAPI.fetchContentForUrl(urlString, fetchUpdate: .Always) {
             [weak self] results, error in
             DispatchQueue.main.async {
                 self?.activityIndicator.removeFromSuperview()
@@ -62,7 +75,9 @@ class DataViewController: UICollectionViewController {
                     return
                 }
                 if let results = results {
+                    // MARK: When updating UI from the internet, the viewable ad will be updated too, which makes sense
                     self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+                    print ("update UI from the internet with \(urlString)")
                 }
             }
         }
@@ -82,7 +97,7 @@ class DataViewController: UICollectionViewController {
             apiUrl: results.apiUrl,
             fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)
         )
-        self.fetches = resultsWithAds        
+        self.fetches = resultsWithAds
         self.collectionView?.reloadData()
     }
     

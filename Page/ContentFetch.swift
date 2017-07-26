@@ -26,7 +26,7 @@ class ContentFetch {
     
     let processingQueue = OperationQueue()
     
-    func fetchContentForUrl(_ urlString: String, completion : @escaping (_ results: ContentFetchResults?, _ error : NSError?) -> Void){
+    func fetchContentForUrl(_ urlString: String, fetchUpdate: FetchUpdateFromInternet, completion : @escaping (_ results: ContentFetchResults?, _ error : NSError?) -> Void){
         guard let fetchUrl = contentSearchURL(urlString) else {
             let APIError = NSError(domain: "API Server", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey:"Unknown API response"])
             completion(nil, APIError)
@@ -257,4 +257,11 @@ class ContentFetch {
     }
     
     
+}
+
+// MARK: When there's local copy of the data, should the app continue to fetch an updated version from the internet?
+enum FetchUpdateFromInternet {
+    case Always
+    case OnlyOnWifi
+    case No
 }

@@ -96,7 +96,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             view.addSubview(activityIndicator)
             activityIndicator.frame = view.bounds
             activityIndicator.startAnimating()
-            contentAPI.fetchContentForUrl(urlString) {
+            contentAPI.fetchContentForUrl(urlString, fetchUpdate: .OnlyOnWifi) {
                 [weak self] results, error in
                 DispatchQueue.main.async {
                     self?.activityIndicator.removeFromSuperview()

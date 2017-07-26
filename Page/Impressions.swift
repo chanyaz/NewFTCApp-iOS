@@ -102,6 +102,7 @@ struct Impressions {
                  deviceType: deviceType,
                  impressionId: impressionId,
                  action: "Request")
+            print ("sent impression of \(adName): \(impressionUrlString)")
         }
     }
     

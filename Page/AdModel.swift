@@ -58,9 +58,9 @@ struct AdParser {
         }
         
         // MARK: Test Impressions
-        //        impressions = [
-        //            Impression(urlString: "https://www.ft.com/", adName: "Some Ad Name")
-        //        ]
+//                impressions = [
+//                    Impression(urlString: "https://www.ft.com/", adName: "Some Ad Name")
+//                ]
         
         let adModel = AdModel(
             imageString: image,

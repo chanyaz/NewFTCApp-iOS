@@ -426,6 +426,7 @@
 				605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */,
 				605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */,
 				605750F81F1499F000552DAC /* UIImage+Attachments.swift */,
+				600BD6AB1F21A65E0077C104 /* Audio */,
 			);
 			name = Page;
 			sourceTree = "<group>";
@@ -557,7 +558,6 @@
 			children = (
 				60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */,
 				60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */,
-				600BD6AB1F21A65E0077C104 /* Audio */,
 				50057FC91EE9752D0092180A /* Layouts */,
 				6037DD3E1F2878D7007DB2FF /* Helpers */,
 				60D4B9021EE7D95800A4506D /* Customizations */,

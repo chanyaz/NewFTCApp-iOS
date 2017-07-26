@@ -32,10 +32,9 @@ The aim of this project is to create a "mother of all news apps". With this proj
 
 ## Development Milestones
 Today's Tasks: 
-1. Cache the current page apis
-2. Cache stories
-3. Add Tracker to Detail Page
-4. Update MPU ad by removing background color when displaying actual ad image
+Bug: Can't remember preference
+track "listen to story" end event
+What to do if there are still too many files after cleanning? 
 
 Delegated Tasks (Check on Monday):
 
@@ -115,3 +114,9 @@ Delegated Tasks (Check on Monday):
 Advertisement Popped Out
 Close Button Need to Pop
 Some audios are not playable
+1. Cache the current page apis
+2. Cache stories
+prefetch stories
+3. Add Tracker to Detail Page
+4. Update MPU ad by removing background color when displaying actual ad image
+Track "list to story" event

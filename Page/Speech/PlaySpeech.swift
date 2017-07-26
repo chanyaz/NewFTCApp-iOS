@@ -44,6 +44,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     private var audioLanguage = ""
     private var eventCategory = ""
     private var audioTitle = "FT中文网"
+    private var audioId = ""
     private lazy var previouseRange: NSRange? = nil
     let speechDefaultVoice = SpeechDefaultVoice()
     
@@ -85,7 +86,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     }
     
     @IBOutlet weak var toolbar: UIToolbar!
-
+    
     @IBOutlet weak var bodytext: UITextView!
     
     deinit {
@@ -98,16 +99,6 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
         mySpeechSynthesizer?.stopSpeaking(at: .word)
         mySpeechSynthesizer = nil
         print ("deinit PlaySpeech successfully")
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        if self.isMovingFromParentViewController {
-            print ("Audio is being popped")
-            mySpeechSynthesizer?.stopSpeaking(at: .word)
-        } else {
-            print ("Audio is not being popped")
-        }
     }
     
     override func loadView() {
@@ -127,8 +118,8 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     override func viewDidLoad() {
         super.viewDidLoad()
         initStyle()
-//        let settingsIcon = UIImage(named: "SettingsButton")
-//        let settingsButton = UIBarButtonItem(image: settingsIcon, style: .plain, target: self, action: #selector(setting))
+        //        let settingsIcon = UIImage(named: "SettingsButton")
+        //        let settingsButton = UIBarButtonItem(image: settingsIcon, style: .plain, target: self, action: #selector(setting))
         let settingsButton = UIBarButtonItem(title: "设置", style: .plain, target: self, action: #selector(setting))
         self.navigationItem.rightBarButtonItem = settingsButton
         
@@ -137,7 +128,27 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
         let backItem = UIBarButtonItem()
         backItem.title = title
         navigationItem.backBarButtonItem = backItem
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let screenName = "/\(DeviceInfo.checkDeviceType())/SpeechToText/\(audioId)/\(audioLanguage)/\(audioTitle)"
+        Track.screenView(screenName)
+        let eventCategory = "Listen To Story"
+        let body = SpeechContent.sharedInstance.body
+        if let language = body["language"], let title = body["title"] {
+            Track.event(category: eventCategory, action: "Start", label: "\(language): \(title.replacingOccurrences(of: "'", with: ""))")
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        if self.isMovingFromParentViewController {
+            print ("Audio is being popped")
+            mySpeechSynthesizer?.stopSpeaking(at: .word)
+        } else {
+            print ("Audio is not being popped")
+        }
     }
     
     private func initStyle() {
@@ -149,7 +160,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
         toolbar?.backgroundColor = tabBackGround
         toolbar?.barTintColor = tabBackGround
         toolbar?.isTranslucent = false
-
+        
         // MARK: Set style for the bottom buttons
         buttonPlayPause?.tintColor = buttonTint
     }
@@ -167,12 +178,13 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     
     private func parseAudioMessage() {
         let body = SpeechContent.sharedInstance.body
-        if let language = body["language"], let text = body["text"], let title = body["title"], let eventCategory = body["eventCategory"] {
+        if let language = body["language"], let text = body["text"], let id = body["id"], let title = body["title"], let eventCategory = body["eventCategory"] {
             let speechLanguage = speechDefaultVoice.getVoiceByLanguage(language)
             self.audioLanguage = speechLanguage
             navigationItem.title = "当前语音：\(SpeechDefaultVoice.getLanguageName(speechLanguage))"
             self.eventCategory = eventCategory
             self.audioTitle = title
+            self.audioId = id
             let titleParagraphStyle = NSMutableParagraphStyle()
             titleParagraphStyle.paragraphSpacing = 20
             let titleAttributes = [
@@ -246,7 +258,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
         
         // FIXME: This line cause the view not being able to be deinit
         mySpeechSynthesizer?.speak(mySpeechUtterance)
-
+        
         
         //MARK: - Update the Lock Screen Image
         NowPlayingCenter().updateInfo(
@@ -257,7 +269,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
             mediaLength: 0,
             PlaybackRate: 1.0
         )
-
+        
     }
     
     private func enableBackGroundMode() {

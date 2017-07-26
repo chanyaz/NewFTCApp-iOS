@@ -14,6 +14,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     var dataObject: ContentItem?
     var pageTitle: String = ""
     var themeColor: String?
+    var currentLanguageIndex: Int?
     private var detailDisplayed = false
     fileprivate lazy var webView: WKWebView? = nil
     fileprivate var isWebViewAdded = false
@@ -40,12 +41,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getDetailInfo()
-        initStyle()
-        
-        navigationController?.delegate = self
-        //navigationItem.title = "another test from oliver"
-        
         // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
         NotificationCenter.default.addObserver(
             self,
@@ -53,6 +48,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             name: Notification.Name(rawValue: Event.languagePreferenceChanged),
             object: nil
         )
+        getDetailInfo()
+        initStyle()
+        
+        navigationController?.delegate = self
+        //navigationItem.title = "another test from oliver"
+        
+ 
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +63,17 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             let screenName = "/\(DeviceInfo.checkDeviceType())/\(type)/\(id)/\(headline)"
             Track.screenView(screenName)
         }
+        // FIXME: The delay is a hack, otherwise the notification will not be received if the content is loaded from cache
+        Timer.scheduledTimer(
+            timeInterval: 0.00001,
+            target: self,
+            selector: #selector(delayedPostLanguageChoice),
+            userInfo: nil,
+            repeats: false
+        )
     }
+    
+
     
     
     deinit {
@@ -161,7 +173,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 }
                 // MARK: Post a notification about English status change
                 postEnglishStatusChange()
-                //print ("post english status change of \(English.sharedInstance.has[id])")
+                //print ("post english status change of \(String(describing: English.sharedInstance.has[id]))")
             }
             dataObject?.ebody = eBody
             dataObject?.cbody = item.cbody
@@ -179,12 +191,21 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let object = ""
         let name = Notification.Name(rawValue: Event.englishStatusChange)
         NotificationCenter.default.post(name: name, object: object)
+        print ("Language: Post English Status Change")
     }
     
     private func postLanguageChoice(_ languageIndex: Int) {
         let object = languageIndex
         let name = Notification.Name(rawValue: Event.languageSelected)
         NotificationCenter.default.post(name: name, object: object)
+        print ("Language: language choice posted as \(languageIndex)")
+        currentLanguageIndex = languageIndex
+    }
+    
+    public func delayedPostLanguageChoice() {
+        if let currentLanguageIndex = currentLanguageIndex {
+            postLanguageChoice(currentLanguageIndex)
+        }
     }
     
     private func initStyle() {
@@ -514,6 +535,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             languageChoice = 0
         }
         postLanguageChoice(languageChoice)
+        //print ("language choice posted as \(languageChoice)")
         let bodyWithMPU = body.replacingOccurrences(
             of: "[\r\t\n]",
             with: "",

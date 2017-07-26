@@ -42,6 +42,10 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     var _modelController: DetailModelController? = nil
     
+    override func loadView() {
+        <#code#>
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: Delegate Step 4: Set the delegate to self
@@ -142,7 +146,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                     "title": title,
                     "language": language,
                     "eventCategory": eventCategory,
-                    "text": text
+                    "text": text,
+                    "id": dataObject.id
                 ]
                 SpeechContent.sharedInstance.body = body
                 navigationController?.pushViewController(playSpeechViewController, animated: true)
@@ -156,10 +161,10 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     private var actualLanguageIndex = 0
     
     public func updateLanguageSwitch(_ notification: Notification) {
-        print ("update language switch to \(notification.object ?? 0)")
+        print ("Language: update language switch to \(notification.object ?? 0)")
         if let actualIndex = notification.object as? Int, let displayedIndex = languages?.selectedSegmentIndex {
             if actualIndex != 0 && actualIndex != displayedIndex {
-                print ("should set languages to \(actualIndex)")
+                print ("Language: should set languages to \(actualIndex)")
                 languages?.selectedSegmentIndex = actualIndex
             }
             actualLanguageIndex = actualIndex
@@ -185,10 +190,10 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         let type = contentPageData[currentPageIndex].type
         //print ("English shared instance is now: \(English.sharedInstance)")
         if type == "story", let hasEnglish = English.sharedInstance.has[id], hasEnglish == true {
-            print ("current view should display English Switch")
+            print ("Language: current view should display English Switch")
             languages?.isHidden = false
         } else {
-            print ("current view should hide English Switch")
+            print ("Language: current view should hide English Switch")
             languages?.isHidden = true
         }
     }

@@ -91,7 +91,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     
-
+    
     
     @IBAction func StopAudio(_ sender: UIBarButtonItem) {
         if let player = player {
@@ -228,6 +228,12 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
         navigationItem.title = item?.headline
         initStyle()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
+        Track.screenView(screenName)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -96,42 +96,72 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             view.addSubview(activityIndicator)
             activityIndicator.frame = view.bounds
             activityIndicator.startAnimating()
+            
+            // MARK: Check the local file
+            if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
+                print ("found \(urlString) in caches directory. ")
+                if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
+                {
+                    let contentSections = contentAPI.formatJSON(resultsDictionary)
+                    let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
+                    updateUI(of: id, with: results)
+                    print ("update content UI from local file with \(urlString), no need to connect to internet again")
+                    return
+                }
+            }
+            
             contentAPI.fetchContentForUrl(urlString, fetchUpdate: .OnlyOnWifi) {
                 [weak self] results, error in
                 DispatchQueue.main.async {
                     self?.activityIndicator.removeFromSuperview()
                     if let error = error {
                         print("Error searching : \(error)")
+                        //TODO: When something is wrong, check the user's internet connection and display a friendly message
+                        let statusType = IJReachability().connectedToNetworkOfType()
+                        let errorMessageString: String
+                        if statusType == .notConnected {
+                            errorMessageString = ErrorMessages.NoInternet.gb
+                        } else {
+                            errorMessageString = ErrorMessages.Unknown.gb
+                        }
+                        self?.dataObject?.cbody = errorMessageString
+                        self?.updatePageContent()
                         return
                     }
-                    if let results = results {
-                        let item = results.fetchResults[0].items[0]
-                        let eBody = item.ebody
-                        // MARK: Whether eBody is empty string
-                        let type = item.type
-                        if type == "story" {
-                            if let eBody = eBody, eBody != "" {
-                                English.sharedInstance.has[id] = true
-                            } else {
-                                English.sharedInstance.has[id] = false
-                            }
-                            // MARK: Post a notification about English status change
-                            self?.postEnglishStatusChange()
-                        }
-                        self?.dataObject?.ebody = eBody
-                        self?.dataObject?.cbody = item.cbody
-                        self?.dataObject?.eheadline = item.eheadline
-                        self?.dataObject?.publishTime = item.publishTime
-                        self?.dataObject?.chineseByline = item.chineseByline
-                        self?.dataObject?.englishByline = item.englishByline
-                        self?.dataObject?.relatedStories = item.relatedStories
-                        self?.dataObject?.relatedVideos = item.relatedVideos
-                        self?.updatePageContent()
-                    }
+                    self?.updateUI(of: id, with: results)
+                    print ("update content UI from internet with \(urlString)")
                 }
             }
         } else {
             // MARK: If it's not a story, no need to get the API
+            updatePageContent()
+        }
+    }
+    
+    private func updateUI(of id: String, with results: ContentFetchResults?) {
+        if let results = results {
+            let item = results.fetchResults[0].items[0]
+            let eBody = item.ebody
+            // MARK: Whether eBody is empty string
+            let type = item.type
+            if type == "story" {
+                if let eBody = eBody, eBody != "" {
+                    English.sharedInstance.has[id] = true
+                } else {
+                    English.sharedInstance.has[id] = false
+                }
+                // MARK: Post a notification about English status change
+                postEnglishStatusChange()
+                //print ("post english status change of \(English.sharedInstance.has[id])")
+            }
+            dataObject?.ebody = eBody
+            dataObject?.cbody = item.cbody
+            dataObject?.eheadline = item.eheadline
+            dataObject?.publishTime = item.publishTime
+            dataObject?.chineseByline = item.chineseByline
+            dataObject?.englishByline = item.englishByline
+            dataObject?.relatedStories = item.relatedStories
+            dataObject?.relatedVideos = item.relatedVideos
             updatePageContent()
         }
     }

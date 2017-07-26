@@ -59,6 +59,10 @@ struct FontSize {
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
     private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
+    // MARK: the number of days you want to keep the cached files
+    static let expireDay: TimeInterval = 30
+    // MARK: the types of files that you want to clean from time to time
+    static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg"]
     static func get(_ id: String, type: String) -> String {
         let actionType: String
         switch type {
@@ -84,6 +88,19 @@ struct APIs {
         }
         print ("open in web view: \(urlString)")
         return urlString
+    }
+}
+
+struct ErrorMessages {
+    struct NoInternet {
+        static let en = "Dear reader, you are not connected to the Internet Now. Please connect and try again. "
+        static let gb = "亲爱的读者，您现在没有连接互联网，也可能没有允许FT中文网连接互联网的权限，请检查连接和设置之后重试。"
+        static let big5 = "親愛的讀者，您現在沒有連接互聯網，也可能沒有允許FT中文網連接互聯網的權限，請檢查連接和設置之後重試。"
+    }
+    struct Unknown {
+        static let en = "Dear reader, you are not able to connect to our server now. Please try again later. "
+        static let gb = "亲爱的读者，您现在无法连接FT中文网的服务器，请稍后重试。"
+        static let big5 = "親愛的讀者，您現在無法連接FT中文網的服務器，請稍後重試。"
     }
 }
 

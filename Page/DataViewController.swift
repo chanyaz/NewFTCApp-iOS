@@ -52,9 +52,9 @@ class DataViewController: UICollectionViewController {
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
-        // TODO: Check the local file
+        // MARK: Check the local file
         if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
-            print ("found \(urlString) in caches directory)")
+            print ("found \(urlString) in caches directory. ")
             if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
             {
                 let contentSections = contentAPI.formatJSON(resultsDictionary)
@@ -78,11 +78,19 @@ class DataViewController: UICollectionViewController {
                     // MARK: When updating UI from the internet, the viewable ad will be updated too, which makes sense
                     self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
                     print ("update UI from the internet with \(urlString)")
+                    // MARK: Only when you get the content from the internet, should you prefetch content from the results
+                    self?.prefetch(from: results)
                 }
             }
         }
     }
     
+    private func prefetch(from results: ContentFetchResults) {
+        let statusType = IJReachability().connectedToNetworkOfType()
+        if statusType == .wiFi {
+            print ("User is on Wifi, Continue to prefetch content")
+        }
+    }
     
     private func updateUI(with results: ContentFetchResults, horizontalClass: UIUserInterfaceSizeClass, verticalCass: UIUserInterfaceSizeClass) {
         // MARK: - Insert Ads into the fetch results

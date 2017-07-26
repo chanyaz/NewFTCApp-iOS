@@ -87,6 +87,51 @@ struct Download {
         }
     }
     
+    
+    public static func manageFiles(_ types: [String], for directory: FileManager.SearchPathDirectory) {
+        if let documentsUrl =  FileManager.default.urls(for: directory, in: .userDomainMask).first {
+            do {
+                // MARK: Get the directory contents urls (including subfolders urls)
+                let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
+                
+                // MARK: Filter the directory contents
+                let files: [URL]
+                if types.count > 0 {
+                    files = directoryContents.filter{ types.contains($0.pathExtension) }
+                } else {
+                    files = directoryContents
+                }
+                var totalSize: UInt64 = 0
+                let earlyDate = Date().addingTimeInterval(-60 * 60 * 24 * APIs.expireDay)
+                for file in files {
+                    let fileName = file.lastPathComponent
+                    let filePath = file.path
+                    do {
+                        let attr = try FileManager.default.attributesOfItem(atPath: filePath)
+                        if let fileSize = attr[FileAttributeKey.size] as? UInt64,
+                            let fileDate = attr[FileAttributeKey.modificationDate] as? Date {
+                            
+                            if fileDate < earlyDate {
+                                try FileManager.default.removeItem(at: file)
+                                print("Manage File remove: \(fileName), expire date: \(earlyDate), now: \(Date()). ")
+                            } else {
+                                totalSize += fileSize
+                                print("Manage File keep: date: \(fileDate), size: \(fileSize), name: \(fileName)")
+                            }
+                        }
+                    } catch {
+                        print("Error: \(error)")
+                    }
+                }
+                print ("total size of the files is now \(totalSize)")
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    
+    
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
         let fileName = urlString.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
             .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)

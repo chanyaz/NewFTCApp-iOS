@@ -35,7 +35,7 @@ Today's Tasks:
 1. Cache the current page apis
 2. Cache stories
 3. Add Tracker to Detail Page
-
+4. Update MPU ad by removing background color when displaying actual ad image
 
 Delegated Tasks (Check on Monday):
 

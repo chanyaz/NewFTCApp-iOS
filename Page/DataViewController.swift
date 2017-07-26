@@ -79,16 +79,31 @@ class DataViewController: UICollectionViewController {
                     self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
                     print ("update UI from the internet with \(urlString)")
                     // MARK: Only when you get the content from the internet, should you prefetch content from the results
-                    self?.prefetch(from: results)
+                    self?.prefetch()
                 }
             }
         }
     }
     
-    private func prefetch(from results: ContentFetchResults) {
+    private func prefetch() {
         let statusType = IJReachability().connectedToNetworkOfType()
         if statusType == .wiFi {
             print ("User is on Wifi, Continue to prefetch content")
+            let sections = fetches.fetchResults
+            for section in sections {
+                let items = section.items
+                for item in items {
+                    if item.type == "story" {
+                        let apiUrl = APIs.get(item.id, type: item.type)
+                        if Download.readFile(apiUrl, for: .cachesDirectory, as: "json") == nil {
+                            print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                        } else {
+                            print ("File already exists. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                        }
+                        Download.downloadUrl(apiUrl, to: .cachesDirectory, as: "json")
+                    }
+                }
+            }
         }
     }
     

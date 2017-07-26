@@ -123,6 +123,7 @@ struct Download {
                         print("Error: \(error)")
                     }
                 }
+                Track.event(category: "Cache", action: "Keep", label: "\(totalSize)")
                 print ("total size of the files is now \(totalSize)")
             } catch let error as NSError {
                 print(error.localizedDescription)

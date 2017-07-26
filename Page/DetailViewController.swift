@@ -183,7 +183,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         //print ("English Status Change Received: \(English.sharedInstance.has)")
         let id = contentPageData[currentPageIndex].id
         let type = contentPageData[currentPageIndex].type
-        print ("English shared instance is now: \(English.sharedInstance)")
+        //print ("English shared instance is now: \(English.sharedInstance)")
         if type == "story", let hasEnglish = English.sharedInstance.has[id], hasEnglish == true {
             print ("current view should display English Switch")
             languages?.isHidden = false

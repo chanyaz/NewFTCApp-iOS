@@ -60,7 +60,7 @@ struct FontSize {
 struct APIs {
     private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
     // MARK: the number of days you want to keep the cached files
-    static let expireDay: TimeInterval = 30
+    static let expireDay: TimeInterval = 7
     // MARK: the types of files that you want to clean from time to time
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg"]
     static func get(_ id: String, type: String) -> String {

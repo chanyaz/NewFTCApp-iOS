@@ -112,6 +112,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
             let imageView = UIImageView(frame: imageFrame)
             imageView.image = image
             self.addSubview(imageView)
+            self.backgroundColor = UIColor(hex: Color.Content.background)
         } else {
             self.loadWebView()
         }

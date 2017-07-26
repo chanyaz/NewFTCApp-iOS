@@ -42,10 +42,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     var _modelController: DetailModelController? = nil
     
-    override func loadView() {
-        <#code#>
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: Delegate Step 4: Set the delegate to self

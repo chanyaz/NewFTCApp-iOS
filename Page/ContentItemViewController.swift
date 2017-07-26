@@ -55,8 +55,17 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         )
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let id = dataObject?.id, let type = dataObject?.type, let headline = dataObject?.headline {
+            let screenName = "/\(DeviceInfo.checkDeviceType())/\(type)/\(id)/\(headline)"
+            Track.screenView(screenName)
+        }
+    }
+    
+    
     deinit {
-        //MARK: Some of the deinit might b e useful in the future
+        //MARK: Some of the deinit might be useful in the future
         //        self.webView?.removeObserver(self, forKeyPath: "estimatedProgress")
         //        self.webView?.removeObserver(self, forKeyPath: "canGoBack")
         //        self.webView?.removeObserver(self, forKeyPath: "canGoForward")
@@ -468,8 +477,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             } else {
                 // MARK: - If it is other types of content such video and interacrtive features
                 if let id = dataObject?.id, let type = dataObject?.type {
-//                    let storyPageBase = "https://m.ftimg.net/"
-//                    let urlString = "\(storyPageBase)\(type)/\(id)?webview=ftcapp&001"
+                    //                    let storyPageBase = "https://m.ftimg.net/"
+                    //                    let urlString = "\(storyPageBase)\(type)/\(id)?webview=ftcapp&001"
                     let urlString = APIs.getUrl(id, type: type)
                     print ("loading \(urlString)")
                     if let url = URL(string: urlString) {

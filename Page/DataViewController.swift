@@ -144,7 +144,7 @@ class DataViewController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let screeName = dataObject["screenName"] {
-            Track.screenView(screeName)
+            Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
     }
     

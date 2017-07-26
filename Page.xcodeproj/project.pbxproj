@@ -336,10 +336,8 @@
 		600BD6AB1F21A65E0077C104 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				600BD6A41F21A6560077C104 /* AudioPlayer.swift */,
-				600BD6A31F21A6560077C104 /* AudioHelper.swift */,
-				600BD6A51F21A6560077C104 /* DownloadHelper.swift */,
-				600BD6A61F21A6570077C104 /* NowPlayingCenter.swift */,
+				6037DD3F1F287907007DB2FF /* Player */,
+				600BD6B21F21A94C0077C104 /* Speech */,
 			);
 			name = Audio;
 			sourceTree = "<group>";
@@ -362,6 +360,45 @@
 				601418071EEA919300DC3EF9 /* IJReachability.swift */,
 			);
 			name = Networks;
+			sourceTree = "<group>";
+		};
+		6037DD3E1F2878D7007DB2FF /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				60986A4B1F1CAC5E00583157 /* Share */,
+				600BD6A01F1DBB080077C104 /* Push */,
+				60D461C51F1C4F80009B7196 /* Track */,
+				601418091EEA91BA00DC3EF9 /* Networks */,
+				60C0D65C1F17405300E6F77D /* Growth Hack */,
+				60B2EF071EE680DE00B8C6DA /* StyleHelpers */,
+				50D9BA101F230A87002A188F /* Performance */,
+				607094B01EE948D700760A60 /* Core Data */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		6037DD3F1F287907007DB2FF /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				600BD6A41F21A6560077C104 /* AudioPlayer.swift */,
+				600BD6A31F21A6560077C104 /* AudioHelper.swift */,
+				600BD6A51F21A6560077C104 /* DownloadHelper.swift */,
+				600BD6A61F21A6570077C104 /* NowPlayingCenter.swift */,
+			);
+			name = Player;
+			sourceTree = "<group>";
+		};
+		6037DD401F28798D007DB2FF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */,
+				60D3C8D01EBFF5DC0085BEF6 /* Info.plist */,
+				60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */,
+				500139E21F1A7436009EC29D /* Bridging-Header.h */,
+				500139E01F1A7188009EC29D /* GoogleService-Info.plist */,
+				AF1B77801F15D3BD00DEFA1E /* Page.entitlements */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		604FF94D1EEF8BBE005D2A41 /* Pages */ = {
@@ -518,26 +555,13 @@
 		60D3C8BF1EBFF5DC0085BEF6 /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				AF1B77801F15D3BD00DEFA1E /* Page.entitlements */,
 				60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */,
 				60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */,
-				60D3C8D01EBFF5DC0085BEF6 /* Info.plist */,
-				500139E01F1A7188009EC29D /* GoogleService-Info.plist */,
-				500139E21F1A7436009EC29D /* Bridging-Header.h */,
-				600BD6B21F21A94C0077C104 /* Speech */,
 				600BD6AB1F21A65E0077C104 /* Audio */,
 				50057FC91EE9752D0092180A /* Layouts */,
-				60986A4B1F1CAC5E00583157 /* Share */,
-				600BD6A01F1DBB080077C104 /* Push */,
-				60D461C51F1C4F80009B7196 /* Track */,
-				601418091EEA91BA00DC3EF9 /* Networks */,
-				60C0D65C1F17405300E6F77D /* Growth Hack */,
-				60B2EF071EE680DE00B8C6DA /* StyleHelpers */,
-				50D9BA101F230A87002A188F /* Performance */,
-				607094B01EE948D700760A60 /* Core Data */,
+				6037DD3E1F2878D7007DB2FF /* Helpers */,
 				60D4B9021EE7D95800A4506D /* Customizations */,
-				60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */,
-				60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */,
+				6037DD401F28798D007DB2FF /* Supporting Files */,
 			);
 			path = Page;
 			sourceTree = "<group>";

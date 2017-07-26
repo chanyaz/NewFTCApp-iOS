@@ -56,6 +56,8 @@ class ContentFetch {
             do {
                 let resultsDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
                 let contentSections = self.formatJSON(resultsDictionary)
+                //MARK: Save the JSON File to Documents Directory
+                Download.saveFile(data, filename: urlString, to: .cachesDirectory, as: "json")
                 OperationQueue.main.addOperation({
                     completion(ContentFetchResults(apiUrl: urlString, fetchResults: contentSections), nil)
                 })

@@ -58,7 +58,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         if let adModel = self.adModel {
             if let imageString = adModel.imageString {
                 // TODO: If the asset is already downloaded, no need to request from the Internet
-                if let data = Download.readFile(imageString, for: .cachesDirectory) {
+                if let data = Download.readFile(imageString, for: .cachesDirectory, as: nil) {
                     showAdImage(data)
                     print ("image already in cache:\(imageString)")
                     return
@@ -73,7 +73,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                         DispatchQueue.main.async { () -> Void in
                             self?.showAdImage(data)
                         }
-                        Download.saveFile(data, filename: imageString, to: .cachesDirectory)
+                        Download.saveFile(data, filename: imageString, to: .cachesDirectory, as: nil)
                     }
                 }
             } else {

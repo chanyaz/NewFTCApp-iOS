@@ -16,20 +16,20 @@ struct Download {
         listTask.resume()
     }
     
-    public static func downloadUrl(_ urlString: String, to: FileManager.SearchPathDirectory) {
+    public static func downloadUrl(_ urlString: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
         if let url = URL(string: urlString) {
             getDataFromUrl(url) {(data, response, error)  in
                 if let data = data, error == nil {
-                    saveFile(data, filename: urlString, to: to)
+                    saveFile(data, filename: urlString, to: to, as: fileExtension)
                 }
             }
         }
     }
     
-    public static func saveFile(_ data: Data, filename: String, to: FileManager.SearchPathDirectory) {
+    public static func saveFile(_ data: Data, filename: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
         if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
             if let directoryPath = URL(string: directoryPathString) {
-                let realFileName = getFileNameFromUrlString(filename)
+                let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
                 let filePath = directoryPath.appendingPathComponent(realFileName)
                 let fileManager = FileManager.default
                 let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
@@ -42,7 +42,7 @@ struct Download {
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
                     file.write(data)
-                    print("File data was written to the \(realFileName) successfully!")
+                    print("File data was written to \(realFileName) successfully!")
                 } catch let error as NSError {
                     print("Couldn't write to file: \(error.localizedDescription)")
                 }
@@ -50,8 +50,8 @@ struct Download {
         }
     }
     
-    public static func readFile(_ urlString: String, for directory: FileManager.SearchPathDirectory) -> Data? {
-        let fileName = getFileNameFromUrlString(urlString)
+    public static func readFile(_ urlString: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> Data? {
+        let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
         do {
             let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileURL = DocumentDirURL.appendingPathComponent(fileName)
@@ -87,15 +87,19 @@ struct Download {
         }
     }
     
-    private static func getFileNameFromUrlString(_ urlString: String) -> String {
-        let fileName = urlString.replacingOccurrences(
-            of: "^http[s]*://[^/]+/",
-            with: "",
-            options: .regularExpression
-            ).replacingOccurrences(
-                of: "/",
-                with: "-"
-        )
+    private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
+        let fileName = urlString.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
+            .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
+        .replacingOccurrences(of: "-type-json", with: ".json")
+        .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
+        if let ext = fileExtension {
+            let forceFileName = fileName.replacingOccurrences(of: ".\(ext)", with: "")
+            .replacingOccurrences(of: ".", with: "")
+            let finalFileName = "\(forceFileName).\(ext)"
+            //print ("\(urlString) is converted into file name of \(finalFileName)")
+            return finalFileName
+        }
+        //print ("\(urlString) is converted into file name of \(fileName)")
         return fileName
     }
     

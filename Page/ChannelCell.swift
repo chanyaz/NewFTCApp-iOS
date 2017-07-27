@@ -31,6 +31,21 @@ class ChannelCell: UICollectionViewCell {
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     func updateUI() {
+        if itemCell?.type != "ad" {
+            updateContent()
+        } else {
+            updateAd()
+        }
+    }
+    
+    private func updateAd() {
+        // MARK: - Update Styles and Layouts
+        updateContent()
+        containerView.backgroundColor = UIColor(hex: Color.Ad.background)
+        
+    }
+    
+    private func updateContent() {
         // MARK: - Update Styles and Layouts
         containerView.backgroundColor = UIColor(hex: Color.Content.background)
         headline.textColor = UIColor(hex: Color.Content.headline)

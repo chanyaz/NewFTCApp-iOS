@@ -33,14 +33,14 @@ The aim of this project is to create a "mother of all news apps". With this proj
 ## Development Milestones
 
 ### Advertising: 
-1. Done: retrieve Ad info from Dolphin's script string
+1. Done: Retrieve Ad info from Dolphin's script string
 2. Done: Send third party impressions until they are confirmed
 3. Done: Tap link for Ad Views
 4. Done: Tap Link in content view
-5. Launch Screen Ad
-6. Native Banner
-7. Web Banner
-8. information flow
+5. Done: Launch Screen Ad
+6. Done: Native Banner
+7. Done: Web Banner
+8. Information flow
 
 ### Channel Page Collection View on iPad: 
 1. Done: Stop using auto-resizing cells on Regular size. 

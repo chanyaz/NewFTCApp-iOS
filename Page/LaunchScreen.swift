@@ -15,7 +15,7 @@ import StoreKit
 import MediaPlayer
 
 class LaunchScreen: UIViewController {
-
+    
     
     // MARK: - Find out whether the user is happy and prompt rating if he/she is happy
     public let happyUser = HappyUser()
@@ -42,11 +42,16 @@ class LaunchScreen: UIViewController {
         return true
     }
     
+    deinit {
+        print ("Launch Ad Closed Successfully! ")
+    }
+    
     override func loadView() {
         super.loadView()
         adOverlayView()
         
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         closeAfterSeconds(maxAdTimeAfterLaunch)
@@ -57,24 +62,24 @@ class LaunchScreen: UIViewController {
         // Do any additional setup after loading the view.
         // print ("launch screen loaded")
         
-//        Timer.scheduledTimer(
-//            timeInterval: 6,
-//            target: self,
-//            selector: #selector(close),
-//            userInfo: nil,
-//            repeats: true
-//        )
+        //        Timer.scheduledTimer(
+        //            timeInterval: 6,
+        //            target: self,
+        //            selector: #selector(close),
+        //            userInfo: nil,
+        //            repeats: true
+        //        )
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
     
-
+    
+    
     // MARK: if there's no ad to load, load the normal start screen
     func normalOverlayView() {
         if let overlayViewNormal = overlayView {
@@ -137,12 +142,15 @@ class LaunchScreen: UIViewController {
         }
         //print (maxAdTimeAfterLaunch)
         if adSchedule.adType == "page" {
+            reportImpressionToClient(impressions: adSchedule.impression)
             addOverlayView()
             showHTMLAd()
         } else if adSchedule.adType == "image" {
+            reportImpressionToClient(impressions: adSchedule.impression)
             addOverlayView()
             showImage()
         } else if adSchedule.adType == "video" {
+            reportImpressionToClient(impressions: adSchedule.impression)
             playVideo()
         } else {
             normalOverlayView()
@@ -420,7 +428,7 @@ class LaunchScreen: UIViewController {
     }
     
     // MARK: report ad impressions
-    private func reportImpressionToWeb(impressions: [String]) {
+    private func reportImpressionToClient(impressions: [String]) {
         let deviceType = DeviceInfo.checkDeviceType()
         let unixDateStamp = Date().timeIntervalSince1970
         let timeStamp = String(unixDateStamp).replacingOccurrences(of: ".", with: "")
@@ -462,7 +470,7 @@ class LaunchScreen: UIViewController {
         let deviceType = DeviceInfo.checkDeviceType()
         Track.event(category: "\(deviceType) Launch Ad", action: "Click", label: "\(adSchedule.adLink)")
     }
-
+    
     
     private func closeAfterSeconds(_ seconds: TimeInterval) {
         if timer == nil {
@@ -482,60 +490,83 @@ class LaunchScreen: UIViewController {
     
     // MARK: Remove the overlay and reveal the web view. This should be public.
     func close() {
+        if let videoView = self.view.viewWithTag(111) {
+            UIView.animate(
+                withDuration: fadeOutDuration,
+                animations: {
+                    videoView.alpha = 0.0
+            }, completion: { (value: Bool) in
+                videoView.removeFromSuperview()
+            })
+        }
+        player?.pause()
+        player = nil
+        if let t = token {
+            player?.removeTimeObserver(t)
+            token = nil
+        }
+        timer?.invalidate()
+        
         self.dismiss(animated: true, completion: nil)
         // TODO: Should handle some denit such as video
         
-//        if pageStatus != .webViewDisplayed {
-//            if let overlay = overlayView {
-//                for subUIView in overlay.subviews {
-//                    subUIView.removeFromSuperview()
-//                }
-//                UIView.animate(
-//                    withDuration: fadeOutDuration,
-//                    animations: {
-//                        overlay.alpha = 0.0
-//                },
-//                    completion: {(value: Bool) in
-//                        overlay.removeFromSuperview()
-//                        self.overlayView = nil
-//                }
-//                )
-//            }
-//            if let videoView = self.view.viewWithTag(111) {
-//                UIView.animate(
-//                    withDuration: fadeOutDuration,
-//                    animations: {
-//                        videoView.alpha = 0.0
-//                }, completion: { (value: Bool) in
-//                    videoView.removeFromSuperview()
-//                })
-//            }
-//            pageStatus = .webViewDisplayed
-//            // MARK: trigger prefersStatusBarHidden
-//            setNeedsStatusBarAppearanceUpdate()
-//            getUserId()
-//            player?.pause()
-//            if let t = token {
-//                player?.removeTimeObserver(t)
-//                token = nil
-//            }
-//            // MARK: send impression ping
-//            reportImpressionToWeb(impressions: adSchedule.impression)
-//            // MARK: show social login buttons
-//            showSocialLoginButtons()
-//            enableTextToSpeech()
-//            enableAudioPlay()
-//            enableLanguageSetting()
-//            player = nil
-//            
-//            if let jsCode = happyUser.requestReviewTracking() {
-//                self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//                }
-//            }
-//        }
+        //        if pageStatus != .webViewDisplayed {
+        //            if let overlay = overlayView {
+        //                for subUIView in overlay.subviews {
+        //                    subUIView.removeFromSuperview()
+        //                }
+        //                UIView.animate(
+        //                    withDuration: fadeOutDuration,
+        //                    animations: {
+        //                        overlay.alpha = 0.0
+        //                },
+        //                    completion: {(value: Bool) in
+        //                        overlay.removeFromSuperview()
+        //                        self.overlayView = nil
+        //                }
+        //                )
+        //            }
+        //            if let videoView = self.view.viewWithTag(111) {
+        //                UIView.animate(
+        //                    withDuration: fadeOutDuration,
+        //                    animations: {
+        //                        videoView.alpha = 0.0
+        //                }, completion: { (value: Bool) in
+        //                    videoView.removeFromSuperview()
+        //                })
+        //            }
+        //            pageStatus = .webViewDisplayed
+        //            // MARK: trigger prefersStatusBarHidden
+        //            setNeedsStatusBarAppearanceUpdate()
+        //            getUserId()
+        //            player?.pause()
+        //            if let t = token {
+        //                player?.removeTimeObserver(t)
+        //                token = nil
+        //            }
+        //            // MARK: send impression ping
+        //            reportImpressionToWeb(impressions: adSchedule.impression)
+        //            // MARK: show social login buttons
+        //            showSocialLoginButtons()
+        //            enableTextToSpeech()
+        //            enableAudioPlay()
+        //            enableLanguageSetting()
+        //            player = nil
+        //
+        //            if let jsCode = happyUser.requestReviewTracking() {
+        //                self.webView.evaluateJavaScript(jsCode) { (result, error) in
+        //                }
+        //            }
+        //        }
         // TODO: - Check connection type and ask user to enable internet connection
         //prompUserToEnableInternet()
     }
+    
+    
+}
 
-
+struct AppLaunch {
+    static var sharedInstance = AppLaunch()
+    var launched = false
+    var adShowed = false
 }

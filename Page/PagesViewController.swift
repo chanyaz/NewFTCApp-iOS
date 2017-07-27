@@ -30,20 +30,18 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // Configure the page view controller and add it as a child view controller.
+        
+        // MARK: Show the Launch Screen as an Overlay
+        if AppLaunch.sharedInstance.launched == false {
+            if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
+                self.present(launchScreenViewController, animated: false, completion: nil)
+                //print ("launch screen presented")
+            }
+            AppLaunch.sharedInstance.launched = true
+        }
         applyStyles()
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
-        
-        
-        // TODO: Show the Launch Screen as an Overlay
-        print ("try to present launch screen")
-        if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
-            self.present(launchScreenViewController, animated: false, completion: nil)
-            //print ("launch screen presented")
-        }
-        
-        
-        //self.navigationItem.title = "YourTitle"
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,9 +49,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    
     // MARK: - UIPageViewController delegate methods
-    
     func pageViewController(_ pageViewController: UIPageViewController, spineLocationFor orientation: UIInterfaceOrientation) -> UIPageViewControllerSpineLocation {
             let currentViewController = self.pageViewController!.viewControllers![0]
             let viewControllers = [currentViewController]

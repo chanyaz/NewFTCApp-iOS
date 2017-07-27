@@ -473,17 +473,8 @@
 		6087E3D81EF212A30034A92F /* Ad */ = {
 			isa = PBXGroup;
 			children = (
-				60C5586D1F2990CD004C4E0E /* LaunchScreen.swift */,
-				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
-				60C558711F29B786004C4E0E /* schedule.json */,
-				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
-				60C5586F1F299F09004C4E0E /* AdSchedule.swift */,
-				60CA7BC01EF26251000CD9B4 /* AdLayout.swift */,
-				609763AF1F0DCFC100088280 /* AdModel.swift */,
-				605750FA1F15B06700552DAC /* AdView.swift */,
-				60C0D65F1F18BF5800E6F77D /* Impressions.swift */,
-				6087E3D61EF212960034A92F /* ad.html */,
-				6087E3D91EF2294C0034A92F /* ga.js */,
+				60C558731F29C703004C4E0E /* Launch */,
+				60C558741F29C726004C4E0E /* Banner */,
 			);
 			name = Ad;
 			sourceTree = "<group>";
@@ -541,6 +532,31 @@
 				60C0D65A1F17402500E6F77D /* HappyUser.swift */,
 			);
 			name = "Growth Hack";
+			sourceTree = "<group>";
+		};
+		60C558731F29C703004C4E0E /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				60C5586D1F2990CD004C4E0E /* LaunchScreen.swift */,
+				60C558711F29B786004C4E0E /* schedule.json */,
+				60C5586F1F299F09004C4E0E /* AdSchedule.swift */,
+			);
+			name = Launch;
+			sourceTree = "<group>";
+		};
+		60C558741F29C726004C4E0E /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
+				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
+				60CA7BC01EF26251000CD9B4 /* AdLayout.swift */,
+				609763AF1F0DCFC100088280 /* AdModel.swift */,
+				605750FA1F15B06700552DAC /* AdView.swift */,
+				60C0D65F1F18BF5800E6F77D /* Impressions.swift */,
+				6087E3D61EF212960034A92F /* ad.html */,
+				6087E3D91EF2294C0034A92F /* ga.js */,
+			);
+			name = Banner;
 			sourceTree = "<group>";
 		};
 		60D3C8B41EBFF5DC0085BEF6 = {

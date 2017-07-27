@@ -68,6 +68,8 @@
 		60C0D65E1F17415A00E6F77D /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */; };
 		60C0D6601F18BF5800E6F77D /* Impressions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65F1F18BF5800E6F77D /* Impressions.swift */; };
 		60C5586C1F29826A004C4E0E /* Web.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C5586B1F29826A004C4E0E /* Web.swift */; };
+		60C5586E1F2990CD004C4E0E /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C5586D1F2990CD004C4E0E /* LaunchScreen.swift */; };
+		60C558701F299F09004C4E0E /* AdSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C5586F1F299F09004C4E0E /* AdSchedule.swift */; };
 		60CA7BC11EF26251000CD9B4 /* AdLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC01EF26251000CD9B4 /* AdLayout.swift */; };
 		60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */; };
 		60CA7BC51EF28AD4000CD9B4 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60CA7BC31EF28AD4000CD9B4 /* HeaderView.xib */; };
@@ -191,6 +193,8 @@
 		60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		60C0D65F1F18BF5800E6F77D /* Impressions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Impressions.swift; sourceTree = "<group>"; };
 		60C5586B1F29826A004C4E0E /* Web.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Web.swift; sourceTree = "<group>"; };
+		60C5586D1F2990CD004C4E0E /* LaunchScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
+		60C5586F1F299F09004C4E0E /* AdSchedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdSchedule.swift; sourceTree = "<group>"; };
 		60CA7BC01EF26251000CD9B4 /* AdLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdLayout.swift; sourceTree = "<group>"; };
 		60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		60CA7BC31EF28AD4000CD9B4 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
@@ -418,6 +422,7 @@
 		604FF94E1EEF8BED005D2A41 /* Page */ = {
 			isa = PBXGroup;
 			children = (
+				60C5586D1F2990CD004C4E0E /* LaunchScreen.swift */,
 				6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */,
 				F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */,
 				F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */,
@@ -469,6 +474,7 @@
 			children = (
 				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
 				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
+				60C5586F1F299F09004C4E0E /* AdSchedule.swift */,
 				60CA7BC01EF26251000CD9B4 /* AdLayout.swift */,
 				609763AF1F0DCFC100088280 /* AdModel.swift */,
 				605750FA1F15B06700552DAC /* AdView.swift */,
@@ -937,6 +943,8 @@
 				6093F1661EE90E81009F16EE /* CustomPopTransition.swift in Sources */,
 				607094AF1EE943A900760A60 /* Channels.swift in Sources */,
 				600BD69F1F1DBAFF0077C104 /* PushHelper.swift in Sources */,
+				60C5586E1F2990CD004C4E0E /* LaunchScreen.swift in Sources */,
+				60C558701F299F09004C4E0E /* AdSchedule.swift in Sources */,
 				60C0D6601F18BF5800E6F77D /* Impressions.swift in Sources */,
 				60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */,
 				AF34DB8A1F127405007DE4D1 /* UITextViewFixed.swift in Sources */,

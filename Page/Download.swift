@@ -61,6 +61,27 @@ struct Download {
         }
     }
     
+    public static func checkFilePath(fileUrl: String, for directory: FileManager.SearchPathDirectory) -> String? {
+        let url = NSURL(string:fileUrl)
+        if let lastComponent = url?.lastPathComponent {
+            let templatepathInBuddle = Bundle.main.bundlePath + "/" + lastComponent
+            do {
+                let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
+                let templatepathInDocument = DocumentDirURL.appendingPathComponent(lastComponent)
+                var templatePath: String? = nil
+                if FileManager.default.fileExists(atPath: templatepathInBuddle) {
+                    templatePath = templatepathInBuddle
+                } else if FileManager().fileExists(atPath: templatepathInDocument.path) {
+                    templatePath = templatepathInDocument.path
+                }
+                return templatePath
+            } catch {
+                return nil
+            }
+        }
+        return nil
+    }
+    
     public static func cleanFile(_ types: [String], for directory: FileManager.SearchPathDirectory) {
         if let documentsUrl =  FileManager.default.urls(for: directory, in: .userDomainMask).first {
             do {

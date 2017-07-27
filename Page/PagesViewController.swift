@@ -34,6 +34,15 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
         
+        
+        // TODO: Show the Launch Screen as an Overlay
+        print ("try to present launch screen")
+        if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
+            self.present(launchScreenViewController, animated: false, completion: nil)
+            print ("launch screen presented")
+        }
+        
+        
         //self.navigationItem.title = "YourTitle"
     }
     

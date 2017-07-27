@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class DataViewController: UICollectionViewController {
     var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
@@ -115,7 +114,6 @@ class DataViewController: UICollectionViewController {
         }else{
             layoutWay="home"
         }
-        
         let resultsWithAds = ContentFetchResults(
             apiUrl: results.apiUrl,
             fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)

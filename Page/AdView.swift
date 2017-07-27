@@ -66,7 +66,8 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                     print ("image already in cache:\(imageString)")
                     return
                 }
-                print ("continue to get the image file")
+//                print ("continue to get the image file of \(imageString)")
+//                print ("the adModel is now \(adModel)")
                 if let url = URL(string: imageString) {
                     Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                         guard let data = data else {

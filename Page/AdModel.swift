@@ -24,7 +24,7 @@ struct AdParser {
     public static func parseAdCode(_ adCode: String) -> AdModel {
         let video = ""
         
-        print ("ad code is now: \(adCode)")
+        // print ("ad code is now: \(adCode)")
         // MARK: Extract Images
         let imagePatterns = [
             "'imageUrl': '(.+)'",
@@ -38,6 +38,7 @@ struct AdParser {
         // MARK: Extract Link
         let linkPatterns = [
             "'link': '(.+)'",
+            "var Click = '(.+)'",
             "href=\"([^\"]+)\""
         ]
         let link = adCode.matchingStrings(regexes: linkPatterns)

@@ -15,21 +15,20 @@ import StoreKit
 import MediaPlayer
 
 class LaunchScreen: UIViewController {
-    
-    
     // MARK: - Find out whether the user is happy and prompt rating if he/she is happy
     public let happyUser = HappyUser()
     private lazy var timer: Timer? = nil
     
     // MARK: - If the app use a native launch ad, suppress the pop up one
     private let useNativeLaunchAd = "useNativeLaunchAd"
-    private var maxAdTimeAfterLaunch = 5.0
+    private var maxAdTimeAfterLaunch = 6.0
     private var maxAdTimeAfterWebRequest = 2.5
     private let fadeOutDuration = 0.5
     private let adSchedule = AdSchedule()
     private lazy var player: AVPlayer? = {return nil} ()
     private lazy var token: Any? = {return nil} ()
     private lazy var overlayView: UIView? = UIView()
+    private var adShowed = false
     
     // MARK: - Hide Ad for Demo Purposes
     private let hideAd = false
@@ -43,6 +42,11 @@ class LaunchScreen: UIViewController {
     }
     
     deinit {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name(rawValue: Event.newAdCreativeDownloaded),
+            object: nil
+        )
         print ("Launch Ad Closed Successfully! ")
     }
     
@@ -70,6 +74,14 @@ class LaunchScreen: UIViewController {
         //            repeats: true
         //        )
         
+        // MARK: - Notification If New Ad Creative is Downloaded
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(retryAd),
+            name: Notification.Name(rawValue: Event.newAdCreativeDownloaded),
+            object: nil
+        )
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -78,13 +90,74 @@ class LaunchScreen: UIViewController {
     }
     
     
+    // MARK: if there's a full screen screen ad to show
+    private func adOverlayView() {
+        // MARK: - If the developer don't want to display the ad
+        if self.adType == "none" || self.hideAd == true || adShowed == true {
+            maxAdTimeAfterLaunch = 1.0
+            maxAdTimeAfterWebRequest = 1.0
+            normalOverlayView()
+            return
+        }
+        adSchedule.parseSchedule()
+        if let adScheduleDurationInSeconds: Double = adSchedule.durationInSeconds {
+            maxAdTimeAfterLaunch = adScheduleDurationInSeconds
+            maxAdTimeAfterWebRequest = maxAdTimeAfterLaunch - 2.0
+        }
+        //print (maxAdTimeAfterLaunch)
+        if adSchedule.adType == "page" {
+            reportImpressionToClient(impressions: adSchedule.impression)
+            adShowed = true
+            addOverlayView()
+            showHTMLAd()
+        } else if adSchedule.adType == "image" {
+            reportImpressionToClient(impressions: adSchedule.impression)
+            adShowed = true
+            addOverlayView()
+            showImage()
+        } else if adSchedule.adType == "video" {
+            reportImpressionToClient(impressions: adSchedule.impression)
+            adShowed = true
+            playVideo()
+        } else {
+            normalOverlayView()
+            return
+        }
+        // MARK: button to close the full screen ad
+        addCloseButton()
+        // MARK: set custom background
+        setAdBackground()
+    }
     
+    private func addOverlayView() {
+        if let overlay = overlayView {
+            overlay.backgroundColor = UIColor(netHex:0x000000)
+            overlay.frame = self.view.bounds
+            self.view.addSubview(overlay)
+            overlay.translatesAutoresizingMaskIntoConstraints = false
+            view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
+            view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+            view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 0))
+            view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0))
+        }
+    }
+
+    
+    public func retryAd() {
+        print ("Try to parse the ad schedule to decide if you can show an ad now")
+        if let overlay = overlayView {
+            for subUIView in overlay.subviews {
+                subUIView.removeFromSuperview()
+            }
+        }
+        adOverlayView()
+    }
     
     // MARK: if there's no ad to load, load the normal start screen
     func normalOverlayView() {
         if let overlayViewNormal = overlayView {
-            maxAdTimeAfterLaunch = 3.0
-            maxAdTimeAfterWebRequest = 2.0
+            maxAdTimeAfterLaunch = 6.0
+            maxAdTimeAfterWebRequest = 4.0
             overlayViewNormal.backgroundColor = UIColor(netHex:0x002F5F)
             overlayViewNormal.frame = self.view.bounds
             self.view.addSubview(overlayViewNormal)
@@ -126,54 +199,6 @@ class LaunchScreen: UIViewController {
     }
     
     
-    // MARK: if there's a full screen screen ad to show
-    private func adOverlayView() {
-        // MARK: - If the developer don't want to display the ad
-        if self.adType == "none" || self.hideAd == true {
-            maxAdTimeAfterLaunch = 1.0
-            maxAdTimeAfterWebRequest = 1.0
-            normalOverlayView()
-            return
-        }
-        adSchedule.parseSchedule()
-        if let adScheduleDurationInSeconds: Double = adSchedule.durationInSeconds {
-            maxAdTimeAfterLaunch = adScheduleDurationInSeconds
-            maxAdTimeAfterWebRequest = adScheduleDurationInSeconds - 2.0
-        }
-        //print (maxAdTimeAfterLaunch)
-        if adSchedule.adType == "page" {
-            reportImpressionToClient(impressions: adSchedule.impression)
-            addOverlayView()
-            showHTMLAd()
-        } else if adSchedule.adType == "image" {
-            reportImpressionToClient(impressions: adSchedule.impression)
-            addOverlayView()
-            showImage()
-        } else if adSchedule.adType == "video" {
-            reportImpressionToClient(impressions: adSchedule.impression)
-            playVideo()
-        } else {
-            normalOverlayView()
-            return
-        }
-        // MARK: button to close the full screen ad
-        addCloseButton()
-        // MARK: set custom background
-        setAdBackground()
-    }
-    
-    private func addOverlayView() {
-        if let overlay = overlayView {
-            overlay.backgroundColor = UIColor(netHex:0x000000)
-            overlay.frame = self.view.bounds
-            self.view.addSubview(overlay)
-            overlay.translatesAutoresizingMaskIntoConstraints = false
-            view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
-            view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-            view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 0))
-            view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0))
-        }
-    }
     
     // MARK: - The close button for the user to close the full screen ad when app launches
     private func addCloseButton() {
@@ -490,15 +515,6 @@ class LaunchScreen: UIViewController {
     
     // MARK: Remove the overlay and reveal the web view. This should be public.
     func close() {
-        if let videoView = self.view.viewWithTag(111) {
-            UIView.animate(
-                withDuration: fadeOutDuration,
-                animations: {
-                    videoView.alpha = 0.0
-            }, completion: { (value: Bool) in
-                videoView.removeFromSuperview()
-            })
-        }
         player?.pause()
         player = nil
         if let t = token {
@@ -506,63 +522,9 @@ class LaunchScreen: UIViewController {
             token = nil
         }
         timer?.invalidate()
-        
         self.dismiss(animated: true, completion: nil)
-        // TODO: Should handle some denit such as video
-        
-        //        if pageStatus != .webViewDisplayed {
-        //            if let overlay = overlayView {
-        //                for subUIView in overlay.subviews {
-        //                    subUIView.removeFromSuperview()
-        //                }
-        //                UIView.animate(
-        //                    withDuration: fadeOutDuration,
-        //                    animations: {
-        //                        overlay.alpha = 0.0
-        //                },
-        //                    completion: {(value: Bool) in
-        //                        overlay.removeFromSuperview()
-        //                        self.overlayView = nil
-        //                }
-        //                )
-        //            }
-        //            if let videoView = self.view.viewWithTag(111) {
-        //                UIView.animate(
-        //                    withDuration: fadeOutDuration,
-        //                    animations: {
-        //                        videoView.alpha = 0.0
-        //                }, completion: { (value: Bool) in
-        //                    videoView.removeFromSuperview()
-        //                })
-        //            }
-        //            pageStatus = .webViewDisplayed
-        //            // MARK: trigger prefersStatusBarHidden
-        //            setNeedsStatusBarAppearanceUpdate()
-        //            getUserId()
-        //            player?.pause()
-        //            if let t = token {
-        //                player?.removeTimeObserver(t)
-        //                token = nil
-        //            }
-        //            // MARK: send impression ping
-        //            reportImpressionToWeb(impressions: adSchedule.impression)
-        //            // MARK: show social login buttons
-        //            showSocialLoginButtons()
-        //            enableTextToSpeech()
-        //            enableAudioPlay()
-        //            enableLanguageSetting()
-        //            player = nil
-        //
-        //            if let jsCode = happyUser.requestReviewTracking() {
-        //                self.webView.evaluateJavaScript(jsCode) { (result, error) in
-        //                }
-        //            }
-        //        }
-        // TODO: - Check connection type and ask user to enable internet connection
-        //prompUserToEnableInternet()
     }
-    
-    
+
 }
 
 struct AppLaunch {

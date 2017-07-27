@@ -491,6 +491,10 @@ class AdSchedule {
                     if parseScheduleForDownload == true {
                         //print("\(fileName) should be parsed for downloading creatives")
                         self.parseScheduleForDownloading()
+                    } else {
+                        let object = ""
+                        let name = Notification.Name(rawValue: Event.newAdCreativeDownloaded)
+                        NotificationCenter.default.post(name: name, object: object)
                     }
                 }
             }

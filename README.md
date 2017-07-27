@@ -41,8 +41,9 @@ The aim of this project is to create a "mother of all news apps". With this proj
 6. Done: Native Banner
 7. Done: Web Banner
 8. Information flow
+9. Done: Show Image if there's time
 
-### Channel Page Collection View on iPad: 
+### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
 2. Use prefetch to make scrolling smooth. 
 3. FT Academy
@@ -50,10 +51,11 @@ The aim of this project is to create a "mother of all news apps". With this proj
 5. Most Popular
 6. Calendar
 
-
-### Channel Structure: Xiangyun
-1. In Progress: The final correct channel structure. 
+### APIs
+1. Done: Stories
 2. Done: Retrieve and convert other types of API. 
+3. Interactive Features
+4. Videos: 
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 

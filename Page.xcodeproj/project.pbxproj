@@ -538,8 +538,8 @@
 			isa = PBXGroup;
 			children = (
 				60C5586D1F2990CD004C4E0E /* LaunchScreen.swift */,
-				60C558711F29B786004C4E0E /* schedule.json */,
 				60C5586F1F299F09004C4E0E /* AdSchedule.swift */,
+				60C558711F29B786004C4E0E /* schedule.json */,
 			);
 			name = Launch;
 			sourceTree = "<group>";

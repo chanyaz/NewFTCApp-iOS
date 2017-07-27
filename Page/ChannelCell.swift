@@ -34,15 +34,30 @@ class ChannelCell: UICollectionViewCell {
         if itemCell?.type != "ad" {
             updateContent()
         } else {
-            updateAd()
+            requestAd()
         }
     }
     
-    private func updateAd() {
+    private func requestAd() {
         // MARK: - Update Styles and Layouts
         updateContent()
         containerView.backgroundColor = UIColor(hex: Color.Ad.background)
-        
+        if let adid = itemCell?.id, let url = AdParser.getAdUrlFromDolphin(adid) {
+            Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
+                DispatchQueue.main.async { () -> Void in
+                    guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
+                        //print ("Fail: Request Ad From \(url)")
+                        // self?.handleAdModel()
+                        return
+                    }
+                    //print ("Success: Request Ad From \(url)")
+                    let adModel = AdParser.parseAdCode(adCode)
+                    print ("info ad ad model retrieved as \(adModel)")
+//                    self?.adModel = adModel
+//                    self?.handleAdModel()
+                }
+            }
+        }
     }
     
     private func updateContent() {

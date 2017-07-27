@@ -67,6 +67,7 @@
 		60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65A1F17402500E6F77D /* HappyUser.swift */; };
 		60C0D65E1F17415A00E6F77D /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */; };
 		60C0D6601F18BF5800E6F77D /* Impressions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65F1F18BF5800E6F77D /* Impressions.swift */; };
+		60C5586C1F29826A004C4E0E /* Web.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C5586B1F29826A004C4E0E /* Web.swift */; };
 		60CA7BC11EF26251000CD9B4 /* AdLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC01EF26251000CD9B4 /* AdLayout.swift */; };
 		60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */; };
 		60CA7BC51EF28AD4000CD9B4 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60CA7BC31EF28AD4000CD9B4 /* HeaderView.xib */; };
@@ -189,6 +190,7 @@
 		60C0D65A1F17402500E6F77D /* HappyUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HappyUser.swift; sourceTree = "<group>"; };
 		60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		60C0D65F1F18BF5800E6F77D /* Impressions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Impressions.swift; sourceTree = "<group>"; };
+		60C5586B1F29826A004C4E0E /* Web.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Web.swift; sourceTree = "<group>"; };
 		60CA7BC01EF26251000CD9B4 /* AdLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdLayout.swift; sourceTree = "<group>"; };
 		60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		60CA7BC31EF28AD4000CD9B4 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 			isa = PBXGroup;
 			children = (
 				6014180A1EEA9CC000DC3EF9 /* Download.swift */,
+				60C5586B1F29826A004C4E0E /* Web.swift */,
 				AF15D6ED1F1743CB0034CE6E /* PostData.swift */,
 				601418071EEA919300DC3EF9 /* IJReachability.swift */,
 			);
@@ -914,6 +917,7 @@
 				50A704C41EEB689900660022 /* ContentItem.swift in Sources */,
 				60D4B8F31EE7A22C00A4506D /* StyleExtensions.swift in Sources */,
 				600BD6B11F21A9420077C104 /* SpeechSettings.swift in Sources */,
+				60C5586C1F29826A004C4E0E /* Web.swift in Sources */,
 				601417701EEA3F7600DC3EF9 /* DataViewController.swift in Sources */,
 				50057FCB1EE977D80092180A /* PagesViewController.swift in Sources */,
 				609763B01F0DCFC100088280 /* AdModel.swift in Sources */,

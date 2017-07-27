@@ -21,7 +21,7 @@ class AudioContent {
     var body = [String: String]()
 }
 
-class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,SFSafariViewControllerDelegate,WKNavigationDelegate {
+class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,WKNavigationDelegate {
     
     private var audioTitle = ""
     private var audioUrlString = ""

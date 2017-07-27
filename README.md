@@ -31,53 +31,62 @@ The aim of this project is to create a "mother of all news apps". With this proj
 ### In Progress: Newspaper experience on iPad
 
 ## Development Milestones
-Today's Tasks: 
-Bug: Can't remember preference
-track "listen to story" end event
-What to do if there are still too many files after cleanning? 
 
-Delegated Tasks (Check on Monday):
+### Advertising: 
+1. Done: retrieve Ad info from Dolphin's script string
+2. Done: Send third party impressions until they are confirmed
+3. Done: Tap link for Ad Views
+4. Done: Tap Link in content view
+5. Launch Screen Ad
+6. Native Banner
+7. Web Banner
+8. information flow
 
-1. Xiangyun: Tracking Code for www1.ftchinese.com log
-
-
-### Done: Static Color Management: Constants and Naming: Weiguo
-
-### In Progress: Channel Structure: Xiangyun
-1. The final correct channel structure. 
-2. Retrieve and convert other types of API. 
-
-
-### In Progress: Channel Page Collection View on iPad: 
+### Channel Page Collection View on iPad: 
 1. Done: Stop using auto-resizing cells on Regular size. 
 2. Use prefetch to make scrolling smooth. 
+3. FT Academy
+4. FT Intelligence
+5. Most Popular
+6. Calendar
 
-### Story Page: 
-1. In Progress: Come up with bilingual and english switch. 
+
+### Channel Structure: Xiangyun
+1. In Progress: The final correct channel structure. 
+2. Done: Retrieve and convert other types of API. 
+
+### Content Page: 
+1. Done: Come up with bilingual and english switch. 
 2. In Progress: Functionalities and buttons. 
 3. Done: Video. 
 4. Interactive Features. 
 5. custom link
 6. Handle Links
-7. Offline and Caches for Content
-8. A progress indicator untill web page is completely updated
-
-
-### Advertising: 
-1. In Progress: retrieve Ad info from Dolphin's script string
-2. Send third party impressions until they are confirmed
-3. Tap link for Ad Views
-
+7. Done: Offline and Caches for Content
+8. Done: A progress indicator untill web page is completely updated
 
 ### Offline and Caches
+1. Done: Channel
+2. Done: Content
+3. Done: Clean
+4. Done: Prefetch
 
 ### Sharing
+1. Done: WeChat
+2. Need Check: Built-ins
 
 ### Tracking
+1. Done: Google
+2. FTC's own tracking
 
 ### Audio
+1. Done: Speech to Text
+2. Done: Radio
 
 ### AI
+1. Chat Room
+2. Customer Service
+3. Recommendation
 
 ### Core data
 
@@ -85,16 +94,16 @@ Delegated Tasks (Check on Monday):
 
 ### Today Widget
 
-### Audio
-
-### Text to Speech
-
 ### Store
+1. eBook
+2. eReader
 
 ### Login and Registration
-#### WeChat Login
-#### Registration
-#### Login
+1. Normal 
+2. WeChat
+
+### myFT
+
 
 ## Completed Tasks
 1. Video Page Take Full Screen Width 
@@ -120,3 +129,5 @@ prefetch stories
 3. Add Tracker to Detail Page
 4. Update MPU ad by removing background color when displaying actual ad image
 Track "list to story" event
+Bug: Can't remember preference
+track "listen to story" end event

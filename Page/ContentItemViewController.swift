@@ -349,6 +349,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         // MARK: This makes the web view scroll like native
         webView?.scrollView.delegate = self
+        webView?.navigationDelegate = self
         
         if let wv = self.webView {
             //self.textView.removeFromSuperview()
@@ -591,8 +592,28 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
         return attrString
     }
+
+    
 }
 
+// TODO: Handle all types of links here
+extension ContentItemViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: (@escaping (WKNavigationActionPolicy) -> Void)) {
+        if let url = navigationAction.request.url {
+            let urlString = url.absoluteString
+            if navigationAction.navigationType == .linkActivated{
+                if urlString.range(of: "mailto:") != nil{
+                    UIApplication.shared.openURL(url)
+                } else {
+                    openLink(url)
+                }
+                decisionHandler(.cancel)
+            }  else {
+                decisionHandler(.allow)
+            }
+        }
+    }
+}
 
 
 extension ContentItemViewController: UIScrollViewDelegate {

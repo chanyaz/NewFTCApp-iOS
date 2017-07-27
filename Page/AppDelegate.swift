@@ -27,10 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 10.0, *) {
             let center = UNUserNotificationCenter.current()
             center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-                print("authorization granted: \(granted)")
+                //print("authorization granted: \(granted)")
                 
             }
-            print("register for remote notifications")
+            //print("register for remote notifications")
             UIApplication.shared.registerForRemoteNotifications()
         } else {
             // Fallback on earlier versions
@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     public func checkImpressions() {
-        print ("check impressions")
+        //print ("check impressions")
         Impressions.retry()
     }
     

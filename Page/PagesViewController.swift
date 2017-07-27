@@ -39,7 +39,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         print ("try to present launch screen")
         if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
             self.present(launchScreenViewController, animated: false, completion: nil)
-            print ("launch screen presented")
+            //print ("launch screen presented")
         }
         
         

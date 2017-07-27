@@ -38,6 +38,10 @@ class LaunchScreen: UIViewController {
     private let screenWidth = UIScreen.main.bounds.width
     private let screenHeight = UIScreen.main.bounds.height
     
+    override var prefersStatusBarHidden : Bool {
+        return true
+    }
+    
     override func loadView() {
         super.loadView()
         adOverlayView()
@@ -46,6 +50,10 @@ class LaunchScreen: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         closeAfterSeconds(maxAdTimeAfterLaunch)
+        // MARK: download the latest ad schedule from the internet
+        if (adType != "none") {
+            adSchedule.updateAdSchedule()
+        }
         // Do any additional setup after loading the view.
         // print ("launch screen loaded")
         

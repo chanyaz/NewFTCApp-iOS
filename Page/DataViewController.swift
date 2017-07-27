@@ -54,13 +54,13 @@ class DataViewController: UICollectionViewController {
         activityIndicator.startAnimating()
         // MARK: Check the local file
         if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
-            print ("found \(urlString) in caches directory. ")
+            //print ("found \(urlString) in caches directory. ")
             if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
             {
                 let contentSections = contentAPI.formatJSON(resultsDictionary)
                 let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
                 updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
-                print ("update UI from local file with \(urlString)")
+                //print ("update UI from local file with \(urlString)")
             }
         }
         
@@ -98,7 +98,7 @@ class DataViewController: UICollectionViewController {
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "json") == nil {
                             print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         } else {
-                            print ("File already exists. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                            //print ("File already exists. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         }
                         Download.downloadUrl(apiUrl, to: .cachesDirectory, as: "json")
                     }
@@ -199,7 +199,7 @@ class DataViewController: UICollectionViewController {
             //flowLayout.sectionHeadersPinToVisibleBounds = true
             let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
             let availableWidth = view.frame.width - paddingSpace
-            print("availableWidth : \(availableWidth)")
+            //print("availableWidth : \(availableWidth)")
             
             if horizontalClass != .regular || verticalCass != .regular {
                 if #available(iOS 10.0, *) {

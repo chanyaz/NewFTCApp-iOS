@@ -17,7 +17,7 @@ struct Track {
             let builder = GAIDictionaryBuilder.createScreenView()
             if let obj = builder?.build() as [NSObject : AnyObject]? {
                 tracker?.send(obj)
-                print ("send track for screen name: \(name)")
+                //print ("send track for screen name: \(name)")
             }
         }
         // TODO: Send to FTChinese Log

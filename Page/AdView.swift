@@ -32,15 +32,15 @@ class AdView: UIView, SFSafariViewControllerDelegate {
             self.adid = adid
             if let url = AdParser.getAdUrlFromDolphin(adid) {
                 clean()
-                print ("Request Ad From \(url)")
+                //print ("Request Ad From \(url)")
                 Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                     DispatchQueue.main.async { () -> Void in
                         guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
-                            print ("Fail: Request Ad From \(url)")
+                            //print ("Fail: Request Ad From \(url)")
                             self?.handleAdModel()
                             return
                         }
-                        print ("Success: Request Ad From \(url)")
+                        //print ("Success: Request Ad From \(url)")
                         let adModel = AdParser.parseAdCode(adCode)
                         self?.adModel = adModel
                         self?.handleAdModel()
@@ -63,7 +63,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                 // TODO: If the asset is already downloaded, no need to request from the Internet
                 if let data = Download.readFile(imageString, for: .cachesDirectory, as: nil) {
                     showAdImage(data)
-                    print ("image already in cache:\(imageString)")
+                    //print ("image already in cache:\(imageString)")
                     return
                 }
 //                print ("continue to get the image file of \(imageString)")

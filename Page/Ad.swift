@@ -34,7 +34,7 @@ class Ad: UICollectionReusableView {
     
     // MARK: Use WKWebview to migrate current display ads.
     func updateUI() {
-        print ("ad header view update UI called")
+        // print ("ad header view update UI called")
         let adBackgroundColor = UIColor(hex: Color.Ad.background)
         self.backgroundColor = adBackgroundColor
         adView?.backgroundColor = adBackgroundColor

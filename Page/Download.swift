@@ -33,18 +33,18 @@ struct Download {
                 let filePath = directoryPath.appendingPathComponent(realFileName)
                 let fileManager = FileManager.default
                 let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
-                if created {
-                    print("\(realFileName) created ")
-                } else {
-                    print("Couldn't create file for some reason")
-                }
+//                if created {
+//                    print("\(realFileName) created successfully")
+//                } else {
+//                    print("Couldn't create file for some reason")
+//                }
                 // Write that JSON to the file created earlier
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
                     file.write(data)
-                    print("File data was written to \(realFileName) successfully!")
+                    //print("File data was written to \(realFileName) successfully!")
                 } catch let error as NSError {
-                    print("Couldn't write to file: \(error.localizedDescription)")
+                    print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
                 }
             }
         }

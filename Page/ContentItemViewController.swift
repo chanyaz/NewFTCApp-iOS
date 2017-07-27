@@ -97,7 +97,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             // MARK: Check the local file
             if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
-                print ("found \(urlString) in caches directory. ")
+                //print ("found \(urlString) in caches directory. ")
                 if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
                 {
                     let contentSections = contentAPI.formatJSON(resultsDictionary)

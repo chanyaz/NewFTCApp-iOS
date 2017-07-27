@@ -88,6 +88,9 @@ class AdSchedule {
                         let url = NSURL(string:currentFileName)
                         let pathExtention = url?.pathExtension
                         
+                        
+                        // let thefile = Download.readFile(currentFileName, for: .documentDirectory, as: nil)
+                        
                         // MARK: - If the file exists locally, return its path, otherwise return nil
                         let templatePath = Download.checkFilePath(fileUrl: currentFileName, for: .documentDirectory)
                         

@@ -22,19 +22,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     fileprivate let contentAPI = ContentFetch()
     
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-    //    @IBOutlet weak var contentScrollView: UIScrollView!
-    //
-    //    @IBOutlet weak var topBanner: UIView!
-    //
-    //    @IBOutlet weak var tag: UILabel!
-    //
-    //    @IBOutlet weak var headline: UILabel!
-    //
-    //    @IBOutlet weak var lead: UILabel!
-    //
-    //    @IBOutlet weak var coverImage: UIImageView!
-    //
-    //    @IBOutlet weak var byline: UILabel!
     
     @IBOutlet weak var bodyTextView: UITextView!
     // TODO: https://stackoverflow.com/questions/38948904/calculating-contentsize-for-uiscrollview-when-using-auto-layout
@@ -53,8 +40,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         navigationController?.delegate = self
         //navigationItem.title = "another test from oliver"
-        
- 
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,14 +48,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             let screenName = "/\(DeviceInfo.checkDeviceType())/\(type)/\(id)/\(headline)"
             Track.screenView(screenName)
         }
-        // FIXME: The delay is a hack, otherwise the notification will not be received if the content is loaded from cache
-        Timer.scheduledTimer(
-            timeInterval: 0.00001,
-            target: self,
-            selector: #selector(delayedPostLanguageChoice),
-            userInfo: nil,
-            repeats: false
-        )
     }
     
 
@@ -137,7 +114,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     self?.activityIndicator.removeFromSuperview()
                     if let error = error {
                         print("Error searching : \(error)")
-                        //TODO: When something is wrong, check the user's internet connection and display a friendly message
+                        //MARK: When something is wrong, check the user's internet connection and display a friendly message
                         let statusType = IJReachability().connectedToNetworkOfType()
                         let errorMessageString: String
                         if statusType == .notConnected {
@@ -194,29 +171,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         print ("Language: Post English Status Change")
     }
     
-    private func postLanguageChoice(_ languageIndex: Int) {
-        let object = languageIndex
-        let name = Notification.Name(rawValue: Event.languageSelected)
-        NotificationCenter.default.post(name: name, object: object)
-        print ("Language: language choice posted as \(languageIndex)")
-        currentLanguageIndex = languageIndex
-    }
-    
-    public func delayedPostLanguageChoice() {
-        if let currentLanguageIndex = currentLanguageIndex {
-            postLanguageChoice(currentLanguageIndex)
-        }
-    }
+
     
     private func initStyle() {
         self.view.backgroundColor = UIColor(hex: Color.Content.background)
-        //        topBanner.backgroundColor = UIColor(hex: Color.Ad.background)
-        //        headline.textColor = UIColor(hex: Color.Content.headline)
-        //        headline.font = headline.font.bold()
-        //        tag.textColor = UIColor(hex: Color.Content.tag)
-        //        tag.font = tag.font.bold()
-        //        byline.textColor = UIColor(hex: Color.Content.time)
-        //        lead.textColor = UIColor(hex: Color.Content.lead)
         bodyTextView.backgroundColor = UIColor(hex: Color.Content.background)
         bodyTextView.isScrollEnabled = false
         bodyTextView.isScrollEnabled = true
@@ -282,20 +240,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
         }
         
-        
-        //        let imageURL = URL(string: (dataObject?.image)!)
-        //        let attachment = AsyncTextAttachment(imageURL: imageURL)
-        //        attachment.displaySize = CGSize(width: 160, height: 90)
-        //        //attachment.image = UIImage.placeholder(UIColor.gray, size: attachment.displaySize!)
-        //        let coverImageAttrString = NSAttributedString(attachment: attachment)
-        
-        //textView.attributedText = attachmentStr
-        
-        
-        
-        // MARK: the outlets may not exist so "?" is necessary
-        // headline?.text = dataObject?.headline ?? ""
-        
         // MARK: paragraph styles
         let paragraphStyle = NSMutableParagraphStyle()
         //paragraphStyle.paragraphSpacing = 12.0
@@ -346,8 +290,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             string: "\(leadString)\r\n",
             attributes:leadAttributes
         )
-        //lead?.attributedText = leadAttrString
-        
         
         // MARK: Publishing Time
         let bylineParagraphStyle = NSMutableParagraphStyle()
@@ -393,18 +335,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         text.append(bylineAttrString)
         text.append(body)
         bodyTextView?.attributedText = text
-        //bodyTextView?.isScrollEnabled = false
-        
-        
-        // FIXME: There's something wrong with this text, comment it for now
-        //        if let content = dataObject {
-        //            let attributedArticle = AttributedArticle(content: content, contentWidth: bodyTextView.contentSize.width)
-        //            // attributedArticle.chineseBody
-        //            // attributedArticle.englishBody
-        //            // attributedArticle.bilingualBody
-        //            // print ("chinese body is: \(attributedArticle.chineseBody)")
-        //            bodyTextView.attributedText = attributedArticle.chineseBody
-        //        }
+
     }
     
     private func renderWebView() {
@@ -519,22 +450,22 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let eHeadline = dataObject?.eheadline ?? ""
         let eBody = dataObject?.ebody ?? ""
         let cBody = dataObject?.cbody ?? ""
-        let languageChoice: Int
+        //let languageChoice: Int
         let cHeadline = dataObject?.headline ?? ""
         if eBody != "" && languagePreference == 1 {
             headline = eHeadline
             body = eBody
-            languageChoice = 1
+            //languageChoice = 1
         } else if eBody != "" && languagePreference == 2 {
             headline = "<div>\(eHeadline)</div><div>\(cHeadline)</div>"
             body = getCEbodyHTML(eBody: eBody, cBody: cBody)
-            languageChoice = 2
+            //languageChoice = 2
         } else {
             headline = cHeadline
             body = cBody
-            languageChoice = 0
+            //languageChoice = 0
         }
-        postLanguageChoice(languageChoice)
+        // postLanguageChoice(languageChoice)
         //print ("language choice posted as \(languageChoice)")
         let bodyWithMPU = body.replacingOccurrences(
             of: "[\r\t\n]",
@@ -602,45 +533,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     
-    
-    //    eText = allId.ebody.match(/<p>.*<\/p>/gi);
-    //    cText = allId.cbody.match(/<p>.*<\/p>/gi);
-    //    eLen = (eText !== null) ? eText.length : 0;
-    //    cLen = (cText !== null) ? cText.length : 0;
-    //    contentnumber = Math.max(eLen, cLen);
-    //    //ceDiff = cLen - eLen;
-    //    ct = '';
-    //    //alert (cText);
-    //    for (i = 0; i < contentnumber; i++) {
-    //    leftc = eText[ebodyCount] || '';
-    //    //remove p tag and img tag
-    //    //if leftc or right c is empty, it means it probably is an img in a p
-    //    //then check the next p
-    //    //the check is needed only once
-    //    //assuming editors don't attach two images without text between
-    //    leftc = removeTag(leftc);
-    //    if (leftc.length <= 2) { //short code means no need to display
-    //    ebodyCount += 1;
-    //    leftc = eText[ebodyCount] || '';
-    //    leftc = removeTag(leftc);
-    //    }
-    //    ebodyTotal += 1;
-    //    ebodyCount += 1;
-    //    rightc = cText[cbodyCount] || '';
-    //    rightc = removeTag(rightc);
-    //    if (rightc.length <= 2) { //short code means no need to display
-    //    cbodyCount += 1;
-    //    rightc = cText[cbodyCount] || '';
-    //    rightc = removeTag(rightc);
-    //    }
-    //    cbodyTotal += 1;
-    //    cbodyCount += 1;
-    //    ct += '<div class=ebodyt title="'+ ebodyTotal +'">'+ leftc + '</div><div class=cbodyt title="'+ cbodyTotal +'">' + rightc + '</div><div class=clearfloat></div>';
-    //    //console.log ("i: " + i + " ebodyTotal: " + ebodyTotal + ' cbodyTotal: ' + cbodyTotal);
-    //    }
-    //    ceDiff = cbodyTotal - ebodyTotal;
-    //    $('#storyview .storybody').html('<div class=ce>' + ct + '</div>');
-    //    $('#storyview .storybody').prepend('<div id="ceTwoColumn" class=centerButton><button class="ui-light-btn">中英文并排</button></div>');
+ 
     
     fileprivate func htmlToAttributedString(_ htmltext: String) -> NSMutableAttributedString? {
         // MARK: remove p tags in text

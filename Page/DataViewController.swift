@@ -119,7 +119,14 @@ class DataViewController: UICollectionViewController {
             fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)
         )
         self.fetches = resultsWithAds
-        self.collectionView?.reloadData()
+        // self.collectionView?.collectionViewLayout.invalidateLayout()
+        
+//        if let sectionCount = collectionView?.numberOfSections, sectionCount > 0 {
+//            let indexSet = IndexSet(integersIn: 0..<sectionCount)
+//            collectionView?.deleteSections(indexSet)
+//        }
+        
+        collectionView?.reloadData()
     }
     
     
@@ -257,7 +264,7 @@ class DataViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        //        print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
+        // print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
         
         return fetches.fetchResults[section].items.count
     }
@@ -265,7 +272,7 @@ class DataViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        //         print ("cellItem111---- \(cellItem) ----cellItem")
+        // print ("section: \(indexPath.section), row: \(indexPath.row)")
         switch reuseIdentifier {
         case "CoverCell":
             if let cell = cellItem as? CoverCell {

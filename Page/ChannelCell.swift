@@ -13,6 +13,7 @@ class ChannelCell: UICollectionViewCell {
     // MARK: - Style settings for this class
     let imageWidth = 152
     let imageHeight = 114
+    var adModel: AdModel?
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
@@ -53,12 +54,46 @@ class ChannelCell: UICollectionViewCell {
                     //print ("Success: Request Ad From \(url)")
                     let adModel = AdParser.parseAdCode(adCode)
                     print ("info ad ad model retrieved as \(adModel)")
-//                    self?.adModel = adModel
-//                    self?.handleAdModel()
+                    self?.adModel = adModel
+                    self?.handleAdModel()
                 }
             }
         }
     }
+    
+    private func handleAdModel() {
+        if let adModel = self.adModel {
+            if let imageString = adModel.imageString {
+                // TODO: If the asset is already downloaded, no need to request from the Internet
+                if let data = Download.readFile(imageString, for: .cachesDirectory, as: nil) {
+                    //TODO: show ad image
+                    //showAdImage(data)
+                    print ("image already in cache:\(imageString)")
+                    return
+                }
+                //                print ("continue to get the image file of \(imageString)")
+                //                print ("the adModel is now \(adModel)")
+                if let url = URL(string: imageString) {
+                    Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
+                        guard let data = data else {
+                            //self?.loadWebView()
+                            return
+                        }
+                        DispatchQueue.main.async { () -> Void in
+                            //self?.showAdImage(data)
+                            print ("show the ad image of feed ad here")
+                        }
+                        Download.saveFile(data, filename: imageString, to: .cachesDirectory, as: nil)
+                    }
+                }
+            } else {
+                //loadWebView()
+            }
+        } else {
+            //loadWebView()
+        }
+    }
+
     
     private func updateContent() {
         // MARK: - Update Styles and Layouts

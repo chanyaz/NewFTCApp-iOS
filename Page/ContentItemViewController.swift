@@ -92,7 +92,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             //MARK: if it is a story, get the API
             let urlString = APIs.get(id, type: "story")
             view.addSubview(activityIndicator)
-            activityIndicator.frame = view.bounds
+            //activityIndicator.frame = view.bounds
+            activityIndicator.center = self.view.center
             activityIndicator.startAnimating()
             
             // MARK: Check the local file

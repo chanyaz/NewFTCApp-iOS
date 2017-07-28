@@ -49,7 +49,8 @@ class DataViewController: UICollectionViewController {
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         view.addSubview(activityIndicator)
-        activityIndicator.frame = view.bounds
+        // activityIndicator.frame = view.bounds
+        activityIndicator.center = self.view.center
         activityIndicator.startAnimating()
         // MARK: Check the local file
         if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {

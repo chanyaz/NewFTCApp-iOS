@@ -46,8 +46,8 @@ class DataViewController: UICollectionViewController {
     
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private func getAPI(_ urlString: String) {
-        let horizontalClass = self.traitCollection.horizontalSizeClass
-        let verticalCass = self.traitCollection.verticalSizeClass
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         view.addSubview(activityIndicator)
         activityIndicator.frame = view.bounds
         activityIndicator.startAnimating()
@@ -58,6 +58,7 @@ class DataViewController: UICollectionViewController {
             {
                 let contentSections = contentAPI.formatJSON(resultsDictionary)
                 let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
+                print ("update UI from local")
                 updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
                 //print ("update UI from local file with \(urlString)")
             }
@@ -75,14 +76,16 @@ class DataViewController: UICollectionViewController {
                 }
                 if let results = results {
                     // MARK: When updating UI from the internet, the viewable ad will be updated too, which makes sense
-                    self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
                     print ("update UI from the internet with \(urlString)")
-                    // MARK: Only when you get the content from the internet, should you prefetch content from the results
+                    self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+                    // FIXME: It is important to reload Data here, not inside the updateUI. But Why? What's the difference?
+                    self?.collectionView?.reloadData()
                     self?.prefetch()
                 }
             }
         }
     }
+
     
     private func prefetch() {
         let statusType = IJReachability().connectedToNetworkOfType()
@@ -118,15 +121,30 @@ class DataViewController: UICollectionViewController {
             apiUrl: results.apiUrl,
             fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)
         )
+        let isFirstLoad: Bool
+        if self.fetches.fetchResults.count == 0 {
+            isFirstLoad = true
+        } else {
+            isFirstLoad = false
+        }
         self.fetches = resultsWithAds
+        // self.fetches = results
         // self.collectionView?.collectionViewLayout.invalidateLayout()
         
-//        if let sectionCount = collectionView?.numberOfSections, sectionCount > 0 {
-//            let indexSet = IndexSet(integersIn: 0..<sectionCount)
-//            collectionView?.deleteSections(indexSet)
-//        }
+        //        if self.collectionView?.numberOfSections > 0 {
+        //            print ("Will reload Data called from updateUI")
+        //            self.collectionView?.reloadData()
+        //        } else {
+        //            print ("No need to reload Data as the fetch is empty")
+        //        }
+        // FIXME: We need to run reloadData inside updateUI and outside updateUI. If not, the app will crash when new data has less items than old data. Why?
+        if isFirstLoad == false {
+            print ("Will reload Data called from updateUI")
+            self.collectionView?.reloadData()
+        } else {
+            print ("No need to reload Data as the fetch is empty")
+        }
         
-        collectionView?.reloadData()
     }
     
     
@@ -134,16 +152,11 @@ class DataViewController: UICollectionViewController {
         // MARK: - Request Data from Server
         if let api = dataObject["api"] {
             // TODO: Display a spinner
-            
             getAPI(api)
         } else {
             //TODO: Show a warning if there's no api to get
             print("results : error")
         }
-        
-        // TODO: Check if there's a local version of data
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -155,8 +168,8 @@ class DataViewController: UICollectionViewController {
     
     override func viewWillLayoutSubviews() {
         //         print("33333")//第一次启动出现3次，转屏出现一次
-        let horizontalClass = self.traitCollection.horizontalSizeClass
-        let verticalCass = self.traitCollection.verticalSizeClass
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         
         if horizontalClass == .regular && verticalCass == .regular {
             if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
@@ -178,7 +191,7 @@ class DataViewController: UICollectionViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         print("22222")//第一次启动不运行，转屏出现一次
-        collectionView?.reloadData()
+        // collectionView?.reloadData()
         
     }
     
@@ -398,8 +411,8 @@ class DataViewController: UICollectionViewController {
                 reuseIdentifier = "HeadlineCell"
             }
         } else {
-            let horizontalClass = self.traitCollection.horizontalSizeClass
-            let verticalCass = self.traitCollection.verticalSizeClass
+            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if horizontalClass == .regular && verticalCass == .regular {
                 
                 var isAd = false
@@ -448,30 +461,32 @@ class DataViewController: UICollectionViewController {
     }
     
     private func getReuseIdentifierForSectionHeader(_ sectionIndex: Int) -> (reuseId: String?, sectionSize: CGSize) {
-        let reuseIdentifier: String?
-        let sectionSize: CGSize
-        let sectionType = fetches.fetchResults[sectionIndex].type
-        switch sectionType {
-        case "Banner":
-            reuseIdentifier = "Ad"
-            sectionSize = CGSize(width: view.frame.width, height: view.frame.width/4)
-        case "MPU":
-            reuseIdentifier = "Ad"
-            sectionSize = CGSize(width: 300, height: 250)
-        case "HalfPage":
-            reuseIdentifier = "Ad"
-            sectionSize = CGSize(width: 300, height: 600)
-        case "List":
-            if fetches.fetchResults[sectionIndex].title != "" {
-                reuseIdentifier = "HeaderView"
-                sectionSize = CGSize(width: view.frame.width, height: 44)
-            } else {
+        var reuseIdentifier: String? = nil
+        var sectionSize: CGSize = .zero
+        if fetches.fetchResults.count > sectionIndex {
+            let sectionType = fetches.fetchResults[sectionIndex].type
+            switch sectionType {
+            case "Banner":
+                reuseIdentifier = "Ad"
+                sectionSize = CGSize(width: view.frame.width, height: view.frame.width/4)
+            case "MPU":
+                reuseIdentifier = "Ad"
+                sectionSize = CGSize(width: 300, height: 250)
+            case "HalfPage":
+                reuseIdentifier = "Ad"
+                sectionSize = CGSize(width: 300, height: 600)
+            case "List":
+                if fetches.fetchResults[sectionIndex].title != "" {
+                    reuseIdentifier = "HeaderView"
+                    sectionSize = CGSize(width: view.frame.width, height: 44)
+                } else {
+                    reuseIdentifier = nil
+                    sectionSize = CGSize.zero
+                }
+            default:
                 reuseIdentifier = nil
                 sectionSize = CGSize.zero
             }
-        default:
-            reuseIdentifier = nil
-            sectionSize = CGSize.zero
         }
         return (reuseId: reuseIdentifier, sectionSize: sectionSize)
     }

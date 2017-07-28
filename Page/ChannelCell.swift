@@ -44,6 +44,7 @@ class ChannelCell: UICollectionViewCell {
         updateContent()
         containerView.backgroundColor = UIColor(hex: Color.Ad.background)
         if let adid = itemCell?.id, let url = AdParser.getAdUrlFromDolphin(adid) {
+            print ("feed ad id is \(adid), url is \(url.absoluteString)")
             Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                 DispatchQueue.main.async { () -> Void in
                     guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
@@ -51,7 +52,8 @@ class ChannelCell: UICollectionViewCell {
                         // self?.handleAdModel()
                         return
                     }
-                    //print ("Success: Request Ad From \(url)")
+                    print ("feed ad success: Request Ad From \(url)")
+                    print ("feed ad code is: \(adCode)")
                     let adModel = AdParser.parseAdCode(adCode)
                     print ("info ad ad model retrieved as \(adModel)")
                     self?.adModel = adModel
@@ -123,6 +125,9 @@ class ChannelCell: UICollectionViewCell {
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        // MARK: - initialize image view as it will be reused. If you don't do this, the cell might show wrong image when you scroll. 
+        imageView.image = nil
+        
         if let loadedImage = itemCell?.thumbnailImage {
             imageView.image = loadedImage
             //print ("image is already loaded, no need to download again. ")

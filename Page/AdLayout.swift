@@ -36,6 +36,12 @@ struct AdLayout {
             )
             // MARK: Create the Info Ad
             let infoAd = ContentItem(id: "20220121", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
+            let infoAdSection = ContentSection(
+                title: "",
+                items: [infoAd],
+                type: "",
+                adid: ""
+            )
 
             // MARK: - The first item in the first section should be marked as Cover.
             // MARk: - Make sure items has a least one child to avoid potential run time error.

@@ -48,11 +48,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fNl-xM-gJP">
+                                <rect key="frame" x="280.5" y="121.5" width="28.5" height="13.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="fNl-xM-gJP" secondAttribute="bottom" constant="14" id="5bl-I5-vmw"/>
                             <constraint firstItem="63A-Fz-18z" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="14" id="8F8-bX-jiF"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="63A-Fz-18z" secondAttribute="bottom" constant="20" symbolic="YES" id="DTH-MS-XFy"/>
+                            <constraint firstAttribute="trailing" secondItem="fNl-xM-gJP" secondAttribute="trailing" constant="14" id="ErL-61-Kh7"/>
                             <constraint firstAttribute="trailing" secondItem="ZeZ-uA-ElO" secondAttribute="trailing" constant="14" id="GD7-ls-qwX"/>
                             <constraint firstItem="RXw-TM-ab8" firstAttribute="top" secondItem="63A-Fz-18z" secondAttribute="top" constant="-1" id="MLN-kM-DGR"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="14" id="OIq-Sz-gYA"/>
@@ -83,8 +91,9 @@
                 <outlet property="headline" destination="ZeZ-uA-ElO" id="XP8-Ai-3NJ"/>
                 <outlet property="imageView" destination="63A-Fz-18z" id="eQD-GB-bMY"/>
                 <outlet property="lead" destination="RXw-TM-ab8" id="HkM-JG-whT"/>
+                <outlet property="sign" destination="fNl-xM-gJP" id="Q5s-UF-JpS"/>
             </connections>
-            <point key="canvasLocation" x="-368" y="-416"/>
+            <point key="canvasLocation" x="-374" y="-419"/>
         </collectionViewCell>
     </objects>
 </document>

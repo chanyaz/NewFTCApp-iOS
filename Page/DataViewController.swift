@@ -189,6 +189,7 @@ class DataViewController: UICollectionViewController {
         }
     }
     
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         print("22222")//第一次启动不运行，转屏出现一次
@@ -522,6 +523,10 @@ class DataViewController: UICollectionViewController {
             }
             
         } else {
+            if selectedItem.type == "ad" {
+                print ("Tap an ad. Let the cell handle it by itself. ")
+                return false
+            }
             //MARK: if it is a story, video or other types of HTML based content, push the detailViewController
             if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
                 var pageData1 = [ContentItem]()

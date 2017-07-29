@@ -40,7 +40,7 @@ The aim of this project is to create a "mother of all news apps". With this proj
 5. Done: Launch Screen Ad
 6. Done: Native Banner
 7. Done: Web Banner
-8. Information flow
+8. In Progress: Information flow: send impression, click, advertisement sign, backup link, remove border
 9. Done: Show Image if there's time
 
 ### Channel Page: 

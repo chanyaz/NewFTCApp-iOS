@@ -12,6 +12,10 @@ struct AdModel {
     let link: String?
     let video: String?
     let impressions: [Impression]
+    let headline: String?
+    let adName: String?
+    var bgColor: String
+    var lead: String?
 }
 
 struct AdParser {
@@ -29,6 +33,7 @@ struct AdParser {
         let imagePatterns = [
             "'imageUrl': '(.+)'",
             "var ImgSrc = '(.+)';",
+            "var image = '(.+)'",
             "(https://creatives.ftimg.net/.+jpg)",
             "(https://creatives.ftimg.net/.+gif)",
             "<img src=\"(.+)\" style"
@@ -46,6 +51,36 @@ struct AdParser {
             print ("link is nil, the ad code is now: \(adCode)")
         }
         
+        // MARK: Headline for Paid Post
+        let headlinePatterns = [
+            "var headline = '(.+)'"
+        ]
+        let headline = adCode.matchingStrings(regexes: headlinePatterns)
+        
+        // MARK: get ad name by combining ad name and ass id
+        let adNamePatterns = [
+            "var AdName = '(.+)'"
+        ]
+        var adName = adCode.matchingStrings(regexes: adNamePatterns)
+        let assIdPatterns = [
+            "var AssID = '(.+)'"
+        ]
+        if let assId = adCode.matchingStrings(regexes: assIdPatterns), let adNameString = adName {
+            adName = "\(adNameString) (\(assId))"
+        }
+        
+        // MARK: get background color for paid post
+        let bgColorPatterns = [
+            "var bgColor = '(.+)'"
+        ]
+        let bgColor = adCode.matchingStrings(regexes: bgColorPatterns) ?? "0"
+        
+        // MARK: get lead for paid post
+        let leadPatterns = [
+        "var lead = '(.+)'"
+        ]
+        let lead = adCode.matchingStrings(regexes: leadPatterns)
+        
         // MARK: Impressions
         let impressionPatterns = [
             "var Imp = '(.+)';"
@@ -53,21 +88,25 @@ struct AdParser {
         
         var impressions = [Impression]()
         if let impressionUrlString = adCode.matchingStrings(regexes: impressionPatterns) {
-            let adName = "Some Ad Name"
-            let impression = Impression(urlString: impressionUrlString, adName: adName)
+            let adNameForImpression = adName ?? "Some Ad Name"
+            let impression = Impression(urlString: impressionUrlString, adName: adNameForImpression)
             impressions.append(impression)
         }
         
         // MARK: Test Impressions
-//                impressions = [
-//                    Impression(urlString: "https://www.ft.com/", adName: "Some Ad Name")
-//                ]
+        //                impressions = [
+        //                    Impression(urlString: "https://www.ft.com/", adName: "Some Ad Name")
+        //                ]
         
         let adModel = AdModel(
             imageString: image,
             link: link,
             video: video,
-            impressions: impressions
+            impressions: impressions,
+            headline: headline,
+            adName: adName,
+            bgColor: bgColor,
+            lead: lead
         )
         
         return adModel
@@ -76,6 +115,14 @@ struct AdParser {
     public static func getAdUrlFromDolphin(_ adid: String) -> URL? {
         let base = "https://dolphin3.ftimg.net/s?z=ft&slot=676544&_sex=101&_cs=1&_csp=1&_dc=2&_mm=2&_sz=2&_am=2&_ut=member&_fallback=0" //10000001
         let urlString =  "\(base)&c=\(adid)"
+        // TODO: This is a test code, remove before publishing
+        if adid == "20220121" {
+            let testUrlString = "https://raw.githubusercontent.com/FTChinese/AdTemplates/master/paid-post-test.html"
+            if let url = URL(string: testUrlString) {
+                return url
+            }
+        }
+        
         if let url = URL(string: urlString) {
             return url
         }

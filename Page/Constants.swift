@@ -48,6 +48,7 @@ struct Color {
     
     struct Ad {
         static let background = "#f6e9d8"
+        static let sign = "#555555"
     }
     
 }
@@ -146,6 +147,13 @@ struct AppGroup {
 
 struct Key {
     static let languagePreference = "Language Preference"
+}
+
+// MARK: - Use a server side image service so that you can request images that are just large enough
+struct ImageService {
+    static func resize(_ imageUrl: String, width: Int, height: Int) -> String {
+        return "https://www.ft.com/__origami/service/image/v2/images/raw/\(imageUrl)?source=ftchinese&width=\(width * 2)&height=\(height * 2)&fit=cover"
+    }
 }
 
 /*

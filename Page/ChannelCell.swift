@@ -47,12 +47,13 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         containerView.backgroundColor = UIColor(hex: Color.Ad.background)
         border.backgroundColor = nil
         // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        imageView.backgroundColor = UIColor(hex: Color.Content.background)
+        // imageView.backgroundColor = UIColor.red
         // MARK: - clear image, headline, lead, sign as it will be reused. If you don't do this, the cell might show wrong content when you scroll.
         imageView.image = nil
-        headline.text = nil
-        lead.text = nil
-        sign.text = nil
+//        headline.text = nil
+//        lead.text = nil
+//        sign.text = nil
         
         
         if let adid = itemCell?.id, let url = AdParser.getAdUrlFromDolphin(adid) {
@@ -80,6 +81,14 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
             headline.text = adModel.headline
             lead.text = adModel.lead
             sign.text = "广告"
+            
+//            let randomIndex = Int(arc4random_uniform(UInt32(2)))
+//            if randomIndex == 1 {
+//                headline.text = "卡地亚广告"
+//            }
+            
+            // TODO: Tell the collection layout view to reflow the layout
+            
             
             // MARK: - Report Impressions
             Impressions.report(adModel.impressions)
@@ -197,6 +206,8 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
             topController.present(webVC, animated: true, completion: nil)
         }
     }
+    
+
     
 }
 

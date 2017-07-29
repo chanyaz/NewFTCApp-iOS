@@ -254,7 +254,13 @@ class DataViewController: UICollectionViewController {
         // MARK: - Get Content Data for the Page
         requestNewContent()
         
+
     }
+    
+//    func updateLayouts() {
+//        print ("update layout")
+//        collectionView?.collectionViewLayout.invalidateLayout()
+//    }
     
     
     func refreshControlDidFire(sender:AnyObject) {
@@ -270,12 +276,9 @@ class DataViewController: UICollectionViewController {
     
     
     // MARK: UICollectionViewDataSource
-    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return fetches.fetchResults.count
     }
-    
-    
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items

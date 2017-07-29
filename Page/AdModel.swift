@@ -116,12 +116,12 @@ struct AdParser {
         let base = "https://dolphin3.ftimg.net/s?z=ft&slot=676544&_sex=101&_cs=1&_csp=1&_dc=2&_mm=2&_sz=2&_am=2&_ut=member&_fallback=0" //10000001
         let urlString =  "\(base)&c=\(adid)"
         // MARK: This is a test code, remove before publishing
-//        if adid == "20220121" {
-//            let testUrlString = "https://raw.githubusercontent.com/FTChinese/AdTemplates/master/paid-post-test.html"
-//            if let url = URL(string: testUrlString) {
-//                return url
-//            }
-//        }
+        if adid == "20220121" {
+            let testUrlString = "https://raw.githubusercontent.com/FTChinese/AdTemplates/master/paid-post-test.html"
+            if let url = URL(string: testUrlString) {
+                return url
+            }
+        }
         
         if let url = URL(string: urlString) {
             return url

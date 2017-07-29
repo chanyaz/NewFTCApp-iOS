@@ -21,8 +21,8 @@ class LaunchScreen: UIViewController {
     
     // MARK: - If the app use a native launch ad, suppress the pop up one
     private let useNativeLaunchAd = "useNativeLaunchAd"
-    private var maxAdTimeAfterLaunch = 6.0
-    private var maxAdTimeAfterWebRequest = 2.5
+    private var maxAdTimeAfterLaunch = 3.0
+    private var maxAdTimeAfterWebRequest = 1.5
     private let fadeOutDuration = 0.5
     private let adSchedule = AdSchedule()
     private lazy var player: AVPlayer? = {return nil} ()

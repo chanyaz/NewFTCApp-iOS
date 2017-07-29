@@ -48,8 +48,11 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         border.backgroundColor = nil
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
-        // MARK: - initialize image view as it will be reused. If you don't do this, the cell might show wrong image when you scroll.
+        // MARK: - clear image, headline, lead, sign as it will be reused. If you don't do this, the cell might show wrong content when you scroll.
         imageView.image = nil
+        headline.text = nil
+        lead.text = nil
+        sign.text = nil
         
         
         if let adid = itemCell?.id, let url = AdParser.getAdUrlFromDolphin(adid) {
@@ -143,7 +146,8 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         
         // MARK: - set the border color
         if let row = itemCell?.row,
-            row > 0 {
+            row > 0,
+            itemCell?.hideTopBorder != true {
             border.backgroundColor = UIColor(hex: Color.Content.border)
         } else {
             // MARK: - set first item's border color to transparent

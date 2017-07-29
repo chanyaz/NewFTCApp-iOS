@@ -35,13 +35,7 @@ struct AdLayout {
                 adid: "20220114"
             )
             // MARK: Create the Info Ad
-            let infoAd = ContentItem(id: "20220121", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
-            let infoAdSection = ContentSection(
-                title: "",
-                items: [infoAd],
-                type: "",
-                adid: ""
-            )
+            let paidPostItem = ContentItem(id: "20220121", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
 
             // MARK: - The first item in the first section should be marked as Cover.
             // MARk: - Make sure items has a least one child to avoid potential run time error.
@@ -60,7 +54,12 @@ struct AdLayout {
                 )
                 newContentSections.insert(newSection, at: 1)
                 newContentSections[0].items = Array(newContentSections[0].items[0..<9])
-                newContentSections[0].items.insert(infoAd, at:1)
+                // MARK: Insert the paid post under Cover
+                newContentSections[0].items.insert(paidPostItem, at:1)
+                // MARK: Tell the second story not to display border
+                if newContentSections[0].items.count > 2 {
+                    newContentSections[0].items[2].hideTopBorder = true
+                }
             }
             
             // MARK: Insert ads into sections that has larger index so that you don't have to constantly recalculate the new index

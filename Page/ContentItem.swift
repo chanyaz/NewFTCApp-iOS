@@ -23,6 +23,7 @@ class ContentItem{
     var row: Int
     
     var isCover = false
+    var hideTopBorder: Bool?
     var englishByline: String?
     var chineseByline: String?
     var publishTime: String?

@@ -15,7 +15,8 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     // MARK: - Style settings for this class
     let imageWidth = 152
     let imageHeight = 114
-    var adModel: AdModel?
+    //var adModel: AdModel?
+    var pageTitle = ""
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
@@ -42,42 +43,99 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         }
     }
     
+    private func updateContent() {
+        setupLayout()
+        
+        // MARK: - set the border color
+        if let row = itemCell?.row,
+            row > 0,
+            itemCell?.hideTopBorder != true {
+            border.backgroundColor = UIColor(hex: Color.Content.border)
+        } else {
+            // MARK: - set first item's border color to transparent
+            border.backgroundColor = nil
+        }
+        
+        // MARK: - Update dispay of the cell
+        headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        sign.text = nil
+        
+        // MARK: - Load the image of the item
+        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        // MARK: - initialize image view as it will be reused. If you don't do this, the cell might show wrong image when you scroll.
+        imageView.image = nil
+        
+        if let loadedImage = itemCell?.thumbnailImage {
+            imageView.image = loadedImage
+            //print ("image is already loaded, no need to download again. ")
+        } else {
+            itemCell?.loadImage(type: "thumbnail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+                self?.imageView.image = cellContentItem.thumbnailImage
+            })
+        }
+        
+        sizeCell()
+    }
+    
     private func requestAd() {
         setupLayout()
         containerView.backgroundColor = UIColor(hex: Color.Ad.background)
         border.backgroundColor = nil
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Content.background)
+        
+
         // imageView.backgroundColor = UIColor.red
         // MARK: - clear image, headline, lead, sign as it will be reused. If you don't do this, the cell might show wrong content when you scroll.
-        imageView.image = nil
-//        headline.text = nil
-//        lead.text = nil
-//        sign.text = nil
+        // MARK: - if adModel is already available from itemCell, no need to get the data from internet
         
+        if itemCell?.adModel != nil {
+            //self.adModel = adModel
+            showAd()
+            print ("use data from fetches to layout this cell! ")
+            return
+        }
+
+        imageView.image = nil
+        headline.text = nil
+        lead.text = nil
+        sign.text = nil
         
         if let adid = itemCell?.id, let url = AdParser.getAdUrlFromDolphin(adid) {
-            print ("feed ad id is \(adid), url is \(url.absoluteString)")
+            print ("Paid Post id is \(adid), url is \(url.absoluteString)")
             Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                 DispatchQueue.main.async { () -> Void in
                     guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
-                        print ("feed ad Fail: Request Ad From \(url)")
+                        print ("Paid Post ad Fail: Request Ad From \(url)")
+                        let adModel = AdModel(
+                            imageString: nil,
+                            link: nil,
+                            video: nil,
+                            impressions: [],
+                            headline: nil,
+                            adName: nil,
+                            bgColor: "0",
+                            lead: nil)
+                        self?.itemCell?.adModel = adModel
+                        self?.postNotificationForPaidPostUpdate()
                         return
                     }
-//                    print ("feed ad success: Request Ad From \(url)")
-//                    print ("feed ad code is: \(adCode)")
+//                    print ("Paid Post success: Request Ad From \(url)")
+//                    print ("Paid Post ad code is: \(adCode)")
                     let adModel = AdParser.parseAdCode(adCode)
 //                    print ("info ad ad model retrieved as \(adModel)")
-                    self?.adModel = adModel
-                    self?.showPaidPost()
+                    self?.itemCell?.adModel = adModel
+                    self?.showAd()
+                    self?.postNotificationForPaidPostUpdate()
                 }
             }
         }
         sizeCell()
     }
     
-    private func showPaidPost() {
-        if let adModel = adModel {
+    private func showAd() {
+        if let adModel = itemCell?.adModel {
             headline.text = adModel.headline
             lead.text = adModel.lead
             sign.text = "广告"
@@ -86,9 +144,6 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
 //            if randomIndex == 1 {
 //                headline.text = "卡地亚广告"
 //            }
-            
-            // TODO: Tell the collection layout view to reflow the layout
-            
             
             // MARK: - Report Impressions
             Impressions.report(adModel.impressions)
@@ -117,6 +172,13 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
                 }
             }
         }
+    }
+    
+    private func postNotificationForPaidPostUpdate() {
+        // MARK: Tell the collection layout view to reflow the layout
+        let object = itemCell
+        let name = Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle))
+        NotificationCenter.default.post(name: name, object: object)
     }
     
     private func showAdImage(_ data: Data) {
@@ -150,41 +212,7 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         }
     }
     
-    private func updateContent() {
-        setupLayout()
-        
-        // MARK: - set the border color
-        if let row = itemCell?.row,
-            row > 0,
-            itemCell?.hideTopBorder != true {
-            border.backgroundColor = UIColor(hex: Color.Content.border)
-        } else {
-            // MARK: - set first item's border color to transparent
-            border.backgroundColor = nil
-        }
-        
-        // MARK: - Update dispay of the cell
-        headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        sign.text = ""
-        
-        // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
-        // MARK: - initialize image view as it will be reused. If you don't do this, the cell might show wrong image when you scroll.
-        imageView.image = nil
-        
-        if let loadedImage = itemCell?.thumbnailImage {
-            imageView.image = loadedImage
-            //print ("image is already loaded, no need to download again. ")
-        } else {
-            itemCell?.loadImage(type: "thumbnail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-                self?.imageView.image = cellContentItem.thumbnailImage
-            })
-        }
-        
-        //print ("update UI for the cell\(String(describing: itemCell?.lead))")
-        sizeCell()
-    }
+
     
     
     // FIXME: These three functions are same as those in the AdView, should find a way to put them in one place
@@ -194,7 +222,7 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     }
     
     open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
-        if let link = self.adModel?.link, let url = URL(string: link) {
+        if let link = self.itemCell?.adModel?.link, let url = URL(string: link) {
             openLink(url)
         }
     }
@@ -210,5 +238,8 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
 
     
 }
+
+//TODO: Paid Post Ad should be moved to a subclass rather than the channel cell
+
 
 

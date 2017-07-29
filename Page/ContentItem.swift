@@ -28,6 +28,8 @@ class ContentItem{
     var chineseByline: String?
     var publishTime: String?
     
+    var adModel: AdModel?
+    
     
     
     // MARK: detail data that only comes with detail content API

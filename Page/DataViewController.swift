@@ -40,7 +40,13 @@ class DataViewController: UICollectionViewController {
     
     
     deinit {
-        //MARK: Some of the deinit might b e useful in the future
+        //MARK: Remove Paid Post Observer
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
+            object: nil
+        )
+        print ("Data View Controller of \(pageTitle) removed successfully")
     }
     
     
@@ -86,7 +92,7 @@ class DataViewController: UICollectionViewController {
             }
         }
     }
-
+    
     
     private func prefetch() {
         let statusType = IJReachability().connectedToNetworkOfType()
@@ -202,16 +208,9 @@ class DataViewController: UICollectionViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
-        
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         
-        //        if horizontalClass == .regular && verticalCass == .regular {
-        ////            collectionView?.collectionViewLayout=flowLayout
-        ////            flowLayout.minimumInteritemSpacing = 0
-        ////            flowLayout.minimumLineSpacing = 0
-        //             print("availableWidth : test")
-        //        } else {
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
@@ -231,9 +230,9 @@ class DataViewController: UICollectionViewController {
             }
         }
         
-        //        }
         collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
         collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
+        collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
         collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
         collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
         collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
@@ -254,13 +253,33 @@ class DataViewController: UICollectionViewController {
         // MARK: - Get Content Data for the Page
         requestNewContent()
         
-
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector:#selector(paidPostUpdate(_:)),
+            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
+            object: nil)
     }
     
-//    func updateLayouts() {
-//        print ("update layout")
-//        collectionView?.collectionViewLayout.invalidateLayout()
-//    }
+    func paidPostUpdate(_ notification: Notification) {
+        // print ("update layout called with \(notification.object)")
+        if let itemCell = notification.object as? ContentItem {
+                let section = itemCell.section
+                let row = itemCell.row
+            //print ("update layout \(section)/\(row) for \(object.itemCell) and \(object.adModel)")
+            if fetches.fetchResults.count > section {
+                if fetches.fetchResults[section].items.count > row {
+                    print ("found layout of paid post in fetches")
+                    fetches.fetchResults[section].items[row].adModel = itemCell.adModel
+                    if itemCell.adModel?.headline == nil {
+                        print ("Paid Post: The adModel is empty")
+                        collectionView?.reloadData()
+                    }
+                }
+            }
+            collectionView?.collectionViewLayout.invalidateLayout()
+        }
+    }
     
     
     func refreshControlDidFire(sender:AnyObject) {
@@ -333,10 +352,16 @@ class DataViewController: UICollectionViewController {
                 //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "LineCell":
+            if let cell = cellItem as? LineCell {
+                //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         default:
             if let cell = cellItem as? ChannelCell {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.pageTitle = pageTitle
                 return cell
             }
         }
@@ -454,7 +479,10 @@ class DataViewController: UICollectionViewController {
                     reuseIdentifier = "ChannelCellRegular"
                 }
             } else {
-                if isCover {
+                if item.type == "ad" && item.adModel == nil {
+                    print ("Paid Post is not retrieved yet, display a line for the cell")
+                    reuseIdentifier = "LineCell"
+                } else if isCover {
                     reuseIdentifier = "CoverCell"
                 } else {
                     reuseIdentifier = "ChannelCell"

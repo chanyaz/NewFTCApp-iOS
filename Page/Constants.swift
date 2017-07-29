@@ -114,6 +114,10 @@ struct Event {
     static let languageSelected = "Language Selected in Story Page"
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
     static let newAdCreativeDownloaded = "New Ad Creative Downloaded"
+    static func paidPostUpdate(for page: String) -> String {
+        let paidPostUpdated = "Paid Post Update"
+        return "\(paidPostUpdated) for \(page)"
+    }
 }
 
 struct GA {

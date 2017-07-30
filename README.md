@@ -50,7 +50,7 @@ The aim of this project is to create a "mother of all news apps". With this proj
 4. FT Intelligence
 5. Most Popular
 6. Calendar
-7. Channel Scroller
+7. Done: Channel Scroller Style
 
 ### APIs
 1. Done: Stories
@@ -60,7 +60,7 @@ The aim of this project is to create a "mother of all news apps". With this proj
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 
-2. In Progress: Functionalities and buttons. 
+2. Functionalities and buttons. 
 3. Done: Video. 
 4. Interactive Features. 
 5. custom link

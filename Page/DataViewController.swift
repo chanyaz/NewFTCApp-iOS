@@ -269,15 +269,15 @@ class DataViewController: UICollectionViewController {
             //print ("update layout \(section)/\(row) for \(object.itemCell) and \(object.adModel)")
             if fetches.fetchResults.count > section {
                 if fetches.fetchResults[section].items.count > row {
-                    print ("found layout of paid post in fetches")
-                    fetches.fetchResults[section].items[row].adModel = itemCell.adModel
-                    if itemCell.adModel?.headline == nil {
-                        print ("Paid Post: The adModel is empty")
+                    if itemCell.adModel?.headline != nil{
+                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
+                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
                         collectionView?.reloadData()
+                    } else {
+                        print ("Paid Post: The adModel has no headline")
                     }
                 }
             }
-            collectionView?.collectionViewLayout.invalidateLayout()
         }
     }
     
@@ -355,6 +355,9 @@ class DataViewController: UICollectionViewController {
         case "LineCell":
             if let cell = cellItem as? LineCell {
                 //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.pageTitle = pageTitle
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.cellWidth = cellWidth
                 return cell
             }
         default:
@@ -479,7 +482,7 @@ class DataViewController: UICollectionViewController {
                     reuseIdentifier = "ChannelCellRegular"
                 }
             } else {
-                if item.type == "ad" && item.adModel == nil {
+                if item.type == "ad" && (item.adModel == nil || item.adModel?.headline == nil) {
                     print ("Paid Post is not retrieved yet, display a line for the cell")
                     reuseIdentifier = "LineCell"
                 } else if isCover {

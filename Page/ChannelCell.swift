@@ -36,15 +36,17 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     func updateUI() {
+        setupLayout()
         if itemCell?.type != "ad" {
             updateContent()
         } else {
             requestAd()
         }
+        sizeCell()
     }
     
     private func updateContent() {
-        setupLayout()
+        
         
         // MARK: - set the border color
         if let row = itemCell?.row,
@@ -75,63 +77,29 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
             })
         }
         
-        sizeCell()
     }
     
     private func requestAd() {
-        setupLayout()
         containerView.backgroundColor = UIColor(hex: Color.Ad.background)
         border.backgroundColor = nil
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Content.background)
         
-
-        // imageView.backgroundColor = UIColor.red
-        // MARK: - clear image, headline, lead, sign as it will be reused. If you don't do this, the cell might show wrong content when you scroll.
+        
         // MARK: - if adModel is already available from itemCell, no need to get the data from internet
         
-        if itemCell?.adModel != nil {
+        if let adModel = itemCell?.adModel, adModel.headline != nil {
             //self.adModel = adModel
             showAd()
-            print ("use data from fetches to layout this cell! ")
+            print ("Paid Post: use data from fetches to layout this cell! ")
             return
+        } else {
+            print ("Paid Post: there is no headline from adMoel. Clear the view")
+            imageView.image = nil
+            headline.text = nil
+            lead.text = nil
+            sign.text = nil
         }
-
-        imageView.image = nil
-        headline.text = nil
-        lead.text = nil
-        sign.text = nil
-        
-        if let adid = itemCell?.id, let url = AdParser.getAdUrlFromDolphin(adid) {
-            print ("Paid Post id is \(adid), url is \(url.absoluteString)")
-            Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
-                DispatchQueue.main.async { () -> Void in
-                    guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
-                        print ("Paid Post ad Fail: Request Ad From \(url)")
-                        let adModel = AdModel(
-                            imageString: nil,
-                            link: nil,
-                            video: nil,
-                            impressions: [],
-                            headline: nil,
-                            adName: nil,
-                            bgColor: "0",
-                            lead: nil)
-                        self?.itemCell?.adModel = adModel
-                        self?.postNotificationForPaidPostUpdate()
-                        return
-                    }
-//                    print ("Paid Post success: Request Ad From \(url)")
-//                    print ("Paid Post ad code is: \(adCode)")
-                    let adModel = AdParser.parseAdCode(adCode)
-//                    print ("info ad ad model retrieved as \(adModel)")
-                    self?.itemCell?.adModel = adModel
-                    self?.showAd()
-                    self?.postNotificationForPaidPostUpdate()
-                }
-            }
-        }
-        sizeCell()
     }
     
     private func showAd() {
@@ -140,10 +108,10 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
             lead.text = adModel.lead
             sign.text = "广告"
             
-//            let randomIndex = Int(arc4random_uniform(UInt32(2)))
-//            if randomIndex == 1 {
-//                headline.text = "卡地亚广告"
-//            }
+            //            let randomIndex = Int(arc4random_uniform(UInt32(2)))
+            //            if randomIndex == 1 {
+            //                headline.text = "卡地亚广告"
+            //            }
             
             // MARK: - Report Impressions
             Impressions.report(adModel.impressions)
@@ -174,12 +142,7 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         }
     }
     
-    private func postNotificationForPaidPostUpdate() {
-        // MARK: Tell the collection layout view to reflow the layout
-        let object = itemCell
-        let name = Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle))
-        NotificationCenter.default.post(name: name, object: object)
-    }
+    
     
     private func showAdImage(_ data: Data) {
         imageView.image = UIImage(data: data)
@@ -212,7 +175,7 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         }
     }
     
-
+    
     
     
     // FIXME: These three functions are same as those in the AdView, should find a way to put them in one place
@@ -235,7 +198,7 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         }
     }
     
-
+    
     
 }
 

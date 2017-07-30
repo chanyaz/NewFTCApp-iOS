@@ -90,11 +90,12 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 0
         flowLayout.estimatedItemSize = CGSize(width: 50, height: channelScrollerHeight)
-        // flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         channelScrollerView?.delegate = self
         channelScrollerView?.dataSource = self
         channelScrollerView?.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
         channelScrollerView?.showsHorizontalScrollIndicator = false
+        //channelScrollerView?.collectionViewLayout.sectionInset =
         //channelScrollerView.backgroundColor = UIColor(hex: Color.Tab.background)
         if let channelScrollerView = channelScrollerView {
             self.view.addSubview(channelScrollerView)
@@ -157,6 +158,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             } else {
                 cell.isSelected = false
             }
+            cell.tabName = tabName
             cell.pageData = pageData[indexPath.row]
             return cell
         }

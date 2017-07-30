@@ -45,11 +45,12 @@ The aim of this project is to create a "mother of all news apps". With this proj
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
-2. Use prefetch to make scrolling smooth. 
+2. Done: Use prefetch to make scrolling smooth. 
 3. FT Academy
 4. FT Intelligence
 5. Most Popular
 6. Calendar
+7. Channel Scroller
 
 ### APIs
 1. Done: Stories

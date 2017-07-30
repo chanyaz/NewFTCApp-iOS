@@ -22,6 +22,7 @@
 		50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50EC3A621EF1E18E00BF17AD /* Ad.xib */; };
 		50F610601F2CCB9C00E3AABC /* LineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F6105E1F2CCB9B00E3AABC /* LineCell.swift */; };
 		50F610611F2CCB9C00E3AABC /* LineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50F6105F1F2CCB9C00E3AABC /* LineCell.xib */; };
+		50F610631F2DAF8F00E3AABC /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F610621F2DAF8F00E3AABC /* PaddingLabel.swift */; };
 		600BD69F1F1DBAFF0077C104 /* PushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD69E1F1DBAFF0077C104 /* PushHelper.swift */; };
 		600BD6A21F1EF20B0077C104 /* English.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6A11F1EF20B0077C104 /* English.swift */; };
 		600BD6A71F21A6570077C104 /* AudioHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6A31F21A6560077C104 /* AudioHelper.swift */; };
@@ -149,6 +150,7 @@
 		50EC3A621EF1E18E00BF17AD /* Ad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Ad.xib; sourceTree = "<group>"; };
 		50F6105E1F2CCB9B00E3AABC /* LineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineCell.swift; sourceTree = "<group>"; };
 		50F6105F1F2CCB9C00E3AABC /* LineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LineCell.xib; sourceTree = "<group>"; };
+		50F610621F2DAF8F00E3AABC /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		600BD69E1F1DBAFF0077C104 /* PushHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushHelper.swift; sourceTree = "<group>"; };
 		600BD6A11F1EF20B0077C104 /* English.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = English.swift; sourceTree = "<group>"; };
 		600BD6A31F21A6560077C104 /* AudioHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioHelper.swift; path = Audio/AudioHelper.swift; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 			children = (
 				6093F1651EE90E81009F16EE /* CustomPopTransition.swift */,
 				60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */,
+				50F610621F2DAF8F00E3AABC /* PaddingLabel.swift */,
 				60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */,
 				AF8E93021F124844007CD6DE /* ArticleStyle.swift */,
 				AF8E93061F125509007CD6DE /* ParseHtml.swift */,
@@ -924,6 +927,7 @@
 				60986A481F1CAC5300583157 /* ShareHelper.swift in Sources */,
 				60D4B8F51EE7BC3800A4506D /* CustomTabBarController.swift in Sources */,
 				50F610601F2CCB9C00E3AABC /* LineCell.swift in Sources */,
+				50F610631F2DAF8F00E3AABC /* PaddingLabel.swift in Sources */,
 				50E535C71F0729900082B181 /* ChannelModelDelegate.swift in Sources */,
 				60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */,
 				60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */,

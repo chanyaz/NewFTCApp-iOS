@@ -40,6 +40,8 @@ struct Color {
         static let text = "#565656"
         static let highlightedText = "#c0282c"
         static let background = "#e8dbcb"
+        //static let background = "#FFFFFF"
+
     }
     
     struct Navigation {
@@ -55,6 +57,7 @@ struct Color {
 
 struct FontSize {
     static let bodyExtraSize: CGFloat = 3.0
+    static let padding: CGFloat = 14
 }
 
 // MARK: Different organization might use different way to construct API and urls

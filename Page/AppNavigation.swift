@@ -222,6 +222,22 @@ struct AppNavigation {
         return nil
     }
     
+    public func getThemeColor(for tabName: String?) -> UIColor {
+        let themeColor: UIColor
+        if let tabName = tabName,
+            let tabBackGroundColor = AppNavigation.sharedInstance.getNavigationProperty(for: tabName, of: "navBackGroundColor") {
+            let isNavLightContent = AppNavigation.sharedInstance.isNavigationPropertyTrue(for: tabName, of: "isNavLightContent")
+            if isNavLightContent == true {
+                themeColor = UIColor(hex: tabBackGroundColor)
+            } else {
+                themeColor = UIColor(hex: Color.Tab.highlightedText)
+            }
+        } else {
+            themeColor = UIColor(hex: Color.Tab.highlightedText)
+        }
+        return themeColor
+    }
+    
     
     
     

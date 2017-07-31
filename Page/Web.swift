@@ -35,7 +35,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 if let id = id,
                     let type = type {
                     dataViewController.dataObject = ["title": id,
-                                                     "api":"https://danla2f5eudt1.cloudfront.net/channel/china.html?type=json",
+                                                     "api":"https://danla2f5eudt1.cloudfront.net/channel/china.html?type=json&tag=\(id)",
                                                      "url":"http://www.ftchinese.com/channel/datanews.html",
                                                      "screenName":"homepage/datanews"]
                     //                    dataViewController.contentPageData = [ContentItem(

@@ -167,8 +167,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             dataObject?.image = item.image
             
             //MARK: This is a test code, delete before publishing
-            let htmlLinks = "<p><a href=http://www.ftchinese.com/video/2180#adchannelID=1900>视屏</a>，<a href=http://www.ftchinese.com/interactive/9106#adchannelID=1701>互动</a></p>"
-            dataObject?.cbody = htmlLinks
+            //            let htmlLinks = "<p><a href=http://www.ftchinese.com/video/2180#adchannelID=1900>视屏</a>，<a href=http://www.ftchinese.com/interactive/9106#adchannelID=1701>互动</a></p>"
+            //            dataObject?.cbody = htmlLinks
             
             updatePageContent()
         }

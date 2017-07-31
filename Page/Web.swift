@@ -14,20 +14,53 @@ extension UIViewController: SFSafariViewControllerDelegate{
         let webVC = SFSafariViewController(url: url)
         webVC.delegate = self
         let urlString = url.absoluteString
-        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-            var id: String? = nil
-            var type: String? = nil
-            // MARK: If the link pattern is recognizable, open it using native method
-            if let contentId = urlString.matchingStrings(regexes: LinkPattern.story) {
-                id = contentId
-                type = "story"
-            } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.video) {
-                id = contentId
-                type = "video"
-            } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.interactive) {
-                id = contentId
-                type = "interactive"
+        var id: String? = nil
+        var type: String? = nil
+        // MARK: If the link pattern is recognizable, open it using native method
+        if let contentId = urlString.matchingStrings(regexes: LinkPattern.story) {
+            id = contentId
+            type = "story"
+        } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.video) {
+            id = contentId
+            type = "video"
+        } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.interactive) {
+            id = contentId
+            type = "interactive"
+        } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.tag) {
+            id = contentId
+            type = "tag"
+        }
+        if type == "tag" {
+            if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+                if let id = id,
+                    let type = type {
+                    dataViewController.dataObject = ["title": id,
+                                                     "api":"https://danla2f5eudt1.cloudfront.net/channel/china.html?type=json",
+                                                     "url":"http://www.ftchinese.com/channel/datanews.html",
+                                                     "screenName":"homepage/datanews"]
+                    //                    dataViewController.contentPageData = [ContentItem(
+                    //                        id: id,
+                    //                        image: "",
+                    //                        headline: "",
+                    //                        lead: "",
+                    //                        type: type,
+                    //                        preferSponsorImage: "",
+                    //                        tag: "",
+                    //                        customLink: "",
+                    //                        timeStamp: 0,
+                    //                        section: 0,
+                    //                        row: 0)]
+                    //dataViewController.dataObject = self.pageData[index]
+                    dataViewController.pageTitle = id
+                    //dataViewController.themeColor = ""
+                    
+                    
+                    self.navigationController?.pushViewController(dataViewController, animated: true)
+                    return
+                }
             }
+        }
+        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
             if let id = id,
                 let type = type {
                 detailViewController.contentPageData = [ContentItem(

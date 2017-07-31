@@ -40,17 +40,17 @@ The aim of this project is to create a "mother of all news apps". With this proj
 5. Done: Launch Screen Ad
 6. Done: Native Banner
 7. Done: Web Banner
-8. Done: Information flow: send impression, click, advertisement sign, backup link, remove border
+8. Information flow
 9. Done: Show Image if there's time
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
-2. Done: Use prefetch to make scrolling smooth. 
+2. Use prefetch to make scrolling smooth. 
 3. FT Academy
 4. FT Intelligence
 5. Most Popular
 6. Calendar
-7. Done: Channel Scroller Style
+7. Title View: Image for News Channel
 
 ### APIs
 1. Done: Stories
@@ -60,7 +60,7 @@ The aim of this project is to create a "mother of all news apps". With this proj
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 
-2. Functionalities and buttons. 
+2. In Progress: Functionalities and buttons. 
 3. Done: Video. 
 4. Interactive Features. 
 5. custom link
@@ -134,3 +134,4 @@ prefetch stories
 Track "list to story" event
 Bug: Can't remember preference
 track "listen to story" end event
+

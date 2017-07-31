@@ -26,8 +26,8 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
     
 
     func updateThemeColor(for tabName: String) {
-        if let themeColor = AppNavigation.sharedInstance.getNavigationProperty(for: tabName, of: "navBackGroundColor") {
-            let isNavLightContent = AppNavigation.sharedInstance.isNavigationPropertyTrue(for: tabName, of: "isNavLightContent")
+        if let themeColor = AppNavigation.getNavigationProperty(for: tabName, of: "navBackGroundColor") {
+            let isNavLightContent = AppNavigation.isNavigationPropertyTrue(for: tabName, of: "isNavLightContent")
             if isNavLightContent == true {
                 pageThemeColor = themeColor
             } else {

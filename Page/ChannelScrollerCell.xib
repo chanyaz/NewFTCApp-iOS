@@ -18,8 +18,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bf-AU-6S3" customClass="PaddingLabel" customModule="Page" customModuleProvider="target">
-                        <rect key="frame" x="3" y="0.0" width="44" height="50"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bf-AU-6S3">
+                        <rect key="frame" x="10" y="0.0" width="30" height="50"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="4YA-gp-5OV"/>
                         </constraints>
@@ -27,16 +27,28 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3cu-Aa-sjR">
+                        <rect key="frame" x="10" y="45" width="30" height="5"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="5" id="Fu7-ci-l3j"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="7bf-AU-6S3" secondAttribute="trailing" constant="3" id="YQT-gv-OLq"/>
+                <constraint firstAttribute="bottom" secondItem="3cu-Aa-sjR" secondAttribute="bottom" id="Hn9-ab-4Ms"/>
+                <constraint firstItem="3cu-Aa-sjR" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="OqI-g8-W7z"/>
+                <constraint firstAttribute="trailing" secondItem="7bf-AU-6S3" secondAttribute="trailing" constant="10" id="YQT-gv-OLq"/>
                 <constraint firstAttribute="bottom" secondItem="7bf-AU-6S3" secondAttribute="bottom" id="YbK-xs-hO6"/>
-                <constraint firstItem="7bf-AU-6S3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="3" id="qdE-xV-bjs"/>
+                <constraint firstAttribute="trailing" secondItem="3cu-Aa-sjR" secondAttribute="trailing" constant="10" id="kQk-8f-mZ1"/>
+                <constraint firstItem="7bf-AU-6S3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="qdE-xV-bjs"/>
                 <constraint firstItem="7bf-AU-6S3" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="xCq-cz-pyC"/>
             </constraints>
             <connections>
                 <outlet property="channel" destination="7bf-AU-6S3" id="aLr-p7-U7c"/>
+                <outlet property="labelHeight" destination="4YA-gp-5OV" id="RCA-T5-0R0"/>
+                <outlet property="underLine" destination="3cu-Aa-sjR" id="lpv-tu-tiq"/>
             </connections>
         </collectionViewCell>
     </objects>

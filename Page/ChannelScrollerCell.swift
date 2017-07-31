@@ -9,8 +9,12 @@
 import UIKit
 
 class ChannelScrollerCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var channel: UILabel!
+    @IBOutlet weak var underLine: UIView!
+    @IBOutlet weak var labelHeight: NSLayoutConstraint!
+    
+    var cellHeight: CGFloat?
     var pageData = [String: String]() {
         didSet {
             updateUI()
@@ -28,23 +32,17 @@ class ChannelScrollerCell: UICollectionViewCell {
         if let title = pageData["title"] {
             channel.text = title
         }
-        //self.backgroundColor = UIColor(hex: Color.Tab.background)
-        channel.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
-        // MARK: Round Corner
-        channel.layer.cornerRadius = 3
-        channel.layer.masksToBounds = true
-        
+        if let cellHeight = cellHeight {
+            labelHeight.constant = cellHeight
+        }
         if isSelected == true {
-            //channel.textColor = UIColor(hex: Color.ChannelScroller.highlightedText)
-            channel.textColor = UIColor.white
-            channel.backgroundColor = AppNavigation.sharedInstance.getThemeColor(for: tabName)
-            //channel.font = UIFont.preferredFont(forTextStyle: .title3)
-            //print ("\(String(describing: pageData["title"])) is selected")
+            channel.textColor = AppNavigation.getThemeColor(for: tabName)
+            channel.font = channel.font.bold()
+            underLine.backgroundColor = AppNavigation.getThemeColor(for: tabName)
         } else {
             channel.textColor = UIColor(hex: Color.ChannelScroller.text)
-            channel.backgroundColor = UIColor.clear
-            //channel.font = UIFont.preferredFont(forTextStyle: .body)
-            //print ("\(String(describing: pageData["title"])) is not selected")
+            underLine.backgroundColor = UIColor.clear
+            channel.font = channel.font.desetBold()
         }
     }
 }

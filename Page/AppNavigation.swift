@@ -14,6 +14,7 @@ struct AppNavigation {
     private static let appMap = [
         "News": [
             "title": "FT中文网",
+            "title-image":"FTC-Header",
             "navColor": "#333333",
             "navBackGroundColor": "#f7e9d8",
             "isNavLightContent": false,
@@ -194,39 +195,39 @@ struct AppNavigation {
     ]
     
     
-    public func getNavigation(for tabName: String) -> [String]? {
-        if let currentNavigation = AppNavigation.appMap[tabName]?["Channels"] as? [String] {
+    public static func getNavigation(for tabName: String) -> [String]? {
+        if let currentNavigation = appMap[tabName]?["Channels"] as? [String] {
             return currentNavigation
         }
         return nil
     }
     
-    public func getNavigationProperty(for tabName: String, of property: String) -> String? {
-        if let p = AppNavigation.appMap[tabName]?[property] as? String {
+    public static func getNavigationProperty(for tabName: String, of property: String) -> String? {
+        if let p = appMap[tabName]?[property] as? String {
             return p
         }
         return nil
     }
     
-    public func isNavigationPropertyTrue(for tabName: String, of property: String) -> Bool {
-        if let p = AppNavigation.appMap[tabName]?[property] as? Bool {
+    public static func isNavigationPropertyTrue(for tabName: String, of property: String) -> Bool {
+        if let p = appMap[tabName]?[property] as? Bool {
             return p
         }
         return false
     }
     
-    public func getNavigationPropertyData(for tabName: String, of property: String) -> [[String: String]]? {
-        if let p = AppNavigation.appMap[tabName]?[property] as? [[String: String]] {
+    public static func getNavigationPropertyData(for tabName: String, of property: String) -> [[String: String]]? {
+        if let p = appMap[tabName]?[property] as? [[String: String]] {
             return p
         }
         return nil
     }
     
-    public func getThemeColor(for tabName: String?) -> UIColor {
+    public static func getThemeColor(for tabName: String?) -> UIColor {
         let themeColor: UIColor
         if let tabName = tabName,
-            let tabBackGroundColor = AppNavigation.sharedInstance.getNavigationProperty(for: tabName, of: "navBackGroundColor") {
-            let isNavLightContent = AppNavigation.sharedInstance.isNavigationPropertyTrue(for: tabName, of: "isNavLightContent")
+            let tabBackGroundColor = getNavigationProperty(for: tabName, of: "navBackGroundColor") {
+            let isNavLightContent = isNavigationPropertyTrue(for: tabName, of: "isNavLightContent")
             if isNavLightContent == true {
                 themeColor = UIColor(hex: tabBackGroundColor)
             } else {

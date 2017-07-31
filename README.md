@@ -40,17 +40,18 @@ The aim of this project is to create a "mother of all news apps". With this proj
 5. Done: Launch Screen Ad
 6. Done: Native Banner
 7. Done: Web Banner
-8. Information flow
+8. Done: Paid Post
 9. Done: Show Image if there's time
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
-2. Use prefetch to make scrolling smooth. 
+2. Done: Use prefetch to make scrolling smooth. 
 3. FT Academy
 4. FT Intelligence
 5. Most Popular
-6. Calendar
-7. Title View: Image for News Channel
+6. Videos
+7. Calendar
+8. Done: Title View: Image for News Channel
 
 ### APIs
 1. Done: Stories
@@ -106,6 +107,8 @@ The aim of this project is to create a "mother of all news apps". With this proj
 2. WeChat
 
 ### myFT
+
+### Big 5 Version
 
 
 ## Completed Tasks

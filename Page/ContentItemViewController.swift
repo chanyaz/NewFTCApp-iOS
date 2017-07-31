@@ -161,6 +161,15 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             dataObject?.englishByline = item.englishByline
             dataObject?.relatedStories = item.relatedStories
             dataObject?.relatedVideos = item.relatedVideos
+            dataObject?.headline = item.headline
+            dataObject?.lead = item.lead
+            dataObject?.tag = item.tag
+            dataObject?.image = item.image
+            
+            //MARK: This is a test code, delete before publishing
+            let htmlLinks = "<p><a href=http://www.ftchinese.com/video/2180#adchannelID=1900>视屏</a>，<a href=http://www.ftchinese.com/interactive/9106#adchannelID=1701>互动</a></p>"
+            dataObject?.cbody = htmlLinks
+            
             updatePageContent()
         }
     }
@@ -186,7 +195,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         if let type = dataObject?.type {
             switch type {
-            case "video":
+            case "video", "interactive":
                 renderWebView()
             case "story":
                 if (dataObject?.cbody) != nil {
@@ -342,7 +351,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     private func renderWebView() {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height)
+        // FIXME: Why do I have to deduct 64 out of the height?
+        // FIXME: Should use self.view = webView to render WebView
+        let webViewFrame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: self.view.frame.height - 64 - 44)
         webView = WKWebView(frame: webViewFrame, configuration: config)
         webView?.isOpaque = true
         webView?.backgroundColor = UIColor.clear
@@ -360,6 +371,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 isWebViewAdded = true
             }
             self.view.clipsToBounds = true
+            webView?.clipsToBounds = true
             webView?.scrollView.bounces = false
             //let urlString: String
             if dataObject?.type == "story" {

@@ -163,6 +163,15 @@ struct ImageService {
     }
 }
 
+
+
+struct LinkPattern {
+    static let story = ["http://www.ftchinese.com/story/([0-9]+)"]
+    static let tag = ["http://www.ftchinese.com/tag/([^?]+)"]
+    static let interactive = ["http://www.ftchinese.com/interactive/([0-9]+)"]
+    static let video = ["http://www.ftchinese.com/video/([0-9]+)"]
+}
+
 /*
  enum AppError : Error {
  case invalidResource(String, String)

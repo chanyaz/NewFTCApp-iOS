@@ -8,16 +8,16 @@ class ContentItem{
     var coverImage: UIImage?
     var detailImage: UIImage?
     
-    let id : String
-    let image: String
-    let headline : String
-    let lead : String
-    let type : String
+    let id: String
+    var image: String
+    var headline: String
+    var lead: String
+    let type: String
     
-    let preferSponsorImage: String
-    let tag: String
-    let customLink: String
-    let timeStamp: TimeInterval
+    var preferSponsorImage: String
+    var tag: String
+    var customLink: String
+    var timeStamp: TimeInterval
     
     var section: Int
     var row: Int

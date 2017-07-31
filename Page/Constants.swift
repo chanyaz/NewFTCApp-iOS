@@ -41,7 +41,7 @@ struct Color {
         static let highlightedText = "#c0282c"
         static let background = "#e8dbcb"
         //static let background = "#FFFFFF"
-
+        
     }
     
     struct Navigation {
@@ -84,13 +84,14 @@ struct APIs {
         // MARK: Use different domains for different types of content
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
-        case "video": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&001"
-        case "interactive": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&001"
+        case "video": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&002"
+        case "interactive": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&i=3&002"
         case "story": urlString = "http://www.ftchinese.com/story/\(id)?full=y"
+        case "photonews", "photo": urlString = "http://danla2f5eudt1.cloudfront.net/photonews/\(id)?i=3"
         default:
             urlString = "http://danla2f5eudt1.cloudfront.net/"
         }
-        print ("open in web view: \(urlString)")
+        // print ("open in web view: \(urlString)")
         return urlString
     }
 }
@@ -167,9 +168,10 @@ struct ImageService {
 
 struct LinkPattern {
     static let story = ["http://www.ftchinese.com/story/([0-9]+)"]
-    static let tag = ["http://www.ftchinese.com/tag/([^?]+)"]
     static let interactive = ["http://www.ftchinese.com/interactive/([0-9]+)"]
     static let video = ["http://www.ftchinese.com/video/([0-9]+)"]
+    static let photonews = ["http://www.ftchinese.com/photonews/([0-9]+)"]
+    static let tag = ["http://www.ftchinese.com/tag/([^?]+)"]
 }
 
 /*

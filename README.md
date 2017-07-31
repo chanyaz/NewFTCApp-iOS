@@ -1,6 +1,7 @@
 # New FTChinese iOS App
 
 ## Development Milestones
+
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
 2. Done: Use prefetch to make scrolling smooth. 
@@ -19,15 +20,19 @@
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 
-2. In Progress: Functionalities and buttons. 
+2. Functionalities and buttons. 
 3. Done: Video. 
-4. Interactive Features. 
-5. custom link
+4. Done: Interactive Features. 
+5. Done: custom link
 6. Done: Handle Story Links
-7. In progress: Handle video and interative links
-8. Handle Tag Links
+7. Done: Handle video and interative links
+8. In Progress: Handle Tag Links
 9. Done: Offline and Caches for Content
 10. Done: A progress indicator untill web page is completely updated
+11. If a page is an empty ad page, show an ad
+12. If an interactive is a speedread, let it read the english text
+13. Hide/show sound button properly
+
 
 ### Sharing
 1. Done: WeChat

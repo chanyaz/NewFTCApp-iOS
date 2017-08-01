@@ -26,12 +26,13 @@
 5. Done: custom link
 6. Done: Handle Story Links
 7. Done: Handle video and interative links
-8. In Progress: Handle Tag Links
+8. Done: Handle Tag Links
 9. Done: Offline and Caches for Content
 10. Done: A progress indicator untill web page is completely updated
 11. If a page is an empty ad page, show an ad
 12. If an interactive is a speedread, let it read the english text
 13. Hide/show sound button properly
+14. Tag page should show title in navigation
 
 
 ### Sharing

@@ -62,20 +62,24 @@ struct FontSize {
 
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
-    private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
+    //private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
+    private static let domain = "https://danla2f5eudt1.cloudfront.net/"
+    private static let publicDomain = "http://www.ftchinese.com/"
     // MARK: the number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
+    
     // MARK: the types of files that you want to clean from time to time
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg"]
+    
     static func get(_ id: String, type: String) -> String {
-        let actionType: String
+        let urlString: String
         switch type {
-        case "story": actionType = "get_story_more_info/"
+        case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
+        case "tag": urlString = "\(domain)\(type)/\(id)?type=json"
         default:
-            actionType = "get_story_more_info/"
+            urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         }
-        let urlString = "\(base)\(actionType)\(id)"
-        //print (urlString)
+        print ("api url is \(urlString)")
         return urlString
     }
     
@@ -84,12 +88,12 @@ struct APIs {
         // MARK: Use different domains for different types of content
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
-        case "video": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&002"
-        case "interactive": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&i=3&002"
-        case "story": urlString = "http://www.ftchinese.com/story/\(id)?full=y"
-        case "photonews", "photo": urlString = "http://danla2f5eudt1.cloudfront.net/photonews/\(id)?i=3"
+        case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
+        case "interactive": urlString = "\(domain)\(type)/\(id)?webview=ftcapp&i=3&002"
+        case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
+        case "photonews", "photo": urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
         default:
-            urlString = "http://danla2f5eudt1.cloudfront.net/"
+            urlString = "\(publicDomain)"
         }
         // print ("open in web view: \(urlString)")
         return urlString
@@ -163,8 +167,6 @@ struct ImageService {
         return "https://www.ft.com/__origami/service/image/v2/images/raw/\(imageUrl)?source=ftchinese&width=\(width * 2)&height=\(height * 2)&fit=cover"
     }
 }
-
-
 
 struct LinkPattern {
     static let story = ["http://www.ftchinese.com/story/([0-9]+)"]

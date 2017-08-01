@@ -30,12 +30,11 @@ extension UIViewController: SFSafariViewControllerDelegate{
             id = contentId
             type = "tag"
         }
-        if type == "tag" {
+        if let type = type, type == "tag" {
             if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
-                if let id = id,
-                    let type = type {
+                if let id = id {
                     dataViewController.dataObject = ["title": id,
-                                                     "api":"https://danla2f5eudt1.cloudfront.net/channel/china.html?type=json&tag=\(id)",
+                                                     "api": APIs.get(id, type: type),
                                                      "url":"http://www.ftchinese.com/channel/datanews.html",
                                                      "screenName":"homepage/datanews"]
                     //                    dataViewController.contentPageData = [ContentItem(
@@ -53,8 +52,6 @@ extension UIViewController: SFSafariViewControllerDelegate{
                     //dataViewController.dataObject = self.pageData[index]
                     dataViewController.pageTitle = id
                     //dataViewController.themeColor = ""
-                    
-                    
                     self.navigationController?.pushViewController(dataViewController, animated: true)
                     return
                 }

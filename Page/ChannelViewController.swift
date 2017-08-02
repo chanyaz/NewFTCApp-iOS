@@ -181,7 +181,6 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
 
 extension ChannelViewController {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        // TODO: use a gotopage function
         goToPage(indexPath.row, isUserPanningEnd: false)
         return false
     }
@@ -190,7 +189,7 @@ extension ChannelViewController {
 extension ChannelViewController: ChannelModelDelegate {
     func pagePanningEnd(_ pageInfoObject: (index: Int, title: String)) {
         let index = pageInfoObject.index
-        print ("panning to \(pageInfoObject.title): \(index)")
+        // print ("panning to \(pageInfoObject.title): \(index)")
         goToPage(index, isUserPanningEnd: true)
     }
 }

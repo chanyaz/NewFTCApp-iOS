@@ -121,12 +121,18 @@ class DataViewController: UICollectionViewController {
         let layoutWay:String
         if horizontalClass == .regular && verticalCass == .regular {
             layoutWay="ipadhome"
-        }else{
+        } else {
             layoutWay="home"
         }
+        // Insert Content
+        let fetchResultsWithContent = AdLayout().insertContent(layoutWay, to: results.fetchResults)
+        
+        // Insert Ads
+        let fetchResultsWithAds = AdLayout().insertAds(layoutWay, to: fetchResultsWithContent)
+
         let resultsWithAds = ContentFetchResults(
             apiUrl: results.apiUrl,
-            fetchResults: AdLayout().insertAds(layoutWay, to: results.fetchResults)
+            fetchResults: fetchResultsWithAds
         )
         let isFirstLoad: Bool
         if self.fetches.fetchResults.count == 0 {
@@ -264,8 +270,8 @@ class DataViewController: UICollectionViewController {
     func paidPostUpdate(_ notification: Notification) {
         // print ("update layout called with \(notification.object)")
         if let itemCell = notification.object as? ContentItem {
-                let section = itemCell.section
-                let row = itemCell.row
+            let section = itemCell.section
+            let row = itemCell.row
             //print ("update layout \(section)/\(row) for \(object.itemCell) and \(object.adModel)")
             if fetches.fetchResults.count > section {
                 if fetches.fetchResults[section].items.count > row {
@@ -557,26 +563,34 @@ class DataViewController: UICollectionViewController {
             }
             
         } else {
-            if selectedItem.type == "ad" {
+            switch selectedItem.type {
+            case "ad":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
-            }
-            //MARK: if it is a story, video or other types of HTML based content, push the detailViewController
-            if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-                var pageData1 = [ContentItem]()
-                var pageData2 = [ContentItem]()
-                for (sectionIndex, section) in fetches.fetchResults.enumerated() {
-                    for (itemIndex, item) in section.items.enumerated() {
-                        if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
-                            pageData1.append(item)
-                        } else {
-                            pageData2.append(item)
+                case "ViewController":
+                if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
+                    navigationController?.pushViewController(chatViewController, animated: true)
+                }
+                break
+                
+            default:
+                //MARK: if it is a story, video or other types of HTML based content, push the detailViewController
+                if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+                    var pageData1 = [ContentItem]()
+                    var pageData2 = [ContentItem]()
+                    for (sectionIndex, section) in fetches.fetchResults.enumerated() {
+                        for (itemIndex, item) in section.items.enumerated() {
+                            if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
+                                pageData1.append(item)
+                            } else {
+                                pageData2.append(item)
+                            }
                         }
                     }
+                    let pageData = pageData1 + pageData2
+                    detailViewController.contentPageData = pageData
+                    navigationController?.pushViewController(detailViewController, animated: true)
                 }
-                let pageData = pageData1 + pageData2
-                detailViewController.contentPageData = pageData
-                navigationController?.pushViewController(detailViewController, animated: true)
             }
         }
         return true

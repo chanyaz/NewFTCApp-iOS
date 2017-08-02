@@ -22,7 +22,8 @@ struct AppNavigation {
                 ["title": "首页",
                  "api":"https://danla2f5eudt1.cloudfront.net/index.php/jsapi/home",
                  "url":"http://www.ftchinese.com/",
-                 "screenName":"homepage"
+                 "screenName":"homepage",
+                 "Insert Content": "home"
                 ],
                 ["title": "中国",
                  "api":"https://danla2f5eudt1.cloudfront.net/channel/china.html?type=json",

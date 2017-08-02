@@ -117,6 +117,7 @@ class DataViewController: UICollectionViewController {
     }
     
     private func updateUI(with results: ContentFetchResults, horizontalClass: UIUserInterfaceSizeClass, verticalCass: UIUserInterfaceSizeClass) {
+        print ("data object is \(dataObject)")
         // MARK: - Insert Ads into the fetch results
         let layoutWay:String
         if horizontalClass == .regular && verticalCass == .regular {
@@ -124,11 +125,16 @@ class DataViewController: UICollectionViewController {
         } else {
             layoutWay="home"
         }
-        // Insert Content
-        let fetchResultsWithContent = AdLayout().insertContent(layoutWay, to: results.fetchResults)
+        // MARK: Insert Content
+        let fetchResultsWithContent: [ContentSection]
+        if let insertContentLayoutWay = dataObject["Insert Content"] {
+            fetchResultsWithContent = SupplementContent.insertContent(insertContentLayoutWay, to: results.fetchResults)
+        } else {
+            fetchResultsWithContent = results.fetchResults
+        }
         
-        // Insert Ads
-        let fetchResultsWithAds = AdLayout().insertAds(layoutWay, to: fetchResultsWithContent)
+        // MARK: Insert Ads
+        let fetchResultsWithAds = AdLayout.insertAds(layoutWay, to: fetchResultsWithContent)
 
         let resultsWithAds = ContentFetchResults(
             apiUrl: results.apiUrl,

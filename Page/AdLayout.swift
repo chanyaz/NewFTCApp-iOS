@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 struct AdLayout {
-    func insertAds(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
+    static func insertAds(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
         var newContentSections = contentSections
         // MARK: It is possible that the JSON Format is broken. Check it here.
         if newContentSections.count < 1 {
@@ -68,7 +68,7 @@ struct AdLayout {
             newContentSections.insert(MPU1, at: 1)
             newContentSections.insert(topBanner, at: 0)
             newContentSections.append(bottomBanner)
-            newContentSections = updateSectionRowIndex(newContentSections)
+            newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
         case "ipadhome":
             // MARK: - The first item in the first section should be marked as Cover
@@ -79,45 +79,6 @@ struct AdLayout {
         default:
             return newContentSections
         }
-    }
-    
-    
-    func insertContent(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
-        var newContentSections = contentSections
-        // MARK: It is possible that the JSON Format is broken. Check it here.
-        if newContentSections.count < 1 {
-            return newContentSections
-        }
-        switch layout {
-        case "home":
-            // MARK: Create link to the Microsoft AI chat bot
-            let xiaobingItem = ContentItem(id: "Id of the Chat Room", image: "http://i.ftimg.net/picture/0/000068460_piclink.jpg", headline: "微软的人工智能机器人小冰", lead: "微软小冰一直在探索新媒体领域的技术能力，试图通过实时对话和用户交流，实现新闻传播的效果", type: "ViewController", preferSponsorImage: "", tag: "AI", customLink: "", timeStamp: 0, section: 0, row: 0)
-            // MARK: Insert the chatbot post under paid post
-            if newContentSections.count > 0 && newContentSections[0].items.count > 2 {
-                newContentSections[0].items.insert(xiaobingItem, at:2)
-            }
-            newContentSections = updateSectionRowIndex(newContentSections)
-            return newContentSections
-        case "ipadhome":
-            // MARK: - The first item in the first section should be marked as Cover
-            newContentSections[0].items[0].isCover = true
-            // MARK: - Break up the first section into two or more, depending on how you want to layout ads
-            
-            return newContentSections
-        default:
-            return newContentSections
-        }
-    }
-    
-    func updateSectionRowIndex(_ contentSection: [ContentSection]) -> [ContentSection] {
-        let newContentSection = contentSection
-        for (sectionIndex, section) in newContentSection.enumerated() {
-            for (itemIndex, item) in section.items.enumerated() {
-                item.section = sectionIndex
-                item.row = itemIndex
-            }
-        }
-        return newContentSection
     }
     
 }

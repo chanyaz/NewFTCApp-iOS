@@ -10,23 +10,16 @@ import UIKit
 import UIKit.NSTextAttachment
 import WebKit
 
-class ContentItemViewController: UIViewController, UINavigationControllerDelegate{
+class ContentItemViewController: UIViewController, UINavigationControllerDelegate {
     var dataObject: ContentItem?
     var pageTitle: String = ""
     var themeColor: String?
     var currentLanguageIndex: Int?
     private var detailDisplayed = false
     fileprivate lazy var webView: WKWebView? = nil
-    fileprivate var isWebViewAdded = false
-    
     fileprivate let contentAPI = ContentFetch()
-    
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-    
-    // @IBOutlet weak var bodyTextView: UITextView!
-    // TODO: https://stackoverflow.com/questions/38948904/calculating-contentsize-for-uiscrollview-when-using-auto-layout
-    
-    
+
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()

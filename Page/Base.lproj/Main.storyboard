@@ -372,25 +372,8 @@
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="ContentItemViewController" id="vI6-SU-Y0Z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AVq-Gr-F2f" customClass="UITextViewFixed" customModule="Page" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <attributedString key="attributedText"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="AVq-Gr-F2f" firstAttribute="leading" secondItem="vI6-SU-Y0Z" secondAttribute="leading" id="3Do-em-cmY"/>
-                            <constraint firstAttribute="trailing" secondItem="AVq-Gr-F2f" secondAttribute="trailing" id="6rW-Ni-SXB"/>
-                            <constraint firstItem="PRi-H5-eiu" firstAttribute="top" secondItem="AVq-Gr-F2f" secondAttribute="bottom" id="Wc0-zh-W8g"/>
-                            <constraint firstItem="AVq-Gr-F2f" firstAttribute="top" secondItem="vI6-SU-Y0Z" secondAttribute="top" id="ql1-Rh-glb"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="bodyTextView" destination="AVq-Gr-F2f" id="fMX-vK-FQb"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dck-Gk-Dsj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

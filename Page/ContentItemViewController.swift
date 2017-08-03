@@ -354,7 +354,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Should use self.view = webView to render WebView
         webView = WKWebView(frame: self.view.bounds, configuration: config)
         self.view = self.webView
-        
         webView?.isOpaque = true
         webView?.backgroundColor = UIColor.clear
         webView?.scrollView.backgroundColor = UIColor.clear

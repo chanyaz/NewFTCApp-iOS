@@ -14,10 +14,10 @@ For more, check out [Cocoa Pod](https://cocoapods.org/)
 The aim of this project is to create a "mother of all news apps". With this project as a "scalfold", anyone who knows the basics of iOS development should be able to build a decent news app in a few minutes. For now, we have two milestones. 
 
 ## Migrate the current FTChinese hybrid app to a pure native app
-### News Reader
-### Billigual Support
+### Done: News Reader
+### Done: Billigual Support
 ### Channels
-### Advertising: including launch ad, in page ad and paid post
+### Done: Advertising: including launch ad, in page ad and paid post
 ### In-app Purchase
 
 ## Enhancement to existing hybrid app
@@ -50,7 +50,9 @@ The aim of this project is to create a "mother of all news apps". With this proj
 4. FT Intelligence
 5. Most Popular
 6. Calendar
-7. Done: Channel Scroller Style
+7. Videos
+8. Done: Channel Scroller Style
+9. Lazy Load For Channels
 
 ### APIs
 1. Done: Stories
@@ -63,7 +65,7 @@ The aim of this project is to create a "mother of all news apps". With this proj
 2. Functionalities and buttons. 
 3. Done: Video. 
 4. Interactive Features. 
-5. custom link
+5. Custom link
 6. Handle Links
 7. Done: Offline and Caches for Content
 8. Done: A progress indicator untill web page is completely updated

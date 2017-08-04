@@ -37,7 +37,7 @@
 
 ### Sharing
 1. Done: WeChat
-2. Need Check: Built-ins
+2. Done: Need Check: Built-ins
 
 ### Tracking
 1. Done: Google

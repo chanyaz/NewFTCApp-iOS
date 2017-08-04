@@ -39,7 +39,9 @@ struct Color {
     struct ChannelScroller {
         static let text = "#565656"
         static let highlightedText = "#c0282c"
-        static let background = "#e8dbcb"
+        static let background = "#fff9f5"
+        //static let background = "#e8dbcb"
+        
         //static let background = "#FFFFFF"
         
     }

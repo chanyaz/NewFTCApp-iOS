@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -306,6 +306,61 @@
             </objects>
             <point key="canvasLocation" x="-2140" y="1925.4872563718143"/>
         </scene>
+        <!--Chat View Controller-->
+        <scene sceneID="Kae-En-U9h">
+            <objects>
+                <viewController storyboardIdentifier="ChatViewController" hidesBottomBarWhenPushed="YES" id="AQa-wQ-fbJ" customClass="ChatViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="goF-SS-5Jc"/>
+                        <viewControllerLayoutGuide type="bottom" id="UHe-gl-owQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ais-G2-Doc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1x-7a-dPn">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" id="WZ4-Wo-PfJ">
+                                        <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="3pv-fd-CPg">
+                                            <rect key="frame" x="16" y="7" width="266" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <nil key="textColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="80P-E8-9Dx"/>
+                                    <barButtonItem style="plain" id="bab-Ef-f4z">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nNa-b1-EUe">
+                                            <rect key="frame" x="313" y="7" width="46" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Send"/>
+                                        </button>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="oOr-Rp-EpX">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="B1x-7a-dPn" secondAttribute="trailing" id="7qJ-JF-TLg"/>
+                            <constraint firstItem="B1x-7a-dPn" firstAttribute="top" secondItem="oOr-Rp-EpX" secondAttribute="bottom" id="BDD-7l-xqT"/>
+                            <constraint firstItem="oOr-Rp-EpX" firstAttribute="leading" secondItem="ais-G2-Doc" secondAttribute="leading" id="GmZ-XU-5Gk"/>
+                            <constraint firstItem="B1x-7a-dPn" firstAttribute="leading" secondItem="ais-G2-Doc" secondAttribute="leading" id="Hl3-Yv-fCh"/>
+                            <constraint firstItem="UHe-gl-owQ" firstAttribute="top" secondItem="B1x-7a-dPn" secondAttribute="bottom" id="Kmh-oM-iSF"/>
+                            <constraint firstAttribute="trailing" secondItem="oOr-Rp-EpX" secondAttribute="trailing" id="ZjE-aU-n8g"/>
+                            <constraint firstItem="oOr-Rp-EpX" firstAttribute="top" secondItem="ais-G2-Doc" secondAttribute="top" id="zqw-E5-JDJ"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZYl-9O-NtM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2138.4000000000001" y="2650.5247376311845"/>
+        </scene>
         <!--Content Item View Controller-->
         <scene sceneID="0Z7-4z-qGB">
             <objects>
@@ -317,25 +372,8 @@
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="ContentItemViewController" id="vI6-SU-Y0Z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AVq-Gr-F2f" customClass="UITextViewFixed" customModule="Page" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <attributedString key="attributedText"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="AVq-Gr-F2f" firstAttribute="leading" secondItem="vI6-SU-Y0Z" secondAttribute="leading" id="3Do-em-cmY"/>
-                            <constraint firstAttribute="trailing" secondItem="AVq-Gr-F2f" secondAttribute="trailing" id="6rW-Ni-SXB"/>
-                            <constraint firstItem="PRi-H5-eiu" firstAttribute="top" secondItem="AVq-Gr-F2f" secondAttribute="bottom" id="Wc0-zh-W8g"/>
-                            <constraint firstItem="AVq-Gr-F2f" firstAttribute="top" secondItem="vI6-SU-Y0Z" secondAttribute="top" id="ql1-Rh-glb"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="bodyTextView" destination="AVq-Gr-F2f" id="fMX-vK-FQb"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dck-Gk-Dsj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

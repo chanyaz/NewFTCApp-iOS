@@ -39,9 +39,11 @@ struct Color {
     struct ChannelScroller {
         static let text = "#565656"
         static let highlightedText = "#c0282c"
-        static let background = "#e8dbcb"
+        static let background = "#fff9f5"
+        //static let background = "#e8dbcb"
+        
         //static let background = "#FFFFFF"
-
+        
     }
     
     struct Navigation {
@@ -62,20 +64,24 @@ struct FontSize {
 
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
-    private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
+    //private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
+    private static let domain = "https://danla2f5eudt1.cloudfront.net/"
+    private static let publicDomain = "http://www.ftchinese.com/"
     // MARK: the number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
+    
     // MARK: the types of files that you want to clean from time to time
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg"]
+    
     static func get(_ id: String, type: String) -> String {
-        let actionType: String
+        let urlString: String
         switch type {
-        case "story": actionType = "get_story_more_info/"
+        case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
+        case "tag": urlString = "\(domain)\(type)/\(id)?type=json"
         default:
-            actionType = "get_story_more_info/"
+            urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         }
-        let urlString = "\(base)\(actionType)\(id)"
-        //print (urlString)
+        print ("api url is \(urlString)")
         return urlString
     }
     
@@ -84,13 +90,14 @@ struct APIs {
         // MARK: Use different domains for different types of content
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
-        case "video": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&001"
-        case "interactive": urlString = "http://danla2f5eudt1.cloudfront.net/\(type)/\(id)?webview=ftcapp&001"
-        case "story": urlString = "http://www.ftchinese.com/story/\(id)?full=y"
+        case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
+        case "interactive": urlString = "\(domain)\(type)/\(id)?webview=ftcapp&i=3&002"
+        case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
+        case "photonews", "photo": urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
         default:
-            urlString = "http://danla2f5eudt1.cloudfront.net/"
+            urlString = "\(publicDomain)"
         }
-        print ("open in web view: \(urlString)")
+        // print ("open in web view: \(urlString)")
         return urlString
     }
 }
@@ -163,13 +170,52 @@ struct ImageService {
     }
 }
 
+struct LinkPattern {
+    static let story = ["http://www.ftchinese.com/story/([0-9]+)"]
+    static let interactive = ["http://www.ftchinese.com/interactive/([0-9]+)"]
+    static let video = ["http://www.ftchinese.com/video/([0-9]+)"]
+    static let photonews = ["http://www.ftchinese.com/photonews/([0-9]+)"]
+    static let tag = ["http://www.ftchinese.com/tag/([^?]+)"]
+}
+
+struct SupplementContent {
+    static func insertContent(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
+        var newContentSections = contentSections
+        // MARK: It is possible that the JSON Format is broken. Check it here.
+        if newContentSections.count < 1 {
+            return newContentSections
+        }
+        switch layout {
+        case "home":
+            // MARK: Create link to the Microsoft AI chat bot
+            let xiaobingItem = ContentItem(id: "Id of the Chat Room", image: "http://i.ftimg.net/picture/0/000068460_piclink.jpg", headline: "微软的人工智能机器人小冰", lead: "微软小冰一直在探索新媒体领域的技术能力，试图通过实时对话和用户交流，实现新闻传播的效果", type: "ViewController", preferSponsorImage: "", tag: "AI", customLink: "", timeStamp: 0, section: 0, row: 0)
+            // MARK: Insert the chatbot post under paid post
+            if newContentSections.count > 0 && newContentSections[0].items.count > 2 {
+                newContentSections[0].items.insert(xiaobingItem, at:2)
+            }
+            newContentSections = Content.updateSectionRowIndex(newContentSections)
+            return newContentSections
+        case "ipadhome":
+            // MARK: - The first item in the first section should be marked as Cover
+            newContentSections[0].items[0].isCover = true
+            // MARK: - Break up the first section into two or more, depending on how you want to layout ads
+            
+            return newContentSections
+        default:
+            return newContentSections
+        }
+    }
+    
+
+
+}
+
+
 /*
  enum AppError : Error {
  case invalidResource(String, String)
  }
  */
-
-
 
 
 //func setTimeout(_ delay:TimeInterval, block:@escaping ()->Void) -> Timer {

@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 struct AdLayout {
-    func insertAds(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
+    static func insertAds(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
         var newContentSections = contentSections
         // MARK: It is possible that the JSON Format is broken. Check it here.
         if newContentSections.count < 1 {
@@ -56,6 +56,8 @@ struct AdLayout {
                 newContentSections[0].items = Array(newContentSections[0].items[0..<9])
                 // MARK: Insert the paid post under Cover
                 newContentSections[0].items.insert(paidPostItem, at:1)
+                
+                
                 // MARK: Tell the second story not to display border
                 if newContentSections[0].items.count > 2 {
                     newContentSections[0].items[2].hideTopBorder = true
@@ -66,7 +68,7 @@ struct AdLayout {
             newContentSections.insert(MPU1, at: 1)
             newContentSections.insert(topBanner, at: 0)
             newContentSections.append(bottomBanner)
-            newContentSections = updateSectionRowIndex(newContentSections)
+            newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
         case "ipadhome":
             // MARK: - The first item in the first section should be marked as Cover
@@ -77,17 +79,6 @@ struct AdLayout {
         default:
             return newContentSections
         }
-    }
-    
-    func updateSectionRowIndex(_ contentSection: [ContentSection]) -> [ContentSection] {
-        let newContentSection = contentSection
-        for (sectionIndex, section) in newContentSection.enumerated() {
-            for (itemIndex, item) in section.items.enumerated() {
-                item.section = sectionIndex
-                item.row = itemIndex
-            }
-        }
-        return newContentSection
     }
     
 }

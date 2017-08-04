@@ -52,10 +52,12 @@ class DataForShare: NSObject, UIActivityItemSource {
     func activityViewController(_ activityViewController: UIActivityViewController,
         thumbnailImageForActivityType activityType: UIActivityType?,
         suggestedSize size: CGSize) -> UIImage? {
-            var image : UIImage
-            image = UIImage(named: "ShareIcon.jpg")!
-            image = image.resizableImage(withCapInsets: UIEdgeInsets.zero)
-            return image
+        //var image : UIImage
+        if let image = UIImage(named: "AppIcon") {
+            //image = image.resizableImage(withCapInsets: UIEdgeInsets.zero)
+            return image.resizableImage(withCapInsets: UIEdgeInsets.zero)
+        }
+        return nil
     }
     
 }

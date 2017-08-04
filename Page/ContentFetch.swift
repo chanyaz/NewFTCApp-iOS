@@ -225,6 +225,25 @@ class ContentFetch {
             row:0
         )
         
+        //MARK: It is necessary to return the headline, lead, tag
+        oneItem.headline = item["cheadline"] as? String ?? ""
+        oneItem.tag = item["tag"] as? String ?? ""
+        oneItem.lead = item["clongleadbody"] as? String ?? ""
+        if oneItem.lead == "" {
+            oneItem.lead = item["cshortleadbody"] as? String ?? ""
+        }
+        
+        //TODO: Get images
+        var image = item["image"] as? String ?? ""
+        if image == "" {
+            if let storyPic = item["story_pic"] as? [String: String] {
+                image = storyPic["smallbutton"] ?? storyPic["cover"] ?? storyPic["bigbutton"] ??  ""
+            }
+        }
+        if image != "" {
+            oneItem.image = image
+        }
+        
         oneItem.cbody = item["cbody"] as? String
         oneItem.ebody = item["ebody"] as? String
         oneItem.eheadline = item["eheadline"] as? String
@@ -233,6 +252,7 @@ class ContentFetch {
         oneItem.publishTime = publishTime.unixToTimeStamp()
         oneItem.relatedStories = item["relative_story"] as? [[String: Any]]
         oneItem.relatedVideos = item["relative_vstory"] as? [[String: Any]]
+        
         
         // MARK: get story bylines
         let cbyline_description = item["cbyline_description"] as? String ?? ""

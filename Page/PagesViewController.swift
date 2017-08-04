@@ -59,19 +59,25 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
     }
     
     func applyStyles() {
+        // MARK: Set up nativation title
         if let currentTabName = tabName {
-            let tabTitle = AppNavigation.sharedInstance.getNavigationProperty(for: currentTabName, of: "title")
-            self.navigationItem.title = tabTitle
-            if let navTintColor = AppNavigation.sharedInstance.getNavigationProperty(for: currentTabName, of: "navBackGroundColor") {
+            let tabTitle = AppNavigation.getNavigationProperty(for: currentTabName, of: "title")
+            if let tabTitleImage = AppNavigation.getNavigationProperty(for: currentTabName, of: "title-image") {
+                if let image = UIImage(named: tabTitleImage) {
+                    navigationItem.titleView = UIImageView(image: image)
+                }
+            } else {
+                navigationItem.title = tabTitle
+            }
+            if let navTintColor = AppNavigation.getNavigationProperty(for: currentTabName, of: "navBackGroundColor") {
                 navigationController?.navigationBar.barTintColor = UIColor(hex: navTintColor)
                 navigationController?.navigationBar.setBackgroundImage(UIImage.colorForNavBar(color: UIColor(hex: navTintColor)), for: .default)
                 navigationController?.navigationBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Navigation.border))
             }
-            if let navColor = AppNavigation.sharedInstance.getNavigationProperty(for: currentTabName, of: "navColor") {
+            if let navColor = AppNavigation.getNavigationProperty(for: currentTabName, of: "navColor") {
                 navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(hex: navColor)]
                 navigationController?.navigationBar.tintColor = UIColor(hex: navColor)
             }
-            
             navigationController?.navigationBar.isTranslucent = false
         }
         self.view.backgroundColor = UIColor(hex: Color.Content.background)

@@ -14,7 +14,7 @@ class ChannelModelController: ModelController{
     init(tabName: String) {
         super.init()
         // Create the data model
-        if let p = AppNavigation.sharedInstance.getNavigationPropertyData(for: tabName, of: "Channels" ) {
+        if let p = AppNavigation.getNavigationPropertyData(for: tabName, of: "Channels" ) {
             pageData = p
         }
         updateThemeColor(for: tabName)

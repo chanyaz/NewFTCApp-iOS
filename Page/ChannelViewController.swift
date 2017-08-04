@@ -90,7 +90,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 0
         flowLayout.estimatedItemSize = CGSize(width: 50, height: channelScrollerHeight)
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        //flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         channelScrollerView?.delegate = self
         channelScrollerView?.dataSource = self
         channelScrollerView?.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
@@ -103,7 +103,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         
         // MARK: - Get Channels Data as the Data Source
         if let currentTabName = tabName,
-            let p = AppNavigation.sharedInstance.getNavigationPropertyData(for: currentTabName, of: "Channels" ) {
+            let p = AppNavigation.getNavigationPropertyData(for: currentTabName, of: "Channels" ) {
             pageData = p
             updateBackBarButton(for: 0)
         }
@@ -158,6 +158,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             } else {
                 cell.isSelected = false
             }
+            cell.cellHeight = channelScrollerHeight
             cell.tabName = tabName
             cell.pageData = pageData[indexPath.row]
             return cell
@@ -180,7 +181,6 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
 
 extension ChannelViewController {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        // TODO: use a gotopage function
         goToPage(indexPath.row, isUserPanningEnd: false)
         return false
     }
@@ -189,7 +189,7 @@ extension ChannelViewController {
 extension ChannelViewController: ChannelModelDelegate {
     func pagePanningEnd(_ pageInfoObject: (index: Int, title: String)) {
         let index = pageInfoObject.index
-        print ("panning to \(pageInfoObject.title): \(index)")
+        // print ("panning to \(pageInfoObject.title): \(index)")
         goToPage(index, isUserPanningEnd: true)
     }
 }

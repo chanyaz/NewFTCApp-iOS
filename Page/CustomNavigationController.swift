@@ -14,13 +14,12 @@ class CustomNavigationController: UINavigationController, UINavigationController
     var tabName: String? = nil
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
-        tabBarController?.tabBar.tintColor = AppNavigation.sharedInstance.getThemeColor(for: tabName)
-        
+        tabBarController?.tabBar.tintColor = AppNavigation.getThemeColor(for: tabName)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         if let currentTabName = tabName {
-            let isLightContent = AppNavigation.sharedInstance.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
+            let isLightContent = AppNavigation.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
             if isLightContent == true {
                 return UIStatusBarStyle.lightContent
             }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -19,10 +19,10 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNP-ZW-SBg">
-                        <rect key="frame" x="15" y="0.0" width="156" height="1"/>
+                        <rect key="frame" x="14" y="0.0" width="158" height="1"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="156" id="9V7-LQ-j36"/>
+                            <constraint firstAttribute="width" constant="158" id="9V7-LQ-j36"/>
                             <constraint firstAttribute="height" constant="1" id="MaH-GD-wal"/>
                         </constraints>
                     </view>
@@ -30,9 +30,9 @@
             </view>
             <constraints>
                 <constraint firstItem="cNP-ZW-SBg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="A7u-cV-LMW"/>
-                <constraint firstAttribute="trailing" secondItem="cNP-ZW-SBg" secondAttribute="trailing" constant="15" id="Le9-ga-FTi"/>
+                <constraint firstAttribute="trailing" secondItem="cNP-ZW-SBg" secondAttribute="trailing" constant="14" id="Le9-ga-FTi"/>
                 <constraint firstAttribute="bottom" secondItem="cNP-ZW-SBg" secondAttribute="bottom" id="mDR-ya-EDP"/>
-                <constraint firstItem="cNP-ZW-SBg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="yhq-Q5-ZT3"/>
+                <constraint firstItem="cNP-ZW-SBg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="14" id="yhq-Q5-ZT3"/>
             </constraints>
             <size key="customSize" width="186" height="16"/>
             <connections>

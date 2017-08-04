@@ -135,7 +135,7 @@ class DataViewController: UICollectionViewController {
         
         // MARK: Insert Ads
         let fetchResultsWithAds = AdLayout.insertAds(layoutWay, to: fetchResultsWithContent)
-
+        
         let resultsWithAds = ContentFetchResults(
             apiUrl: results.apiUrl,
             fetchResults: fetchResultsWithAds
@@ -575,7 +575,7 @@ class DataViewController: UICollectionViewController {
             case "ad":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
-                case "ViewController":
+            case "ViewController":
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
                     navigationController?.pushViewController(chatViewController, animated: true)
                 }
@@ -588,14 +588,18 @@ class DataViewController: UICollectionViewController {
                     var pageData2 = [ContentItem]()
                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
                         for (itemIndex, item) in section.items.enumerated() {
-                            if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
-                                pageData1.append(item)
-                            } else {
-                                pageData2.append(item)
+                            if ["story", "video", "interactive", "photo"].contains(item.type) {
+                                if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
+                                    pageData1.append(item)
+                                } else {
+                                    pageData2.append(item)
+                                }
                             }
                         }
                     }
-                    let pageData = pageData1 + pageData2
+                    
+                    let pageDataRaw = pageData1 + pageData2
+                    let pageData = AdLayout.insertFullScreenAd(to: pageDataRaw)
                     detailViewController.contentPageData = pageData
                     navigationController?.pushViewController(detailViewController, animated: true)
                 }

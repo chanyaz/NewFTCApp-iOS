@@ -81,4 +81,12 @@ struct AdLayout {
         }
     }
     
+    static func insertFullScreenAd(to items: [ContentItem])->[ContentItem]{
+        
+        let newItem = ContentItem(id: "", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
+        var newItems = items
+        newItems.insert(newItem, at:2)
+        return newItems
+    }
+    
 }

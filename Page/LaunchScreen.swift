@@ -17,6 +17,7 @@ import MediaPlayer
 class LaunchScreen: UIViewController {
     // MARK: - Find out whether the user is happy and prompt rating if he/she is happy
     public let happyUser = HappyUser()
+    public var showCloseButton = true
     private lazy var timer: Timer? = nil
     
     // MARK: - If the app use a native launch ad, suppress the pop up one
@@ -202,6 +203,9 @@ class LaunchScreen: UIViewController {
     
     // MARK: - The close button for the user to close the full screen ad when app launches
     private func addCloseButton() {
+        if showCloseButton == false {
+            return
+        }
         let horizontalLayout:NSLayoutAttribute
         let verticalLayout:NSLayoutAttribute
         let horizontalMargin:CGFloat

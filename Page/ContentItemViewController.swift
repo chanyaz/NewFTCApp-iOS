@@ -27,13 +27,18 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         if dataObject?.type == "ad" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
-                //add as a childviewcontroller
+                //additionalSafeAreaInsets = UIEdgeInsetsMake(44, 0, 44, 0)
+//                edgesForExtendedLayout = UIRectEdge.all
+//                extendedLayoutIncludesOpaqueBars = true
+                // MARK: add as a childviewcontroller
+                controller.showCloseButton = false
                 addChildViewController(controller)
-                // Add the child's View as a subview
+                // MARK: Add the child's View as a subview
                 self.view.addSubview(controller.view)
                 controller.view.frame = view.bounds
                 controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                // tell the childviewcontroller it's contained in it's parent
+                
+                // MARK: tell the childviewcontroller it's contained in it's parent
                 controller.didMove(toParentViewController: self)
             }
         } else {
@@ -41,6 +46,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
 //            self.tabBarController?.tabBar.isHidden = false
             
             self.view.backgroundColor = UIColor(hex: Color.Content.background)
+//            self.edgesForExtendedLayout = []
+//            self.extendedLayoutIncludesOpaqueBars = false
+            
             let config = WKWebViewConfiguration()
             config.allowsInlineMediaPlayback = true
             

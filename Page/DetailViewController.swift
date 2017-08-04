@@ -99,14 +99,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             object: nil
         )
         
-        // MARK: - Notification For Actual Language Select in Story
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(updateLanguageSwitch(_:)),
-//            name: Notification.Name(rawValue: Event.languageSelected),
-//            object: nil
-//        )
-        
         // MARK: - Color Scheme for the view
         initStyle()
         
@@ -152,21 +144,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         } else {
             print ("cannot play the speech")
         }
-        
     }
     
     private var actualLanguageIndex = 0
-    
-//    public func updateLanguageSwitch(_ notification: Notification) {
-//        print ("Language: update language switch to \(notification.object ?? 0)")
-//        if let actualIndex = notification.object as? Int, let displayedIndex = languages?.selectedSegmentIndex {
-//            if actualIndex != 0 && actualIndex != displayedIndex {
-//                print ("Language: should set languages to \(actualIndex)")
-//                languages?.selectedSegmentIndex = actualIndex
-//            }
-//            actualLanguageIndex = actualIndex
-//        }
-//    }
     
     //MARK: This is only triggerd when user actual taps the UISegmentedControl
     public func switchLanguage(_ sender: UISegmentedControl) {

@@ -11,6 +11,7 @@
 6. Videos
 7. Calendar
 8. Done: Title View: Image for News Channel
+9. Infinite Scrolling in Home and Channel Pages
 
 ### APIs
 1. Done: Stories
@@ -29,7 +30,7 @@
 8. Done: Handle Tag Links
 9. Done: Offline and Caches for Content
 10. Done: A progress indicator untill web page is completely updated
-11. If a page is an empty ad page, show an ad
+11. Working On: If a page is an empty ad page, show an ad
 12. If an interactive is a speedread, let it read the english text
 13. Hide/show sound button properly
 14. Tag page should show title in navigation
@@ -150,9 +151,9 @@ The aim of this project is to create a "mother of all news apps". With this proj
 ### Done: Smooth Panning between content
 ### Done: Pull to refresh
 ### Infinite Scrolling in Home and Channel Pages
-### In Progress: Dynamic Type Support
+### Dynamic Type Support
 ### Autorenewing Subscription
 ### JSON formating that supports as many as possible APIs
-### In Progress: Newspaper experience on iPad
+### Newspaper experience on iPad
 
 

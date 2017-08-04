@@ -19,40 +19,61 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     fileprivate lazy var webView: WKWebView? = nil
     fileprivate let contentAPI = ContentFetch()
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-
+    
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()
-        self.view.backgroundColor = UIColor(hex: Color.Content.background)
-        let config = WKWebViewConfiguration()
-        config.allowsInlineMediaPlayback = true
         
-        // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
-        webView = WKWebView(frame: self.view.bounds, configuration: config)
-        self.view = self.webView
-        webView?.isOpaque = true
-        webView?.backgroundColor = UIColor.clear
-        webView?.scrollView.backgroundColor = UIColor.clear
-        
-        // MARK: This makes the web view scroll like native
-        webView?.scrollView.delegate = self
-        webView?.navigationDelegate = self
-        webView?.clipsToBounds = true
-        webView?.scrollView.bounces = false
+        if dataObject?.type == "ad" {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
+                //add as a childviewcontroller
+                addChildViewController(controller)
+                // Add the child's View as a subview
+                self.view.addSubview(controller.view)
+                controller.view.frame = view.bounds
+                controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                // tell the childviewcontroller it's contained in it's parent
+                controller.didMove(toParentViewController: self)
+            }
+        } else {
+//            self.navigationController?.isNavigationBarHidden = false
+//            self.tabBarController?.tabBar.isHidden = false
+            
+            self.view.backgroundColor = UIColor(hex: Color.Content.background)
+            let config = WKWebViewConfiguration()
+            config.allowsInlineMediaPlayback = true
+            
+            // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
+            webView = WKWebView(frame: self.view.bounds, configuration: config)
+            self.view = self.webView
+            webView?.isOpaque = true
+            webView?.backgroundColor = UIColor.clear
+            webView?.scrollView.backgroundColor = UIColor.clear
+            
+            // MARK: This makes the web view scroll like native
+            webView?.scrollView.delegate = self
+            webView?.navigationDelegate = self
+            webView?.clipsToBounds = true
+            webView?.scrollView.bounces = false
+            
+            // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleLanguagePreferenceChange),
+                name: Notification.Name(rawValue: Event.languagePreferenceChanged),
+                object: nil
+            )
+            getDetailInfo()
+            navigationController?.delegate = self
+            
+            
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleLanguagePreferenceChange),
-            name: Notification.Name(rawValue: Event.languagePreferenceChanged),
-            object: nil
-        )
-        getDetailInfo()
-        navigationController?.delegate = self
-        //navigationItem.title = "another test from oliver"
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +98,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         //        // MARK: - Remove delegate to deal with crashes on iOS 8
         //        self.webView?.navigationDelegate = nil
         self.webView?.scrollView.delegate = nil
-        print ("deinit web view successfully")
+        print ("deinit content item view controller successfully! ")
     }
     
     public func handleLanguagePreferenceChange() {
@@ -210,131 +231,131 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     // wrap the attachment in its own attributed string so we can append it
     var coverImageString: NSAttributedString = NSAttributedString(string: "")
     
-//    private func renderTextview(_ body: NSMutableAttributedString) {
-//        print ("render the text view with native code")
-//        // MARK: Ad View
-//        
-//        
-//        
-//        
-//        // MARK: Image View
-//        
-//        // = NSAttributedString(attachment: coverImageAttachment)
-//        if let loadedImage = dataObject?.detailImage {
-//            //coverImage.image = loadedImage
-//            coverImageAttachment.image = loadedImage
-//            coverImageString = NSAttributedString(attachment: coverImageAttachment)
-//        } else {
-//            let imageWidth = Int(bodyTextView.frame.width - bodyTextView.textContainer.lineFragmentPadding * 2)
-//            let imageHeight = imageWidth * 9 / 16
-//            if let imageString = dataObject?.image {
-//                let imageURL = dataObject?.getImageURL(imageString, width: imageWidth, height: imageHeight)
-//                let attachment = AsyncTextAttachment(imageURL: imageURL)
-//                let imageSize = CGSize(width: imageWidth, height: imageHeight)
-//                attachment.displaySize = imageSize
-//                //attachment.image = UIImage.placeholder(UIColor.gray, size: imageSize)
-//                coverImageString = NSAttributedString(attachment: attachment)
-//            }
-//            
-//        }
-//        
-//        // MARK: paragraph styles
-//        let paragraphStyle = NSMutableParagraphStyle()
-//        //paragraphStyle.paragraphSpacing = 12.0
-//        paragraphStyle.lineHeightMultiple = 1.0
-//        paragraphStyle.lineSpacing = 8.0
-//        //paragraphStyle.paragraphSpacing = 100.0
-//        
-//        // MARK: Get the first tag using regular expression
-//        let tagParagraphStyle = NSMutableParagraphStyle()
-//        tagParagraphStyle.lineHeightMultiple = 1.4
-//        tagParagraphStyle.lineSpacing = 5.0
-//        let tagColor = UIColor(hex: Color.Content.tag)
-//        let tagAttributes:[String:AnyObject] = [
-//            NSForegroundColorAttributeName: tagColor,
-//            NSParagraphStyleAttributeName: tagParagraphStyle,
-//            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title3)
-//        ]
-//        let tagString = dataObject?.tag ?? ""
-//        let firstTag = tagString.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
-//        let tagAttrString = NSMutableAttributedString(
-//            string: "\(firstTag)\r\n",
-//            attributes:tagAttributes
-//        )
-//        //tag?.text = firstTag
-//        
-//        // MARK: Handle Headline
-//        let headlineColor = UIColor(hex: Color.Content.headline)
-//        let headlineAttributes:[String:AnyObject] = [
-//            NSForegroundColorAttributeName: headlineColor,
-//            NSParagraphStyleAttributeName: paragraphStyle,
-//            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title2)
-//        ]
-//        let headlineString = dataObject?.headline ?? ""
-//        let headlineAttrString = NSMutableAttributedString(
-//            string: "\(headlineString)\r\n",
-//            attributes:headlineAttributes
-//        )
-//        
-//        // MARK: Lead
-//        let leadColor = UIColor(hex: Color.Content.lead)
-//        let leadAttributes:[String:AnyObject] = [
-//            NSForegroundColorAttributeName: leadColor,
-//            NSParagraphStyleAttributeName: paragraphStyle,
-//            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title3)
-//        ]
-//        let leadString = dataObject?.lead ?? ""
-//        let leadAttrString = NSMutableAttributedString(
-//            string: "\(leadString)\r\n",
-//            attributes:leadAttributes
-//        )
-//        
-//        // MARK: Publishing Time
-//        let bylineParagraphStyle = NSMutableParagraphStyle()
-//        bylineParagraphStyle.lineHeightMultiple = 1.4
-//        bylineParagraphStyle.lineSpacing = 5.0
-//        let timeColor = UIColor(hex: Color.Content.time)
-//        let timeAttributes:[String:AnyObject] = [
-//            NSForegroundColorAttributeName: timeColor,
-//            NSParagraphStyleAttributeName: bylineParagraphStyle,
-//            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .footnote)
-//        ]
-//        let publishingTime = dataObject?.publishTime ?? ""
-//        let publishingTimeAttributedString = NSMutableAttributedString(
-//            string: "\r\n\(publishingTime) ",
-//            attributes:timeAttributes
-//        )
-//        
-//        
-//        // MARK: Set the byline/author text style
-//        let authorColor = UIColor(hex: Color.Content.body)
-//        let authorAttributes:[String:AnyObject] = [
-//            NSForegroundColorAttributeName: authorColor,
-//            NSParagraphStyleAttributeName: bylineParagraphStyle,
-//            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .footnote)
-//        ]
-//        let bylineString = dataObject?.chineseByline ?? ""
-//        let bylineAttrString = NSMutableAttributedString(
-//            string: "\(bylineString)\r\n",
-//            attributes:authorAttributes
-//        )
-//        let bylineAttributedString = NSMutableAttributedString()
-//        bylineAttributedString.append(publishingTimeAttributedString)
-//        bylineAttributedString.append(bylineAttrString)
-//        //byline?.attributedText = bylineAttributedString
-//        
-//        
-//        let text = NSMutableAttributedString()
-//        text.append(tagAttrString)
-//        text.append(headlineAttrString)
-//        text.append(leadAttrString)
-//        text.append(coverImageString)
-//        text.append(publishingTimeAttributedString)
-//        text.append(bylineAttrString)
-//        text.append(body)
-//        bodyTextView?.attributedText = text
-//        
-//    }
+    //    private func renderTextview(_ body: NSMutableAttributedString) {
+    //        print ("render the text view with native code")
+    //        // MARK: Ad View
+    //
+    //
+    //
+    //
+    //        // MARK: Image View
+    //
+    //        // = NSAttributedString(attachment: coverImageAttachment)
+    //        if let loadedImage = dataObject?.detailImage {
+    //            //coverImage.image = loadedImage
+    //            coverImageAttachment.image = loadedImage
+    //            coverImageString = NSAttributedString(attachment: coverImageAttachment)
+    //        } else {
+    //            let imageWidth = Int(bodyTextView.frame.width - bodyTextView.textContainer.lineFragmentPadding * 2)
+    //            let imageHeight = imageWidth * 9 / 16
+    //            if let imageString = dataObject?.image {
+    //                let imageURL = dataObject?.getImageURL(imageString, width: imageWidth, height: imageHeight)
+    //                let attachment = AsyncTextAttachment(imageURL: imageURL)
+    //                let imageSize = CGSize(width: imageWidth, height: imageHeight)
+    //                attachment.displaySize = imageSize
+    //                //attachment.image = UIImage.placeholder(UIColor.gray, size: imageSize)
+    //                coverImageString = NSAttributedString(attachment: attachment)
+    //            }
+    //
+    //        }
+    //
+    //        // MARK: paragraph styles
+    //        let paragraphStyle = NSMutableParagraphStyle()
+    //        //paragraphStyle.paragraphSpacing = 12.0
+    //        paragraphStyle.lineHeightMultiple = 1.0
+    //        paragraphStyle.lineSpacing = 8.0
+    //        //paragraphStyle.paragraphSpacing = 100.0
+    //
+    //        // MARK: Get the first tag using regular expression
+    //        let tagParagraphStyle = NSMutableParagraphStyle()
+    //        tagParagraphStyle.lineHeightMultiple = 1.4
+    //        tagParagraphStyle.lineSpacing = 5.0
+    //        let tagColor = UIColor(hex: Color.Content.tag)
+    //        let tagAttributes:[String:AnyObject] = [
+    //            NSForegroundColorAttributeName: tagColor,
+    //            NSParagraphStyleAttributeName: tagParagraphStyle,
+    //            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title3)
+    //        ]
+    //        let tagString = dataObject?.tag ?? ""
+    //        let firstTag = tagString.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+    //        let tagAttrString = NSMutableAttributedString(
+    //            string: "\(firstTag)\r\n",
+    //            attributes:tagAttributes
+    //        )
+    //        //tag?.text = firstTag
+    //
+    //        // MARK: Handle Headline
+    //        let headlineColor = UIColor(hex: Color.Content.headline)
+    //        let headlineAttributes:[String:AnyObject] = [
+    //            NSForegroundColorAttributeName: headlineColor,
+    //            NSParagraphStyleAttributeName: paragraphStyle,
+    //            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title2)
+    //        ]
+    //        let headlineString = dataObject?.headline ?? ""
+    //        let headlineAttrString = NSMutableAttributedString(
+    //            string: "\(headlineString)\r\n",
+    //            attributes:headlineAttributes
+    //        )
+    //
+    //        // MARK: Lead
+    //        let leadColor = UIColor(hex: Color.Content.lead)
+    //        let leadAttributes:[String:AnyObject] = [
+    //            NSForegroundColorAttributeName: leadColor,
+    //            NSParagraphStyleAttributeName: paragraphStyle,
+    //            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .title3)
+    //        ]
+    //        let leadString = dataObject?.lead ?? ""
+    //        let leadAttrString = NSMutableAttributedString(
+    //            string: "\(leadString)\r\n",
+    //            attributes:leadAttributes
+    //        )
+    //
+    //        // MARK: Publishing Time
+    //        let bylineParagraphStyle = NSMutableParagraphStyle()
+    //        bylineParagraphStyle.lineHeightMultiple = 1.4
+    //        bylineParagraphStyle.lineSpacing = 5.0
+    //        let timeColor = UIColor(hex: Color.Content.time)
+    //        let timeAttributes:[String:AnyObject] = [
+    //            NSForegroundColorAttributeName: timeColor,
+    //            NSParagraphStyleAttributeName: bylineParagraphStyle,
+    //            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .footnote)
+    //        ]
+    //        let publishingTime = dataObject?.publishTime ?? ""
+    //        let publishingTimeAttributedString = NSMutableAttributedString(
+    //            string: "\r\n\(publishingTime) ",
+    //            attributes:timeAttributes
+    //        )
+    //
+    //
+    //        // MARK: Set the byline/author text style
+    //        let authorColor = UIColor(hex: Color.Content.body)
+    //        let authorAttributes:[String:AnyObject] = [
+    //            NSForegroundColorAttributeName: authorColor,
+    //            NSParagraphStyleAttributeName: bylineParagraphStyle,
+    //            NSFontAttributeName:UIFont.preferredFont(forTextStyle: .footnote)
+    //        ]
+    //        let bylineString = dataObject?.chineseByline ?? ""
+    //        let bylineAttrString = NSMutableAttributedString(
+    //            string: "\(bylineString)\r\n",
+    //            attributes:authorAttributes
+    //        )
+    //        let bylineAttributedString = NSMutableAttributedString()
+    //        bylineAttributedString.append(publishingTimeAttributedString)
+    //        bylineAttributedString.append(bylineAttrString)
+    //        //byline?.attributedText = bylineAttributedString
+    //
+    //
+    //        let text = NSMutableAttributedString()
+    //        text.append(tagAttrString)
+    //        text.append(headlineAttrString)
+    //        text.append(leadAttrString)
+    //        text.append(coverImageString)
+    //        text.append(publishingTimeAttributedString)
+    //        text.append(bylineAttrString)
+    //        text.append(body)
+    //        bodyTextView?.attributedText = text
+    //
+    //    }
     
     private func renderWebView() {
         if dataObject?.type == "story" {

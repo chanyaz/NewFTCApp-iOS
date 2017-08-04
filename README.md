@@ -67,6 +67,8 @@
 2. WeChat
 
 ### myFT
+1. Reading History
+
 
 ### Big 5 Version
 

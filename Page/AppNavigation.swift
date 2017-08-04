@@ -69,11 +69,12 @@ struct AppNavigation {
                  "url":"http://www.ftchinese.com/channel/datanews.html",
                  "screenName":"homepage/datanews"
                 ],
-                ["title": "小冰播报",
-                 "type": "chat",
-                 "api":"https://danla2f5eudt1.cloudfront.net/channel/datanews.html?type=json",
+                ["title": "FTCC",
+                 "api":"https://danla2f5eudt1.cloudfront.net/index.php/jsapi/publish/ftcc",
+                 "compactLayout": "All Cover",
+                 "regularLayout": "",
                  "url":"http://www.ftchinese.com/channel/datanews.html",
-                 "screenName":"homepage/chat"
+                 "screenName":"homepage/ftcc"
                 ]
             ]
         ],
@@ -245,8 +246,5 @@ struct AppNavigation {
         }
         return themeColor
     }
-    
-    
-    
-    
+
 }

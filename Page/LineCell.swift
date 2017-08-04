@@ -37,9 +37,11 @@ class LineCell: UICollectionViewCell {
     
     private func updateUI() {
         if let cellWidth = cellWidth {
+            //MARK: Use this to suppress useless warnings in log
+            self.contentView.translatesAutoresizingMaskIntoConstraints = false
             borderWidthConstraint.constant = cellWidth - borderTrailing.constant - borderLeading.constant
+            //print ("border width constraint is now \(borderWidthConstraint.constant)")
         }
-
     }
     
     private func requestAd() {

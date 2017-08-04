@@ -455,6 +455,8 @@ class DataViewController: UICollectionViewController {
             } else {
                 reuseIdentifier = "HeadlineCell"
             }
+        } else if layoutStrategy == "All Cover" {
+            reuseIdentifier = "CoverCell"
         } else {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass

@@ -23,6 +23,15 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         self.launchActionSheet(for: item)
     }
     
+    var isFullScreenAdOn = false
+    
+    override var prefersStatusBarHidden: Bool {
+        if isFullScreenAdOn {
+            return true
+        } else {
+            return false
+        }
+    }
     
     // @IBOutlet weak var bottomBar: UIToolbar!
     var modelController: DetailModelController {
@@ -42,7 +51,18 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     var _modelController: DetailModelController? = nil
     
-
+    var bottomBarHeight: CGFloat?
+    var fullPageViewRect: CGRect?
+    
+    fileprivate func setPageViewFrame() {
+        if let fullPageViewRect = fullPageViewRect {
+            let pageViewHeight: CGFloat
+            pageViewHeight = fullPageViewRect.height
+            let pageViewRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: pageViewHeight)
+            self.pageViewController!.view.frame = pageViewRect
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: Delegate Step 4: Set the delegate to self
@@ -52,11 +72,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // TODO: Add the bottom bar here instead of in the
         
         // MARK: - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-        let bottomBarHeight = toolBar.frame.height + 1
-        let fullPageViewRect = self.view.bounds
-        let pageViewRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: fullPageViewRect.height - bottomBarHeight)
-        self.pageViewController!.view.frame = pageViewRect
-        
+        bottomBarHeight = toolBar.frame.height + 1
+        fullPageViewRect = self.view.bounds
+        setPageViewFrame()
         let startingViewController: ContentItemViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
         let viewControllers = [startingViewController]
         self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: false, completion: {done in })
@@ -64,6 +82,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         self.addChildViewController(self.pageViewController!)
         self.view.addSubview(self.pageViewController!.view)
         self.pageViewController!.didMove(toParentViewController: self)
+        
+        toolBar.layer.zPosition = 1
         
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""
@@ -73,13 +93,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         let audioButton = UIBarButtonItem(image: audioIcon, style: .plain, target: self, action: #selector(listen))
         self.navigationItem.rightBarButtonItem = audioButton
         
-
+        
         
         // MARK: - Segmented Control
         let items = ["中文", "英文", "对照"]
         languages = UISegmentedControl(items: items)
         languages?.selectedSegmentIndex = 0
-
+        
         // MARK: Add target action method
         languages?.addTarget(self, action: #selector(switchLanguage(_:)), for: .valueChanged)
         
@@ -177,7 +197,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         }
         languages?.selectedSegmentIndex = actualLanguageIndex
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -287,6 +307,17 @@ extension DetailViewController: DetailModelDelegate {
         // TODO: There might not be enough space for story title. Consider doing some other things when page is changed
         //self.navigationItem.title = title
         currentPageIndex = index
-        print ("current item is \(String(describing: item?.headline))")
+        print ("DetailModelDelegate: current item \(index): \(String(describing: item?.headline))")
+        if item?.type == "ad" {
+            navigationController?.setNavigationBarHidden(true, animated: true)
+            toolBar.isHidden = true
+            isFullScreenAdOn = true
+        } else {
+            navigationController?.setNavigationBarHidden(false, animated: true)
+            toolBar.isHidden = false
+            isFullScreenAdOn = false
+        }
+        // MARK: Ask the view controller to hide or show status bar
+        setNeedsStatusBarAppearanceUpdate()
     }
 }

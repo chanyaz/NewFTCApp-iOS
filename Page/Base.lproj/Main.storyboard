@@ -110,7 +110,7 @@
         <!--Detail View Controller-->
         <scene sceneID="8jS-Yg-eeT">
             <objects>
-                <viewController storyboardIdentifier="Detail View" modalTransitionStyle="flipHorizontal" modalPresentationStyle="currentContext" hidesBottomBarWhenPushed="YES" id="naC-T6-XIm" customClass="DetailViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Detail View" extendedLayoutIncludesOpaqueBars="YES" modalTransitionStyle="flipHorizontal" modalPresentationStyle="currentContext" hidesBottomBarWhenPushed="YES" id="naC-T6-XIm" customClass="DetailViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5uS-gj-lpA"/>
                         <viewControllerLayoutGuide type="bottom" id="1bF-GV-FCk"/>
@@ -140,7 +140,6 @@
                             <constraint firstAttribute="trailing" secondItem="bc2-gr-Zq9" secondAttribute="trailing" id="TWs-VG-yVG"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="Izp-uS-eCX"/>
                     <connections>
                         <outlet property="actionButton" destination="QUo-79-Rea" id="RkP-Hh-BaA"/>

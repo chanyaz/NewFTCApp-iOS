@@ -62,6 +62,7 @@ class ContentFetch {
                     completion(ContentFetchResults(apiUrl: urlString, fetchResults: contentSections), nil)
                 })
             } catch _ {
+                print ("error in content fetch of \(urlString)")
                 completion(nil, nil)
                 return
             }

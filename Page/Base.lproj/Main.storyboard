@@ -371,8 +371,23 @@
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="ContentItemViewController" id="vI6-SU-Y0Z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mP0-6c-0VA">
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mP0-6c-0VA" firstAttribute="leading" secondItem="vI6-SU-Y0Z" secondAttribute="leading" id="RLR-um-kLg"/>
+                            <constraint firstAttribute="trailing" secondItem="mP0-6c-0VA" secondAttribute="trailing" id="h61-zn-caB"/>
+                            <constraint firstItem="PRi-H5-eiu" firstAttribute="top" secondItem="mP0-6c-0VA" secondAttribute="bottom" constant="44" id="wIH-pe-fuC"/>
+                            <constraint firstItem="mP0-6c-0VA" firstAttribute="top" secondItem="vI6-SU-Y0Z" secondAttribute="top" constant="64" id="xe7-BZ-e6c"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="containerView" destination="mP0-6c-0VA" id="dKv-Pq-fGU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dck-Gk-Dsj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

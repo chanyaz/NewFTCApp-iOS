@@ -20,6 +20,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     fileprivate let contentAPI = ContentFetch()
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
+    @IBOutlet weak var containerView: UIView!
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()
@@ -52,10 +53,17 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             let config = WKWebViewConfiguration()
             config.allowsInlineMediaPlayback = true
             
+            // MARK: Add the webview as a subview of containerView
+            self.webView = WKWebView(frame: self.containerView.bounds, configuration: config)
+            self.containerView.addSubview(self.webView!)
+            self.containerView.clipsToBounds = true
+            self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
-            webView = WKWebView(frame: self.view.bounds, configuration: config)
-            self.view = self.webView
-            webView?.isOpaque = true
+//            webView = WKWebView(frame: self.view.bounds, configuration: config)
+//            self.view = self.webView
+            webView?.isOpaque = false
             webView?.backgroundColor = UIColor.clear
             webView?.scrollView.backgroundColor = UIColor.clear
             

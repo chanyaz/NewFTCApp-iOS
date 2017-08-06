@@ -30,10 +30,11 @@
 8. Done: Handle Tag Links
 9. Done: Offline and Caches for Content
 10. Done: A progress indicator untill web page is completely updated
-11. Working On: If a page is an empty ad page, show an ad
+11. Done: Full Screen Ad
 12. If an interactive is a speedread, let it read the english text
 13. Hide/show sound button properly
 14. Tag page should show title in navigation
+15. Add new layout to display all cover
 
 ### Sharing
 1. Done: WeChat

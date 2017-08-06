@@ -17,6 +17,7 @@ class BigImageCell: UICollectionViewCell {
     let imageHeight = 234  // 9 * 52
     
 
+    @IBOutlet weak var topBorder: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
     @IBOutlet weak var lead: UILabel!
@@ -37,7 +38,15 @@ class BigImageCell: UICollectionViewCell {
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     func updateUI() {
         
-
+        // MARK: - Set Top Border Color        
+        if let row = itemCell?.row,
+            row > 0,
+            itemCell?.hideTopBorder != true {
+            topBorder.backgroundColor = UIColor(hex: Color.Content.border)
+        } else {
+            // MARK: - set first item's border color to transparent
+            topBorder.backgroundColor = nil
+        }
         
         // MARK: - Update Styles and Layouts
         containerView.backgroundColor = UIColor(hex: Color.Content.background)

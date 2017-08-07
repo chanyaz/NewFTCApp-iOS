@@ -13,7 +13,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     var keyboardNeedLayout:Bool = true
     
-    var talkData = Array(repeating:CellData(), count:10){
+    
+    var talkData = Array(repeating:CellData(), count:7){
         didSet{
             self.talkListBlock.reloadData()
             //let num = talkData.count
@@ -24,11 +25,27 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
         }
     }
+ 
+    /*
+    var talkData = [CellData]() {
+        didSet{
+            self.talkListBlock.reloadData()
+            //let num = talkData.count
+            let currentIndexPath = IndexPath(row: talkData.count-1, section: 0)
+            //let firstIndexPath = IndexPath(row: 0, section: 0)
+            
+            self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+            
+        }
+    }
+ */
+    
 
     @IBOutlet weak var talkListBlock: UITableView!
     
     @IBOutlet weak var inputBlock: UITextField!
     
+    @IBOutlet weak var bottomToolbar: UIToolbar!
     
     @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         self.inputBlock.resignFirstResponder()
@@ -84,6 +101,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     animations: { _ in
                         
                         self.view.frame = CGRect(x: 0, y: -deltaY, width: self.view.bounds.width, height: self.view.bounds.height)
+                        //self.talkListBlock.frame = CGRect(x:0,y: deltaY,width:self.talkListBlock.bounds.width,height: self.talkListBlock.bounds.height - deltaY)
                         self.keyboardNeedLayout = false
                         self.view.layoutIfNeeded()
                         
@@ -111,6 +129,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 animations: { _ in
                     
                     self.view.frame = CGRect(x: 0, y: deltaY, width: self.view.bounds.width, height: self.view.bounds.height)
+                    //self.talkListBlock.frame = CGRect(x:0,y: -deltaY,width:self.talkListBlock.bounds.width,height: self.talkListBlock.bounds.height + deltaY)
                     self.keyboardNeedLayout = true
                     self.view.layoutIfNeeded()
                     
@@ -156,6 +175,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         self.talkData.append(CellData(headImage: "you.jpeg", whoSays: .you, saysWhat: "Hahaha"))
         self.talkData.append(CellData(headImage: "robot.jpeg", whoSays: .robot, saysWhat: "Welcome"))
+
 
     }
 

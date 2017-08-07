@@ -317,7 +317,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1x-7a-dPn">
+                            <toolbar clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1x-7a-dPn">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" id="WZ4-Wo-PfJ">
@@ -350,7 +350,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xM3-DN-3bY" id="zW4-df-Wwi">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -361,18 +361,21 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="B1x-7a-dPn" secondAttribute="trailing" id="7qJ-JF-TLg"/>
-                            <constraint firstItem="B1x-7a-dPn" firstAttribute="top" secondItem="oOr-Rp-EpX" secondAttribute="bottom" id="BDD-7l-xqT"/>
                             <constraint firstItem="oOr-Rp-EpX" firstAttribute="leading" secondItem="ais-G2-Doc" secondAttribute="leading" id="GmZ-XU-5Gk"/>
                             <constraint firstItem="B1x-7a-dPn" firstAttribute="leading" secondItem="ais-G2-Doc" secondAttribute="leading" id="Hl3-Yv-fCh"/>
                             <constraint firstItem="UHe-gl-owQ" firstAttribute="top" secondItem="B1x-7a-dPn" secondAttribute="bottom" id="Kmh-oM-iSF"/>
+                            <constraint firstItem="UHe-gl-owQ" firstAttribute="top" secondItem="B1x-7a-dPn" secondAttribute="bottom" id="RkL-2J-LSk"/>
                             <constraint firstAttribute="trailing" secondItem="oOr-Rp-EpX" secondAttribute="trailing" id="ZjE-aU-n8g"/>
+                            <constraint firstItem="B1x-7a-dPn" firstAttribute="top" secondItem="oOr-Rp-EpX" secondAttribute="bottom" id="lKj-zy-HSn"/>
                             <constraint firstItem="oOr-Rp-EpX" firstAttribute="top" secondItem="ais-G2-Doc" secondAttribute="top" id="zqw-E5-JDJ"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="2Dg-XC-Zh8" appends="YES" id="IRe-aj-Ihh"/>
                         </connections>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <connections>
+                        <outlet property="bottomToolbar" destination="B1x-7a-dPn" id="FGf-dF-Ywc"/>
                         <outlet property="inputBlock" destination="3pv-fd-CPg" id="LaK-5W-pG9"/>
                         <outlet property="talkListBlock" destination="oOr-Rp-EpX" id="8Qz-HX-dou"/>
                     </connections>

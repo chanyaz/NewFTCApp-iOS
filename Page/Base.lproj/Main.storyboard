@@ -367,6 +367,7 @@
                             <constraint firstItem="UHe-gl-owQ" firstAttribute="top" secondItem="B1x-7a-dPn" secondAttribute="bottom" id="RkL-2J-LSk"/>
                             <constraint firstAttribute="trailing" secondItem="oOr-Rp-EpX" secondAttribute="trailing" id="ZjE-aU-n8g"/>
                             <constraint firstItem="B1x-7a-dPn" firstAttribute="top" secondItem="oOr-Rp-EpX" secondAttribute="bottom" id="lKj-zy-HSn"/>
+                            <constraint firstItem="UHe-gl-owQ" firstAttribute="top" secondItem="B1x-7a-dPn" secondAttribute="bottom" id="lXA-6G-m45"/>
                             <constraint firstItem="oOr-Rp-EpX" firstAttribute="top" secondItem="ais-G2-Doc" secondAttribute="top" id="zqw-E5-JDJ"/>
                         </constraints>
                         <connections>

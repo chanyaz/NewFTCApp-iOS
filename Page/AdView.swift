@@ -59,8 +59,29 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     
     private func handleAdModel() {
         if let adModel = self.adModel {
-            if let imageString = adModel.imageString {
-                // TODO: If the asset is already downloaded, no need to request from the Internet
+            if let videoString = adModel.video {
+                // MARK: If the asset is already downloaded, no need to request from the Internet
+                if let videoFilePath = Download.checkFilePath(fileUrl: videoString, for: .cachesDirectory) {
+                    showAdVideo(videoFilePath)
+                    print ("video already in cache:\(videoString)")
+                    return
+                }
+                //                print ("continue to get the image file of \(imageString)")
+                //                print ("the adModel is now \(adModel)")
+                if let url = URL(string: videoString) {
+                    Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
+                        guard let data = data else {
+                            self?.loadWebView()
+                            return
+                        }
+                        DispatchQueue.main.async { () -> Void in
+                            self?.showAdVideo(videoString)
+                        }
+                        Download.saveFile(data, filename: videoString, to: .cachesDirectory, as: nil)
+                    }
+                }
+            } else if let imageString = adModel.imageString {
+                // MARK: If the asset is already downloaded, no need to request from the Internet
                 if let data = Download.readFile(imageString, for: .cachesDirectory, as: nil) {
                     showAdImage(data)
                     //print ("image already in cache:\(imageString)")
@@ -86,6 +107,10 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         } else {
             loadWebView()
         }
+    }
+    
+    private func showAdVideo(_ filePath: String) {
+        print ("should show ad video: \(filePath)")
     }
     
     private func showAdImage(_ data: Data) {

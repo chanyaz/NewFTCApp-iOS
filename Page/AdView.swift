@@ -118,6 +118,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     
     private func showAdVideo(_ filePath: URL) {
         print ("should show ad video: \(filePath)")
+        
         let player = AVPlayer(url: filePath)
         let playerLayer = AVPlayerLayer()
         

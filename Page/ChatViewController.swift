@@ -55,7 +55,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     @IBAction func sendYourTalk(_ sender: UIButton) {
         if let currentYourTalk = inputBlock.text {
-            let currentYourCellData = CellData(headImage: "you.jpeg", whoSays: .you, saysWhat: currentYourTalk)
+            let currentYourCellData = CellData(whoSays: .you, saysWhat: currentYourTalk)
             talkData.append(currentYourCellData)
             
             self.inputBlock.text = ""
@@ -71,7 +71,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             default:
                 currentRobotTalk = "What do you say?"
             }
-            let currentRobotCellData = CellData(headImage: "robot.jpeg", whoSays: .robot, saysWhat: currentRobotTalk)
+            let currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotTalk)
             talkData.append(currentRobotCellData)
             
         }
@@ -96,7 +96,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     delay: 0.0,
                     options: UIViewAnimationOptions(rawValue: curve),
                     animations: { _ in
-                        
+                        // FIXME: There is an spooky black bar above keyboard whose height is 64. Now my temporary solution is cutting of the bar forcibly
                         self.view.frame = CGRect(x: 0, y: -deltaY+64, width: self.view.bounds.width, height: self.view.bounds.height)
                         //self.talkListBlock.frame = CGRect(x:0,y: deltaY,width:self.talkListBlock.bounds.width,height: self.talkListBlock.bounds.height - deltaY)
                         self.keyboardNeedLayout = false
@@ -174,8 +174,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
-        self.talkData.append(CellData(headImage: "you.jpeg", whoSays: .you, saysWhat: "Hahaha"))
-        self.talkData.append(CellData(headImage: "robot.jpeg", whoSays: .robot, saysWhat: "Welcome"))
+        self.talkData.append(CellData(whoSays: .you, saysWhat: "Hahaha"))
+        self.talkData.append(CellData(whoSays: .robot, saysWhat: "Welcome"))
 
 
     }

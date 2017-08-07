@@ -26,7 +26,6 @@ class OneTalkCell: UITableViewCell {
         self.cellData = data
         print(data)
         super.init(style: UITableViewCellStyle.default, reuseIdentifier:cellId)
-        print("here")
         buildTheCell()
     }
     
@@ -49,16 +48,15 @@ class OneTalkCell: UITableViewCell {
             
             // 头像高、宽都为50CGFloat
             // 头像的位置x: robot头像在左，you头像在右
-            let xForHeadImageView = (whoSays == .robot) ? 2 : self.frame.width - 52
-            // 头像的位置y: 在cell的垂直居中处
-            let yForHeadImageView = self.frame.midY - 25
+            let xForHeadImageView = (whoSays == .robot) ? 5 : self.frame.width - 55
+            // 头像的位置y:
+            let yForHeadImageView = self.frame.minY + 5
             
             // 绘制头像view
             self.headImageView.frame = CGRect(x:xForHeadImageView,y:yForHeadImageView,width:50,height:50)
             print(self.headImageView.frame.minX)
             print(self.headImageView.frame.maxX)
             self.addSubview(self.headImageView)
-            print("Add headImage Success")
         }
         
         // 显示对话内容
@@ -74,28 +72,16 @@ class OneTalkCell: UITableViewCell {
                 options: .truncatesLastVisibleLine,
                 attributes: atts,
                 context: nil)
-            /*
-             let size = self.cellData.saysWhat.boundingRect(
-             with: CGSize(width:CGFloat(width), height:CGFloat(height)),
-             options: .truncatesLastVisibleLine,
-             attributes: atts,
-             context: nil)
-             */
-            
+       
             let finalWidth = size.size.width * 1.4 //修正计算错误
             let finalHeight = size.size.height * 1.4
-            let finalX = (whoSays == .robot) ? 54: self.frame.width - 54 - finalWidth
-            let finalY = self.frame.midY - 25
+            let finalX = (whoSays == .robot) ? 60: self.frame.width - 60 - finalWidth
+            let finalY = self.frame.minY + 5
             saysContentView = UILabel(frame: CGRect(x: finalX, y: finalY, width: finalWidth, height: finalHeight))
             saysContentView.numberOfLines = 0
             saysContentView.lineBreakMode = NSLineBreakMode.byCharWrapping
             saysContentView.text = self.cellData.saysWhat
-            
-            /*
-             let xForSaysContentView = (whoSays == .robot) ? 54 : self.frame.width - 54 - 200
-             let yForSaysContentView = self.frame.midY - 25
-             self.saysContentView.frame = CGRect(x: xForSaysContentView, y: yForSaysContentView, width: 200, height: 50)
-             */
+
             self.addSubview(saysContentView)
         }
         

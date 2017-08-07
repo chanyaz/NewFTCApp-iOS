@@ -123,28 +123,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(self.talkData.count)
         return self.talkData.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        print(100)
         return 60.0
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        /*
-         let cell = tableView.dequeueReusableCell(withIdentifier: "Talk", for: indexPath)
-         print(cell)
-         cell.textLabel?.text = talkData[indexPath.row]
-         */
-        
-        print("one cell")
+
         let cellData = self.talkData[indexPath.row]
-        print(cellData)
         let cell = OneTalkCell(cellData, reuseId:"Talk")
-        print("One cell success")
         return cell
         
     }

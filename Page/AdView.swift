@@ -65,22 +65,20 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         if let adModel = self.adModel {
             if let videoString = adModel.video {
                 // MARK: If the asset is already downloaded, no need to request from the Internet
-                if let videoFilePath = Download.getFilePath(videoString, for: .cachesDirectory, as: nil) {
-                    print ("video already in cache:\(videoFilePath)")
+                if let videoFilePath = Download.getFilePath(videoString, for: .documentDirectory, as: nil) {
+                    print ("video already downloaded to:\(videoFilePath)")
                     showAdVideo(videoFilePath)
                     return
                 }
-                //                print ("continue to get the image file of \(imageString)")
-                //                print ("the adModel is now \(adModel)")
                 if let url = URL(string: videoString) {
                     Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                         guard let data = data else {
                             self?.loadWebView()
                             return
                         }
-                        Download.saveFile(data, filename: videoString, to: .cachesDirectory, as: nil)
+                        Download.saveFile(data, filename: videoString, to: .documentDirectory, as: nil)
                         DispatchQueue.main.async { () -> Void in
-                            if let videoFilePath = Download.getFilePath(videoString, for: .cachesDirectory, as: nil) {
+                            if let videoFilePath = Download.getFilePath(videoString, for: .documentDirectory, as: nil) {
                                 self?.showAdVideo(videoFilePath)
                                 print ("video just downloaded:\(videoString) as \(videoFilePath)")
                             }
@@ -116,17 +114,27 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         }
     }
     
+    // https://stackoverflow.com/questions/33702490/embedding-videos-in-a-tableview-cell
+    
     private func showAdVideo(_ path: String) {
         let pathUrl = URL(fileURLWithPath: path)
+        //let pathUrl = URL(fileURLWithPath: "/Users/zhangoliver/Library/Developer/CoreSimulator/Devices/D02EDCEC-BD4D-442E-91DD-FEA096B5D07C/data/Containers/Data/Application/7785EE7F-29D7-43BA-BEDF-FD2C09EF463D/Documents/CAR-video-828x1472-inf15s-PUJE1682-CN.mp4")
+        //let pathUrl = URL(string: "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")
         print ("should show ad video: \(pathUrl)")
         let player = AVPlayer(url: pathUrl)
-        let playerLayer = AVPlayerLayer()
-        playerLayer.player = player
+        let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = self.bounds
-        playerLayer.backgroundColor = UIColor.clear.cgColor
+        
+        //playerLayer.frame = CGRect(x: 0, y: 0, width: 300, height: 250)
+        
+        playerLayer.backgroundColor = UIColor.red.cgColor
         playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        self.layer.addSublayer(playerLayer)
-        player.isMuted = false
+        //self.layer.addSublayer(playerLayer)
+        layer.addSublayer(playerLayer)
+        
+        //self.layer.insertSublayer(playerLayer, at: 0)
+        
+        //player.isMuted = false
         player.play()
         
         

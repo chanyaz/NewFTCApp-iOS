@@ -798,7 +798,6 @@
 				TargetAttributes = {
 					60D3C8BC1EBFF5DC0085BEF6 = {
 						CreatedOnToolsVersion = 8.3.1;
-						DevelopmentTeam = CAEDT8EKGV;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -1190,7 +1189,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Page/Page.entitlements;
-				DEVELOPMENT_TEAM = CAEDT8EKGV;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Page/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1207,7 +1206,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Page/Page.entitlements;
-				DEVELOPMENT_TEAM = CAEDT8EKGV;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Page/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

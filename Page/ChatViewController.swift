@@ -84,23 +84,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
             let keyboardFrame = value.cgRectValue
             
-            if let currentWindow = self.view.window {
-                currentWindow.convert(keyboardFrame, from: nil)
-            }
-            
             print(keyboardFrame.height)
+            
             let intersection = self.view.frame.intersection(keyboardFrame) // 求当前view的frame与keyboardFrame的交集
             let deltaY = intersection.height
-            print(deltaY)
+             print(deltaY)
             
-            if keyboardNeedLayout {
+            //if keyboardNeedLayout {
                 UIView.animate(
                     withDuration: duration,
                     delay: 0.0,
                     options: UIViewAnimationOptions(rawValue: curve),
                     animations: { _ in
                         
-                        self.view.frame = CGRect(x: 0, y: -deltaY, width: self.view.bounds.width, height: self.view.bounds.height)
+                        self.view.frame = CGRect(x: 0, y: -deltaY+64, width: self.view.bounds.width, height: self.view.bounds.height)
                         //self.talkListBlock.frame = CGRect(x:0,y: deltaY,width:self.talkListBlock.bounds.width,height: self.talkListBlock.bounds.height - deltaY)
                         self.keyboardNeedLayout = false
                         self.view.layoutIfNeeded()
@@ -108,7 +105,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 },
                     completion: nil
                 )
-            }
+            //}
             
             
             
@@ -119,8 +116,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("hide")
         if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
             let keyboardFrame = value.cgRectValue
+            
+            print(keyboardFrame.height)
             let intersection = self.view.frame.intersection(keyboardFrame) // 求当前view的frame与keyboardFrame的交集
             let deltaY = intersection.height
+ 
+ 
             print(deltaY)
             UIView.animate(
                 withDuration: duration,
@@ -128,10 +129,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 options: UIViewAnimationOptions(rawValue: curve),
                 animations: { _ in
                     
-                    self.view.frame = CGRect(x: 0, y: deltaY, width: self.view.bounds.width, height: self.view.bounds.height)
-                    //self.talkListBlock.frame = CGRect(x:0,y: -deltaY,width:self.talkListBlock.bounds.width,height: self.talkListBlock.bounds.height + deltaY)
-                    self.keyboardNeedLayout = true
-                    self.view.layoutIfNeeded()
+                    self.view.frame = CGRect(x: 0, y: deltaY + 64, width: self.view.bounds.width, height: self.view.bounds.height)
+  
+                    //self.keyboardNeedLayout = true
+                    //self.view.layoutIfNeeded()
                     
             },
                 completion: nil

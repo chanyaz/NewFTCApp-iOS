@@ -64,8 +64,8 @@ struct FontSize {
 
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
-    //private static let base = "https://danla2f5eudt1.cloudfront.net/index.php/jsapi/"
-    private static let domain = "https://danla2f5eudt1.cloudfront.net/"
+    //private static let base = "https://www.ftimg.net/index.php/jsapi/"
+    private static let domain = "https://www.ftimg.net/"
     private static let publicDomain = "http://www.ftchinese.com/"
     // MARK: the number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7

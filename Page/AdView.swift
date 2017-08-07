@@ -9,6 +9,10 @@
 import UIKit
 import WebKit
 import SafariServices
+import AVKit
+import AVFoundation
+import MediaPlayer
+
 class AdView: UIView, SFSafariViewControllerDelegate {
     
     private var adid: String?
@@ -59,15 +63,39 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     
     private func handleAdModel() {
         if let adModel = self.adModel {
-            if let imageString = adModel.imageString {
-                // TODO: If the asset is already downloaded, no need to request from the Internet
+            if let videoString = adModel.video {
+                // MARK: If the asset is already downloaded, no need to request from the Internet
+                if let videoFilePath = Download.getFilePath(videoString, for: .cachesDirectory, as: nil) {
+                    print ("video already in cache:\(videoFilePath)")
+                    showAdVideo(videoFilePath)
+                    return
+                }
+                //                print ("continue to get the image file of \(imageString)")
+                //                print ("the adModel is now \(adModel)")
+                if let url = URL(string: videoString) {
+                    Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
+                        guard let data = data else {
+                            self?.loadWebView()
+                            return
+                        }
+                        Download.saveFile(data, filename: videoString, to: .cachesDirectory, as: nil)
+                        DispatchQueue.main.async { () -> Void in
+                            if let videoFilePath = Download.getFilePath(videoString, for: .cachesDirectory, as: nil) {
+                                self?.showAdVideo(videoFilePath)
+                                print ("video just downloaded:\(videoString) as \(videoFilePath)")
+                            }
+                        }
+                    }
+                }
+            } else if let imageString = adModel.imageString {
+                // MARK: If the asset is already downloaded, no need to request from the Internet
                 if let data = Download.readFile(imageString, for: .cachesDirectory, as: nil) {
                     showAdImage(data)
                     //print ("image already in cache:\(imageString)")
                     return
                 }
-//                print ("continue to get the image file of \(imageString)")
-//                print ("the adModel is now \(adModel)")
+                //                print ("continue to get the image file of \(imageString)")
+                //                print ("the adModel is now \(adModel)")
                 if let url = URL(string: imageString) {
                     Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                         guard let data = data else {
@@ -86,6 +114,57 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         } else {
             loadWebView()
         }
+    }
+    
+    private func showAdVideo(_ filePath: URL) {
+        print ("should show ad video: \(filePath)")
+        
+        let player = AVPlayer(url: filePath)
+        let playerLayer = AVPlayerLayer()
+        
+        playerLayer.player = player
+        playerLayer.frame = self.bounds
+        playerLayer.backgroundColor = UIColor.clear.cgColor
+        playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
+        self.layer.addSublayer(playerLayer)
+        player.isMuted = false
+        player.play()
+        
+        
+        
+        //let asset = AVURLAsset(url: filePath)
+        
+        
+        //        playerController.player = player
+        //
+        //        playerController.showsPlaybackControls = false
+        //
+        //
+        //        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+        
+        // MARK: The Video should be muted by default. The user can unmute if they want to listen.
+        //player.isMuted = true
+        //player.play()
+        
+        
+        
+        //        if let moviePath = Bundle.main.path(forResource: "SagarRKothari", ofType: "mov") {
+        //            let movieURL = URL(fileURLWithPath: moviePath)
+        //            let player = AVPlayer(url: movieURL)
+        //            let playerLayer = AVPlayerLayer()
+        //            playerLayer.player = player
+        //            playerLayer.frame = self.imgV.bounds
+        //            playerLayer.backgroundColor = UIColor.clear.cgColor
+        //            playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
+        //            self.imgV.layer.addSublayer(playerLayer)
+        //            player.play()
+        //        }
+        
+        //        self.view.addSubview(playerController.view)
+        //        playerController.view.tag = 111
+        //        playerController.view.frame = self.view.frame
+        
+        
     }
     
     private func showAdImage(_ data: Data) {
@@ -172,7 +251,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
             }
         }
     }
-
+    
 }
 
 extension AdView: WKNavigationDelegate {

@@ -26,7 +26,19 @@ struct AdParser {
     }
     
     public static func parseAdCode(_ adCode: String) -> AdModel {
-        let video = ""
+        //print ("ad Code is \(adCode)")
+        let videoPattern = [
+        "var videoUrl = '(.+)'"
+        ]
+        var video = adCode.matchingStrings(regexes: videoPattern)
+        
+        //TODO: This is a Test Code, Remove after testing is over
+        if adCode.contains("v.muted") {
+            //video = "https://creatives.ftimg.net/ads/beijing/201707/Cartier/CAR-video-828x1472-inf15s-PUJE1683-CN.mp4"
+            video = "https://creatives.ftimg.net/video/adv/AccentureTest2.mp4"
+            // https://creatives.ftimg.net/video/adv/AccentureTest20170807.mp4
+        }
+        //print ("video ad url is: \(String(describing: video))")
         
         // print ("ad code is now: \(adCode)")
         // MARK: Extract Images
@@ -135,16 +147,6 @@ struct AdParser {
 extension String {
     
     func matchingFirstString(regex: String) -> String? {
-        //        guard let regex = try? NSRegularExpression(pattern: regex, options: []) else { return nil }
-        //        let nsString = self as NSString
-        //        let results  = regex.matches(in: self, options: [], range: NSMakeRange(0, nsString.length))
-        //        let matches = results.map { result in
-        //            (0..<result.numberOfRanges).map { result.rangeAt($0).location != NSNotFound
-        //                ? nsString.substring(with: result.rangeAt($0))
-        //                : ""
-        //            }
-        //        }
-        
         let matches = self.matchingArrays(regex: regex)
         if let matches = matches {
             if matches.count > 0 {
@@ -155,7 +157,6 @@ extension String {
                 }
             }
         }
-        
         return nil
     }
     

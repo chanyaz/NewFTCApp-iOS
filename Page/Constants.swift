@@ -64,8 +64,8 @@ struct FontSize {
 
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
-    //private static let base = "https://www.ftimg.net/index.php/jsapi/"
-    private static let domain = "https://www.ftimg.net/"
+    //private static let base = "https://m.ftimg.net/index.php/jsapi/"
+    private static let domain = "https://m.ftimg.net/"
     private static let publicDomain = "http://www.ftchinese.com/"
     // MARK: the number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
@@ -161,6 +161,7 @@ struct AppGroup {
 
 struct Key {
     static let languagePreference = "Language Preference"
+    static let domainIndex = "Domain Index"
 }
 
 // MARK: - Use a server side image service so that you can request images that are just large enough

@@ -2,6 +2,19 @@
 
 ## Development Milestones
 
+### Advertising: 
+1. Done: Retrieve Ad info from Dolphin's script string
+2. Done: Send third party impressions until they are confirmed
+3. Done: Tap link for Ad Views
+4. Done: Tap Link in content view
+5. Done: Launch Screen Ad
+6. Done: Native Banner
+7. Done: Web Banner
+8. Done: Paid Post
+9. Done: Show Image if there's time
+10. Working On: Parse Video Ad into native
+
+
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
 2. Done: Use prefetch to make scrolling smooth. 
@@ -18,6 +31,7 @@
 2. Done: Retrieve and convert other types of API. 
 3. Interactive Features
 4. Videos: 
+5. Switch Between APIs
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 
@@ -76,16 +90,7 @@
 
 ## Completed Tasks
 
-### Advertising: 
-1. Done: Retrieve Ad info from Dolphin's script string
-2. Done: Send third party impressions until they are confirmed
-3. Done: Tap link for Ad Views
-4. Done: Tap Link in content view
-5. Done: Launch Screen Ad
-6. Done: Native Banner
-7. Done: Web Banner
-8. Done: Paid Post
-9. Done: Show Image if there's time
+
 
 ### Audio
 1. Done: Speech to Text

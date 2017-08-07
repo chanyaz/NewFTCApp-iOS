@@ -116,12 +116,11 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         }
     }
     
-    private func showAdVideo(_ filePath: URL) {
-        print ("should show ad video: \(filePath)")
-        
-        let player = AVPlayer(url: filePath)
+    private func showAdVideo(_ path: String) {
+        let pathUrl = URL(fileURLWithPath: path)
+        print ("should show ad video: \(pathUrl)")
+        let player = AVPlayer(url: pathUrl)
         let playerLayer = AVPlayerLayer()
-        
         playerLayer.player = player
         playerLayer.frame = self.bounds
         playerLayer.backgroundColor = UIColor.clear.cgColor

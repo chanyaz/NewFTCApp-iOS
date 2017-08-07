@@ -42,7 +42,7 @@ struct Download {
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
                     file.write(data)
-                    //print("File data was written to \(realFileName) successfully!")
+                    print("File data was written to \(realFileName) successfully!")
                 } catch let error as NSError {
                     print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
                 }
@@ -64,14 +64,12 @@ struct Download {
     public static func getFilePath(_ urlString: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> String? {
         let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
         do {
-//            let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
-//            let fileURL = DocumentDirURL.appendingPathComponent(fileName)
-//            //print ("local file url is \(fileURL)")
-//            return fileURL
-//            //return (try? Data(contentsOf: fileURL))
             let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
             let templatepathInDocument = DocumentDirURL.appendingPathComponent(fileName)
-            let templatePath = templatepathInDocument.path
+            var templatePath: String? = nil
+            if FileManager().fileExists(atPath: templatepathInDocument.path) {
+                templatePath = templatepathInDocument.path
+            }
             return templatePath
         } catch {
             return nil

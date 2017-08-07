@@ -65,7 +65,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         if let adModel = self.adModel {
             if let videoString = adModel.video {
                 // MARK: If the asset is already downloaded, no need to request from the Internet
-                if let videoFilePath = Download.getFilePath(videoString, for: .documentDirectory, as: nil) {
+                if let videoFilePath = Download.getFilePath(videoString, for: .cachesDirectory, as: nil) {
                     print ("video already downloaded to:\(videoFilePath)")
                     showAdVideo(videoFilePath)
                     return
@@ -76,9 +76,9 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                             self?.loadWebView()
                             return
                         }
-                        Download.saveFile(data, filename: videoString, to: .documentDirectory, as: nil)
+                        Download.saveFile(data, filename: videoString, to: .cachesDirectory, as: nil)
                         DispatchQueue.main.async { () -> Void in
-                            if let videoFilePath = Download.getFilePath(videoString, for: .documentDirectory, as: nil) {
+                            if let videoFilePath = Download.getFilePath(videoString, for: .cachesDirectory, as: nil) {
                                 self?.showAdVideo(videoFilePath)
                                 print ("video just downloaded:\(videoString) as \(videoFilePath)")
                             }
@@ -115,63 +115,18 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     }
     
     // https://stackoverflow.com/questions/33702490/embedding-videos-in-a-tableview-cell
-    
+    private lazy var player: AVPlayer? = nil
     private func showAdVideo(_ path: String) {
         let pathUrl = URL(fileURLWithPath: path)
-        //let pathUrl = URL(fileURLWithPath: "/Users/zhangoliver/Library/Developer/CoreSimulator/Devices/D02EDCEC-BD4D-442E-91DD-FEA096B5D07C/data/Containers/Data/Application/7785EE7F-29D7-43BA-BEDF-FD2C09EF463D/Documents/CAR-video-828x1472-inf15s-PUJE1682-CN.mp4")
-        //let pathUrl = URL(string: "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")
-        print ("should show ad video: \(pathUrl)")
-        let player = AVPlayer(url: pathUrl)
+        player = AVPlayer(url: pathUrl)
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = self.bounds
-        
-        //playerLayer.frame = CGRect(x: 0, y: 0, width: 300, height: 250)
-        
-        playerLayer.backgroundColor = UIColor.red.cgColor
+        playerLayer.backgroundColor = UIColor.clear.cgColor
         playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        //self.layer.addSublayer(playerLayer)
+        layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         layer.addSublayer(playerLayer)
-        
-        //self.layer.insertSublayer(playerLayer, at: 0)
-        
-        //player.isMuted = false
-        player.play()
-        
-        
-        
-        //let asset = AVURLAsset(url: filePath)
-        
-        
-        //        playerController.player = player
-        //
-        //        playerController.showsPlaybackControls = false
-        //
-        //
-        //        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-        
-        // MARK: The Video should be muted by default. The user can unmute if they want to listen.
-        //player.isMuted = true
-        //player.play()
-        
-        
-        
-        //        if let moviePath = Bundle.main.path(forResource: "SagarRKothari", ofType: "mov") {
-        //            let movieURL = URL(fileURLWithPath: moviePath)
-        //            let player = AVPlayer(url: movieURL)
-        //            let playerLayer = AVPlayerLayer()
-        //            playerLayer.player = player
-        //            playerLayer.frame = self.imgV.bounds
-        //            playerLayer.backgroundColor = UIColor.clear.cgColor
-        //            playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        //            self.imgV.layer.addSublayer(playerLayer)
-        //            player.play()
-        //        }
-        
-        //        self.view.addSubview(playerController.view)
-        //        playerController.view.tag = 111
-        //        playerController.view.frame = self.view.frame
-        
-        
+        player?.isMuted = true
+        player?.play()
     }
     
     private func showAdImage(_ data: Data) {

@@ -326,8 +326,7 @@ class LaunchScreen: UIViewController {
     private func playVideo() {
         let path = adSchedule.videoFilePath
         
-        //let path = "/Users/zhangoliver/Library/Developer/CoreSimulator/Devices/D02EDCEC-BD4D-442E-91DD-FEA096B5D07C/data/Containers/Data/Application/D53053D5-07E3-4172-A8AE-D3C29921E16C/Documents/video-adv-AccentureTest2.mp4"
-        print ("local file is \(path)")
+        //let path = "/Users/zhangoliver/Library/Developer/CoreSimulator/Devices/D02EDCEC-BD4D-442E-91DD-FEA096B5D07C/data/Containers/Data/Application/E176DB68-9184-489C-B776-8D057159F4B1/Library/Caches/video-adv-AccentureTest2.mp4"
         
         print ("launch ad path is \(path)")
         let pathUrl = URL(fileURLWithPath: path)

@@ -48,7 +48,7 @@
 12. If an interactive is a speedread, let it read the english text
 13. Hide/show sound button properly
 14. Tag page should show title in navigation
-15. Add new layout to display all cover
+15. Done: Add new layout to display all cover
 
 ### Sharing
 1. Done: WeChat

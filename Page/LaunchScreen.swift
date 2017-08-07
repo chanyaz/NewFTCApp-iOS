@@ -325,6 +325,7 @@ class LaunchScreen: UIViewController {
     // MARK: - Play video of a full-screen ad when app launches
     private func playVideo() {
         let path = adSchedule.videoFilePath
+        print ("launch ad path is \(path)")
         let pathUrl = URL(fileURLWithPath: path)
         maxAdTimeAfterLaunch = 60.0
         maxAdTimeAfterWebRequest = 57.0

@@ -164,6 +164,8 @@ class DataViewController: UICollectionViewController {
             print ("No need to reload Data as the fetch is empty")
         }
         
+        navigationController?.title = pageTitle
+        
     }
     
     
@@ -219,6 +221,8 @@ class DataViewController: UICollectionViewController {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
+        
+        navigationController?.title = pageTitle
         
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass

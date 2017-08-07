@@ -34,7 +34,9 @@ struct AdParser {
         
         //TODO: This is a Test Code, Remove after testing is over
         if adCode.contains("v.muted") {
-            video = "https://creatives.ftimg.net/ads/beijing/201707/Cartier/CAR-video-828x1472-inf15s-PUJE1683-CN.mp4"
+            //video = "https://creatives.ftimg.net/ads/beijing/201707/Cartier/CAR-video-828x1472-inf15s-PUJE1683-CN.mp4"
+            video = "https://creatives.ftimg.net/video/adv/AccentureTest2.mp4"
+            // https://creatives.ftimg.net/video/adv/AccentureTest20170807.mp4
         }
         //print ("video ad url is: \(String(describing: video))")
         

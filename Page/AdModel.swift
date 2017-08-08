@@ -32,7 +32,7 @@ struct AdParser {
         ]
         let video = adCode.matchingStrings(regexes: videoPattern)
         
-        print ("video is \(String(describing: video))")
+
         
         //TODO: This is a Test Code, Remove after testing is over
         // let video = "https://creatives.ftimg.net/video/adv/AccentureTest2.mp4"
@@ -49,6 +49,8 @@ struct AdParser {
         ]
         let image = adCode.matchingStrings(regexes: imagePatterns)
         
+        
+        
         // MARK: Extract Link
         let linkPatterns = [
             "'link': '(.+)'",
@@ -59,6 +61,9 @@ struct AdParser {
         if link == nil {
             print ("link is nil, the ad code is now: \(adCode)")
         }
+        
+        print ("video is \(String(describing: video)), image is \(String(describing: image)), link is \(String(describing: link))")
+
         
         // MARK: Headline for Paid Post
         let headlinePatterns = [

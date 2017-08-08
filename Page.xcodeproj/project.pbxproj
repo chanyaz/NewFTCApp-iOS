@@ -150,14 +150,14 @@
 		602153751F397C650077A7AF /* you.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AFD8AF5A1F3809DC00508A91 /* you.jpeg */; };
 		602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 500139E01F1A7188009EC29D /* GoogleService-Info.plist */; };
 		602153771F397C650077A7AF /* ga.js in Resources */ = {isa = PBXBuildFile; fileRef = 6087E3D91EF2294C0034A92F /* ga.js */; };
-		602153781F397C650077A7AF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */; };
 		602153791F397C650077A7AF /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA4F81EFF7FAA003D4180 /* story.html */; };
 		6021537A1F397C650077A7AF /* LineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50F6105F1F2CCB9C00E3AABC /* LineCell.xib */; };
 		6021537B1F397C650077A7AF /* robot.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AFD8AF591F3809DC00508A91 /* robot.jpeg */; };
 		6021537C1F397C650077A7AF /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
 		6021537D1F397C650077A7AF /* sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 600BD6B81F21CDE80077C104 /* sound.png */; };
 		6021537E1F397C650077A7AF /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50E220B81F36B498005E4642 /* BigImageCell.xib */; };
-		602153881F3985660077A7AF /* FTCC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602153871F3985660077A7AF /* FTCC.storyboard */; };
+		602153881F3985660077A7AF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602153871F3985660077A7AF /* Main.storyboard */; };
+		6021538B1F3990880077A7AF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602153891F3990880077A7AF /* Main.storyboard */; };
 		604FF94B1EEF7649005D2A41 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604FF9491EEF7649005D2A41 /* ChannelCell.swift */; };
 		604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 604FF94A1EEF7649005D2A41 /* ChannelCell.xib */; };
 		605750F31F1461F400552DAC /* WKWebPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F21F1461F400552DAC /* WKWebPage.swift */; };
@@ -198,7 +198,6 @@
 		60D3C8C11EBFF5DC0085BEF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */; };
 		60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */; };
 		60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */; };
-		60D3C8CA1EBFF5DC0085BEF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */; };
 		60D3C8CC1EBFF5DC0085BEF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */; };
 		60D3C8CF1EBFF5DC0085BEF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */; };
 		60D3C8DA1EBFF5DC0085BEF6 /* PageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8D91EBFF5DC0085BEF6 /* PageTests.swift */; };
@@ -296,7 +295,8 @@
 		6014180A1EEA9CC000DC3EF9 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		602153841F397C660077A7AF /* FTCC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FTCC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		602153851F397C660077A7AF /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "/Users/oliverzhang/sandbox/NewFTCApp-iOS/Page copy-Info.plist"; sourceTree = "<absolute>"; };
-		602153871F3985660077A7AF /* FTCC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = FTCC.storyboard; path = Page/FTCC.storyboard; sourceTree = "<group>"; };
+		602153871F3985660077A7AF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Page/Main.storyboard; sourceTree = "<group>"; };
+		6021538A1F3990880077A7AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		60362DBA01D0F57A6C7932A5 /* Pods_Page.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Page.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		604FF9491EEF7649005D2A41 /* ChannelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
 		604FF94A1EEF7649005D2A41 /* ChannelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCell.xib; sourceTree = "<group>"; };
@@ -339,7 +339,6 @@
 		60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
 		60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
-		60D3C8C91EBFF5DC0085BEF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60D3C8CE1EBFF5DC0085BEF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		60D3C8D01EBFF5DC0085BEF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -533,7 +532,7 @@
 		602153861F397D280077A7AF /* FTCC */ = {
 			isa = PBXGroup;
 			children = (
-				602153871F3985660077A7AF /* FTCC.storyboard */,
+				602153871F3985660077A7AF /* Main.storyboard */,
 				602153851F397C660077A7AF /* Page copy-Info.plist */,
 			);
 			name = FTCC;
@@ -569,8 +568,6 @@
 		6037DD401F28798D007DB2FF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */,
-				60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */,
 				500139E21F1A7436009EC29D /* Bridging-Header.h */,
 				500139E01F1A7188009EC29D /* GoogleService-Info.plist */,
 				AF1B77801F15D3BD00DEFA1E /* Page.entitlements */,
@@ -759,6 +756,7 @@
 				60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */,
 				50057FC91EE9752D0092180A /* Layouts */,
 				6037DD3E1F2878D7007DB2FF /* Helpers */,
+				6037DD401F28798D007DB2FF /* Supporting Files */,
 				60D4B9021EE7D95800A4506D /* FTChinese */,
 				602153861F397D280077A7AF /* FTCC */,
 			);
@@ -794,12 +792,13 @@
 		60D4B9021EE7D95800A4506D /* FTChinese */ = {
 			isa = PBXGroup;
 			children = (
-				60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */,
+				602153891F3990880077A7AF /* Main.storyboard */,
+				60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */,
+				60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */,
 				60D3C8D01EBFF5DC0085BEF6 /* Info.plist */,
 				503A3B021EF4AFB100FB6006 /* Main */,
 				6087E3D81EF212A30034A92F /* Ad */,
 				60986A4E1F1CBE4700583157 /* Images */,
-				6037DD401F28798D007DB2FF /* Supporting Files */,
 			);
 			name = FTChinese;
 			sourceTree = "<group>";
@@ -1013,7 +1012,7 @@
 			files = (
 				602153641F397C650077A7AF /* ChannelScrollerCell.xib in Resources */,
 				602153651F397C650077A7AF /* CoverCell.xib in Resources */,
-				602153881F3985660077A7AF /* FTCC.storyboard in Resources */,
+				602153881F3985660077A7AF /* Main.storyboard in Resources */,
 				602153661F397C650077A7AF /* CoverCellRegular.xib in Resources */,
 				602153671F397C650077A7AF /* Ad.xib in Resources */,
 				602153681F397C650077A7AF /* ShareIcon.jpg in Resources */,
@@ -1032,7 +1031,6 @@
 				602153751F397C650077A7AF /* you.jpeg in Resources */,
 				602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */,
 				602153771F397C650077A7AF /* ga.js in Resources */,
-				602153781F397C650077A7AF /* Main.storyboard in Resources */,
 				602153791F397C650077A7AF /* story.html in Resources */,
 				6021537A1F397C650077A7AF /* LineCell.xib in Resources */,
 				6021537B1F397C650077A7AF /* robot.jpeg in Resources */,
@@ -1052,6 +1050,7 @@
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
 				60986A4D1F1CBE4100583157 /* ShareIcon.jpg in Resources */,
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
+				6021538B1F3990880077A7AF /* Main.storyboard in Resources */,
 				60D3C8CF1EBFF5DC0085BEF6 /* LaunchScreen.storyboard in Resources */,
 				600BD6BA1F21CDE80077C104 /* cover.jpg in Resources */,
 				600BD6BB1F21CDE80077C104 /* mute.png in Resources */,
@@ -1066,7 +1065,6 @@
 				AFD8AF5C1F3809DC00508A91 /* you.jpeg in Resources */,
 				500139E11F1A7188009EC29D /* GoogleService-Info.plist in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
-				60D3C8CA1EBFF5DC0085BEF6 /* Main.storyboard in Resources */,
 				60FDA4F91EFF7FAA003D4180 /* story.html in Resources */,
 				50F610611F2CCB9C00E3AABC /* LineCell.xib in Resources */,
 				AFD8AF5B1F3809DC00508A91 /* robot.jpeg in Resources */,
@@ -1400,10 +1398,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */ = {
+		602153891F3990880077A7AF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				60D3C8C91EBFF5DC0085BEF6 /* Base */,
+				6021538A1F3990880077A7AF /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

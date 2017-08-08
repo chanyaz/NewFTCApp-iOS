@@ -42,7 +42,7 @@ struct Download {
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
                     file.write(data)
-                    print("File data was written to \(realFileName) successfully!")
+                    //print("File data was written to \(realFileName) successfully!")
                 } catch let error as NSError {
                     print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
                 }

@@ -18,6 +18,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     private var adid: String?
     private var adWidth: String?
     private var adModel: AdModel?
+    private lazy var player: AVPlayer? = nil
     
     public var contentSection: ContentSection? = nil {
         didSet {
@@ -115,8 +116,8 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         }
     }
     
-    // https://stackoverflow.com/questions/33702490/embedding-videos-in-a-tableview-cell
-    private lazy var player: AVPlayer? = nil
+
+    
     private func showAdVideo(_ path: String) {
         if let impressions = adModel?.impressions {
             Impressions.report(impressions)
@@ -204,9 +205,11 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                     do {
                         let adHTML = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                         let gaJS = try NSString(contentsOfFile:gaJSPath, encoding:String.Encoding.utf8.rawValue)
+                        let adCode = adModel?.adCode ?? ""
                         let adHTMLFinal = (adHTML as String)
                             .replacingOccurrences(of: "{google-analytics-js}", with: gaJS as String)
                             .replacingOccurrences(of: "{adbodywidth}", with: adWidth)
+                        .replacingOccurrences(of: "{ad-code-from-server}", with: adCode)
                         webView.loadHTMLString(adHTMLFinal, baseURL:url)
                     } catch {
                         webView.load(req)

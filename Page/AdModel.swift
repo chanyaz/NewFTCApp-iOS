@@ -16,6 +16,7 @@ struct AdModel {
     let adName: String?
     var bgColor: String
     var lead: String?
+    var adCode: String
 }
 
 struct AdParser {
@@ -120,7 +121,8 @@ struct AdParser {
             headline: headline,
             adName: adName,
             bgColor: bgColor,
-            lead: lead
+            lead: lead,
+            adCode: adCode
         )
         
         return adModel

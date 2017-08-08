@@ -59,7 +59,8 @@ class LineCell: UICollectionViewCell {
                             headline: nil,
                             adName: nil,
                             bgColor: "0",
-                            lead: nil)
+                            lead: nil,
+                            adCode: "")
                         self?.itemCell?.adModel = adModel
                         self?.postNotificationForPaidPostUpdate()
                         return

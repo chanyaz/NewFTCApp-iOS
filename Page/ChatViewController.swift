@@ -26,20 +26,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
  
-    /*
-    var talkData = [CellData]() {
-        didSet{
-            self.talkListBlock.reloadData()
-            //let num = talkData.count
-            let currentIndexPath = IndexPath(row: talkData.count-1, section: 0)
-            //let firstIndexPath = IndexPath(row: 0, section: 0)
-            
-            self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-            
-        }
-    }
- */
-    
 
     @IBOutlet weak var talkListBlock: UITableView!
     
@@ -90,7 +76,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let deltaY = intersection.height
              print(deltaY)
             
-            //if keyboardNeedLayout {
+            if keyboardNeedLayout {
                 UIView.animate(
                     withDuration: duration,
                     delay: 0.0,
@@ -105,7 +91,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 },
                     completion: nil
                 )
-            //}
+            }
             
             
             
@@ -131,8 +117,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     
                     self.view.frame = CGRect(x: 0, y: deltaY + 64, width: self.view.bounds.width, height: self.view.bounds.height)
   
-                    //self.keyboardNeedLayout = true
-                    //self.view.layoutIfNeeded()
+                    self.keyboardNeedLayout = true
+                    self.view.layoutIfNeeded()
                     
             },
                 completion: nil

@@ -18,13 +18,15 @@ struct CellData {
     var saysWhat: String = ""
     var bubbleImage: String = ""
     
+    var bubbleImageInsets = UIEdgeInsetsMake(10, 20, 10, 20)
+    
     init(whoSays who: Member, saysWhat say: String) {
         if who == .robot {
             self.headImage = "robot.jpeg"
-            self.bubbleImage = "robotBubble.png"
+            self.bubbleImage = "robotBub"
         } else if who == .you {
             self.headImage = "you.jpeg"
-            self.bubbleImage = "youBubble.png"
+            self.bubbleImage = "youBub"
         }
         self.whoSays = who
         self.saysWhat = say

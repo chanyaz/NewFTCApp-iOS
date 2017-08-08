@@ -7,3 +7,9 @@ target 'Page' do
 pod 'Google/Analytics'
 pod 'WechatOpenSDK'
 end
+
+
+target 'FTCC' do
+pod 'Google/Analytics'
+pod 'WechatOpenSDK'
+end

@@ -434,7 +434,6 @@
 			isa = PBXGroup;
 			children = (
 				60D3C8CB1EBFF5DC0085BEF6 /* Assets.xcassets */,
-				60D3C8D01EBFF5DC0085BEF6 /* Info.plist */,
 				60D3C8CD1EBFF5DC0085BEF6 /* LaunchScreen.storyboard */,
 				500139E21F1A7436009EC29D /* Bridging-Header.h */,
 				500139E01F1A7188009EC29D /* GoogleService-Info.plist */,
@@ -620,12 +619,10 @@
 		60D3C8BF1EBFF5DC0085BEF6 /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */,
 				60D3C8C01EBFF5DC0085BEF6 /* AppDelegate.swift */,
 				50057FC91EE9752D0092180A /* Layouts */,
 				6037DD3E1F2878D7007DB2FF /* Helpers */,
-				60D4B9021EE7D95800A4506D /* Customizations */,
-				6037DD401F28798D007DB2FF /* Supporting Files */,
+				60D4B9021EE7D95800A4506D /* FTChinese */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -656,14 +653,17 @@
 			name = Track;
 			sourceTree = "<group>";
 		};
-		60D4B9021EE7D95800A4506D /* Customizations */ = {
+		60D4B9021EE7D95800A4506D /* FTChinese */ = {
 			isa = PBXGroup;
 			children = (
+				60D3C8C81EBFF5DC0085BEF6 /* Main.storyboard */,
+				60D3C8D01EBFF5DC0085BEF6 /* Info.plist */,
 				503A3B021EF4AFB100FB6006 /* Main */,
 				6087E3D81EF212A30034A92F /* Ad */,
 				60986A4E1F1CBE4700583157 /* Images */,
+				6037DD401F28798D007DB2FF /* Supporting Files */,
 			);
-			name = Customizations;
+			name = FTChinese;
 			sourceTree = "<group>";
 		};
 		60F4C1731EFCEBCC00F21EB6 /* Regular */ = {

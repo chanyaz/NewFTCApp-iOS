@@ -157,6 +157,7 @@
 		6021537C1F397C650077A7AF /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
 		6021537D1F397C650077A7AF /* sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 600BD6B81F21CDE80077C104 /* sound.png */; };
 		6021537E1F397C650077A7AF /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50E220B81F36B498005E4642 /* BigImageCell.xib */; };
+		602153881F3985660077A7AF /* FTCC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602153871F3985660077A7AF /* FTCC.storyboard */; };
 		604FF94B1EEF7649005D2A41 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604FF9491EEF7649005D2A41 /* ChannelCell.swift */; };
 		604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 604FF94A1EEF7649005D2A41 /* ChannelCell.xib */; };
 		605750F31F1461F400552DAC /* WKWebPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F21F1461F400552DAC /* WKWebPage.swift */; };
@@ -295,6 +296,7 @@
 		6014180A1EEA9CC000DC3EF9 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		602153841F397C660077A7AF /* FTCC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FTCC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		602153851F397C660077A7AF /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "/Users/oliverzhang/sandbox/NewFTCApp-iOS/Page copy-Info.plist"; sourceTree = "<absolute>"; };
+		602153871F3985660077A7AF /* FTCC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = FTCC.storyboard; path = Page/FTCC.storyboard; sourceTree = "<group>"; };
 		60362DBA01D0F57A6C7932A5 /* Pods_Page.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Page.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		604FF9491EEF7649005D2A41 /* ChannelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
 		604FF94A1EEF7649005D2A41 /* ChannelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCell.xib; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 		602153861F397D280077A7AF /* FTCC */ = {
 			isa = PBXGroup;
 			children = (
+				602153871F3985660077A7AF /* FTCC.storyboard */,
 				602153851F397C660077A7AF /* Page copy-Info.plist */,
 			);
 			name = FTCC;
@@ -996,9 +999,9 @@
 			projectRoot = "";
 			targets = (
 				60D3C8BC1EBFF5DC0085BEF6 /* Page */,
+				602153091F397C650077A7AF /* FTCC */,
 				60D3C8D41EBFF5DC0085BEF6 /* PageTests */,
 				60D3C8DF1EBFF5DC0085BEF6 /* PageUITests */,
-				602153091F397C650077A7AF /* FTCC */,
 			);
 		};
 /* End PBXProject section */
@@ -1010,6 +1013,7 @@
 			files = (
 				602153641F397C650077A7AF /* ChannelScrollerCell.xib in Resources */,
 				602153651F397C650077A7AF /* CoverCell.xib in Resources */,
+				602153881F3985660077A7AF /* FTCC.storyboard in Resources */,
 				602153661F397C650077A7AF /* CoverCellRegular.xib in Resources */,
 				602153671F397C650077A7AF /* Ad.xib in Resources */,
 				602153681F397C650077A7AF /* ShareIcon.jpg in Resources */,

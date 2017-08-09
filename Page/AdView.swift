@@ -55,10 +55,16 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         }
     }
     
+    
     private func clean() {
         // MARK: remove subviews before loading new creatives
-        self.subviews.forEach {
-            $0.removeFromSuperview()
+//        self.subviews.forEach {
+//            // FIXME: - Sometimes this line will come up with an error, fix it
+//            $0.removeFromSuperview()
+//        }
+        
+        for subView in self.subviews {
+            subView.removeFromSuperview()
         }
     }
     
@@ -115,8 +121,6 @@ class AdView: UIView, SFSafariViewControllerDelegate {
             loadWebView()
         }
     }
-    
-
     
     private func showAdVideo(_ path: String) {
         if let impressions = adModel?.impressions {

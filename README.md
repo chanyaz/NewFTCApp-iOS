@@ -12,7 +12,7 @@
 7. Done: Web Banner
 8. Done: Paid Post
 9. Done: Show Image if there's time
-10. Working On: Parse Video Ad into native
+10. Done: Parse Video Ad into native
 
 
 ### Channel Page: 

@@ -14,7 +14,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var keyboardNeedLayout:Bool = true
     
     
-    var talkData = Array(repeating:CellData(), count:4){
+    var talkData = Array(repeating:CellData(), count:6){
         didSet{
             self.talkListBlock.reloadData()
             //let num = talkData.count
@@ -134,7 +134,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80.0
+        let currentCellData = self.talkData[indexPath.row]
+        let currentHeight = max(currentCellData.cellHeightByHeadImage, currentCellData.cellHeightByBubble)
+        return currentHeight
     }
  
     
@@ -161,13 +163,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
-        //self.talkData.append(CellData(whoSays: .you, saysWhat: "Hahaha"))
-        self.talkData.append(CellData(whoSays: .robot, saysWhat: "Hello! I am Little Ice.  What can I do for you?"))
-        /*
-        self.talkListBlock.estimatedRowHeight = 300
-        self.talkListBlock.rowHeight = UITableViewAutomaticDimension
-         */
-
+        self.talkData.append(CellData(whoSays: .robot, saysWhat: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?"))
+  
     }
 
     override func didReceiveMemoryWarning() {

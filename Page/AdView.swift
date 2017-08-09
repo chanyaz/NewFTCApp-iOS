@@ -70,6 +70,8 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     
     private func handleAdModel() {
         if let adModel = self.adModel {
+            // MARK: Track Impression First
+            Impressions.report(adModel.impressions)
             if let videoString = adModel.video {
                 // MARK: If the asset is already downloaded, no need to request from the Internet
                 if let videoFilePath = Download.getFilePath(videoString, for: .cachesDirectory, as: nil) {
@@ -123,9 +125,6 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     }
     
     private func showAdVideo(_ path: String) {
-        if let impressions = adModel?.impressions {
-            Impressions.report(impressions)
-        }
         let pathUrl = URL(fileURLWithPath: path)
         player = AVPlayer(url: pathUrl)
         let playerLayer = AVPlayerLayer(player: player)
@@ -136,15 +135,154 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         layer.addSublayer(playerLayer)
         player?.isMuted = true
         player?.play()
-    }
-    
-    private func showAdImage(_ data: Data) {
-        // MARK: Report Impressions First
-        //reportImpressions()
-        if let impressions = adModel?.impressions {
-            Impressions.report(impressions)
+        
+        Track.event(category: "Video Ad", action: "Play Automatically", label: adModel?.video ?? "")
+        
+        // MARK: video played to the end
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playerDidFinishPlaying(_:)),
+            name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
+            object: player?.currentItem
+        )
+
+        let adWidth: CGFloat = 300
+        let adHeight: CGFloat = 250
+        let bottomViewHeight: CGFloat = 44
+        let buttonWidth: CGFloat = 36
+        let buttonPadding = (bottomViewHeight - buttonWidth)/2
+
+        // MARK: Set Background of the Ad View to default content background
+        self.backgroundColor = UIColor(hex: Color.Content.background)
+        
+        // MARK: Ad a semi-transparent view
+        bottomView = UIView()
+        bottomView?.backgroundColor = UIColor.black.withAlphaComponent(0.618)
+        bottomView?.isOpaque = false
+        bottomView?.frame = CGRect(
+            x: (self.frame.width - adWidth)/2,
+            y: adHeight-bottomViewHeight,
+            width: adWidth,
+            height: bottomViewHeight)
+        if let bottomView = bottomView {
+            self.addSubview(bottomView)
         }
         
+        
+        fadeOutVideoControl()
+
+        
+        
+//        bottomView?.animateWithDuration
+//        (animationDuration, delay: delay, options: .CurveEaseInOut, animations: { () -> Void in
+//            view.alpha = 0
+//        },
+//                                   completion: nil)
+        
+        
+        
+        // MARK: Mute Button
+        if let imageForMute = UIImage(named: "sound.png"),
+            let imageForSound = UIImage(named: "mute.png") {
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: buttonWidth, height: buttonWidth))
+            //button.backgroundColor = UIColor(white: 0, alpha: 0.382)
+            button.setImage(imageForMute, for: UIControlState())
+            button.setImage(imageForSound, for: .selected)
+            button.layer.masksToBounds = true
+            button.layer.cornerRadius = 20
+            bottomView?.addSubview(button)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.addTarget(self, action: #selector(videoMuteSwitch), for: .touchUpInside)
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: bottomView, attribute: NSLayoutAttribute.right, multiplier: 1, constant: -buttonPadding))
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: bottomView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -buttonPadding))
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        }
+        
+        // MARK: Play Button
+        if let imageForPlay = UIImage(named: "PlayButton"),
+            let imageForPause = UIImage(named: "PauseButton") {
+            playButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonWidth, height: buttonWidth))
+            //button.backgroundColor = UIColor(white: 0, alpha: 0.382)
+            playButton?.setImage(imageForPause, for: UIControlState())
+            playButton?.setImage(imageForPlay, for: .selected)
+            playButton?.layer.masksToBounds = true
+            playButton?.layer.cornerRadius = 20
+            playButton?.translatesAutoresizingMaskIntoConstraints = false
+            playButton?.addTarget(self, action: #selector(playPauseSwitch), for: .touchUpInside)
+            if let playButton = playButton {
+            bottomView?.addSubview(playButton)
+            self.addConstraint(NSLayoutConstraint(item: playButton, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: bottomView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: buttonPadding))
+            self.addConstraint(NSLayoutConstraint(item: playButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: bottomView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -buttonPadding))
+            self.addConstraint(NSLayoutConstraint(item: playButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+            self.addConstraint(NSLayoutConstraint(item: playButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+            }
+        }
+
+    }
+    
+    private lazy var playButton: UIButton? = nil
+    private lazy var bottomView: UIView? = nil
+    private lazy var fadeTimer: Timer? = nil
+    
+    func playerDidFinishPlaying(_ notification: Notification) {
+        
+        if (notification.object as? AVPlayerItem) != nil {
+            print("Video Finished")
+            playButton?.isSelected = true
+            bottomView?.fadeIn()
+        }
+        
+    }
+    
+    private func fadeOutVideoControl() {
+        let delay: TimeInterval = 3.0
+        if #available(iOS 10.0, *) {
+            fadeTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] timer in
+                self?.bottomView?.fadeOut()
+            }
+        } else {
+            bottomView?.fadeOut(delay: 5.0)
+        }
+    }
+    
+    @IBAction private func videoMuteSwitch(sender: UIButton) {
+        if sender.isSelected {
+            player?.isMuted = true
+            sender.isSelected = false
+            Track.event(category: "Video Ad", action: "Tap to Mute", label: adModel?.video ?? "")
+        } else {
+            // MARK: this will make the video play sound even when iPhone is muted
+            player?.isMuted = false
+            sender.isSelected = true
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            } catch let error {
+                print("Couldn't turn on sound: \(error.localizedDescription)")
+            }
+            Track.event(category: "Video Ad", action: "Tap for Sound", label: adModel?.video ?? "")
+        }
+    }
+    
+    @IBAction private func playPauseSwitch(sender: UIButton) {
+        if sender.isSelected {
+            player?.seek(to: kCMTimeZero)
+            player?.play()
+            sender.isSelected = false
+            fadeOutVideoControl()
+            Track.event(category: "Video Ad", action: "Tap to Play", label: adModel?.video ?? "")
+        } else {
+            // MARK: this will make the video play sound even when iPhone is muted
+            player?.pause()
+            fadeTimer?.invalidate()
+            bottomView?.alpha = 1.0
+            sender.isSelected = true
+            Track.event(category: "Video Ad", action: "Tap to Pause", label: adModel?.video ?? "")
+        }
+    }
+    
+    
+    private func showAdImage(_ data: Data) {
         let frameWidth = self.frame.width
         let frameHeight = self.frame.height
         if let image = UIImage(data: data),
@@ -244,3 +382,5 @@ extension AdView: WKNavigationDelegate {
         }
     }
 }
+
+

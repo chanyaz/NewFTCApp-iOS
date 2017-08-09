@@ -13,7 +13,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     var keyboardNeedLayout:Bool = true
     
-    
+    //TODO: 使用override func reloadData方法重新实现数据刷新功能
     var talkData = Array(repeating:CellData(), count:4){
         didSet{
             self.talkListBlock.reloadData()
@@ -41,23 +41,29 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     @IBAction func sendYourTalk(_ sender: UIButton) {
         if let currentYourTalk = inputBlock.text {
-            let currentYourCellData = CellData(whoSays: .you, saysWhat: currentYourTalk)
-            talkData.append(currentYourCellData)
+            let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
+            let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
+            talkData.append(currentYouCellData)
             
             self.inputBlock.text = ""
             
             var currentRobotTalk = ""
+            var currentRobotSaysWhat = SaysWhat()
             switch currentYourTalk {
             case "How are you":
                 currentRobotTalk = "Fine"
+                currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
             case "Hi":
                 currentRobotTalk = "Hello"
+                currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
             case "I love you":
                 currentRobotTalk = "I love you, too"
+                currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
             default:
                 currentRobotTalk = "What do you say?"
+                currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
             }
-            let currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotTalk)
+            let currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
             talkData.append(currentRobotCellData)
             
         }
@@ -134,7 +140,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80.0
+        let currentCellData = self.talkData[indexPath.row]
+        let currentHeight = max(currentCellData.cellHeightByHeadImage, currentCellData.cellHeightByBubble)
+        return currentHeight
     }
  
     
@@ -161,13 +169,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
-        //self.talkData.append(CellData(whoSays: .you, saysWhat: "Hahaha"))
-        self.talkData.append(CellData(whoSays: .robot, saysWhat: "Hello! I am Little Ice.  What can I do for you?"))
-        /*
-        self.talkListBlock.estimatedRowHeight = 300
-        self.talkListBlock.rowHeight = UITableViewAutomaticDimension
-         */
-
+        let firstRobotSaysWhat = SaysWhat(saysType: .text, saysContent: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?")
+        self.talkData.append(CellData(whoSays: .robot, saysWhat:firstRobotSaysWhat))
+        
+        let secondRobotSayWhat = SaysWhat(saysType: .image, saysImage: "landscape.jpeg")
+        //print("here")
+        //print(secondRobotSayWhat.url)
+        let secondCellData = CellData(whoSays: .robot, saysWhat: secondRobotSayWhat)
+        //print(secondCellData.saysImage)
+        self.talkData.append(secondCellData)
+  
     }
 
     override func didReceiveMemoryWarning() {

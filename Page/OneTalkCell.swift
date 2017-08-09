@@ -67,7 +67,7 @@ class OneTalkCell: UITableViewCell {
         
         
         
-        // 根据对话文字长短得到相关尺寸
+        // 根据对话内容长短及self.frame尺寸得到相关位置尺寸
         let headImageWithInsets = self.cellData.cellInsets.left + self.cellData.headImageLength + self.cellData.betweenHeadAndBubble //60
         let bubbleImageX = (whoSays == .robot) ? headImageWithInsets : self.frame.width - headImageWithInsets - self.cellData.bubbleImageWidth
         let bubbleImageY = self.frame.minY + 5
@@ -101,7 +101,6 @@ class OneTalkCell: UITableViewCell {
         
         if self.cellData.saysWhat.type == .text {
             let saysContentView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
-            //print("saysContentView:\(saysContentView.frame)")
             saysContentView.numberOfLines = 0
             saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
             saysContentView.text = self.cellData.saysWhat.content
@@ -109,6 +108,13 @@ class OneTalkCell: UITableViewCell {
             saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
             
+        } else if self.cellData.saysWhat.type == .image {
+            let saysContentView = UIImageView(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
+            saysContentView.image = self.cellData.saysImage
+            print(self.cellData.saysImage)
+            saysContentView.contentMode = .scaleToFill
+            saysContentView.backgroundColor = UIColor.green
+            self.addSubview(saysContentView)
         }
         
         

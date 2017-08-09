@@ -68,18 +68,18 @@ class OneTalkCell: UITableViewCell {
         
         // 根据对话文字长短得到相关尺寸
         let font = UIFont.systemFont(ofSize:12)
-        let width = 250, height = 10000.0
+        let width = 150, height = 10000.0
         let atts = [NSFontAttributeName: font]
         
         let saysWhatNSString = self.cellData.saysWhat as NSString
         
         let size = saysWhatNSString.boundingRect(
             with: CGSize(width:CGFloat(width), height:CGFloat(height)),
-            options: .truncatesLastVisibleLine,
+            options: .usesLineFragmentOrigin,
             attributes: atts,
             context: nil)
-        let computeWidth = size.size.width * 1.4 //修正计算错误
-        let computeHeight = size.size.height * 1.4
+        let computeWidth = size.size.width * 1.4//修正计算错误 //QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
+        let computeHeight = size.size.height * 1.6
         
         
         let bubbleImageWidth = computeWidth + self.cellData.bubbleImageInsets.left + self.cellData.bubbleImageInsets.right
@@ -126,10 +126,11 @@ class OneTalkCell: UITableViewCell {
         saysContentView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: saysWhatWidth, height: saysWhatHeight))
         //print("saysContentView:\(saysContentView.frame)")
         saysContentView.numberOfLines = 0
-        saysContentView.lineBreakMode = NSLineBreakMode.byCharWrapping
+        saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
         saysContentView.text = self.cellData.saysWhat
         saysContentView.backgroundColor = UIColor.green
         self.addSubview(saysContentView)
+        
         
         
         

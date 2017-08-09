@@ -14,7 +14,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var keyboardNeedLayout:Bool = true
     
     //TODO: 使用override func reloadData方法重新实现数据刷新功能
-    var talkData = Array(repeating:CellData(), count:4){
+    var talkData = Array(repeating:CellData(), count:2){
         didSet{
             self.talkListBlock.reloadData()
             //let num = talkData.count
@@ -173,11 +173,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.talkData.append(CellData(whoSays: .robot, saysWhat:firstRobotSaysWhat))
         
         let secondRobotSayWhat = SaysWhat(saysType: .image, saysImage: "landscape.jpeg")
-        //print("here")
-        //print(secondRobotSayWhat.url)
         let secondCellData = CellData(whoSays: .robot, saysWhat: secondRobotSayWhat)
-        //print(secondCellData.saysImage)
         self.talkData.append(secondCellData)
+        
+        let thirdRobotSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the landscape",saysDescription:"It is very beautiful, I love that place...",saysCover:"landscape.jpeg")
+        let thirdCellData = CellData(whoSays: .robot, saysWhat: thirdRobotSayWhat)
+        self.talkData.append(thirdCellData)
   
     }
 

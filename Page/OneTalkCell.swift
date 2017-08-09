@@ -115,16 +115,32 @@ class OneTalkCell: UITableViewCell {
             saysContentView.contentMode = .scaleToFill
             saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
+        } else if self.cellData.saysWhat.type == .card {
+            let coverY = saysWhatY + self.cellData.titleHeight
+            let descriptionY = coverY + self.cellData.coverHeight
+            
+            //titleView:
+            let titleView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.titleWidth, height: self.cellData.titleHeight))
+            titleView.numberOfLines = 0
+            titleView.lineBreakMode = NSLineBreakMode.byWordWrapping
+            titleView.text = self.cellData.saysWhat.title
+            self.addSubview(titleView)
+            
+            //coverView:
+            let coverView = UIImageView(frame: CGRect(x:saysWhatX, y:coverY,width:self.cellData.coverWidth,height:self.cellData.coverHeight))
+            coverView.image = self.cellData.coverImage
+            coverView.contentMode = .scaleToFill
+            self.addSubview(coverView)
+            
+            //descriptionView:
+            let descriptionView = UILabel(frame: CGRect(x: saysWhatX, y: descriptionY, width: self.cellData.descriptionWidth, height: self.cellData.descriptionHeight))
+            descriptionView.numberOfLines = 0
+            descriptionView.lineBreakMode = NSLineBreakMode.byWordWrapping
+            descriptionView.text = self.cellData.saysWhat.description
+            self.addSubview(descriptionView)
+            
         }
-        
-        
-        
-        
-        
-        
-      
-        
-        
+
         
         
     }

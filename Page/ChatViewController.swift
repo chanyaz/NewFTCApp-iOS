@@ -41,23 +41,29 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     @IBAction func sendYourTalk(_ sender: UIButton) {
         if let currentYourTalk = inputBlock.text {
-            let currentYourCellData = CellData(whoSays: .you, saysWhat: currentYourTalk)
-            talkData.append(currentYourCellData)
+            let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
+            let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
+            talkData.append(currentYouCellData)
             
             self.inputBlock.text = ""
             
             var currentRobotTalk = ""
+            var currentRobotSaysWhat = SaysWhat()
             switch currentYourTalk {
             case "How are you":
                 currentRobotTalk = "Fine"
+                currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
             case "Hi":
                 currentRobotTalk = "Hello"
+                currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
             case "I love you":
                 currentRobotTalk = "I love you, too"
+                currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
             default:
                 currentRobotTalk = "What do you say?"
+                currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
             }
-            let currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotTalk)
+            let currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
             talkData.append(currentRobotCellData)
             
         }
@@ -163,7 +169,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
-        self.talkData.append(CellData(whoSays: .robot, saysWhat: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?"))
+        let firstRobotSaysWhat = SaysWhat(saysType: .text, saysContent: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?")
+        self.talkData.append(CellData(whoSays: .robot, saysWhat:firstRobotSaysWhat))
   
     }
 

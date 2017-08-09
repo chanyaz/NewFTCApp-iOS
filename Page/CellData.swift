@@ -17,13 +17,56 @@ enum Infotype {
     case image // 图片
     case card // 图文
 }
+
+struct SaysWhat {
+    var type = Infotype.text
+    var content: String = ""
+    var url: String = ""
+    var title: String = ""
+    var description: String = ""
+    
+    //文本类型构造器
+    init(saysType type: Infotype, saysContent content: String) {
+        if(type == .text) {
+            self.content = content
+        }
+    }
+    
+    //图片类型构造器
+    init(saysType type: Infotype, saysImage url: String){
+        if(type == .image){
+            self.url = url
+        }
+    }
+    
+    //图文类型构造器
+    init(saysType type: Infotype, saysImage url: String, saysTitle title: String, saysDescription description: String) {
+        if(type == .card) {
+            self.url = url
+            self.title = title
+            self.description = description
+            
+        }
+    }
+    
+    //空构造器
+    init() {
+        
+    }
+    
+}
+
+
 struct CellData {
     //基本字段
     var headImage: String = ""
     var whoSays: Member = .no
-    var saysWhat: String = ""
     var bubbleImage: String = ""
+    
     var saysType: Infotype = .text
+    var saysWhat = SaysWhat()
+
+    
     //基本尺寸
     var bubbleImageInsets = UIEdgeInsetsMake(10, 20, 10, 20)//气泡嵌入文字UILabelView的边距
     var cellInsets = UIEdgeInsetsMake(5, 5, 5, 5)//cell嵌入头像和气泡的最小边距
@@ -48,8 +91,8 @@ struct CellData {
         }
     }
     
-    //构造器1
-    init(whoSays who: Member, saysWhat say: String) {
+    
+    init(whoSays who: Member, saysWhat say: SaysWhat) {
         if who == .robot {
             self.headImage = "robot.jpeg"
             self.bubbleImage = "robotBub"
@@ -62,25 +105,30 @@ struct CellData {
         
         
         // 根据对话文字长短得到图形实际尺寸
-        let font = UIFont.systemFont(ofSize:12)
-        let width = 150, height = 10000.0
-        let atts = [NSFontAttributeName: font]
-        let saysWhatNSString = saysWhat as NSString
         
-        let size = saysWhatNSString.boundingRect(
-            with: CGSize(width:CGFloat(width), height:CGFloat(height)),
-            options: .usesLineFragmentOrigin,
-            attributes: atts,
-            context: nil)
-        let computeWidth = size.size.width * 1.4//修正计算错误 //QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
-        let computeHeight = size.size.height * 1.6
+        if(say.type == .text) {
+            let font = UIFont.systemFont(ofSize:12)
+            let width = 150, height = 10000.0
+            let atts = [NSFontAttributeName: font]
+            let saysWhatNSString = say.content as NSString
+            
+            let size = saysWhatNSString.boundingRect(
+                with: CGSize(width:CGFloat(width), height:CGFloat(height)),
+                options: .usesLineFragmentOrigin,
+                attributes: atts,
+                context: nil)
+            let computeWidth = size.size.width * 1.6//修正计算错误 //QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
+            let computeHeight = size.size.height * 1.6
+            
+            
+            self.bubbleImageWidth = computeWidth + bubbleImageInsets.left + bubbleImageInsets.right
+            self.bubbleImageHeight = computeHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
+            
+            self.saysWhatWidth = computeWidth
+            self.saysWhatHeight = computeHeight
+        }
         
-        
-        self.bubbleImageWidth = computeWidth + bubbleImageInsets.left + bubbleImageInsets.right
-        self.bubbleImageHeight = computeHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
-        
-        self.saysWhatWidth = computeWidth
-        self.saysWhatHeight = computeHeight
+       
 
     }
     //构造器2

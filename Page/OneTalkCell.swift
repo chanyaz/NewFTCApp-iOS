@@ -11,11 +11,11 @@ import Foundation
 class OneTalkCell: UITableViewCell {
     // 头像View
     var headImageView = UIImageView(image: UIImage(named: "you.jpeg"))
-    // 文本
-    var saysContentView : UILabel!
+    
     // 文本背景气泡
     var bubbleImageView : UIImageView!
     
+   
     var cellData:CellData
     
     // MARK: 重写Frame:费了好长好长时间才找到解决办法。。。
@@ -98,14 +98,25 @@ class OneTalkCell: UITableViewCell {
         
         
         // 显示对话内容 // NOTE:内容在bubble上方才能不被bubble遮挡
-        saysContentView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
-        //print("saysContentView:\(saysContentView.frame)")
-        saysContentView.numberOfLines = 0
-        saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
-        saysContentView.text = self.cellData.saysWhat
-        saysContentView.backgroundColor = UIColor.green
-        self.addSubview(saysContentView)
         
+        if self.cellData.saysWhat.type == .text {
+            let saysContentView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
+            //print("saysContentView:\(saysContentView.frame)")
+            saysContentView.numberOfLines = 0
+            saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
+            saysContentView.text = self.cellData.saysWhat.content
+            
+            saysContentView.backgroundColor = UIColor.green
+            self.addSubview(saysContentView)
+            
+        }
+        
+        
+        
+        
+        
+        
+      
         
         
         

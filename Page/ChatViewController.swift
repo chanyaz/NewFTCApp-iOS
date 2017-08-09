@@ -13,7 +13,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     var keyboardNeedLayout:Bool = true
     
-    
+    //TODO: 使用override func reloadData方法重新实现数据刷新功能
     var talkData = Array(repeating:CellData(), count:6){
         didSet{
             self.talkListBlock.reloadData()

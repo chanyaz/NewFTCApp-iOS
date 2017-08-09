@@ -12,13 +12,18 @@ enum Member {
     case you
     case no
 }
+enum Infotype {
+    case text // 文本
+    case image // 图片
+    case card // 图文
+}
 struct CellData {
     //基本字段
     var headImage: String = ""
     var whoSays: Member = .no
     var saysWhat: String = ""
     var bubbleImage: String = ""
-    
+    var saysType: Infotype = .text
     //基本尺寸
     var bubbleImageInsets = UIEdgeInsetsMake(10, 20, 10, 20)//气泡嵌入文字UILabelView的边距
     var cellInsets = UIEdgeInsetsMake(5, 5, 5, 5)//cell嵌入头像和气泡的最小边距

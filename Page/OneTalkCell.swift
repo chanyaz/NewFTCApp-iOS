@@ -104,7 +104,7 @@ class OneTalkCell: UITableViewCell {
             saysContentView.numberOfLines = 0
             saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
             saysContentView.text = self.cellData.saysWhat.content
-            
+            saysContentView.font = self.cellData.normalFont
             saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
             
@@ -124,6 +124,8 @@ class OneTalkCell: UITableViewCell {
             titleView.numberOfLines = 0
             titleView.lineBreakMode = NSLineBreakMode.byWordWrapping
             titleView.text = self.cellData.saysWhat.title
+            titleView.font = self.cellData.titleFont
+            titleView.backgroundColor = UIColor.green
             self.addSubview(titleView)
             
             //coverView:
@@ -137,6 +139,8 @@ class OneTalkCell: UITableViewCell {
             descriptionView.numberOfLines = 0
             descriptionView.lineBreakMode = NSLineBreakMode.byWordWrapping
             descriptionView.text = self.cellData.saysWhat.description
+            descriptionView.font = self.cellData.descriptionFont
+            descriptionView.backgroundColor = UIColor.green
             self.addSubview(descriptionView)
             
         }

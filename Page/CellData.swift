@@ -76,6 +76,9 @@ struct CellData {
     var cellInsets = UIEdgeInsetsMake(5, 5, 5, 5)//cell嵌入头像和气泡的最小边距
     var headImageLength = CGFloat(50) //正方形头像边长
     var betweenHeadAndBubble = CGFloat(5) //头像和气泡的左右距离
+    
+    var maxTextWidth = CGFloat(240)//文字最大宽度
+    var maxTextHeight = CGFloat(10000.0) //文字最大高度
     var maxImageWidth = CGFloat(200) //图像消息的图片最大宽度
     var maxImageHeight = CGFloat(400) //图像消息的图片最大高度
     var coverWidth = CGFloat(240)
@@ -94,7 +97,9 @@ struct CellData {
     // 一些必须在数据里生成的和view相关的对象
     var saysImage = UIImage()
     var coverImage = UIImage()
-    
+    var normalFont = UIFont()
+    var titleFont = UIFont()
+    var descriptionFont = UIFont()
     //计算得到的cell的几种高度
     var cellHeightByHeadImage:CGFloat {
         get {
@@ -123,18 +128,22 @@ struct CellData {
         
         if say.type == .text { // 根据对话文字长短得到图形实际尺寸
             print("hereherehere")
-            let font = UIFont.systemFont(ofSize:12)
-            let width = 150, height = 10000.0
+            let font = UIFont.systemFont(ofSize:18)
+            self.normalFont = font
             let atts = [NSFontAttributeName: font]
             let saysWhatNSString = say.content as NSString
             
             let size = saysWhatNSString.boundingRect(
-                with: CGSize(width:CGFloat(width), height:CGFloat(height)),
+                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
                 options: .usesLineFragmentOrigin,
                 attributes: atts,
                 context: nil)
-            let computeWidth = size.size.width * 1.6//修正计算错误 //QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
-            let computeHeight = size.size.height * 1.6
+            let computeWidth = size.size.width //修正计算错误
+               /* QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
+                * 已解决：因为此处的font大小和实际font大小不同，只有为UILabelView设置属性font为一样的UIFont对象，才能保证大小合适
+                * 另说明：此处当文字多余一行时，自动就是宽度固定为最大宽度，高度自适应
+                */
+            let computeHeight = size.size.height
             
             
             self.bubbleImageWidth = computeWidth + bubbleImageInsets.left + bubbleImageInsets.right
@@ -169,22 +178,18 @@ struct CellData {
             
             
         } else if say.type == .card {
-            //总宽度就是240
-            let width = 150, height = 10000.0
-            
             //处理title
-            let titleFont = UIFont.systemFont(ofSize:20)
-            
+            let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
+            self.titleFont = titleFont
             let atts = [NSFontAttributeName: titleFont]
             let titleNSString = say.title as NSString
-            
             let size = titleNSString.boundingRect(
-                with: CGSize(width:CGFloat(width), height:CGFloat(height)),
+                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
                 options: .usesLineFragmentOrigin,
                 attributes: atts,
                 context: nil)
-            self.titleWidth = size.size.width * 1.6//修正计算错误 //QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
-            self.titleHeight = size.size.height * 1.6
+            self.titleWidth = 240
+            self.titleHeight = size.size.height
             
             
             //处理cover
@@ -192,18 +197,18 @@ struct CellData {
            
             
             //处理description
-            let descriptionFont = UIFont.systemFont(ofSize:12)
+            let descriptionFont = UIFont.systemFont(ofSize:18)
+            self.descriptionFont = descriptionFont
             let descriptionAtts = [NSFontAttributeName: descriptionFont]
             let descriptionNSString = say.description as NSString
             
             let descriptionSize = descriptionNSString.boundingRect(
-                with: CGSize(width:CGFloat(width), height:CGFloat(height)),
+                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
                 options: .usesLineFragmentOrigin,
                 attributes: descriptionAtts,
                 context: nil)
-            self.descriptionWidth = descriptionSize.size.width * 1.6//修正计算错误 //QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
-            self.descriptionHeight = descriptionSize.size.height * 1.6
-            
+            self.descriptionWidth = 240
+            self.descriptionHeight = descriptionSize.size.height
             self.saysWhatWidth = self.coverWidth
             self.saysWhatHeight = self.titleHeight + self.coverHeight + self.descriptionHeight
             self.bubbleImageWidth = self.saysWhatWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right

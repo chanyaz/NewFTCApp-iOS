@@ -176,7 +176,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let secondCellData = CellData(whoSays: .robot, saysWhat: secondRobotSayWhat)
         self.talkData.append(secondCellData)
         
-        let thirdRobotSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the landscape",saysDescription:"It is very beautiful, I love that place...",saysCover:"landscape.jpeg")
+        let thirdRobotSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg")
         let thirdCellData = CellData(whoSays: .robot, saysWhat: thirdRobotSayWhat)
         self.talkData.append(thirdCellData)
   

@@ -210,7 +210,6 @@
 		60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */; };
 		60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */; };
 		60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
-		83FA955FA1E2DBC345D582E1 /* Pods_Page.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60362DBA01D0F57A6C7932A5 /* Pods_Page.framework */; };
 		AF15D6EE1F1743CB0034CE6E /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15D6ED1F1743CB0034CE6E /* PostData.swift */; };
 		AF34DB8A1F127405007DE4D1 /* UITextViewFixed.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF34DB891F127405007DE4D1 /* UITextViewFixed.swift */; };
 		AF657A5E1F3AE97E00E2EABA /* landscape.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AF657A5D1F3AE97E00E2EABA /* landscape.jpeg */; };
@@ -419,7 +418,6 @@
 			files = (
 				414E4175EC6B044B430F5601 /* Pods_Page.framework in Frameworks */,
 				600BD6B41F21CCF90077C104 /* StoreKit.framework in Frameworks */,
-				83FA955FA1E2DBC345D582E1 /* Pods_Page.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

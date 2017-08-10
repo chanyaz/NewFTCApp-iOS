@@ -13,8 +13,17 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     var keyboardNeedLayout:Bool = true
     
+    // 一些实验数据
+    let textSaysWhat = SaysWhat(saysType: .text, saysContent: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?")
+      //MARK:属性初始化时不能直接使用其他属性
+    let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?"))
+    let imageSayWhat = SaysWhat(saysType: .image, saysImage: "landscape.jpeg")
+    let imageCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType: .image, saysImage: "landscape.jpeg"))
+    let cardSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg")
+    let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg"))
+    
     //TODO: 使用override func reloadData方法重新实现数据刷新功能
-    var talkData = Array(repeating:CellData(), count:2){
+    var talkData = Array(repeating:CellData(), count:1){
         didSet{
             self.talkListBlock.reloadData()
             //let num = talkData.count
@@ -49,21 +58,32 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             var currentRobotTalk = ""
             var currentRobotSaysWhat = SaysWhat()
+            var currentRobotCellData = CellData()
             switch currentYourTalk {
             case "How are you":
                 currentRobotTalk = "Fine"
                 currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
+                currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
             case "Hi":
                 currentRobotTalk = "Hello"
                 currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
+                currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
             case "I love you":
                 currentRobotTalk = "I love you, too"
                 currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
+                currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
+            case "text":
+                currentRobotCellData = self.textCellData
+            case "image":
+                currentRobotCellData = self.imageCellData
+            case "card":
+                currentRobotCellData = self.cardCellData
             default:
                 currentRobotTalk = "What do you say?"
                 currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
+                currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
             }
-            let currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
+            
             talkData.append(currentRobotCellData)
             
         }
@@ -89,8 +109,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     options: UIViewAnimationOptions(rawValue: curve),
                     animations: { _ in
                         // FIXME: There is an spooky black bar above keyboard whose height is 64. Now my temporary solution is cutting of the bar forcibly
-                        self.view.frame = CGRect(x: 0, y: -deltaY+64, width: self.view.bounds.width, height: self.view.bounds.height)
-                        //self.talkListBlock.frame = CGRect(x:0,y: deltaY,width:self.talkListBlock.bounds.width,height: self.talkListBlock.bounds.height - deltaY)
+                        self.view.frame = CGRect(x: 0, y: -deltaY + 64, width: self.view.bounds.width, height: self.view.bounds.height)
                         self.keyboardNeedLayout = false
                         self.view.layoutIfNeeded()
                         
@@ -121,7 +140,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 options: UIViewAnimationOptions(rawValue: curve),
                 animations: { _ in
                     
-                    self.view.frame = CGRect(x: 0, y: deltaY + 64, width: self.view.bounds.width, height: self.view.bounds.height)
+                    self.view.frame = CGRect(x: 0, y: deltaY+64, width: self.view.bounds.width, height: self.view.bounds.height)
   
                     self.keyboardNeedLayout = true
                     self.view.layoutIfNeeded()
@@ -169,16 +188,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
-        let firstRobotSaysWhat = SaysWhat(saysType: .text, saysContent: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?")
-        self.talkData.append(CellData(whoSays: .robot, saysWhat:firstRobotSaysWhat))
-        
-        let secondRobotSayWhat = SaysWhat(saysType: .image, saysImage: "landscape.jpeg")
-        let secondCellData = CellData(whoSays: .robot, saysWhat: secondRobotSayWhat)
-        self.talkData.append(secondCellData)
-        
-        let thirdRobotSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg")
-        let thirdCellData = CellData(whoSays: .robot, saysWhat: thirdRobotSayWhat)
-        self.talkData.append(thirdCellData)
+        self.talkData.append(self.textCellData)
+        self.talkData.append(self.imageCellData)
+        self.talkData.append(self.cardCellData)
   
     }
 

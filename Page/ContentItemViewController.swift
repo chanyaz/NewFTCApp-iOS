@@ -50,7 +50,20 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
 //            self.edgesForExtendedLayout = []
 //            self.extendedLayoutIncludesOpaqueBars = false
             
+
             let config = WKWebViewConfiguration()
+            
+            // MARK: Tell the web view what kind of connection the user is currently on
+            let contentController = WKUserContentController();
+            let jsCode = "window.gConnectionType = '\(Connection.current())';"
+            let userScript = WKUserScript(
+                source: jsCode,
+                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                forMainFrameOnly: true
+            )
+            contentController.addUserScript(userScript)
+            config.userContentController = contentController
+            
             config.allowsInlineMediaPlayback = true
             
             // MARK: Add the webview as a subview of containerView

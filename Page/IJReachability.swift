@@ -10,6 +10,22 @@
 import Foundation
 import SystemConfiguration
 
+struct Connection {
+    static func current() -> String {
+        let statusType = IJReachability().connectedToNetworkOfType()
+        var connectionType = "unknown"
+        switch statusType {
+        case .wwan:
+            connectionType = "data"
+        case .wiFi:
+            connectionType =  "wifi"
+        case .notConnected:
+            connectionType =  "no"
+        }
+        return connectionType
+    }
+}
+
 public enum IJReachabilityType {
     case wwan,
     wiFi,

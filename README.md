@@ -2,17 +2,7 @@
 
 ## Development Milestones
 
-### Advertising: 
-1. Done: Retrieve Ad info from Dolphin's script string
-2. Done: Send third party impressions until they are confirmed
-3. Done: Tap link for Ad Views
-4. Done: Tap Link in content view
-5. Done: Launch Screen Ad
-6. Done: Native Banner
-7. Done: Web Banner
-8. Done: Paid Post
-9. Done: Show Image if there's time
-10. Done: Parse Video Ad into native
+
 
 
 ### Channel Page: 
@@ -90,7 +80,17 @@
 
 ## Completed Tasks
 
-
+### Advertising: 
+1. Done: Retrieve Ad info from Dolphin's script string
+2. Done: Send third party impressions until they are confirmed
+3. Done: Tap link for Ad Views
+4. Done: Tap Link in content view
+5. Done: Launch Screen Ad
+6. Done: Native Banner
+7. Done: Web Banner
+8. Done: Paid Post
+9. Done: Show Image if there's time
+10. Done: Parse Video Ad into native
 
 ### Audio
 1. Done: Speech to Text

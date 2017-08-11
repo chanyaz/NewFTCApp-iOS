@@ -79,6 +79,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             case "card":
                 currentRobotCellData = self.cardCellData
             default:
+                createTalkRequest()
                 currentRobotTalk = "What do you say?"
                 currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
                 currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)

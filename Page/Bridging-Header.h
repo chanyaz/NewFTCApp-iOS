@@ -28,5 +28,6 @@
 //MARK: wechat sdk
 #import "WXApi.h"
 #import "WXApiObject.h"
+#import <CommonCrypto/CommonHMAC.h>
 
 #endif /* Bridging_Header_h */

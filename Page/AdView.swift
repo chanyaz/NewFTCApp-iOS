@@ -334,6 +334,20 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         if let adid = self.adid, let adWidth = self.adWidth {
             let config = WKWebViewConfiguration()
             config.allowsInlineMediaPlayback = true
+            
+            
+            // MARK: Tell the web view what kind of connection the user is currently on
+            let contentController = WKUserContentController();
+            let jsCode = "window.gConnectionType = '\(Connection.current())';"
+            let userScript = WKUserScript(
+                source: jsCode,
+                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                forMainFrameOnly: true
+            )
+            contentController.addUserScript(userScript)
+            config.userContentController = contentController
+            
+            
             let webView = WKWebView(frame: self.frame, configuration: config)
             webView.isOpaque = true
             webView.backgroundColor = UIColor.clear

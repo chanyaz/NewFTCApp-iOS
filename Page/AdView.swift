@@ -20,11 +20,10 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     private var adModel: AdModel?
     private lazy var player: AVPlayer? = nil
     
-    public var contentSection: ContentSection? = nil {
-        didSet {
-            updateUI()
-        }
-    }
+    //MARK: Don't use DidSet to trigger updateUI, it might cause unexpected crashes
+    public var contentSection: ContentSection? = nil
+    
+
     
     public func updateUI() {
         if let adType = contentSection?.type, adType == "MPU" {
@@ -32,11 +31,12 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         } else {
             adWidth = "100%"
         }
+        clean()
         //TODO: - We should preload the ad information to avoid decreasing our ad inventory
         if let adid = contentSection?.adid {
             self.adid = adid
             if let url = AdParser.getAdUrlFromDolphin(adid) {
-                clean()
+                
                 //print ("Request Ad From \(url)")
                 Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                     DispatchQueue.main.async { () -> Void in
@@ -62,10 +62,11 @@ class AdView: UIView, SFSafariViewControllerDelegate {
 //            // FIXME: - Sometimes this line will come up with an error, fix it
 //            $0.removeFromSuperview()
 //        }
-        
+        print ("will clean the ad view")
         for subView in self.subviews {
             subView.removeFromSuperview()
         }
+        print ("did clean the ad view")
     }
     
     private func handleAdModel() {

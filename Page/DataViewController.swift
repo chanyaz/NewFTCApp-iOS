@@ -413,10 +413,11 @@ class DataViewController: UICollectionViewController {
             headerView.addGestureRecognizer(tapGestureRecognizer)
             switch reuseIdentifier {
             case "Ad":
-                let adView = headerView as! Ad
-                adView.contentSection = fetches.fetchResults[indexPath.section]
-                //                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
-                return adView
+                let ad = headerView as! Ad
+                ad.contentSection = fetches.fetchResults[indexPath.section]
+                ad.updateUI()
+                //print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
+                return ad
             case "HeaderView":
                 let headerView = headerView as! HeaderView
                 headerView.themeColor = themeColor

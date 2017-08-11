@@ -210,7 +210,6 @@
 		60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */; };
 		60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */; };
 		60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
-		83FA955FA1E2DBC345D582E1 /* Pods_Page.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60362DBA01D0F57A6C7932A5 /* Pods_Page.framework */; };
 		AF15D6EE1F1743CB0034CE6E /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15D6ED1F1743CB0034CE6E /* PostData.swift */; };
 		AF34DB8A1F127405007DE4D1 /* UITextViewFixed.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF34DB891F127405007DE4D1 /* UITextViewFixed.swift */; };
 		AF657A5E1F3AE97E00E2EABA /* landscape.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AF657A5D1F3AE97E00E2EABA /* landscape.jpeg */; };
@@ -219,6 +218,7 @@
 		AF8E93031F124844007CD6DE /* ArticleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93021F124844007CD6DE /* ArticleStyle.swift */; };
 		AF8E93071F125509007CD6DE /* ParseHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93061F125509007CD6DE /* ParseHtml.swift */; };
 		AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93081F125889007CD6DE /* AttributedArticle.swift */; };
+		AFC40F801F3C38E200F5FC4A /* TalkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC40F7F1F3C38E200F5FC4A /* TalkRequest.swift */; };
 		AFD8AF5B1F3809DC00508A91 /* robot.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AFD8AF591F3809DC00508A91 /* robot.jpeg */; };
 		AFD8AF5C1F3809DC00508A91 /* you.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AFD8AF5A1F3809DC00508A91 /* you.jpeg */; };
 		AFD8AF5E1F380A2400508A91 /* CellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5D1F380A2400508A91 /* CellData.swift */; };
@@ -386,6 +386,7 @@
 		AF8E93021F124844007CD6DE /* ArticleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleStyle.swift; sourceTree = "<group>"; };
 		AF8E93061F125509007CD6DE /* ParseHtml.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHtml.swift; sourceTree = "<group>"; };
 		AF8E93081F125889007CD6DE /* AttributedArticle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedArticle.swift; sourceTree = "<group>"; };
+		AFC40F7F1F3C38E200F5FC4A /* TalkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkRequest.swift; sourceTree = "<group>"; };
 		AFD8AF591F3809DC00508A91 /* robot.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = robot.jpeg; sourceTree = "<group>"; };
 		AFD8AF5A1F3809DC00508A91 /* you.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = you.jpeg; sourceTree = "<group>"; };
 		AFD8AF5D1F380A2400508A91 /* CellData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellData.swift; sourceTree = "<group>"; };
@@ -419,7 +420,6 @@
 			files = (
 				414E4175EC6B044B430F5601 /* Pods_Page.framework in Frameworks */,
 				600BD6B41F21CCF90077C104 /* StoreKit.framework in Frameworks */,
-				83FA955FA1E2DBC345D582E1 /* Pods_Page.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,6 +531,7 @@
 				60124FB51F316F2400CFA04C /* ChatViewController.swift */,
 				AFD8AF5D1F380A2400508A91 /* CellData.swift */,
 				AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */,
+				AFC40F7F1F3C38E200F5FC4A /* TalkRequest.swift */,
 			);
 			name = Chat;
 			sourceTree = "<group>";
@@ -1159,7 +1160,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		886899C82F14A377FBC6FF9E /* [CP] Check Pods Manifest.lock */ = {
@@ -1358,6 +1359,7 @@
 				605750F31F1461F400552DAC /* WKWebPage.swift in Sources */,
 				600BD6AF1F21A9420077C104 /* PlaySpeech.swift in Sources */,
 				60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */,
+				AFC40F801F3C38E200F5FC4A /* TalkRequest.swift in Sources */,
 				F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */,
 				F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */,
 				607094AD1EE9436900760A60 /* Tabs.swift in Sources */,

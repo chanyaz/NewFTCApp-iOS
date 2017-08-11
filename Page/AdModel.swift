@@ -36,7 +36,7 @@ struct AdParser {
 
         
         //TODO: This is a Test Code, Remove after testing is over
-        // let video = "https://creatives.ftimg.net/video/adv/AccentureTest2.mp4"
+        //let video = "https://creatives.ftimg.net/video/adv/AccentureTest2.mp4"
         
         // print ("ad code is now: \(adCode)")
         // MARK: Extract Images

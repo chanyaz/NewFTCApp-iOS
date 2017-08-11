@@ -44,6 +44,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                     tabName: t,
                     pageData: contentPageData
                 )
+                _modelController?.currentPageIndex = currentPageIndex
             }
         }
         return _modelController!
@@ -75,7 +76,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         bottomBarHeight = toolBar.frame.height + 1
         fullPageViewRect = self.view.bounds
         setPageViewFrame()
-        let startingViewController: ContentItemViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
+        let startingViewController: ContentItemViewController = self.modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!)!
         let viewControllers = [startingViewController]
         self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: false, completion: {done in })
         self.pageViewController!.dataSource = self.modelController

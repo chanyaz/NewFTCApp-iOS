@@ -455,8 +455,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             // MARK: - If it is other types of content such video and interacrtive features
             if let id = dataObject?.id, let type = dataObject?.type {
-                //                    let storyPageBase = "https://m.ftimg.net/"
-                //                    let urlString = "\(storyPageBase)\(type)/\(id)?webview=ftcapp&001"
                 let urlString = APIs.getUrl(id, type: type)
                 print ("loading \(urlString)")
                 if let url = URL(string: urlString) {

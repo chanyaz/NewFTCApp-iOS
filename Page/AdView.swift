@@ -22,9 +22,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     
     //MARK: Don't use DidSet to trigger updateUI, it might cause unexpected crashes
     public var contentSection: ContentSection? = nil
-    
 
-    
     public func updateUI() {
         if let adType = contentSection?.type, adType == "MPU" {
             adWidth = "300px"

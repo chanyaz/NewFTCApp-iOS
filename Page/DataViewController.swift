@@ -413,10 +413,11 @@ class DataViewController: UICollectionViewController {
             headerView.addGestureRecognizer(tapGestureRecognizer)
             switch reuseIdentifier {
             case "Ad":
-                let adView = headerView as! Ad
-                adView.contentSection = fetches.fetchResults[indexPath.section]
-                //                print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
-                return adView
+                let ad = headerView as! Ad
+                ad.contentSection = fetches.fetchResults[indexPath.section]
+                ad.updateUI()
+                //print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
+                return ad
             case "HeaderView":
                 let headerView = headerView as! HeaderView
                 headerView.themeColor = themeColor
@@ -596,7 +597,26 @@ class DataViewController: UICollectionViewController {
                 //MARK: if it is a story, video or other types of HTML based content, push the detailViewController
                 if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
                     var pageData1 = [ContentItem]()
-                    var pageData2 = [ContentItem]()
+//                    var pageData2 = [ContentItem]()
+                    var currentPageIndex = 0
+                    var pageIndexCount = 0
+                    for (sectionIndex, section) in fetches.fetchResults.enumerated() {
+                        for (itemIndex, item) in section.items.enumerated() {
+                            if ["story", "video", "interactive", "photo"].contains(item.type) {
+                                if sectionIndex == indexPath.section && itemIndex == indexPath.row {
+                                    currentPageIndex = pageIndexCount
+                                }
+                                pageData1.append(item)
+                                pageIndexCount += 1
+                            }
+                            
+                        }
+                    }
+                    
+                    let pageDataRaw = pageData1 //+ pageData2
+                    
+                    
+                    /* MARK: - Reorder the page
                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
                         for (itemIndex, item) in section.items.enumerated() {
                             if ["story", "video", "interactive", "photo"].contains(item.type) {
@@ -605,13 +625,21 @@ class DataViewController: UICollectionViewController {
                                 } else {
                                     pageData2.append(item)
                                 }
+                                
                             }
                         }
                     }
                     
-                    let pageDataRaw = pageData1 + pageData2
-                    let pageData = AdLayout.insertFullScreenAd(to: pageDataRaw)
+                    let pageDataRaw = pageData1 //+ pageData2
+                    */
+                    
+                    
+                    let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
+                    let pageData = withAd.contentItems
+                    currentPageIndex = withAd.pageIndex
+                    
                     detailViewController.contentPageData = pageData
+                    detailViewController.currentPageIndex = currentPageIndex
                     navigationController?.pushViewController(detailViewController, animated: true)
                 }
             }

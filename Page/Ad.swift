@@ -14,11 +14,8 @@ class Ad: UICollectionReusableView {
     
     @IBOutlet weak var adView: AdView!
     // MARK: - Use lazy var for webView as we might later switch to native ad and use web view only as fallback
-    var contentSection: ContentSection? = nil {
-        didSet {
-            updateUI()
-        }
-    }
+    // MARK: - didset might not be a good way to trigger updateUI as it causes unexpected crashes
+    var contentSection: ContentSection? = nil
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,12 +30,13 @@ class Ad: UICollectionReusableView {
     }
     
     // MARK: Use WKWebview to migrate current display ads.
-    func updateUI() {
+    public func updateUI() {
         // print ("ad header view update UI called")
         let adBackgroundColor = UIColor(hex: Color.Ad.background)
         self.backgroundColor = adBackgroundColor
         adView?.backgroundColor = adBackgroundColor
         adView?.contentSection = self.contentSection
+        adView?.updateUI()
     }
     
     // TODO: Need to implement url click in wkwebview

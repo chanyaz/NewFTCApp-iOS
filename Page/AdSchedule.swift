@@ -26,7 +26,7 @@ class AdSchedule {
     
     
     private let adScheduleFileName = "schedule.json"
-    private let lauchAdSchedule = "https://m.ftimg.net/index.php/jsapi/applaunchschedule"
+    private let lauchAdSchedule = "https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/applaunchschedule"
     private let imageTypes = ["png","jpg","gif"]
     private let videoTypes = ["mov","mp4"]
     private let htmlTypes = ["html"]

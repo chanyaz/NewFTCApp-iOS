@@ -20,23 +20,21 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     private var adModel: AdModel?
     private lazy var player: AVPlayer? = nil
     
-    public var contentSection: ContentSection? = nil {
-        didSet {
-            updateUI()
-        }
-    }
-    
+    //MARK: Don't use DidSet to trigger updateUI, it might cause unexpected crashes
+    public var contentSection: ContentSection? = nil
+
     public func updateUI() {
         if let adType = contentSection?.type, adType == "MPU" {
             adWidth = "300px"
         } else {
             adWidth = "100%"
         }
+        clean()
         //TODO: - We should preload the ad information to avoid decreasing our ad inventory
         if let adid = contentSection?.adid {
             self.adid = adid
             if let url = AdParser.getAdUrlFromDolphin(adid) {
-                clean()
+                
                 //print ("Request Ad From \(url)")
                 Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                     DispatchQueue.main.async { () -> Void in
@@ -62,10 +60,11 @@ class AdView: UIView, SFSafariViewControllerDelegate {
 //            // FIXME: - Sometimes this line will come up with an error, fix it
 //            $0.removeFromSuperview()
 //        }
-        
+        print ("will clean the ad view")
         for subView in self.subviews {
             subView.removeFromSuperview()
         }
+        print ("did clean the ad view")
     }
     
     private func handleAdModel() {
@@ -333,6 +332,20 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         if let adid = self.adid, let adWidth = self.adWidth {
             let config = WKWebViewConfiguration()
             config.allowsInlineMediaPlayback = true
+            
+            
+            // MARK: Tell the web view what kind of connection the user is currently on
+            let contentController = WKUserContentController();
+            let jsCode = "window.gConnectionType = '\(Connection.current())';"
+            let userScript = WKUserScript(
+                source: jsCode,
+                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                forMainFrameOnly: true
+            )
+            contentController.addUserScript(userScript)
+            config.userContentController = contentController
+            
+            
             let webView = WKWebView(frame: self.frame, configuration: config)
             webView.isOpaque = true
             webView.backgroundColor = UIColor.clear

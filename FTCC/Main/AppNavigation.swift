@@ -22,7 +22,7 @@ struct AppNavigation {
             "isNavLightContent": false,
             "Channels": [
                 ["title": "首页",
-                 "api":"https://m.ftimg.net/index.php/jsapi/publish/ftcc",
+                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
                  "url":"http://www.ftchinese.com/",
                  "screenName":"homepage",
                  "Insert Content": ""

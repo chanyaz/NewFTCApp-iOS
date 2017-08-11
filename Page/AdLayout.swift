@@ -81,12 +81,29 @@ struct AdLayout {
         }
     }
     
-    static func insertFullScreenAd(to items: [ContentItem])->[ContentItem]{
+    static func insertFullScreenAd(to items: [ContentItem], for index: Int)->(contentItems: [ContentItem], pageIndex: Int){
         
-        let newItem = ContentItem(id: "", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
         var newItems = items
-        newItems.insert(newItem, at:2)
-        return newItems
+        var newPageIndex = index
+        var insertionPointAfter = index + 2
+        
+        // MARK: Insert a full page ad after the next content page
+        if insertionPointAfter > newItems.count {
+            insertionPointAfter = newItems.count
+        }
+        let newItem = ContentItem(id: "fullpagead1", image: "", headline: "full page ad 1", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
+        newItems.insert(newItem, at:insertionPointAfter)
+        
+        // MARK: Insert a full page ad before the previous content page
+        var insertionPointBefore = index - 1
+        if insertionPointBefore < 0 {
+            insertionPointBefore = 0
+        }
+        let newItem2 = ContentItem(id: "fullpagead2", image: "", headline: "full page ad 2", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
+        newItems.insert(newItem2, at:insertionPointBefore)
+        newPageIndex += 1
+        
+        return (newItems, newPageIndex)
     }
     
 }

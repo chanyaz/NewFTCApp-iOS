@@ -750,9 +750,9 @@
 			children = (
 				50EC3A621EF1E18E00BF17AD /* Ad.xib */,
 				50EC3A611EF1E18E00BF17AD /* Ad.swift */,
+				605750FA1F15B06700552DAC /* AdView.swift */,
 				60CA7BC01EF26251000CD9B4 /* AdLayout.swift */,
 				609763AF1F0DCFC100088280 /* AdModel.swift */,
-				605750FA1F15B06700552DAC /* AdView.swift */,
 				60C0D65F1F18BF5800E6F77D /* Impressions.swift */,
 				6087E3D61EF212960034A92F /* ad.html */,
 				6087E3D91EF2294C0034A92F /* ga.js */,

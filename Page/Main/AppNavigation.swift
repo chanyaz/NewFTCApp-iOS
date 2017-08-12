@@ -23,7 +23,7 @@ struct AppNavigation {
             "isNavLightContent": false,
             "Channels": [
                 ["title": "首页",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/home",
+                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
                  "url":"http://www.ftchinese.com/",
                  "screenName":"homepage",
                  "Insert Content": "home"

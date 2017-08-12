@@ -21,7 +21,7 @@
 2. Done: Retrieve and convert other types of API. 
 3. Interactive Features
 4. Videos: 
-5. Switch Between APIs
+5. Switch Between Domains for APIs
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 
@@ -39,7 +39,7 @@
 13. Hide/show sound button properly
 14. Tag page should show title in navigation
 15. Done: Add new layout to display all cover
-16. User comments
+16. Working on: User comments
 17. Display column layout on iPad
 
 ### Sharing

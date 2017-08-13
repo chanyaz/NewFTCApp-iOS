@@ -20,6 +20,8 @@
 		50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9BA0E1F230A73002A188F /* LeakAvoider.swift */; };
 		50DA6E7E1F3EFC87006B4CDE /* TalkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequest.swift */; };
 		50DA6E7F1F3EFC87006B4CDE /* TalkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequest.swift */; };
+		50DA6E811F4037C8006B4CDE /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = 50DA6E801F4037C8006B4CDE /* story.html */; };
+		50DA6E821F4037C8006B4CDE /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = 50DA6E801F4037C8006B4CDE /* story.html */; };
 		50E220B91F36B498005E4642 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E220B71F36B498005E4642 /* BigImageCell.swift */; };
 		50E220BA1F36B498005E4642 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50E220B81F36B498005E4642 /* BigImageCell.xib */; };
 		50E535C71F0729900082B181 /* ChannelModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E535C61F0729900082B181 /* ChannelModelDelegate.swift */; };
@@ -133,7 +135,6 @@
 		602153751F397C650077A7AF /* you.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AFD8AF5A1F3809DC00508A91 /* you.jpeg */; };
 		602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 500139E01F1A7188009EC29D /* GoogleService-Info.plist */; };
 		602153771F397C650077A7AF /* ga.js in Resources */ = {isa = PBXBuildFile; fileRef = 6087E3D91EF2294C0034A92F /* ga.js */; };
-		602153791F397C650077A7AF /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA4F81EFF7FAA003D4180 /* story.html */; };
 		6021537A1F397C650077A7AF /* LineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50F6105F1F2CCB9C00E3AABC /* LineCell.xib */; };
 		6021537B1F397C650077A7AF /* robot.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AFD8AF591F3809DC00508A91 /* robot.jpeg */; };
 		6021537C1F397C650077A7AF /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
@@ -207,7 +208,6 @@
 		60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */; };
 		60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */; };
 		60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */; };
-		60FDA4F91EFF7FAA003D4180 /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA4F81EFF7FAA003D4180 /* story.html */; };
 		60FEBB511EF0CEAE00C3EBB6 /* CoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */; };
 		60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */; };
 		60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */; };
@@ -269,6 +269,7 @@
 		50A704C21EEB689900660022 /* ContentFetchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchResults.swift; sourceTree = "<group>"; };
 		50D9BA0E1F230A73002A188F /* LeakAvoider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakAvoider.swift; sourceTree = "<group>"; };
 		50DA6E7D1F3EFC87006B4CDE /* TalkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkRequest.swift; sourceTree = "<group>"; };
+		50DA6E801F4037C8006B4CDE /* story.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = story.html; path = FTChinese/story.html; sourceTree = "<group>"; };
 		50E220B71F36B498005E4642 /* BigImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		50E220B81F36B498005E4642 /* BigImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
 		50E535C61F0729900082B181 /* ChannelModelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelModelDelegate.swift; sourceTree = "<group>"; };
@@ -371,7 +372,6 @@
 		60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCellRegular.xib; sourceTree = "<group>"; };
 		60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCellRegular.swift; sourceTree = "<group>"; };
 		60F4C1701EFCEBC000F21EB6 /* ChannelCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCellRegular.xib; sourceTree = "<group>"; };
-		60FDA4F81EFF7FAA003D4180 /* story.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = story.html; sourceTree = "<group>"; };
 		60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverCell.swift; sourceTree = "<group>"; };
 		60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCell.xib; sourceTree = "<group>"; };
 		60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlineCell.swift; sourceTree = "<group>"; };
@@ -487,6 +487,14 @@
 				50D9BA0E1F230A73002A188F /* LeakAvoider.swift */,
 			);
 			name = Performance;
+			sourceTree = "<group>";
+		};
+		50DA6E831F4037D0006B4CDE /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				50DA6E801F4037C8006B4CDE /* story.html */,
+			);
+			name = HTML;
 			sourceTree = "<group>";
 		};
 		50EC3A651EF2C83F00BF17AD /* Header */ = {
@@ -642,7 +650,6 @@
 				600BD6A11F1EF20B0077C104 /* English.swift */,
 				605750F21F1461F400552DAC /* WKWebPage.swift */,
 				AF34DB891F127405007DE4D1 /* UITextViewFixed.swift */,
-				60FDA4F81EFF7FAA003D4180 /* story.html */,
 				605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */,
 				605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */,
 				605750F81F1499F000552DAC /* UIImage+Attachments.swift */,
@@ -830,6 +837,7 @@
 				602153901F3999D50077A7AF /* LaunchScreen.storyboard */,
 				602153951F399C0F0077A7AF /* Assets.xcassets */,
 				60D3C8D01EBFF5DC0085BEF6 /* Info.plist */,
+				50DA6E831F4037D0006B4CDE /* HTML */,
 				503A3B021EF4AFB100FB6006 /* Main */,
 				6087E3D81EF212A30034A92F /* Ad */,
 				602153C61F39A4400077A7AF /* Images */,
@@ -1073,6 +1081,7 @@
 				6021538F1F39990E0077A7AF /* LaunchScreen.storyboard in Resources */,
 				602153691F397C650077A7AF /* ad.html in Resources */,
 				6021536D1F397C650077A7AF /* ChannelCell.xib in Resources */,
+				50DA6E821F4037C8006B4CDE /* story.html in Resources */,
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
 				6021536F1F397C650077A7AF /* ChannelCellRegular.xib in Resources */,
 				602153721F397C650077A7AF /* AdCellRegular.xib in Resources */,
@@ -1082,7 +1091,6 @@
 				602153751F397C650077A7AF /* you.jpeg in Resources */,
 				602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */,
 				602153771F397C650077A7AF /* ga.js in Resources */,
-				602153791F397C650077A7AF /* story.html in Resources */,
 				6021537A1F397C650077A7AF /* LineCell.xib in Resources */,
 				6021537B1F397C650077A7AF /* robot.jpeg in Resources */,
 				F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */,
@@ -1104,6 +1112,7 @@
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
 				6021538B1F3990880077A7AF /* Main.storyboard in Resources */,
+				50DA6E811F4037C8006B4CDE /* story.html in Resources */,
 				604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */,
 				60C558721F29B786004C4E0E /* schedule.json in Resources */,
 				60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */,
@@ -1116,7 +1125,6 @@
 				602153C21F39A4390077A7AF /* cover.jpg in Resources */,
 				500139E11F1A7188009EC29D /* GoogleService-Info.plist in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
-				60FDA4F91EFF7FAA003D4180 /* story.html in Resources */,
 				602153C51F39A4390077A7AF /* sound.png in Resources */,
 				50F610611F2CCB9C00E3AABC /* LineCell.xib in Resources */,
 				602153C41F39A4390077A7AF /* ShareIcon.jpg in Resources */,

@@ -23,7 +23,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg"))
     
     //TODO: 使用override func reloadData方法重新实现数据刷新功能
-    var talkData = Array(repeating:CellData(), count:1){
+     var talkData = Array(repeating:CellData(), count:1){
         didSet{
             self.talkListBlock.reloadData()
             //let num = talkData.count
@@ -34,7 +34,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
         }
     }
- 
+    
 
     @IBOutlet weak var talkListBlock: UITableView!
     
@@ -60,6 +60,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             var currentRobotSaysWhat = SaysWhat()
             var currentRobotCellData = CellData()
             switch currentYourTalk {
+                /*
             case "How are you":
                 currentRobotTalk = "Fine"
                 currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
@@ -72,20 +73,27 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 currentRobotTalk = "I love you, too"
                 currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
                 currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
+                 */
             case "text":
                 currentRobotCellData = self.textCellData
+                talkData.append(currentRobotCellData)
             case "image":
                 currentRobotCellData = self.imageCellData
+                talkData.append(currentRobotCellData)
             case "card":
                 currentRobotCellData = self.cardCellData
+                talkData.append(currentRobotCellData)
             default:
                 createTalkRequest()
+                
                 currentRobotTalk = "What do you say?"
                 currentRobotSaysWhat = SaysWhat(saysType: .text, saysContent: currentRobotTalk)
                 currentRobotCellData = CellData(whoSays: .robot, saysWhat: currentRobotSaysWhat)
+                
+                talkData.append(currentRobotCellData)
             }
             
-            talkData.append(currentRobotCellData)
+            //talkListBlock.reloadData()
             
         }
 
@@ -173,7 +181,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         return cell
         
     }
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -192,6 +200,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.talkData.append(self.textCellData)
         self.talkData.append(self.imageCellData)
         self.talkData.append(self.cardCellData)
+        
+        
   
     }
 

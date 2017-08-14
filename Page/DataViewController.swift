@@ -213,7 +213,7 @@ class DataViewController: UICollectionViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         print("22222")//第一次启动不运行，转屏出现一次
-        // collectionView?.reloadData()
+        collectionView?.reloadData()
         
     }
     

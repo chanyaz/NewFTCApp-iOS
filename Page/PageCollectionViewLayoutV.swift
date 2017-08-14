@@ -178,8 +178,8 @@ class PageCollectionViewLayoutV: UICollectionViewFlowLayout{
                                 attributes.frame = frame
                                 
                                 yOffset[column] = yOffset[column] + heightItemWithSmall
-                                contentHeight = max(contentHeight, frame.maxY)
-                                
+//                                contentHeight = max(contentHeight, frame.maxY)
+                                contentHeight = yOffset[column]
                                 if column >= numberOfColumns - 1{
                                     column = 0
                                 }else{

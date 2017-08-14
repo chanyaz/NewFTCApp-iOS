@@ -7,33 +7,10 @@
 //
 
 import Foundation
-import Security
-typealias CompletionHandler = () -> Void
 
-class MySessionDelegate: URLSessionStreamTask, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
-    var completionHandlers: [String: CompletionHandler] = [:]
-}
 
 func createTalkRequest () {
-    /*
-    let defaultConfiguration = URLSessionConfiguration.default
-    let cachesDirectoryURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-    let cacheURL = cachesDirectoryURL.appendingPathComponent("MyCache")
-    let diskPath = cacheURL.path
-    let cache = URLCache(memoryCapacity: 16384, diskCapacity: 268435456, diskPath: diskPath)
-    defaultConfiguration.urlCache = cache
-    defaultConfiguration.requestCachePolicy = .useProtocolCachePolicy
     
-    
-    let delegate = MySessionDelegate()
-    let operationQueue = OperationQueue.main
-    
-    
-    let defaultSession = URLSession(configuration: defaultConfiguration, delegate: delegate, delegateQueue: operationQueue)
-    */
-    
-    
-    //let sessionWithoutADelegate = URLSession(configuration: defaultConfiguration)
     print("Execute createTalkRequest")
     
     let bodyString = "{\"query\":\"你喜欢夏天还是冬天?\",\"messageType\":\"text\"}"
@@ -43,11 +20,7 @@ func createTalkRequest () {
     let appId = "XI36GDstzRkCzD18Fh"
     let secret = "5c3c48acd5434663897109d18a2f62c5"
 
-    /*
-     Prod:
-     appid: XIeQemRXxREgGsyPki
-     Secret:4b3f82a71fb54cbe9e4c8f125998c787
-     */
+
     let timestampField = "x-msxiaoice-request-timestamp"
     let timestamp = Int(Date().timeIntervalSince1970)//生成时间戳
     print("timestamp:\(timestamp)")
@@ -62,7 +35,6 @@ func createTalkRequest () {
     print("signature:\(signature)")
     
     if let url = URL(string: urlString),
-       //let body = bodyString.data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
         let body = bodyString.data(using: .utf8)
         { // 将String转化为Data
         var talkRequest = URLRequest(url:url)
@@ -81,20 +53,82 @@ func createTalkRequest () {
             
         (URLSession.shared.dataTask(with: talkRequest) {
             (data,response,error) in
-            if let response = response,
-                let data = data,
-                let string = String(data: data, encoding: .utf8) {
-                print("Response:\(response)")
-                print("DATA:\n\(string) \n End DATA \n")
-            } else if let error = error {
-                print("Error:\(error)")
+            /*
+                if let response = response,
+                    let data = data,
+                    let string = String(data: data, encoding: .utf8) {
+                    print("Response:\(response)")
+                    print("DATA:\n\(string) \n End DATA \n")
+                    
+                } else if let error = error {
+                    print("Error:\(error)")
+                }
+            */
+            if error != nil {
+                /* wycNOTE:
+                 * guard语句的执行取决于一个表达式的布尔值。可以使用guard语句来要求条件必须为真时，以执行guard语句后面的代码。不同于if语句，一个guard语句总是有一个else从句，条件不为真则执行else从句中的代码
+                 */
+                print("Error:(error))")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                print("Status code is not 200. It is \(httpStatus.statusCode)")
+                return
+            }
+            
+            if let data = data, let dataString = String(data: data, encoding: .utf8){
+                print("Overview Data:\(dataString)")
+                createResponseCellData(data: data)
             }
             
         }).resume()
         
     }
    }
-
+func createResponseCellData(data:Data) {
+    do {
+        let jsonAny = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
+        if let jsonDictionary = jsonAny as? NSDictionary,let answer = jsonDictionary["Answer"],let answerArray = answer as? NSArray {
+            let oneAnswer = answerArray[0]
+            
+            if let oneAnswerDic = oneAnswer as? NSDictionary,
+                let type = oneAnswerDic["Type"], let typeStr = type as? String {
+               
+                print(typeStr)
+                
+                switch typeStr {
+                    case "Text":
+                        if let content = oneAnswerDic["Content"], let contentStr = content as? String {
+                            /*
+                            let robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                            let robotCellData = CellData(whoSays: .robot, saysWhat: robotSaysWhat)
+                            */
+                            //ChatView.talkData.append(robotCellData)
+                            print(contentStr)
+                        }
+                    
+                    case "Image":
+                        print("This is a Image")
+                    case "Card":
+                        print("This is a Card")
+                    default:
+                        print("An unknow type response data.")
+                }
+                
+                
+                
+            }
+          
+        }
+        
+        
+    } catch {
+        
+    }
+    
+   
+}
 
 func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
     print("Execute computeSignature")
@@ -124,15 +158,6 @@ func computeSignature(verb:String, path:String, paramList:[String], headerList:[
     let messageStr = "\(verbStr);\(pathStr);\(paramListStr);\(headerListStr);\(bodyStr);\(timestamp);\(secretKeyStr)"
     
     print("messageStr:\(messageStr)")
-    //let secretKeyByte = [UInt8](secretKeyStr.utf8)//NOTE:将string转化为byte数组，待再理解
-    //let messageByte = [UInt8](messageStr.utf8)
-    
-    /*
-    let computedHash = secretKeyStr.hmac(algorithm: .SHA1, key:messageStr)
-    
-    let computedHashData = computedHash.data(using: .utf8)
-    let computedHashBase64 = computedHashData!.base64EncodedString()
-    */
     
     let signature = messageStr.HmacSHA1(key: secretKeyStr)
     return signature

@@ -208,5 +208,12 @@ struct Download {
         }
     }
     
+    public static func encodingGBK() -> String.Encoding {
+        let cfEnc = CFStringEncodings.GB_18030_2000
+        let enc = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(cfEnc.rawValue))
+        let gbEncoding = String.Encoding(rawValue: enc)
+        return gbEncoding
+    }
+    
 }
 

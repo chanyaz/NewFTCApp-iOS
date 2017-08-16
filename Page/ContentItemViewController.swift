@@ -10,11 +10,23 @@ import UIKit
 import UIKit.NSTextAttachment
 import WebKit
 
+enum ContentSubType {
+    case UserComments
+    case None
+}
+
 class ContentItemViewController: UIViewController, UINavigationControllerDelegate {
     var dataObject: ContentItem?
     var pageTitle: String = ""
     var themeColor: String?
     var currentLanguageIndex: Int?
+    
+    // MARK: show in full screen
+    var isFullScreen = false
+    
+    // MARK: sub type such as user comments
+    var subType: ContentSubType = .None
+    
     private var detailDisplayed = false
     fileprivate lazy var webView: WKWebView? = nil
     fileprivate let contentAPI = ContentFetch()
@@ -29,8 +41,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
                 //additionalSafeAreaInsets = UIEdgeInsetsMake(44, 0, 44, 0)
-//                edgesForExtendedLayout = UIRectEdge.all
-//                extendedLayoutIncludesOpaqueBars = true
+                //                edgesForExtendedLayout = UIRectEdge.all
+                //                extendedLayoutIncludesOpaqueBars = true
                 // MARK: add as a childviewcontroller
                 controller.showCloseButton = false
                 addChildViewController(controller)
@@ -43,14 +55,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 controller.didMove(toParentViewController: self)
             }
         } else {
-//            self.navigationController?.isNavigationBarHidden = false
-//            self.tabBarController?.tabBar.isHidden = false
+            //            self.navigationController?.isNavigationBarHidden = false
+            //            self.tabBarController?.tabBar.isHidden = false
             
             self.view.backgroundColor = UIColor(hex: Color.Content.background)
-//            self.edgesForExtendedLayout = []
-//            self.extendedLayoutIncludesOpaqueBars = false
+            //            self.edgesForExtendedLayout = []
+            //            self.extendedLayoutIncludesOpaqueBars = false
             
-
+            
             let config = WKWebViewConfiguration()
             
             // MARK: Tell the web view what kind of connection the user is currently on
@@ -62,23 +74,32 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 forMainFrameOnly: true
             )
             contentController.addUserScript(userScript)
+            contentController.add(self, name: "alert")
             config.userContentController = contentController
             
             config.allowsInlineMediaPlayback = true
             
             // MARK: Add the webview as a subview of containerView
-            self.webView = WKWebView(frame: self.containerView.bounds, configuration: config)
-            self.containerView.addSubview(self.webView!)
-            self.containerView.clipsToBounds = true
-            self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            if isFullScreen == false {
+                webView = WKWebView(frame: containerView.bounds, configuration: config)
+                containerView.addSubview(webView!)
+                containerView.clipsToBounds = true
+            } else {
+                webView = WKWebView(frame: self.view.bounds, configuration: config)
+                view = webView
+                view.clipsToBounds = true
+            }
+            
+            webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             
             
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
-//            webView = WKWebView(frame: self.view.bounds, configuration: config)
-//            self.view = self.webView
-            webView?.isOpaque = false
-            webView?.backgroundColor = UIColor.clear
-            webView?.scrollView.backgroundColor = UIColor.clear
+            //            webView = WKWebView(frame: self.view.bounds, configuration: config)
+            //            self.view = self.webView
+            let webViewBG = UIColor(hex: Color.Content.background)
+            webView?.isOpaque = true
+            webView?.backgroundColor = webViewBG
+            webView?.scrollView.backgroundColor = webViewBG
             
             // MARK: This makes the web view scroll like native
             webView?.scrollView.delegate = self
@@ -93,10 +114,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 name: Notification.Name(rawValue: Event.languagePreferenceChanged),
                 object: nil
             )
-            getDetailInfo()
+            // MARK: If the sub type is a user comment, render web view directly
+            if subType == .UserComments {
+                renderWebView()
+            } else {
+                getDetailInfo()
+            }
             navigationController?.delegate = self
-            
-            
         }
     }
     
@@ -151,7 +175,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             //MARK: if it is a story, get the API
             let urlString = APIs.get(id, type: "story")
             view.addSubview(activityIndicator)
-            //activityIndicator.frame = view.bounds
             activityIndicator.center = self.view.center
             activityIndicator.startAnimating()
             
@@ -392,18 +415,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 let urlString = APIs.getUrl(id, type: "story")
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
-                    let lead = dataObject?.lead ?? ""
+                    let lead: String
                     let tags = dataObject?.tag ?? ""
-                    let tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+                    let tag: String
                     let imageHTML:String
-                    if let image = dataObject?.image {
-                        imageHTML = "<div class=\"story-image image\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
-                    } else {
-                        imageHTML = ""
-                    }
+                    
                     
                     // MARK: story byline
-                    let byline = dataObject?.chineseByline ?? ""
+                    let byline: String
                     var relatedStories = ""
                     if let relatedStoriesData = dataObject?.relatedStories {
                         for (index, story) in relatedStoriesData.enumerated() {
@@ -426,10 +445,39 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     
                     let headlineBody = getHeadlineBody(dataObject)
                     let headline = headlineBody.headline
-                    let finalBody = headlineBody.finalBody
                     
+                    let finalBody: String
                     // MARK: Story Time
-                    let timeStamp = dataObject?.publishTime ?? ""
+                    let timeStamp: String
+                    let userCommentsOrder: String
+                    let styleContainerStyle: String
+                    if subType == .UserComments {
+                        finalBody = ""
+                        byline = ""
+                        relatedStories = ""
+                        relatedTopics = ""
+                        tag = ""
+                        imageHTML = ""
+                        timeStamp = ""
+                        lead = ""
+                        navigationItem.title = headline
+                        userCommentsOrder = "storyall1"
+                        styleContainerStyle = " style=\"display:none;\""
+                    } else {
+                        finalBody = headlineBody.finalBody
+                        byline = dataObject?.chineseByline ?? ""
+                        tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+                        if let image = dataObject?.image {
+                            imageHTML = "<div class=\"story-image image\" style=\"margin-bottom:0;\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+                        } else {
+                            imageHTML = ""
+                        }
+                        timeStamp = dataObject?.publishTime ?? ""
+                        lead = dataObject?.lead ?? ""
+                        userCommentsOrder = "story"
+                        styleContainerStyle = ""
+                    }
+                    
                     if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
@@ -443,6 +491,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "{story-image}", with: imageHTML)
                                 .replacingOccurrences(of: "{related-stories}", with: relatedStories)
                                 .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
+                                .replacingOccurrences(of: "{comments-order}", with: userCommentsOrder)
+                                    .replacingOccurrences(of: "{story-container-style}", with: styleContainerStyle)
+                            
+                            
+                            
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             self.webView?.load(request)
@@ -632,6 +685,19 @@ extension ContentItemViewController: WKNavigationDelegate {
                 decisionHandler(.cancel)
             }  else {
                 decisionHandler(.allow)
+            }
+        }
+    }
+}
+
+// MARK: Handle Message from Web View
+extension ContentItemViewController: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let body = message.body as? [String: String] {
+            if message.name == "alert" {
+                if let title = body["title"], let lead = body["message"] {
+                    Alert.present(title, message: lead)
+                }
             }
         }
     }

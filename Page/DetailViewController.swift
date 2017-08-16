@@ -23,6 +23,19 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         self.launchActionSheet(for: item)
     }
     
+    @IBAction func launchComment(_ sender: Any) {
+        let item = contentPageData[currentPageIndex]
+        let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as! ContentItemViewController
+        //print(dataViewController.view.frame)
+        contentItemViewController.dataObject = item
+        contentItemViewController.pageTitle = item.headline
+        contentItemViewController.isFullScreen = true
+        contentItemViewController.subType = .UserComments
+        //contentItemViewController.themeColor = self.pageThemeColor
+        navigationController?.pushViewController(contentItemViewController, animated: true)
+        
+    }
+    
     var isFullScreenAdOn = false
     
     override var prefersStatusBarHidden: Bool {
@@ -84,7 +97,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         self.view.addSubview(self.pageViewController!.view)
         self.pageViewController!.didMove(toParentViewController: self)
         
-        toolBar.layer.zPosition = 1
+        //toolBar.layer.zPosition = 1
+        toolBar.superview?.bringSubview(toFront: toolBar)
         
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""

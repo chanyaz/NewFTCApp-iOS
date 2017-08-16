@@ -28,7 +28,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     var subType: ContentSubType = .None
     
     private var detailDisplayed = false
-    fileprivate lazy var webView: WKWebView? = nil
+    public lazy var webView: WKWebView? = nil
     fileprivate let contentAPI = ContentFetch()
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     

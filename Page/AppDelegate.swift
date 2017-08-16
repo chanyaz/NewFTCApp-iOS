@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-
+        
         // MARK: - Don't Set the default background overall color. It will affect the action sheet
         // window?.tintColor = UIColor(hex: Color.Content.background)
         
@@ -249,19 +249,16 @@ extension AppDelegate: WXApiDelegate {
                                             guard let data = data , error == nil else { return }
                                             print ("Get Wechat Login Data \(data)")
                                             if let JSONString = String(data: data, encoding: .utf8) {
-                                                print ("json strying is \(JSONString)")
-//                                                if let rootViewController = self.window?.rootViewController as? ViewController {
-//                                                    let jsCode = "socialLogin('wechat', '\(JSONString)');"
-//                                                    print(jsCode)
-//                                                    rootViewController.webView.evaluateJavaScript(jsCode) { (result, error) in
-//                                                        if result != nil {
-//                                                            print (result ?? "unprintable JS result")
-//                                                        }
-//                                                        if error != nil {
-//                                                            print (error ?? "unprintable error")
-//                                                        }
-//                                                    }
-//                                                }
+                                                print ("json string is \(JSONString)")
+                                                if let topViewController = UIApplication.topViewController() as? ContentItemViewController {
+                                                    let jsCode = "socialLogin('wechat', '\(JSONString)');"
+                                                    print(jsCode)
+                                                    topViewController.webView?.evaluateJavaScript(jsCode) { (result, error) in
+                                                        if result != nil {
+                                                            print (result ?? "unprintable JS result")
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }

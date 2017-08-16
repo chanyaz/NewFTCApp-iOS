@@ -35,7 +35,15 @@ func createResponseCellData(data:Data) -> CellData? {
                         }
                     
                     case "Image":
-                        print("This is a Image")
+                        if let url = oneAnswerDic["Url"], let urlStr = url as? String {
+                           
+                            let robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
+                            robotCellData = CellData(whoSays: .robot, saysWhat:robotSaysWhat)
+                          
+                            print("This is a Image")
+                            print(urlStr)
+                        }
+                    
                     case "Card":
                         print("This is a Card")
                     

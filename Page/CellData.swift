@@ -44,12 +44,13 @@ struct SaysWhat {
     }
     
     //图文类型构造器
-    init(saysType type: Infotype, saysTitle title: String, saysDescription description: String, saysCover coverUrl: String) {
+    init(saysType type: Infotype, saysTitle title: String, saysDescription description: String, saysCover coverUrl: String, saysUrl cardUrl:String) {
         self.type = type
         if(type == .card) {
             self.title = title
             self.description = description
             self.coverUrl = coverUrl
+            self.url = cardUrl
         }
     }
     
@@ -124,104 +125,136 @@ struct CellData {
         self.whoSays = who
         self.saysWhat = say
         
-       
+        self.saysType = say.type
         
         if say.type == .text { // 根据对话文字长短得到图形实际尺寸
             print("hereherehere")
-            let font = UIFont.systemFont(ofSize:18)
-            self.normalFont = font
-            let atts = [NSFontAttributeName: font]
-            let saysWhatNSString = say.content as NSString
-            
-            let size = saysWhatNSString.boundingRect(
-                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
-                options: .usesLineFragmentOrigin,
-                attributes: atts,
-                context: nil)
-            let computeWidth = size.size.width //修正计算错误
-               /* QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
-                * 已解决：因为此处的font大小和实际font大小不同，只有为UILabelView设置属性font为一样的UIFont对象，才能保证大小合适
-                * 另说明：此处当文字多余一行时，自动就是宽度固定为最大宽度，高度自适应
-                */
-            let computeHeight = size.size.height
-            
-            
-            self.bubbleImageWidth = computeWidth + bubbleImageInsets.left + bubbleImageInsets.right
-            self.bubbleImageHeight = computeHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
-            
-            self.saysWhatWidth = computeWidth
-            self.saysWhatHeight = computeHeight
-            
-        } else if say.type == .image { //缩放图片大小得到实际图形尺寸
-    
-             self.saysImage = UIImage(named: say.url)!
-             let saysImageWidth = self.saysImage.size.width
-             let saysImageHeight = self.saysImage.size.height
-             let saysRwh = saysImageWidth / saysImageHeight
-            
-             var adjustImageWidth = CGFloat()
-             var adjustImageHeight = CGFloat()
-            
-             let standardRwh = maxImageWidth/maxImageHeight
-             if saysRwh > standardRwh {
-                adjustImageWidth = maxImageWidth
-                adjustImageHeight = adjustImageWidth * saysImageHeight / saysImageWidth
-             } else {
-                adjustImageHeight = maxImageHeight
-                adjustImageWidth = adjustImageHeight * saysImageWidth / saysImageHeight
-             }
-            
-             self.saysWhatWidth = adjustImageWidth
-             self.saysWhatHeight = adjustImageHeight
-             self.bubbleImageWidth = adjustImageWidth + bubbleImageInsets.left + bubbleImageInsets.right
-             self.bubbleImageHeight = adjustImageHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
-            
+          
+            self.buildTextCellData(textContent: say.content)
+        } else if say.type == .image { //缩放图片大小得到实际图形尺寸,并得到UIImage对象self.saysImage
+            //let imageUrlStr = "http://ts1.mm.bing.net/th?id=OIP.UkcKcCStZUP_60o1QYH06wEoDS&pid=15.1"
+            self.buildImageCellData(imageUrl: say.url)
             
         } else if say.type == .card {
-            //处理title
-            let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
-            self.titleFont = titleFont
-            let atts = [NSFontAttributeName: titleFont]
-            let titleNSString = say.title as NSString
-            let size = titleNSString.boundingRect(
-                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
-                options: .usesLineFragmentOrigin,
-                attributes: atts,
-                context: nil)
-            self.titleWidth = 240
-            self.titleHeight = size.size.height
-            
-            
-            //处理cover
-            self.coverImage = UIImage(named: say.coverUrl)!
-           
-            
-            //处理description
-            let descriptionFont = UIFont.systemFont(ofSize:18)
-            self.descriptionFont = descriptionFont
-            let descriptionAtts = [NSFontAttributeName: descriptionFont]
-            let descriptionNSString = say.description as NSString
-            
-            let descriptionSize = descriptionNSString.boundingRect(
-                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
-                options: .usesLineFragmentOrigin,
-                attributes: descriptionAtts,
-                context: nil)
-            self.descriptionWidth = 240
-            self.descriptionHeight = descriptionSize.size.height
-            self.saysWhatWidth = self.coverWidth
-            self.saysWhatHeight = self.titleHeight + self.coverHeight + self.descriptionHeight
-            self.bubbleImageWidth = self.saysWhatWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
-            self.bubbleImageHeight = self.saysWhatHeight + self.bubbleImageInsets.top + self.bubbleImageInsets.bottom
+            self.buildCardCellData(title: say.title, coverUrl:say.coverUrl, description:say.description)
         }
-        
-       
 
     }
     //构造器2
     init(){
         
     }
+    
+    //创建Text类型数据的可变方法
+    mutating func buildTextCellData(textContent text: String) {//wycNOTE: mutating func:可以在mutating方法中修改结构体属性
+        let font = UIFont.systemFont(ofSize:18)
+        self.normalFont = font
+        let atts = [NSFontAttributeName: font]
+        let saysWhatNSString = text as NSString
+        
+        let size = saysWhatNSString.boundingRect(
+            with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
+            options: .usesLineFragmentOrigin,
+            attributes: atts,
+            context: nil)
+        let computeWidth = size.size.width //修正计算错误
+        /* QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
+         * 已解决：因为此处的font大小和实际font大小不同，只有为UILabelView设置属性font为一样的UIFont对象，才能保证大小合适
+         * 另说明：此处当文字多余一行时，自动就是宽度固定为最大宽度，高度自适应
+         */
+        let computeHeight = size.size.height
+        
+        
+        self.bubbleImageWidth = computeWidth + bubbleImageInsets.left + bubbleImageInsets.right
+        self.bubbleImageHeight = computeHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
+        
+        self.saysWhatWidth = computeWidth
+        self.saysWhatHeight = computeHeight
+    }
+    
+    //创建Image类型数据的可变方法
+    mutating func buildImageCellData(imageUrl imageUrlStr: String) {
+        print(imageUrlStr)
+        let fm = FileManager.default
+        let path = "\(Bundle.main.resourcePath!)/\(imageUrlStr)"
+        print(path)
+        var myUIImage: UIImage? = nil
+        if (fm.fileExists(atPath: path)) { //本地资源目录中有该文件
+            myUIImage = UIImage(named: imageUrlStr)
+        }
+        else if let imageUrl = NSURL(string: imageUrlStr),let imageData = NSData(contentsOf: imageUrl as URL) { //使用绝对路径寻找该文件
+            //let imageUrl = NSURL(string: imageUrlStr)!
+            //let imageData = NSData(contentsOf: imageUrl as URL)!
+            myUIImage = UIImage(data: imageData as Data)
+        }
+        
+        if let realUIImage = myUIImage { //如果成功获取了图片
+            self.saysImage = realUIImage
+            let saysImageWidth = self.saysImage.size.width
+            let saysImageHeight = self.saysImage.size.height
+            let saysRwh = saysImageWidth / saysImageHeight
+            
+            var adjustImageWidth = CGFloat()
+            var adjustImageHeight = CGFloat()
+            
+            let standardRwh = maxImageWidth/maxImageHeight
+            if saysRwh > standardRwh {
+                adjustImageWidth = maxImageWidth
+                adjustImageHeight = adjustImageWidth * saysImageHeight / saysImageWidth
+            } else {
+                adjustImageHeight = maxImageHeight
+                adjustImageWidth = adjustImageHeight * saysImageWidth / saysImageHeight
+            }
+            
+            self.saysWhatWidth = adjustImageWidth
+            self.saysWhatHeight = adjustImageHeight
+            self.bubbleImageWidth = adjustImageWidth + bubbleImageInsets.left + bubbleImageInsets.right
+            self.bubbleImageHeight = adjustImageHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
+        } else { //如果没成功获取图片，则改为text类型回复
+            self.saysType = .text
+            self.buildTextCellData(textContent: "Sorry，没能成功得到图片")
+        }
+    }
+    
+    //创建Card类型数据的可变方法
+    mutating func buildCardCellData(title titleStr: String, coverUrl coverUrlStr:String, description descriptionStr:String) {
+        //处理title
+        let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
+        self.titleFont = titleFont
+        let atts = [NSFontAttributeName: titleFont]
+        let titleNSString = titleStr as NSString
+        let size = titleNSString.boundingRect(
+            with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
+            options: .usesLineFragmentOrigin,
+            attributes: atts,
+            context: nil)
+        self.titleWidth = 240
+        self.titleHeight = size.size.height
+        
+        
+        //处理cover
+        self.coverImage = UIImage(named: coverUrlStr)!
+        
+        
+        //处理description
+        let descriptionFont = UIFont.systemFont(ofSize:18)
+        self.descriptionFont = descriptionFont
+        let descriptionAtts = [NSFontAttributeName: descriptionFont]
+        let descriptionNSString = descriptionStr as NSString
+        
+        let descriptionSize = descriptionNSString.boundingRect(
+            with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
+            options: .usesLineFragmentOrigin,
+            attributes: descriptionAtts,
+            context: nil)
+        self.descriptionWidth = 240
+        self.descriptionHeight = descriptionSize.size.height
+        self.saysWhatWidth = self.coverWidth
+        self.saysWhatHeight = self.titleHeight + self.coverHeight + self.descriptionHeight
+        self.bubbleImageWidth = self.saysWhatWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
+        self.bubbleImageHeight = self.saysWhatHeight + self.bubbleImageInsets.top + self.bubbleImageInsets.bottom
+    }
+
     
 }
 

@@ -99,7 +99,7 @@ class OneTalkCell: UITableViewCell {
         
         // 显示对话内容 // NOTE:内容在bubble上方才能不被bubble遮挡
         
-        if self.cellData.saysWhat.type == .text {
+        if self.cellData.saysType == .text {
             let saysContentView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
             saysContentView.numberOfLines = 0
             saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -108,14 +108,14 @@ class OneTalkCell: UITableViewCell {
             saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
             
-        } else if self.cellData.saysWhat.type == .image {
+        } else if self.cellData.saysType == .image {
             let saysContentView = UIImageView(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
             saysContentView.image = self.cellData.saysImage
             print(self.cellData.saysImage)
             saysContentView.contentMode = .scaleToFill
             saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
-        } else if self.cellData.saysWhat.type == .card {
+        } else if self.cellData.saysType == .card {
             let coverY = saysWhatY + self.cellData.titleHeight
             let descriptionY = coverY + self.cellData.coverHeight
             

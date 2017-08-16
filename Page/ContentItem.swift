@@ -12,7 +12,7 @@ class ContentItem{
     var image: String
     var headline: String
     var lead: String
-    let type: String
+    var type: String
     
     var preferSponsorImage: String
     var tag: String
@@ -43,6 +43,7 @@ class ContentItem{
     var relatedVideos: [[String: Any]]?
     var audioFileUrl: String?
     
+
     
     init (id: String,
           image: String,

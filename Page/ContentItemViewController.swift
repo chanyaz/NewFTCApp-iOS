@@ -10,11 +10,23 @@ import UIKit
 import UIKit.NSTextAttachment
 import WebKit
 
+enum ContentSubType {
+    case UserComments
+    case None
+}
+
 class ContentItemViewController: UIViewController, UINavigationControllerDelegate {
     var dataObject: ContentItem?
     var pageTitle: String = ""
     var themeColor: String?
     var currentLanguageIndex: Int?
+    
+    // MARK: show in full screen
+    var isFullScreen = false
+    
+    // MARK: sub type such as user comments
+    var subType: ContentSubType = .None
+    
     private var detailDisplayed = false
     fileprivate lazy var webView: WKWebView? = nil
     fileprivate let contentAPI = ContentFetch()
@@ -29,8 +41,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
                 //additionalSafeAreaInsets = UIEdgeInsetsMake(44, 0, 44, 0)
-//                edgesForExtendedLayout = UIRectEdge.all
-//                extendedLayoutIncludesOpaqueBars = true
+                //                edgesForExtendedLayout = UIRectEdge.all
+                //                extendedLayoutIncludesOpaqueBars = true
                 // MARK: add as a childviewcontroller
                 controller.showCloseButton = false
                 addChildViewController(controller)
@@ -43,14 +55,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 controller.didMove(toParentViewController: self)
             }
         } else {
-//            self.navigationController?.isNavigationBarHidden = false
-//            self.tabBarController?.tabBar.isHidden = false
+            //            self.navigationController?.isNavigationBarHidden = false
+            //            self.tabBarController?.tabBar.isHidden = false
             
             self.view.backgroundColor = UIColor(hex: Color.Content.background)
-//            self.edgesForExtendedLayout = []
-//            self.extendedLayoutIncludesOpaqueBars = false
+            //            self.edgesForExtendedLayout = []
+            //            self.extendedLayoutIncludesOpaqueBars = false
             
-
+            
             let config = WKWebViewConfiguration()
             
             // MARK: Tell the web view what kind of connection the user is currently on
@@ -68,15 +80,22 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             config.allowsInlineMediaPlayback = true
             
             // MARK: Add the webview as a subview of containerView
-            self.webView = WKWebView(frame: self.containerView.bounds, configuration: config)
-            self.containerView.addSubview(self.webView!)
-            self.containerView.clipsToBounds = true
+            if isFullScreen == false {
+                webView = WKWebView(frame: containerView.bounds, configuration: config)
+                containerView.addSubview(webView!)
+                containerView.clipsToBounds = true
+            } else {
+                webView = WKWebView(frame: self.view.bounds, configuration: config)
+                view = webView
+                view.clipsToBounds = true
+            }
+            
             self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             
             
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
-//            webView = WKWebView(frame: self.view.bounds, configuration: config)
-//            self.view = self.webView
+            //            webView = WKWebView(frame: self.view.bounds, configuration: config)
+            //            self.view = self.webView
             webView?.isOpaque = false
             webView?.backgroundColor = UIColor.clear
             webView?.scrollView.backgroundColor = UIColor.clear

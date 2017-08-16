@@ -123,7 +123,11 @@
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kpf-ts-v6Y"/>
-                                    <barButtonItem systemItem="compose" id="x2W-Ox-VaF"/>
+                                    <barButtonItem systemItem="compose" id="x2W-Ox-VaF">
+                                        <connections>
+                                            <action selector="launchComment:" destination="naC-T6-XIm" id="z50-yh-cVk"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="z2W-UJ-syG"/>
                                     <barButtonItem systemItem="action" id="QUo-79-Rea">
                                         <connections>

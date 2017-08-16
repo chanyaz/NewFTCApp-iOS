@@ -49,8 +49,10 @@ class LineCell: UICollectionViewCell {
             print ("Paid Post id is \(adid), url is \(url.absoluteString)")
             Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                 DispatchQueue.main.async { () -> Void in
-                    guard let data = data , error == nil, let adCode = String(data: data, encoding: .utf8) else {
-                        print ("Paid Post ad Fail: Request Ad From \(url)")
+                    //print ("get paid post data of \(data)")
+                    // MARK: - Dolphin uses GBK as encoding
+                    guard let data = data, error == nil, let adCode = String(data: data, encoding: Download.encodingGBK()) else {
+                        print ("Paid Post ad Fail: Request Ad From \(url). Error: \(String(describing: error))")
                         let adModel = AdModel(
                             imageString: nil,
                             link: nil,

@@ -24,7 +24,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     }
     
     @IBAction func launchComment(_ sender: Any) {
-        print ("Will Show User Comments")
         let item = contentPageData[currentPageIndex]
         let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as! ContentItemViewController
         //print(dataViewController.view.frame)

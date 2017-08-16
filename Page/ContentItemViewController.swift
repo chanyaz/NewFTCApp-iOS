@@ -90,15 +90,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 view.clipsToBounds = true
             }
             
-            self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             
             
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
             //            webView = WKWebView(frame: self.view.bounds, configuration: config)
             //            self.view = self.webView
-            webView?.isOpaque = false
-            webView?.backgroundColor = UIColor.clear
-            webView?.scrollView.backgroundColor = UIColor.clear
+            let webViewBG = UIColor(hex: Color.Content.background)
+            webView?.isOpaque = true
+            webView?.backgroundColor = webViewBG
+            webView?.scrollView.backgroundColor = webViewBG
             
             // MARK: This makes the web view scroll like native
             webView?.scrollView.delegate = self
@@ -113,10 +114,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 name: Notification.Name(rawValue: Event.languagePreferenceChanged),
                 object: nil
             )
-            getDetailInfo()
+            // MARK: If the sub type is a user comment, render web view directly
+            if subType == .UserComments {
+                renderWebView()
+            } else {
+                getDetailInfo()
+            }
             navigationController?.delegate = self
-            
-            
         }
     }
     
@@ -171,7 +175,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             //MARK: if it is a story, get the API
             let urlString = APIs.get(id, type: "story")
             view.addSubview(activityIndicator)
-            //activityIndicator.frame = view.bounds
             activityIndicator.center = self.view.center
             activityIndicator.startAnimating()
             
@@ -412,18 +415,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 let urlString = APIs.getUrl(id, type: "story")
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
-                    let lead = dataObject?.lead ?? ""
+                    let lead: String
                     let tags = dataObject?.tag ?? ""
-                    let tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+                    let tag: String
                     let imageHTML:String
-                    if let image = dataObject?.image {
-                        imageHTML = "<div class=\"story-image image\" style=\"margin-bottom:0;\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
-                    } else {
-                        imageHTML = ""
-                    }
+                    
                     
                     // MARK: story byline
-                    let byline = dataObject?.chineseByline ?? ""
+                    let byline: String
                     var relatedStories = ""
                     if let relatedStoriesData = dataObject?.relatedStories {
                         for (index, story) in relatedStoriesData.enumerated() {
@@ -446,10 +445,39 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     
                     let headlineBody = getHeadlineBody(dataObject)
                     let headline = headlineBody.headline
-                    let finalBody = headlineBody.finalBody
                     
+                    let finalBody: String
                     // MARK: Story Time
-                    let timeStamp = dataObject?.publishTime ?? ""
+                    let timeStamp: String
+                    let userCommentsOrder: String
+                    let styleContainerStyle: String
+                    if subType == .UserComments {
+                        finalBody = ""
+                        byline = ""
+                        relatedStories = ""
+                        relatedTopics = ""
+                        tag = ""
+                        imageHTML = ""
+                        timeStamp = ""
+                        lead = ""
+                        navigationItem.title = headline
+                        userCommentsOrder = "storyall1"
+                        styleContainerStyle = " style=\"display:none;\""
+                    } else {
+                        finalBody = headlineBody.finalBody
+                        byline = dataObject?.chineseByline ?? ""
+                        tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+                        if let image = dataObject?.image {
+                            imageHTML = "<div class=\"story-image image\" style=\"margin-bottom:0;\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+                        } else {
+                            imageHTML = ""
+                        }
+                        timeStamp = dataObject?.publishTime ?? ""
+                        lead = dataObject?.lead ?? ""
+                        userCommentsOrder = "story"
+                        styleContainerStyle = ""
+                    }
+                    
                     if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
@@ -463,6 +491,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "{story-image}", with: imageHTML)
                                 .replacingOccurrences(of: "{related-stories}", with: relatedStories)
                                 .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
+                                .replacingOccurrences(of: "{comments-order}", with: userCommentsOrder)
+                                    .replacingOccurrences(of: "{story-container-style}", with: styleContainerStyle)
+                            
+                            
+                            
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             self.webView?.load(request)

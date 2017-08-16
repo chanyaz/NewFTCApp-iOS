@@ -62,6 +62,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 forMainFrameOnly: true
             )
             contentController.addUserScript(userScript)
+            contentController.add(self, name: "alert")
             config.userContentController = contentController
             
             config.allowsInlineMediaPlayback = true
@@ -397,7 +398,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     let tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
                     let imageHTML:String
                     if let image = dataObject?.image {
-                        imageHTML = "<div class=\"story-image image\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+                        imageHTML = "<div class=\"story-image image\" style=\"margin-bottom:0;\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
                     } else {
                         imageHTML = ""
                     }
@@ -632,6 +633,19 @@ extension ContentItemViewController: WKNavigationDelegate {
                 decisionHandler(.cancel)
             }  else {
                 decisionHandler(.allow)
+            }
+        }
+    }
+}
+
+// MARK: Handle Message from Web View
+extension ContentItemViewController: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let body = message.body as? [String: String] {
+            if message.name == "alert" {
+                if let title = body["title"], let lead = body["message"] {
+                    Alert.present(title, message: lead)
+                }
             }
         }
     }

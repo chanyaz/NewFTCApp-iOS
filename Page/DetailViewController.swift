@@ -84,7 +84,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         self.view.addSubview(self.pageViewController!.view)
         self.pageViewController!.didMove(toParentViewController: self)
         
-        toolBar.layer.zPosition = 1
+        //toolBar.layer.zPosition = 1
+        toolBar.superview?.bringSubview(toFront: toolBar)
         
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""

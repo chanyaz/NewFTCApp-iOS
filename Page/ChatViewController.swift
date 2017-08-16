@@ -8,12 +8,12 @@
 
 import UIKit
 import Foundation
-
+import CoreGraphics
 //var globalTalkData = Array(repeating: CellData(), count: 1)
 
 class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    var keyboardNeedLayout:Bool = true
+    //var keyboardNeedLayout:Bool = true
     
     // 一些实验数据
     let textSaysWhat = SaysWhat(saysType: .text, saysContent: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?")
@@ -86,29 +86,38 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("show")
         
         if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
-            let keyboardFrame = value.cgRectValue
+            let keyboardBounds = value.cgRectValue
+            let keyboardFrame = self.view.convert(keyboardBounds, to: nil)
+            
             
             print(keyboardFrame.height)
             
-            let intersection = self.view.frame.intersection(keyboardFrame) // 求当前view的frame与keyboardFrame的交集
-            let deltaY = intersection.height
-             print(deltaY)
+            //let intersection = self.view.frame.intersection(keyboardFrame) // 求当前view的frame与keyboardFrame的交集
+            //let deltaY = intersection.height
+            let deltaY = keyboardBounds.size.height
             
-            if keyboardNeedLayout {
+             print(deltaY)
+            let animation:(() -> Void) = {
+                self.view.transform = CGAffineTransform(translationX: 0,y: -deltaY)
+                //self.keyboardNeedLayout = false
+            }
+            //if keyboardNeedLayout {
                 UIView.animate(
                     withDuration: duration,
                     delay: 0.0,
                     options: UIViewAnimationOptions(rawValue: curve),
+                    /*
                     animations: { _ in
                         // FIXME: There is an spooky black bar above keyboard whose height is 64. Now my temporary solution is cutting of the bar forcibly
-                        self.view.frame = CGRect(x: 0, y: -deltaY + 64, width: self.view.bounds.width, height: self.view.bounds.height)
+                        self.view.frame = CGRect(x: 0, y: -deltaY, width: self.view.bounds.width, height: self.view.bounds.height)
                         self.keyboardNeedLayout = false
                         self.view.layoutIfNeeded()
-                        
-                },
+                    },
+                     */
+                    animations:animation,
                     completion: nil
                 )
-            }
+            //}
             
             
             
@@ -117,26 +126,35 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     func keyboardWillHide(_ notification: NSNotification) {
         print("hide")
-        if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
-            let keyboardFrame = value.cgRectValue
-            
-            print(keyboardFrame.height)
-            let intersection = self.view.frame.intersection(keyboardFrame) // 求当前view的frame与keyboardFrame的交集
-            let deltaY = intersection.height
+        if let userInfo = notification.userInfo, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
+            //let keyboardFrame = value.cgRectValue
+            //let keyboardBounds = value.cgRectValue
+            //let keyboardFrame = self.view.convert(keyboardBounds, to: nil)
+            //print(keyboardFrame.height)
+            //let intersection = self.view.frame.intersection(keyboardFrame) // 求当前view的frame与keyboardFrame的交集
+            //let deltaY = intersection.height
+            //let deltaY = keyboardBounds.size.height
   
-            print(deltaY)
+            //print(deltaY)
+            let animation:(() -> Void)={
+                self.view.transform = CGAffineTransform.identity
+                //self.keyboardNeedLayout = true
+            }
             UIView.animate(
                 withDuration: duration,
                 delay: 0.0,
                 options: UIViewAnimationOptions(rawValue: curve),
+                /*
                 animations: { _ in
                     
-                    self.view.frame = CGRect(x: 0, y: deltaY+64, width: self.view.bounds.width, height: self.view.bounds.height)
+                    self.view.frame = CGRect(x: 0, y: deltaY, width: self.view.bounds.width, height: self.view.bounds.height)
   
                     self.keyboardNeedLayout = true
                     self.view.layoutIfNeeded()
                     
-            },
+                },
+                 */
+                animations:animation,
                 completion: nil
             )
             

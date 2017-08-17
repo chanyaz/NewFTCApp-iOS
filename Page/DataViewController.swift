@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import WebKit
 
-class DataViewController: UICollectionViewController {
+class DataViewController: UICollectionViewController, UINavigationControllerDelegate {
     var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
@@ -28,6 +29,8 @@ class DataViewController: UICollectionViewController {
     // MARK: - Once The dataObject is changed, UI should be updated
     var dataObject = [String: String]()
     var pageTitle: String = ""
+    
+    fileprivate lazy var webView: WKWebView? = nil
     
     //    var pageContent = [String: Any]() {
     //        didSet {
@@ -168,11 +171,12 @@ class DataViewController: UICollectionViewController {
         
     }
     
+
     
     private func requestNewContent() {
         // MARK: - Request Data from Server
         if let api = dataObject["api"] {
-            // TODO: Display a spinner
+            // MARK: Display a spinner
             getAPI(api)
         } else {
             //TODO: Show a warning if there's no api to get
@@ -224,51 +228,111 @@ class DataViewController: UICollectionViewController {
         
         navigationController?.title = pageTitle
         
-        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         
-        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.minimumInteritemSpacing = 0
-            flowLayout.minimumLineSpacing = 0
-            //FIXME: Why does this break scrolling?
-            //flowLayout.sectionHeadersPinToVisibleBounds = true
-            let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-            let availableWidth = view.frame.width - paddingSpace
-            //print("availableWidth : \(availableWidth)")
+        // MARK: - Request Data from Server
+        if dataObject["api"] != nil {
+            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             
-            if horizontalClass != .regular || verticalCass != .regular {
-                if #available(iOS 10.0, *) {
-                    flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-                } else {
-                    flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+            if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+                flowLayout.minimumInteritemSpacing = 0
+                flowLayout.minimumLineSpacing = 0
+                //FIXME: Why does this break scrolling?
+                //flowLayout.sectionHeadersPinToVisibleBounds = true
+                let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+                let availableWidth = view.frame.width - paddingSpace
+                //print("availableWidth : \(availableWidth)")
+                
+                if horizontalClass != .regular || verticalCass != .regular {
+                    if #available(iOS 10.0, *) {
+                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                    } else {
+                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+                    }
+                    cellWidth = availableWidth
                 }
-                cellWidth = availableWidth
+            }
+            
+            collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
+            collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
+            collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
+            collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
+            collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
+            collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
+            collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
+            
+            // MARK: Cell for Regular Size
+            collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
+            collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
+            collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
+            collectionView?.register(UINib.init(nibName: "HotArticleCellRegular", bundle: nil), forCellWithReuseIdentifier: "HotArticleCellRegular")
+            // MARK: - Update Styles
+            view.backgroundColor = UIColor(hex: Color.Content.border)
+            collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
+            if #available(iOS 10.0, *) {
+                refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
+                collectionView?.refreshControl = refreshControl
+            }
+            
+            // MARK: - Get Content Data for the Page
+            requestNewContent()
+        } else if let urlString = dataObject["url"] {
+            //TODO: Show a warning if there's no api to get
+            print("No API for this channel. Load \(urlString)")
+            
+            self.view.backgroundColor = UIColor(hex: Color.Content.background)
+            //            self.edgesForExtendedLayout = []
+            //            self.extendedLayoutIncludesOpaqueBars = false
+            
+            
+            let config = WKWebViewConfiguration()
+            
+            // MARK: Tell the web view what kind of connection the user is currently on
+            let contentController = WKUserContentController();
+            let jsCode = "window.gConnectionType = '\(Connection.current())';"
+            let userScript = WKUserScript(
+                source: jsCode,
+                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                forMainFrameOnly: true
+            )
+            contentController.addUserScript(userScript)
+            contentController.add(self, name: "alert")
+            config.userContentController = contentController
+            
+            config.allowsInlineMediaPlayback = true
+            
+            // MARK: Add the webview as a subview of containerView
+            webView = WKWebView(frame: self.view.bounds, configuration: config)
+            view = webView
+            view.clipsToBounds = true
+            
+            
+            webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            
+            // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
+            //            webView = WKWebView(frame: self.view.bounds, configuration: config)
+            //            self.view = self.webView
+            let webViewBG = UIColor(hex: Color.Content.background)
+            webView?.isOpaque = true
+            webView?.backgroundColor = webViewBG
+            webView?.scrollView.backgroundColor = webViewBG
+            
+            // MARK: This makes the web view scroll like native
+            webView?.scrollView.delegate = self
+            webView?.navigationDelegate = self
+            webView?.clipsToBounds = true
+            webView?.scrollView.bounces = false
+            
+            if let url = URL(string: urlString) {
+                print ("Open url: \(urlString)")
+                let request = URLRequest(url: url)
+                webView?.load(request)
             }
         }
         
-        collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
-        collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
-        collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
-        collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
-        collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
-        collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
-        collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
         
-        // MARK: Cell for Regular Size
-        collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
-        collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
-        collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
-        collectionView?.register(UINib.init(nibName: "HotArticleCellRegular", bundle: nil), forCellWithReuseIdentifier: "HotArticleCellRegular")
-        // MARK: - Update Styles
-        view.backgroundColor = UIColor(hex: Color.Content.border)
-        collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
-        if #available(iOS 10.0, *) {
-            refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
-            collectionView?.refreshControl = refreshControl
-        }
         
-        // MARK: - Get Content Data for the Page
-        requestNewContent()
         
         
         NotificationCenter.default.addObserver(
@@ -597,7 +661,7 @@ class DataViewController: UICollectionViewController {
                 //MARK: if it is a story, video or other types of HTML based content, push the detailViewController
                 if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
                     var pageData1 = [ContentItem]()
-//                    var pageData2 = [ContentItem]()
+                    //                    var pageData2 = [ContentItem]()
                     var currentPageIndex = 0
                     var pageIndexCount = 0
                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
@@ -617,21 +681,21 @@ class DataViewController: UICollectionViewController {
                     
                     
                     /* MARK: - Reorder the page
-                    for (sectionIndex, section) in fetches.fetchResults.enumerated() {
-                        for (itemIndex, item) in section.items.enumerated() {
-                            if ["story", "video", "interactive", "photo"].contains(item.type) {
-                                if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
-                                    pageData1.append(item)
-                                } else {
-                                    pageData2.append(item)
-                                }
-                                
-                            }
-                        }
-                    }
-                    
-                    let pageDataRaw = pageData1 //+ pageData2
-                    */
+                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
+                     for (itemIndex, item) in section.items.enumerated() {
+                     if ["story", "video", "interactive", "photo"].contains(item.type) {
+                     if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
+                     pageData1.append(item)
+                     } else {
+                     pageData2.append(item)
+                     }
+                     
+                     }
+                     }
+                     }
+                     
+                     let pageDataRaw = pageData1 //+ pageData2
+                     */
                     
                     
                     let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
@@ -710,6 +774,50 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
     
     
 }
+
+
+
+// MARK: Handle links here
+extension DataViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: (@escaping (WKNavigationActionPolicy) -> Void)) {
+        if let url = navigationAction.request.url {
+            let urlString = url.absoluteString
+            if navigationAction.navigationType == .linkActivated{
+                if urlString.range(of: "mailto:") != nil{
+                    UIApplication.shared.openURL(url)
+                } else {
+                    openLink(url)
+                }
+                decisionHandler(.cancel)
+            }  else {
+                decisionHandler(.allow)
+            }
+        }
+    }
+}
+
+// MARK: Handle Message from Web View
+extension DataViewController: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let body = message.body as? [String: String] {
+            if message.name == "alert" {
+                if let title = body["title"], let lead = body["message"] {
+                    Alert.present(title, message: lead)
+                }
+            }
+        }
+    }
+}
+
+
+extension DataViewController {
+    // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
+    // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
+    }
+}
+
 
 
 // MARK: - Private

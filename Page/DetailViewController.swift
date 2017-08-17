@@ -25,15 +25,15 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     @IBAction func launchComment(_ sender: Any) {
         let item = contentPageData[currentPageIndex]
-        let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as! ContentItemViewController
-        //print(dataViewController.view.frame)
-        contentItemViewController.dataObject = item
-        contentItemViewController.pageTitle = item.headline
-        contentItemViewController.isFullScreen = true
-        contentItemViewController.subType = .UserComments
-        //contentItemViewController.themeColor = self.pageThemeColor
-        navigationController?.pushViewController(contentItemViewController, animated: true)
-        
+        if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+            //print(dataViewController.view.frame)
+            contentItemViewController.dataObject = item
+            contentItemViewController.pageTitle = item.headline
+            contentItemViewController.isFullScreen = true
+            contentItemViewController.subType = .UserComments
+            //contentItemViewController.themeColor = self.pageThemeColor
+            navigationController?.pushViewController(contentItemViewController, animated: true)
+        }
     }
     
     var isFullScreenAdOn = false

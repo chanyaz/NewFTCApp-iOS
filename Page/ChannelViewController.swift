@@ -83,6 +83,13 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             updateBackBarButton(for: 0)
         }
         
+        // MARK: - Show Search Button is Required
+        let searchIcon = UIImage(named: "Audio")
+        let searchButton = UIBarButtonItem(image: searchIcon, style: .plain, target: self, action: #selector(showSearch))
+        self.navigationItem.rightBarButtonItem = searchButton
+        
+        
+        
         //MARK: - if there's only one channel, on need to show navigation scroller
         if pageData.count > 1 {
             // MARK - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
@@ -181,6 +188,10 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         self.isUserPanningEnd = isUserPanningEnd
         currentChannelIndex = index
         updateBackBarButton(for: index)
+    }
+    
+    func showSearch() {
+        print ("should show search field")
     }
     
 }

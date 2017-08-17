@@ -21,6 +21,7 @@ struct AppNavigation {
             "navColor": "#333333",
             "navBackGroundColor": "#f7e9d8",
             "isNavLightContent": false,
+            "navRightItem": "Search",
             "Channels": [
                 ["title": "首页",
                  "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",

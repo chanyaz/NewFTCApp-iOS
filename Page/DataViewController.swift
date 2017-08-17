@@ -171,6 +171,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
     }
     
+
     
     private func requestNewContent() {
         // MARK: - Request Data from Server

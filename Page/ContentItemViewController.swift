@@ -115,7 +115,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 object: nil
             )
             // MARK: If the sub type is a user comment, render web view directly
-            if subType == .UserComments {
+            if subType == .UserComments || dataObject?.type == "webpage" {
                 renderWebView()
             } else {
                 getDetailInfo()
@@ -492,7 +492,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "{related-stories}", with: relatedStories)
                                 .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
                                 .replacingOccurrences(of: "{comments-order}", with: userCommentsOrder)
-                                    .replacingOccurrences(of: "{story-container-style}", with: styleContainerStyle)
+                                .replacingOccurrences(of: "{story-container-style}", with: styleContainerStyle)
                             
                             
                             
@@ -505,14 +505,39 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     }
                 }
             }
+        } else if dataObject?.type == "register"{
+            if let adHTMLPath = Bundle.main.path(forResource: "register", ofType: "html"){
+                let url = URL(string: APIs.getUrl("register", type: "register"))
+                do {
+                    let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let storyHTML = (storyTemplate as String)
+                    self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                } catch {
+                    print ("register page is not loaded correctly")
+                }
+            }
         } else {
             // MARK: - If it is other types of content such video and interacrtive features
             if let id = dataObject?.id, let type = dataObject?.type {
-                let urlString = APIs.getUrl(id, type: type)
+                let urlString: String
+                if let customLink = dataObject?.customLink, customLink != "" {
+                    urlString = customLink
+                } else {
+                    urlString = APIs.getUrl(id, type: type)
+                }
                 print ("loading \(urlString)")
-                if let url = URL(string: urlString) {
-                    let request = URLRequest(url: url)
-                    webView?.load(request)
+                if var urlComponents = URLComponents(string: urlString) {
+                    let newQuery = APIs.newQueryForWebPage()
+                    if urlComponents.queryItems != nil {
+                        urlComponents.queryItems?.append(newQuery)
+                    } else {
+                        urlComponents.queryItems = [newQuery]
+                    }
+                    if let url = urlComponents.url {
+                        print ("url is now \(url)")
+                        let request = URLRequest(url: url)
+                        webView?.load(request)
+                    }
                 }
             }
         }
@@ -671,7 +696,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
 }
 
-// TODO: Handle all types of links here
+// MARK: Handle links here
 extension ContentItemViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: (@escaping (WKNavigationActionPolicy) -> Void)) {
         if let url = navigationAction.request.url {

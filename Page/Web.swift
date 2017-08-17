@@ -34,29 +34,18 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.tag) {
                     id = contentId
                     type = "tag"
+                } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.other) {
+                    id = contentId
+                    type = "webpage"
                 }
                 if let type = type, type == "tag" {
                     if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
                         if let id = id {
                             dataViewController.dataObject = ["title": id,
                                                              "api": APIs.get(id, type: type),
-                                                             "url":"http://www.ftchinese.com/channel/datanews.html",
-                                                             "screenName":"homepage/datanews"]
-                            //                    dataViewController.contentPageData = [ContentItem(
-                            //                        id: id,
-                            //                        image: "",
-                            //                        headline: "",
-                            //                        lead: "",
-                            //                        type: type,
-                            //                        preferSponsorImage: "",
-                            //                        tag: "",
-                            //                        customLink: "",
-                            //                        timeStamp: 0,
-                            //                        section: 0,
-                            //                        row: 0)]
-                            //dataViewController.dataObject = self.pageData[index]
+                                                             "url":"",
+                                                             "screenName":"tag/\(id)"]
                             dataViewController.pageTitle = id
-                            //dataViewController.themeColor = ""
                             self.navigationController?.pushViewController(dataViewController, animated: true)
                             return
                         }
@@ -65,6 +54,12 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
                     if let id = id,
                         let type = type {
+                        let customLink: String
+                        if type == "webpage" {
+                            customLink = id
+                        } else {
+                            customLink = ""
+                        }
                         detailViewController.contentPageData = [ContentItem(
                             id: id,
                             image: "",
@@ -73,7 +68,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                             type: type,
                             preferSponsorImage: "",
                             tag: "",
-                            customLink: "",
+                            customLink: customLink,
                             timeStamp: 0,
                             section: 0,
                             row: 0)]
@@ -82,6 +77,28 @@ extension UIViewController: SFSafariViewControllerDelegate{
                     }
                 }
                 self.present(webVC, animated: true, completion: nil)
+            case "ftcregister":
+                print ("register page")
+                let item = ContentItem(
+                    id: "register",
+                    image: "",
+                    headline: "",
+                    lead: "",
+                    type: "register",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0
+                )
+                if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+                    contentItemViewController.dataObject = item
+                    contentItemViewController.pageTitle = item.headline
+                    contentItemViewController.isFullScreen = true
+                    contentItemViewController.subType = .UserComments
+                    navigationController?.pushViewController(contentItemViewController, animated: true)
+                }
             case "weixinlogin":
                 let req = SendAuthReq()
                 req.scope = "snsapi_userinfo"

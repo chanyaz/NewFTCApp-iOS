@@ -67,6 +67,7 @@ struct APIs {
     //private static let base = "https://m.ftimg.net/index.php/jsapi/"
     private static let domain = "https://d37m993yiqhccr.cloudfront.net/"
     private static let publicDomain = "http://app003.ftmailbox.com/"
+    private static let webPageDomain = "http://www.ftchinese.com/"
     // MARK: the number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
     
@@ -91,14 +92,19 @@ struct APIs {
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
         case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
-        case "interactive": urlString = "\(domain)\(type)/\(id)?webview=ftcapp&i=3&002"
+        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&003"
         case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
-        case "photonews", "photo": urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
+        case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
+        case "register": urlString = "\(publicDomain)register/\(id)?webview=ftcapp&i=3"
         default:
             urlString = "\(publicDomain)"
         }
         // print ("open in web view: \(urlString)")
         return urlString
+    }
+    
+    static func newQueryForWebPage() -> URLQueryItem {
+        return URLQueryItem(name: "webview", value: "ftcapp")
     }
 }
 
@@ -177,6 +183,7 @@ struct LinkPattern {
     static let video = ["http://www.ftchinese.com/video/([0-9]+)"]
     static let photonews = ["http://www.ftchinese.com/photonews/([0-9]+)"]
     static let tag = ["http://www.ftchinese.com/tag/([^?]+)"]
+    static let other = ["(http://www.ftchinese.com/.*$)", "(http://www.ftacademy.cn/.*$)"]
 }
 
 struct SupplementContent {

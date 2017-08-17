@@ -68,8 +68,7 @@ struct AppNavigation {
                  "screenName":"homepage/mostpopular"
                 ],
                 ["title": "数据新闻",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/datanews.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/datanews.html",
+                 "url":"http://www.ftchinese.com/channel/datanews.html?webview=ftcapp",
                  "screenName":"homepage/datanews"
                 ],
                 ["title": "FTCC",
@@ -78,6 +77,14 @@ struct AppNavigation {
                  "regularLayout": "",
                  "url":"http://www.ftchinese.com/channel/datanews.html",
                  "screenName":"homepage/ftcc"
+                ],
+                ["title": "会议活动",
+                 "url":"http://www.ftchinese.com/m/events/event.html?webview=ftcapp&001",
+                 "screenName":"homepage/events"
+                ],
+                ["title": "FT研究院",
+                 "url":"http://www.ftchinese.com/m/marketing/intelligence.html?webview=ftcapp&001",
+                 "screenName":"homepage/ftintelligence"
                 ]
             ]
         ],

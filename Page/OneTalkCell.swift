@@ -105,7 +105,7 @@ class OneTalkCell: UITableViewCell {
             saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
             saysContentView.text = self.cellData.saysWhat.content
             saysContentView.font = self.cellData.normalFont
-            saysContentView.backgroundColor = UIColor.green
+             //saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
             
         } else if self.cellData.saysType == .image {
@@ -113,7 +113,7 @@ class OneTalkCell: UITableViewCell {
             saysContentView.image = self.cellData.saysImage
             print(self.cellData.saysImage)
             saysContentView.contentMode = .scaleToFill
-            saysContentView.backgroundColor = UIColor.green
+             //saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
         } else if self.cellData.saysType == .card {
             let coverY = saysWhatY + self.cellData.titleHeight
@@ -125,7 +125,7 @@ class OneTalkCell: UITableViewCell {
             titleView.lineBreakMode = NSLineBreakMode.byWordWrapping
             titleView.text = self.cellData.saysWhat.title
             titleView.font = self.cellData.titleFont
-            titleView.backgroundColor = UIColor.green
+             //titleView.backgroundColor = UIColor.green
             self.addSubview(titleView)
             
             //coverView:
@@ -140,7 +140,7 @@ class OneTalkCell: UITableViewCell {
             descriptionView.lineBreakMode = NSLineBreakMode.byWordWrapping
             descriptionView.text = self.cellData.saysWhat.description
             descriptionView.font = self.cellData.descriptionFont
-            descriptionView.backgroundColor = UIColor.green
+             //descriptionView.backgroundColor = UIColor.green
             self.addSubview(descriptionView)
             
         }

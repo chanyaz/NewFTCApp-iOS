@@ -13,18 +13,17 @@ import CoreGraphics
 
 class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    //var keyboardNeedLayout:Bool = true
     
     // 一些实验数据
-    let textSaysWhat = SaysWhat(saysType: .text, saysContent: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?")
+    let textSaysWhat = SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。我会陪你聊天，还会告诉你这儿好多好玩的东西。和我聊的越多，我越聪明。想要测试我能回复的几种类型？试试分别输入'text'、'image'、'card'吧~想要和我聊天？随便输入你想说的话吧~想看精美图片？随便输入'xx图片'，比如’黛玉图片‘、’小狗图片‘")
       //MARK:属性初始化时不能直接使用其他属性
-    let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "Hello! I am Little Ice. I am a smart robot developed by Microsoft Company. What can I do for you?"))
+    let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n想查看我能回复哪些类型？\n试试输入 'text'、 'image' 或 'card' \n想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n想看精美图片？\n试试输入'xx图片'，比如'林黛玉图片'、'小狗图片'"))
     let imageSayWhat = SaysWhat(saysType: .image, saysImage: "landscape.jpeg")
     let imageCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType: .image, saysImage: "landscape.jpeg"))
     let cardSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg",saysUrl:"http://www.ftchinese.com/story/001073866")
     let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg",saysUrl:"http://www.ftchinese.com/story/001073866"))
     
-    var talkData = Array(repeating: CellData(), count: 6) {
+    var talkData = Array(repeating: CellData(), count: 5) {
     
         didSet {
             print("tableReloadData")
@@ -91,33 +90,23 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             
             print(keyboardFrame.height)
-            
-            //let intersection = self.view.frame.intersection(keyboardFrame) // 求当前view的frame与keyboardFrame的交集
-            //let deltaY = intersection.height
+
             let deltaY = keyboardBounds.size.height
             
              print(deltaY)
             let animation:(() -> Void) = {
                 self.view.transform = CGAffineTransform(translationX: 0,y: -deltaY)
-                //self.keyboardNeedLayout = false
             }
-            //if keyboardNeedLayout {
-                UIView.animate(
-                    withDuration: duration,
-                    delay: 0.0,
-                    options: UIViewAnimationOptions(rawValue: curve),
-                    /*
-                    animations: { _ in
-                        // FIXME: There is an spooky black bar above keyboard whose height is 64. Now my temporary solution is cutting of the bar forcibly
-                        self.view.frame = CGRect(x: 0, y: -deltaY, width: self.view.bounds.width, height: self.view.bounds.height)
-                        self.keyboardNeedLayout = false
-                        self.view.layoutIfNeeded()
-                    },
-                     */
-                    animations:animation,
-                    completion: nil
-                )
-            //}
+
+            UIView.animate(
+                withDuration: duration,
+                delay: 0.0,
+                options: UIViewAnimationOptions(rawValue: curve),
+              
+                animations:animation,
+                completion: nil
+            )
+ 
             
             
             
@@ -127,16 +116,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func keyboardWillHide(_ notification: NSNotification) {
         print("hide")
         if let userInfo = notification.userInfo, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
-            //let keyboardFrame = value.cgRectValue
-            //let keyboardBounds = value.cgRectValue
-            //let keyboardFrame = self.view.convert(keyboardBounds, to: nil)
-            //print(keyboardFrame.height)
-            //let intersection = self.view.frame.intersection(keyboardFrame) // 求当前view的frame与keyboardFrame的交集
-            //let deltaY = intersection.height
-            //let deltaY = keyboardBounds.size.height
-  
-            //print(deltaY)
-            let animation:(() -> Void)={
+                        let animation:(() -> Void)={
                 self.view.transform = CGAffineTransform.identity
                 //self.keyboardNeedLayout = true
             }
@@ -144,16 +124,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 withDuration: duration,
                 delay: 0.0,
                 options: UIViewAnimationOptions(rawValue: curve),
-                /*
-                animations: { _ in
-                    
-                    self.view.frame = CGRect(x: 0, y: deltaY, width: self.view.bounds.width, height: self.view.bounds.height)
-  
-                    self.keyboardNeedLayout = true
-                    self.view.layoutIfNeeded()
-                    
-                },
-                 */
                 animations:animation,
                 completion: nil
             )

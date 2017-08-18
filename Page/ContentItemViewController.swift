@@ -508,6 +508,12 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else if dataObject?.type == "register"{
             if let adHTMLPath = Bundle.main.path(forResource: "register", ofType: "html"){
                 let url = URL(string: APIs.getUrl("register", type: "register"))
+//                print ("registration page url: \(url)")
+//                if let url = url {
+//                    let request = URLRequest(url: url)
+//                    webView?.load(request)
+//                }
+
                 do {
                     let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                     let storyHTML = (storyTemplate as String)

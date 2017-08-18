@@ -95,7 +95,7 @@ struct APIs {
         case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&003"
         case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
         case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
-        case "register": urlString = "\(publicDomain)register/\(id)?webview=ftcapp&i=3"
+        case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
         default:
             urlString = "\(publicDomain)"
         }

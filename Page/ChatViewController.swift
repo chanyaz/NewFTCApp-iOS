@@ -10,7 +10,8 @@ import UIKit
 import Foundation
 import CoreGraphics
 //var globalTalkData = Array(repeating: CellData(), count: 1)
-
+var keyboardWillShowExecute = 0
+var showAnimateExecute = 0
 class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
     
@@ -21,9 +22,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     let imageSayWhat = SaysWhat(saysType: .image, saysImage: "landscape.jpeg")
     let imageCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType: .image, saysImage: "landscape.jpeg"))
     let cardSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg",saysUrl:"http://www.ftchinese.com/story/001073866")
+    /*
     let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg",saysUrl:"http://www.ftchinese.com/story/001073866"))
-    
-    
+    */
+    let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"澳洲高端葡萄酒势头强劲",saysDescription:"一瓶1951年奔富葛兰许拍出5万澳元的澳洲历史最高价。澳洲高端葡萄酒国际地位正在提高，中国是第一大市场。",saysCover:"https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fi.ftimg.net%2Fpicture%2F9%2F000072299_piclink.jpg?source=ftchinese",saysUrl:"http://www.ftchinese.com/story/001073823"))
     
     var talkData = Array(repeating: CellData(), count: 5) {
     
@@ -85,21 +87,26 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
 
     func keyboardWillShow(_ notification: NSNotification) {
-        print("show")
         
+        print("show:\(keyboardWillShowExecute)")
+        keyboardWillShowExecute += 1
         if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
             let keyboardBounds = value.cgRectValue
             let keyboardFrame = self.view.convert(keyboardBounds, to: nil)
             
             
-            print(keyboardFrame.height)
+            //print(keyboardFrame.height)
 
-            let deltaY = keyboardBounds.size.height
+            let deltaY = keyboardFrame.size.height
             
-             print(deltaY)
+             print("deltaY:\(deltaY)")
             let animation:(() -> Void) = {
                 self.view.transform = CGAffineTransform(translationX: 0,y: -deltaY)
-                self.view.layoutIfNeeded()
+                self.view.setNeedsUpdateConstraints()
+                self.view.setNeedsLayout()
+                print("showAnimate:\(showAnimateExecute)")
+                showAnimateExecute += 1
+                print("self.view.frame:\(self.view.frame)")
             }
 
             UIView.animate(
@@ -108,9 +115,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 options: UIViewAnimationOptions(rawValue: curve),
               
                 animations:animation,
-                completion: nil
+                completion:nil
+                /*
+                completion: { Void in
+                    self.view.layoutIfNeeded()
+                
+                }
+                 */
             )
- 
+             self.view.setNeedsLayout()
             //self.view.layoutIfNeeded()
             
             
@@ -122,7 +135,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         if let userInfo = notification.userInfo, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
             let animation:(() -> Void)={
                 self.view.transform = CGAffineTransform.identity
-                self.view.layoutIfNeeded()
+                self.view.setNeedsUpdateConstraints()
+                //self.view.setNeedsLayout()
                 //self.keyboardNeedLayout = true
             }
             UIView.animate(
@@ -133,10 +147,24 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 completion: nil
             )
             //self.view.layoutIfNeeded()
+             self.view.setNeedsLayout()
         }
         
     }
-
+    
+    
+    // TODO:Fix the bug: 当键盘处于弹出时，如果滑动行为导致返回页面一半的话，还是会导致talkBlock缩回键盘之下。目前临时解决方案是inactive状态时，将键盘置于收缩状态。否则键盘的监听会出问题。
+    func applicationWillResignActive(_ notification:NSNotification){
+        //MARK:在该controller为inactive状态时（比如点击了Home键),将键盘置于收缩状态
+        self.inputBlock.resignFirstResponder()
+        print("applicationWillResignActive")
+    }
+    /*
+    func applicationDidBecomeActive(_ notification:NSNotification){
+        //self.inputBlock.resignFirstResponder()
+        print("applicationDidBecomeActive")
+    }
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.talkData.count
     }
@@ -251,15 +279,23 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.viewDidLoad()
         print("Execute viewDidLoad")
         // Do any additional setup after loading the view.
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         
+        //MARK:监听键盘弹出、收起事件
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        //MARK:监听是否点击Home键以及重新进入界面
+        NotificationCenter.default.addObserver(self, selector: #selector(self.applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+        
+        //NotificationCenter.default.addObserver(self, selector: #selector(self.applicationDidBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+        /*
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardDidShow, object: nil)
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardDidHide, object: nil)
+         */
         self.talkListBlock.delegate = self
         self.talkListBlock.dataSource = self // MARK:两个协议代理，一个也不能少
         self.inputBlock.delegate = self

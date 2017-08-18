@@ -161,7 +161,8 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     private func updateBackBarButton(for index: Int) {
         // MARK: - Set the back bar button for the popped views
-        let title = pageData[index]["title"] ?? ""
+        // let title = pageData[index]["title"] ?? ""
+        let title = ""
         let backItem = UIBarButtonItem()
         backItem.title = title
         navigationItem.backBarButtonItem = backItem
@@ -201,33 +202,22 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     
     func showSearch() {
-        if let titleView = navigationItem.titleView?.bounds {
-            print ("title view bounds: \(titleView)")
-            let searchBar = UISearchBar()
-            searchBar.sizeToFit()
+        
+        if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+            // searchViewController
+            dataViewController.dataObject = AppNavigation.search
+            dataViewController.pageTitle = "搜索"
             
-            navigationItem.titleView = searchBar
-            
-            
-            
-//            let sampleTextField = UITextField(frame: titleView)
-//            sampleTextField.placeholder = "查找文章"
-//            sampleTextField.font = UIFont.preferredFont(forTextStyle: .body)
-//            sampleTextField.borderStyle = UITextBorderStyle.line
-//            sampleTextField.autocorrectionType = UITextAutocorrectionType.no
-//            sampleTextField.keyboardType = UIKeyboardType.default
-//            sampleTextField.returnKeyType = UIReturnKeyType.search
-//            sampleTextField.clearButtonMode = UITextFieldViewMode.whileEditing
-//            sampleTextField.contentVerticalAlignment = UIControlContentVerticalAlignment.center
-//            //sampleTextField.delegate = self
-//            
-//            sampleTextField.layer.masksToBounds = true
-//            sampleTextField.layer.borderColor = UIColor(hex: Color.Content.border).cgColor
-//            sampleTextField.layer.borderWidth = 1.0
-//            sampleTextField.layer.backgroundColor = UIColor.white.cgColor
-//            
-//            navigationItem.titleView = sampleTextField
+            navigationController?.pushViewController(dataViewController, animated: true)
         }
+        
+        
+//        if let titleView = navigationItem.titleView?.bounds {
+//            print ("title view bounds: \(titleView)")
+//            let searchBar = UISearchBar()
+//            searchBar.sizeToFit()
+//            navigationItem.titleView = searchBar
+//        }
     }
     
 }

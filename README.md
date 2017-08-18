@@ -39,7 +39,7 @@
 13. Hide/show sound button properly
 14. Tag page should show title in navigation
 15. Done: Add new layout to display all cover
-16. Working on: User comments
+16. Done: User comments
 17. Display column layout on iPad
 
 ### Sharing
@@ -70,11 +70,13 @@
 2. eReader
 
 ### Login and Registration
-1. Normal 
-2. WeChat
+1. Done: Normal Login
+2. Done: Normal Registration 
+3. Done: WeChat
 
 ### myFT
 1. Reading History
+2. Login and Register
 
 
 ### Big 5 Version

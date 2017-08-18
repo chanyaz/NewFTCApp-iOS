@@ -31,6 +31,12 @@ struct AppNavigation {
         ]
     ]
     
+    static let search = [
+        "title": "Search",
+        "url":"http://www.ftchinese.com/channel/weekly.html?webview=ftcapp",
+        "screenName":"Search/Main",
+        "type": "Search"
+    ]
     
     public static func getNavigation(for tabName: String) -> [String]? {
         if let currentNavigation = appMap[tabName]?["Channels"] as? [String] {

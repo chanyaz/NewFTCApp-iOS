@@ -23,6 +23,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     let cardSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg",saysUrl:"http://www.ftchinese.com/story/001073866")
     let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg",saysUrl:"http://www.ftchinese.com/story/001073866"))
     
+    
+    
     var talkData = Array(repeating: CellData(), count: 5) {
     
         didSet {
@@ -80,6 +82,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
 
     }
+    
 
     func keyboardWillShow(_ notification: NSNotification) {
         print("show")
@@ -96,6 +99,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
              print(deltaY)
             let animation:(() -> Void) = {
                 self.view.transform = CGAffineTransform(translationX: 0,y: -deltaY)
+                self.view.layoutIfNeeded()
             }
 
             UIView.animate(
@@ -107,7 +111,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 completion: nil
             )
  
-            
+            //self.view.layoutIfNeeded()
             
             
         }
@@ -116,8 +120,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func keyboardWillHide(_ notification: NSNotification) {
         print("hide")
         if let userInfo = notification.userInfo, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
-                        let animation:(() -> Void)={
+            let animation:(() -> Void)={
                 self.view.transform = CGAffineTransform.identity
+                self.view.layoutIfNeeded()
                 //self.keyboardNeedLayout = true
             }
             UIView.animate(
@@ -127,7 +132,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 animations:animation,
                 completion: nil
             )
-            
+            //self.view.layoutIfNeeded()
         }
         
     }
@@ -150,6 +155,35 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let cell = OneTalkCell(cellData, reuseId:"Talk")
         return cell
         
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let currentYourTalk = textField.text {
+            let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
+            let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
+            self.talkData.append(currentYouCellData)
+            
+            textField.text = ""
+            
+            var currentRobotCellData = CellData()
+            
+            switch currentYourTalk {
+            case "text":
+                currentRobotCellData = self.textCellData
+                self.talkData.append(currentRobotCellData)
+            case "image":
+                currentRobotCellData = self.imageCellData
+                self.talkData.append(currentRobotCellData)
+            case "card":
+                currentRobotCellData = self.cardCellData
+                self.talkData.append(currentRobotCellData)
+            default:
+                self.createTalkRequest(myInputText:currentYourTalk)
+            }
+            
+        }
+        print("Here return")
+        return true
     }
     
     func createTalkRequest (myInputText inputText:String = "") {
@@ -215,18 +249,26 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print("Execute viewDidLoad")
         // Do any additional setup after loading the view.
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardDidShow, object: nil)
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardDidHide, object: nil)
         self.talkListBlock.delegate = self
         self.talkListBlock.dataSource = self // MARK:两个协议代理，一个也不能少
+        self.inputBlock.delegate = self
         
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
+        self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
+        self.inputBlock.keyboardAppearance = .dark//指定键盘外关
+        self.inputBlock.returnKeyType = .send//指定Return键上显示
         
         self.talkData.append(self.textCellData)
         //self.talkData.append(self.imageCellData)

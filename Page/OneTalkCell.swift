@@ -36,8 +36,12 @@ class OneTalkCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
+    /*
+    func tapClick(_ sender:UIView){
+        print("Click card")
+    }
+    let tap = UITapGestureRecognizer(target: self, action: Selector(("tapClick")))
+   */
     private func buildTheCell() {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         
@@ -143,9 +147,7 @@ class OneTalkCell: UITableViewCell {
              //descriptionView.backgroundColor = UIColor.green
             self.addSubview(descriptionView)
             
+            // self.bubbleImageView.addGestureRecognizer(self.tap)
         }
-
-        
-        
     }
 }

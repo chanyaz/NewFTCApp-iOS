@@ -175,18 +175,8 @@ struct CellData {
     //创建Image类型数据的可变方法
     mutating func buildImageCellData(imageUrl imageUrlStr: String) {
         print(imageUrlStr)
-        let fm = FileManager.default
-        let path = "\(Bundle.main.resourcePath!)/\(imageUrlStr)"
-        print(path)
-        var myUIImage: UIImage? = nil
-        if (fm.fileExists(atPath: path)) { //本地资源目录中有该文件
-            myUIImage = UIImage(named: imageUrlStr)
-        }
-        else if let imageUrl = NSURL(string: imageUrlStr),let imageData = NSData(contentsOf: imageUrl as URL) { //使用绝对路径寻找该文件
-            //let imageUrl = NSURL(string: imageUrlStr)!
-            //let imageData = NSData(contentsOf: imageUrl as URL)!
-            myUIImage = UIImage(data: imageData as Data)
-        }
+       
+        let myUIImage = self.buidUIImage(url:imageUrlStr)
         
         if let realUIImage = myUIImage { //如果成功获取了图片
             self.saysImage = realUIImage
@@ -233,7 +223,7 @@ struct CellData {
         
         
         //处理cover
-        self.coverImage = UIImage(named: coverUrlStr)!
+        self.coverImage = self.buidUIImage(url: coverUrlStr)!
         
         
         //处理description
@@ -255,7 +245,21 @@ struct CellData {
         self.bubbleImageHeight = self.saysWhatHeight + self.bubbleImageInsets.top + self.bubbleImageInsets.bottom
     }
 
-    
+    func buidUIImage(url theUrl:String) -> UIImage? {
+        let fm = FileManager.default
+        let path = "\(Bundle.main.resourcePath!)/\(theUrl)"
+        print(path)
+        var myUIImage: UIImage? = nil
+        if (fm.fileExists(atPath: path)) { //本地资源目录中有该文件
+            myUIImage = UIImage(named: theUrl)
+        }
+        else if let imageUrl = NSURL(string: theUrl),let imageData = NSData(contentsOf: imageUrl as URL) { //使用绝对路径寻找该文件
+            //let imageUrl = NSURL(string: imageUrlStr)!
+            //let imageData = NSData(contentsOf: imageUrl as URL)!
+            myUIImage = UIImage(data: imageData as Data)
+        }
+        return myUIImage
+    }
 }
 
 

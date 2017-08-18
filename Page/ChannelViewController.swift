@@ -81,12 +81,22 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             pageData = p
             //print ("page data count: \(p.count)")
             updateBackBarButton(for: 0)
+            
+            // MARK: - Show Search Button is Required
+            if let navRightItem = AppNavigation.getNavigationProperty(for: currentTabName, of: "navRightItem") {
+                switch navRightItem {
+                case "Search":
+                    let searchImage = UIImage(named: "Search")
+                    let searchButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(showSearch))
+                    self.navigationItem.rightBarButtonItem = searchButton
+                default:
+                    break
+                }
+                
+            }
         }
         
-        // MARK: - Show Search Button is Required
-        let searchIcon = UIImage(named: "Audio")
-        let searchButton = UIBarButtonItem(image: searchIcon, style: .plain, target: self, action: #selector(showSearch))
-        self.navigationItem.rightBarButtonItem = searchButton
+        
         
         
         
@@ -191,7 +201,33 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     
     func showSearch() {
-        print ("should show search field")
+        if let titleView = navigationItem.titleView?.bounds {
+            print ("title view bounds: \(titleView)")
+            let searchBar = UISearchBar()
+            searchBar.sizeToFit()
+            
+            navigationItem.titleView = searchBar
+            
+            
+            
+//            let sampleTextField = UITextField(frame: titleView)
+//            sampleTextField.placeholder = "查找文章"
+//            sampleTextField.font = UIFont.preferredFont(forTextStyle: .body)
+//            sampleTextField.borderStyle = UITextBorderStyle.line
+//            sampleTextField.autocorrectionType = UITextAutocorrectionType.no
+//            sampleTextField.keyboardType = UIKeyboardType.default
+//            sampleTextField.returnKeyType = UIReturnKeyType.search
+//            sampleTextField.clearButtonMode = UITextFieldViewMode.whileEditing
+//            sampleTextField.contentVerticalAlignment = UIControlContentVerticalAlignment.center
+//            //sampleTextField.delegate = self
+//            
+//            sampleTextField.layer.masksToBounds = true
+//            sampleTextField.layer.borderColor = UIColor(hex: Color.Content.border).cgColor
+//            sampleTextField.layer.borderWidth = 1.0
+//            sampleTextField.layer.backgroundColor = UIColor.white.cgColor
+//            
+//            navigationItem.titleView = sampleTextField
+        }
     }
     
 }

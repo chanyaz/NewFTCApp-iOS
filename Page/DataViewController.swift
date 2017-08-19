@@ -47,7 +47,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-                    
+        
         // MARK: - Request Data from Server
         if dataObject["api"] != nil {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass

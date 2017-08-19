@@ -24,10 +24,15 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     fileprivate var searchKeywords: String? = nil {
         didSet {
             if let keywords = searchKeywords, keywords != "" {
-                if let url = URL(string: "http://www.ftchinese.com/search/?keys=\(keywords)&type=default&category=") {
-                    let request = URLRequest(url: url)
-                    webView?.load(request)
+                let jsCode = "search('\(keywords)');"
+                webView?.evaluateJavaScript(jsCode) { (result, error) in
+                    if result != nil {
+                        print (result ?? "unprintable JS result")
+                    }
                 }
+                searchBar?.resignFirstResponder()
+                // TODO: Remember My Last Search Key Words
+                
             }
         }
     }
@@ -150,10 +155,23 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 navigationItem.titleView = searchBar
                 searchBar?.becomeFirstResponder()
                 searchBar?.delegate = self
-                if let url = URL(string: "http://www.ftchinese.com/") {
-                let request = URLRequest(url: url)
-                webView?.load(request)
+                if let url = URL(string: "http://app003.ftmailbox.com/search/") {
+                    let request = URLRequest(url: url)
+                    if let adHTMLPath = Bundle.main.path(forResource: "search", ofType: "html"){
+                        do {
+                            let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                            let storyHTML = storyTemplate as String
+                            self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                        } catch {
+                            //self.webView?.load(request)
+                        }
+                    } else {
+                        self.webView?.load(request)
+                    }
                 }
+                
+                
+                
             } else if let url = URL(string: urlString) {
                 print ("Open url: \(urlString)")
                 let request = URLRequest(url: url)

@@ -464,9 +464,9 @@
 			children = (
 				602153981F399E010077A7AF /* AppNavigation.swift */,
 				602153991F399E010077A7AF /* Constants.swift */,
-				602153971F399E010077A7AF /* AcademyNavigationController.swift */,
-				6021539A1F399E010077A7AF /* CustomNavigationController.swift */,
 				6021539B1F399E010077A7AF /* CustomTabBarController.swift */,
+				6021539A1F399E010077A7AF /* CustomNavigationController.swift */,
+				602153971F399E010077A7AF /* AcademyNavigationController.swift */,
 				6021539C1F399E010077A7AF /* EnglishNavigationController.swift */,
 				6021539D1F399E010077A7AF /* MyFTNavigationController.swift */,
 				6021539E1F399E010077A7AF /* NewsNavigationController.swift */,

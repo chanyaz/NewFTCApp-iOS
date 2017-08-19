@@ -202,22 +202,12 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     
     func showSearch() {
-        
         if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
             // searchViewController
             dataViewController.dataObject = AppNavigation.search
             dataViewController.pageTitle = "搜索"
-            
             navigationController?.pushViewController(dataViewController, animated: true)
         }
-        
-        
-//        if let titleView = navigationItem.titleView?.bounds {
-//            print ("title view bounds: \(titleView)")
-//            let searchBar = UISearchBar()
-//            searchBar.sizeToFit()
-//            navigationItem.titleView = searchBar
-//        }
     }
     
 }

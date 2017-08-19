@@ -47,10 +47,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        
-        navigationController?.title = pageTitle
-        
-        
+                    
         // MARK: - Request Data from Server
         if dataObject["api"] != nil {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
@@ -295,8 +292,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         } else {
             print ("No need to reload Data as the fetch is empty")
         }
-        
-        navigationController?.title = pageTitle
         
     }
     

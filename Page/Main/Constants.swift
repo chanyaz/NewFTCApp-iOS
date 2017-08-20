@@ -70,6 +70,10 @@ struct APIs {
     private static let webPageDomain = "http://www.ftchinese.com/"
     // MARK: the number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
+    static let searchUrl = "http://app003.ftmailbox.com/search/"
+    static func jsForSearch(_ keywords: String) -> String {
+        return "search('\(keywords)');"
+    }
     
     // MARK: the types of files that you want to clean from time to time
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg"]
@@ -168,6 +172,7 @@ struct AppGroup {
 struct Key {
     static let languagePreference = "Language Preference"
     static let domainIndex = "Domain Index"
+    static let searchHistory = "Search History"
 }
 
 // MARK: - Use a server side image service so that you can request images that are just large enough

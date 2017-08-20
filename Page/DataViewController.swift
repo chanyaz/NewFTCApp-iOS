@@ -20,22 +20,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var cellWidth: CGFloat = 0
     var themeColor: String? = nil
     
+    // MARK: Search
     fileprivate lazy var searchBar: UISearchBar? = nil
     fileprivate var searchKeywords: String? = nil {
         didSet {
-            if let keywords = searchKeywords, keywords != "" {
-                let jsCode = "search('\(keywords)');"
-                webView?.evaluateJavaScript(jsCode) { (result, error) in
-                    if result != nil {
-                        print (result ?? "unprintable JS result")
-                    }
-                }
-                searchBar?.resignFirstResponder()
-                // TODO: Remember My Last Search Key Words
-                
-            }
+            search()
         }
     }
+    
     
     fileprivate var fetches = ContentFetchResults(
         apiUrl: "",
@@ -48,6 +40,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var pageTitle: String = ""
     
     fileprivate lazy var webView: WKWebView? = nil
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
@@ -129,10 +123,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             webView = WKWebView(frame: self.view.bounds, configuration: config)
             view = webView
             view.clipsToBounds = true
-            
-            
             webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            
             
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
             //            webView = WKWebView(frame: self.view.bounds, configuration: config)
@@ -155,11 +146,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 navigationItem.titleView = searchBar
                 searchBar?.becomeFirstResponder()
                 searchBar?.delegate = self
-                if let url = URL(string: "http://app003.ftmailbox.com/search/") {
+                if let url = URL(string: APIs.searchUrl) {
                     let request = URLRequest(url: url)
                     if let adHTMLPath = Bundle.main.path(forResource: "search", ofType: "html"){
                         do {
+                            let searchHTML = getSearchHistoryHTML()
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                            .replacingOccurrences(of: "{search-html}", with: searchHTML)
                             let storyHTML = storyTemplate as String
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
@@ -169,9 +162,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         self.webView?.load(request)
                     }
                 }
-                
-                
-                
             } else if let url = URL(string: urlString) {
                 print ("Open url: \(urlString)")
                 let request = URLRequest(url: url)
@@ -186,6 +176,44 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             object: nil)
     }
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let screeName = dataObject["screenName"] {
+            Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
+        }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        //         print("33333")//第一次启动出现3次，转屏出现一次
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+        
+        if horizontalClass == .regular && verticalCass == .regular {
+            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+                isLandscape = true
+                collectionView?.collectionViewLayout=flowLayoutH
+                flowLayoutH.minimumInteritemSpacing = 0
+                flowLayoutH.minimumLineSpacing = 0
+            }
+            
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+                isLandscape = false
+                collectionView?.collectionViewLayout=flowLayout
+                flowLayout.minimumInteritemSpacing = 0
+                flowLayout.minimumLineSpacing = 0
+            }
+        }
+    }
+    
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        print("22222")//第一次启动不运行，转屏出现一次
+        collectionView?.reloadData()
+    }
+    
+    
     deinit {
         //MARK: Remove Paid Post Observer
         NotificationCenter.default.removeObserver(
@@ -197,7 +225,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    
     private func getAPI(_ urlString: String) {
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
@@ -314,7 +342,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     
-    
     private func requestNewContent() {
         // MARK: - Request Data from Server
         if let api = dataObject["api"] {
@@ -326,42 +353,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let screeName = dataObject["screenName"] {
-            Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
-        }
-    }
-    
-    override func viewWillLayoutSubviews() {
-        //         print("33333")//第一次启动出现3次，转屏出现一次
-        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-        
-        if horizontalClass == .regular && verticalCass == .regular {
-            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
-                isLandscape = true
-                collectionView?.collectionViewLayout=flowLayoutH
-                flowLayoutH.minimumInteritemSpacing = 0
-                flowLayoutH.minimumLineSpacing = 0
-            }
-            
-            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
-                isLandscape = false
-                collectionView?.collectionViewLayout=flowLayout
-                flowLayout.minimumInteritemSpacing = 0
-                flowLayout.minimumLineSpacing = 0
-            }
-        }
-    }
-    
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        print("22222")//第一次启动不运行，转屏出现一次
-        collectionView?.reloadData()
-        
-    }
     
     
     func paidPostUpdate(_ notification: Notification) {
@@ -840,10 +831,58 @@ extension DataViewController {
     }
 }
 
+// MARK: Search Related Functions. As FTC don't have a well-structured https search API yet, use web to render search.
 extension DataViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked( _ searchBar: UISearchBar) {
         searchKeywords = searchBar.text
     }
+    
+    fileprivate func search() {
+        if let keywords = searchKeywords, keywords != "" {
+            let jsCode = APIs.jsForSearch(keywords)
+            webView?.evaluateJavaScript(jsCode) { (result, error) in
+                if result != nil {
+                    print (result ?? "unprintable JS result")
+                }
+            }
+            searchBar?.resignFirstResponder()
+            // MARK: Remember My Last Search Key Words
+            let searchHistoryMaxLength = 10
+            var searchHistory = UserDefaults.standard.array(forKey: Key.searchHistory) as? [String] ?? [String]()
+            searchHistory = searchHistory.filter{
+                $0 != keywords
+            }
+            searchHistory.insert(keywords, at: 0)
+            var searchHistoryNew = [String]()
+            for (index, value) in searchHistory.enumerated() {
+                if index < searchHistoryMaxLength {
+                    searchHistoryNew.append(value)
+                }
+            }
+            UserDefaults.standard.set(searchHistoryNew, forKey: Key.searchHistory)
+        }
+    }
+    
+    fileprivate func getSearchHistoryHTML() -> String {
+        let searchHistory = UserDefaults.standard.array(forKey: Key.searchHistory) as? [String] ?? [String]()
+        var searchHistoryHTML = ""
+        for (index, keyword) in searchHistory.enumerated() {
+            let firstChildClass: String
+            if index == 0 {
+                firstChildClass = " first-child"
+            } else {
+                firstChildClass = ""
+            }
+            searchHistoryHTML += "<div onclick=\"search('\(keyword)')\" class=\"oneStory story\(firstChildClass)\"><div class=\"headline\">\(keyword)</div></div>"
+        }
+        if searchHistoryHTML != "" {
+            searchHistoryHTML = "<a class=\"section\"><span>搜索历史</span></a>" + searchHistoryHTML
+        } else {
+            searchHistoryHTML = "<div class=\"oneStory story first-child\"><div class=\"headline\">输入关键字开始搜索</div></div>"
+        }
+        return searchHistoryHTML
+    }
+    
 }
 
 

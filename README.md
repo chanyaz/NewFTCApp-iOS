@@ -3,8 +3,6 @@
 ## Development Milestones
 
 
-
-
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
 2. Done: Use prefetch to make scrolling smooth. 
@@ -50,9 +48,7 @@
 1. Done: Google
 2. FTC's own tracking
 
-
-### Search
-
+### Done: Search
 
 ### AI
 1. Chat Room
@@ -71,16 +67,24 @@
 
 ### Login and Registration
 1. Done: Normal Login
-2. Done: Normal Registration 
+2. Done: Normal Registration
 3. Done: WeChat
 
 ### myFT
-1. Reading History
-2. Login and Register
+Follow: Save the preference as a Dictionary. a. In content page; b. In MyFT Page Channel List
+
+API: If there's under 5 follows, request all of them as one request
+Other wise request the latest 10000 items and filter them 
+
+Data View: 
+
+1. Watch List
+2. Reading History
+3. Login and Register
+4. My Subscription
 
 
 ### Big 5 Version
-
 
 ## Completed Tasks
 

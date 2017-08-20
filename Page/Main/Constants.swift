@@ -183,12 +183,12 @@ struct ImageService {
 }
 
 struct LinkPattern {
-    static let story = ["http://www.ftchinese.com/story/([0-9]+)"]
-    static let interactive = ["http://www.ftchinese.com/interactive/([0-9]+)"]
-    static let video = ["http://www.ftchinese.com/video/([0-9]+)"]
-    static let photonews = ["http://www.ftchinese.com/photonews/([0-9]+)"]
-    static let tag = ["http://www.ftchinese.com/tag/([^?]+)"]
-    static let other = ["(http://www.ftchinese.com/.*$)", "(http://www.ftacademy.cn/.*$)"]
+    static let story = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/story/([0-9]+)"]
+    static let interactive = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/interactive/([0-9]+)"]
+    static let video = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/video/([0-9]+)"]
+    static let photonews = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
+    static let tag = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
+    static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+)"]
 }
 
 struct SupplementContent {

@@ -189,12 +189,17 @@ struct AppNavigation {
             "navBackGroundColor": "#5a8caf",
             "isNavLightContent": true,
             "Channels": [
-                ["title": "最新",
+                ["title": "关注",
                  "api":"https://d37m993yiqhccr.cloudfront.net/users/mystories?type=json",
                  "url":"http://www.ftchinese.com/users/mystories",
                  "screenName":"myft"
                 ],
-                ["title": "阅读偏好",
+                ["title": "已读",
+                 "api":"https://d37m993yiqhccr.cloudfront.net/users/mystories?type=json",
+                 "url":"http://www.ftchinese.com/users/mystories",
+                 "screenName":"myft"
+                ],
+                ["title": "偏好",
                  "api":"https://d37m993yiqhccr.cloudfront.net/users/mytopics?type=json",
                  "url":"http://www.ftchinese.com/users/mytopics",
                  "screenName":"myft/preference"
@@ -204,7 +209,7 @@ struct AppNavigation {
                  "url":"http://www.ftchinese.com/users/favstorylist",
                  "screenName":"myft/subscription"
                 ],
-                ["title": "账号",
+                ["title": "账户",
                  "api":"https://d37m993yiqhccr.cloudfront.net/users/discover?type=json",
                  "url":"http://www.ftchinese.com/users/discover",
                  "screenName":"myft/account"

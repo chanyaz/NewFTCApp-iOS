@@ -75,6 +75,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             )
             contentController.addUserScript(userScript)
             contentController.add(self, name: "alert")
+            contentController.add(self, name: "follow")
             config.userContentController = contentController
             
             config.allowsInlineMediaPlayback = true
@@ -478,6 +479,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         styleContainerStyle = ""
                     }
                     
+                    let followTags = getFollow("tag")
+                    let followTopics = getFollow("topic")
+                    let followAreas = getFollow("area")
+                    let followIndustries = getFollow("industry")
+                    let followAuthors = getFollow("author")
+                    let followColumns = getFollow("column")
+                    
                     if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
@@ -493,9 +501,12 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
                                 .replacingOccurrences(of: "{comments-order}", with: userCommentsOrder)
                                 .replacingOccurrences(of: "{story-container-style}", with: styleContainerStyle)
-                            
-                            
-                            
+                                .replacingOccurrences(of: "['{follow-tags}']", with: followTags)
+                                .replacingOccurrences(of: "['{follow-topics}']", with: followTopics)
+                                .replacingOccurrences(of: "['{follow-industries}']", with: followIndustries)
+                                .replacingOccurrences(of: "['{follow-areas}']", with: followAreas)
+                                .replacingOccurrences(of: "['{follow-authors}']", with: followAuthors)
+                                .replacingOccurrences(of: "['{follow-columns}']", with: followColumns)
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             self.webView?.load(request)
@@ -541,6 +552,19 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 }
             }
         }
+    }
+    
+    private func getFollow(_ type: String) -> String {
+        let follows = UserDefaults.standard.array(forKey: "follow \(type)") as? [String] ?? [String]()
+        var followString = ""
+        for (index, value) in follows.enumerated() {
+            if index == 0 {
+                followString += "'\(value)'"
+            } else {
+                followString += ",'\(value)'"
+            }
+        }
+        return "[\(followString)]"
     }
     
     private func getHeadlineBody(_ dataObject: ContentItem?) -> (headline: String, finalBody: String) {
@@ -719,10 +743,24 @@ extension ContentItemViewController: WKNavigationDelegate {
 extension ContentItemViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if let body = message.body as? [String: String] {
-            if message.name == "alert" {
+            switch message.name {
+            case "alert":
                 if let title = body["title"], let lead = body["message"] {
                     Alert.present(title, message: lead)
                 }
+            case "follow":
+                if let type = body["type"], let keyword = body["tag"], let action = body["action"] {
+                    var follows = UserDefaults.standard.array(forKey: "follow \(type)") as? [String] ?? [String]()
+                    follows = follows.filter{
+                        $0 != keyword
+                    }
+                    if action == "follow" {
+                        follows.insert(keyword, at: 0)
+                    }
+                    UserDefaults.standard.set(follows, forKey: "follow \(type)")
+                }
+            default:
+                break
             }
         }
     }

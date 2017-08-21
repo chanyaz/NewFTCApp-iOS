@@ -57,8 +57,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             //            self.navigationController?.isNavigationBarHidden = false
             //            self.tabBarController?.tabBar.isHidden = false
-            
-            self.view.backgroundColor = UIColor(hex: Color.Content.background)
+            let webViewBG = UIColor(hex: Color.Content.background)
+            view.backgroundColor = webViewBG
             //            self.edgesForExtendedLayout = []
             //            self.extendedLayoutIncludesOpaqueBars = false
             
@@ -97,8 +97,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
             //            webView = WKWebView(frame: self.view.bounds, configuration: config)
             //            self.view = self.webView
-            let webViewBG = UIColor(hex: Color.Content.background)
-            webView?.isOpaque = true
+
+            // MARK: set the web view opaque to avoid white screen during loading
+            webView?.isOpaque = false
             webView?.backgroundColor = webViewBG
             webView?.scrollView.backgroundColor = webViewBG
             

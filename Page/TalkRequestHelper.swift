@@ -2,7 +2,7 @@
 //  TalkRequest.swift
 //  Page
 //
-//  Created by niweiguo on 10/08/2017.
+//  Created by wangyichen on 10/08/2017.
 //  Copyright © 2017 Oliver Zhang. All rights reserved.
 //
 

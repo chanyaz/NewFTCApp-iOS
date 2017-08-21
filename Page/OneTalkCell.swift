@@ -18,6 +18,9 @@ class OneTalkCell: UITableViewCell {
    
     var cellData:CellData
     
+    
+    var cardUrl:String = ""
+    
     // MARK: 重写Frame:费了好长好长时间才找到解决办法。。。
     override var frame: CGRect {
         didSet {
@@ -36,12 +39,23 @@ class OneTalkCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    /*
+    
     func tapClick(_ sender:UIView){
+        //NOTE:通过url地址打开Web页面
+        //TODO:此处为测试，可能后面的打开方式应该为打开app内文章页，而非用浏览器打开web页面
+        if let openUrl = URL(string:self.cardUrl) {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(openUrl, options: [:],completionHandler: {
+                    (success) in
+                })
+            } else {
+                UIApplication.shared.openURL(openUrl)
+            }
+        }
         print("Click card")
     }
-    let tap = UITapGestureRecognizer(target: self, action: Selector(("tapClick")))
-   */
+   
+   
     private func buildTheCell() {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         
@@ -147,7 +161,12 @@ class OneTalkCell: UITableViewCell {
              //descriptionView.backgroundColor = UIColor.green
             self.addSubview(descriptionView)
             
-            // self.bubbleImageView.addGestureRecognizer(self.tap)
+            self.bubbleImageView.isUserInteractionEnabled = true//打开用户交互属性
+            self.cardUrl = self.cellData.saysWhat.url
+            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapClick))
+            self.bubbleImageView.addGestureRecognizer(tap)
+            
         }
     }
 }

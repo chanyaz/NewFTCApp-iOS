@@ -14,12 +14,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
     let flowLayoutH = PageCollectionViewLayoutH()
-    //fileprivate let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
     var cellWidth: CGFloat = 0
     var themeColor: String? = nil
-    
     // MARK: Search
     fileprivate lazy var searchBar: UISearchBar? = nil
     fileprivate var searchKeywords: String? = nil {
@@ -27,15 +24,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             search()
         }
     }
-    
-    
     fileprivate var fetches = ContentFetchResults(
         apiUrl: "",
         fetchResults: [ContentSection]()
     )
     fileprivate let contentAPI = ContentFetch()
-    
-    // MARK: - Once The dataObject is changed, UI should be updated
     var dataObject = [String: String]()
     var pageTitle: String = ""
     
@@ -48,10 +41,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         // self.clearsSelectionOnViewWillAppear = false
         
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil {
+        if dataObject["api"] != nil || dataObject["type"] == "follow" {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-            
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
                 flowLayout.minimumInteritemSpacing = 0
                 flowLayout.minimumLineSpacing = 0
@@ -70,7 +62,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     cellWidth = availableWidth
                 }
             }
-            
             collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
             collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
@@ -95,14 +86,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             // MARK: - Get Content Data for the Page
             requestNewContent()
         } else if let urlString = dataObject["url"] {
-            //TODO: Show a warning if there's no api to get
-            print("No API for this channel. Load \(urlString)")
-            
             self.view.backgroundColor = UIColor(hex: Color.Content.background)
             //            self.edgesForExtendedLayout = []
             //            self.extendedLayoutIncludesOpaqueBars = false
-            
-            
             let config = WKWebViewConfiguration()
             
             // MARK: Tell the web view what kind of connection the user is currently on
@@ -152,7 +138,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         do {
                             let searchHTML = getSearchHistoryHTML()
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                            .replacingOccurrences(of: "{search-html}", with: searchHTML)
+                                .replacingOccurrences(of: "{search-html}", with: searchHTML)
                             let storyHTML = storyTemplate as String
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
@@ -347,6 +333,10 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         if let api = dataObject["api"] {
             // MARK: Display a spinner
             getAPI(api)
+        } else if let type = dataObject["type"] {
+            let urlString = APIs.getUrl("", type: type)
+            print ("request type: \(type), url: \(urlString)")
+            getAPI(urlString)
         } else {
             //TODO: Show a warning if there's no api to get
             print("results : error")

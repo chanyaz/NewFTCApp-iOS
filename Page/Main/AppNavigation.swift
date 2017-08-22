@@ -190,8 +190,7 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "关注",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/users/mystories?type=json",
-                 "url":"http://www.ftchinese.com/users/mystories",
+                 "type": "follow",
                  "screenName":"myft"
                 ],
                 ["title": "收藏",

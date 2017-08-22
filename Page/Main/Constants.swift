@@ -100,12 +100,36 @@ struct APIs {
         case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
         case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
         case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
+        case "follow":
+            // TODO: Calculate the url string for follow
+            let followTypes = Meta.map
+            var parameterString = ""
+            for followTypeArray in followTypes {
+                if let followType = followTypeArray["key"] as? String {
+                    let followKeywords = UserDefaults.standard.array(forKey: "follow \(followType)") as? [String] ?? [String]()
+                    var keyStrings = ""
+                    for (index, value) in followKeywords.enumerated() {
+                        if index == 0 {
+                            keyStrings += value
+                        } else {
+                            keyStrings += ",\(value)"
+                        }
+                    }
+                    if keyStrings != "" {
+                        parameterString += "&\(followType)=\(keyStrings)"
+                    }
+                }
+            }
+            urlString = "\(publicDomain)channel/china.html?type=json\(parameterString)"
+            print ("follow request type: \(urlString)")
         default:
             urlString = "\(publicDomain)"
         }
         // print ("open in web view: \(urlString)")
         return urlString
     }
+    
+    
     
     static func newQueryForWebPage() -> URLQueryItem {
         return URLQueryItem(name: "webview", value: "ftcapp")
@@ -221,7 +245,10 @@ struct SupplementContent {
 }
 
 struct Meta {
-    static let map: [Any] = [
+    static let map: [[String: Any]] = [
+        ["key": "tag",
+         "name": "标签"
+        ],
         ["key": "topic",
          "name": "话题",
          "meta": [
@@ -246,6 +273,12 @@ struct Meta {
             "technology": "科技",
             "media": "媒体"
             ]
+        ],
+        ["key": "author",
+         "name": "作者"
+        ],
+        ["key": "column",
+         "name": "栏目"
         ]
     ]
 }

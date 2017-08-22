@@ -218,9 +218,36 @@ struct SupplementContent {
             return newContentSections
         }
     }
-    
+}
 
-
+struct Meta {
+    static let map: [Any] = [
+        ["key": "topic",
+         "name": "话题",
+         "meta": [
+            "markets": "金融市场",
+            "management": "管理",
+            "lifestyle": "生活时尚",
+            "business": "商业"
+            ]
+        ],
+        ["key": "area",
+         "name": "地区",
+         "meta": [
+            "china": "中国",
+            "us": "美国",
+            "europe": "欧洲",
+            "africa": "非洲"
+            ]
+        ],
+        ["key": "industry",
+         "name": "行业",
+         "meta": [
+            "technology": "科技",
+            "media": "媒体"
+            ]
+        ]
+    ]
 }
 
 

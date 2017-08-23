@@ -90,6 +90,15 @@ class LaunchScreen: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: On mobile phone, lock the screen to portrait only
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return UIInterfaceOrientationMask.all
+        } else {
+            return UIInterfaceOrientationMask.portrait
+        }
+    }
+    
     
     // MARK: if there's a full screen screen ad to show
     private func adOverlayView() {

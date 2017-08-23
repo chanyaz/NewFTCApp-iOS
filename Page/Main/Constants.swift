@@ -83,23 +83,6 @@ struct APIs {
         switch type {
         case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         case "tag": urlString = "\(domain)\(type)/\(id)?type=json"
-        default:
-            urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
-        }
-        print ("api url is \(urlString)")
-        return urlString
-    }
-    
-    static func getUrl(_ id: String, type: String) -> String {
-        let urlString: String
-        // MARK: Use different domains for different types of content
-        switch type {
-        // MARK: If there are http resources that you rely on in your page, don't use https as the url base
-        case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
-        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&003"
-        case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
-        case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
-        case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
         case "follow":
             // TODO: Calculate the url string for follow
             let followTypes = Meta.map
@@ -120,8 +103,26 @@ struct APIs {
                     }
                 }
             }
-            urlString = "\(publicDomain)channel/china.html?type=json\(parameterString)"
+            parameterString = parameterString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? parameterString
+            urlString = "\(domain)channel/china.html?type=json\(parameterString)"
             print ("follow request type: \(urlString)")
+        default:
+            urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
+        }
+        print ("api url is \(urlString)")
+        return urlString
+    }
+    
+    static func getUrl(_ id: String, type: String) -> String {
+        let urlString: String
+        // MARK: Use different domains for different types of content
+        switch type {
+        // MARK: If there are http resources that you rely on in your page, don't use https as the url base
+        case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
+        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&003"
+        case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
+        case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
+        case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
         default:
             urlString = "\(publicDomain)"
         }
@@ -231,6 +232,42 @@ struct SupplementContent {
                 newContentSections[0].items.insert(xiaobingItem, at:2)
             }
             newContentSections = Content.updateSectionRowIndex(newContentSections)
+            return newContentSections
+        case "follows":
+            let followTypes = Meta.map
+            for followTypeArray in followTypes {
+                if let followType = followTypeArray["key"] as? String {
+                    let followKeywords = UserDefaults.standard.array(forKey: "follow \(followType)") as? [String] ?? [String]()
+                    var items = [ContentItem]()
+                    for itemKeyWord in followKeywords {
+                        let item = ContentItem(
+                            id: itemKeyWord,
+                            image: "",
+                            headline: itemKeyWord,
+                            lead: "",
+                            type: "follow",
+                            preferSponsorImage: "",
+                            tag: "",
+                            customLink: "",
+                            timeStamp: 0,
+                            section: 0,
+                            row: 0
+                        )
+                        items.append(item)
+                    }
+                    if items.count > 0 {
+                        let newContentSection = ContentSection(
+                            title: followTypeArray["name"] as? String ?? "",
+                            items: items,
+                            type: "List",
+                            adid: nil
+                        )
+                        newContentSections.append(newContentSection)
+                    }
+                }
+            }
+            
+            print ("request type: \(newContentSections)")
             return newContentSections
         case "ipadhome":
             // MARK: - The first item in the first section should be marked as Cover

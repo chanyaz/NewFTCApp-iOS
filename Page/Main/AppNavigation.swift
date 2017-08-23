@@ -191,7 +191,8 @@ struct AppNavigation {
             "Channels": [
                 ["title": "关注",
                  "type": "follow",
-                 "screenName":"myft"
+                 "screenName":"myft",
+                 "Insert Content": "follows"
                 ],
                 ["title": "收藏",
                  "api":"https://d37m993yiqhccr.cloudfront.net/users/favstorylist?type=json",

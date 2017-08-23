@@ -334,7 +334,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             // MARK: Display a spinner
             getAPI(api)
         } else if let type = dataObject["type"] {
-            let urlString = APIs.getUrl("", type: type)
+            let urlString = APIs.get("", type: type)
             print ("request type: \(type), url: \(urlString)")
             getAPI(urlString)
         } else {
@@ -575,7 +575,10 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "ChannelCellRegular"
                 }
             } else {
-                if item.type == "ad" && (item.adModel == nil || item.adModel?.headline == nil) {
+                if item.type == "follow" {
+                    reuseIdentifier = "ChannelCell"
+                    print ("request type cell is follow")
+                } else if item.type == "ad" && (item.adModel == nil || item.adModel?.headline == nil) {
                     print ("Paid Post is not retrieved yet, display a line for the cell")
                     reuseIdentifier = "LineCell"
                 } else if isCover {

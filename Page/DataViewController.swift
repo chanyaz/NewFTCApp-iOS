@@ -66,6 +66,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
             collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
+            collectionView?.register(UINib.init(nibName: "FollowCell", bundle: nil), forCellWithReuseIdentifier: "FollowCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
             collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
@@ -450,6 +451,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.cellWidth = cellWidth
                 return cell
             }
+        case "FollowCell":
+            if let cell = cellItem as? FollowCell {
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         default:
             if let cell = cellItem as? ChannelCell {
                 cell.cellWidth = cellWidth
@@ -576,8 +583,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 }
             } else {
                 if item.type == "follow" {
-                    reuseIdentifier = "ChannelCell"
-                    print ("request type cell is follow")
+                    reuseIdentifier = "FollowCell"
                 } else if item.type == "ad" && (item.adModel == nil || item.adModel?.headline == nil) {
                     print ("Paid Post is not retrieved yet, display a line for the cell")
                     reuseIdentifier = "LineCell"
@@ -654,7 +660,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
         } else {
             switch selectedItem.type {
-            case "ad":
+            case "ad", "follow":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
             case "ViewController":

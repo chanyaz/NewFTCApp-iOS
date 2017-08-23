@@ -43,6 +43,8 @@ class ContentItem{
     var relatedVideos: [[String: Any]]?
     var audioFileUrl: String?
     
+    var followType: String?
+    
 
     
     init (id: String,

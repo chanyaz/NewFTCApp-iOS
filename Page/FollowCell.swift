@@ -73,10 +73,24 @@ class FollowCell: UICollectionViewCell {
     
     open func tapName(_ recognizer: UITapGestureRecognizer) {
         //print ("name is tapped: \(itemCell?.headline); \(itemCell?.id)")
+        if let followType = itemCell?.followType,
+            let followKey = itemCell?.id,
+            let followTitle = itemCell?.headline {
+            let urlString = APIs.get(followType, value: followKey)
+            print ("should show \(urlString)")
+            if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+                dataViewController.dataObject = ["title": followTitle,
+                                                 "api": urlString,                                                     "screenName":"tag/\(followKey)"]
+                dataViewController.pageTitle = followTitle
+                if let topController = UIApplication.topViewController() {
+                    topController.navigationController?.pushViewController(dataViewController, animated: true)
+                }
+            }
+        }
     }
     
     open func tapAction(_ recognizer: UITapGestureRecognizer) {
-        //print ("action is tapped: \(itemCell?.headline); \(itemCell?.id); \(actionButton.state)")
+        print ("action is tapped: \(String(describing: itemCell?.headline)); \(String(describing: itemCell?.id)); \(actionButton.state)")
     }
     
 }

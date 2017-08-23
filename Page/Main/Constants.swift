@@ -113,6 +113,10 @@ struct APIs {
         return urlString
     }
     
+    static func get(_ key: String, value: String) -> String {
+        return "\(domain)channel/china.html?type=json&\(key)=\(value)"
+    }
+    
     static func getUrl(_ id: String, type: String) -> String {
         let urlString: String
         // MARK: Use different domains for different types of content
@@ -236,14 +240,14 @@ struct SupplementContent {
         case "follows":
             let followTypes = Meta.map
             for followTypeArray in followTypes {
-                if let followType = followTypeArray["key"] as? String {
-                    let followKeywords = UserDefaults.standard.array(forKey: "follow \(followType)") as? [String] ?? [String]()
+                if let followType = followTypeArray["key"] as? String,
+                    let followKeywords = followTypeArray["meta"] as? [String: String]{
                     var items = [ContentItem]()
-                    for itemKeyWord in followKeywords {
+                    for (key, value) in followKeywords {
                         let item = ContentItem(
-                            id: itemKeyWord,
+                            id: key,
                             image: "",
-                            headline: itemKeyWord,
+                            headline: value,
                             lead: "",
                             type: "follow",
                             preferSponsorImage: "",
@@ -253,6 +257,7 @@ struct SupplementContent {
                             section: 0,
                             row: 0
                         )
+                        item.followType = followType
                         items.append(item)
                     }
                     if items.count > 0 {
@@ -266,8 +271,7 @@ struct SupplementContent {
                     }
                 }
             }
-            
-            print ("request type: \(newContentSections)")
+            //print ("request type: \(newContentSections)")
             return newContentSections
         case "ipadhome":
             // MARK: - The first item in the first section should be marked as Cover

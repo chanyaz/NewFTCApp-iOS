@@ -156,6 +156,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         }
         
+        // MARK: Only update the navigation title when it is pushed
+        navigationItem.title = pageTitle
         NotificationCenter.default.addObserver(
             self,
             selector:#selector(paidPostUpdate(_:)),

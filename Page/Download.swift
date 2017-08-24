@@ -215,5 +215,33 @@ struct Download {
         return gbEncoding
     }
     
+    public static func save(_ item: ContentItem, to: String, uplimit: Int) {
+        let headline = item.headline
+        let image = item.image
+        let lead = item.lead
+        let id = item.id
+        let type = item.type
+        let key = "Saved \(to)"
+        var savedItems = UserDefaults.standard.array(forKey: key) as? [[String: String]] ?? [[String: String]]()
+        savedItems = savedItems.filter {
+            id != $0["id"]
+        }
+        let item = [
+            "id": id,
+            "headline": headline,
+            "type": type,
+            "lead": lead,
+            "image": image
+        ]
+        savedItems.insert(item, at: 0)
+        var newSavedItems = [[String: String]]()
+        for (index, value) in savedItems.enumerated() {
+            if index < uplimit {
+                newSavedItems.append(value)
+            }
+        }
+        UserDefaults.standard.set(newSavedItems, forKey: key)
+        print ("saved item is now: \(newSavedItems)")
+    }
 }
 

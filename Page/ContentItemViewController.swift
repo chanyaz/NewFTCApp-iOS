@@ -276,6 +276,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 return
             }
         }
+        if let dataObject = dataObject {
+            Download.save(dataObject, to: "read", uplimit: 30)
+        }
     }
     
     // create our NSTextAttachment

@@ -36,6 +36,11 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         }
     }
     
+    @IBAction func save(_ sender: Any) {
+        let item = contentPageData[currentPageIndex]
+        Download.save(item, to: "clipping", uplimit: 50)
+    }
+    
     var isFullScreenAdOn = false
     
     override var prefersStatusBarHidden: Bool {

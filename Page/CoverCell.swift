@@ -36,14 +36,10 @@ class CoverCell: UICollectionViewCell {
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     func updateUI() {
-        
-
-        
         // MARK: - Update Styles and Layouts
         containerView.backgroundColor = UIColor(hex: Color.Content.background)
         headline.textColor = UIColor(hex: Color.Content.headline)
         headline.font = headline.font.bold()
-        
         lead.textColor = UIColor(hex: Color.Content.lead)
         layoutMargins.left = 0
         layoutMargins.right = 0
@@ -51,7 +47,6 @@ class CoverCell: UICollectionViewCell {
         layoutMargins.bottom = 0
         containerView.layoutMargins.left = 0
         containerView.layoutMargins.right = 0
-        
         
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right
@@ -67,7 +62,6 @@ class CoverCell: UICollectionViewCell {
         } else {
             headlineActualWidth = nil
         }
-        
         
         // MARK: - Update dispay of the cell
         let headlineString = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
@@ -95,11 +89,7 @@ class CoverCell: UICollectionViewCell {
             })
             //print ("should load image here")
         }
-        
-
-        
     }
-    
 }
 
 extension UILabel {

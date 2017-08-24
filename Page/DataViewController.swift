@@ -456,6 +456,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         case "FollowCell":
             if let cell = cellItem as? FollowCell {
                 cell.cellWidth = cellWidth
+                cell.themeColor = themeColor
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }

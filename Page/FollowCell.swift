@@ -17,6 +17,7 @@ class FollowCell: UICollectionViewCell {
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var actionButton: UIButton!
     
+    @IBOutlet weak var topBorder: UIView!
     
     // MARK: - Cell width set by collection view controller
     var cellWidth: CGFloat?
@@ -25,6 +26,7 @@ class FollowCell: UICollectionViewCell {
             updateUI()
         }
     }
+    var themeColor: String?
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
@@ -55,9 +57,33 @@ class FollowCell: UICollectionViewCell {
         // MARK: Update Content
         name.text = itemCell?.headline
         name.isUserInteractionEnabled = true
-        actionButton.setTitle("+关注", for: .normal)
+        actionButton.setTitle("+ 关注", for: .normal)
         actionButton.setTitle("已关注", for: .selected)
         
+        if let themeColor = themeColor {
+            let theme = UIColor(hex: themeColor)
+            actionButton.setTitleColor(theme, for: .normal)
+            actionButton.setTitleColor(UIColor.white, for: .selected)
+            actionButton.tintColor = theme
+        }
+        
+        if itemCell?.row != 0 {
+            topBorder.backgroundColor = UIColor(hex: Color.Content.border)
+        } else {
+            topBorder.backgroundColor = UIColor.clear
+        }
+        
+        
+        // MARK: Check if the topic is already followed
+        if let followType = itemCell?.followType,
+            let keyword = itemCell?.id {
+            let follows = UserDefaults.standard.array(forKey: "follow \(followType)") as? [String] ?? [String]()
+            for followKeyword in follows {
+                if followKeyword == keyword {
+                    actionButton.isSelected = true
+                }
+            }
+        }
         addTap()
     }
     
@@ -90,7 +116,20 @@ class FollowCell: UICollectionViewCell {
     }
     
     open func tapAction(_ recognizer: UITapGestureRecognizer) {
-        print ("action is tapped: \(String(describing: itemCell?.headline)); \(String(describing: itemCell?.id)); \(actionButton.state)")
+        //print ("action is tapped: \(String(describing: itemCell?.headline)); \(String(describing: itemCell?.id)); \(actionButton.state)")
+        if let followType = itemCell?.followType,
+            let keyword = itemCell?.id {
+            var follows = UserDefaults.standard.array(forKey: "follow \(followType)") as? [String] ?? [String]()
+            follows = follows.filter{
+                $0 != keyword
+            }
+            if actionButton.state != .selected {
+                follows.insert(keyword, at: 0)
+            }
+            UserDefaults.standard.set(follows, forKey: "follow \(followType)")
+            actionButton.isSelected = !actionButton.isSelected
+        }
     }
     
 }
+

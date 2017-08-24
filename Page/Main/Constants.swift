@@ -240,8 +240,15 @@ struct SupplementContent {
         case "follows":
             let followTypes = Meta.map
             for followTypeArray in followTypes {
-                if let followType = followTypeArray["key"] as? String,
-                    let followKeywords = followTypeArray["meta"] as? [String: String]{
+                if let followType = followTypeArray["key"] as? String
+                {
+                    var followKeywords = followTypeArray["meta"] as? [String: String] ?? [String: String]()
+                    let followedKeywords = UserDefaults.standard.array(forKey: "follow \(followType)") as? [String] ?? [String]()
+                    for key in followedKeywords {
+                        if followKeywords[key] == nil {
+                            followKeywords[key] = key
+                        }
+                    }
                     var items = [ContentItem]()
                     for (key, value) in followKeywords {
                         let item = ContentItem(

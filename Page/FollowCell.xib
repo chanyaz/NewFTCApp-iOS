@@ -31,16 +31,26 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bu8-W3-TEf">
+                                <rect key="frame" x="14" y="0.0" width="289" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="gDa-pa-Gtt"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Bu8-W3-TEf" firstAttribute="leading" secondItem="Snl-Wn-QeA" secondAttribute="leading" constant="14" id="3ar-DX-5TF"/>
                             <constraint firstAttribute="bottom" secondItem="tCS-gS-egX" secondAttribute="bottom" constant="8" id="TLY-rj-66Q"/>
                             <constraint firstAttribute="trailing" secondItem="gal-xw-aLa" secondAttribute="trailing" constant="14" id="XMQ-wT-ha3"/>
                             <constraint firstItem="tCS-gS-egX" firstAttribute="top" secondItem="Snl-Wn-QeA" secondAttribute="top" constant="8" id="aGq-Ct-PFn"/>
                             <constraint firstItem="gal-xw-aLa" firstAttribute="top" secondItem="Snl-Wn-QeA" secondAttribute="top" constant="8" id="bHb-3g-Wm8"/>
                             <constraint firstAttribute="bottom" secondItem="gal-xw-aLa" secondAttribute="bottom" constant="8" id="db1-HW-lrb"/>
+                            <constraint firstAttribute="trailing" secondItem="Bu8-W3-TEf" secondAttribute="trailing" constant="14" id="dm9-06-wk7"/>
                             <constraint firstAttribute="width" constant="317" id="eJQ-6I-BJJ"/>
                             <constraint firstItem="tCS-gS-egX" firstAttribute="leading" secondItem="Snl-Wn-QeA" secondAttribute="leading" constant="14" id="jfn-lp-ZQU"/>
+                            <constraint firstItem="Bu8-W3-TEf" firstAttribute="top" secondItem="Snl-Wn-QeA" secondAttribute="top" id="thN-4H-DXc"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -57,6 +67,7 @@
                 <outlet property="containerView" destination="Snl-Wn-QeA" id="brX-7n-uu5"/>
                 <outlet property="containerViewWidthConstraint" destination="eJQ-6I-BJJ" id="Xjn-I8-g91"/>
                 <outlet property="name" destination="tCS-gS-egX" id="80t-xE-dLu"/>
+                <outlet property="topBorder" destination="Bu8-W3-TEf" id="y0s-ia-5Rs"/>
             </connections>
             <point key="canvasLocation" x="-164.5" y="41"/>
         </collectionViewCell>

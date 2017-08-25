@@ -37,17 +37,11 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     func updateUI() {
         setupLayout()
-        if itemCell?.type != "ad" {
-            updateContent()
-        } else {
-            requestAd()
-        }
+        updateContent()
         sizeCell()
     }
     
     private func updateContent() {
-        
-        
         // MARK: - set the border color
         if let row = itemCell?.row,
             row > 0,
@@ -79,74 +73,7 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         
     }
     
-    private func requestAd() {
-        containerView.backgroundColor = UIColor(hex: Color.Ad.background)
-        border.backgroundColor = nil
-        // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Content.background)
-        
-        
-        // MARK: - if adModel is already available from itemCell, no need to get the data from internet
-        
-        if let adModel = itemCell?.adModel, adModel.headline != nil {
-            //self.adModel = adModel
-            showAd()
-            print ("Paid Post: use data from fetches to layout this cell! ")
-            return
-        } else {
-            print ("Paid Post: there is no headline from adMoel. Clear the view")
-            imageView.image = nil
-            headline.text = nil
-            lead.text = nil
-            sign.text = nil
-        }
-    }
-    
-    private func showAd() {
-        if let adModel = itemCell?.adModel {
-            headline.text = adModel.headline
-            lead.text = adModel.lead
-            sign.text = "广告"
-            
-            //            let randomIndex = Int(arc4random_uniform(UInt32(2)))
-            //            if randomIndex == 1 {
-            //                headline.text = "卡地亚广告"
-            //            }
-            
-            // MARK: - Report Impressions
-            Impressions.report(adModel.impressions)
-            
-            // MARK: - Add the tap
-            addTap()
-            
-            if let imageString0 = adModel.imageString {
-                let imageString = ImageService.resize(imageString0, width: imageWidth, height: imageHeight)
-                // MARK: If the asset is already downloaded, no need to request from the Internet
-                if let data = Download.readFile(imageString, for: .cachesDirectory, as: nil) {
-                    showAdImage(data)
-                    //print ("image already in cache:\(imageString)")
-                    return
-                }
-                if let url = URL(string: imageString) {
-                    Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
-                        guard let data = data else {
-                            return
-                        }
-                        DispatchQueue.main.async { () -> Void in
-                            self?.showAdImage(data)
-                        }
-                        Download.saveFile(data, filename: imageString, to: .cachesDirectory, as: nil)
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    
-    private func showAdImage(_ data: Data) {
-        imageView.image = UIImage(data: data)
-    }
+
     
     
     private func setupLayout() {

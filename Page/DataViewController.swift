@@ -463,9 +463,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         case "PaidPostCell":
             if let cell = cellItem as? PaidPostCell {
-//                cell.cellWidth = cellWidth
-//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-//                cell.pageTitle = pageTitle
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.pageTitle = pageTitle
                 return cell
             }
         case "FollowCell":
@@ -607,7 +607,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         print ("Paid Post is not retrieved yet, display a line for the cell")
                         reuseIdentifier = "LineCell"
                     } else {
-                        print ("Paid Post is retrieved, still display a line for the cell")
+                        print ("Paid Post is retrieved, display headline, image and lead")
                         reuseIdentifier = "PaidPostCell"
                     }
                 } else if isCover {

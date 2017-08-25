@@ -7,10 +7,8 @@
 //
 
 import UIKit
-import SafariServices
 
-
-class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
+class ChannelCell: CustomCell {
     
     // MARK: - Style settings for this class
     let imageWidth = 152
@@ -26,16 +24,9 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var sign: UILabel!
     
-    // MARK: - Cell width set by collection view controller
-    var cellWidth: CGFloat?
-    var itemCell: ContentItem? {
-        didSet {
-            updateUI()
-        }
-    }
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
-    func updateUI() {
+    override func updateUI() {
         setupLayout()
         updateContent()
         sizeCell()
@@ -105,25 +96,7 @@ class ChannelCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     
     
     
-    // FIXME: These three functions are same as those in the AdView, should find a way to put them in one place
-    private func addTap() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
-        self.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
-        if let link = self.itemCell?.adModel?.link, let url = URL(string: link) {
-            openLink(url)
-        }
-    }
-    
-    fileprivate func openLink(_ url: URL) {
-        let webVC = SFSafariViewController(url: url)
-        webVC.delegate = self
-        if let topController = UIApplication.topViewController() {
-            topController.present(webVC, animated: true, completion: nil)
-        }
-    }
+
     
     
     

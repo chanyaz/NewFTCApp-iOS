@@ -16,7 +16,6 @@ class FollowCell: UICollectionViewCell {
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var actionButton: UIButton!
-    
     @IBOutlet weak var topBorder: UIView!
     
     // MARK: - Cell width set by collection view controller

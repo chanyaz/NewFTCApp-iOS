@@ -11,7 +11,7 @@ import SafariServices
 
 // TODO: Paid Post Cell is just a copy from Channel Cell. Should seperate two sets of code.
 // MARK: It is important that this is a seperate XIB and class otherwise some normal content cells will not be able to be selected, as a result of some weird bug in collection view. 
-class PaidPostCell: UICollectionViewCell, SFSafariViewControllerDelegate {
+class PaidPostCell: CustomCell {
     
     // MARK: - Style settings for this class
     let imageWidth = 152
@@ -27,16 +27,10 @@ class PaidPostCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var sign: UILabel!
     
-    // MARK: - Cell width set by collection view controller
-    var cellWidth: CGFloat?
-    var itemCell: ContentItem? {
-        didSet {
-            updateUI()
-        }
-    }
+
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
-    func updateUI() {
+    override func updateUI() {
         setupLayout()
         requestAd()
         sizeCell()
@@ -143,25 +137,8 @@ class PaidPostCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     
     
     
-    // FIXME: These three functions are same as those in the AdView, should find a way to put them in one place
-    private func addTap() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(handleTapGesture(_:)))
-        self.addGestureRecognizer(tapGestureRecognizer)
-    }
     
-    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
-        if let link = self.itemCell?.adModel?.link, let url = URL(string: link) {
-            openLink(url)
-        }
-    }
-    
-    fileprivate func openLink(_ url: URL) {
-        let webVC = SFSafariViewController(url: url)
-        webVC.delegate = self
-        if let topController = UIApplication.topViewController() {
-            topController.present(webVC, animated: true, completion: nil)
-        }
-    }
+
     
     
     

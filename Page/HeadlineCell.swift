@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HeadlineCell: UICollectionViewCell {
+class HeadlineCell: CustomCell {
 
     let imageWidth = 152
     let imageHeight = 114
@@ -21,17 +21,9 @@ class HeadlineCell: UICollectionViewCell {
     @IBOutlet weak var theme: UILabel!
     @IBOutlet weak var time: UILabel!
     
-    var cellWidth: CGFloat?
-    var itemCell: ContentItem? {
-        
-        didSet {
-            //      print ("headline updateUI?")
-            updateUI()
-        }
-        
-    }
+
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
-    func updateUI() {
+    override func updateUI() {
         // MARK: - Update Styles and Layouts
         //    print ("headline should load image here")
         let leadColor = UIColor(hex: Color.Content.lead)

@@ -10,7 +10,7 @@ import UIKit
 
 import UIKit
 
-class CoverCell: UICollectionViewCell {
+class CoverCell: CustomCell {
     
     // MARK: - Style settings for this class
     let imageWidth = 408   // 16 * 52
@@ -25,17 +25,11 @@ class CoverCell: UICollectionViewCell {
     @IBOutlet weak var headlineLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var headlineTrailingConstraint: NSLayoutConstraint!
     
-    // MARK: - Cell width set by collection view controller
-    var cellWidth: CGFloat?
-    var itemCell: ContentItem? {
-        didSet {
-            updateUI()
-        }
-    }
+
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
-    func updateUI() {
+    override func updateUI() {
         // MARK: - Update Styles and Layouts
         containerView.backgroundColor = UIColor(hex: Color.Content.background)
         headline.textColor = UIColor(hex: Color.Content.headline)

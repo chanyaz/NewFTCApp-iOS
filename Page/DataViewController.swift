@@ -604,10 +604,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "FollowCell"
                 } else if item.type == "ad"{
                     if item.adModel == nil || item.adModel?.headline == nil {
-                        print ("Paid Post is not retrieved yet, display a line for the cell")
                         reuseIdentifier = "LineCell"
                     } else {
-                        print ("Paid Post is retrieved, display headline, image and lead")
                         reuseIdentifier = "PaidPostCell"
                     }
                 } else if isCover {

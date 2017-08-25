@@ -10,7 +10,7 @@ import UIKit
 
 import UIKit
 
-class BigImageCell: UICollectionViewCell {
+class BigImageCell: CustomCell {
     
     // MARK: - Style settings for this class
     let imageWidth = 408   // 16 * 52
@@ -26,17 +26,11 @@ class BigImageCell: UICollectionViewCell {
     @IBOutlet weak var headlineLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var headlineTrailingConstraint: NSLayoutConstraint!
     
-    // MARK: - Cell width set by collection view controller
-    var cellWidth: CGFloat?
-    var itemCell: ContentItem? {
-        didSet {
-            updateUI()
-        }
-    }
+
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
-    func updateUI() {
+    override func updateUI() {
         
         // MARK: - Set Top Border Color        
         if let row = itemCell?.row,

@@ -177,6 +177,8 @@
 		6055EF981F5021C1006F8A83 /* PaidPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055EF951F5021C1006F8A83 /* PaidPostCell.swift */; };
 		6055EF991F5021C1006F8A83 /* PaidPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6055EF961F5021C1006F8A83 /* PaidPostCell.xib */; };
 		6055EF9A1F5021C1006F8A83 /* PaidPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6055EF961F5021C1006F8A83 /* PaidPostCell.xib */; };
+		6055EF9C1F506276006F8A83 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055EF9B1F506276006F8A83 /* CustomCell.swift */; };
+		6055EF9D1F506276006F8A83 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055EF9B1F506276006F8A83 /* CustomCell.swift */; };
 		605750F31F1461F400552DAC /* WKWebPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F21F1461F400552DAC /* WKWebPage.swift */; };
 		605750F51F1499AD00552DAC /* AsyncTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */; };
 		605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */; };
@@ -343,6 +345,7 @@
 		604FF94A1EEF7649005D2A41 /* ChannelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCell.xib; sourceTree = "<group>"; };
 		6055EF951F5021C1006F8A83 /* PaidPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaidPostCell.swift; sourceTree = "<group>"; };
 		6055EF961F5021C1006F8A83 /* PaidPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaidPostCell.xib; sourceTree = "<group>"; };
+		6055EF9B1F506276006F8A83 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		605750F21F1461F400552DAC /* WKWebPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebPage.swift; sourceTree = "<group>"; };
 		605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncTextAttachment.swift; sourceTree = "<group>"; };
 		605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutManager+Attachments.swift"; sourceTree = "<group>"; };
@@ -697,6 +700,7 @@
 		604FF9501EEF8CA5005D2A41 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				6055EF9B1F506276006F8A83 /* CustomCell.swift */,
 				60F4C1741EFCEBE500F21EB6 /* Compact */,
 				60F4C1731EFCEBCC00F21EB6 /* Regular */,
 			);
@@ -1336,6 +1340,7 @@
 				602153301F397C650077A7AF /* WeChatShare.swift in Sources */,
 				602153311F397C650077A7AF /* CoverCellRegular.swift in Sources */,
 				602153321F397C650077A7AF /* Ad.swift in Sources */,
+				6055EF9D1F506276006F8A83 /* CustomCell.swift in Sources */,
 				602153351F397C650077A7AF /* ContentFetchResults.swift in Sources */,
 				602153361F397C650077A7AF /* NSLayoutManager+Attachments.swift in Sources */,
 				602153371F397C650077A7AF /* ContentFetch.swift in Sources */,
@@ -1462,6 +1467,7 @@
 				60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */,
 				50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */,
 				604FF94B1EEF7649005D2A41 /* ChannelCell.swift in Sources */,
+				6055EF9C1F506276006F8A83 /* CustomCell.swift in Sources */,
 				5070EDF51EEBD425008A10CE /* ContentSection.swift in Sources */,
 				6093F1661EE90E81009F16EE /* CustomPopTransition.swift in Sources */,
 				602153A01F399E010077A7AF /* AcademyNavigationController.swift in Sources */,

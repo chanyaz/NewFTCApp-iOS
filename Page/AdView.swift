@@ -40,11 +40,9 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                     DispatchQueue.main.async { () -> Void in
                         // MARK: Dolphin Uses GBK as encoding
                         guard let data = data , error == nil, let adCode = String(data: data, encoding: Download.encodingGBK()) else {
-                            //print ("Fail: Request Ad From \(url)")
                             self?.handleAdModel()
                             return
                         }
-                        //print ("Success: Request Ad From \(url)")
                         let adModel = AdParser.parseAdCode(adCode)
                         self?.adModel = adModel
                         self?.handleAdModel()
@@ -56,16 +54,9 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     
     
     private func clean() {
-        // MARK: remove subviews before loading new creatives
-//        self.subviews.forEach {
-//            // FIXME: - Sometimes this line will come up with an error, fix it
-//            $0.removeFromSuperview()
-//        }
-        print ("will clean the ad view")
         for subView in self.subviews {
             subView.removeFromSuperview()
         }
-        print ("did clean the ad view")
     }
     
     private func handleAdModel() {
@@ -98,11 +89,8 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                 // MARK: If the asset is already downloaded, no need to request from the Internet
                 if let data = Download.readFile(imageString, for: .cachesDirectory, as: nil) {
                     showAdImage(data)
-                    //print ("image already in cache:\(imageString)")
                     return
                 }
-                //                print ("continue to get the image file of \(imageString)")
-                //                print ("the adModel is now \(adModel)")
                 if let url = URL(string: imageString) {
                     Download.getDataFromUrl(url) { [weak self] (data, response, error)  in
                         guard let data = data else {
@@ -116,7 +104,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
                     }
                 }
             } else {
-                // TODO: Should Use Ad Code to Load Web View
+                // MARK: Should Use Ad Code to Load Web View
                 loadWebView()
             }
         } else {

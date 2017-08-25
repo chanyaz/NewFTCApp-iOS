@@ -41,7 +41,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         // self.clearsSelectionOnViewWillAppear = false
         
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil || dataObject["type"] == "follow" {
+        if dataObject["api"] != nil || dataObject["type"] == "follow" || dataObject["type"] == "read" || dataObject["type"] == "clip" {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -66,6 +66,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
             collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
+            collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
             collectionView?.register(UINib.init(nibName: "FollowCell", bundle: nil), forCellWithReuseIdentifier: "FollowCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
@@ -332,14 +333,24 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     private func requestNewContent() {
-        // MARK: - Request Data from Server
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         if let api = dataObject["api"] {
-            // MARK: Display a spinner
             getAPI(api)
         } else if let type = dataObject["type"] {
-            let urlString = APIs.get("", type: type)
-            print ("request type: \(type), url: \(urlString)")
-            getAPI(urlString)
+            if type == "clip" || type == "read" {
+                let contentSections = ContentSection(
+                    title: "",
+                    items: Download.get(type),
+                    type: "List",
+                    adid: ""
+                )
+                let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
+                updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+            } else {
+                let urlString = APIs.get("", type: type)
+                getAPI(urlString)
+            }
         } else {
             //TODO: Show a warning if there's no api to get
             print("results : error")
@@ -349,11 +360,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     func paidPostUpdate(_ notification: Notification) {
-        // print ("update layout called with \(notification.object)")
         if let itemCell = notification.object as? ContentItem {
             let section = itemCell.section
             let row = itemCell.row
-            //print ("update layout \(section)/\(row) for \(object.itemCell) and \(object.adModel)")
             if fetches.fetchResults.count > section {
                 if fetches.fetchResults[section].items.count > row {
                     if itemCell.adModel?.headline != nil{
@@ -447,10 +456,16 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         case "LineCell":
             if let cell = cellItem as? LineCell {
-                //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.pageTitle = pageTitle
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.cellWidth = cellWidth
+                return cell
+            }
+        case "PaidPostCell":
+            if let cell = cellItem as? PaidPostCell {
+//                cell.cellWidth = cellWidth
+//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+//                cell.pageTitle = pageTitle
                 return cell
             }
         case "FollowCell":
@@ -560,7 +575,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 if !isLandscape{
                     if indexPath.row == 6 {isAd = true}else{isAd = false}
                     if indexPath.row == 10 {isHot = true}else{isHot = false}
-                }else if isLandscape {
+                } else if isLandscape {
                     isAd = (indexPath.row == 5)
                     isHot = (indexPath.row == 9)
                 }
@@ -587,9 +602,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             } else {
                 if item.type == "follow" {
                     reuseIdentifier = "FollowCell"
-                } else if item.type == "ad" && (item.adModel == nil || item.adModel?.headline == nil) {
-                    print ("Paid Post is not retrieved yet, display a line for the cell")
-                    reuseIdentifier = "LineCell"
+                } else if item.type == "ad"{
+                    if item.adModel == nil || item.adModel?.headline == nil {
+                        print ("Paid Post is not retrieved yet, display a line for the cell")
+                        reuseIdentifier = "LineCell"
+                    } else {
+                        print ("Paid Post is retrieved, still display a line for the cell")
+                        reuseIdentifier = "PaidPostCell"
+                    }
                 } else if isCover {
                     reuseIdentifier = "CoverCell"
                 } else {

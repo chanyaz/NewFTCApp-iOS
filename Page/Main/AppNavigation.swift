@@ -195,13 +195,11 @@ struct AppNavigation {
                  "Insert Content": "follows"
                 ],
                 ["title": "收藏",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/users/favstorylist?type=json",
-                 "url":"http://www.ftchinese.com/users/favstorylist",
+                 "type": "clip",
                  "screenName":"myft"
                 ],
                 ["title": "已读",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/users/mystories?type=json",
-                 "url":"http://www.ftchinese.com/users/mystories",
+                 "type": "read",
                  "screenName":"myft"
                 ],
                 ["title": "偏好",

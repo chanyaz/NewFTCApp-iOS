@@ -14,6 +14,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     var currentPageIndex = 0
     var languages: UISegmentedControl?
     
+    
     @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var bookMark: UIBarButtonItem!
     
@@ -35,10 +36,19 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             navigationController?.pushViewController(contentItemViewController, animated: true)
         }
     }
-    
+    fileprivate var isSaved = false
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBAction func save(_ sender: Any) {
         let item = contentPageData[currentPageIndex]
-        Download.save(item, to: "clipping", uplimit: 50)
+        if isSaved == false {
+            Download.save(item, to: "clip", uplimit: 50, action: "save")
+            isSaved = true
+            saveButton.image = UIImage(named: "Delete")
+        } else {
+            Download.save(item, to: "clip", uplimit: 50, action: "delete")
+            isSaved = false
+            saveButton.image = UIImage(named: "Clip")
+        }
     }
     
     var isFullScreenAdOn = false
@@ -236,6 +246,29 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // MARK: Set style for the bottom buttons
         actionButton.tintColor = buttonTint
         bookMark.tintColor = buttonTint
+        saveButton.tintColor = buttonTint
+        
+        //saveButton.setBackgroundImage(UIImage(named: "Clip"), for: .normal, barMetrics: .default)
+        // saveButton.image = UIImage(named: "Clip")
+        
+        checkSaveButton()
+    }
+    
+    fileprivate func checkSaveButton() {
+        let item = contentPageData[currentPageIndex]
+        let key = "Saved clip"
+        let savedItems = UserDefaults.standard.array(forKey: key) as? [[String: String]] ?? [[String: String]]()
+        for savedItem in savedItems {
+            if item.id == savedItem["id"] && item.type == savedItem["type"] {
+                isSaved = true
+                break
+            }
+        }
+        if isSaved == true {
+            saveButton.image = UIImage(named: "Delete")
+        } else {
+            saveButton.image = UIImage(named: "Clip")
+        }
     }
     
     
@@ -337,6 +370,7 @@ extension DetailViewController: DetailModelDelegate {
             toolBar.isHidden = false
             isFullScreenAdOn = false
         }
+        checkSaveButton()
         // MARK: Ask the view controller to hide or show status bar
         setNeedsStatusBarAppearanceUpdate()
     }

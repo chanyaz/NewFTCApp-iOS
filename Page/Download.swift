@@ -215,7 +215,7 @@ struct Download {
         return gbEncoding
     }
     
-    public static func save(_ item: ContentItem, to: String, uplimit: Int) {
+    public static func save(_ item: ContentItem, to: String, uplimit: Int, action: String) {
         let headline = item.headline
         let image = item.image
         let lead = item.lead
@@ -233,7 +233,9 @@ struct Download {
             "lead": lead,
             "image": image
         ]
-        savedItems.insert(item, at: 0)
+        if action == "save" {
+            savedItems.insert(item, at: 0)
+        }
         var newSavedItems = [[String: String]]()
         for (index, value) in savedItems.enumerated() {
             if index < uplimit {
@@ -242,6 +244,29 @@ struct Download {
         }
         UserDefaults.standard.set(newSavedItems, forKey: key)
         print ("saved item is now: \(newSavedItems)")
+    }
+    
+    public static func get(_ from: String) -> [ContentItem] {
+        let key = "Saved \(from)"
+        let savedItems = UserDefaults.standard.array(forKey: key) as? [[String: String]] ?? [[String: String]]()
+        var contentItems = [ContentItem]()
+        for item in savedItems {
+            let contentItem = ContentItem(
+                id: item["id"] ?? "",
+                image: item["image"] ?? "",
+                headline: item["headline"] ?? "",
+                lead: item["lead"] ?? "",
+                type: item["type"] ?? "",
+                preferSponsorImage: item["preferSponsorImage"] ?? "",
+                tag: item["tag"] ?? "",
+                customLink: item["customLink"] ?? "",
+                timeStamp: 0,
+                section: 0,
+                row: 0
+            )
+            contentItems.append(contentItem)
+        }
+        return contentItems
     }
 }
 

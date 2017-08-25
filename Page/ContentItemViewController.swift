@@ -277,7 +277,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             }
         }
         if let dataObject = dataObject {
-            Download.save(dataObject, to: "read", uplimit: 30)
+            Download.save(dataObject, to: "read", uplimit: 30, action: "save")
         }
     }
     

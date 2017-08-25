@@ -223,6 +223,7 @@ struct CellData {
         
         
         //处理cover
+        // FIXME: This code always crash when network is off. As a good habit, never use force unwrap in your code. 
         self.coverImage = self.buidUIImage(url: coverUrlStr)!
         
         

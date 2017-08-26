@@ -1,7 +1,8 @@
 # New FTChinese iOS App
 
 ## Development Milestones
-
+### Bug List: 
+1. Why can't MyFT be stored locally? 
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
@@ -70,11 +71,11 @@
 2. Done: Normal Registration
 3. Done: WeChat
 
-### myFT
-Follow: Save the preference as a Dictionary. a. In content page; b. In MyFT Page Channel List
-
-API: If there's under 5 follows, request all of them as one request
-Other wise request the latest 10000 items and filter them 
+### Done: myFT
+1. Done: Follow: Save the preference as a Dictionary. a. In content page; b. In MyFT Page Channel List
+2. Done: Clippings
+3. Done: Read
+4. API: If there's under 5 follows, request all of them as one request. Otherwise request the latest 10000 items and filter them 
 
 Data View: 
 

@@ -33,11 +33,11 @@ struct Download {
                 let filePath = directoryPath.appendingPathComponent(realFileName)
                 let fileManager = FileManager.default
                 let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
-//                if created {
-//                    print("\(realFileName) created successfully")
-//                } else {
-//                    print("Couldn't create file for some reason")
-//                }
+                //                if created {
+                //                    print("\(realFileName) created successfully")
+                //                } else {
+                //                    print("Couldn't create file for some reason")
+                //                }
                 // Write that JSON to the file created earlier
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
@@ -110,7 +110,7 @@ struct Download {
                 } else {
                     files = directoryContents
                 }
-
+                
                 for file in files {
                     print("found file \(file.lastPathComponent) in \(directory) folder")
                     let fileName = file.lastPathComponent
@@ -168,20 +168,21 @@ struct Download {
     }
     
     
-    
+    //https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&tag=%E7%A7%91%E6%8A%80,%E4%B8%AD%E5%9B%BD%E7%BB%8F%E6%B5%8E,%E7%89%B9%E6%9C%97%E6%99%AE
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
         let fileName = urlString.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
+            .replacingOccurrences(of: "[?].*", with: "", options: .regularExpression)
             .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
-        .replacingOccurrences(of: "-type-json", with: ".json")
-        .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
+            .replacingOccurrences(of: "-type-json", with: ".json")
+            .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
         if let ext = fileExtension {
             let forceFileName = fileName.replacingOccurrences(of: ".\(ext)", with: "")
-            .replacingOccurrences(of: ".", with: "")
+                .replacingOccurrences(of: ".", with: "")
             let finalFileName = "\(forceFileName).\(ext)"
-            //print ("\(urlString) is converted into file name of \(finalFileName)")
+            print ("\(urlString) is converted into file name of \(finalFileName)")
             return finalFileName
         }
-        //print ("\(urlString) is converted into file name of \(fileName)")
+        print ("\(urlString) is converted into file name of \(fileName)")
         return fileName
     }
     

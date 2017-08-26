@@ -36,7 +36,7 @@ struct AdLayout {
             )
             // MARK: Create the Info Ad
             let paidPostItem = ContentItem(id: "20220121", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
-
+            
             // MARK: - The first item in the first section should be marked as Cover.
             // MARk: - Make sure items has a least one child to avoid potential run time error.
             if newContentSections[0].items.count > 0 {
@@ -57,7 +57,6 @@ struct AdLayout {
                 // MARK: Insert the paid post under Cover
                 newContentSections[0].items.insert(paidPostItem, at:1)
                 
-                
                 // MARK: Tell the second story not to display border
                 if newContentSections[0].items.count > 2 {
                     newContentSections[0].items[2].hideTopBorder = true
@@ -67,14 +66,17 @@ struct AdLayout {
             // MARK: Insert ads into sections that has larger index so that you don't have to constantly recalculate the new index
             newContentSections.insert(MPU1, at: 1)
             newContentSections.insert(topBanner, at: 0)
-            newContentSections.append(bottomBanner)
+            // MARK: Make sure there's content between MPU and Bottom Banner
+            if newContentSections.count > 3 {
+                newContentSections.append(bottomBanner)
+            }
             newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
         case "ipadhome":
             // MARK: - The first item in the first section should be marked as Cover
             newContentSections[0].items[0].isCover = true
             // MARK: - Break up the first section into two or more, depending on how you want to layout ads
- 
+            
             return newContentSections
         default:
             return newContentSections

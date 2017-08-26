@@ -2,7 +2,7 @@
 
 ## Development Milestones
 ### Bug List: 
-1. Why can't MyFT be stored locally? 
+1. Done: Why can't MyFT be stored locally? It's because file name is not correct. 
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
@@ -36,7 +36,7 @@
 11. Done: Full Screen Ad
 12. If an interactive is a speedread, let it read the english text
 13. Hide/show sound button properly
-14. Tag page should show title in navigation
+14. Done: Tag page should show title in navigation
 15. Done: Add new layout to display all cover
 16. Done: User comments
 17. Display column layout on iPad

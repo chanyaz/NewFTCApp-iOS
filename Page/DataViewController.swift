@@ -158,14 +158,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
         
         // MARK: Only update the navigation title when it is pushed
-        navigationItem.title = pageTitle
+        navigationItem.title = pageTitle.removingPercentEncoding
         NotificationCenter.default.addObserver(
             self,
             selector:#selector(paidPostUpdate(_:)),
             name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
             object: nil)
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

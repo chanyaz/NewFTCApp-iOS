@@ -13,13 +13,13 @@ class OneTalkCell: UITableViewCell {
     var headImageView = UIImageView(image: UIImage(named: "you.jpeg"))
     
     // 文本背景气泡
-    var bubbleImageView : UIImageView!
+    var bubbleImageView = UIImageView()
     
    
-    var cellData:CellData
+    var cellData = CellData()
     
     
-    var cardUrl:String = ""
+    var cardUrl = ""
     
     // MARK: 重写Frame:费了好长好长时间才找到解决办法。。。
     override var frame: CGRect {
@@ -102,14 +102,18 @@ class OneTalkCell: UITableViewCell {
             let bubbleImageName = self.cellData.bubbleImage
             let bubbleImage = UIImage(named: bubbleImageName)
 
-            let bubbleImageStreched = bubbleImage!.resizableImage(withCapInsets: UIEdgeInsetsMake(20, 30, 20, 30), resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
-            //self.bubbleImageView.contentMode = .scaleToFill //NOTE:该方式可实现全部拉伸
             
-            
-            self.bubbleImageView = UIImageView(frame: CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight)) // NOTE:任何一个View都要先初始化再设置属性
-            self.addSubview(self.bubbleImageView)
-            self.bubbleImageView.backgroundColor = UIColor.lightGray
-            self.bubbleImageView.image =  bubbleImageStreched
+            if let realBubbleImage = bubbleImage {
+                let bubbleImageStreched = realBubbleImage.resizableImage(withCapInsets: UIEdgeInsetsMake(20, 30, 20, 30), resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
+                //self.bubbleImageView.contentMode = .scaleToFill //NOTE:该方式可实现全部拉伸
+                
+                
+                self.bubbleImageView = UIImageView(frame: CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight)) // NOTE:任何一个View都要先初始化再设置属性
+                self.addSubview(self.bubbleImageView)
+                self.bubbleImageView.backgroundColor = UIColor.lightGray
+                self.bubbleImageView.image =  bubbleImageStreched
+
+            }
             
             //print("bubbleImageView:\(self.bubbleImageView.frame)")
         }

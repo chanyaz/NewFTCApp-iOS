@@ -224,7 +224,11 @@ struct CellData {
         
         //处理cover
         // FIXME: This code always crash when network is off. As a good habit, never use force unwrap in your code. 
-        self.coverImage = self.buidUIImage(url: coverUrlStr)!
+        let myUIImage = self.buidUIImage(url: coverUrlStr)
+        if let realUIImage = myUIImage {
+            self.coverImage = realUIImage
+        }
+        
         
         
         //处理description
@@ -255,8 +259,6 @@ struct CellData {
             myUIImage = UIImage(named: theUrl)
         }
         else if let imageUrl = NSURL(string: theUrl),let imageData = NSData(contentsOf: imageUrl as URL) { //使用绝对路径寻找该文件
-            //let imageUrl = NSURL(string: imageUrlStr)!
-            //let imageData = NSData(contentsOf: imageUrl as URL)!
             myUIImage = UIImage(data: imageData as Data)
         }
         return myUIImage

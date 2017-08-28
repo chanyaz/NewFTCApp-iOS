@@ -1,8 +1,6 @@
 # New FTChinese iOS App
 
 ## Development Milestones
-### Bug List: 
-1. Done: Why can't MyFT be stored locally? It's because file name is not correct. 
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
@@ -21,6 +19,7 @@
 3. Interactive Features
 4. Videos: 
 5. Switch Between Domains for APIs
+6. Stories By Date
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 
@@ -49,8 +48,6 @@
 1. Done: Google
 2. FTC's own tracking
 
-### Done: Search
-
 ### AI
 1. Chat Room
 2. Customer Service
@@ -58,18 +55,15 @@
 
 ### Core data
 
-### Anvanced Notifications
+### Notifications
+1. Handle Notification Types
+2. Move Notification Extensions
 
 ### Today Widget
 
 ### Store
 1. eBook
 2. eReader
-
-### Login and Registration
-1. Done: Normal Login
-2. Done: Normal Registration
-3. Done: WeChat
 
 ### Done: myFT
 1. Done: Follow: Save the preference as a Dictionary. a. In content page; b. In MyFT Page Channel List
@@ -78,16 +72,16 @@
 4. API: If there's under 5 follows, request all of them as one request. Otherwise request the latest 10000 items and filter them 
 
 Data View: 
-
 1. Watch List
 2. Reading History
 3. Login and Register
 4. My Subscription
 
-
 ### Big 5 Version
 
 ## Completed Tasks
+
+### Done: Search
 
 ### Advertising: 
 1. Done: Retrieve Ad info from Dolphin's script string
@@ -101,6 +95,11 @@ Data View:
 9. Done: Show Image if there's time
 10. Done: Parse Video Ad into native
 
+### Login and Registration
+1. Done: Normal Login
+2. Done: Normal Registration
+3. Done: WeChat
+
 ### Audio
 1. Done: Speech to Text
 2. Done: Radio
@@ -112,14 +111,14 @@ Data View:
 4. Done: Prefetch
 
 ### Other Tasks: 
-1. Video Page Take Full Screen Width 
+1. Done: Video Page Take Full Screen Width 
 2. Done: Send third party impressions until they are confirmed
 3. Done: Tap link for Ad Views
-1. Workspace
-2. Cocoa Pod
-3. Google Analytics
+1. Done: Workspace
+2. Done: Cocoa Pod
+3. Done: Google Analytics
 2. Done: Tracking Third Party Ad impression with native code
-3. WeChat Share 
+3. Done: WeChat Share 
 3. Home Page Font Size Review
 1. Article Share Button
 2. Article Switch to English and Billingual
@@ -138,7 +137,8 @@ Track "list to story" event
 Bug: Can't remember preference
 track "listen to story" end event
 
-
+### Bug List: 
+1. Done: Why can't MyFT be stored locally? It's because file name is not correct. 
 
 ## How To Start
 $ sudo gem install cocoapods

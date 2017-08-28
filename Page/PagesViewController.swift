@@ -26,12 +26,10 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        // Configure the page view controller and add it as a child view controller.
+    override func loadView() {
+        super.loadView()
+
         
-        // MARK: Show the Launch Screen as an Overlay
         if AppLaunch.sharedInstance.launched == false {
             if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
                 self.present(launchScreenViewController, animated: false, completion: nil)
@@ -39,6 +37,13 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
             }
             AppLaunch.sharedInstance.launched = true
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        // Configure the page view controller and add it as a child view controller.
+
         applyStyles()
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self

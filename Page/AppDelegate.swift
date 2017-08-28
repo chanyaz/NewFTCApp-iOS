@@ -42,6 +42,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // WeChat API
         WXApi.registerApp(WeChat.appId)
+        
+        
+        // MARK: Show the Launch Screen as an Overlay
+//        if AppLaunch.sharedInstance.launched == false {
+//            if let launchScreenViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
+//                if let window = self.window, let rootViewController = window.rootViewController {
+//                    var currentController = rootViewController
+//                    while let presentedController = currentController.presentedViewController {
+//                        currentController = presentedController
+//                    }
+//                    currentController.present(launchScreenViewController, animated: false, completion: nil)
+//                }
+//
+//            }
+//            AppLaunch.sharedInstance.launched = true
+//        }
+        
+
+        
+        
         return true
     }
     

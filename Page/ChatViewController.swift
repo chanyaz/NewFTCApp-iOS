@@ -303,7 +303,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
-        self.inputBlock.keyboardAppearance = .dark//指定键盘外关
+        self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
         
         self.talkData.append(self.textCellData)

@@ -15,6 +15,9 @@ import SafariServices
 
 // MARK: - Use singleton pattern to pass speech data between view controllers. It's better in in term of code style than prepare segue.
 
+struct AudioPlayerStyle {
+    static let height: CGFloat = 200
+}
 
 class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate {
     

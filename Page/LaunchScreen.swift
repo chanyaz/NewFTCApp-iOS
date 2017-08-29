@@ -539,7 +539,9 @@ class LaunchScreen: UIViewController {
             token = nil
         }
         timer?.invalidate()
-        self.dismiss(animated: true, completion: nil)
+        self.view.superview?.removeFromSuperview()
+        self.removeFromParentViewController()
+        //self.dismiss(animated: true, completion: nil)
     }
 
 }

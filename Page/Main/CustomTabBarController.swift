@@ -10,17 +10,13 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
-    
-    
-//    override func loadView() {
-//        super.loadView()
-//        if AppLaunch.sharedInstance.launched == false {
-//            if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
-//                self.tabBarController?.present(launchScreenViewController, animated: false, completion: nil)
-//            }
-//            AppLaunch.sharedInstance.launched = true
-//        }
-//    }
+    override func loadView() {
+        super.loadView()
+        if AppLaunch.sharedInstance.launched == false {
+            showLaunchScreen()
+            AppLaunch.sharedInstance.launched = true
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +42,7 @@ class CustomTabBarController: UITabBarController {
                 tabBarItem.image = tabBarImage?.withRenderingMode(.alwaysOriginal)
             }
         }
-
+        
     }
     
     
@@ -76,6 +72,26 @@ class CustomTabBarController: UITabBarController {
             return true
         } else {
             return false
+        }
+    }
+    
+    
+    public func showLaunchScreen() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
+            let fullScreenView = UIView()
+            fullScreenView.frame = UIScreen.main.bounds
+            fullScreenView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            // MARK: add as a childviewcontroller
+            addChildViewController(controller)
+            // MARK: Add the child's View as a subview
+            fullScreenView.addSubview(controller.view)
+            controller.view.frame = fullScreenView.bounds
+            controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            // MARK: tell the childviewcontroller it's contained in it's parent
+            controller.didMove(toParentViewController: self)
+            view.insertSubview(fullScreenView, aboveSubview: self.tabBar)
         }
     }
     

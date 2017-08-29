@@ -26,17 +26,6 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
     }
     
-    override func loadView() {
-        super.loadView()
-
-        if AppLaunch.sharedInstance.launched == false {
-            if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
-                self.present(launchScreenViewController, animated: false, completion: nil)
-            }
-            AppLaunch.sharedInstance.launched = true
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

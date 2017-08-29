@@ -70,6 +70,10 @@ struct APIs {
     private static let webPageDomain = "http://www.ftchinese.com/"
     // MARK: the number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
+    static let searchUrl = "http://app003.ftmailbox.com/search/"
+    static func jsForSearch(_ keywords: String) -> String {
+        return "search('\(keywords)');"
+    }
     
     // MARK: the types of files that you want to clean from time to time
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg"]
@@ -79,11 +83,38 @@ struct APIs {
         switch type {
         case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         case "tag": urlString = "\(domain)\(type)/\(id)?type=json"
+        case "follow":
+            // TODO: Calculate the url string for follow
+            let followTypes = Meta.map
+            var parameterString = ""
+            for followTypeArray in followTypes {
+                if let followType = followTypeArray["key"] as? String {
+                    let followKeywords = UserDefaults.standard.array(forKey: "follow \(followType)") as? [String] ?? [String]()
+                    var keyStrings = ""
+                    for (index, value) in followKeywords.enumerated() {
+                        if index == 0 {
+                            keyStrings += value
+                        } else {
+                            keyStrings += ",\(value)"
+                        }
+                    }
+                    if keyStrings != "" {
+                        parameterString += "&\(followType)=\(keyStrings)"
+                    }
+                }
+            }
+            parameterString = parameterString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? parameterString
+            urlString = "\(domain)channel/china.html?type=json\(parameterString)"
+            print ("follow request type: \(urlString)")
         default:
             urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         }
         print ("api url is \(urlString)")
         return urlString
+    }
+    
+    static func get(_ key: String, value: String) -> String {
+        return "\(domain)channel/china.html?type=json&\(key)=\(value)"
     }
     
     static func getUrl(_ id: String, type: String) -> String {
@@ -95,13 +126,15 @@ struct APIs {
         case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&003"
         case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
         case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
-        case "register": urlString = "\(publicDomain)register/\(id)?webview=ftcapp&i=3"
+        case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
         default:
             urlString = "\(publicDomain)"
         }
         // print ("open in web view: \(urlString)")
         return urlString
     }
+    
+    
     
     static func newQueryForWebPage() -> URLQueryItem {
         return URLQueryItem(name: "webview", value: "ftcapp")
@@ -168,6 +201,7 @@ struct AppGroup {
 struct Key {
     static let languagePreference = "Language Preference"
     static let domainIndex = "Domain Index"
+    static let searchHistory = "Search History"
 }
 
 // MARK: - Use a server side image service so that you can request images that are just large enough
@@ -178,12 +212,12 @@ struct ImageService {
 }
 
 struct LinkPattern {
-    static let story = ["http://www.ftchinese.com/story/([0-9]+)"]
-    static let interactive = ["http://www.ftchinese.com/interactive/([0-9]+)"]
-    static let video = ["http://www.ftchinese.com/video/([0-9]+)"]
-    static let photonews = ["http://www.ftchinese.com/photonews/([0-9]+)"]
-    static let tag = ["http://www.ftchinese.com/tag/([^?]+)"]
-    static let other = ["(http://www.ftchinese.com/.*$)", "(http://www.ftacademy.cn/.*$)"]
+    static let story = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/story/([0-9]+)"]
+    static let interactive = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/interactive/([0-9]+)"]
+    static let video = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/video/([0-9]+)"]
+    static let photonews = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
+    static let tag = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
+    static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+)"]
 }
 
 struct SupplementContent {
@@ -203,6 +237,49 @@ struct SupplementContent {
             }
             newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
+        case "follows":
+            let followTypes = Meta.map
+            for followTypeArray in followTypes {
+                if let followType = followTypeArray["key"] as? String
+                {
+                    var followKeywords = followTypeArray["meta"] as? [String: String] ?? [String: String]()
+                    let followedKeywords = UserDefaults.standard.array(forKey: "follow \(followType)") as? [String] ?? [String]()
+                    for key in followedKeywords {
+                        if followKeywords[key] == nil {
+                            followKeywords[key] = key
+                        }
+                    }
+                    var items = [ContentItem]()
+                    for (key, value) in followKeywords {
+                        let item = ContentItem(
+                            id: key,
+                            image: "",
+                            headline: value,
+                            lead: "",
+                            type: "follow",
+                            preferSponsorImage: "",
+                            tag: "",
+                            customLink: "",
+                            timeStamp: 0,
+                            section: 0,
+                            row: 0
+                        )
+                        item.followType = followType
+                        items.append(item)
+                    }
+                    if items.count > 0 {
+                        let newContentSection = ContentSection(
+                            title: followTypeArray["name"] as? String ?? "",
+                            items: items,
+                            type: "List",
+                            adid: nil
+                        )
+                        newContentSections.append(newContentSection)
+                    }
+                }
+            }
+            //print ("request type: \(newContentSections)")
+            return newContentSections
         case "ipadhome":
             // MARK: - The first item in the first section should be marked as Cover
             newContentSections[0].items[0].isCover = true
@@ -213,9 +290,45 @@ struct SupplementContent {
             return newContentSections
         }
     }
-    
-    
-    
+}
+
+struct Meta {
+    static let map: [[String: Any]] = [
+        ["key": "tag",
+         "name": "标签"
+        ],
+        ["key": "topic",
+         "name": "话题",
+         "meta": [
+            "markets": "金融市场",
+            "management": "管理",
+            "lifestyle": "生活时尚",
+            "business": "商业"
+            ]
+        ],
+        ["key": "area",
+         "name": "地区",
+         "meta": [
+            "china": "中国",
+            "us": "美国",
+            "europe": "欧洲",
+            "africa": "非洲"
+            ]
+        ],
+        ["key": "industry",
+         "name": "行业",
+         "meta": [
+            "technology": "科技",
+            "media": "媒体"
+            ]
+        ],
+        ["key": "author",
+         "name": "作者"
+        ],
+        ["key": "column",
+         "name": "栏目"
+        ]
+    ]
 }
 
 

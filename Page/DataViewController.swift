@@ -35,6 +35,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     fileprivate lazy var webView: WKWebView? = nil
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations

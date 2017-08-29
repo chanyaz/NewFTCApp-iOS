@@ -136,6 +136,9 @@ extension UIViewController {
             //view.insertSubview(fullScreenView, aboveSubview: self.tabBar)
             if let tabBarViewController = self as? UITabBarController {
                 view.insertSubview(fullScreenView, aboveSubview: tabBarViewController.tabBar)
+            } else if let navController = self as? UINavigationController {
+                self.navigationController?.view.addSubview(fullScreenView)
+                view.insertSubview(fullScreenView, aboveSubview: navController.navigationBar)
             } else {
                 let lastViewIndex = view.subviews.count - 1
                 view.insertSubview(fullScreenView, at: lastViewIndex)

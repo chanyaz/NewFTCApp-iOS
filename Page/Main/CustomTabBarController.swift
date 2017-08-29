@@ -10,12 +10,13 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
-    override func loadView() {
-        super.loadView()
-        if AppLaunch.sharedInstance.launched == false {
-            showLaunchScreen()
-            AppLaunch.sharedInstance.launched = true
-        }
+//    override func loadView() {
+//        super.loadView()
+//    }
+    
+    
+    override var prefersStatusBarHidden : Bool {
+        return true
     }
     
     override func viewDidLoad() {

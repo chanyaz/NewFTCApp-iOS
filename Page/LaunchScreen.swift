@@ -541,6 +541,10 @@ class LaunchScreen: UIViewController {
         timer?.invalidate()
         self.view.superview?.removeFromSuperview()
         self.removeFromParentViewController()
+        AppLaunch.sharedInstance.fullScreenDismissed = true
+        if let topViewController = UIApplication.topViewController() {
+            topViewController.setNeedsStatusBarAppearanceUpdate()
+        }
         //self.dismiss(animated: true, completion: nil)
     }
 
@@ -550,4 +554,5 @@ struct AppLaunch {
     static var sharedInstance = AppLaunch()
     var launched = false
     var adShowed = false
+    var fullScreenDismissed = false
 }

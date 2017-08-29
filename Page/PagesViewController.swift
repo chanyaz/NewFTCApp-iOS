@@ -26,11 +26,19 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
     }
     
+    override var prefersStatusBarHidden : Bool {
+        if AppLaunch.sharedInstance.fullScreenDismissed == false {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // Configure the page view controller and add it as a child view controller.
-
+        
         applyStyles()
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
@@ -43,11 +51,11 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
     
     // MARK: - UIPageViewController delegate methods
     func pageViewController(_ pageViewController: UIPageViewController, spineLocationFor orientation: UIInterfaceOrientation) -> UIPageViewControllerSpineLocation {
-            let currentViewController = self.pageViewController!.viewControllers![0]
-            let viewControllers = [currentViewController]
-            self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: true, completion: {done in })
-            self.pageViewController!.isDoubleSided = false
-            return .min
+        let currentViewController = self.pageViewController!.viewControllers![0]
+        let viewControllers = [currentViewController]
+        self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: true, completion: {done in })
+        self.pageViewController!.isDoubleSided = false
+        return .min
     }
     
     func applyStyles() {
@@ -74,7 +82,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
         self.view.backgroundColor = UIColor(hex: Color.Content.background)
     }
-
+    
     
 }
 

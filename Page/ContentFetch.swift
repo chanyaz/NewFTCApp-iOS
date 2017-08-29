@@ -118,6 +118,8 @@ class ContentFetch {
                         let customLink = item["customLink"] as? String ?? ""
                         let timeStampString = item["timeStamp"] as? String ?? "0"
                         let timeStamp = TimeInterval(timeStampString) ?? 0
+                        let caudio = item["caudio"] as? String ?? ""
+                        let eaudio = item["eaudio"] as? String ?? ""
                         
                         // MARK: Note that section may not be continuous
                         let oneItem = ContentItem(
@@ -137,6 +139,10 @@ class ContentFetch {
                         if shortlead.range(of: ".mp3$", options: .regularExpression) != nil {
                             oneItem.audioFileUrl = shortlead
                         }
+                        // MARK: If there is audio field, then the story has audio
+                        oneItem.caudio = caudio
+                        oneItem.eaudio = eaudio
+                        
                         itemCollection.append(oneItem)
                     }
                     let title = list["title"] as? String ?? ""

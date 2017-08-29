@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Kih-19-Ipx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Kih-19-Ipx">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -32,7 +32,7 @@
         <!--Detail View Controller-->
         <scene sceneID="8jS-Yg-eeT">
             <objects>
-                <viewController storyboardIdentifier="Detail View" modalTransitionStyle="flipHorizontal" modalPresentationStyle="currentContext" hidesBottomBarWhenPushed="YES" id="naC-T6-XIm" customClass="DetailViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Detail View" modalTransitionStyle="flipHorizontal" modalPresentationStyle="currentContext" hidesBottomBarWhenPushed="YES" id="naC-T6-XIm" customClass="DetailViewController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5uS-gj-lpA"/>
                         <viewControllerLayoutGuide type="bottom" id="1bF-GV-FCk"/>
@@ -282,7 +282,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xM3-DN-3bY" id="zW4-df-Wwi">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -548,10 +548,13 @@
     </scenes>
     <resources>
         <image name="BigPlayButton" width="48" height="48"/>
+        <image name="Clip" width="24" height="24"/>
+        <image name="Comment" width="24" height="24"/>
         <image name="DownloadButton" width="36" height="36"/>
         <image name="News" width="25" height="25"/>
         <image name="NewsDim" width="25" height="25"/>
         <image name="PauseButton" width="36" height="36"/>
         <image name="SettingsButton" width="36" height="36"/>
+        <image name="Share" width="24" height="24"/>
     </resources>
 </document>

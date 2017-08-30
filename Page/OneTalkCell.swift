@@ -60,7 +60,8 @@ class OneTalkCell: UITableViewCell {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         
         let whoSays = self.cellData.whoSays
-        
+        self.backgroundColor = UIColor(hex: "#fff1e0")
+
         
         // 显示头像
         if(self.cellData.headImage != "") {
@@ -104,18 +105,18 @@ class OneTalkCell: UITableViewCell {
 
             
             if let realBubbleImage = bubbleImage {
-                let bubbleImageStreched = realBubbleImage.resizableImage(withCapInsets: UIEdgeInsetsMake(20, 30, 20, 30), resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
-                //self.bubbleImageView.contentMode = .scaleToFill //NOTE:该方式可实现全部拉伸
+                let bubbleImageStreched = realBubbleImage.resizableImage(withCapInsets: UIEdgeInsetsMake(18.5, 18.5, 18.5, 24), resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
                 
-                
+               
                 self.bubbleImageView = UIImageView(frame: CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight)) // NOTE:任何一个View都要先初始化再设置属性
                 self.addSubview(self.bubbleImageView)
-                self.bubbleImageView.backgroundColor = UIColor.lightGray
+                //self.bubbleImageView.backgroundColor = UIColor.lightGray
                 self.bubbleImageView.image =  bubbleImageStreched
+                //self.bubbleImageView.contentMode = .scaleToFill //NOTE:该方式可实现全部拉伸
+                //print("bubbleImageView:\(self.bubbleImageView.frame)")
 
             }
             
-            //print("bubbleImageView:\(self.bubbleImageView.frame)")
         }
         
         
@@ -127,6 +128,7 @@ class OneTalkCell: UITableViewCell {
             saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
             saysContentView.text = self.cellData.saysWhat.content
             saysContentView.font = self.cellData.normalFont
+            saysContentView.textColor = self.cellData.textColor
              //saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
             
@@ -148,6 +150,7 @@ class OneTalkCell: UITableViewCell {
             titleView.text = self.cellData.saysWhat.title
             titleView.font = self.cellData.titleFont
              //titleView.backgroundColor = UIColor.green
+            titleView.textColor = self.cellData.textColor
             self.addSubview(titleView)
             
             //coverView:
@@ -163,6 +166,7 @@ class OneTalkCell: UITableViewCell {
             descriptionView.text = self.cellData.saysWhat.description
             descriptionView.font = self.cellData.descriptionFont
              //descriptionView.backgroundColor = UIColor.green
+            descriptionView.textColor = self.cellData.textColor
             self.addSubview(descriptionView)
             
             self.bubbleImageView.isUserInteractionEnabled = true//打开用户交互属性

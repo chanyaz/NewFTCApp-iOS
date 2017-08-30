@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import StoreKit
 
 class DataViewController: UICollectionViewController, UINavigationControllerDelegate {
     var isLandscape :Bool = false
@@ -42,7 +43,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         // self.clearsSelectionOnViewWillAppear = false
         
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil || dataObject["type"] == "follow" || dataObject["type"] == "read" || dataObject["type"] == "clip" {
+        if dataObject["api"] != nil || dataObject["type"] == "follow" || dataObject["type"] == "read" || dataObject["type"] == "clip"  || dataObject["type"] == "iap" {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -281,8 +282,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
     }
     
-    private func updateUI(with results: ContentFetchResults, horizontalClass: UIUserInterfaceSizeClass, verticalCass: UIUserInterfaceSizeClass) {
-        print ("data object is \(dataObject)")
+    fileprivate func updateUI(with results: ContentFetchResults, horizontalClass: UIUserInterfaceSizeClass, verticalCass: UIUserInterfaceSizeClass) {
+        print ("update UI: data object is \(dataObject)")
         // MARK: - Insert Ads into the fetch results
         let layoutWay:String
         if horizontalClass == .regular && verticalCass == .regular {
@@ -347,6 +348,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 )
                 let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
                 updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+            } else if type == "iap" {
+                loadProducts()
             } else {
                 let urlString = APIs.get("", type: type)
                 getAPI(urlString)
@@ -762,8 +765,57 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
     }
     
+    
+    // MARK: - In-app purchase start
+    
+    // TODO: - How do users share a product?
+    
+    // MARK: - Product information from app store, need to be online to access
+    fileprivate var products = [SKProduct]()
+    
+    // MARK: - The key name for purchase information in user defaults
+    fileprivate let myPurchasesKey = "My Purchases"
+    
+
+    
 }
 
+
+extension DataViewController {
+
+    // MARK: - load IAP products and update UI
+    fileprivate func loadProducts() {
+        products = []
+        FTCProducts.store.requestProducts{[weak self] success, products in
+            if success {
+                if let products = products {
+                    self?.products = products
+                }
+            }
+            // MARK: - Get product regardless of the request result
+            print ("product loaded: \(String(describing: self?.products))")
+            
+            
+            let contentSections = ContentSection(
+                title: "",
+                items: Download.get("read"),
+                type: "List",
+                adid: ""
+            )
+            let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
+            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+            
+            
+            //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
+            //            self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
+        }
+        
+    }
+    
+    
+}
 
 
 fileprivate let itemsPerRow: CGFloat = 3
@@ -804,6 +856,13 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
     }
+    
+    
+
+    
+    
+
+
     
     
 }

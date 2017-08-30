@@ -14,8 +14,8 @@ import SafariServices
 class PaidPostCell: CustomCell {
     
     // MARK: - Style settings for this class
-    let imageWidth = 152
-    let imageHeight = 114
+    let imageWidth = 187
+    let imageHeight = 140
     //var adModel: AdModel?
     var pageTitle = ""
     
@@ -65,6 +65,17 @@ class PaidPostCell: CustomCell {
         if let adModel = itemCell?.adModel {
             headline.text = adModel.headline
             lead.text = adModel.lead
+            
+            
+            if let leadText = adModel.lead {
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 8
+                paragraphStyle.lineBreakMode = .byTruncatingTail
+                let setStr = NSMutableAttributedString.init(string: leadText)
+                setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
+                lead.attributedText = setStr
+            }
+            
             sign.text = "广告"
             
             //            let randomIndex = Int(arc4random_uniform(UInt32(2)))

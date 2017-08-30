@@ -14,7 +14,7 @@ struct Color {
         static let headline = "#000000"
         static let body = "#333333"
         static let lead = "#777777"
-        static let border = "#d4c9bc"
+        static let border = "#e9decf"
         static let background = "#FFF1E0"
         static let tag = "#9E2F50"
         static let time = "#8b572a"
@@ -123,7 +123,7 @@ struct APIs {
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
         case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
-        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&003"
+        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&i=3&001"
         case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
         case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
         case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"

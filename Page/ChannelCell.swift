@@ -11,8 +11,8 @@ import UIKit
 class ChannelCell: CustomCell {
     
     // MARK: - Style settings for this class
-    let imageWidth = 152
-    let imageHeight = 114
+    let imageWidth = 187
+    let imageHeight = 140
     //var adModel: AdModel?
     var pageTitle = ""
     
@@ -45,7 +45,17 @@ class ChannelCell: CustomCell {
         
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        
+
+        if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 8
+            paragraphStyle.lineBreakMode = .byTruncatingTail
+            let setStr = NSMutableAttributedString.init(string: leadText)
+            setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
+            lead.attributedText = setStr
+        }
+        
         sign.text = nil
         
         // MARK: - Load the image of the item

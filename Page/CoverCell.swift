@@ -16,7 +16,7 @@ class CoverCell: CustomCell {
     let imageWidth = 408   // 16 * 52
     let imageHeight = 234  // 9 * 52
     
-
+    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
     @IBOutlet weak var lead: UILabel!
@@ -25,7 +25,7 @@ class CoverCell: CustomCell {
     @IBOutlet weak var headlineLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var headlineTrailingConstraint: NSLayoutConstraint!
     
-
+    
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
@@ -59,18 +59,27 @@ class CoverCell: CustomCell {
         
         // MARK: - Update dispay of the cell
         let headlineString = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-//        let headlineString: String?
-//        headlineString = "南五环边上学梦：北京首所打工子弟"
+        //        let headlineString: String?
+        //        headlineString = "南五环边上学梦：北京首所打工子弟"
         headline.text = headlineString
         
         // MARK: - Prevent widows in the second line
         if let headlineActualWidth = headlineActualWidth {
-        if headline.hasWidowInSecondLine(headlineActualWidth) == true {
-            headline.numberOfLines = 1
-        }
+            if headline.hasWidowInSecondLine(headlineActualWidth) == true {
+                headline.numberOfLines = 1
+            }
         }
         
-        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineHeightMultiple = 1.4
+            let setStr = NSMutableAttributedString.init(string: leadText)
+            setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
+            lead.attributedText = setStr
+        }
+        
+        
+        
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
@@ -110,5 +119,5 @@ extension UILabel {
         }
         return false
     }
-
+    
 }

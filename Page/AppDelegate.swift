@@ -43,24 +43,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // WeChat API
         WXApi.registerApp(WeChat.appId)
         
-        
-        // MARK: Show the Launch Screen as an Overlay
-//                if AppLaunch.sharedInstance.launched == false {
-//                    if let launchScreenViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
-//                        if let window = self.window, let rootViewController = window.rootViewController {
-//                            var currentController = rootViewController
-//                            let navViewController = currentController.childViewControllers[0]
-//                            let pageViewController = navViewController.childViewControllers[0]
-//                            
-//                            pageViewController.present(launchScreenViewController, animated: false, completion: nil)
-//                            
-//                        }
-//        
-//                    }
-//                    AppLaunch.sharedInstance.launched = true
-//                }
+        // MARK: Show the Launch Screen only when there is tabbar controller
+        if AppLaunch.sharedInstance.launched == false {
+            if let rootViewController = window?.rootViewController as? UITabBarController {
+                rootViewController.showLaunchScreen()
+                AppLaunch.sharedInstance.launched = true
+            } else {
+                AppLaunch.sharedInstance.fullScreenDismissed = true
+            }
+        }
 
-        
         return true
     }
     
@@ -138,7 +130,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         checkImpressions()
         checkImpressionTimer?.invalidate()
-        
+        //        if AppLaunch.sharedInstance.launched == true {
+        //            if let rootViewController = window?.rootViewController {
+        //                rootViewController.showAudioPlayer()
+        //            }
+        //        }
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -154,6 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         startCheckImpressionTimer()
+        
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

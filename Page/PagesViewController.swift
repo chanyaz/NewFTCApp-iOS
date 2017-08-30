@@ -26,14 +26,11 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
     }
     
-    override func loadView() {
-        super.loadView()
-
-        if AppLaunch.sharedInstance.launched == false {
-            if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
-                self.present(launchScreenViewController, animated: false, completion: nil)
-            }
-            AppLaunch.sharedInstance.launched = true
+    override var prefersStatusBarHidden : Bool {
+        if AppLaunch.sharedInstance.fullScreenDismissed == false {
+            return true
+        } else {
+            return false
         }
     }
     
@@ -41,7 +38,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // Configure the page view controller and add it as a child view controller.
-
+        
         applyStyles()
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
@@ -54,11 +51,11 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
     
     // MARK: - UIPageViewController delegate methods
     func pageViewController(_ pageViewController: UIPageViewController, spineLocationFor orientation: UIInterfaceOrientation) -> UIPageViewControllerSpineLocation {
-            let currentViewController = self.pageViewController!.viewControllers![0]
-            let viewControllers = [currentViewController]
-            self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: true, completion: {done in })
-            self.pageViewController!.isDoubleSided = false
-            return .min
+        let currentViewController = self.pageViewController!.viewControllers![0]
+        let viewControllers = [currentViewController]
+        self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: true, completion: {done in })
+        self.pageViewController!.isDoubleSided = false
+        return .min
     }
     
     func applyStyles() {
@@ -85,7 +82,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
         self.view.backgroundColor = UIColor(hex: Color.Content.background)
     }
-
+    
     
 }
 

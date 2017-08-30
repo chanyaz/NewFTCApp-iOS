@@ -250,6 +250,15 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             dataObject?.lead = item.lead
             dataObject?.tag = item.tag
             dataObject?.image = item.image
+            
+            if let caudio = item.caudio, caudio != "" {
+                dataObject?.caudio = caudio
+            }
+            
+            if let eaudio = item.eaudio, eaudio != "" {
+                dataObject?.eaudio = eaudio
+            }
+            
             updatePageContent()
         }
     }

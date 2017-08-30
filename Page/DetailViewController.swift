@@ -171,6 +171,17 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 let language: String
                 let text: String
                 let eventCategory = "Listen To Story"
+                
+                
+                // TODO: Check if there's audio file attached to this item
+                if let caudio = dataObject.caudio, caudio != "" {
+                    print ("There is chinese audio: \(caudio) for this item, handle it later. ")
+                }
+                // TODO: Check if there's audio file attached to this item
+                if let eaudio = dataObject.eaudio, eaudio != "" {
+                    print ("There is english audio: \(eaudio) for this item, handle it later. ")
+                }
+                
                 // MARK: 0 means Chinese
                 if actualLanguageIndex == 0 {
                     title = dataObject.headline

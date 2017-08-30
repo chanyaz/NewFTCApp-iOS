@@ -10,17 +10,14 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
-    
-    
 //    override func loadView() {
 //        super.loadView()
-//        if AppLaunch.sharedInstance.launched == false {
-//            if let launchScreenViewController = storyboard?.instantiateViewController(withIdentifier: "LaunchScreen") {
-//                self.tabBarController?.present(launchScreenViewController, animated: false, completion: nil)
-//            }
-//            AppLaunch.sharedInstance.launched = true
-//        }
 //    }
+    
+    
+    override var prefersStatusBarHidden : Bool {
+        return true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +43,7 @@ class CustomTabBarController: UITabBarController {
                 tabBarItem.image = tabBarImage?.withRenderingMode(.alwaysOriginal)
             }
         }
-
+        
     }
     
     
@@ -79,5 +76,8 @@ class CustomTabBarController: UITabBarController {
         }
     }
     
+    
+
+
     
 }

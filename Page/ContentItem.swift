@@ -41,7 +41,15 @@ class ContentItem{
     var locations: String?
     var relatedStories: [[String: Any]]?
     var relatedVideos: [[String: Any]]?
+    
+    // MARK: Audio File Url for Interactive such as FT Radio
     var audioFileUrl: String?
+    
+    // MARK: Audio File urls for story such as FTCC
+    var caudio: String?
+    var eaudio: String?
+    
+    
     
     var followType: String?
     

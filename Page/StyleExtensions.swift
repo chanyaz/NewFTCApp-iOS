@@ -119,6 +119,10 @@ extension UIViewController {
     }
     
     public func showLaunchScreen() {
+        // MARK: You can't insert a view controller into a navigation controller
+        if self is UINavigationController {
+        return
+        }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
             let fullScreenView = UIView()
@@ -136,9 +140,6 @@ extension UIViewController {
             //view.insertSubview(fullScreenView, aboveSubview: self.tabBar)
             if let tabBarViewController = self as? UITabBarController {
                 view.insertSubview(fullScreenView, aboveSubview: tabBarViewController.tabBar)
-            } else if let navController = self as? UINavigationController {
-                self.navigationController?.view.addSubview(fullScreenView)
-                view.insertSubview(fullScreenView, aboveSubview: navController.navigationBar)
             } else {
                 let lastViewIndex = view.subviews.count - 1
                 view.insertSubview(fullScreenView, at: lastViewIndex)

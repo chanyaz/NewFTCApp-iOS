@@ -86,6 +86,11 @@ struct AppNavigation {
                 ["title": "FT研究院",
                  "url":"http://www.ftchinese.com/m/marketing/intelligence.html?webview=ftcapp&001",
                  "screenName":"homepage/ftintelligence"
+                ],
+                ["title": "FT电子书",
+                 "type": "iap",
+                 "subtype":"ebook",
+                 "screenName":"homepage/ftintelligence"
                 ]
             ]
         ],
@@ -129,7 +134,7 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/mba.html?type=json",
+                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test?001",
                  "url":"http://www.ftchinese.com/channel/mba.html",
                  "screenName":"ftacademy"
                 ],

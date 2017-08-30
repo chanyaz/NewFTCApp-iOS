@@ -300,6 +300,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.talkListBlock.dataSource = self // MARK:两个协议代理，一个也不能少
         self.inputBlock.delegate = self
         
+        self.talkListBlock.backgroundColor = UIColor(hex: "#fff1e0")
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）

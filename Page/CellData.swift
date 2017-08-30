@@ -70,10 +70,11 @@ struct CellData {
     
     var saysType: Infotype = .text
     var saysWhat = SaysWhat()
-
+    var textColor = UIColor.black
     
     //基本尺寸
-    var bubbleImageInsets = UIEdgeInsetsMake(10, 20, 10, 20)//气泡嵌入文字UILabelView的边距
+    //var bubbleImageInsets = UIEdgeInsetsMake(10, 20, 10, 20)//气泡嵌入文字UILabelView的边距
+    var bubbleImageInsets = UIEdgeInsetsMake(17, 17, 17, 31)
     var cellInsets = UIEdgeInsetsMake(5, 5, 5, 5)//cell嵌入头像和气泡的最小边距
     var headImageLength = CGFloat(50) //正方形头像边长
     var betweenHeadAndBubble = CGFloat(5) //头像和气泡的左右距离
@@ -116,11 +117,15 @@ struct CellData {
     
     init(whoSays who: Member, saysWhat say: SaysWhat) {
         if who == .robot {
-            self.headImage = "robot.jpeg"
-            self.bubbleImage = "robotBub"
+            self.headImage = "robotPortrait"
+            //self.bubbleImage = "robotBub"
+            self.bubbleImage = "robotSayBubble"
+            self.textColor = UIColor.black
         } else if who == .you {
-            self.headImage = "you.jpeg"
-            self.bubbleImage = "youBub"
+            self.headImage = "youPortrait"
+            //self.bubbleImage = "youBub"
+            self.bubbleImage = "youSayBubble"
+            self.textColor = UIColor.white
         }
         self.whoSays = who
         self.saysWhat = say

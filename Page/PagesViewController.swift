@@ -64,7 +64,11 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
             let tabTitle = AppNavigation.getNavigationProperty(for: currentTabName, of: "title")
             if let tabTitleImage = AppNavigation.getNavigationProperty(for: currentTabName, of: "title-image") {
                 if let image = UIImage(named: tabTitleImage) {
-                    navigationItem.titleView = UIImageView(image: image)
+                    let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 124, height: 26))
+                    imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                    imageView.contentMode = .scaleAspectFit
+                    imageView.image = image
+                    navigationItem.titleView = imageView
                 }
             } else {
                 navigationItem.title = tabTitle

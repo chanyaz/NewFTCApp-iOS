@@ -59,16 +59,11 @@ class BigImageCell: CustomCell {
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right
         let containerViewMargins = containerView.layoutMargins.left + containerView.layoutMargins.right
-        let headlineActualWidth: CGFloat?
+        //let headlineActualWidth: CGFloat?
         if let cellWidth = cellWidth {
             self.contentView.translatesAutoresizingMaskIntoConstraints = false
             let containerWidth = cellWidth - cellMargins - containerViewMargins
             containerViewWidthConstraint.constant = containerWidth
-            let headlineLeading = headlineLeadingConstraint.constant
-            let headlineTrailing = headlineTrailingConstraint.constant
-            headlineActualWidth = containerWidth - headlineLeading - headlineTrailing
-        } else {
-            headlineActualWidth = nil
         }
         
         
@@ -79,11 +74,11 @@ class BigImageCell: CustomCell {
         headline.text = headlineString
         
         // MARK: - Prevent widows in the second line
-        if let headlineActualWidth = headlineActualWidth {
-        if headline.hasWidowInSecondLine(headlineActualWidth) == true {
-            headline.numberOfLines = 1
-        }
-        }
+//        if let headlineActualWidth = headlineActualWidth {
+//        if headline.hasWidowInSecondLine(headlineActualWidth) == true {
+//            headline.numberOfLines = 1
+//        }
+//        }
         
         
         if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
@@ -93,7 +88,7 @@ class BigImageCell: CustomCell {
             setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
             lead.attributedText = setStr
         }
-        
+    
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
         if let loadedImage = itemCell?.coverImage {

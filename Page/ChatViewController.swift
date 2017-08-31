@@ -303,6 +303,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.talkListBlock.backgroundColor = UIColor(hex: "#fff1e0")
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
+        self.bottomToolbar.backgroundColor = UIColor(hex: "#f7e9d8")
+        
+        // MARK：为bottomToolbar添加上边框
+        let border = CALayer()
+        border.frame = CGRect(x:0, y:0, width:self.bottomToolbar.frame.width, height:1)
+        border.backgroundColor = UIColor(hex: "#dddddd").cgColor
+        self.bottomToolbar.layer.addSublayer(border)
+        
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示

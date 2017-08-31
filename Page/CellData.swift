@@ -123,14 +123,14 @@ struct CellData {
             //self.bubbleImage = "robotBub"
             self.bubbleImage = "robotSayBubble"
             self.textColor = UIColor.black
-            self.bubbleImageInsets = UIEdgeInsetsMake(10, 20, 10, 12 )
+            self.bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12 )
             self.bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)
         } else if who == .you {
             self.headImage = "youPortrait"
             //self.bubbleImage = "youBub"
             self.bubbleImage = "youSayBubble"
             self.textColor = UIColor.white
-            self.bubbleImageInsets = UIEdgeInsetsMake(10, 12, 10, 20)
+            self.bubbleImageInsets = UIEdgeInsetsMake(8, 12, 10, 20)
             self.bubbleStrechInsets = UIEdgeInsetsMake(18.5, 18.5, 18.5, 24)
         }
         self.whoSays = who

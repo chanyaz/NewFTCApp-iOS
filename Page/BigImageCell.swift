@@ -100,9 +100,7 @@ class BigImageCell: CustomCell {
             })
             //print ("should load image here")
         }
-        
 
-        
     }
     
 }

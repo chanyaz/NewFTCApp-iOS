@@ -14,7 +14,7 @@ struct Color {
         static let headline = "#000000"
         static let body = "#333333"
         static let lead = "#777777"
-        static let border = "#d4c9bc"
+        static let border = "#e9decf"
         static let background = "#FFF1E0"
         static let tag = "#9E2F50"
         static let time = "#8b572a"
@@ -53,6 +53,7 @@ struct Color {
     struct Ad {
         static let background = "#f6e9d8"
         static let sign = "#555555"
+        static let signBackground = "#ecd4b4"
     }
     
 }
@@ -123,7 +124,7 @@ struct APIs {
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
         case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
-        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&003"
+        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&i=3&001"
         case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
         case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
         case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
@@ -229,12 +230,12 @@ struct SupplementContent {
         }
         switch layout {
         case "home":
-//            // MARK: Create link to the Microsoft AI chat bot
-//            let xiaobingItem = ContentItem(id: "Id of the Chat Room", image: "http://i.ftimg.net/picture/0/000068460_piclink.jpg", headline: "微软的人工智能机器人小冰", lead: "微软小冰一直在探索新媒体领域的技术能力，试图通过实时对话和用户交流，实现新闻传播的效果", type: "ViewController", preferSponsorImage: "", tag: "AI", customLink: "", timeStamp: 0, section: 0, row: 0)
-//            // MARK: Insert the chatbot post under paid post
-//            if newContentSections.count > 0 && newContentSections[0].items.count > 2 {
-//                newContentSections[0].items.insert(xiaobingItem, at:2)
-//            }
+            // MARK: Create link to the Microsoft AI chat bot
+            //            let xiaobingItem = ContentItem(id: "Id of the Chat Room", image: "http://i.ftimg.net/picture/0/000068460_piclink.jpg", headline: "微软的人工智能机器人小冰", lead: "微软小冰一直在探索新媒体领域的技术能力，试图通过实时对话和用户交流，实现新闻传播的效果", type: "ViewController", preferSponsorImage: "", tag: "AI", customLink: "", timeStamp: 0, section: 0, row: 0)
+            //            // MARK: Insert the chatbot post under paid post
+            //            if newContentSections.count > 0 && newContentSections[0].items.count > 2 {
+            //                newContentSections[0].items.insert(xiaobingItem, at:2)
+            //            }
             newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
         case "follows":

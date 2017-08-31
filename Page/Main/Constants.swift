@@ -53,6 +53,7 @@ struct Color {
     struct Ad {
         static let background = "#f6e9d8"
         static let sign = "#555555"
+        static let signBackground = "#ecd4b4"
     }
     
 }

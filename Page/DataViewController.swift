@@ -307,12 +307,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             apiUrl: results.apiUrl,
             fetchResults: fetchResultsWithAds
         )
-//        let isFirstLoad: Bool
-//        if self.fetches.fetchResults.count == 0 {
-//            isFirstLoad = true
-//        } else {
-//            isFirstLoad = false
-//        }
+        //        let isFirstLoad: Bool
+        //        if self.fetches.fetchResults.count == 0 {
+        //            isFirstLoad = true
+        //        } else {
+        //            isFirstLoad = false
+        //        }
         
         // self.fetches = results
         // self.collectionView?.collectionViewLayout.invalidateLayout()
@@ -324,12 +324,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         //            print ("No need to reload Data as the fetch is empty")
         //        }
         // FIXME: We need to run reloadData inside updateUI and outside updateUI. If not, the app will crash when new data has less items than old data. Why?
-//        if isFirstLoad == false {
-//            print ("Will reload Data called from updateUI")
-//            self.collectionView?.reloadData()
-//        } else {
-//            print ("No need to reload Data as the fetch is empty")
-//        }
+        //        if isFirstLoad == false {
+        //            print ("Will reload Data called from updateUI")
+        //            self.collectionView?.reloadData()
+        //        } else {
+        //            print ("No need to reload Data as the fetch is empty")
+        //        }
         if resultsWithAds.fetchResults.count > 0 {
             self.fetches = resultsWithAds
             self.collectionView?.reloadData()
@@ -776,16 +776,15 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     // MARK: - Product information from app store, need to be online to access
     fileprivate var products = [SKProduct]()
     
-    // MARK: - The key name for purchase information in user defaults
-    fileprivate let myPurchasesKey = "My Purchases"
-    
 
+    
+    
     
 }
 
 
 extension DataViewController {
-
+    
     // MARK: - load IAP products and update UI
     fileprivate func loadProducts() {
         products = []
@@ -798,18 +797,18 @@ extension DataViewController {
             // MARK: - Get product regardless of the request result
             print ("product loaded: \(String(describing: self?.products))")
             
-            
-            let contentSections = ContentSection(
-                title: "",
-                items: Download.get("read"),
-                type: "List",
-                adid: ""
-            )
-            let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
-            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-            self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
-            
+            if let products = self?.products {
+                let contentSections = ContentSection(
+                    title: "",
+                    items: IAP.get(products, in: "ebook"),
+                    type: "List",
+                    adid: ""
+                )
+                let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
+                let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+                let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+                self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+            }
             
             //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
             //            self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
@@ -861,11 +860,11 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
     }
     
     
-
     
     
-
-
+    
+    
+    
     
     
 }

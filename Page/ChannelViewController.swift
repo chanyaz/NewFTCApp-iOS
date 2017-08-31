@@ -83,19 +83,9 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             updateBackBarButton(for: 0)
             
             // MARK: - Show Search Button is Required
-            if let navRightItem = AppNavigation.getNavigationProperty(for: currentTabName, of: "navRightItem") {
-                switch navRightItem {
-                case "Search":
-                    let searchImage = UIImage(named: "Search")
-                    let searchButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(showSearch))
-                    self.navigationItem.rightBarButtonItem = searchButton
-                default:
-                    break
-                }
-                
-            }
+            createNavItem(for: currentTabName, of: "navRightItem")
+            createNavItem(for: currentTabName, of: "navLeftItem")
         }
-        
         
         
         
@@ -157,7 +147,43 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         //        }
     }
     
+    // navItem = AppNavigation.getNavigationProperty(for: currentTabName, of: "navRightItem")
     
+    fileprivate func createNavItem(for currentTabName: String, of navItemString: String) {
+        func insertButton(_ button: UIBarButtonItem, to navItemString: String) {
+            switch navItemString {
+            case "navRightItem":
+                navigationItem.rightBarButtonItem = button
+            case "navLeftItem":
+                navigationItem.leftBarButtonItem = button
+                break
+            default:
+                break
+            }
+        }
+        if let navItem = AppNavigation.getNavigationProperty(for: currentTabName, of: navItemString) {
+            switch navItem {
+            case "Search":
+                let image = UIImage(named: "Search")
+                let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showSearch))
+                insertButton(button, to: navItemString)
+            case "Chat":
+                let image = UIImage(named: "Comment")
+                let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showChat))
+                insertButton(button, to: navItemString)
+            default:
+                break
+            }
+        }
+    }
+    
+
+    
+    public func showChat() {
+        if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
+            navigationController?.pushViewController(chatViewController, animated: true)
+        }
+    }
     
     private func updateBackBarButton(for index: Int) {
         // MARK: - Set the back bar button for the popped views

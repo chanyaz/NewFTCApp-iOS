@@ -795,17 +795,7 @@ extension ContentItemViewController: UITextViewDelegate {
     }
 }
 
-extension String {
-    func cleanHTMLTags() -> String {
-        let newString = self.replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
-            .replacingOccurrences(of: "'", with: "{singlequote}")
-            .replacingOccurrences(of: "<div [classid]+=story_main_mpu.*</div>", with: "", options: .regularExpression)
-            .replacingOccurrences(of: "<script type=\"text/javascript\">", with: "{JSScriptTagStart}")
-            .replacingOccurrences(of: "</script>", with: "{JSScriptTagEnd}")
-            .replacingOccurrences(of: "<script>", with: "{JSScriptTagStart}")
-        return newString
-    }
-}
+
 
 //extension String {
 //    func htmlAttributedString() -> NSMutableAttributedString? {

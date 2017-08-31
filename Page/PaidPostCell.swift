@@ -25,7 +25,7 @@ class PaidPostCell: CustomCell {
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var border: UIView!
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var sign: UILabel!
+    @IBOutlet weak var sign: PaddingLabel!
     
 
     
@@ -63,11 +63,9 @@ class PaidPostCell: CustomCell {
     
     private func showAd() {
         if let adModel = itemCell?.adModel {
-            headline.text = adModel.headline
-            lead.text = adModel.lead
-            
-            
-            if let leadText = adModel.lead {
+            headline.text = adModel.headline?.removeHTMLTags()
+                        
+            if let leadText = adModel.lead?.removeHTMLTags() {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.lineSpacing = 8
                 paragraphStyle.lineBreakMode = .byTruncatingTail
@@ -77,6 +75,11 @@ class PaidPostCell: CustomCell {
             }
             
             sign.text = "广告"
+            sign.backgroundColor = UIColor(hex: Color.Ad.signBackground)
+            sign.topInset = 2
+            sign.bottomInset = 2
+            sign.leftInset = 5
+            sign.rightInset = 5
             
             //            let randomIndex = Int(arc4random_uniform(UInt32(2)))
             //            if randomIndex == 1 {
@@ -145,14 +148,7 @@ class PaidPostCell: CustomCell {
         }
     }
     
-    
-    
-    
-    
 
-    
-    
-    
 }
 
 //TODO: Paid Post Ad should be moved to a subclass rather than the channel cell

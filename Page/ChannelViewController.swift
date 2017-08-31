@@ -168,7 +168,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
                 let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showSearch))
                 insertButton(button, to: navItemString)
             case "Chat":
-                let image = UIImage(named: "Comment")
+                let image = UIImage(named: "Chat")
                 let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showChat))
                 insertButton(button, to: navItemString)
             default:

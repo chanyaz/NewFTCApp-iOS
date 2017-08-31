@@ -105,13 +105,14 @@ class OneTalkCell: UITableViewCell {
 
             
             if let realBubbleImage = bubbleImage {
-                let bubbleImageStreched = realBubbleImage.resizableImage(withCapInsets: UIEdgeInsetsMake(18.5, 18.5, 18.5, 24), resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
+                let bubbleImageStreched = realBubbleImage.resizableImage(withCapInsets: self.cellData.bubbleStrechInsets, resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
                 
-               
-                self.bubbleImageView = UIImageView(frame: CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight)) // NOTE:任何一个View都要先初始化再设置属性
+                self.bubbleImageView = UIImageView(image: bubbleImageStreched)
+                print("origin StrechedBubbleView: \(self.bubbleImageView.frame.size)")
+                self.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight) // NOTE:任何一个View都要先初始化再设置属性
                 self.addSubview(self.bubbleImageView)
                 //self.bubbleImageView.backgroundColor = UIColor.lightGray
-                self.bubbleImageView.image =  bubbleImageStreched
+                //self.bubbleImageView.image =  bubbleImageStreched
                 //self.bubbleImageView.contentMode = .scaleToFill //NOTE:该方式可实现全部拉伸
                 //print("bubbleImageView:\(self.bubbleImageView.frame)")
 

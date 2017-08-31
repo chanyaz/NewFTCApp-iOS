@@ -98,6 +98,7 @@ struct CellData {
     var descriptionHeight = CGFloat()
     
     // 一些必须在数据里生成的和view相关的对象
+    var strechedBubbleImage = UIImage()
     var saysImage = UIImage()
     var coverImage = UIImage()
     var normalFont = UIFont()

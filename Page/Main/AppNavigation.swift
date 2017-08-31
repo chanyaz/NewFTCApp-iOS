@@ -91,6 +91,7 @@ struct AppNavigation {
                 ["title": "FT电子书",
                  "type": "iap",
                  "subtype":"ebook",
+                 "compactLayout": "books",
                  "screenName":"homepage/ftintelligence"
                 ]
             ]

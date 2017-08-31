@@ -192,6 +192,10 @@
 		607094AF1EE943A900760A60 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AE1EE943A900760A60 /* Channels.swift */; };
 		6072F9F31F57ED280035AD92 /* IAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6072F9F21F57ED280035AD92 /* IAP.swift */; };
 		6072F9F41F57ED280035AD92 /* IAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6072F9F21F57ED280035AD92 /* IAP.swift */; };
+		60814F601F580FB200041801 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60814F5E1F580FB200041801 /* BookCell.swift */; };
+		60814F611F580FB200041801 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60814F5E1F580FB200041801 /* BookCell.swift */; };
+		60814F621F580FB200041801 /* BookCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60814F5F1F580FB200041801 /* BookCell.xib */; };
+		60814F631F580FB200041801 /* BookCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60814F5F1F580FB200041801 /* BookCell.xib */; };
 		6084C7CC1F452A210035F60C /* register.html in Resources */ = {isa = PBXBuildFile; fileRef = 6084C7CB1F452A210035F60C /* register.html */; };
 		6084C7CD1F452A210035F60C /* register.html in Resources */ = {isa = PBXBuildFile; fileRef = 6084C7CB1F452A210035F60C /* register.html */; };
 		6087E3D71EF212960034A92F /* ad.html in Resources */ = {isa = PBXBuildFile; fileRef = 6087E3D61EF212960034A92F /* ad.html */; };
@@ -372,6 +376,8 @@
 		607094AC1EE9436900760A60 /* Tabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		607094AE1EE943A900760A60 /* Channels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
 		6072F9F21F57ED280035AD92 /* IAP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAP.swift; sourceTree = "<group>"; };
+		60814F5E1F580FB200041801 /* BookCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
+		60814F5F1F580FB200041801 /* BookCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookCell.xib; sourceTree = "<group>"; };
 		6084C7CB1F452A210035F60C /* register.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = register.html; path = FTChinese/register.html; sourceTree = "<group>"; };
 		6087E3D61EF212960034A92F /* ad.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ad.html; sourceTree = "<group>"; };
 		6087E3D91EF2294C0034A92F /* ga.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ga.js; sourceTree = "<group>"; };
@@ -937,6 +943,8 @@
 				50E220B81F36B498005E4642 /* BigImageCell.xib */,
 				604FF9491EEF7649005D2A41 /* ChannelCell.swift */,
 				604FF94A1EEF7649005D2A41 /* ChannelCell.xib */,
+				60814F5E1F580FB200041801 /* BookCell.swift */,
+				60814F5F1F580FB200041801 /* BookCell.xib */,
 				50F6105E1F2CCB9B00E3AABC /* LineCell.swift */,
 				50F6105F1F2CCB9C00E3AABC /* LineCell.xib */,
 				60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */,
@@ -1154,6 +1162,7 @@
 				F29E19B31F39A2BC00FAA8C0 /* sound.png in Resources */,
 				602153671F397C650077A7AF /* Ad.xib in Resources */,
 				F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */,
+				60814F631F580FB200041801 /* BookCell.xib in Resources */,
 				6021538F1F39990E0077A7AF /* LaunchScreen.storyboard in Resources */,
 				6055EF9A1F5021C1006F8A83 /* PaidPostCell.xib in Resources */,
 				601AC21C1F4870780004196A /* search.html in Resources */,
@@ -1207,6 +1216,7 @@
 				602153C11F39A4390077A7AF /* close.png in Resources */,
 				60CA7BC51EF28AD4000CD9B4 /* HeaderView.xib in Resources */,
 				F234EC741F15D1DB003F6DD0 /* HotArticleCellRegular.xib in Resources */,
+				60814F621F580FB200041801 /* BookCell.xib in Resources */,
 				AFD8AF5C1F3809DC00508A91 /* you.jpeg in Resources */,
 				602153C21F39A4390077A7AF /* cover.jpg in Resources */,
 				500139E11F1A7188009EC29D /* GoogleService-Info.plist in Resources */,
@@ -1257,7 +1267,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		886899C82F14A377FBC6FF9E /* [CP] Check Pods Manifest.lock */ = {
@@ -1275,7 +1285,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9EEBA5BD08C755F531ACE82B /* [CP] Copy Pods Resources */ = {
@@ -1368,6 +1378,7 @@
 				6021531A1F397C650077A7AF /* PlaySpeech.swift in Sources */,
 				6021531C1F397C650077A7AF /* ChannelCellRegular.swift in Sources */,
 				6021531D1F397C650077A7AF /* HotArticleCellRegular.swift in Sources */,
+				60814F611F580FB200041801 /* BookCell.swift in Sources */,
 				6021531E1F397C650077A7AF /* PageCollectionViewLayoutV.swift in Sources */,
 				6021531F1F397C650077A7AF /* Tabs.swift in Sources */,
 				602153201F397C650077A7AF /* ShareHelper.swift in Sources */,
@@ -1532,6 +1543,7 @@
 				607094AF1EE943A900760A60 /* Channels.swift in Sources */,
 				602153A11F399E010077A7AF /* AppNavigation.swift in Sources */,
 				600BD69F1F1DBAFF0077C104 /* PushHelper.swift in Sources */,
+				60814F601F580FB200041801 /* BookCell.swift in Sources */,
 				60C5586E1F2990CD004C4E0E /* LaunchScreen.swift in Sources */,
 				60C558701F299F09004C4E0E /* AdSchedule.swift in Sources */,
 				60C0D6601F18BF5800E6F77D /* Impressions.swift in Sources */,

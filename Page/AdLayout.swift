@@ -76,9 +76,11 @@ struct AdLayout {
             // MARK: - The first item in the first section should be marked as Cover
             newContentSections[0].items[0].isCover = true
             // MARK: - Break up the first section into two or more, depending on how you want to layout ads
-            
+            newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
+            
         default:
+            newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
         }
     }

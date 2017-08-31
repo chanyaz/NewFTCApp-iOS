@@ -70,6 +70,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
             collectionView?.register(UINib.init(nibName: "FollowCell", bundle: nil), forCellWithReuseIdentifier: "FollowCell")
+            collectionView?.register(UINib.init(nibName: "BookCell", bundle: nil), forCellWithReuseIdentifier: "BookCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
             collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
@@ -284,13 +285,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     fileprivate func updateUI(with results: ContentFetchResults, horizontalClass: UIUserInterfaceSizeClass, verticalCass: UIUserInterfaceSizeClass) {
-        print ("update UI: data object is \(dataObject)")
         // MARK: - Insert Ads into the fetch results
         let layoutWay:String
         if horizontalClass == .regular && verticalCass == .regular {
-            layoutWay="ipadhome"
+            layoutWay = dataObject["regularLayout"] ?? "ipadhome"
         } else {
-            layoutWay="home"
+            layoutWay = dataObject["compactLayout"] ?? "home"
         }
         // MARK: Insert Content
         let fetchResultsWithContent: [ContentSection]
@@ -307,29 +307,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             apiUrl: results.apiUrl,
             fetchResults: fetchResultsWithAds
         )
-        //        let isFirstLoad: Bool
-        //        if self.fetches.fetchResults.count == 0 {
-        //            isFirstLoad = true
-        //        } else {
-        //            isFirstLoad = false
-        //        }
-        
-        // self.fetches = results
-        // self.collectionView?.collectionViewLayout.invalidateLayout()
-        
-        //        if self.collectionView?.numberOfSections > 0 {
-        //            print ("Will reload Data called from updateUI")
-        //            self.collectionView?.reloadData()
-        //        } else {
-        //            print ("No need to reload Data as the fetch is empty")
-        //        }
-        // FIXME: We need to run reloadData inside updateUI and outside updateUI. If not, the app will crash when new data has less items than old data. Why?
-        //        if isFirstLoad == false {
-        //            print ("Will reload Data called from updateUI")
-        //            self.collectionView?.reloadData()
-        //        } else {
-        //            print ("No need to reload Data as the fetch is empty")
-        //        }
         if resultsWithAds.fetchResults.count > 0 {
             self.fetches = resultsWithAds
             self.collectionView?.reloadData()
@@ -474,6 +451,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.pageTitle = pageTitle
                 return cell
             }
+        case "BookCell":
+            if let cell = cellItem as? BookCell {
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.pageTitle = pageTitle
+                return cell
+            }
         case "FollowCell":
             if let cell = cellItem as? FollowCell {
                 cell.cellWidth = cellWidth
@@ -606,7 +590,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "ChannelCellRegular"
                 }
             } else {
-                if item.type == "follow" {
+                if item.type == "ebook" {
+                    reuseIdentifier = "BookCell"
+                } else if item.type == "follow" {
                     reuseIdentifier = "FollowCell"
                 } else if item.type == "ad"{
                     if item.adModel == nil || item.adModel?.headline == nil {

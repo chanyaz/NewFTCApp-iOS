@@ -21,7 +21,6 @@ struct IAP {
                 // MARK: If product group doesn't fit, fall through the loop immediately
                 let productGroup = oneProduct["group"] as? String ?? ""
                 if let groupFilterString = group, groupFilterString != productGroup {
-                    print ("skip group of \(groupFilterString)")
                     continue
                 }
                 
@@ -109,7 +108,7 @@ struct IAP {
                     savePurchase(id, property: "description", value: productDescription)
                 }
                 
-                productDescription = "<p>\(productDescription.replacingOccurrences(of: "\n", with: "</p><p>", options: .regularExpression))</p>"
+                //productDescription = "<p>\(productDescription.replacingOccurrences(of: "\n", with: "</p><p>", options: .regularExpression))</p>"
                 
                 //                let productString = "{title: '\(productTitle)',description: '\(productDescription)',price: '\(productPrice)',id: '\(id)',image: '\(productImage)', teaser: '\(productTeaser)', isPurchased: \(isPurchased), isDownloaded: \(isDownloaded), group: '\(productGroup)', groupTitle: '\(productGroupTitle)'\(benefitsString)\(expireDateString)\(periodString)}"
                 //                productsString += ",\(productString)"
@@ -118,7 +117,7 @@ struct IAP {
                     image: productImage,
                     headline: productTitle,
                     lead: productTeaser,
-                    type: "story",
+                    type: productGroup,
                     preferSponsorImage: "",
                     tag: productGroup,
                     customLink: "",
@@ -126,6 +125,8 @@ struct IAP {
                     section: 0,
                     row: 0
                 )
+                contentItem.cbody = productDescription
+                
                 contentItems.append(contentItem)
                 
             }

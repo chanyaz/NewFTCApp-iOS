@@ -36,14 +36,14 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="63A-Fz-18z">
-                                <rect key="frame" x="14" y="58" width="93.5" height="70"/>
+                                <rect key="frame" x="14" y="52" width="93.5" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="63A-Fz-18z" secondAttribute="height" multiplier="4:3" id="2b5-He-cJh"/>
                                     <constraint firstAttribute="height" constant="70" id="wX2-6T-OrC"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RXw-TM-ab8">
-                                <rect key="frame" x="115.5" y="57" width="193.5" height="18"/>
+                                <rect key="frame" x="115.5" y="51" width="193.5" height="18"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Label">
                                         <attributes>
@@ -69,7 +69,7 @@
                             <constraint firstAttribute="trailing" secondItem="ZeZ-uA-ElO" secondAttribute="trailing" constant="14" id="GD7-ls-qwX"/>
                             <constraint firstItem="RXw-TM-ab8" firstAttribute="top" secondItem="63A-Fz-18z" secondAttribute="top" constant="-1" id="MLN-kM-DGR"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="14" id="OIq-Sz-gYA"/>
-                            <constraint firstItem="63A-Fz-18z" firstAttribute="top" secondItem="ZeZ-uA-ElO" secondAttribute="bottom" constant="14" id="YKr-tN-xZD"/>
+                            <constraint firstItem="63A-Fz-18z" firstAttribute="top" secondItem="ZeZ-uA-ElO" secondAttribute="bottom" constant="8" id="YKr-tN-xZD"/>
                             <constraint firstAttribute="trailing" secondItem="dD2-9f-YHY" secondAttribute="trailing" constant="14" id="ZG1-e4-mxh"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="top" secondItem="yfD-Kf-wUR" secondAttribute="top" id="dOv-cV-L5y"/>
                             <constraint firstAttribute="trailing" secondItem="RXw-TM-ab8" secondAttribute="trailing" constant="14" id="e3b-Db-ggg"/>

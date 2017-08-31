@@ -63,11 +63,9 @@ class PaidPostCell: CustomCell {
     
     private func showAd() {
         if let adModel = itemCell?.adModel {
-            headline.text = adModel.headline
-            lead.text = adModel.lead
-            
-            
-            if let leadText = adModel.lead {
+            headline.text = adModel.headline?.removeHTMLTags()
+                        
+            if let leadText = adModel.lead?.removeHTMLTags() {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.lineSpacing = 8
                 paragraphStyle.lineBreakMode = .byTruncatingTail

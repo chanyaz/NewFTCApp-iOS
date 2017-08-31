@@ -22,6 +22,7 @@ struct AppNavigation {
             "navBackGroundColor": "#f7e9d8",
             "isNavLightContent": false,
             "navRightItem": "Search",
+            "navLeftItem": "Chat",
             "Channels": [
                 ["title": "首页",
                  "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",

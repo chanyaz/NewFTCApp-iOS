@@ -276,3 +276,19 @@ extension UIButton {
         self.setBackgroundImage(colorImage, for: forState)
     }
 }
+
+extension String {
+    func removeHTMLTags() -> String {
+        let newString = self.replacingOccurrences(of: "<[^>]*>", with: "", options: .regularExpression)
+        return newString
+    }
+    func cleanHTMLTags() -> String {
+        let newString = self.replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "'", with: "{singlequote}")
+            .replacingOccurrences(of: "<div [classid]+=story_main_mpu.*</div>", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "<script type=\"text/javascript\">", with: "{JSScriptTagStart}")
+            .replacingOccurrences(of: "</script>", with: "{JSScriptTagEnd}")
+            .replacingOccurrences(of: "<script>", with: "{JSScriptTagStart}")
+        return newString
+    }
+}

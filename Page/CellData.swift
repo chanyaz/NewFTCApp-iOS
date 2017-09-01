@@ -25,7 +25,7 @@ struct SaysWhat {
     var url: String = ""
     var title: String = ""
     var description: String = ""
-    var coverUrl: String = ""
+    var coverUrl: String?
     
     //文本类型构造器
     init(saysType type: Infotype, saysContent content: String) {
@@ -44,7 +44,7 @@ struct SaysWhat {
     }
     
     //图文类型构造器
-    init(saysType type: Infotype, saysTitle title: String, saysDescription description: String, saysCover coverUrl: String, saysUrl cardUrl:String) {
+    init(saysType type: Infotype, saysTitle title: String, saysDescription description: String, saysCover coverUrl: String?, saysUrl cardUrl:String) {
         self.type = type
         if(type == .card) {
             self.title = title
@@ -140,16 +140,20 @@ struct CellData {
         
         if say.type == .text { // 根据对话文字长短得到图形实际尺寸
             print("hereherehere")
-          
+            
             self.buildTextCellData(textContent: say.content)
         } else if say.type == .image { //缩放图片大小得到实际图形尺寸,并得到UIImage对象self.saysImage
             //let imageUrlStr = "http://ts1.mm.bing.net/th?id=OIP.UkcKcCStZUP_60o1QYH06wEoDS&pid=15.1"
             self.buildImageCellData(imageUrl: say.url)
             
         } else if say.type == .card {
-            self.buildCardCellData(title: say.title, coverUrl:say.coverUrl, description:say.description)
+            self.buildCardCellData(
+                title: say.title,
+                coverUrl: say.coverUrl,
+                description:say.description
+            )
         }
-
+        
     }
     //构造器2
     init(){
@@ -186,7 +190,7 @@ struct CellData {
     //创建Image类型数据的可变方法
     mutating func buildImageCellData(imageUrl imageUrlStr: String) {
         print(imageUrlStr)
-       
+        
         let myUIImage = self.buidUIImage(url:imageUrlStr)
         
         if let realUIImage = myUIImage { //如果成功获取了图片
@@ -218,7 +222,7 @@ struct CellData {
     }
     
     //创建Card类型数据的可变方法
-    mutating func buildCardCellData(title titleStr: String, coverUrl coverUrlStr:String, description descriptionStr:String) {
+    mutating func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String?, description descriptionStr:String) {
         //处理title
         let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
         self.titleFont = titleFont
@@ -234,7 +238,7 @@ struct CellData {
         
         
         //处理cover
-        // FIXME: This code always crash when network is off. As a good habit, never use force unwrap in your code. 
+        // FIXME: This code always crash when network is off. As a good habit, never use force unwrap in your code.
         let myUIImage = self.buidUIImage(url: coverUrlStr)
         if let realUIImage = myUIImage {
             self.coverImage = realUIImage
@@ -265,19 +269,22 @@ struct CellData {
         self.bubbleImageWidth = self.saysWhatWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
         self.bubbleImageHeight = self.saysWhatHeight + self.bubbleImageInsets.top + self.bubbleImageInsets.bottom
     }
-
-    func buidUIImage(url theUrl:String) -> UIImage? {
-        let fm = FileManager.default
-        let path = "\(Bundle.main.resourcePath!)/\(theUrl)"
-        print(path)
-        var myUIImage: UIImage? = nil
-        if (fm.fileExists(atPath: path)) { //本地资源目录中有该文件
-            myUIImage = UIImage(named: theUrl)
+    
+    func buidUIImage(url theUrl:String?) -> UIImage? {
+        if let url = theUrl {
+            let fm = FileManager.default
+            let path = "\(Bundle.main.resourcePath!)/\(String(describing: theUrl))"
+            print(path)
+            var myUIImage: UIImage? = nil
+            if (fm.fileExists(atPath: path)) { //本地资源目录中有该文件
+                myUIImage = UIImage(named: url)
+            } else if let imageUrl = NSURL(string: url),
+                let imageData = NSData(contentsOf: imageUrl as URL) { //使用绝对路径寻找该文件
+                myUIImage = UIImage(data: imageData as Data)
+            }
+            return myUIImage
         }
-        else if let imageUrl = NSURL(string: theUrl),let imageData = NSData(contentsOf: imageUrl as URL) { //使用绝对路径寻找该文件
-            myUIImage = UIImage(data: imageData as Data)
-        }
-        return myUIImage
+        return UIImage(named: "landscape.jpeg")
     }
 }
 

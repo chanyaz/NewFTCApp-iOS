@@ -20,61 +20,66 @@ func createResponseCellData(data:Data) -> CellData? {
             
             if let oneAnswerDic = oneAnswer as? NSDictionary,
                 let type = oneAnswerDic["Type"], let typeStr = type as? String {
-               
+                
                 print(typeStr)
                 switch typeStr {
-                    case "Text":
-                        if let content = oneAnswerDic["Content"], let contentStr = content as? String {
-                            
-                            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                            //print(contentStr)
-                            
-                        } else {
-                            let contentStr = "This is a Text, the data miss some important fields."
-                            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                        }
+                case "Text":
+                    if let content = oneAnswerDic["Content"], let contentStr = content as? String {
+                        
+                        robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                        //print(contentStr)
+                        
+                    } else {
+                        let contentStr = "This is a Text, the data miss some important fields."
+                        robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                    }
                     
-                    case "Image":
-                        if let url = oneAnswerDic["Url"], let urlStr = url as? String {
-                           
-                            robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
-                          
-                            print("This is a Image")
-                        } else {
-                            let contentStr = "This is a Image, the data miss some important fields."
-                            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                        }
+                case "Image":
+                    if let url = oneAnswerDic["Url"], let urlStr = url as? String {
+                        
+                        robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
+                        
+                        print("This is a Image")
+                    } else {
+                        let contentStr = "This is a Image, the data miss some important fields."
+                        robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                    }
                     
-                    case "Card":
-                        print("This is a Card")
-
-                        if let title = oneAnswerDic["Title"],let description = oneAnswerDic["Description"],  let coverUrl = oneAnswerDic["CoverUrl"],let cardUrl = oneAnswerDic["Url"]{
-                   
-                            if let titleStr = title as? String, let coverUrlStr = coverUrl as? String, let cardUrlStr = cardUrl as? String {
-                                let descriptionStr = description as? String ?? ""
-                                robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
-                            } else {
-                                let contentStr = "This is a Card, the data miss some important fields."
-                                robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                            }
+                case "Card":
+                    print("This is a Card")
+                    
+                    if let title = oneAnswerDic["Title"],
+                        let description = oneAnswerDic["Description"],
+                        let coverUrl = oneAnswerDic["CoverUrl"],
+                        let cardUrl = oneAnswerDic["Url"] {
+                        
+                        if let titleStr = title as? String,
+                            let cardUrlStr = cardUrl as? String {
+                            let coverUrlStr = coverUrl as? String
+                            let descriptionStr = description as? String ?? ""
+                            robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
                         } else {
                             let contentStr = "This is a Card, the data miss some important fields."
                             robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-
                         }
-                    
-                    
-                    default:
-                        print("An unknow type response data.")
-                        let contentStr = "An unknow type response data."
+                    } else {
+                        let contentStr = "This is a Card, the data miss some important fields."
                         robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                        
+                    }
+                    
+                    
+                default:
+                    print("An unknow type response data.")
+                    let contentStr = "An unknow type response data."
+                    robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                 }
                 
             } else {
                 let contentStr = "There is some Error on parsing data Step2"
                 robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
             }
-          
+            
         } else {
             let contentStr = "There is some Error on parsing data Step1"
             robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
@@ -86,7 +91,7 @@ func createResponseCellData(data:Data) -> CellData? {
         return nil
     }
     
-   
+    
 }
 
 func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
@@ -110,7 +115,7 @@ func computeSignature(verb:String, path:String, paramList:[String], headerList:[
     let headerListStr = headerListNew.sorted().joined(separator: ",")
     //base64EncodedString()
     let bodyStr = body
-
+    
     let secretKeyStr = secretKey
     print("secretKeyStr:\(secretKeyStr)")
     

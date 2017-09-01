@@ -676,6 +676,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "ad", "follow":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
+            case "ebook":
+                print ("current item is \(selectedItem.type)")
+                if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+                    contentItemViewController.dataObject = selectedItem
+                    navigationController?.pushViewController(contentItemViewController, animated: true)
+                }
+
             case "ViewController":
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
                     navigationController?.pushViewController(chatViewController, animated: true)

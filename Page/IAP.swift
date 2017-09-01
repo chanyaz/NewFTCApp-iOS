@@ -126,9 +126,12 @@ struct IAP {
                     row: 0
                 )
                 contentItem.cbody = productDescription
-                
+                contentItem.productGroupTitle = productGroupTitle
+                contentItem.isDownloaded = isDownloaded
+                contentItem.expireDateString = expireDateString
+                contentItem.periodString = periodString
+                contentItem.productPrice = productPrice
                 contentItems.append(contentItem)
-                
             }
         }
         

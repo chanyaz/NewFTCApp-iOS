@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="323" height="195"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeZ-uA-ElO">
-                                <rect key="frame" x="140.5" y="15" width="168.5" height="24"/>
+                                <rect key="frame" x="141" y="15" width="168" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -36,20 +36,14 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="63A-Fz-18z">
-                                <rect key="frame" x="14" y="15" width="118.5" height="160"/>
+                                <rect key="frame" x="14" y="15" width="119" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="63A-Fz-18z" secondAttribute="height" multiplier="80:108" id="2b5-He-cJh"/>
                                     <constraint firstAttribute="height" constant="160" id="wX2-6T-OrC"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fNl-xM-gJP">
-                                <rect key="frame" x="280.5" y="167.5" width="28.5" height="13.5"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RXw-TM-ab8">
-                                <rect key="frame" x="141" y="47" width="168.5" height="18"/>
+                                <rect key="frame" x="141" y="47" width="168" height="18"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Label">
                                         <attributes>
@@ -59,26 +53,42 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fbg-cX-t0H">
+                                <rect key="frame" x="278" y="151" width="31" height="30"/>
+                                <state key="normal" title="查看"/>
+                                <connections>
+                                    <action selector="checkDetail:" destination="gTV-IL-0wX" eventType="touchUpInside" id="k4g-Nc-lYJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5D4-wy-PyN">
+                                <rect key="frame" x="233" y="151" width="31" height="30"/>
+                                <state key="normal" title="购买"/>
+                                <connections>
+                                    <action selector="buy:" destination="gTV-IL-0wX" eventType="touchUpInside" id="mJt-6g-KW4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="fNl-xM-gJP" secondAttribute="bottom" constant="14" id="5bl-I5-vmw"/>
                             <constraint firstItem="63A-Fz-18z" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="14" id="8F8-bX-jiF"/>
                             <constraint firstItem="63A-Fz-18z" firstAttribute="top" secondItem="dD2-9f-YHY" secondAttribute="bottom" constant="14" id="9RB-ka-IrE"/>
                             <constraint firstItem="ZeZ-uA-ElO" firstAttribute="top" secondItem="dD2-9f-YHY" secondAttribute="bottom" constant="14" id="BXL-J9-pWS"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="63A-Fz-18z" secondAttribute="bottom" constant="20" symbolic="YES" id="DTH-MS-XFy"/>
-                            <constraint firstAttribute="trailing" secondItem="fNl-xM-gJP" secondAttribute="trailing" constant="14" id="ErL-61-Kh7"/>
                             <constraint firstAttribute="trailing" secondItem="ZeZ-uA-ElO" secondAttribute="trailing" constant="14" id="GD7-ls-qwX"/>
+                            <constraint firstAttribute="bottom" secondItem="fbg-cX-t0H" secondAttribute="bottom" constant="14" id="Ne1-By-lrW"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="14" id="OIq-Sz-gYA"/>
                             <constraint firstItem="ZeZ-uA-ElO" firstAttribute="leading" secondItem="63A-Fz-18z" secondAttribute="trailing" constant="8" symbolic="YES" id="SWC-JZ-tK8"/>
                             <constraint firstItem="RXw-TM-ab8" firstAttribute="leading" secondItem="63A-Fz-18z" secondAttribute="trailing" constant="8" symbolic="YES" id="Whv-4V-C7x"/>
                             <constraint firstAttribute="trailing" secondItem="dD2-9f-YHY" secondAttribute="trailing" constant="14" id="ZG1-e4-mxh"/>
+                            <constraint firstAttribute="bottom" secondItem="5D4-wy-PyN" secondAttribute="bottom" constant="14" id="bDQ-OR-H5w"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="top" secondItem="yfD-Kf-wUR" secondAttribute="top" id="dOv-cV-L5y"/>
                             <constraint firstAttribute="trailing" secondItem="RXw-TM-ab8" secondAttribute="trailing" constant="14" id="e3b-Db-ggg"/>
+                            <constraint firstItem="fbg-cX-t0H" firstAttribute="leading" secondItem="5D4-wy-PyN" secondAttribute="trailing" constant="14" id="gmi-GJ-FZ6"/>
                             <constraint firstItem="RXw-TM-ab8" firstAttribute="top" secondItem="ZeZ-uA-ElO" secondAttribute="bottom" constant="8" symbolic="YES" id="jGz-yD-J2W"/>
                             <constraint firstAttribute="width" constant="323" id="kxf-id-qLZ"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="RXw-TM-ab8" secondAttribute="bottom" constant="20" symbolic="YES" id="kzL-tm-25W"/>
                             <constraint firstItem="RXw-TM-ab8" firstAttribute="leading" secondItem="63A-Fz-18z" secondAttribute="trailing" constant="8" symbolic="YES" id="mtn-nG-tok"/>
+                            <constraint firstAttribute="trailing" secondItem="fbg-cX-t0H" secondAttribute="trailing" constant="14" id="y0d-Ee-27d"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -92,12 +102,13 @@
             <size key="customSize" width="323" height="195"/>
             <connections>
                 <outlet property="border" destination="dD2-9f-YHY" id="MVC-Ic-fwT"/>
+                <outlet property="buyButton" destination="5D4-wy-PyN" id="Cqv-jD-CER"/>
+                <outlet property="checkDetailButton" destination="fbg-cX-t0H" id="4fb-7c-wUH"/>
                 <outlet property="containerView" destination="yfD-Kf-wUR" id="T60-bB-qq7"/>
                 <outlet property="containerViewWidthConstraint" destination="kxf-id-qLZ" id="ebI-0s-tKd"/>
                 <outlet property="headline" destination="ZeZ-uA-ElO" id="XP8-Ai-3NJ"/>
                 <outlet property="imageView" destination="63A-Fz-18z" id="eQD-GB-bMY"/>
                 <outlet property="lead" destination="RXw-TM-ab8" id="HkM-JG-whT"/>
-                <outlet property="sign" destination="fNl-xM-gJP" id="Q5s-UF-JpS"/>
             </connections>
             <point key="canvasLocation" x="-374.5" y="-396.5"/>
         </collectionViewCell>

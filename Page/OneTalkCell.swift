@@ -44,12 +44,8 @@ class OneTalkCell: UITableViewCell {
         //NOTE:通过url地址打开Web页面
         //TODO:此处为测试，可能后面的打开方式应该为打开app内文章页，而非用浏览器打开web页面
         if let openUrl = URL(string:self.cardUrl) {
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(openUrl, options: [:],completionHandler: {
-                    (success) in
-                })
-            } else {
-                UIApplication.shared.openURL(openUrl)
+            if let topController = UIApplication.topViewController() {
+                topController.openLink(openUrl)
             }
         }
         print("Click card")

@@ -16,7 +16,7 @@ class BigImageCell: CustomCell {
     let imageWidth = 408   // 16 * 52
     let imageHeight = 234  // 9 * 52
     
-
+    
     @IBOutlet weak var topBorder: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
@@ -26,13 +26,20 @@ class BigImageCell: CustomCell {
     @IBOutlet weak var headlineLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var headlineTrailingConstraint: NSLayoutConstraint!
     
-
+    @IBOutlet weak var soundButton: UIButton!
     
+    @IBOutlet weak var tagButton: UIButton!
+    @IBOutlet weak var loveCount: UILabel!
+    @IBOutlet weak var loveButton: UIButton!
+    @IBOutlet weak var commentButton: UIButton!
+    @IBOutlet weak var commentCount: UILabel!
+    
+    @IBOutlet weak var imageBorder: UIView!
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
         
-        // MARK: - Set Top Border Color        
+        // MARK: - Set Top Border Color
         if let row = itemCell?.row,
             row > 0,
             itemCell?.hideTopBorder != true {
@@ -55,6 +62,29 @@ class BigImageCell: CustomCell {
         containerView.layoutMargins.left = 0
         containerView.layoutMargins.right = 0
         
+        // MARK: sound Button, love buttons and other FTCC buttons
+        if let themeColorString = self.themeColor {
+            let themeColor = UIColor(hex: themeColorString)
+            soundButton.layer.backgroundColor = themeColor.cgColor
+            soundButton.layer.cornerRadius = 15
+            
+            // MARK: border for the image bottom
+            imageBorder.backgroundColor = themeColor
+            
+            tagButton.backgroundColor = themeColor
+            tagButton.setTitleColor(UIColor.white, for: .normal)
+            
+            tagButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5)
+            
+            // MARK: get item tag
+            if let firstTag = itemCell?.tag.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression) {
+                tagButton.setTitle(firstTag, for: .normal)
+            } else {
+                tagButton.isHidden = true
+            }
+        }
+        
+        
         
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right
@@ -69,16 +99,16 @@ class BigImageCell: CustomCell {
         
         // MARK: - Update dispay of the cell
         let headlineString = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-//        let headlineString: String?
-//        headlineString = "南五环边上学梦：北京首所打工子弟"
+        //        let headlineString: String?
+        //        headlineString = "南五环边上学梦：北京首所打工子弟"
         headline.text = headlineString
         
         // MARK: - Prevent widows in the second line
-//        if let headlineActualWidth = headlineActualWidth {
-//        if headline.hasWidowInSecondLine(headlineActualWidth) == true {
-//            headline.numberOfLines = 1
-//        }
-//        }
+        //        if let headlineActualWidth = headlineActualWidth {
+        //        if headline.hasWidowInSecondLine(headlineActualWidth) == true {
+        //            headline.numberOfLines = 1
+        //        }
+        //        }
         
         
         if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
@@ -88,7 +118,7 @@ class BigImageCell: CustomCell {
             setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
             lead.attributedText = setStr
         }
-    
+        
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
         if let loadedImage = itemCell?.coverImage {
@@ -100,7 +130,7 @@ class BigImageCell: CustomCell {
             })
             //print ("should load image here")
         }
-
+        
     }
     
 }

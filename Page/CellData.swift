@@ -76,7 +76,7 @@ struct CellData {
     //var bubbleImageInsets = UIEdgeInsetsMake(10, 20, 10, 20)//气泡嵌入文字UILabelView的边距
     var bubbleImageInsets = UIEdgeInsetsMake(17, 17, 17, 31)
     var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 18.5, 18.5, 24)
-    var cellInsets = UIEdgeInsetsMake(5, 5, 5, 5)//cell嵌入头像和气泡的最小边距
+    var cellInsets = UIEdgeInsetsMake(10, 5, 10, 5)//cell嵌入头像和气泡的最小边距
     var headImageLength = CGFloat(50) //正方形头像边长
     var betweenHeadAndBubble = CGFloat(5) //头像和气泡的左右距离
     

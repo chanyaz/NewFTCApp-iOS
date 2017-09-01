@@ -16,17 +16,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     
     // 一些实验数据
-    //let textSaysWhat = SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。我会陪你聊天，还会告诉你这儿好多好玩的东西。和我聊的越多，我越聪明。想要测试我能回复的几种类型？试试分别输入'text'、'image'、'card'吧~想要和我聊天？随便输入你想说的话吧~想看精美图片？随便输入'xx图片'，比如’黛玉图片‘、’小狗图片‘")
       //MARK:属性初始化时不能直接使用其他属性
-    let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n-想查看我能回复哪些类型？\n试试输入 'text'、 'image' 或 'card' \n-想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n-想看精美图片？\n试试输入'xx图片'，比如'林黛玉图片'、'小狗图片'"))
-    //let imageSayWhat = SaysWhat(saysType: .image, saysImage: "landscape.jpeg")
-    let imageCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType: .image, saysImage: "landscape.jpeg"))
-    //let cardSayWhat = SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg",saysUrl:"http://www.ftchinese.com/story/001073866")
-    /*
-    let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"Look at the Beautiful landscape",saysDescription:"It is very beautiful, I love that place. When I was young,I have lived there for 2 years with my grandma.",saysCover:"landscape.jpeg",saysUrl:"http://www.ftchinese.com/story/001073866"))
-    */
-    let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"澳洲高端葡萄酒势头强劲",saysDescription:"一瓶1951年奔富葛兰许拍出5万澳元的澳洲历史最高价。澳洲高端葡萄酒国际地位正在提高，中国是第一大市场。",saysCover:"https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fi.ftimg.net%2Fpicture%2F9%2F000072299_piclink.jpg?source=ftchinese",saysUrl:"http://www.ftchinese.com/story/001073823"))
+    let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"))
     
+    /* 一些测试数据
+     let imageCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType: .image, saysImage: "landscape.jpeg"))
+     let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"澳洲高端葡萄酒势头强劲",saysDescription:"一瓶1951年奔富葛兰许拍出5万澳元的澳洲历史最高价。澳洲高端葡萄酒国际地位正在提高，中国是第一大市场。",saysCover:"https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fi.ftimg.net%2Fpicture%2F9%2F000072299_piclink.jpg?source=ftchinese",saysUrl:"http://www.ftchinese.com/story/001073823"))
+    */
     var talkData = Array(repeating: CellData(), count: 5) {
     
         didSet {
@@ -64,9 +60,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             self.talkData.append(currentYouCellData)
             
             self.inputBlock.text = ""
-            
+            self.createTalkRequest(myInputText:currentYourTalk)
+            /* 使用本地测试数据
             var currentRobotCellData = CellData()
-            
             switch currentYourTalk {
             case "text":
                 currentRobotCellData = self.textCellData
@@ -80,7 +76,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             default:
                 self.createTalkRequest(myInputText:currentYourTalk)
             }
-            
+            */
         }
 
     }
@@ -192,25 +188,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             self.talkData.append(currentYouCellData)
             
             textField.text = ""
-            
-            var currentRobotCellData = CellData()
-            
-            switch currentYourTalk {
-            case "text":
-                currentRobotCellData = self.textCellData
-                self.talkData.append(currentRobotCellData)
-            case "image":
-                currentRobotCellData = self.imageCellData
-                self.talkData.append(currentRobotCellData)
-            case "card":
-                currentRobotCellData = self.cardCellData
-                self.talkData.append(currentRobotCellData)
-            default:
-                self.createTalkRequest(myInputText:currentYourTalk)
-            }
-            
+            self.createTalkRequest(myInputText:currentYourTalk)
+
         }
-        print("Here return")
         return true
     }
     
@@ -320,8 +300,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.returnKeyType = .send//指定Return键上显示
         
         self.talkData.append(self.textCellData)
-        //self.talkData.append(self.imageCellData)
-        //self.talkData.append(self.cardCellData)
+
 
     }
 

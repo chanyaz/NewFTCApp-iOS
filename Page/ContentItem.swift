@@ -49,6 +49,14 @@ class ContentItem{
     var caudio: String?
     var eaudio: String?
     
+    // MARK: properties that are exclusive for eBooks
+    var productGroupTitle: String?
+    var isDownloaded = false
+    var expireDateString: String?
+    var periodString: String?
+    var productPrice: String?
+    
+    
     
     
     var followType: String?

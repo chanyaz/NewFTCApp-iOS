@@ -97,7 +97,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
             //            webView = WKWebView(frame: self.view.bounds, configuration: config)
             //            self.view = self.webView
-
+            
             // MARK: set the web view opaque to avoid white screen during loading
             webView?.isOpaque = false
             webView?.backgroundColor = webViewBG
@@ -117,7 +117,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 object: nil
             )
             // MARK: If the sub type is a user comment, render web view directly
-            if subType == .UserComments || dataObject?.type == "webpage" {
+            if subType == .UserComments || dataObject?.type == "webpage" || dataObject?.type == "ebook" {
                 renderWebView()
             } else {
                 getDetailInfo()
@@ -423,16 +423,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     //    }
     
     private func renderWebView() {
-        if dataObject?.type == "story" {
+        if let type = dataObject?.type, ["story", "ebook"].contains(type) {
             // MARK: If it is a story
             if let id = dataObject?.id {
-                let urlString = APIs.getUrl(id, type: "story")
+                let urlString = APIs.getUrl(id, type: type)
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
                     let lead: String
                     let tags = dataObject?.tag ?? ""
                     let tag: String
-                    let imageHTML:String
+                    var imageHTML:String
                     
                     
                     // MARK: story byline
@@ -465,6 +465,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     let timeStamp: String
                     let userCommentsOrder: String
                     let styleContainerStyle: String
+                    var adBanner = ""
+                    var adMPU = ""
+                    var storyTheme = ""
+                    
                     if subType == .UserComments {
                         finalBody = ""
                         byline = ""
@@ -477,10 +481,28 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         navigationItem.title = headline
                         userCommentsOrder = "storyall1"
                         styleContainerStyle = " style=\"display:none;\""
+                    } else if type == "ebook" {
+                        finalBody = "<p>\(headlineBody.finalBody.replacingOccurrences(of: "\n", with: "</p><p>", options: .regularExpression))</p>"
+                        byline = ""
+                        relatedStories = ""
+                        relatedTopics = ""
+                        tag = ""
+                        imageHTML = ""
+                        timeStamp = ""
+                        lead = ""
+                        userCommentsOrder = "story"
+                        styleContainerStyle = ""
+                        storyTheme = "<div style=\"padding-top: 14px;\"></div>"
+                        if let image = dataObject?.image {
+                            imageHTML = "<div class=\"leftPic image portrait-img\" style=\"margin-bottom:0;\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+                        } else {
+                            imageHTML = ""
+                        }
                     } else {
                         finalBody = headlineBody.finalBody
                         byline = dataObject?.chineseByline ?? ""
                         tag = tags.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression)
+                        storyTheme = "<div class=\"story-theme\"><a target=\"_blank\" href=\"/tag/\(tag)\">\(tag)</a><button class=\"myft-follow plus\" data-tag=\"\(tag)\" data-type=\"tag\">关注</button></div>"
                         if let image = dataObject?.image {
                             imageHTML = "<div class=\"story-image image\" style=\"margin-bottom:0;\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
                         } else {
@@ -490,6 +512,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         lead = dataObject?.lead ?? ""
                         userCommentsOrder = "story"
                         styleContainerStyle = ""
+                        adBanner = "<div class=\"bn-ph\"><div class=\"banner-container\"><div class=\"banner-inner\"><div class=\"banner-content\"><script type=\"text/javascript\">document.write (writeAd('banner'));</script></div></div></div></div>"
+                        adMPU = "<div class=\"mpu-container\"><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div>"
                     }
                     
                     let followTags = getFollow("tag")
@@ -507,6 +531,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "{story-byline}", with: byline)
                                 .replacingOccurrences(of: "{story-time}", with: timeStamp)
                                 .replacingOccurrences(of: "{story-lead}", with: lead)
+                                .replacingOccurrences(of: "{story-theme}", with: storyTheme)
                                 .replacingOccurrences(of: "{story-tag}", with: tag)
                                 .replacingOccurrences(of: "{story-id}", with: id)
                                 .replacingOccurrences(of: "{story-image}", with: imageHTML)
@@ -520,6 +545,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "['{follow-areas}']", with: followAreas)
                                 .replacingOccurrences(of: "['{follow-authors}']", with: followAuthors)
                                 .replacingOccurrences(of: "['{follow-columns}']", with: followColumns)
+                                .replacingOccurrences(of: "{ad-banner}", with: adBanner)
+                                .replacingOccurrences(of: "{ad-mpu}", with: adMPU)
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             self.webView?.load(request)

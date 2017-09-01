@@ -399,6 +399,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         case "BigImageCell":
             if let cell = cellItem as? BigImageCell {
                 cell.cellWidth = cellWidth
+                cell.themeColor = self.themeColor
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
@@ -676,6 +677,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "ad", "follow":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
+            case "ebook":
+                if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+                    contentItemViewController.dataObject = selectedItem
+                    navigationController?.pushViewController(contentItemViewController, animated: true)
+                }
+
             case "ViewController":
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
                     navigationController?.pushViewController(chatViewController, animated: true)

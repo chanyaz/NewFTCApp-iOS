@@ -17,6 +17,7 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
             updateUI()
         }
     }
+    var themeColor: String?
     
     func updateUI() {}
     

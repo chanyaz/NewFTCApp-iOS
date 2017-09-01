@@ -22,9 +22,14 @@ class BookCell: CustomCell {
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var border: UIView!
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var sign: UILabel!
+    @IBOutlet weak var checkDetailButton: UIButton!
+    @IBAction func checkDetail(_ sender: UIButton) {
+    }
     
+    @IBOutlet weak var buyButton: UIButton!
     
+    @IBAction func buy(_ sender: Any) {
+    }
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
         setupLayout()
@@ -56,13 +61,11 @@ class BookCell: CustomCell {
             lead.attributedText = setStr
         }
         
-        sign.text = nil
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
         // MARK: - initialize image view as it will be reused. If you don't do this, the cell might show wrong image when you scroll.
         imageView.image = nil
-        
         if let loadedImage = itemCell?.thumbnailImage {
             imageView.image = loadedImage
             //print ("image is already loaded, no need to download again. ")
@@ -72,10 +75,10 @@ class BookCell: CustomCell {
             })
         }
         
+        // MARK: - update buy button content
+        buyButton.setTitle(itemCell?.productPrice, for: .normal)
+        
     }
-    
-    
-    
     
     private func setupLayout() {
         // MARK: - Update Styles and Layouts
@@ -83,15 +86,26 @@ class BookCell: CustomCell {
         headline.textColor = UIColor(hex: Color.Content.headline)
         headline.font = headline.font.bold()
         lead.textColor = UIColor(hex: Color.Content.lead)
-        sign.textColor = UIColor(hex: Color.Ad.sign)
         layoutMargins.left = 0
         layoutMargins.right = 0
         layoutMargins.top = 0
         layoutMargins.bottom = 0
         containerView.layoutMargins.left = 0
         containerView.layoutMargins.right = 0
+        
+        // MARK: - Set Button Colors
+        let buttonTint = UIColor(hex: Color.Button.tint)
+        let buttons = [buyButton, checkDetailButton]
+        for button in buttons {
+            button?.tintColor = buttonTint
+            button?.layer.cornerRadius = 3
+            button?.layer.borderColor = buttonTint.cgColor
+            button?.layer.borderWidth = 1
+            button?.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5)
+        }
     }
     
+
     private func sizeCell() {
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right

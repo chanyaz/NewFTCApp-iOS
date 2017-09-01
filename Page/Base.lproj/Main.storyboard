@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -286,7 +286,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9iH-ip-n8r">
-                                        <rect key="frame" x="243" y="199.5" width="31" height="30"/>
+                                        <rect key="frame" x="243" y="200" width="31" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="MWC-g8-BNt"/>
                                             <constraint firstAttribute="width" constant="31" id="Ufa-UX-Eha"/>
@@ -579,6 +579,7 @@
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="2Dg-XC-Zh8" appends="YES" id="IRe-aj-Ihh"/>
+                            <outletCollection property="gestureRecognizers" destination="ywL-mu-LSF" appends="YES" id="ak7-KH-afT"/>
                         </connections>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
@@ -594,6 +595,11 @@
                         <action selector="dismissKeyboard:" destination="AQa-wQ-fbJ" id="4bC-HQ-aqc"/>
                     </connections>
                 </tapGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="ywL-mu-LSF">
+                    <connections>
+                        <action selector="dismissKeyboardWhenSwipe:" destination="AQa-wQ-fbJ" id="xrC-Q8-L7z"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-2138.4000000000001" y="2650.5247376311845"/>
         </scene>

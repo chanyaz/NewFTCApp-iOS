@@ -11,8 +11,9 @@ import Foundation
 
 
 func createResponseCellData(data:Data) -> CellData? {
+    var robotSaysWhat = SaysWhat()
+    var robotCellData:CellData? = nil
     do {
-        var robotCellData:CellData? = nil
         let jsonAny = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
         if let jsonDictionary = jsonAny as? NSDictionary,let answer = jsonDictionary["Answer"],let answerArray = answer as? NSArray {
             let oneAnswer = answerArray[0]
@@ -21,39 +22,64 @@ func createResponseCellData(data:Data) -> CellData? {
                 let type = oneAnswerDic["Type"], let typeStr = type as? String {
                
                 print(typeStr)
-                
                 switch typeStr {
                     case "Text":
                         if let content = oneAnswerDic["Content"], let contentStr = content as? String {
                             
-                            let robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                            robotCellData = CellData(whoSays: .robot, saysWhat: robotSaysWhat)
+                            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                            //print(contentStr)
                             
-                            
-                            print(contentStr)
-                            
+                        } else {
+                            let contentStr = "This is a Text, the data miss some important fields."
+                            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                         }
                     
                     case "Image":
                         if let url = oneAnswerDic["Url"], let urlStr = url as? String {
                            
-                            let robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
-                            robotCellData = CellData(whoSays: .robot, saysWhat:robotSaysWhat)
+                            robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
                           
                             print("This is a Image")
-                            print(urlStr)
+                        } else {
+                            let contentStr = "This is a Image, the data miss some important fields."
+                            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                         }
                     
                     case "Card":
                         print("This is a Card")
+
+                        if let title = oneAnswerDic["Title"],let description = oneAnswerDic["Description"],  let coverUrl = oneAnswerDic["CoverUrl"],let cardUrl = oneAnswerDic["Url"]{
+                   
+                            if let titleStr = title as? String, let coverUrlStr = coverUrl as? String, let cardUrlStr = cardUrl as? String {
+                                let descriptionStr = description as? String ?? ""
+                                robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
+                            } else {
+                                let contentStr = "This is a Card, the data miss some important fields."
+                                robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                            }
+                        } else {
+                            let contentStr = "This is a Card, the data miss some important fields."
+                            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+
+                        }
+                    
                     
                     default:
                         print("An unknow type response data.")
+                        let contentStr = "An unknow type response data."
+                        robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                 }
                 
+            } else {
+                let contentStr = "There is some Error on parsing data Step2"
+                robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
             }
           
+        } else {
+            let contentStr = "There is some Error on parsing data Step1"
+            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
         }
+        robotCellData = CellData(whoSays: .robot, saysWhat: robotSaysWhat)
         return robotCellData
         
     } catch {

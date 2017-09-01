@@ -52,6 +52,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     }
  
+    @IBAction func dismissKeyboardWhenSwipe(_ sender: UISwipeGestureRecognizer) {
+        self.inputBlock.resignFirstResponder()
+    }
 
     @IBAction func sendYourTalk(_ sender: UIButton) {
         if let currentYourTalk = inputBlock.text {

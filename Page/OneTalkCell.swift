@@ -108,7 +108,6 @@ class OneTalkCell: UITableViewCell {
                 let bubbleImageStreched = realBubbleImage.resizableImage(withCapInsets: self.cellData.bubbleStrechInsets, resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
                 
                 self.bubbleImageView = UIImageView(image: bubbleImageStreched)
-                print("origin StrechedBubbleView: \(self.bubbleImageView.frame.size)")
                 self.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight) // NOTE:任何一个View都要先初始化再设置属性
                 self.addSubview(self.bubbleImageView)
                 //self.bubbleImageView.backgroundColor = UIColor.lightGray
@@ -161,14 +160,17 @@ class OneTalkCell: UITableViewCell {
             self.addSubview(coverView)
             
             //descriptionView:
-            let descriptionView = UILabel(frame: CGRect(x: saysWhatX, y: descriptionY, width: self.cellData.descriptionWidth, height: self.cellData.descriptionHeight))
-            descriptionView.numberOfLines = 0
-            descriptionView.lineBreakMode = NSLineBreakMode.byWordWrapping
-            descriptionView.text = self.cellData.saysWhat.description
-            descriptionView.font = self.cellData.descriptionFont
-             //descriptionView.backgroundColor = UIColor.green
-            descriptionView.textColor = self.cellData.textColor
-            self.addSubview(descriptionView)
+            if(self.cellData.saysWhat.description != "") {
+                let descriptionView = UILabel(frame: CGRect(x: saysWhatX, y: descriptionY, width: self.cellData.descriptionWidth, height: self.cellData.descriptionHeight))
+                descriptionView.numberOfLines = 0
+                descriptionView.lineBreakMode = NSLineBreakMode.byWordWrapping
+                descriptionView.text = self.cellData.saysWhat.description
+                descriptionView.font = self.cellData.descriptionFont
+                //descriptionView.backgroundColor = UIColor.green
+                descriptionView.textColor = self.cellData.textColor
+                self.addSubview(descriptionView)
+            }
+            
             
             self.bubbleImageView.isUserInteractionEnabled = true//打开用户交互属性
             self.cardUrl = self.cellData.saysWhat.url

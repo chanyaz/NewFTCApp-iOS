@@ -248,26 +248,30 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
       
             (URLSession.shared.dataTask(with: talkRequest) {
                 (data,response,error) in
+                var explainRobotTalk = ""
+                var responseCellData:CellData? = nil
                 if error != nil {
-                    print("Error:(error))")
-                    return
-                }
-                
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                    print("Status code is not 200. It is \(httpStatus.statusCode)")
-                    return
-                }
-                
-                if let data = data, let dataString = String(data: data, encoding: .utf8){
+                    explainRobotTalk = "Error: \(String(describing: error))"
+                    //print(explainRobotTalk)
+                    //return
+                } else if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                    explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
+                    //print()
+                    //return
+                } else if let data = data, let dataString = String(data: data, encoding: .utf8){
                     print("Overview Data:\(dataString)")
-                    let defaultRobotTalk = "What do you say?"
-                    let defaultRobotSaysWhat = SaysWhat(saysType: .text, saysContent: defaultRobotTalk)
-                    let defaultRobotCellData = CellData(whoSays: .robot, saysWhat: defaultRobotSaysWhat)
+                    explainRobotTalk = dataString
+                    responseCellData = createResponseCellData(data: data)
                     
-                    let responseCellData = createResponseCellData(data: data) ?? defaultRobotCellData
-                    self.talkData.append(responseCellData)
-                    
+                } else {
+                    explainRobotTalk = "Some do catch error when execute createResponseCellData."
                 }
+                let explainRobotSaysWhat = SaysWhat(saysType: .text, saysContent: explainRobotTalk)
+                let explainRobotCellData = CellData(whoSays: .robot, saysWhat: explainRobotSaysWhat)
+                let robotCellData = responseCellData ?? explainRobotCellData
+                self.talkData.append(robotCellData)
+
+                
                 
             }).resume()
             

@@ -88,14 +88,14 @@ struct CellData {
     var coverHeight = CGFloat(135)//Cover图像统一是16*19的，这里统一为240*135
     
     //计算得到的图形实际尺寸
-    var bubbleImageWidth = CGFloat() //气泡宽度
-    var bubbleImageHeight = CGFloat() //气泡高度
-    var saysWhatWidth = CGFloat() // 文字宽度
-    var saysWhatHeight = CGFloat() //文字高度
-    var titleWidth = CGFloat()
-    var titleHeight = CGFloat()
-    var descriptionWidth = CGFloat()
-    var descriptionHeight = CGFloat()
+    var bubbleImageWidth = CGFloat(0) //气泡宽度
+    var bubbleImageHeight = CGFloat(0) //气泡高度
+    var saysWhatWidth = CGFloat(0) // 文字宽度
+    var saysWhatHeight = CGFloat(0) //文字高度
+    var titleWidth = CGFloat(0)
+    var titleHeight = CGFloat(0)
+    var descriptionWidth = CGFloat(0)
+    var descriptionHeight = CGFloat(0)
     
     // 一些必须在数据里生成的和view相关的对象
     var strechedBubbleImage = UIImage()
@@ -168,7 +168,7 @@ struct CellData {
             options: .usesLineFragmentOrigin,
             attributes: atts,
             context: nil)
-        let computeWidth = size.size.width //修正计算错误
+        let computeWidth = max(size.size.width,20) //修正计算错误
         /* QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
          * 已解决：因为此处的font大小和实际font大小不同，只有为UILabelView设置属性font为一样的UIFont对象，才能保证大小合适
          * 另说明：此处当文字多余一行时，自动就是宽度固定为最大宽度，高度自适应
@@ -243,18 +243,23 @@ struct CellData {
         
         
         //处理description
-        let descriptionFont = UIFont.systemFont(ofSize:18)
-        self.descriptionFont = descriptionFont
-        let descriptionAtts = [NSFontAttributeName: descriptionFont]
-        let descriptionNSString = descriptionStr as NSString
+        if (descriptionStr != "") {
+            let descriptionFont = UIFont.systemFont(ofSize:18)
+            self.descriptionFont = descriptionFont
+            let descriptionAtts = [NSFontAttributeName: descriptionFont]
+            let descriptionNSString = descriptionStr as NSString
+            
+            let descriptionSize = descriptionNSString.boundingRect(
+                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
+                options: .usesLineFragmentOrigin,
+                attributes: descriptionAtts,
+                context: nil)
+            self.descriptionWidth = 240
+            self.descriptionHeight = descriptionSize.size.height
+        }
         
-        let descriptionSize = descriptionNSString.boundingRect(
-            with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
-            options: .usesLineFragmentOrigin,
-            attributes: descriptionAtts,
-            context: nil)
-        self.descriptionWidth = 240
-        self.descriptionHeight = descriptionSize.size.height
+        
+        //处理总bubble
         self.saysWhatWidth = self.coverWidth
         self.saysWhatHeight = self.titleHeight + self.coverHeight + self.descriptionHeight
         self.bubbleImageWidth = self.saysWhatWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right

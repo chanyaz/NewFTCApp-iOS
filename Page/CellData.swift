@@ -25,32 +25,62 @@ struct SaysWhat {
     var url: String = ""
     var title: String = ""
     var description: String = ""
-    var coverUrl: String?
+    var coverUrl: String = ""
     
     //文本类型构造器
-    init(saysType type: Infotype, saysContent content: String) {
+    init(saysType type: Infotype, saysContent content: String?) {
         self.type = type
         if(self.type == .text) {
-            self.content = content
+            if let contentStr = content{
+                self.content = contentStr
+            } else {
+                self.content = "The Content field is nil"
+            }
+            
         }
     }
     
     //图片类型构造器
-    init(saysType type: Infotype, saysImage url: String){
+    init(saysType type: Infotype, saysImage url: String?){
         self.type = type
         if(self.type == .image){
-            self.url = url
+            if let urlStr = url {
+                self.url = urlStr
+            } else {
+                self.url = "landscape.jpeg"
+            }
+            
         }
     }
     
     //图文类型构造器
-    init(saysType type: Infotype, saysTitle title: String, saysDescription description: String, saysCover coverUrl: String?, saysUrl cardUrl:String) {
+    init(saysType type: Infotype, saysTitle title: String?, saysDescription description: String?, saysCover coverUrl: String?, saysUrl cardUrl:String?) {
         self.type = type
         if(type == .card) {
-            self.title = title
-            self.description = description
-            self.coverUrl = coverUrl
-            self.url = cardUrl
+            if let titleStr = title {
+                self.title = titleStr
+            } else {
+                self.title = "The Title field is nil"
+            }
+            
+            if let descriptionStr = description {
+                self.description = descriptionStr
+            } else {
+                self.description = ""
+            }
+            
+            if let coverUrlStr = coverUrl {
+                self.coverUrl = coverUrlStr
+            } else {
+                self.coverUrl = "landscape.jpeg"
+            }
+            
+            if let urlStr = cardUrl {
+                self.url = urlStr
+            } else {
+                self.url = "http://www.ftchinese.com/story/001074079"
+            }
+            
         }
     }
     
@@ -73,10 +103,11 @@ struct CellData {
     var textColor = UIColor.black
     
     //基本尺寸
-    //var bubbleImageInsets = UIEdgeInsetsMake(10, 20, 10, 20)//气泡嵌入文字UILabelView的边距
-    var bubbleImageInsets = UIEdgeInsetsMake(17, 17, 17, 31)
-    var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 18.5, 18.5, 24)
-    var cellInsets = UIEdgeInsetsMake(10, 5, 10, 5)//cell嵌入头像和气泡的最小边距
+
+    var bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12)//文字嵌入气泡的边距
+    var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)//气泡点九拉伸时的边距
+    var cellInsets = UIEdgeInsetsMake(10, 5, 15, 5)//头像嵌入Cell的最小边距
+    var bubbleInsets = UIEdgeInsetsMake(15, 5, 15, 5)//气泡嵌入Cell的最小边距，其中左右边距和cellInsets的左右边距值相等
     var headImageLength = CGFloat(50) //正方形头像边长
     var betweenHeadAndBubble = CGFloat(5) //头像和气泡的左右距离
     
@@ -104,6 +135,7 @@ struct CellData {
     var normalFont = UIFont()
     var titleFont = UIFont()
     var descriptionFont = UIFont()
+    
     //计算得到的cell的几种高度
     var cellHeightByHeadImage:CGFloat {
         get {
@@ -112,7 +144,7 @@ struct CellData {
     }
     var cellHeightByBubble: CGFloat {
         get {
-            return bubbleImageHeight + cellInsets.top + cellInsets.bottom
+            return bubbleImageHeight + bubbleInsets.top + bubbleInsets.bottom
         }
     }
     
@@ -222,7 +254,7 @@ struct CellData {
     }
     
     //创建Card类型数据的可变方法
-    mutating func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String?, description descriptionStr:String) {
+    mutating func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String) {
         //处理title
         let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
         self.titleFont = titleFont
@@ -270,21 +302,21 @@ struct CellData {
         self.bubbleImageHeight = self.saysWhatHeight + self.bubbleImageInsets.top + self.bubbleImageInsets.bottom
     }
     
-    func buidUIImage(url theUrl:String?) -> UIImage? {
-        if let url = theUrl {
+    func buidUIImage(url theUrl:String) -> UIImage? {
+        //if let url = theUrl {
             let fm = FileManager.default
             let path = "\(Bundle.main.resourcePath!)/\(String(describing: theUrl))"
             print(path)
             var myUIImage: UIImage? = nil
             if (fm.fileExists(atPath: path)) { //本地资源目录中有该文件
-                myUIImage = UIImage(named: url)
-            } else if let imageUrl = NSURL(string: url),
+                myUIImage = UIImage(named: theUrl)
+            } else if let imageUrl = NSURL(string: theUrl),
                 let imageData = NSData(contentsOf: imageUrl as URL) { //使用绝对路径寻找该文件
                 myUIImage = UIImage(data: imageData as Data)
             }
             return myUIImage
-        }
-        return UIImage(named: "landscape.jpeg")
+        //}
+        //return UIImage(named: "landscape.jpeg")
     }
 }
 

@@ -24,8 +24,9 @@ func createResponseCellData(data:Data) -> CellData? {
                 print(typeStr)
                 switch typeStr {
                 case "Text":
-                    if let content = oneAnswerDic["Content"], let contentStr = content as? String {
+                    if let content = oneAnswerDic["Content"]{
                         
+                        let contentStr = content as? String
                         robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                         //print(contentStr)
                         
@@ -35,8 +36,8 @@ func createResponseCellData(data:Data) -> CellData? {
                     }
                     
                 case "Image":
-                    if let url = oneAnswerDic["Url"], let urlStr = url as? String {
-                        
+                    if let url = oneAnswerDic["Url"] {
+                         let urlStr = url as? String
                         robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
                         
                         print("This is a Image")
@@ -53,15 +54,12 @@ func createResponseCellData(data:Data) -> CellData? {
                         let coverUrl = oneAnswerDic["CoverUrl"],
                         let cardUrl = oneAnswerDic["Url"] {
                         
-                        if let titleStr = title as? String,
-                            let cardUrlStr = cardUrl as? String {
-                            let coverUrlStr = coverUrl as? String
-                            let descriptionStr = description as? String ?? ""
-                            robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
-                        } else {
-                            let contentStr = "This is a Card, the data miss some important fields."
-                            robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                        }
+                        let titleStr = title as? String
+                        let cardUrlStr = cardUrl as? String
+                        let coverUrlStr = coverUrl as? String
+                        let descriptionStr = description as? String
+                        robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
+                        
                     } else {
                         let contentStr = "This is a Card, the data miss some important fields."
                         robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)

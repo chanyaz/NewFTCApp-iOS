@@ -91,7 +91,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         
         
         //MARK: - if there's only one channel, on need to show navigation scroller
-        if pageData.count > 1 {
+//        if pageData.count > 1 {
             // MARK - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
             let fullPageViewRect = self.view.bounds
             let pageViewRect = CGRect(x: 0, y: channelScrollerHeight, width: fullPageViewRect.width, height: fullPageViewRect.height - channelScrollerHeight)
@@ -117,7 +117,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             if let channelScrollerView = channelScrollerView {
                 self.view.addSubview(channelScrollerView)
             }
-        }
+//        }
         
         
         

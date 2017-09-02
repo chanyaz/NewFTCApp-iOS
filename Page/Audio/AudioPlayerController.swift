@@ -541,15 +541,15 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         MPRemoteCommandCenter.shared().pauseCommand.isEnabled = true
         
         MPRemoteCommandCenter.shared().previousTrackCommand.accessibilityActivate()
-        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget {[weak self] event in
-            print ("next audio")
-
-            return .success
-        }
-        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget {[weak self] event in
-            print ("previous audio")
-            return .success
-        }
+//        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget {[weak self] event in
+//            print ("next audio")
+//
+//            return .success
+//        }
+//        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget {[weak self] event in
+//            print ("previous audio")
+//            return .success
+//        }
         MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled = true
         MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled = true
         
@@ -674,51 +674,51 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.commonInit()
-    }
-    
-    
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!)  {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        
-        self.commonInit()
-    }
-    
-    func commonInit() {
-        self.modalPresentationStyle = .custom
-        self.transitioningDelegate = self
-    }
-
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        
-        if presented == self {
-            return CustomPresentationController(presentedViewController: presented, presenting: presenting)
-        }
-        
-        return nil
-    }
-    
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
-        if presented == self {
-            return CustomPresentationAnimation(isPresenting: true)
-        }
-        else {
-            return nil
-        }
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
-        if dismissed == self {
-            return CustomPresentationAnimation(isPresenting: false)
-        }
-        else {
-            return nil
-        }
-    }
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        self.commonInit()
+//    }
+//    
+//    
+//    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!)  {
+//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//        
+//        self.commonInit()
+//    }
+//    
+//    func commonInit() {
+//        self.modalPresentationStyle = .custom
+//        self.transitioningDelegate = self
+//    }
+//
+//    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+//        
+//        if presented == self {
+//            return CustomPresentationController(presentedViewController: presented, presenting: presenting)
+//        }
+//        
+//        return nil
+//    }
+//    
+//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        
+//        if presented == self {
+//            return CustomPresentationAnimation(isPresenting: true)
+//        }
+//        else {
+//            return nil
+//        }
+//    }
+//    
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        
+//        if dismissed == self {
+//            return CustomPresentationAnimation(isPresenting: false)
+//        }
+//        else {
+//            return nil
+//        }
+//    }
 
 
 }

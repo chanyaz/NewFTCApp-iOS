@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomPresentationController: UIPresentationController {
+class CustomPresentController: UIPresentationController {
     lazy var dimmingView :UIView = {
         let view = UIView(frame: self.containerView!.bounds)
         
@@ -44,7 +44,7 @@ class CustomPresentationController: UIPresentationController {
     override func dismissalTransitionWillBegin() {
         if let transitionCoordinator = self.presentingViewController.transitionCoordinator {
             transitionCoordinator.animate(alongsideTransition: {(context: UIViewControllerTransitionCoordinatorContext!) -> Void in
-                self.dimmingView.alpha  = 2.0
+                self.dimmingView.alpha  = 1.0
             }, completion:nil)
         }
     }
@@ -65,7 +65,7 @@ class CustomPresentationController: UIPresentationController {
 //        var frame = containerView.bounds;
 //        frame = frame.insetBy(dx: 50.0, dy: 50.0)
         
-        let frame = CGRect(x:0,y:400,width:containerView.bounds.width,height:200)
+        let frame = CGRect(x:0,y:250,width:containerView.bounds.width,height:containerView.bounds.height-250)
         return frame
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

@@ -41,8 +41,7 @@ class OneTalkCell: UITableViewCell {
     }
     
     func tapClick(_ sender:UIView){
-        //NOTE:通过url地址打开Web页面
-        //TODO:此处为测试，可能后面的打开方式应该为打开app内文章页，而非用浏览器打开web页面
+        //NOTE:通过openLink方法对cardUrl进行判断，如果是站内文章，就打开app内文章；如果是站外文章，就在app内打开浏览器
         if let openUrl = URL(string:self.cardUrl) {
             if let topController = UIApplication.topViewController() {
                 topController.openLink(openUrl)
@@ -67,10 +66,9 @@ class OneTalkCell: UITableViewCell {
             
             // 头像高、宽都为50CGFloat
             // 头像的位置x: robot头像在左，you头像在右
-            let headImageViewX = (whoSays == .robot) ? self.cellData.cellInsets.left : self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.right //即 （）？5 : self.frame.width-55
+            let headImageViewX = (whoSays == .robot) ? self.cellData.cellInsets.left : self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.right
             // 头像的位置y:
-            let headImageViewY = self.frame.minY + self.cellData.cellInsets.top //即self.frame.minY +5
-       
+            let headImageViewY = self.frame.minY + self.cellData.cellInsets.top
             
             // 绘制头像view
             self.headImageView.frame = CGRect(x:headImageViewX,y:headImageViewY,width:self.cellData.headImageLength,height:self.cellData.headImageLength)
@@ -85,7 +83,7 @@ class OneTalkCell: UITableViewCell {
         // 根据对话内容长短及self.frame尺寸得到相关位置尺寸
         let headImageWithInsets = self.cellData.cellInsets.left + self.cellData.headImageLength + self.cellData.betweenHeadAndBubble //60
         let bubbleImageX = (whoSays == .robot) ? headImageWithInsets : self.frame.width - headImageWithInsets - self.cellData.bubbleImageWidth
-        let bubbleImageY = self.frame.minY + 5
+        let bubbleImageY = self.frame.minY + self.cellData.bubbleInsets.top
         
         let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
         let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top

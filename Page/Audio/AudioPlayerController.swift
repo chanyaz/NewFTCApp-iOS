@@ -13,30 +13,45 @@ import MediaPlayer
 import WebKit
 import SafariServices
 
-// MARK: - Use singleton pattern to pass speech data between view controllers. It's better in in term of code style than prepare segue.
 
-struct AudioPlayerStyle {
-    static let height: CGFloat = 200
-}
 
-class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate {
+class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate{
     
     private var audioTitle = ""
     private var audioUrlString = ""
     private var audioId = ""
     private lazy var player: AVPlayer? = nil
     private lazy var playerItem: AVPlayerItem? = nil
+    private var queuePlayer:AVQueuePlayer?
     private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = DownloadHelper(directory: "audio")
+    private var playerItems: [AVPlayerItem]?
+    private var urls: [URL]? = []
+    private var urlStrings: [String]? = []
+    private var urlOrigStrings: [String]? = []
+    private var urlAssets: [AVURLAsset]? = nil
     
     var item: ContentItem?
     var themeColor: String?
-
+    
+    var fetchesAudioObject = ContentFetchResults(
+        apiUrl: "",
+        fetchResults: [ContentSection]()
+    )
+    private var playingUrlStr:String? = ""
+    private var playingIndex:Int = 0
+    private var playingUrl:URL? = nil
+    var count:Int = 0
+    
+    
+    
+    
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var playlist: UIButton!
     @IBOutlet weak var share: UIButton!
     @IBOutlet weak var downloadButton: UIButtonEnhanced!
-//    @IBOutlet weak var downloadButton: UIButton!
+    //    @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var forward: UIButton!
     @IBOutlet weak var back: UIButton!
     @IBOutlet weak var multiple: UIButton!
@@ -49,6 +64,14 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     @IBOutlet weak var playDuration: UILabel!
     @IBOutlet weak var playStatus: UILabel!
     
+    @IBAction func hideAudioButton(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+        print("this hideAudioButton")
+    }
+    
+    //    @IBAction func hideAudioButton(_ sender: UIButton) {
+    //        self.dismiss(animated: true, completion: nil)
+    //    }
     
     @IBAction func ButtonPlayPause(_ sender: UIButton) {
         if let player = player {
@@ -65,7 +88,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
                 player.play()
                 player.replaceCurrentItem(with: playerItem)
                 playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-//                playAndPauseButton.image = UIImage(named:"BigPauseButton")
+                //                playAndPauseButton.image = UIImage(named:"BigPauseButton")
                 
                 // TODO: - Need to find a way to display media duration and current time in lock screen
                 var mediaLength: NSNumber = 0
@@ -95,11 +118,57 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             nowPlayingCenter.updateTimeForPlayerItem(player)
         }
     }
+    
     @IBAction func switchToPreAudio(_ sender: UIButton) {
-        self.player?.replaceCurrentItem(with: playerItem)
+        //        count = fetchesAudioObject.fetchResults[0].items.count - 1
+        removePlayerItemObservers()
+        print("urlString next")
+        if playingIndex > 0{
+            playingIndex = playingIndex-1
+        }else{
+            playingIndex = count - 1
+        }
+        
+        let preUrl = urlOrigStrings?[playingIndex].replacingOccurrences(of: " ", with: "%20")
+        audioUrlString = preUrl!
+        prepareAudioPlay()
+        
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        try? AVAudioSession.sharedInstance().setActive(true)
+        if let player = player {
+            print("urlString next 11")
+            player.play()
+        }
+        //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
     }
     @IBAction func switchToNextAudio(_ sender: UIButton) {
-        self.player?.replaceCurrentItem(with: playerItem)
+
+        removePlayerItemObservers()
+
+        playingIndex += 1
+        if playingIndex >= count-1{
+            playingIndex = 0
+            
+        }
+        
+        let nextUrl = urlOrigStrings?[playingIndex].replacingOccurrences(of: " ", with: "%20")
+        print("urlString playingIndex\(playingIndex)")
+        let index = playingIndex
+//
+        audioUrlString = nextUrl!
+        prepareAudioPlay()
+        
+//        ContentItemContent.sharedInstance.item = fetchesAudioObject.fetchResults[0].items[index]
+        print("urlString ContentItemContent\(String(describing: index))")
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
+        
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        try? AVAudioSession.sharedInstance().setActive(true)
+        if let player = player {
+            //             print("urlString next 21")
+            player.play()
+        }
+ 
     }
     @IBAction func skipForward(_ sender: UIButton) {
         let currentSliderValue = self.progressSlider.value
@@ -112,38 +181,51 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         let currentTime = CMTimeMake(Int64(currentSliderValue + 15), 1)
         playerItem?.seek(to: currentTime)
         self.progressSlider.value = currentSliderValue + 15
-//        print("self.progressSlider.value\(currentSliderValue)")
+        //        print("self.progressSlider.value\(currentSliderValue)")
     }
     var isSwitch = true
-    @IBAction func switchPlayRate(_ sender: UIButton) {
-        
-//        if isSwitch {
-//            self.player?.rate = 2.0
-//            isSwitch = false
-//        }else {
-//           self.player?.rate = 1.0
-//            isSwitch = true
-//        }
-        self.dismiss(animated: true, completion: nil)
-//        self.view.frame = CGRect(x:0,y:0,width:200,height:200)
-
-        
-    }
+    //    @IBAction func switchPlayRate(_ sender: UIButton) {
     
-    @IBAction func favorite(_ sender: UIButton) {
+    //        if isSwitch {
+    //            self.player?.rate = 2.0
+    //            isSwitch = false
+    //        }else {
+    //           self.player?.rate = 1.0
+    //            isSwitch = true
+    //        }
+    //        self.dismiss(animated: true, completion: nil)
+    //        self.view.frame = CGRect(x:0,y:0,width:200,height:200)
+    //    }
+    @IBAction func openPlayList(_ sender: UIButton) {
 //        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
-//                listPerColumnViewController.modalPresentationStyle = .custom
+//            listPerColumnViewController.AudioLists = fetchesAudioObject
+//            
+//            
+//            listPerColumnViewController.modalPresentationStyle = .custom
+//            
+//            //            listPerColumnViewController.view.frame = CGRect(x:0,y:150,width:self.view.bounds.width,height:self.view.bounds.height-150)
+//            
 //            self.present(listPerColumnViewController, animated: false, completion: nil)
 //            
-//            }
+//            
+//        }
+    }
+    
+    
+    @IBAction func favorite(_ sender: UIButton) {
+        //        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
+        //                listPerColumnViewController.modalPresentationStyle = .custom
+        //            self.present(listPerColumnViewController, animated: false, completion: nil)
+        //
+        //            }
     }
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
-//        print("sliderValueChanged button")
+        //        print("sliderValueChanged button")
         let currentValue = sender.value
         let currentTime = CMTimeMake(Int64(currentValue), 1)
         playerItem?.seek(to: currentTime)
-//        print("sliderValueChanged button\(currentTime)")
+        //        print("sliderValueChanged button\(currentTime)")
     }
     
     @IBAction func share(_ sender: UIButton) {
@@ -153,7 +235,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     
     @IBAction func download(_ sender: Any) {
-         audioUrlString = "http://v.ftimg.net/album/starman.mp3"
+        //         audioUrlString = "http://v.ftimg.net/album/starman.mp3"
         print("download button111\( audioUrlString)")
         
         if audioUrlString != "" {
@@ -167,8 +249,11 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        print("viewDidAppear refresh?")
+        
+    }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -176,6 +261,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     
     
     deinit {
+        print("denit refresh")
         removePlayerItemObservers()
         
         // MARK: - Remove Observe download status change
@@ -215,16 +301,48 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         
         print ("deinit successfully and observer removed")
     }
-    
+    func getPlayingUrl(){
+        
+        for (_, item0) in fetchesAudioObject.fetchResults[0].items.enumerated() {
+            if var fileUrl = item0.audioFileUrl {
+                //                    var fileUrl = item0.audioFileUrl 不能不判断，因为有可能为空
+                urlOrigStrings?.append(fileUrl)
+                fileUrl = fileUrl.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
+                fileUrl = fileUrl.replacingOccurrences(of: "%20", with: " ")
+                urlStrings?.append(fileUrl)
+            }
+            
+        }
+        print("urlString urlStrings000---\(String(describing: urlStrings))")
+        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
+        print("urlString000---\(audioUrlString)")
+        for (urlIndex,urlString) in (urlStrings?.enumerated())! {
+            if audioUrlString != "" {
+                if audioUrlString == urlString{
+                    print("urlString222---\(String(describing: audioUrlString))")
+                    playingUrlStr = urlString
+                    playingIndex = urlIndex
+                }
+                
+            }
+        }
+        print("urlString333--\(String(describing: playingIndex))")
+        print("urlString444---\(String(describing: playingUrlStr))")
+        //        print("urlString  audioUrlString111---\(String(describing: audioUrlString))")
+    }
     override func loadView() {
         super.loadView()
-         print("loadView \( ShareHelper.sharedInstance.webPageTitle)")
+        
+        print("loadView \( ShareHelper.sharedInstance.webPageTitle)")
         ShareHelper.sharedInstance.webPageTitle = ""
         ShareHelper.sharedInstance.webPageDescription = ""
         ShareHelper.sharedInstance.webPageImage = ""
         ShareHelper.sharedInstance.webPageImageIcon = ""
         parseAudioMessage()
+        //        prepareForAudioPlay(url:audioUrlString)
         prepareAudioPlay()
+        getPlayingUrl()
+        
         enableBackGroundMode()
         let jsCode = "function getContentByMetaTagName(c) {for (var b = document.getElementsByTagName('meta'), a = 0; a < b.length; a++) {if (c == b[a].name || c == b[a].getAttribute('property')) { return b[a].content; }} return '';} var gCoverImage = getContentByMetaTagName('og:image') || '';var gIconImage = getContentByMetaTagName('thumbnail') || '';var gDescription = getContentByMetaTagName('og:description') || getContentByMetaTagName('description') || '';gIconImage=encodeURIComponent(gIconImage);webkit.messageHandlers.callbackHandler.postMessage(gCoverImage + '|' + gIconImage + '|' + gDescription);"
         let userScript = WKUserScript(
@@ -241,19 +359,20 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         )
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
-//        self.webView = WKWebView(frame: self.containerView.frame, configuration: config)
-//        self.containerView.addSubview(self.webView!)
-//        self.containerView.clipsToBounds = true
+        //        self.webView = WKWebView(frame: self.containerView.frame, configuration: config)
+        //        self.containerView.addSubview(self.webView!)
+        //        self.containerView.clipsToBounds = true
         self.webView?.scrollView.bounces = false
         self.webView?.navigationDelegate = self
         self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.webView?.scrollView.delegate = self
     }
-
-
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        count = fetchesAudioObject.fetchResults[0].items.count
         ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
         let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
         if let url = URL(string:url) {
@@ -262,14 +381,37 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
         navigationItem.title = item?.headline
         initStyle()
-//        print("item---\(item?.audioFileUrl)")
+        self.containerView.backgroundColor = UIColor(hex: "#12a5b3")
+        audioAddGesture()
         
+        //        queuePlayer = AVQueuePlayer(items:)
+        
+    }
+    private func audioAddGesture(){
+        let swipeGestureRecognizerDown = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
+        swipeGestureRecognizerDown.direction = .down
+        self.view?.addGestureRecognizer(swipeGestureRecognizerDown)
+        
+        let swipeGestureRecognizerUp = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
+        swipeGestureRecognizerUp.direction = .up
+        self.view?.addGestureRecognizer(swipeGestureRecognizerUp)
+    }
+    func isHideAudio(sender: UISwipeGestureRecognizer){
+        if sender.direction == .down{
+            print("down hide audio")
+            //            self.view.isHidden = true
+            self.dismiss(animated: true, completion: nil)
+        }else if sender.direction == .up{
+            print("up show audio")
+            //            self.view.isHidden = false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
+        print("self refresh?")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -285,9 +427,10 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     
     private func initStyle() {
-//        if let themeColor = themeColor {
-//            let theme = UIColor(hex: themeColor)
-//        }
+        //        if let themeColor = themeColor {
+        //            let theme = UIColor(hex: themeColor)
+        //        }
+        
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -363,24 +506,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             self.performSegue(withIdentifier: segueId, sender: nil)
         }
     }
-
-    private func parseAudioMessage() {
-        let body = AudioContent.sharedInstance.body
-        print("interactiveUrl---\(body)")
-        if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
-            print (title)
-            audioTitle = title
-            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
-            audioId = interactiveUrl.replacingOccurrences(
-                of: "^.*interactive/([0-9]+).*$",
-                with: "$1",
-                options: .regularExpression
-            )
-            ShareHelper.sharedInstance.webPageTitle = title
-//            print("interactiveUrl---\(title)")
-        }
-    }
-
+    
     private func updateAVPlayerWithLocalUrl() {
         if let localAudioFile = download.checkDownloadedFileInDirectory(audioUrlString) {
             let currentSliderValue = self.progressSlider.value
@@ -403,7 +529,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
         playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
     }
-
+    
     private func addPlayerItemObservers() {
         // MARK: - Observe Play to the End
         NotificationCenter.default.addObserver(self,selector:#selector(AudioPlayerController.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
@@ -418,14 +544,31 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         playDuration.text = "-\((duration-time).durationText)"
         playTime.text = time.durationText
     }
-
+    
+    private func parseAudioMessage() {
+        let body = AudioContent.sharedInstance.body
+        if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
+            audioTitle = title
+            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
+            audioId = interactiveUrl.replacingOccurrences(
+                of: "^.*interactive/([0-9]+).*$",
+                with: "$1",
+                options: .regularExpression
+            )
+            ShareHelper.sharedInstance.webPageTitle = title
+        }
+    }
+    
+    private func prepareForAudioPlay(url audioUrlStr:String) {
+    }
+    
     private func prepareAudioPlay() {
-        print("audioUrlString prepareAudioPlay\(audioUrlString)")
-//        audioUrlString = "http://v.ftimg.net/album/starman.mp3"
+        //        print("audioUrlString prepareAudioPlay\(audioUrlString)")
+        //        audioUrlString = "http://v.ftimg.net/album/starman.mp3"
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
         audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
         // MARK: - Remove toolBar's top border. This cannot be done in interface builder.
-//        toolBar.clipsToBounds = true
+        //        toolBar.clipsToBounds = true
         
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
@@ -459,8 +602,12 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             let asset = AVURLAsset(url: audioUrl)
             
             playerItem = AVPlayerItem(asset: asset)
-            player = AVPlayer()
-            
+            //            player = AVPlayer()
+            if player != nil {
+                
+            }else {
+                player = AVPlayer()
+            }
             // MARK: - If user is using wifi, buffer the audio immediately
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
@@ -519,7 +666,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             }
         }
     }
-//    func remoteControlReceivedWithEvent()
+    //    func remoteControlReceivedWithEvent()
     private func enableBackGroundMode() {
         // MARK: Receive Messages from Lock Screen
         UIApplication.shared.beginReceivingRemoteControlEvents();
@@ -527,7 +674,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             print("resume music")
             self?.player?.play()
             self?.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-//            self?.playAndPauseButton.image = UIImage(named:"BigPauseButton")
+            //            self?.playAndPauseButton.image = UIImage(named:"BigPauseButton")
             return .success
         }
         MPRemoteCommandCenter.shared().pauseCommand.addTarget {[weak self] event in
@@ -541,15 +688,15 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         MPRemoteCommandCenter.shared().pauseCommand.isEnabled = true
         
         MPRemoteCommandCenter.shared().previousTrackCommand.accessibilityActivate()
-//        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget {[weak self] event in
-//            print ("next audio")
-//
-//            return .success
-//        }
-//        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget {[weak self] event in
-//            print ("previous audio")
-//            return .success
-//        }
+        //        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget {[weak self] event in
+        //            print ("next audio")
+        //
+        //            return .success
+        //        }
+        //        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget {[weak self] event in
+        //            print ("previous audio")
+        //            return .success
+        //        }
         MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled = true
         MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled = true
         
@@ -559,7 +706,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         skipBackwardIntervalCommand.accessibilityActivate()
         
         let skipForwardIntervalCommand =  MPRemoteCommandCenter.shared().skipForwardCommand
-        skipForwardIntervalCommand.preferredIntervals = [NSNumber(value: 3.5)]
+        skipForwardIntervalCommand.preferredIntervals = [NSNumber(value: 1.5)]
         
         skipForwardIntervalCommand.addTarget(self, action: #selector(skipForwardEvent))
         skipBackwardIntervalCommand.addTarget(self, action: #selector(skipBackwardEvent))
@@ -567,25 +714,25 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         MPRemoteCommandCenter.shared().skipBackwardCommand.isEnabled = true
         MPRemoteCommandCenter.shared().skipForwardCommand.isEnabled = true
         
-//        let changePlaybackRateCommand = MPRemoteCommandCenter.shared().changePlaybackRateCommand
-//        changePlaybackRateCommand.isEnabled = true
-//        changePlaybackRateCommand.addTarget(self, action: #selector(changePlaybackRateEvent))
-//        changePlaybackRateCommand.supportedPlaybackRates = [NSNumber(value: 2)]
+        //        let changePlaybackRateCommand = MPRemoteCommandCenter.shared().changePlaybackRateCommand
+        //        changePlaybackRateCommand.isEnabled = true
+        //        changePlaybackRateCommand.addTarget(self, action: #selector(changePlaybackRateEvent))
+        //        changePlaybackRateCommand.supportedPlaybackRates = [NSNumber(value: 2)]
         
-//        let changePlaybackPositionCommand = MPRemoteCommandCenter.shared().changePlaybackPositionCommand
-//        changePlaybackPositionCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-//            
-//
-//            return .success;
-//        }
+        //        let changePlaybackPositionCommand = MPRemoteCommandCenter.shared().changePlaybackPositionCommand
+        //        changePlaybackPositionCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
+        //
+        //
+        //            return .success;
+        //        }
         
     }
     
     func skipForwardEvent() {
-        print("前进3.5s")
+        print("前进1.5s")
     }
     func skipBackwardEvent() {
-        print("后退3.5s")
+        print("后退1.5s")
     }
     func changePlaybackRateEvent(){
         self.player?.rate = 2.0
@@ -598,7 +745,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         self.player?.pause()
         self.progressSlider.value = 0
         self.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-//        self.playAndPauseButton.image = UIImage(named:"BigPlayButton")
+        //        self.playAndPauseButton.image = UIImage(named:"BigPlayButton")
         nowPlayingCenter.updateTimeForPlayerItem(player)
     }
     
@@ -630,8 +777,8 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             nowPlayingCenter.updateTimeForPlayerItem(player)
         }
     }
-
-
+    
+    
     public func handleDownloadStatusChange(_ notification: Notification) {
         DispatchQueue.main.async() {
             if let object = notification.object as? (id: String, status: DownloadStatus) {
@@ -658,7 +805,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             }
         }
     }
-
+    
     public func handleDownloadProgressChange(_ notification: Notification) {
         DispatchQueue.main.async() {
             if let object = notification.object as? (id: String, percentage: Float, downloaded: String, total: String) {
@@ -674,51 +821,51 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
     }
     
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        self.commonInit()
-//    }
-//    
-//    
-//    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!)  {
-//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//        
-//        self.commonInit()
-//    }
-//    
-//    func commonInit() {
-//        self.modalPresentationStyle = .custom
-//        self.transitioningDelegate = self
-//    }
-//
-//    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-//        
-//        if presented == self {
-//            return CustomPresentationController(presentedViewController: presented, presenting: presenting)
-//        }
-//        
-//        return nil
-//    }
-//    
-//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        
-//        if presented == self {
-//            return CustomPresentationAnimation(isPresenting: true)
-//        }
-//        else {
-//            return nil
-//        }
-//    }
-//    
-//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        
-//        if dismissed == self {
-//            return CustomPresentationAnimation(isPresenting: false)
-//        }
-//        else {
-//            return nil
-//        }
-//    }
-
-
+    //    required init?(coder aDecoder: NSCoder) {
+    //        super.init(coder: aDecoder)
+    //        self.commonInit()
+    //    }
+    //
+    //
+    //    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!)  {
+    //        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    //
+    //        self.commonInit()
+    //    }
+    //
+    //    func commonInit() {
+    //        self.modalPresentationStyle = .custom
+    //        self.transitioningDelegate = self
+    //    }
+    
+    //    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    //
+    //        if presented == self {
+    //            return CustomPresentationController(presentedViewController: presented, presenting: presenting)
+    //        }
+    //        
+    //        return nil
+    //    }
+    //    
+    //    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    //        
+    //        if presented == self {
+    //            return CustomPresentationAnimation(isPresenting: true)
+    //        }
+    //        else {
+    //            return nil
+    //        }
+    //    }
+    //    
+    //    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    //        
+    //        if dismissed == self {
+    //            return CustomPresentationAnimation(isPresenting: false)
+    //        }
+    //        else {
+    //            return nil
+    //        }
+    //    }
+    
+    
 }

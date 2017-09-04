@@ -1,8 +1,8 @@
 //
-//  listPerColumnViewController.swift
+//  ListPerColumnViewController.swift
 //  Page
 //
-//  Created by huiyun.he on 24/08/2017.
+//  Created by huiyun.he on 04/09/2017.
 //  Copyright © 2017 Oliver Zhang. All rights reserved.
 //
 
@@ -10,7 +10,14 @@ import UIKit
 import AVKit
 import MediaPlayer
 
+
+class ContentItemContent {
+    static let sharedInstance = ContentItemContent()
+    var item: ContentItem?
+}
 class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIViewControllerTransitioningDelegate {
+    public var directory: String? = nil
+    public let reloadView = "reloadView"
     let customTabBarController = CustomTabBarController()
     var AudioLists = ContentFetchResults(
         apiUrl: "",
@@ -19,30 +26,35 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     var item: ContentItem?
     @IBOutlet weak var listTableView: UITableView!
     @IBOutlet weak var exitButton: UIButton!
-    
-    
     @IBAction func exit(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-
+    
+    public init(item: ContentItem)
+    {
+        self.item = item
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        customTabBarController.item = item
+//        customTabBarController.item = item
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
-//        self.transitioningDelegate = self
-//        self.modalPresentationStyle = .custom
-//        listTableView?.register(UINib(nibName: "AudioListsTableViewCell", bundle: nil), forCellReuseIdentifier: "AudioListsTableViewCell")
-       
+        //        self.transitioningDelegate = self
+        //        self.modalPresentationStyle = .custom
+        //        listTableView?.register(UINib(nibName: "AudioListsTableViewCell", bundle: nil), forCellReuseIdentifier: "AudioListsTableViewCell")
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -61,7 +73,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellItem = tableView.dequeueReusableCell(withIdentifier: "AudioListTableViewCell", for: indexPath)
-        if let cell = cellItem as? AudioListTableViewCell {
+        if let cell = cellItem as? ListTableViewCell {
             cell.itemCell = AudioLists.fetchResults[0].items[indexPath.row]
             return cell
         }
@@ -71,32 +83,39 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         item = AudioLists.fetchResults[0].items[indexPath.row]
-//        当点击一行，更新ContentItemViewController中的内容
-        self.dismiss(animated: true)
-        
-//        if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController
-//        {
-//            print("update contentItemViewController content")
-//            contentItemViewController.fetchesDataObject = AudioLists
-//            contentItemViewController.dataObject = item
-//            contentItemViewController.modalPresentationStyle = UIModalPresentationStyle.custom
-//            self.present(contentItemViewController, animated: true, completion: nil)
-//        }
+        //        当点击一行，更新ContentItemViewController中的内容
+        //        self.dismiss(animated: true)
         
         
-//        if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
-//            if let audioFileUrl = item?.audioFileUrl {
-//                
-//                AudioContent.sharedInstance.body["title"] = item?.headline
-//                AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-//                AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(String(describing: item?.id))"
-//                audioPlayerController.item = item
-//                self.addChildViewController(audioPlayerController)
-//                self.view.addSubview(audioPlayerController.view)
-//                audioPlayerController.view.frame = CGRect(x:0,y:self.view.bounds.height-200,width:self.view.bounds.width,height:200)
-//
-//            }
-//        }
+        if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController
+        {
+            
+            
+            //            NotificationCenter.default.post(name: "ReloadView", object: self)
+            print("update contentItemViewController content")
+            //            contentItemViewController.fetchesDataObject = AudioLists
+            ContentItemContent.sharedInstance.item = item
+            //            contentItemViewController.dataObject = item
+            contentItemViewController.modalPresentationStyle = UIModalPresentationStyle.custom
+            //            self.present(contentItemViewController, animated: true, completion: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
+            self.dismiss(animated: true)
+        }
+        
+        
+        //        if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
+        //            if let audioFileUrl = item?.audioFileUrl {
+        //
+        //                AudioContent.sharedInstance.body["title"] = item?.headline
+        //                AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+        //                AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(String(describing: item?.id))"
+        //                audioPlayerController.item = item
+        //                self.addChildViewController(audioPlayerController)
+        //                self.view.addSubview(audioPlayerController.view)
+        //                audioPlayerController.view.frame = CGRect(x:0,y:self.view.bounds.height-200,width:self.view.bounds.width,height:200)
+        //
+        //            }
+        //        }
     }
     //init 不能少，写在viewDidLoad中不生效
     
@@ -106,17 +125,17 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     
-    //        override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!)  {
-    //            super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    //    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!)  {
+    //        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     //
-    //            self.commonInit()
-    //        }
+    //        self.commonInit()
+    //    }
     
     func commonInit() {
         self.modalPresentationStyle = .custom
         self.transitioningDelegate = self
     }
-
+    
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         
         if presented == self {
@@ -144,5 +163,5 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
             return nil
         }
     }
-
+    
 }

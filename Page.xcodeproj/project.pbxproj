@@ -264,6 +264,8 @@
 		F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AC1F39A2BC00FAA8C0 /* mute.png */; };
 		F29E19B21F39A2BC00FAA8C0 /* ShareIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AD1F39A2BC00FAA8C0 /* ShareIcon.jpg */; };
 		F29E19B31F39A2BC00FAA8C0 /* sound.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AE1F39A2BC00FAA8C0 /* sound.png */; };
+		F2D792691F5CEBA2005A7588 /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */; };
+		F2D7926B1F5CEBF4005A7588 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */; };
 		F2E0906A1F5A6A3900F4409F /* ColumnAllListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E0905C1F5A6A3900F4409F /* ColumnAllListCell.swift */; };
 		F2E0906B1F5A6A3900F4409F /* ColumnAllListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2E0905D1F5A6A3900F4409F /* ColumnAllListCell.xib */; };
 		F2E0906C1F5A6A3900F4409F /* ColumnAllListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E0905E1F5A6A3900F4409F /* ColumnAllListViewController.swift */; };
@@ -279,10 +281,8 @@
 		F2E090761F5A6A3900F4409F /* PersonInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */; };
 		F2E090791F5A721E00F4409F /* CustomTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090771F5A721E00F4409F /* CustomTab.swift */; };
 		F2E0907A1F5A721E00F4409F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090781F5A721E00F4409F /* CustomTabBarController.swift */; };
-		F2E090801F5A736E00F4409F /* AudioListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E0907C1F5A736E00F4409F /* AudioListTableViewCell.swift */; };
 		F2E090811F5A736E00F4409F /* CustomAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E0907D1F5A736E00F4409F /* CustomAnimation.swift */; };
 		F2E090821F5A736E00F4409F /* CustomPresentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E0907E1F5A736E00F4409F /* CustomPresentController.swift */; };
-		F2E090831F5A736E00F4409F /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E0907F1F5A736E00F4409F /* ListPerColumnViewController.swift */; };
 		F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */; };
 		F2F92B181F0B6C0C00C4E043 /* AdCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */; };
 /* End PBXBuildFile section */
@@ -468,6 +468,8 @@
 		F29E19AC1F39A2BC00FAA8C0 /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mute.png; path = FTCC/Images/mute.png; sourceTree = "<group>"; };
 		F29E19AD1F39A2BC00FAA8C0 /* ShareIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ShareIcon.jpg; path = FTCC/Images/ShareIcon.jpg; sourceTree = "<group>"; };
 		F29E19AE1F39A2BC00FAA8C0 /* sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sound.png; path = FTCC/Images/sound.png; sourceTree = "<group>"; };
+		F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListPerColumnViewController.swift; path = Audio/ListPerColumnViewController.swift; sourceTree = "<group>"; };
+		F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListTableViewCell.swift; path = Audio/ListTableViewCell.swift; sourceTree = "<group>"; };
 		F2E0905C1F5A6A3900F4409F /* ColumnAllListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnAllListCell.swift; sourceTree = "<group>"; };
 		F2E0905D1F5A6A3900F4409F /* ColumnAllListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColumnAllListCell.xib; sourceTree = "<group>"; };
 		F2E0905E1F5A6A3900F4409F /* ColumnAllListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnAllListViewController.swift; sourceTree = "<group>"; };
@@ -483,10 +485,8 @@
 		F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInfoViewController.swift; sourceTree = "<group>"; };
 		F2E090771F5A721E00F4409F /* CustomTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTab.swift; path = ../FTCC/CustomTab.swift; sourceTree = "<group>"; };
 		F2E090781F5A721E00F4409F /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTabBarController.swift; path = ../FTCC/CustomTabBarController.swift; sourceTree = "<group>"; };
-		F2E0907C1F5A736E00F4409F /* AudioListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioListTableViewCell.swift; sourceTree = "<group>"; };
 		F2E0907D1F5A736E00F4409F /* CustomAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimation.swift; sourceTree = "<group>"; };
 		F2E0907E1F5A736E00F4409F /* CustomPresentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPresentController.swift; sourceTree = "<group>"; };
-		F2E0907F1F5A736E00F4409F /* ListPerColumnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListPerColumnViewController.swift; sourceTree = "<group>"; };
 		F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCellRegular.swift; sourceTree = "<group>"; };
 		F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdCellRegular.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -723,6 +723,8 @@
 				F24B798F1F5555FA001B62A2 /* AudioPlayerController.swift */,
 				F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */,
 				F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */,
+				F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */,
+				F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */,
 			);
 			name = Player;
 			sourceTree = "<group>";
@@ -1072,10 +1074,8 @@
 		F2E0907B1F5A736E00F4409F /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				F2E0907C1F5A736E00F4409F /* AudioListTableViewCell.swift */,
 				F2E0907D1F5A736E00F4409F /* CustomAnimation.swift */,
 				F2E0907E1F5A736E00F4409F /* CustomPresentController.swift */,
-				F2E0907F1F5A736E00F4409F /* ListPerColumnViewController.swift */,
 			);
 			name = Audio;
 			path = FTCC/Audio;
@@ -1479,13 +1479,11 @@
 				602153361F397C650077A7AF /* NSLayoutManager+Attachments.swift in Sources */,
 				602153371F397C650077A7AF /* ContentFetch.swift in Sources */,
 				602153381F397C650077A7AF /* AdCellRegular.swift in Sources */,
-				F2E090801F5A736E00F4409F /* AudioListTableViewCell.swift in Sources */,
 				602153391F397C650077A7AF /* Content.swift in Sources */,
 				6021533A1F397C650077A7AF /* ParseHtml.swift in Sources */,
 				6021533C1F397C650077A7AF /* PageCollectionViewLayoutH.swift in Sources */,
 				6021533D1F397C650077A7AF /* AdLayout.swift in Sources */,
 				6021533E1F397C650077A7AF /* OneTalkCell.swift in Sources */,
-				F2E090831F5A736E00F4409F /* ListPerColumnViewController.swift in Sources */,
 				602153401F397C650077A7AF /* ContentItem.swift in Sources */,
 				602153411F397C650077A7AF /* StyleExtensions.swift in Sources */,
 				602153421F397C650077A7AF /* SpeechSettings.swift in Sources */,
@@ -1622,7 +1620,9 @@
 				60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */,
 				50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */,
 				604FF94B1EEF7649005D2A41 /* ChannelCell.swift in Sources */,
+				F2D7926B1F5CEBF4005A7588 /* ListTableViewCell.swift in Sources */,
 				6055EF9C1F506276006F8A83 /* CustomCell.swift in Sources */,
+				F2D792691F5CEBA2005A7588 /* ListPerColumnViewController.swift in Sources */,
 				5070EDF51EEBD425008A10CE /* ContentSection.swift in Sources */,
 				6093F1661EE90E81009F16EE /* CustomPopTransition.swift in Sources */,
 				602153A01F399E010077A7AF /* AcademyNavigationController.swift in Sources */,

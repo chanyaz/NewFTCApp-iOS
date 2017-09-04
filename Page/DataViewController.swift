@@ -680,6 +680,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "ebook":
                 if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
                     contentItemViewController.dataObject = selectedItem
+                    contentItemViewController.hidesBottomBarWhenPushed = true
                     navigationController?.pushViewController(contentItemViewController, animated: true)
                 }
 

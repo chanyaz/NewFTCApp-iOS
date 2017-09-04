@@ -42,6 +42,7 @@
 		600BD6B41F21CCF90077C104 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 600BD6B31F21CCF90077C104 /* StoreKit.framework */; };
 		600C0CFE1F5CDD7D00226F84 /* APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600C0CFD1F5CDD7D00226F84 /* APIs.swift */; };
 		600C0D001F5CDEA500226F84 /* APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600C0CFF1F5CDEA500226F84 /* APIs.swift */; };
+		600C0D021F5CE7B800226F84 /* ebook.html in Resources */ = {isa = PBXBuildFile; fileRef = 600C0D011F5CE7B800226F84 /* ebook.html */; };
 		60124FB61F316F2400CFA04C /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60124FB51F316F2400CFA04C /* ChatViewController.swift */; };
 		60124FB91F318C0A00CFA04C /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60124FB81F318C0A00CFA04C /* Content.swift */; };
 		601417701EEA3F7600DC3EF9 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */; };
@@ -340,6 +341,7 @@
 		600BD6B31F21CCF90077C104 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		600C0CFD1F5CDD7D00226F84 /* APIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIs.swift; sourceTree = "<group>"; };
 		600C0CFF1F5CDEA500226F84 /* APIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIs.swift; sourceTree = "<group>"; };
+		600C0D011F5CE7B800226F84 /* ebook.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = ebook.html; path = FTChinese/ebook.html; sourceTree = "<group>"; };
 		60124FB51F316F2400CFA04C /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		60124FB81F318C0A00CFA04C /* Content.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
@@ -579,6 +581,7 @@
 			children = (
 				50DA6E801F4037C8006B4CDE /* story.html */,
 				6084C7CB1F452A210035F60C /* register.html */,
+				600C0D011F5CE7B800226F84 /* ebook.html */,
 				601AC21A1F4870780004196A /* search.html */,
 			);
 			name = HTML;
@@ -1272,6 +1275,7 @@
 				60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */,
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
+				600C0D021F5CE7B800226F84 /* ebook.html in Resources */,
 				6021538B1F3990880077A7AF /* Main.storyboard in Resources */,
 				50DA6E811F4037C8006B4CDE /* story.html in Resources */,
 				6084C7CC1F452A210035F60C /* register.html in Resources */,

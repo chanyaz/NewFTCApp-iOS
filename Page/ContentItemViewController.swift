@@ -523,7 +523,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     let followAuthors = getFollow("author")
                     let followColumns = getFollow("column")
                     
-                    if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
+                    let resourceFileName: String
+                    switch type {
+                        case "ebook":
+                        resourceFileName = "ebook"
+                        insertBuyButtons()
+                    default:
+                        resourceFileName = "story"
+                    }
+                    
+                    if let adHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                             let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: finalBody)
@@ -806,7 +815,6 @@ extension ContentItemViewController: WKScriptMessageHandler {
     }
 }
 
-
 extension ContentItemViewController: UIScrollViewDelegate {
     // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
     // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
@@ -822,6 +830,15 @@ extension ContentItemViewController: UITextViewDelegate {
     }
 }
 
+// Buy and Download Buttons
+extension ContentItemViewController {
+    fileprivate func insertBuyButtons() {
+        let buyButton = UIButton()
+        buyButton.setTitle("购买", for: .normal)
+        
+        
+    }
+}
 
 
 //extension String {

@@ -303,6 +303,8 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     func getPlayingUrl(){
         
+        return
+        
         for (_, item0) in fetchesAudioObject.fetchResults[0].items.enumerated() {
             if var fileUrl = item0.audioFileUrl {
                 //                    var fileUrl = item0.audioFileUrl 不能不判断，因为有可能为空
@@ -372,6 +374,11 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = UIColor.red
+        print ("poped a audio controller view! ")
+        
+        /*
         count = fetchesAudioObject.fetchResults[0].items.count
         ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
         let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
@@ -383,6 +390,8 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         initStyle()
         self.containerView.backgroundColor = UIColor(hex: "#12a5b3")
         audioAddGesture()
+         
+        */
         
         //        queuePlayer = AVQueuePlayer(items:)
         

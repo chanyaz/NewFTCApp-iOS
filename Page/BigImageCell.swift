@@ -131,6 +131,16 @@ class BigImageCell: CustomCell {
             //print ("should load image here")
         }
         
+        // MARK: - Add tap gestures to buttons
+        let soundButtonTapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(audioButtonTapGesture(_:)))
+        soundButton.addGestureRecognizer(soundButtonTapGestureRecognizer)
+        
+    }
+    
+    open func audioButtonTapGesture(_ recognizer: UITapGestureRecognizer) {
+        if let rootViewController = window?.rootViewController as? UITabBarController {
+            rootViewController.showAudioPlayer()
+        }
     }
     
 }

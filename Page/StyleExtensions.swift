@@ -92,7 +92,8 @@ extension UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let controller = storyboard.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
             let audioPlayerView = UIView()
-            let playerHeight: CGFloat = AudioPlayerStyle.height
+//            let playerHeight: CGFloat = AudioPlayerStyle.height
+            let playerHeight: CGFloat = 50
             let playerX = UIScreen.main.bounds.origin.x
             let playerY = UIScreen.main.bounds.origin.y + UIScreen.main.bounds.height - playerHeight
             let playerWidth = UIScreen.main.bounds.width

@@ -40,7 +40,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        customTabBarController.item = item
+//        customTabBarController.item = item
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
         //        self.transitioningDelegate = self
@@ -73,7 +73,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellItem = tableView.dequeueReusableCell(withIdentifier: "AudioListTableViewCell", for: indexPath)
-        if let cell = cellItem as? AudioListTableViewCell {
+        if let cell = cellItem as? ListTableViewCell {
             cell.itemCell = AudioLists.fetchResults[0].items[indexPath.row]
             return cell
         }

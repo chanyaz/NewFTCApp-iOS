@@ -142,19 +142,9 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
     }
     @IBAction func switchToNextAudio(_ sender: UIButton) {
-        
-        //        count = fetchesAudioObject.fetchResults[0].items.count - 1//有一个没有音频，所以越界
+
         removePlayerItemObservers()
-        //        print("urlString next")
-        //        if playingIndex < count-2{
-        ////            playingIndex = playingIndex+1
-        //           playingIndex += 1
-        //
-        //        }else{
-        //            playingIndex = 0
-        //            print("urlString playingIndex0\(playingIndex)")
-        //        }
-        
+
         playingIndex += 1
         if playingIndex >= count-1{
             playingIndex = 0
@@ -164,12 +154,12 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         let nextUrl = urlOrigStrings?[playingIndex].replacingOccurrences(of: " ", with: "%20")
         print("urlString playingIndex\(playingIndex)")
         let index = playingIndex
-        
+//
         audioUrlString = nextUrl!
         prepareAudioPlay()
         
-        ContentItemContent.sharedInstance.item = fetchesAudioObject.fetchResults[0].items[index]
-        print("urlString ContentItemContent\(String(describing: ContentItemContent.sharedInstance.item?.audioFileUrl))")
+//        ContentItemContent.sharedInstance.item = fetchesAudioObject.fetchResults[0].items[index]
+        print("urlString ContentItemContent\(String(describing: index))")
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
         
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
@@ -178,9 +168,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             //             print("urlString next 21")
             player.play()
         }
-        //        let aa = ContentItemViewController()
-        //        aa.reloadView()
-        //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self) //不能放在此处，否则playingIndex值不会变化，为什么呢？
+ 
     }
     @IBAction func skipForward(_ sender: UIButton) {
         let currentSliderValue = self.progressSlider.value
@@ -209,18 +197,18 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     //        self.view.frame = CGRect(x:0,y:0,width:200,height:200)
     //    }
     @IBAction func openPlayList(_ sender: UIButton) {
-        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
-            listPerColumnViewController.AudioLists = fetchesAudioObject
-            
-            
-            listPerColumnViewController.modalPresentationStyle = .custom
-            
-            //            listPerColumnViewController.view.frame = CGRect(x:0,y:150,width:self.view.bounds.width,height:self.view.bounds.height-150)
-            
-            self.present(listPerColumnViewController, animated: false, completion: nil)
-            
-            
-        }
+//        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
+//            listPerColumnViewController.AudioLists = fetchesAudioObject
+//            
+//            
+//            listPerColumnViewController.modalPresentationStyle = .custom
+//            
+//            //            listPerColumnViewController.view.frame = CGRect(x:0,y:150,width:self.view.bounds.width,height:self.view.bounds.height-150)
+//            
+//            self.present(listPerColumnViewController, animated: false, completion: nil)
+//            
+//            
+//        }
     }
     
     

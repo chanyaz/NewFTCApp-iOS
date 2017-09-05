@@ -64,7 +64,7 @@ class BigImageCell: CustomCell {
         
         // MARK: sound Button, love buttons and other FTCC buttons
         if let themeColorString = self.themeColor {
-            let themeColor = UIColor(hex: themeColorString)
+            let themeColor = UIColor(hex: themeColorString, alpha: 0.7)
             soundButton.layer.backgroundColor = themeColor.cgColor
 //            soundButton.layer.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.7).cgColor
             soundButton.layer.cornerRadius = 17.5

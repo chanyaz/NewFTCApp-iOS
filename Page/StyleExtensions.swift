@@ -33,6 +33,24 @@ extension UIColor {
         )
     }
     
+    
+    convenience init(hex: String, alpha: CGFloat) {
+        let hexString = hex.replacingOccurrences(of: "#", with: "")
+        let scanner = Scanner(string: hexString)
+        scanner.scanLocation = 0
+        var rgbValue: UInt64 = 0
+        scanner.scanHexInt64(&rgbValue)
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff,
+            alpha: alpha
+        )
+    }
+    
     public convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid green component")

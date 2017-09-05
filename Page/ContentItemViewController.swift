@@ -833,11 +833,34 @@ extension ContentItemViewController: UITextViewDelegate {
 // Buy and Download Buttons
 extension ContentItemViewController {
     fileprivate func insertBuyButtons() {
+        let iapView = IAPView()
+        let containerFrame = containerView.bounds
+        let viewFrame = view.bounds
+        let originX: CGFloat = 0
+        let originY = containerFrame.height
+        let width = viewFrame.width
+        let height = viewFrame.height - containerFrame.height
+        iapView.frame = CGRect(x: originX, y: originY, width: width, height: height)
+        iapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        iapView.updateUI()
+        view.addSubview(iapView)
+    }
+}
+
+class IAPView: UIView {
+    
+    
+    
+    func updateUI() {
         let buyButton = UIButton()
         buyButton.setTitle("购买", for: .normal)
+        buyButton.backgroundColor = UIColor.blue
+        buyButton.frame = CGRect(x: 0, y: 0, width: self.frame.width/2, height: self.frame.height)
         
         
+        self.addSubview(buyButton)
     }
+    
 }
 
 

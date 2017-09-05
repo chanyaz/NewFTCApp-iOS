@@ -201,4 +201,67 @@ struct IAP {
     }
     
     
+    
+    public static func buy(_ id: String) {
+//        print (urlString)
+//        let productId = urlString.replacingOccurrences(of: "buy://", with: "")
+        let product = findSKProductByID(id)
+        if let product = product {
+            FTCProducts.store.buyProduct(product)
+            // MARK: Update the interface go let users know the buying is in process
+//            let jsCode = "iapActions('\(productId)', 'pending');"
+//            self.webView.evaluateJavaScript(jsCode) { (result, error) in
+//            }
+            trackIAPActions("buy", productId: id)
+        } else {
+            print ("cannot find the product id, try load product again")
+            FTCProducts.store.requestProducts{success, products in
+                if success {
+                    if let products = products {
+                        IAPs.shared.products = products
+                        if let productNew = self.findSKProductByID(id) {
+                            FTCProducts.store.buyProduct(productNew)
+                            // MARK: Update the interface go let users know the buying is in process
+//                            let jsCode = "iapActions('\(productId)', 'pending');"
+//                            self.webView.evaluateJavaScript(jsCode) { (result, error) in
+//                            }
+                        }
+//                        self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
+//                        self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
+                    }
+                } else {
+                    print ("cannot connect to app store right now!")
+                    // MARK: - pop up alert to let user know about this
+                    let alert = UIAlertController(title: "交易失败", message: "现在无法连接到App Store进行购买，请在网络状况比较好的情况下重试", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "知道了", style: UIAlertActionStyle.default, handler: nil))
+                    //self.present(alert, animated: true, completion: nil)
+                    if let topController = UIApplication.topViewController() {
+                        topController.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    private static func findSKProductByID(_ productID: String) -> SKProduct? {
+        var product: SKProduct?
+        for p in IAPs.shared.products {
+            if p.productIdentifier == productID {
+                product = p
+                print ("product id matched: \(p.productIdentifier)")
+                break
+            }
+        }
+        return product
+    }
+    
+    private static func trackIAPActions(_ actionType: String, productId: String) {
+        Track.event(category: "In-App Purchase", action: actionType, label: productId)
+    }
+    
+    
 }
+

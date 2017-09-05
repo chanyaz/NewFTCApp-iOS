@@ -232,6 +232,10 @@
 		60F1A5241F5E329E0007F9F3 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A5211F5E329E0007F9F3 /* BigImageCell.swift */; };
 		60F1A5251F5E329E0007F9F3 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F1A5221F5E329E0007F9F3 /* BigImageCell.xib */; };
 		60F1A5261F5E329E0007F9F3 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F1A5221F5E329E0007F9F3 /* BigImageCell.xib */; };
+		60F1A52B1F5E98DE0007F9F3 /* IAPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */; };
+		60F1A52C1F5E98DE0007F9F3 /* IAPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */; };
+		60F1A52E1F5EAD0D0007F9F3 /* IAPs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */; };
+		60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */; };
 		60F4C16D1EFCEBA500F21EB6 /* CoverCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */; };
 		60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */; };
 		60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */; };
@@ -436,6 +440,8 @@
 		60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleExtensions.swift; sourceTree = "<group>"; };
 		60F1A5211F5E329E0007F9F3 /* BigImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		60F1A5221F5E329E0007F9F3 /* BigImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
+		60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPView.swift; sourceTree = "<group>"; };
+		60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPs.swift; sourceTree = "<group>"; };
 		60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverCellRegular.swift; sourceTree = "<group>"; };
 		60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCellRegular.xib; sourceTree = "<group>"; };
 		60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCellRegular.swift; sourceTree = "<group>"; };
@@ -694,8 +700,10 @@
 			isa = PBXGroup;
 			children = (
 				602CD2921F565FD500FFC1EA /* FTCProducts.swift */,
+				60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */,
 				602CD2931F565FD500FFC1EA /* IAPHelper.swift */,
 				6072F9F21F57ED280035AD92 /* IAP.swift */,
+				60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */,
 			);
 			name = IAP;
 			sourceTree = "<group>";
@@ -1469,6 +1477,7 @@
 				602153291F397C650077A7AF /* ArticleStyle.swift in Sources */,
 				6021532B1F397C650077A7AF /* ChatViewController.swift in Sources */,
 				602153B51F399E9A0077A7AF /* CustomNavigationController.swift in Sources */,
+				60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */,
 				6021532C1F397C650077A7AF /* AudioPlayer.swift in Sources */,
 				F2E090761F5A6A3900F4409F /* PersonInfoViewController.swift in Sources */,
 				6021532D1F397C650077A7AF /* OpenInSafari.swift in Sources */,
@@ -1494,6 +1503,7 @@
 				602153431F397C650077A7AF /* Web.swift in Sources */,
 				602153441F397C650077A7AF /* DataViewController.swift in Sources */,
 				602153451F397C650077A7AF /* PagesViewController.swift in Sources */,
+				60F1A52C1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
 				602CD2971F565FD500FFC1EA /* IAPHelper.swift in Sources */,
 				F2E090711F5A6A3900F4409F /* MyDownloadViewController.swift in Sources */,
 				602153461F397C650077A7AF /* AdModel.swift in Sources */,
@@ -1548,6 +1558,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60F1A52E1F5EAD0D0007F9F3 /* IAPs.swift in Sources */,
 				608C55211EF78FA100AF27CB /* DetailModelController.swift in Sources */,
 				6055EF971F5021C1006F8A83 /* PaidPostCell.swift in Sources */,
 				60986A461F1CAC5300583157 /* DataForShare.swift in Sources */,
@@ -1595,6 +1606,7 @@
 				60F4C16D1EFCEBA500F21EB6 /* CoverCellRegular.swift in Sources */,
 				50EC3A631EF1E18E00BF17AD /* Ad.swift in Sources */,
 				50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */,
+				60F1A52B1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
 				605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */,
 				50A704C31EEB689900660022 /* ContentFetch.swift in Sources */,
 				F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */,

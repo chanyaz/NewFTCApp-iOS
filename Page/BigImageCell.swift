@@ -66,9 +66,10 @@ class BigImageCell: CustomCell {
         if let themeColorString = self.themeColor {
             let themeColor = UIColor(hex: themeColorString, alpha: 0.7)
             soundButton.layer.backgroundColor = themeColor.cgColor
-//            soundButton.layer.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.7).cgColor
             soundButton.layer.cornerRadius = 17.5
-            
+        }
+        if let themeColorString = self.themeColor {
+            let themeColor = UIColor(hex: themeColorString)
             // MARK: border for the image bottom
             imageBorder.backgroundColor = themeColor
             
@@ -84,9 +85,7 @@ class BigImageCell: CustomCell {
                 tagButton.isHidden = true
             }
         }
-        
-        
-        
+        lead.font = UIFont(name: "Helvetica-Light", size: 16.0)
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right
         let containerViewMargins = containerView.layoutMargins.left + containerView.layoutMargins.right

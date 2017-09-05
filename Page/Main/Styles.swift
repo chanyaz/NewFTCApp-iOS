@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 struct Color {
-    // Those nested structures are grouped mostly according to their functions
+    // MARK: Grouped mostly based on functions
     struct Content {
         static let headline = "#000000"
         static let body = "#333333"

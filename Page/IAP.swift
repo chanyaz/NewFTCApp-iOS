@@ -265,7 +265,3 @@ struct IAP {
     
 }
 
-struct IAPs {
-    static var shared = IAPs()
-    var products = [SKProduct]()
-}

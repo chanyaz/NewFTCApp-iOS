@@ -131,16 +131,38 @@ class BigImageCell: CustomCell {
             //print ("should load image here")
         }
         
-        // MARK: - Add tap gestures to buttons
-        let soundButtonTapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(audioButtonTapGesture(_:)))
-        soundButton.addGestureRecognizer(soundButtonTapGestureRecognizer)
         
     }
     
-    open func audioButtonTapGesture(_ recognizer: UITapGestureRecognizer) {
+    @IBAction func tapSoundButton(_ sender: Any) {
         if let rootViewController = window?.rootViewController as? UITabBarController {
             rootViewController.showAudioPlayer()
         }
+    }
+    
+    @IBAction func tapTagButton(_ sender: UIButton) {
+        if let tag = sender.currentTitle {
+            if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+                let tagAPI = APIs.get(tag, type: "tag")
+                
+                dataViewController.dataObject = ["title": tag,
+                                                 "api": tagAPI,
+                                                 "url":"",
+                                                 "screenName":"tag/\(tag)"]
+                dataViewController.pageTitle = tag
+                if let topViewController = UIApplication.topViewController() {
+                    topViewController.navigationController?.pushViewController(dataViewController, animated: true)
+                }
+            }
+        }
+    }
+    
+    @IBAction func tapLoveButton(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction func tapCommentButton(_ sender: UIButton) {
+        
     }
     
 }

@@ -28,7 +28,12 @@ struct APIs {
         let urlString: String
         switch type {
         case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
-        case "tag": urlString = "\(domain)\(type)/\(id)?type=json"
+        case "tag":
+            if let encodedTag = id.removingPercentEncoding?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+                urlString = "\(domain)\(type)/\(encodedTag)?type=json"
+            } else {
+                urlString = "\(domain)\(type)/\(id)?type=json"
+            }
         case "follow":
             // TODO: Calculate the url string for follow
             let followTypes = Meta.map
@@ -55,7 +60,6 @@ struct APIs {
         default:
             urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         }
-        print ("api url is \(urlString)")
         return urlString
     }
     

@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BigImageCell" id="gTV-IL-0wX" customClass="BigImageCell" customModule="FTCC" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BigImageCell" id="gTV-IL-0wX" customClass="BigImageCell" customModule="Page">
             <rect key="frame" x="0.0" y="0.0" width="313" height="350"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -51,14 +51,23 @@
                                 <rect key="frame" x="14" y="162" width="30" height="30"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="tag"/>
+                                <connections>
+                                    <action selector="tapTagButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="jMi-vr-dqR"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ddO-DN-GgS">
                                 <rect key="frame" x="237" y="162" width="13" height="30"/>
                                 <state key="normal" image="Love"/>
+                                <connections>
+                                    <action selector="tapLoveButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="rbF-tJ-jHV"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jSp-lV-W3P">
                                 <rect key="frame" x="271" y="166" width="12" height="22"/>
                                 <state key="normal" image="CommentCount"/>
+                                <connections>
+                                    <action selector="tapCommentButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Y0J-K4-pwx"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fj-Oj-ZB4">
                                 <rect key="frame" x="255" y="167" width="11" height="21"/>
@@ -86,6 +95,9 @@
                                     <constraint firstAttribute="height" constant="30" id="qhP-s0-AWj"/>
                                 </constraints>
                                 <state key="normal" image="Sound"/>
+                                <connections>
+                                    <action selector="tapSoundButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="FIv-M7-7xV"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

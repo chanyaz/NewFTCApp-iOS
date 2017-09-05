@@ -525,7 +525,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     
                     let resourceFileName: String
                     switch type {
-                        case "ebook":
+                    case "ebook":
                         resourceFileName = "ebook"
                         insertBuyButtons()
                     default:
@@ -852,13 +852,36 @@ class IAPView: UIView {
     
     
     func updateUI() {
-        let buyButton = UIButton()
-        buyButton.setTitle("购买", for: .normal)
-        buyButton.backgroundColor = UIColor.blue
-        buyButton.frame = CGRect(x: 0, y: 0, width: self.frame.width/2, height: self.frame.height)
+        //        let buyButton = UIButton()
+        //        buyButton.backgroundColor = UIColor.blue
+        //        buyButton.setTitle("buy", for: .normal)
+        //        buyButton.setTitleColor(.white, for: .normal)
+        //        buyButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        //        buyButton.frame = CGRect(x: 0, y: 0, width: self.frame.width/2, height: self.frame.height)
+        //
+        //
+        //        self.addSubview(buyButton)
         
+        self.backgroundColor = .red
         
-        self.addSubview(buyButton)
+        let buttonWidth = self.bounds.width/2
+        let buttonHeight = self.bounds.height
+        let buttonPadding: CGFloat = 0
+        
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight))
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 3
+        button.setTitle("buy", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.blue
+        self.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        //button.addTarget(self, action: #selector(videoMuteSwitch), for: .touchUpInside)
+                    self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.left, multiplier: 1, constant: -buttonPadding))
+                    self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -buttonPadding))
+                    self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+                    self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
+        
     }
     
 }

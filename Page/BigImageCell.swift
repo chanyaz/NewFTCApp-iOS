@@ -66,7 +66,8 @@ class BigImageCell: CustomCell {
         if let themeColorString = self.themeColor {
             let themeColor = UIColor(hex: themeColorString)
             soundButton.layer.backgroundColor = themeColor.cgColor
-            soundButton.layer.cornerRadius = 15
+//            soundButton.layer.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.7).cgColor
+            soundButton.layer.cornerRadius = 17.5
             
             // MARK: border for the image bottom
             imageBorder.backgroundColor = themeColor
@@ -74,7 +75,7 @@ class BigImageCell: CustomCell {
             tagButton.backgroundColor = themeColor
             tagButton.setTitleColor(UIColor.white, for: .normal)
             
-            tagButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5)
+            tagButton.contentEdgeInsets = UIEdgeInsetsMake(5,15,5,15)
             
             // MARK: get item tag
             if let firstTag = itemCell?.tag.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression) {

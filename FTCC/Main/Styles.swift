@@ -13,8 +13,8 @@ struct Color {
     struct Content {
         static let headline = "#000000"
         static let body = "#333333"
-        static let lead = "#777777"
-        static let border = "#e9decf"
+        static let lead = "#000000"
+        static let border = "#cecece"
         static let background = "#FFFFFF"
         static let tag = "#9E2F50"
         static let time = "#8b572a"
@@ -47,7 +47,7 @@ struct Color {
     }
     
     struct Navigation {
-        static let border = "#d5c6b3"
+        static let border = "#000000"
     }
     
     struct Ad {

@@ -30,6 +30,8 @@ struct Color {
     
     struct Button {
         static let tint = "#057b93"
+        static let highlight = "#f6801a"
+        static let standard = "#26747a"
     }
     
     struct Header {

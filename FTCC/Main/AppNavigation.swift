@@ -18,11 +18,11 @@ struct AppNavigation {
         "News": [
             "title": "FTCC",
             "navColor": "#333333",
-            "navBackGroundColor": "#f7e9d8",
+            "navBackGroundColor": "#FFFFFF",
             "isNavLightContent": false,
             "Channels": [
                 ["title": "文章",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
+                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
                  "compactLayout": "All Cover",
                  "regularLayout": "",
                  "url":"http://www.ftchinese.com/channel/datanews.html",

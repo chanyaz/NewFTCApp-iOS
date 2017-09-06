@@ -134,6 +134,149 @@ class IAPView: UIView {
         }
     }
     
+    private func updateUI(_ actionType: String) {
+        switch actionType {
+            case "success":
+            print ("show open and delete button")
+            case "pendingdownload":
+            print ("show download button only")
+            case "downloading":
+            print ("show downloading view")
+            case "pending":
+            print ("show request button")
+            case "fail":
+            print ("show buy and try button")
+        default:
+            break
+        }
+    }
+    
+    
+    /*
+     // MARK: - Update DOM UI based on user actions
+     function iapActions(productID, actionType, expireDate) {
+     var iapButtons;
+     var iapRailHTML = '';
+     var iapHTMLCode = '';
+     var productPrice = '';
+     var productTeaser = '';
+     var productIndex;
+     var productName;
+     var productExpire = '为止';
+     
+     // MARK: - current view prefix
+     var viewPrefix = getViewPrefix();
+     
+     // MARK: get iapButtons based on the current view
+     var currentView = 'fullbody';
+     if (gNowView.indexOf('storyview') >= 0) {
+     currentView = 'storyview';
+     } else if (gNowView.indexOf('channelview') >= 0) {
+     currentView = 'channelview';
+     }
+     
+     iapButtons = document.getElementById(currentView).querySelectorAll('.iap-button');
+     
+     // MARK: - Get the index number of the current product for window.iapProducts
+     if (productID !== '') {
+     for (var i = 0; i < window.iapProducts.length; i++) {
+     if (productID === iapProducts[i].id) {
+     productIndex = i;
+     break;
+     }
+     }
+     }
+     
+     // MARK: - get product price here
+     productPrice = window.iapProducts[productIndex].price || '购买';
+     productTeaser = window.iapProducts[productIndex].teaser || '';
+     productName = window.iapProducts[productIndex].title || '';
+     
+     // MARK: - Get product type based on its identifiers
+     var productType = '';
+     if (/premium$|standard$|trial$/.test(productID)) {
+     productType = 'membership';
+     } else if (/subscription/.test(productID)) {
+     productType = 'subscription';
+     } else {
+     productType = 'eBook';
+     }
+     
+     // MARK: - iapHTMLCode is used for home and channel page, iapRailHTML is used for product detail page
+     switch (actionType) {
+     case 'success':
+     if (productType === 'membership') {
+     productExpire = expireDate || '未知';
+     iapHTMLCode = '<p class="iap-teaser">成功订阅'+productName+'，到期时间'+productExpire+'</p><a'+getBuyCode(productID, productPrice, gUserId, productName)+'><button class="iap-move-left">续订</button></a>';
+     iapRailHTML = '';
+     } else {
+     iapHTMLCode = '<a href="readbook://' + productID + '"><button class="iap-move-left">打开</button></a><a href="removedownload://' + productID + '"><button>删除</button></a>';
+     iapRailHTML = '<a href="readbook://' + productID + '"><button class="floatright iap-highlight">打开</button></a><a href="removedownload://' + productID + '"><button class="floatleft">删除</button></a>';
+     }
+     updateProductStatus(productIndex, true, true);
+     break;
+     case 'pendingdownload':
+     iapHTMLCode = '<a href="downloadproduct://' + productID + '"><button>下载</button></a>';
+     iapRailHTML = '<a href="downloadproduct://' + productID + '"><button class="full-width iap-highlight">下载</button></a>';
+     updateProductStatus(productIndex, true, false);
+     break;
+     case 'downloading':
+     iapHTMLCode = '<a id="' + viewPrefix + 'pause-' + productID + '" href="pausedownload://' + productID + '"><button class="iap-move-left pause-button">暂停</button></a><a href="canceldownload://' + productID + '"><button>取消</button></a><div class="progresscontainer"><div class="progressbar standardprogressbar uses3d progressbg structureprogress" id="' + viewPrefix + 'progress-' + productID + '"></div></div><div id="' + viewPrefix + 'status-' + productID + '" class="download-status"></div>';
+     iapRailHTML = '<a href="canceldownload://' + productID + '"><button class="quarter-width floatright">取消</button></a><a id="story-pause-' + productID + '" href="pausedownload://' + productID + '"><button class="pause-button quarter-width floatright">暂停</button></a><div class="progresscontainer"><div class="progressbar standardprogressbar uses3d progressbg structureprogress" id="' + viewPrefix + 'progress-' + productID + '"></div></div><div id="' + viewPrefix + 'status-' + productID + '" class="download-status"></div>';
+     updateProductStatus(productIndex, true, false);
+     break;
+     case 'pending':
+     if (productType === 'membership') {
+     iapHTMLCode = '<p class="iap-teaser">请求...</p>';
+     iapRailHTML = '';
+     } else {
+     iapHTMLCode = '<button>请求...</button>';
+     iapRailHTML = '<button class="full-width">请求...</button>';
+     }
+     updateProductStatus(productIndex, false, false);
+     break;
+     case 'fail':
+     if (productType === 'membership') {
+     iapHTMLCode = '<p class="iap-teaser">' + productTeaser + ' ' + productPrice + '/年' + '</p><a'+getBuyCode(productID, productPrice, gUserId, productName)+'><button class="iap-move-left">立即订阅</button></a>';
+     iapRailHTML = '';
+     } else {
+     iapHTMLCode = '<a'+getBuyCode(productID, productPrice, gUserId, productName)+'><button class="iap-move-left">' + productPrice + '</button></a><button onclick="showProductDetail(\'' + productID + '\');" class="iap-detail">查看</button>';
+     iapRailHTML = '<a'+getBuyCode(productID, productPrice, gUserId, productName)+'><button class="floatright iap-highlight">购买：' + productPrice + '</button></a><a href="try://' + productID + '"><button class="floatleft">试读</button></a>';
+     }
+     updateProductStatus(productIndex, false, false);
+     
+     
+     //productActionButton = '<div class="iap-button" product-id="' + products[i].id + '" product-price="' + productPrice + '"></div>';
+     
+     
+     break;
+     default:
+     }
+     
+     // MARK: - for each of the iap button containers that fit the criteria, update its innerHTML
+     for (var i = 0; i < iapButtons.length; i++) {
+     //productPrice = iapButtons[i].getAttribute('product-price') || '购买';
+     if (productID === iapButtons[i].getAttribute('product-id')) {
+     //iapHTMLCode = iapHTMLCode.replace('[productprice]',productPrice);
+     iapButtons[i].innerHTML = iapHTMLCode;
+     } else if (productID === '') {
+     iapHTMLCode = '<a'+getBuyCode(iapButtons[i].getAttribute('product-id'), iapButtons[i].getAttribute('product-price'), gUserId, iapButtons[i].getAttribute('product-title'))+'><a href="buy://' + iapButtons[i].getAttribute('product-id') + '"><button class="iap-move-left">' + productPrice + '</button></a><button onclick="showProductDetail(\'' + products[i].id + '\');" class="iap-detail">查看</button>';
+     iapButtons[i].innerHTML = iapHTMLCode;
+     }
+     }
+     
+     // Mark: Update iap Button at the bottom of the detail view
+     if (productID !== '' && document.getElementById('iap-rail').getAttribute('data-id') === productID && gNowView.indexOf('storyview') >= 0) {
+     document.getElementById('iap-rail').innerHTML = iapRailHTML;
+     }
+     
+     }
+ 
+ 
+ 
+ 
+ */
+    
     
     // MARK: This should be public, as it will be called by other classes
     public func handlePurchaseNotification(_ notification: Notification) {

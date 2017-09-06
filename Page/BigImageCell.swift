@@ -160,12 +160,26 @@ class BigImageCell: CustomCell {
             }
         }
     }
-    
+    var isLove:Bool = false
     @IBAction func tapLoveButton(_ sender: UIButton) {
+        if !isLove{
+            loveButton.setImage(UIImage(named:"LoveActive"), for: UIControlState.normal)
+            isLove = true
+        }else{
+            loveButton.setImage(UIImage(named:"Love"), for: UIControlState.normal)
+            isLove = false
+        }
         
     }
-    
+    var isComment:Bool = false
     @IBAction func tapCommentButton(_ sender: UIButton) {
+        if !isComment{
+            commentButton.setImage(UIImage(named:"CommentActiveCount"), for: UIControlState.normal)
+            isComment = true
+        }else{
+            commentButton.setImage(UIImage(named:"CommentCount"), for: UIControlState.normal)
+            isComment = false
+        }
         
     }
     

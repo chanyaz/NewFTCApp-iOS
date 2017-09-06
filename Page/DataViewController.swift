@@ -457,6 +457,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.pageTitle = pageTitle
+                cell.themeColor = themeColor
                 return cell
             }
         case "FollowCell":
@@ -681,6 +682,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
                     contentItemViewController.dataObject = selectedItem
                     contentItemViewController.hidesBottomBarWhenPushed = true
+                    contentItemViewController.themeColor = themeColor
                     navigationController?.pushViewController(contentItemViewController, animated: true)
                 }
                 

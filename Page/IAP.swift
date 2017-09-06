@@ -181,7 +181,7 @@ struct IAP {
     
     
     // MARK: - Save one piece of information into the user default's "my purchase" key
-    private static func savePurchase(_ productId: String, property: String, value: String) {
+    public static func savePurchase(_ productId: String, property: String, value: String) {
         if var myPurchases = UserDefaults.standard.dictionary(forKey: myPurchasesKey) as? [String: Dictionary<String, String>] {
             if myPurchases[productId] != nil {
                 myPurchases[productId]?[property] = value
@@ -200,18 +200,40 @@ struct IAP {
         }
     }
     
+    public static func updatePurchaseHistory(_ productId: String, date: Date?) {
+        // MARK: - Use the date from app store's API and fall back to today's date
+        let transactionDate: Date = date ?? Date()
+        let unixDateStamp = round(transactionDate.timeIntervalSince1970)
+        if var purchaseHistory = UserDefaults.standard.dictionary(forKey: purchaseHistoryKey) as? [String: Array<TimeInterval>] {
+            if purchaseHistory[productId] != nil {
+                purchaseHistory[productId]?.append(unixDateStamp)
+                //print ("updated \(productId) by adding \(unixDateStamp): ")
+            } else {
+                purchaseHistory[productId] = [unixDateStamp]
+                //print ("create \(productId) with \(unixDateStamp): ")
+            }
+            UserDefaults.standard.set(purchaseHistory, forKey: purchaseHistoryKey)
+            //print (purchaseHistory)
+        } else {
+            let purchaseHistory = [productId: [unixDateStamp]]
+            UserDefaults.standard.set(purchaseHistory, forKey: purchaseHistoryKey)
+            //print ("created purchase history record")
+            //print (purchaseHistory)
+        }
+    }
+    
     
     
     public static func buy(_ id: String) {
-//        print (urlString)
-//        let productId = urlString.replacingOccurrences(of: "buy://", with: "")
+        //        print (urlString)
+        //        let productId = urlString.replacingOccurrences(of: "buy://", with: "")
         let product = findSKProductByID(id)
         if let product = product {
             FTCProducts.store.buyProduct(product)
             // MARK: Update the interface go let users know the buying is in process
-//            let jsCode = "iapActions('\(productId)', 'pending');"
-//            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//            }
+            //            let jsCode = "iapActions('\(productId)', 'pending');"
+            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
+            //            }
             trackIAPActions("buy", productId: id)
         } else {
             print ("cannot find the product id, try load product again")
@@ -222,12 +244,12 @@ struct IAP {
                         if let productNew = self.findSKProductByID(id) {
                             FTCProducts.store.buyProduct(productNew)
                             // MARK: Update the interface go let users know the buying is in process
-//                            let jsCode = "iapActions('\(productId)', 'pending');"
-//                            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//                            }
+                            //                            let jsCode = "iapActions('\(productId)', 'pending');"
+                            //                            self.webView.evaluateJavaScript(jsCode) { (result, error) in
+                            //                            }
                         }
-//                        self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
-//                        self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
+                        //                        self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
+                        //                        self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
                     }
                 } else {
                     print ("cannot connect to app store right now!")
@@ -244,6 +266,31 @@ struct IAP {
     }
     
     
+    public static func downloadProduct(_ productID: String) {
+        if let fileDownloadUrl = findProductInfoById(productID)?["download"] as? String {
+            print ("download this file: \(fileDownloadUrl)")
+            if Download.checkFilePath(fileUrl: productID, for: .documentDirectory) == nil {
+                // MARK: - Download the file through the internet
+                print ("The file does not exist. Download from \(fileDownloadUrl)")
+                let backgroundSessionConfiguration = URLSessionConfiguration.background(withIdentifier: productID)
+                let backgroundSession = URLSession(configuration: backgroundSessionConfiguration, delegate: IAPs.shared.downloadDelegate, delegateQueue: IAPs.shared.downloadQueue)
+                if let url = URL(string: fileDownloadUrl) {
+                    let request = URLRequest(url: url)
+                    IAPs.shared.downloadTasks[productID] = backgroundSession.downloadTask(with: request)
+                    IAPs.shared.downloadTasks[productID]?.resume()
+                    //jsCode = "iapActions('\(productID)', 'downloading')"
+                } else {
+                    //jsCode = "iapActions('\(productID)', 'pendingdownload')"
+                }
+            } else {
+                // MARK: - Update interface to change the button action into read
+                print ("The file already exists. No need to download. Update Interface")
+                //jsCode = "iapActions('\(productID)', 'success')"
+            }
+            //self.webView.evaluateJavaScript(jsCode) { (result, error) in
+        }
+        trackIAPActions("download", productId: productID)
+    }
     
     
     private static func findSKProductByID(_ productID: String) -> SKProduct? {
@@ -258,7 +305,20 @@ struct IAP {
         return product
     }
     
-    private static func trackIAPActions(_ actionType: String, productId: String) {
+    public static func findProductInfoById(_ productID: String) -> [String: Any]? {
+        var product: [String: Any]?
+        for p in FTCProducts.allProducts {
+            if let id = p["id"] as? String {
+                if id == productID {
+                    product = p
+                    break
+                }
+            }
+        }
+        return product
+    }
+    
+    public static func trackIAPActions(_ actionType: String, productId: String) {
         Track.event(category: "In-App Purchase", action: actionType, label: productId)
     }
     

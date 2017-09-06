@@ -16,10 +16,9 @@ class IAPView: UIView {
     let tryButton = UIButton()
     let downloadingView = UIView()
     let progressView = UIProgressView()
-    let pauseButton = UIButton()
     let cancelButton = UIButton()
     let downloadingStatus = UILabel()
-
+    
     public func initUI() {
         if let price = dataObject?.productPrice {
             setButton(buyButton, title: "购买：\(price)", disabledTitle: "连接中...", position: .right, backgroundColor: Color.Button.highlight)
@@ -63,8 +62,9 @@ class IAPView: UIView {
     
     private func setDownloadingView() {
         // MARK: downloading view takes the full IAPView
-        //downloadingView.isHidden = true
-        downloadingView.frame = CGRect(x: 0, y: 0, width: 300, height: 44)
+        downloadingView.isHidden = true
+        let viewHeight = self.frame.height
+        downloadingView.frame = CGRect(x: 0, y: 0, width: 300, height: self.frame.height)
         downloadingView.backgroundColor = UIColor(hex: Color.Content.background)
         downloadingView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(downloadingView)
@@ -84,12 +84,33 @@ class IAPView: UIView {
         downloadingView.addSubview(progressView)
         
         // MARK: progress label
-        downloadingStatus.frame = CGRect(x:0, y: progressHeight, width: self.frame.width/2, height: 44 - progressHeight)
-        downloadingStatus.text = "0M / 0M"
+        let statusPadding: CGFloat = 14
+        downloadingStatus.frame = CGRect(
+            x: statusPadding,
+            y: progressHeight,
+            width: self.frame.width - statusPadding * 2 - viewHeight,
+            height: viewHeight - progressHeight
+        )
+        downloadingStatus.text = "正在准备下载，点击暂停"
         downloadingStatus.textColor = UIColor(hex: Color.Content.lead)
-        downloadingStatus.textAlignment = .center
+        downloadingStatus.font = downloadingStatus.font.withSize(13)
+        downloadingStatus.textAlignment = .left
         downloadingView.addSubview(downloadingStatus)
         
+        // MARK: cancel button
+        let buttonWidth = viewHeight - progressHeight
+        cancelButton.frame = CGRect(
+            x: self.frame.width - buttonWidth,
+            y: progressHeight,
+            width: buttonWidth,
+            height: buttonWidth
+        )
+        if let image = UIImage(named: "Close") {
+            cancelButton.setImage(image, for: .normal)
+        }
+        cancelButton.tintColor = UIColor(hex: Color.Ad.background)
+        cancelButton.addTarget(self, action: #selector(cancelDownload(_:)), for: .touchUpInside)
+        downloadingView.addSubview(cancelButton)
         
     }
     
@@ -104,6 +125,13 @@ class IAPView: UIView {
     public func tryProduct(_ sender: UIButton) {
         sender.isEnabled = false
         print ("try product")
+    }
+    
+    public func cancelDownload(_ sender: UIButton) {
+        downloadingView.isHidden = true
+        if let id = dataObject?.id {
+            IAP.cancelDownload(id)
+        }
     }
     
     
@@ -122,11 +150,13 @@ class IAPView: UIView {
                         // iapAction = "downloading"
                         IAP.downloadProduct(productID)
                         IAP.savePurchase(productID, property: "purchased", value: "Y")
- 
+                        downloadingView.isHidden = false
+                        
                     } else if actionType == "buy success" {
                         // MARK: Otherwise if it's a buy action, save the purchase information and update UI accordingly
                         let transactionDate = notificationObject["date"] as? Date
                         IAP.updatePurchaseHistory(productID, date: transactionDate)
+                        downloadingView.isHidden = true
                         /*
                          if let periodLength = currentProduct?["period"] as? String {
                          if let expire = getExpireDateFromPurchaseHistory(productID, periodLength: periodLength) {
@@ -138,10 +168,10 @@ class IAPView: UIView {
                          }
                          */
                     }
-//                    jsCode = "iapActions('\(productID)', '\(iapAction)')"
-//                    print(jsCode)
-//                    self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//                    }
+                    //                    jsCode = "iapActions('\(productID)', '\(iapAction)')"
+                    //                    print(jsCode)
+                    //                    self.webView.evaluateJavaScript(jsCode) { (result, error) in
+                    //                    }
                     IAP.trackIAPActions(actionType, productId: productID)
                 }
             } else if let errorObject = notification.object as? [String : String?] {
@@ -164,9 +194,9 @@ class IAPView: UIView {
                     buyButton.isEnabled = true
                     
                     // MARK: - For subscription types, should consider the situation of Failing to Renew in the webview's JavaScript Code of function iapActions, which means the UI should go back to renew button and display expire date
-//                    jsCode = "iapActions('\(productId ?? "")', 'fail')"
-//                    self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//                    }
+                    //                    jsCode = "iapActions('\(productId ?? "")', 'fail')"
+                    //                    self.webView.evaluateJavaScript(jsCode) { (result, error) in
+                    //                    }
                 }
             }
         } else {
@@ -177,9 +207,9 @@ class IAPView: UIView {
                 topViewController.present(alert, animated: true, completion: nil)
             }
             buyButton.isEnabled = true
-//            jsCode = "iapActions('', 'fail')"
-//            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//            }
+            //            jsCode = "iapActions('', 'fail')"
+            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
+            //            }
             IAP.trackIAPActions("buy or restore error", productId: "")
         }
     }
@@ -224,23 +254,23 @@ extension IAPView: URLSessionDownloadDelegate {
                     if productId.hasPrefix("try") {
                         // TODO: - This is a trial file, open it immediately
                         /*
-                        print ("open the try book")
-                        let config = FolioReaderConfig()
-                        config.scrollDirection = .horizontal
-                        config.allowSharing = false
-                        config.tintColor = UIColor(netHex: 0x9E2F50)
-                        config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
-                        config.enableTTS = false
-                        let jsCode = "iapActions('\(productId.replacingOccurrences(of: "try.", with: ""))', 'fail');"
-                        self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                        }
- */
+                         print ("open the try book")
+                         let config = FolioReaderConfig()
+                         config.scrollDirection = .horizontal
+                         config.allowSharing = false
+                         config.tintColor = UIColor(netHex: 0x9E2F50)
+                         config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
+                         config.enableTTS = false
+                         let jsCode = "iapActions('\(productId.replacingOccurrences(of: "try.", with: ""))', 'fail');"
+                         self.webView.evaluateJavaScript(jsCode) { (result, error) in
+                         }
+                         */
                         if let fileLocation = Download.checkFilePath(fileUrl: productId, for: .documentDirectory) {
                             DispatchQueue.main.async {
                                 // TODO: uncomment after installing the Folio reader
                                 /*
-                                FolioReader.presentReader(parentViewController: self, withEpubPath: fileLocation, andConfig: config)
- */
+                                 FolioReader.presentReader(parentViewController: self, withEpubPath: fileLocation, andConfig: config)
+                                 */
                                 print ("should open the file at \(fileLocation)")
                                 IAP.trackIAPActions("download excerpt success", productId: productId)
                             }
@@ -252,13 +282,14 @@ extension IAPView: URLSessionDownloadDelegate {
                     IAP.trackIAPActions("save fail", productId: productId)
                 }
             }
-//            let jsCode = "iapActions('\(productId)', 'success');"
-//            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//            }
+            downloadingView.isHidden = true
+            //            let jsCode = "iapActions('\(productId)', 'success');"
+            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
+            //            }
         }
     }
     
-
+    
     
     // MARK: - Get progress status for download tasks and update UI
     func urlSession(_ session: URLSession,
@@ -278,9 +309,11 @@ extension IAPView: URLSessionDownloadDelegate {
                 let totalMBsExpectedToWrite = String(format: "%.1f", Float(totalBytesExpectedToWrite)/1000000)
                 // TODO: update UI in the view
                 print ("updateDownloadProgress('\(productId)', '\(percentageNumber)%', '\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M')")
-//                let jsCode = "updateDownloadProgress('\(productId)', '\(percentageNumber)%', '\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M')"
-//                self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//                }
+                downloadingStatus.text = "\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M 点击暂停"
+                progressView.progress = percentageNumber/100
+                //                let jsCode = "updateDownloadProgress('\(productId)', '\(percentageNumber)%', '\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M')"
+                //                self.webView.evaluateJavaScript(jsCode) { (result, error) in
+                //                }
             }
         }
     }
@@ -289,16 +322,19 @@ extension IAPView: URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession,
                     task: URLSessionTask,
                     didCompleteWithError error: Error?){
-        if (error != nil) {
-            print(error!.localizedDescription)
+        if let error = error {
+            print(error.localizedDescription)
+            Alert.present("下载失败，您可以稍后再试", message: error.localizedDescription)
             if let productId = session.configuration.identifier {
                 // TODO: Update UI in the view
-//                let jsCode = "iapActions('\(productId)', 'pendingdownload');"
-//                self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//                }
+                //                let jsCode = "iapActions('\(productId)', 'pendingdownload');"
+                //                self.webView.evaluateJavaScript(jsCode) { (result, error) in
+                //                }
                 IAP.trackIAPActions("download fail", productId: productId)
             }
+            downloadingView.isHidden = true
+            
         }
     }
-
+    
 }

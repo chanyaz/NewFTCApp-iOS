@@ -292,6 +292,11 @@ struct IAP {
         trackIAPActions("download", productId: productID)
     }
     
+    public static func cancelDownload(_ productId: String) {
+        IAPs.shared.downloadTasks[productId]?.cancel()
+        IAP.trackIAPActions("cancel download", productId: productId)
+    }
+    
     
     private static func findSKProductByID(_ productID: String) -> SKProduct? {
         var product: SKProduct?

@@ -203,18 +203,18 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     
     @IBAction func openPlayList(_ sender: UIButton) {
-//        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
-//            listPerColumnViewController.AudioLists = fetchesAudioObject
-//            
-//            
-//            listPerColumnViewController.modalPresentationStyle = .custom
-//            
-//            //            listPerColumnViewController.view.frame = CGRect(x:0,y:150,width:self.view.bounds.width,height:self.view.bounds.height-150)
-//            
-//            self.present(listPerColumnViewController, animated: false, completion: nil)
-//            
-//            
-//        }
+        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
+            listPerColumnViewController.AudioLists = fetchesAudioObject
+            
+            
+            listPerColumnViewController.modalPresentationStyle = .custom
+            
+            //            listPerColumnViewController.view.frame = CGRect(x:0,y:150,width:self.view.bounds.width,height:self.view.bounds.height-150)
+            
+            self.present(listPerColumnViewController, animated: false, completion: nil)
+            
+            
+        }
     }
     
     
@@ -383,6 +383,16 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        containerView.layer.backgroundColor = UIColor.red.cgColor
+        containerView.backgroundColor = UIColor.green
+        
+        let progressThumbImage = UIImage(named: "SliderImg")
+        let aa = progressThumbImage?.imageWithImage(image: progressThumbImage!, scaledToSize: CGSize(width: 15, height: 15))
+        progressSlider.setThumbImage(aa, for: .normal)
+        progressSlider.maximumTrackTintColor = UIColor.white
+        progressSlider.minimumTrackTintColor = UIColor(hex: "#05d5e9")
+        containerView.backgroundColor = UIColor(hex: "#12a5b3", alpha: 0.9)
+        
         //        count = fetchesAudioObject.fetchResults[0].items.count
         ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
         let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
@@ -392,7 +402,6 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
         navigationItem.title = item?.headline
         initStyle()
-        self.containerView.backgroundColor = UIColor(hex: "#12a5b3")
         audioAddGesture()
         
         //        queuePlayer = AVQueuePlayer(items:)
@@ -896,3 +905,4 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     
 }
+

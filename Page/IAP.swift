@@ -292,9 +292,61 @@ struct IAP {
         trackIAPActions("download", productId: productID)
     }
     
+    
+    // MARK: - use Folio reader to read eBook
+    public static func readBook(_ productIdentifier: String) {
+        // MARK: - check if the file exists locally
+        if let fileLocation = Download.checkFilePath(fileUrl: productIdentifier, for: .documentDirectory) {
+            print (fileLocation)
+            // TODO: uncomment after folio reader is installed
+            /*
+            let config = FolioReaderConfig()
+            config.scrollDirection = .horizontal
+            config.allowSharing = false
+            config.tintColor = UIColor(netHex: 0x9E2F50)
+            config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
+            config.enableTTS = false
+            FolioReader.presentReader(parentViewController: self, withEpubPath: fileLocation, andConfig: config)
+ */
+        } else {
+            print ("file not found: download it")
+            let alert = UIAlertController(title: "文件还没有下载，要现在下载吗？", message: "下载到本地可以打开并阅读", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "立即下载",
+                                          style: UIAlertActionStyle.default,
+                                          handler: {_ in self.downloadProduct(productIdentifier)}
+            ))
+            alert.addAction(UIAlertAction(title: "以后再说", style: UIAlertActionStyle.default, handler: nil))
+            if let topController = UIApplication.topViewController() {
+                topController.present(alert, animated: true, completion: nil)
+            }
+        }
+        trackIAPActions("read", productId: productIdentifier)
+    }
+    
+    
+    public static func removeDownload(_ productId: String) {
+        let fileManager = FileManager.default
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        guard let dirPath = paths.first else {
+            return
+        }
+        let filePath = "\(dirPath)/\(productId)"
+        do {
+            try fileManager.removeItem(atPath: filePath)
+            print ("removed the file at \(filePath)")
+            IAP.savePurchase(productId, property: "purchased", value: "Y")
+        } catch let error as NSError {
+            print(error.debugDescription)
+        }
+        IAP.trackIAPActions("remove download", productId: productId)
+    }
+    
+    
     public static func cancelDownload(_ productId: String) {
         IAPs.shared.downloadTasks[productId]?.cancel()
-        IAP.trackIAPActions("cancel download", productId: productId)
+        trackIAPActions("cancel download", productId: productId)
     }
     
     

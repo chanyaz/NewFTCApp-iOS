@@ -12,7 +12,13 @@ import UIKit
 class IAPView: UIView {
     var themeColor: String?
     var dataObject: ContentItem?
-    let buyButton = UIButton()
+    var buttons: [String: UIButton] = [
+        "buy": UIButton(),
+        "try": UIButton(),
+        "open": UIButton(),
+        "delete": UIButton()
+    ]
+    
     let tryButton = UIButton()
     let downloadingView = UIView()
     let progressView = UIProgressView()
@@ -21,11 +27,17 @@ class IAPView: UIView {
     
     public func initUI() {
         if let price = dataObject?.productPrice {
-            setButton(buyButton, title: "购买：\(price)", disabledTitle: "连接中...", position: .right, backgroundColor: Color.Button.highlight)
-            buyButton.addTarget(self, action: #selector(buy(_:)), for: .touchUpInside)
+            setButton(buttons["buy"], title: "购买：\(price)", disabledTitle: "连接中...", position: .right, backgroundColor: Color.Button.highlight)
+            buttons["buy"]?.addTarget(self, action: #selector(buy(_:)), for: .touchUpInside)
         }
-        setButton(tryButton, title: "试读", disabledTitle: "下载中...", position: .left, backgroundColor: Color.Button.standard)
-        tryButton.addTarget(self, action: #selector(tryProduct(_:)), for: .touchUpInside)
+        setButton(buttons["try"], title: "试读", disabledTitle: "下载中...", position: .left, backgroundColor: Color.Button.standard)
+        buttons["try"]?.addTarget(self, action: #selector(tryProduct(_:)), for: .touchUpInside)
+        
+        setButton(buttons["open"], title: "打开", disabledTitle: "打开中...", position: .left, backgroundColor: Color.Button.highlight)
+        buttons["open"]?.addTarget(self, action: #selector(openProduct(_:)), for: .touchUpInside)
+        
+        setButton(buttons["delete"], title: "删除", disabledTitle: "删除中...", position: .right, backgroundColor: Color.Button.standard)
+        buttons["delete"]?.addTarget(self, action: #selector(removeDownload(_:)), for: .touchUpInside)
         
         setDownloadingView()
         
@@ -41,23 +53,49 @@ class IAPView: UIView {
         
     }
     
-    private func setButton(_ button: UIButton, title: String, disabledTitle: String,  position: NSLayoutAttribute, backgroundColor: String) {
-        let buttonPadding: CGFloat = 0
-        let buttonWidth = self.frame.width/2 - 2*buttonPadding
-        let buttonHeight = self.frame.height
-        button.frame = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
-        button.layer.masksToBounds = true
-        button.setTitle(title, for: .normal)
-        button.setTitle(disabledTitle, for: .disabled)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(hex: backgroundColor)
-        self.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setBackgroundColor(color: .gray, forState: .disabled)
-        self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1, constant: -buttonPadding))
-        self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -buttonPadding))
-        self.addConstraint(NSLayoutConstraint(item: button, attribute: position, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: position, multiplier: 1, constant: -buttonPadding))
-        self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+    private func updateUI(_ actionType: String) {
+        func hideAll() {
+            for (_, button) in buttons {
+                button.isHidden = true
+            }
+            downloadingView.isHidden = true
+        }
+        switch actionType {
+        case "success":
+            print ("show open and delete button")
+        case "pendingdownload":
+            print ("show download view only")
+        case "downloading":
+            print ("show downloading view")
+        case "pending":
+            print ("show buy and try button. buy button disabled. ")
+        case "fail", "new":
+            print ("show buy and try button")
+        default:
+            break
+        }
+    }
+    
+    
+    private func setButton(_ button: UIButton?, title: String, disabledTitle: String,  position: NSLayoutAttribute, backgroundColor: String) {
+        if let button = button {
+            let buttonPadding: CGFloat = 0
+            let buttonWidth = self.frame.width/2 - 2*buttonPadding
+            let buttonHeight = self.frame.height
+            button.frame = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
+            button.layer.masksToBounds = true
+            button.setTitle(title, for: .normal)
+            button.setTitle(disabledTitle, for: .disabled)
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIColor(hex: backgroundColor)
+            self.addSubview(button)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setBackgroundColor(color: .gray, forState: .disabled)
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1, constant: -buttonPadding))
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -buttonPadding))
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: position, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: position, multiplier: 1, constant: -buttonPadding))
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        }
     }
     
     private func setDownloadingView() {
@@ -127,6 +165,20 @@ class IAPView: UIView {
         print ("try product")
     }
     
+    public func openProduct(_ sender: UIButton) {
+        print ("open product")
+        if let id = dataObject?.id {
+            IAP.readBook(id)
+        }
+    }
+    
+    public func removeDownload(_ sender: UIButton) {
+        print ("remove downloaded product")
+        if let id = dataObject?.id {
+            IAP.removeDownload(id)
+        }
+    }
+    
     public func cancelDownload(_ sender: UIButton) {
         downloadingView.isHidden = true
         if let id = dataObject?.id {
@@ -134,22 +186,7 @@ class IAPView: UIView {
         }
     }
     
-    private func updateUI(_ actionType: String) {
-        switch actionType {
-            case "success":
-            print ("show open and delete button")
-            case "pendingdownload":
-            print ("show download button only")
-            case "downloading":
-            print ("show downloading view")
-            case "pending":
-            print ("show request button")
-            case "fail":
-            print ("show buy and try button")
-        default:
-            break
-        }
-    }
+    
     
     
     /*
@@ -271,11 +308,11 @@ class IAPView: UIView {
      }
      
      }
- 
- 
- 
- 
- */
+     
+     
+     
+     
+     */
     
     
     // MARK: This should be public, as it will be called by other classes
@@ -334,7 +371,7 @@ class IAPView: UIView {
                         IAP.trackIAPActions("buy or restore error", productId: "\(productIdForTracking): \(errorMessage)")
                     }
                     // MARK: update the buy button
-                    buyButton.isEnabled = true
+                    buttons["buy"]?.isEnabled = true
                     
                     // MARK: - For subscription types, should consider the situation of Failing to Renew in the webview's JavaScript Code of function iapActions, which means the UI should go back to renew button and display expire date
                     //                    jsCode = "iapActions('\(productId ?? "")', 'fail')"
@@ -349,7 +386,7 @@ class IAPView: UIView {
             if let topViewController = UIApplication.topViewController() {
                 topViewController.present(alert, animated: true, completion: nil)
             }
-            buyButton.isEnabled = true
+            buttons["buy"]?.isEnabled = true
             //            jsCode = "iapActions('', 'fail')"
             //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
             //            }

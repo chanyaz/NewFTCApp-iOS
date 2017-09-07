@@ -63,9 +63,13 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     @IBOutlet weak var playTime: UILabel!
     @IBOutlet weak var playDuration: UILabel!
     @IBOutlet weak var playStatus: UILabel!
-    
+    let playerView = AudioPlayerView()
     @IBAction func hideAudioButton(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+//        self.dismiss(animated: true, completion: nil)
+        
+        playerView.frame = CGRect(x: 0, y: 40, width: 250, height: 150)
+        self.view.addSubview(playerView)
+        
         print("this hideAudioButton")
     }
 

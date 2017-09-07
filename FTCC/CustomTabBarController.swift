@@ -23,7 +23,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     override func viewDidLoad() {
 
         super.viewDidLoad()
-
+        self.tabBar.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: 0)
         self.tabBar.isHidden = true
 
     }

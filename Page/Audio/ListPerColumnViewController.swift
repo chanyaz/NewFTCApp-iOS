@@ -6,6 +6,7 @@
 //  Copyright © 2017 Oliver Zhang. All rights reserved.
 //
 
+
 import UIKit
 import AVKit
 import MediaPlayer
@@ -61,7 +62,8 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return AudioLists.fetchResults[0].items.count
+         return 5
+//        return AudioLists.fetchResults[0].items.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -72,7 +74,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cellItem = tableView.dequeueReusableCell(withIdentifier: "AudioListTableViewCell", for: indexPath)
+        let cellItem = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath)
         if let cell = cellItem as? ListTableViewCell {
             cell.itemCell = AudioLists.fetchResults[0].items[indexPath.row]
             return cell

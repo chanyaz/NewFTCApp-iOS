@@ -16,7 +16,7 @@ import SafariServices
 
 
 class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate{
-    
+
     private var audioTitle = ""
     private var audioUrlString = ""
     private var audioId = ""
@@ -26,11 +26,12 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = DownloadHelper(directory: "audio")
-    private var playerItems: [AVPlayerItem]?
-    private var urls: [URL]? = []
+    private var playerItems: [AVPlayerItem]? = []
+    private var urls: [URL] = []
     private var urlStrings: [String]? = []
-    private var urlOrigStrings: [String]? = []
-    private var urlAssets: [AVURLAsset]? = nil
+    private var urlOrigStrings: [String] = []
+    private var urlTempStrings: [String] = []
+    private var urlAssets: [AVURLAsset]? = []
     
     var item: ContentItem?
     var themeColor: String?
@@ -54,7 +55,6 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     //    @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var forward: UIButton!
     @IBOutlet weak var back: UIButton!
-    @IBOutlet weak var multiple: UIButton!
     @IBOutlet weak var collect: UIButton!
     @IBOutlet weak var preAudio: UIButton!
     @IBOutlet weak var nextAudio: UIButton!
@@ -68,10 +68,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         self.dismiss(animated: true, completion: nil)
         print("this hideAudioButton")
     }
-    
-    //    @IBAction func hideAudioButton(_ sender: UIButton) {
-    //        self.dismiss(animated: true, completion: nil)
-    //    }
+
     
     @IBAction func ButtonPlayPause(_ sender: UIButton) {
         if let player = player {
@@ -118,57 +115,79 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             nowPlayingCenter.updateTimeForPlayerItem(player)
         }
     }
+    func lockScreenPlay(){
+        var mediaLength: NSNumber = 0
+        if let d = self.playerItem?.duration {
+            let duration = CMTimeGetSeconds(d)
+            if duration.isNaN == false {
+                mediaLength = duration as NSNumber
+            }
+        }
+        
+        var currentTime: NSNumber = 0
+        if let c = self.playerItem?.currentTime() {
+            let currentTime1 = CMTimeGetSeconds(c)
+            if currentTime1.isNaN == false {
+                currentTime = currentTime1 as NSNumber
+            }
+        }
+        nowPlayingCenter.updateInfo(
+            title: audioTitle,
+            artist: "FT中文网",
+            albumArt: UIImage(named: "cover.jpg"),
+            currentTime: currentTime,
+            mediaLength: mediaLength,
+            PlaybackRate: 1.0
+        )
+    }
     
     @IBAction func switchToPreAudio(_ sender: UIButton) {
-        //        count = fetchesAudioObject.fetchResults[0].items.count - 1
+        count = (urlOrigStrings.count)
         removePlayerItemObservers()
         print("urlString next")
-        if playingIndex > 0{
-            playingIndex = playingIndex-1
-        }else{
+        
+        playingIndex = playingIndex-1
+        if playingIndex < 0{
             playingIndex = count - 1
-        }
-        
-        let preUrl = urlOrigStrings?[playingIndex].replacingOccurrences(of: " ", with: "%20")
-        audioUrlString = preUrl!
-        prepareAudioPlay()
-        
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        try? AVAudioSession.sharedInstance().setActive(true)
-        if let player = player {
-            print("urlString next 11")
-            player.play()
-        }
-        //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
-    }
-    @IBAction func switchToNextAudio(_ sender: UIButton) {
-
-        removePlayerItemObservers()
-
-        playingIndex += 1
-        if playingIndex >= count-1{
-            playingIndex = 0
             
         }
-        
-        let nextUrl = urlOrigStrings?[playingIndex].replacingOccurrences(of: " ", with: "%20")
-        print("urlString playingIndex\(playingIndex)")
-        let index = playingIndex
-//
-        audioUrlString = nextUrl!
+//        ContentItemContent.sharedInstance.item = fetchesAudioObject.fetchResults[0].items[playingIndex]
+        let preUrl = urlOrigStrings[playingIndex].replacingOccurrences(of: " ", with: "%20")
+        audioUrlString = preUrl
         prepareAudioPlay()
-        
-//        ContentItemContent.sharedInstance.item = fetchesAudioObject.fetchResults[0].items[index]
-        print("urlString ContentItemContent\(String(describing: index))")
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
-        
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        try? AVAudioSession.sharedInstance().setActive(true)
-        if let player = player {
-            //             print("urlString next 21")
-            player.play()
+        //        enableBackGroundMode()
+        //        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        //        try? AVAudioSession.sharedInstance().setActive(true)
+        //        if let player = player {
+        //            player.play()
+        //        }
+        self.playStatus.text = fetchesAudioObject.fetchResults[0].items[playingIndex].headline
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView11"), object: self)
+    }
+    @IBAction func switchToNextAudio(_ sender: UIButton) {
+        count = (urlOrigStrings.count)
+        self.playStatus.text = fetchesAudioObject.fetchResults[0].items[playingIndex].headline
+        removePlayerItemObservers()
+        playingIndex += 1
+        if playingIndex >= count{
+            playingIndex = 0
         }
- 
+        
+//        ContentItemContent.sharedInstance.item = fetchesAudioObject.fetchResults[0].items[playingIndex]
+        let nextUrl = urlOrigStrings[playingIndex].replacingOccurrences(of: " ", with: "%20")
+        print("urlString playingIndex\(playingIndex)")
+        //        let index = playingIndex
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView11"), object: sender)
+        audioUrlString = nextUrl
+        prepareAudioPlay()
+        //        enableBackGroundMode()
+        
+        //        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        //        try? AVAudioSession.sharedInstance().setActive(true)
+        //        if let player = player {
+        //            player.play()
+        //        }
+        //不能放在此处，否则playingIndex值不会变化，为什么呢？因为会运行loadView()
     }
     @IBAction func skipForward(_ sender: UIButton) {
         let currentSliderValue = self.progressSlider.value
@@ -181,21 +200,8 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         let currentTime = CMTimeMake(Int64(currentSliderValue + 15), 1)
         playerItem?.seek(to: currentTime)
         self.progressSlider.value = currentSliderValue + 15
-        //        print("self.progressSlider.value\(currentSliderValue)")
     }
-    var isSwitch = true
-    //    @IBAction func switchPlayRate(_ sender: UIButton) {
     
-    //        if isSwitch {
-    //            self.player?.rate = 2.0
-    //            isSwitch = false
-    //        }else {
-    //           self.player?.rate = 1.0
-    //            isSwitch = true
-    //        }
-    //        self.dismiss(animated: true, completion: nil)
-    //        self.view.frame = CGRect(x:0,y:0,width:200,height:200)
-    //    }
     @IBAction func openPlayList(_ sender: UIButton) {
 //        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
 //            listPerColumnViewController.AudioLists = fetchesAudioObject
@@ -302,40 +308,43 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         print ("deinit successfully and observer removed")
     }
     func getPlayingUrl(){
-        
-        return
-        
+        var urlAsset : URL?
+        var playerItemTemp : AVPlayerItem?
         for (_, item0) in fetchesAudioObject.fetchResults[0].items.enumerated() {
             if var fileUrl = item0.audioFileUrl {
-                //                    var fileUrl = item0.audioFileUrl 不能不判断，因为有可能为空
-                urlOrigStrings?.append(fileUrl)
+                urlOrigStrings.append(fileUrl)
+                fileUrl = fileUrl.replacingOccurrences(of: " ", with: "%20")
                 fileUrl = fileUrl.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
-                fileUrl = fileUrl.replacingOccurrences(of: "%20", with: " ")
+                urlTempStrings.append(fileUrl) //处理后的audioUrlString
+                fileUrl = fileUrl.replacingOccurrences(of: "%20", with: "")
                 urlStrings?.append(fileUrl)
+                urlAsset = URL(string: fileUrl)
+                playerItemTemp = AVPlayerItem(url: urlAsset!) //可以用于播放的playItem
+                playerItems?.append(playerItemTemp!)
             }
-            
         }
-        print("urlString urlStrings000---\(String(describing: urlStrings))")
-        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
-        print("urlString000---\(audioUrlString)")
-        for (urlIndex,urlString) in (urlStrings?.enumerated())! {
+        
+        print("urlString playerItems000---\(String(describing: playerItems))")
+        
+        //        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
+        
+        //        print("urlString000---\(audioUrlString)")
+        for (urlIndex,urlTempString) in (urlTempStrings.enumerated()) {
             if audioUrlString != "" {
-                if audioUrlString == urlString{
-                    print("urlString222---\(String(describing: audioUrlString))")
-                    playingUrlStr = urlString
+                if audioUrlString == urlTempString{
+                    print("urlString audioUrlString111---\(String(describing: audioUrlString))")
+                    playingUrlStr = urlTempString
                     playingIndex = urlIndex
                 }
-                
             }
         }
-        print("urlString333--\(String(describing: playingIndex))")
-        print("urlString444---\(String(describing: playingUrlStr))")
-        //        print("urlString  audioUrlString111---\(String(describing: audioUrlString))")
+        print("urlString playingIndex222--\(playingIndex)")
+        
     }
     override func loadView() {
         super.loadView()
         
-        print("loadView \( ShareHelper.sharedInstance.webPageTitle)")
+        print("urlString loadView \( ShareHelper.sharedInstance.webPageTitle)")
         ShareHelper.sharedInstance.webPageTitle = ""
         ShareHelper.sharedInstance.webPageDescription = ""
         ShareHelper.sharedInstance.webPageImage = ""
@@ -343,7 +352,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         parseAudioMessage()
         //        prepareForAudioPlay(url:audioUrlString)
         prepareAudioPlay()
-        getPlayingUrl()
+//        getPlayingUrl()
         
         enableBackGroundMode()
         let jsCode = "function getContentByMetaTagName(c) {for (var b = document.getElementsByTagName('meta'), a = 0; a < b.length; a++) {if (c == b[a].name || c == b[a].getAttribute('property')) { return b[a].content; }} return '';} var gCoverImage = getContentByMetaTagName('og:image') || '';var gIconImage = getContentByMetaTagName('thumbnail') || '';var gDescription = getContentByMetaTagName('og:description') || getContentByMetaTagName('description') || '';gIconImage=encodeURIComponent(gIconImage);webkit.messageHandlers.callbackHandler.postMessage(gCoverImage + '|' + gIconImage + '|' + gDescription);"
@@ -374,12 +383,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = UIColor.red
-        print ("poped a audio controller view! ")
-        
-        /*
-        count = fetchesAudioObject.fetchResults[0].items.count
+        //        count = fetchesAudioObject.fetchResults[0].items.count
         ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
         let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
         if let url = URL(string:url) {
@@ -390,8 +394,6 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         initStyle()
         self.containerView.backgroundColor = UIColor(hex: "#12a5b3")
         audioAddGesture()
-         
-        */
         
         //        queuePlayer = AVQueuePlayer(items:)
         
@@ -568,16 +570,11 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
     }
     
-    private func prepareForAudioPlay(url audioUrlStr:String) {
-    }
     
-    private func prepareAudioPlay() {
+    func prepareAudioPlay() {
         //        print("audioUrlString prepareAudioPlay\(audioUrlString)")
-        //        audioUrlString = "http://v.ftimg.net/album/starman.mp3"
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
         audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
-        // MARK: - Remove toolBar's top border. This cannot be done in interface builder.
-        //        toolBar.clipsToBounds = true
         
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
@@ -607,22 +604,30 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             progressSlider.setThumbImage(progressThumbImage, for: .normal)
             progressSlider.setThumbImage(progressThumbImageForHighted, for: .highlighted)
             
-            
+            print("urlString audioUrl---\(audioUrl)")
             let asset = AVURLAsset(url: audioUrl)
             
             playerItem = AVPlayerItem(asset: asset)
-            //            player = AVPlayer()
             if player != nil {
                 
             }else {
                 player = AVPlayer()
+                
             }
+            
+            
             // MARK: - If user is using wifi, buffer the audio immediately
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
             
+            try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try? AVAudioSession.sharedInstance().setActive(true)
+            if let player = player {
+                player.play()
+            }
+            //            lockScreenPlay()
             // MARK: - Update audio play progress
             player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
                 if let d = self?.playerItem?.duration {
@@ -749,14 +754,74 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     
     func playerDidFinishPlaying() {
+        print("urlString")
         let startTime = CMTimeMake(0, 1)
         self.playerItem?.seek(to: startTime)
-        self.player?.pause()
+        //        self.player?.pause()
         self.progressSlider.value = 0
         self.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
         //        self.playAndPauseButton.image = UIImage(named:"BigPlayButton")
         nowPlayingCenter.updateTimeForPlayerItem(player)
+        print("urlString playerItem front---\(String(describing: playerItem))")
+//        loopPlay()
+
     }
+    
+    func orderPlay(){
+        
+        count = urlOrigStrings.count
+        removePlayerItemObservers()
+        playingIndex += 1
+        if playingIndex >= count{
+            playingIndex = 0
+            
+        }
+//        ContentItemContent.sharedInstance.item = fetchesAudioObject.fetchResults[0].items[playingIndex]
+        let nextUrl = urlOrigStrings[playingIndex].replacingOccurrences(of: " ", with: "%20")
+        print("urlString playingIndex---\(playingIndex)")
+        audioUrlString = nextUrl
+        prepareAudioPlay()
+        
+        let currentItem = self.player?.currentItem
+        let nextItem = playerItems?[playingIndex]
+        queuePlayer?.advanceToNextItem()
+        currentItem?.seek(to: kCMTimeZero)
+        queuePlayer?.insert(nextItem!, after: currentItem)
+        self.player?.play()
+    }
+    func randomPlay(){
+        let randomIndex = Int(arc4random_uniform(UInt32(urlOrigStrings.count)))
+        removePlayerItemObservers()
+        playingIndex = randomIndex
+//        ContentItemContent.sharedInstance.item = fetchesAudioObject.fetchResults[0].items[playingIndex]
+        let nextUrl = urlOrigStrings[playingIndex].replacingOccurrences(of: " ", with: "%20")
+        print("urlString playingIndex---\(playingIndex)")
+        audioUrlString = nextUrl
+        prepareAudioPlay()
+        
+        let currentItem = self.player?.currentItem
+        let nextItem = playerItems?[playingIndex]
+        queuePlayer?.advanceToNextItem()
+        currentItem?.seek(to: kCMTimeZero)
+        queuePlayer?.insert(nextItem!, after: currentItem)
+        self.player?.play()
+    }
+    func loopPlay(){
+        let currentItem = self.player?.currentItem
+        queuePlayer?.advanceToNextItem()
+        currentItem?.seek(to: kCMTimeZero)
+        queuePlayer?.insert(currentItem!, after: nil)
+        self.player?.play()
+    }
+    func onePlay(){
+        let startTime = CMTimeMake(0, 1)
+        self.playerItem?.seek(to: startTime)
+        self.player?.pause()
+        self.progressSlider.value = 0
+        nowPlayingCenter.updateTimeForPlayerItem(player)
+        
+    }
+    
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if object is AVPlayerItem {
@@ -829,52 +894,5 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
             }
         }
     }
-    
-    //    required init?(coder aDecoder: NSCoder) {
-    //        super.init(coder: aDecoder)
-    //        self.commonInit()
-    //    }
-    //
-    //
-    //    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!)  {
-    //        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    //
-    //        self.commonInit()
-    //    }
-    //
-    //    func commonInit() {
-    //        self.modalPresentationStyle = .custom
-    //        self.transitioningDelegate = self
-    //    }
-    
-    //    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-    //
-    //        if presented == self {
-    //            return CustomPresentationController(presentedViewController: presented, presenting: presenting)
-    //        }
-    //        
-    //        return nil
-    //    }
-    //    
-    //    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    //        
-    //        if presented == self {
-    //            return CustomPresentationAnimation(isPresenting: true)
-    //        }
-    //        else {
-    //            return nil
-    //        }
-    //    }
-    //    
-    //    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    //        
-    //        if dismissed == self {
-    //            return CustomPresentationAnimation(isPresenting: false)
-    //        }
-    //        else {
-    //            return nil
-    //        }
-    //    }
-    
     
 }

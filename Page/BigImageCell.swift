@@ -139,9 +139,16 @@ class BigImageCell: CustomCell {
     }
     
     @IBAction func tapSoundButton(_ sender: Any) {
+        if let audioFileUrl = itemCell?.audioFileUrl {
+            AudioContent.sharedInstance.body["title"] = self.itemCell?.headline
+            AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+            AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(String(describing: self.itemCell?.id))"
+            
+        }
         if let rootViewController = window?.rootViewController as? UITabBarController {
             rootViewController.showAudioPlayer()
         }
+        
     }
     
     @IBAction func tapTagButton(_ sender: UIButton) {

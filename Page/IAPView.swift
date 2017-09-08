@@ -21,6 +21,7 @@ class IAPView: UIView {
         "delete": UIButton(),
         "download": UIButton()
     ]
+    var action: String?
     var verticalPadding: CGFloat = 10
     let horizontalPadding: CGFloat = 14
     let tryButton = UIButton()
@@ -64,12 +65,79 @@ class IAPView: UIView {
         IAPs.shared.downloadDelegate = self
         
         updateUI()
+        if let action = action {
+            takeAction(action)
+        }
     }
     
     private func updateUI() {
         if let id = dataObject?.id {
             let status = IAP.checkStatus(id)
             switchUI(status)
+        }
+    }
+    
+    private func takeAction(_ action: String) {
+        switch action {
+        case "buy":
+            if let id = dataObject?.id {
+                let status = IAP.checkStatus(id)
+                switch status {
+                case "success":
+                    switchUI("success")
+                    let alert = UIAlertController(title: "无需付款", message: "您之前已经购买过该产品，无需重复付款", preferredStyle: UIAlertControllerStyle.alert)
+                    let action1 = UIAlertAction(title: "打开", style: .default, handler: { (action) -> Void in
+                        IAP.readBook(id)
+                    })
+                    alert.addAction(action1)
+                    alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
+                    if let topViewController = UIApplication.topViewController() {
+                        topViewController.present(alert, animated: true, completion: nil)
+                    }
+                case "pendingdownload":
+                    switchUI("downloading")
+                    Alert.present("无需付款，免费下载", message: "您之前已经购买过该产品，无需重复付款，请点击下载即可")
+                    let alert = UIAlertController(title: "无需付款，免费下载", message: "您之前已经购买过该产品，无需重复付款，请点击下载即可", preferredStyle: UIAlertControllerStyle.alert)
+                    let action1 = UIAlertAction(title: "下载", style: .default, handler: { (action) -> Void in
+                        IAP.downloadProduct(id)
+                    })
+                    alert.addAction(action1)
+                    alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
+                    if let topViewController = UIApplication.topViewController() {
+                        topViewController.present(alert, animated: true, completion: nil)
+                    }
+                case "new", "fail":
+                    switchUI("pending")
+                    IAP.buy(id)
+                default:
+                    break
+                }
+            }
+        case "read":
+            if let id = dataObject?.id {
+                let status = IAP.checkStatus(id)
+                switch status {
+                case "pendingdownload":
+                    switchUI("downloading")
+                    Alert.present("无需付款，免费下载", message: "您之前已经购买过该产品，无需重复付款，请点击下载即可")
+                    let alert = UIAlertController(title: "无需付款，免费下载", message: "您之前已经购买过该产品，无需重复付款，请点击下载即可", preferredStyle: UIAlertControllerStyle.alert)
+                    let action1 = UIAlertAction(title: "下载", style: .default, handler: { (action) -> Void in
+                        IAP.downloadProduct(id)
+                    })
+                    alert.addAction(action1)
+                    alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
+                    if let topViewController = UIApplication.topViewController() {
+                        topViewController.present(alert, animated: true, completion: nil)
+                    }
+                case "new", "fail":
+                    switchUI("pending")
+                    IAP.buy(id)
+                default:
+                    IAP.readBook(id)
+                }
+            }
+        default:
+            break
         }
     }
     

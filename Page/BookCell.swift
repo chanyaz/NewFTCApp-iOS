@@ -9,6 +9,8 @@
 import UIKit
 
 class BookCell: CustomCell {
+    // TODO: What if status is changed? For example, after a user buy the product. 
+    
     
     // MARK: - Style settings for this class
     let imageWidth = 160
@@ -24,12 +26,40 @@ class BookCell: CustomCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var checkDetailButton: UIButton!
     @IBAction func checkDetail(_ sender: UIButton) {
+        if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController,
+            let topController = UIApplication.topViewController() {
+            contentItemViewController.dataObject = itemCell
+            contentItemViewController.hidesBottomBarWhenPushed = true
+            contentItemViewController.themeColor = themeColor
+            topController.navigationController?.pushViewController(contentItemViewController, animated: true)
+        }
     }
     
     @IBOutlet weak var buyButton: UIButton!
-    
     @IBAction func buy(_ sender: Any) {
+        if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController,
+            let topController = UIApplication.topViewController() {
+            contentItemViewController.dataObject = itemCell
+            contentItemViewController.hidesBottomBarWhenPushed = true
+            contentItemViewController.themeColor = themeColor
+            contentItemViewController.action = "buy"
+            topController.navigationController?.pushViewController(contentItemViewController, animated: true)
+        }
     }
+    
+    @IBOutlet weak var readButton: UIButton!
+    @IBAction func read(_ sender: UIButton) {
+        if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController,
+            let topController = UIApplication.topViewController() {
+            contentItemViewController.dataObject = itemCell
+            contentItemViewController.hidesBottomBarWhenPushed = true
+            contentItemViewController.themeColor = themeColor
+            contentItemViewController.action = "read"
+            topController.navigationController?.pushViewController(contentItemViewController, animated: true)
+        }
+    }
+    
+    
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
         setupLayout()
@@ -78,6 +108,22 @@ class BookCell: CustomCell {
         // MARK: - update buy button content
         buyButton.setTitle(itemCell?.productPrice, for: .normal)
         
+        if let id = itemCell?.id {
+            let status = IAP.checkStatus(id)
+            let buttons = [buyButton, checkDetailButton, readButton]
+            for button in buttons {
+                button?.isHidden = true
+            }
+            
+            switch status {
+            case "success", "pendingdownload":
+                readButton.isHidden = false
+            default:
+                buyButton.isHidden = false
+                checkDetailButton.isHidden = false
+            }
+        }
+        
     }
     
     private func setupLayout() {
@@ -94,8 +140,8 @@ class BookCell: CustomCell {
         containerView.layoutMargins.right = 0
         
         // MARK: - Set Button Colors
-        let buttonTint = UIColor(hex: Color.Button.tint)
-        let buttons = [buyButton, checkDetailButton]
+        let buttonTint = UIColor(hex: Color.Button.highlight)
+        let buttons = [buyButton, checkDetailButton, readButton]
         for button in buttons {
             button?.tintColor = buttonTint
             button?.layer.cornerRadius = 3
@@ -105,7 +151,7 @@ class BookCell: CustomCell {
         }
     }
     
-
+    
     private func sizeCell() {
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right

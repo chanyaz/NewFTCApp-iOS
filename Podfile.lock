@@ -39,6 +39,7 @@ PODS:
 
 DEPENDENCIES:
   - FolioReaderKit
+  - FontBlaster
   - Google/Analytics
   - Realm
   - SSZipArchive
@@ -63,6 +64,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: ad1e7be1b66416df847ac50830c798b70c9e365e
   ZFDragableModalTransition: 0d294eaaba6edfcb9839595de765f9ca06a4b524
 
-PODFILE CHECKSUM: 1b22f08e9dbd6e9e6a54b843f0493eabff767601
+PODFILE CHECKSUM: 328818f74dd1a83e1e3c8d28bfc5e736ebb08a7a
 
 COCOAPODS: 1.2.1

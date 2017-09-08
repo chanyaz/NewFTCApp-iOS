@@ -7,6 +7,7 @@ pod 'SSZipArchive', :inhibit_warnings => true
 pod 'Realm', :inhibit_warnings => true
 pod 'ZFDragableModalTransition', :inhibit_warnings => true
 pod 'FontBlaster', :inhibit_warnings => true
+inhibit_all_warnings!
 
 target 'Page' do
 pod 'Google/Analytics'

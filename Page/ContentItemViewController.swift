@@ -20,6 +20,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     var pageTitle: String = ""
     var themeColor: String?
     var currentLanguageIndex: Int?
+    var action: String?
     
     // MARK: show in full screen
     var isFullScreen = false
@@ -845,6 +846,7 @@ extension ContentItemViewController {
         iapView.themeColor = themeColor
         iapView.dataObject = dataObject
         iapView.verticalPadding = verticalPadding
+        iapView.action = self.action      
         iapView.initUI()
         
         view.addSubview(iapView)

@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-
+import FolioReaderKit
 
 class IAPView: UIView {
     
@@ -146,7 +146,7 @@ class IAPView: UIView {
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
             self.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.setBackgroundColor(color: .gray, forState: .disabled)
+            
             var buttonPadding = horizontalPadding
             if buttonWidth > maxButtonWidth {
                 buttonWidth = maxButtonWidth
@@ -303,6 +303,7 @@ class IAPView: UIView {
         if let notificationObject = notification.object as? [String: Any?]{
             // MARK: when user buys or restores a product, we should display relevant information
             if let productID = notificationObject["id"] as? String, let actionType = notificationObject["actionType"] as? String {
+                var newStatus = "new"
                 for (_, product) in IAPs.shared.products.enumerated() {
                     guard product.productIdentifier == productID else { continue }
                     //var iapAction: String = "success"
@@ -313,13 +314,13 @@ class IAPView: UIView {
                         // iapAction = "downloading"
                         IAP.downloadProduct(productID)
                         IAP.savePurchase(productID, property: "purchased", value: "Y")
-                        downloadingView.isHidden = false
+                        newStatus = "downloading"
                         
                     } else if actionType == "buy success" {
                         // MARK: Otherwise if it's a buy action, save the purchase information and update UI accordingly
                         let transactionDate = notificationObject["date"] as? Date
                         IAP.updatePurchaseHistory(productID, date: transactionDate)
-                        downloadingView.isHidden = true
+                        newStatus = "success"
                         /*
                          if let periodLength = currentProduct?["period"] as? String {
                          if let expire = getExpireDateFromPurchaseHistory(productID, periodLength: periodLength) {
@@ -336,6 +337,9 @@ class IAPView: UIView {
                     //                    self.webView.evaluateJavaScript(jsCode) { (result, error) in
                     //                    }
                     IAP.trackIAPActions(actionType, productId: productID)
+                    DispatchQueue.main.async(execute: {
+                        self.switchUI(newStatus)
+                    })
                 }
             } else if let errorObject = notification.object as? [String : String?] {
                 // MARK: - When there is an error
@@ -354,7 +358,9 @@ class IAPView: UIView {
                         IAP.trackIAPActions("buy or restore error", productId: "\(productIdForTracking): \(errorMessage)")
                     }
                     // MARK: update the buy button
-                    buttons["buy"]?.isEnabled = true
+                    DispatchQueue.main.async(execute: {
+                        self.switchUI("fail")
+                    })
                     
                     // MARK: - For subscription types, should consider the situation of Failing to Renew in the webview's JavaScript Code of function iapActions, which means the UI should go back to renew button and display expire date
                     //                    jsCode = "iapActions('\(productId ?? "")', 'fail')"
@@ -369,7 +375,9 @@ class IAPView: UIView {
             if let topViewController = UIApplication.topViewController() {
                 topViewController.present(alert, animated: true, completion: nil)
             }
-            buttons["buy"]?.isEnabled = true
+            DispatchQueue.main.async(execute: {
+                self.switchUI("fail")
+            })
             //            jsCode = "iapActions('', 'fail')"
             //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
             //            }
@@ -420,25 +428,22 @@ extension IAPView: URLSessionDownloadDelegate {
                     if productId.hasPrefix("try") {
                         // TODO: - This is a trial file, open it immediately
                         print ("open the try book")
-                        /*
-                         
-                         let config = FolioReaderConfig()
-                         config.scrollDirection = .horizontal
-                         config.allowSharing = false
-                         config.tintColor = UIColor(netHex: 0x9E2F50)
-                         config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
-                         config.enableTTS = false
-                         let jsCode = "iapActions('\(productId.replacingOccurrences(of: "try.", with: ""))', 'fail');"
-                         self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                         }
-                         */
+                        
+                        
+                        let config = FolioReaderConfig()
+                        config.scrollDirection = .horizontal
+                        config.allowSharing = false
+                        config.tintColor = UIColor(netHex: 0x9E2F50)
+                        config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
+                        config.enableTTS = false
+                        
                         newStatus = "new"
                         if let fileLocation = Download.checkFilePath(fileUrl: productId, for: .documentDirectory) {
                             DispatchQueue.main.async {
-                                // TODO: uncomment after installing the Folio reader
-                                /*
-                                 FolioReader.presentReader(parentViewController: self, withEpubPath: fileLocation, andConfig: config)
-                                 */
+                                if let topController = UIApplication.topViewController() {
+                                    let folioReader = FolioReader()
+                                    folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
+                                }
                                 print ("should open the file at \(fileLocation)")
                                 IAP.trackIAPActions("download excerpt success", productId: productId)
                             }
@@ -456,7 +461,6 @@ extension IAPView: URLSessionDownloadDelegate {
             
         }
     }
-    
     
     
     // MARK: - Get progress status for download tasks and update UI

@@ -163,13 +163,6 @@ class BookCell: CustomCell {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
 }
 
 //TODO: Paid Post Ad should be moved to a subclass rather than the channel cell

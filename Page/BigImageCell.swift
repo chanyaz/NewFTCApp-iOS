@@ -148,6 +148,7 @@ class BigImageCell: CustomCell {
         if let rootViewController = window?.rootViewController as? UITabBarController {
             rootViewController.showAudioPlayer()
         }
+    
         
     }
     

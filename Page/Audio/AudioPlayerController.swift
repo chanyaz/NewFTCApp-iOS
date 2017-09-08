@@ -63,9 +63,13 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     @IBOutlet weak var playTime: UILabel!
     @IBOutlet weak var playDuration: UILabel!
     @IBOutlet weak var playStatus: UILabel!
-    
+    let playerView = AudioPlayerView()
     @IBAction func hideAudioButton(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+//        self.dismiss(animated: true, completion: nil)
+        
+        playerView.frame = CGRect(x: 0, y: 40, width: 250, height: 150)
+        self.view.addSubview(playerView)
+        
         print("this hideAudioButton")
     }
 
@@ -383,6 +387,16 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        containerView.layer.backgroundColor = UIColor.red.cgColor
+        containerView.backgroundColor = UIColor.green
+        
+        let progressThumbImage = UIImage(named: "SliderImg")
+        let aa = progressThumbImage?.imageWithImage(image: progressThumbImage!, scaledToSize: CGSize(width: 15, height: 15))
+        progressSlider.setThumbImage(aa, for: .normal)
+        progressSlider.maximumTrackTintColor = UIColor.white
+        progressSlider.minimumTrackTintColor = UIColor(hex: "#05d5e9")
+        containerView.backgroundColor = UIColor(hex: "#12a5b3", alpha: 0.9)
+        
         //        count = fetchesAudioObject.fetchResults[0].items.count
         ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
         let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
@@ -392,7 +406,6 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
         navigationItem.title = item?.headline
         initStyle()
-        self.containerView.backgroundColor = UIColor(hex: "#12a5b3")
         audioAddGesture()
         
         //        queuePlayer = AVQueuePlayer(items:)
@@ -896,3 +909,4 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     
 }
+

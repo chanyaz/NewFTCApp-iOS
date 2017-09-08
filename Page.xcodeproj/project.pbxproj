@@ -267,6 +267,10 @@
 		F24B79951F5555FA001B62A2 /* CustomPresentationAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */; };
 		F24B79961F5555FA001B62A2 /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */; };
 		F24B79971F5555FA001B62A2 /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */; };
+		F258A5B51F60DBF70095253A /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */; };
+		F258A5B61F60DBFA0095253A /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */; };
+		F258A5B81F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
+		F258A5B91F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
 		F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AA1F39A2BC00FAA8C0 /* close.png */; };
 		F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AB1F39A2BC00FAA8C0 /* cover.jpg */; };
 		F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AC1F39A2BC00FAA8C0 /* mute.png */; };
@@ -474,6 +478,7 @@
 		F24B798F1F5555FA001B62A2 /* AudioPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayerController.swift; path = Audio/AudioPlayerController.swift; sourceTree = "<group>"; };
 		F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPresentationAnimation.swift; path = Audio/CustomPresentationAnimation.swift; sourceTree = "<group>"; };
 		F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPresentationController.swift; path = Audio/CustomPresentationController.swift; sourceTree = "<group>"; };
+		F258A5B71F613E9A0095253A /* AudioPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayerView.swift; path = Audio/AudioPlayerView.swift; sourceTree = "<group>"; };
 		F29E19AA1F39A2BC00FAA8C0 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close.png; path = FTCC/Images/close.png; sourceTree = "<group>"; };
 		F29E19AB1F39A2BC00FAA8C0 /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = cover.jpg; path = FTCC/Images/cover.jpg; sourceTree = "<group>"; };
 		F29E19AC1F39A2BC00FAA8C0 /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mute.png; path = FTCC/Images/mute.png; sourceTree = "<group>"; };
@@ -739,6 +744,7 @@
 				F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */,
 				F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */,
 				F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */,
+				F258A5B71F613E9A0095253A /* AudioPlayerView.swift */,
 			);
 			name = Player;
 			sourceTree = "<group>";
@@ -1445,6 +1451,7 @@
 			files = (
 				6021530C1F397C650077A7AF /* DetailModelController.swift in Sources */,
 				6021530D1F397C650077A7AF /* DataForShare.swift in Sources */,
+				F258A5B51F60DBF70095253A /* ListTableViewCell.swift in Sources */,
 				602153B91F399E9A0077A7AF /* NewsNavigationController.swift in Sources */,
 				6021530E1F397C650077A7AF /* HeaderView.swift in Sources */,
 				6021530F1F397C650077A7AF /* UIImage+Attachments.swift in Sources */,
@@ -1453,6 +1460,7 @@
 				602153111F397C650077A7AF /* AdView.swift in Sources */,
 				602153121F397C650077A7AF /* DeviceInfo.swift in Sources */,
 				602153131F397C650077A7AF /* AttributedArticle.swift in Sources */,
+				F258A5B91F613E9B0095253A /* AudioPlayerView.swift in Sources */,
 				602153151F397C650077A7AF /* ChannelModelController.swift in Sources */,
 				F2E0907A1F5A721E00F4409F /* CustomTabBarController.swift in Sources */,
 				602153161F397C650077A7AF /* CoverCell.swift in Sources */,
@@ -1479,6 +1487,7 @@
 				F24B79951F5555FA001B62A2 /* CustomPresentationAnimation.swift in Sources */,
 				602153291F397C650077A7AF /* ArticleStyle.swift in Sources */,
 				6021532B1F397C650077A7AF /* ChatViewController.swift in Sources */,
+				F258A5B61F60DBFA0095253A /* ListPerColumnViewController.swift in Sources */,
 				602153B51F399E9A0077A7AF /* CustomNavigationController.swift in Sources */,
 				60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */,
 				6021532C1F397C650077A7AF /* AudioPlayer.swift in Sources */,
@@ -1642,6 +1651,7 @@
 				60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */,
 				50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */,
 				604FF94B1EEF7649005D2A41 /* ChannelCell.swift in Sources */,
+				F258A5B81F613E9B0095253A /* AudioPlayerView.swift in Sources */,
 				F2D7926B1F5CEBF4005A7588 /* ListTableViewCell.swift in Sources */,
 				6055EF9C1F506276006F8A83 /* CustomCell.swift in Sources */,
 				F2D792691F5CEBA2005A7588 /* ListPerColumnViewController.swift in Sources */,

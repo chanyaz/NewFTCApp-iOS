@@ -203,18 +203,18 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     
     @IBAction func openPlayList(_ sender: UIButton) {
-//        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
-//            listPerColumnViewController.AudioLists = fetchesAudioObject
-//            
-//            
-//            listPerColumnViewController.modalPresentationStyle = .custom
-//            
-//            //            listPerColumnViewController.view.frame = CGRect(x:0,y:150,width:self.view.bounds.width,height:self.view.bounds.height-150)
-//            
-//            self.present(listPerColumnViewController, animated: false, completion: nil)
-//            
-//            
-//        }
+        if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
+            listPerColumnViewController.AudioLists = fetchesAudioObject
+            
+            
+            listPerColumnViewController.modalPresentationStyle = .custom
+            
+            //            listPerColumnViewController.view.frame = CGRect(x:0,y:150,width:self.view.bounds.width,height:self.view.bounds.height-150)
+            
+            self.present(listPerColumnViewController, animated: false, completion: nil)
+            
+            
+        }
     }
     
     

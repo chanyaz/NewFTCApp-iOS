@@ -323,16 +323,25 @@ struct IAP {
         trackIAPActions("read", productId: productIdentifier)
     }
     
+    public static func checkStatus(_ id: String) -> String {
+        if Download.checkFilePath(fileUrl: id, for: .documentDirectory) != nil {
+            return "success"
+        } else if FTCProducts.store.isProductPurchased(id) == true {
+            return "pendingdownload"
+        }
+        return "new"
+    }
     
-    public static func removeDownload(_ productId: String) {
+    public static func removeDownload(_ productId: String) -> String {
         let fileManager = FileManager.default
         let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
         let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
         let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
         guard let dirPath = paths.first else {
-            return
+            return "pendingdownload"
         }
         let filePath = "\(dirPath)/\(productId)"
+        IAP.trackIAPActions("remove download", productId: productId)
         do {
             try fileManager.removeItem(atPath: filePath)
             print ("removed the file at \(filePath)")
@@ -340,9 +349,19 @@ struct IAP {
         } catch let error as NSError {
             print(error.debugDescription)
         }
-        IAP.trackIAPActions("remove download", productId: productId)
+        return "pendingdownload"
     }
     
+    public static func pauseDownload(_ productId: String) {
+        IAPs.shared.downloadTasks[productId]?.suspend()
+        trackIAPActions("pause download", productId: productId)
+    }
+    
+    public static func resumeDownload(_ productId: String) {
+        IAPs.shared.downloadTasks[productId]?.resume()
+        trackIAPActions("resume download", productId: productId)
+    }
+
     
     public static func cancelDownload(_ productId: String) {
         IAPs.shared.downloadTasks[productId]?.cancel()

@@ -54,6 +54,8 @@
 		6019A9D41F4C457D00B8FB69 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9D01F4C457D00B8FB69 /* FollowCell.xib */; };
 		601AC21B1F4870780004196A /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = 601AC21A1F4870780004196A /* search.html */; };
 		601AC21C1F4870780004196A /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = 601AC21A1F4870780004196A /* search.html */; };
+		601CBA7A1F60D91100F952B1 /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */; };
+		601CBA7B1F60D92900F952B1 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */; };
 		6021530C1F397C650077A7AF /* DetailModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608C55201EF78FA100AF27CB /* DetailModelController.swift */; };
 		6021530D1F397C650077A7AF /* DataForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A411F1CAC5300583157 /* DataForShare.swift */; };
 		6021530E1F397C650077A7AF /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */; };
@@ -1446,6 +1448,7 @@
 				602153B91F399E9A0077A7AF /* NewsNavigationController.swift in Sources */,
 				6021530E1F397C650077A7AF /* HeaderView.swift in Sources */,
 				6021530F1F397C650077A7AF /* UIImage+Attachments.swift in Sources */,
+				601CBA7A1F60D91100F952B1 /* ListPerColumnViewController.swift in Sources */,
 				602153101F397C650077A7AF /* English.swift in Sources */,
 				602153111F397C650077A7AF /* AdView.swift in Sources */,
 				602153121F397C650077A7AF /* DeviceInfo.swift in Sources */,
@@ -1489,6 +1492,7 @@
 				6055EF9D1F506276006F8A83 /* CustomCell.swift in Sources */,
 				602153351F397C650077A7AF /* ContentFetchResults.swift in Sources */,
 				602153361F397C650077A7AF /* NSLayoutManager+Attachments.swift in Sources */,
+				601CBA7B1F60D92900F952B1 /* ListTableViewCell.swift in Sources */,
 				602153371F397C650077A7AF /* ContentFetch.swift in Sources */,
 				602153381F397C650077A7AF /* AdCellRegular.swift in Sources */,
 				602153391F397C650077A7AF /* Content.swift in Sources */,

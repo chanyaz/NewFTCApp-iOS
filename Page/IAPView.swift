@@ -9,37 +9,49 @@
 import Foundation
 import UIKit
 
+
 class IAPView: UIView {
+    
     var themeColor: String?
     var dataObject: ContentItem?
     var buttons: [String: UIButton] = [
         "buy": UIButton(),
         "try": UIButton(),
         "open": UIButton(),
-        "delete": UIButton()
+        "delete": UIButton(),
+        "download": UIButton()
     ]
-    
+    var verticalPadding: CGFloat = 10
+    let horizontalPadding: CGFloat = 14
     let tryButton = UIButton()
     let downloadingView = UIView()
     let progressView = UIProgressView()
     let cancelButton = UIButton()
     let downloadingStatus = UILabel()
+    var currentDownloadStatus: DownloadStatus = .remote
+    
     
     public func initUI() {
+        self.backgroundColor = UIColor(hex: Color.Content.background)
         if let price = dataObject?.productPrice {
-            setButton(buttons["buy"], title: "购买：\(price)", disabledTitle: "连接中...", position: .right, backgroundColor: Color.Button.highlight)
+            setButton(buttons["buy"], title: "购买：\(price)", disabledTitle: "连接中...", positions: [.right], width: "half", type: "highlight")
             buttons["buy"]?.addTarget(self, action: #selector(buy(_:)), for: .touchUpInside)
         }
-        setButton(buttons["try"], title: "试读", disabledTitle: "下载中...", position: .left, backgroundColor: Color.Button.standard)
+        setButton(buttons["try"], title: "试读", disabledTitle: "下载中...", positions: [.left], width: "half", type: "standard")
         buttons["try"]?.addTarget(self, action: #selector(tryProduct(_:)), for: .touchUpInside)
         
-        setButton(buttons["open"], title: "打开", disabledTitle: "打开中...", position: .left, backgroundColor: Color.Button.highlight)
+        setButton(buttons["open"], title: "打开", disabledTitle: "打开中...", positions: [.left], width: "half", type: "highlight")
         buttons["open"]?.addTarget(self, action: #selector(openProduct(_:)), for: .touchUpInside)
         
-        setButton(buttons["delete"], title: "删除", disabledTitle: "删除中...", position: .right, backgroundColor: Color.Button.standard)
+        setButton(buttons["delete"], title: "删除", disabledTitle: "删除中...", positions: [.right], width: "half", type: "standard")
         buttons["delete"]?.addTarget(self, action: #selector(removeDownload(_:)), for: .touchUpInside)
         
+        setButton(buttons["download"], title: "下载", disabledTitle: "下载中...", positions: [.left, .right], width: "full", type: "standard")
+        buttons["download"]?.addTarget(self, action: #selector(download(_:)), for: .touchUpInside)
+        
+        
         setDownloadingView()
+        
         
         // MARK: listen to in-app purchase transaction notification. There's no need to remove it in code after iOS 9 as the system will do that for you. https://useyourloaf.com/blog/unregistering-nsnotificationcenter-observers-in-ios-9/
         NotificationCenter.default.addObserver(
@@ -51,49 +63,103 @@ class IAPView: UIView {
         
         IAPs.shared.downloadDelegate = self
         
+        updateUI()
     }
     
-    private func updateUI(_ actionType: String) {
-        func hideAll() {
-            for (_, button) in buttons {
-                button.isHidden = true
-            }
-            downloadingView.isHidden = true
+    private func updateUI() {
+        if let id = dataObject?.id {
+            let status = IAP.checkStatus(id)
+            switchUI(status)
         }
+    }
+    
+    fileprivate func switchUI(_ actionType: String) {
         switch actionType {
         case "success":
             print ("show open and delete button")
+            hideAll()
+            buttons["open"]?.isHidden = false
+            buttons["delete"]?.isHidden = false
         case "pendingdownload":
             print ("show download view only")
+            hideAll()
+            downloadingView.isHidden = false
+            buttons["download"]?.isHidden = false
         case "downloading":
             print ("show downloading view")
+            hideAll()
+            downloadingView.isHidden = false
         case "pending":
             print ("show buy and try button. buy button disabled. ")
+            hideAll()
+            buttons["buy"]?.isHidden = false
+            buttons["buy"]?.isEnabled = false
+            buttons["try"]?.isHidden = false
         case "fail", "new":
             print ("show buy and try button")
+            hideAll()
+            buttons["buy"]?.isHidden = false
+            buttons["buy"]?.isEnabled = true
+            buttons["try"]?.isHidden = false
         default:
             break
         }
     }
     
+    private func hideAll() {
+        for (_, button) in buttons {
+            button.isHidden = true
+        }
+        downloadingView.isHidden = true
+    }
     
-    private func setButton(_ button: UIButton?, title: String, disabledTitle: String,  position: NSLayoutAttribute, backgroundColor: String) {
+    
+    private func setButton(_ button: UIButton?, title: String, disabledTitle: String,  positions: [NSLayoutAttribute], width: String, type: String) {
         if let button = button {
-            let buttonPadding: CGFloat = 0
-            let buttonWidth = self.frame.width/2 - 2*buttonPadding
+            var maxButtonWidth: CGFloat = 200
+            let frameWidth = frame.width
+            var buttonWidth: CGFloat
+            switch width {
+            case "half":
+                buttonWidth = frameWidth/2 - horizontalPadding - horizontalPadding/2
+            default:
+                buttonWidth = frameWidth
+            }
+            
             let buttonHeight = self.frame.height
             button.frame = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
             button.layer.masksToBounds = true
             button.setTitle(title, for: .normal)
             button.setTitle(disabledTitle, for: .disabled)
-            button.setTitleColor(.white, for: .normal)
-            button.backgroundColor = UIColor(hex: backgroundColor)
+            switch type {
+            case "highlight":
+                button.setTitleColor(UIColor(hex: Color.Button.highlightFont), for: .normal)
+                button.backgroundColor = UIColor(hex: Color.Button.highlight)
+                button.layer.borderColor = UIColor(hex: Color.Button.highlightBorder).cgColor
+                button.layer.borderWidth = 1
+            default:
+                button.setTitleColor(UIColor(hex: Color.Button.standardFont), for: .normal)
+                button.backgroundColor = UIColor(hex: Color.Button.standard)
+                button.layer.borderColor = UIColor(hex: Color.Button.standardBorder).cgColor
+                button.layer.borderWidth = 1
+            }
+            button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
             self.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.setBackgroundColor(color: .gray, forState: .disabled)
-            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1, constant: -buttonPadding))
-            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -buttonPadding))
-            self.addConstraint(NSLayoutConstraint(item: button, attribute: position, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: position, multiplier: 1, constant: -buttonPadding))
+            var buttonPadding = horizontalPadding
+            if buttonWidth > maxButtonWidth {
+                buttonWidth = maxButtonWidth
+                buttonPadding = (frameWidth-horizontalPadding)/2 - buttonWidth
+            }
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1, constant: verticalPadding))
+            self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+            for position in positions {
+                if position == .right {
+                    buttonPadding = -buttonPadding
+                }
+                self.addConstraint(NSLayoutConstraint(item: button, attribute: position, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: position, multiplier: 1, constant: buttonPadding))
+            }
             self.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         }
     }
@@ -106,7 +172,7 @@ class IAPView: UIView {
         downloadingView.backgroundColor = UIColor(hex: Color.Content.background)
         downloadingView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(downloadingView)
-        self.addConstraint(NSLayoutConstraint(item: downloadingView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: downloadingView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1, constant: verticalPadding))
         self.addConstraint(NSLayoutConstraint(item: downloadingView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
         self.addConstraint(NSLayoutConstraint(item: downloadingView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
         self.addConstraint(NSLayoutConstraint(item: downloadingView, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.right, multiplier: 1, constant: 0))
@@ -115,10 +181,7 @@ class IAPView: UIView {
         let progressHeight: CGFloat = 2
         progressView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: progressHeight)
         progressView.backgroundColor = UIColor(hex: Color.Ad.background)
-        if let themeColor = themeColor {
-            progressView.progressTintColor = UIColor(hex: themeColor)
-        }
-        progressView.progress = 0.25
+        progressView.progressTintColor = UIColor(hex: Color.Button.highlight)
         downloadingView.addSubview(progressView)
         
         // MARK: progress label
@@ -129,10 +192,13 @@ class IAPView: UIView {
             width: self.frame.width - statusPadding * 2 - viewHeight,
             height: viewHeight - progressHeight
         )
-        downloadingStatus.text = "正在准备下载，点击暂停"
+        downloadingStatus.text = "点击此处开始下载"
         downloadingStatus.textColor = UIColor(hex: Color.Content.lead)
         downloadingStatus.font = downloadingStatus.font.withSize(13)
         downloadingStatus.textAlignment = .left
+        downloadingStatus.isUserInteractionEnabled = true
+        let downloadStatusTapGesture = UITapGestureRecognizer(target:self, action:#selector(tapDownloadingStatus(_:)))
+        downloadingStatus.addGestureRecognizer(downloadStatusTapGesture)
         downloadingView.addSubview(downloadingStatus)
         
         // MARK: cancel button
@@ -175,144 +241,59 @@ class IAPView: UIView {
     public func removeDownload(_ sender: UIButton) {
         print ("remove downloaded product")
         if let id = dataObject?.id {
-            IAP.removeDownload(id)
+            let newStatus = IAP.removeDownload(id)
+            switchUI(newStatus)
+            progressView.progress = 0
+            downloadingStatus.text = "点击此处重新下载"
         }
+    }
+    
+    public func download(_ sender: Any) {
+        print ("start downloading product")
+        downloadingStatus.text = "准备下载，点击此处取消"
+        if let id = dataObject?.id {
+            IAP.downloadProduct(id)
+        }
+        switchUI("downloading")
+    }
+    
+    public func tapDownloadingStatus(_ recognizer: UITapGestureRecognizer) {
+        print ("current download status is now \(currentDownloadStatus)")
+        switch currentDownloadStatus {
+        case .remote:
+            print ("should start downloading")
+            if let id = dataObject?.id {
+                IAP.downloadProduct(id)
+            }
+        case .downloading, .resumed:
+            print ("should pause downloading")
+            currentDownloadStatus = .paused
+            if let id = dataObject?.id {
+                IAP.pauseDownload(id)
+            }
+            downloadingStatus.text = "下载暂停，点击继续"
+        case .paused:
+            print ("should resume download")
+            currentDownloadStatus = .resumed
+            if let id = dataObject?.id {
+                IAP.resumeDownload(id)
+            }
+            downloadingStatus.text = "下载中，点击暂停"
+        case .success:
+            print ("should close downloading view")
+            switchUI("success")
+        }
+        print ("current download status changed to \(currentDownloadStatus)")
     }
     
     public func cancelDownload(_ sender: UIButton) {
-        downloadingView.isHidden = true
         if let id = dataObject?.id {
             IAP.cancelDownload(id)
         }
+        switchUI("pendingdownload")
+        self.currentDownloadStatus = .remote
+        downloadingStatus.text = "点击此处重新加载"
     }
-    
-    
-    
-    
-    /*
-     // MARK: - Update DOM UI based on user actions
-     function iapActions(productID, actionType, expireDate) {
-     var iapButtons;
-     var iapRailHTML = '';
-     var iapHTMLCode = '';
-     var productPrice = '';
-     var productTeaser = '';
-     var productIndex;
-     var productName;
-     var productExpire = '为止';
-     
-     // MARK: - current view prefix
-     var viewPrefix = getViewPrefix();
-     
-     // MARK: get iapButtons based on the current view
-     var currentView = 'fullbody';
-     if (gNowView.indexOf('storyview') >= 0) {
-     currentView = 'storyview';
-     } else if (gNowView.indexOf('channelview') >= 0) {
-     currentView = 'channelview';
-     }
-     
-     iapButtons = document.getElementById(currentView).querySelectorAll('.iap-button');
-     
-     // MARK: - Get the index number of the current product for window.iapProducts
-     if (productID !== '') {
-     for (var i = 0; i < window.iapProducts.length; i++) {
-     if (productID === iapProducts[i].id) {
-     productIndex = i;
-     break;
-     }
-     }
-     }
-     
-     // MARK: - get product price here
-     productPrice = window.iapProducts[productIndex].price || '购买';
-     productTeaser = window.iapProducts[productIndex].teaser || '';
-     productName = window.iapProducts[productIndex].title || '';
-     
-     // MARK: - Get product type based on its identifiers
-     var productType = '';
-     if (/premium$|standard$|trial$/.test(productID)) {
-     productType = 'membership';
-     } else if (/subscription/.test(productID)) {
-     productType = 'subscription';
-     } else {
-     productType = 'eBook';
-     }
-     
-     // MARK: - iapHTMLCode is used for home and channel page, iapRailHTML is used for product detail page
-     switch (actionType) {
-     case 'success':
-     if (productType === 'membership') {
-     productExpire = expireDate || '未知';
-     iapHTMLCode = '<p class="iap-teaser">成功订阅'+productName+'，到期时间'+productExpire+'</p><a'+getBuyCode(productID, productPrice, gUserId, productName)+'><button class="iap-move-left">续订</button></a>';
-     iapRailHTML = '';
-     } else {
-     iapHTMLCode = '<a href="readbook://' + productID + '"><button class="iap-move-left">打开</button></a><a href="removedownload://' + productID + '"><button>删除</button></a>';
-     iapRailHTML = '<a href="readbook://' + productID + '"><button class="floatright iap-highlight">打开</button></a><a href="removedownload://' + productID + '"><button class="floatleft">删除</button></a>';
-     }
-     updateProductStatus(productIndex, true, true);
-     break;
-     case 'pendingdownload':
-     iapHTMLCode = '<a href="downloadproduct://' + productID + '"><button>下载</button></a>';
-     iapRailHTML = '<a href="downloadproduct://' + productID + '"><button class="full-width iap-highlight">下载</button></a>';
-     updateProductStatus(productIndex, true, false);
-     break;
-     case 'downloading':
-     iapHTMLCode = '<a id="' + viewPrefix + 'pause-' + productID + '" href="pausedownload://' + productID + '"><button class="iap-move-left pause-button">暂停</button></a><a href="canceldownload://' + productID + '"><button>取消</button></a><div class="progresscontainer"><div class="progressbar standardprogressbar uses3d progressbg structureprogress" id="' + viewPrefix + 'progress-' + productID + '"></div></div><div id="' + viewPrefix + 'status-' + productID + '" class="download-status"></div>';
-     iapRailHTML = '<a href="canceldownload://' + productID + '"><button class="quarter-width floatright">取消</button></a><a id="story-pause-' + productID + '" href="pausedownload://' + productID + '"><button class="pause-button quarter-width floatright">暂停</button></a><div class="progresscontainer"><div class="progressbar standardprogressbar uses3d progressbg structureprogress" id="' + viewPrefix + 'progress-' + productID + '"></div></div><div id="' + viewPrefix + 'status-' + productID + '" class="download-status"></div>';
-     updateProductStatus(productIndex, true, false);
-     break;
-     case 'pending':
-     if (productType === 'membership') {
-     iapHTMLCode = '<p class="iap-teaser">请求...</p>';
-     iapRailHTML = '';
-     } else {
-     iapHTMLCode = '<button>请求...</button>';
-     iapRailHTML = '<button class="full-width">请求...</button>';
-     }
-     updateProductStatus(productIndex, false, false);
-     break;
-     case 'fail':
-     if (productType === 'membership') {
-     iapHTMLCode = '<p class="iap-teaser">' + productTeaser + ' ' + productPrice + '/年' + '</p><a'+getBuyCode(productID, productPrice, gUserId, productName)+'><button class="iap-move-left">立即订阅</button></a>';
-     iapRailHTML = '';
-     } else {
-     iapHTMLCode = '<a'+getBuyCode(productID, productPrice, gUserId, productName)+'><button class="iap-move-left">' + productPrice + '</button></a><button onclick="showProductDetail(\'' + productID + '\');" class="iap-detail">查看</button>';
-     iapRailHTML = '<a'+getBuyCode(productID, productPrice, gUserId, productName)+'><button class="floatright iap-highlight">购买：' + productPrice + '</button></a><a href="try://' + productID + '"><button class="floatleft">试读</button></a>';
-     }
-     updateProductStatus(productIndex, false, false);
-     
-     
-     //productActionButton = '<div class="iap-button" product-id="' + products[i].id + '" product-price="' + productPrice + '"></div>';
-     
-     
-     break;
-     default:
-     }
-     
-     // MARK: - for each of the iap button containers that fit the criteria, update its innerHTML
-     for (var i = 0; i < iapButtons.length; i++) {
-     //productPrice = iapButtons[i].getAttribute('product-price') || '购买';
-     if (productID === iapButtons[i].getAttribute('product-id')) {
-     //iapHTMLCode = iapHTMLCode.replace('[productprice]',productPrice);
-     iapButtons[i].innerHTML = iapHTMLCode;
-     } else if (productID === '') {
-     iapHTMLCode = '<a'+getBuyCode(iapButtons[i].getAttribute('product-id'), iapButtons[i].getAttribute('product-price'), gUserId, iapButtons[i].getAttribute('product-title'))+'><a href="buy://' + iapButtons[i].getAttribute('product-id') + '"><button class="iap-move-left">' + productPrice + '</button></a><button onclick="showProductDetail(\'' + products[i].id + '\');" class="iap-detail">查看</button>';
-     iapButtons[i].innerHTML = iapHTMLCode;
-     }
-     }
-     
-     // Mark: Update iap Button at the bottom of the detail view
-     if (productID !== '' && document.getElementById('iap-rail').getAttribute('data-id') === productID && gNowView.indexOf('storyview') >= 0) {
-     document.getElementById('iap-rail').innerHTML = iapRailHTML;
-     }
-     
-     }
-     
-     
-     
-     
-     */
     
     
     // MARK: This should be public, as it will be called by other classes
@@ -462,10 +443,11 @@ extension IAPView: URLSessionDownloadDelegate {
                     IAP.trackIAPActions("save fail", productId: productId)
                 }
             }
-            downloadingView.isHidden = true
-            //            let jsCode = "iapActions('\(productId)', 'success');"
-            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-            //            }
+            
+            DispatchQueue.main.async(execute: {
+                self.switchUI("success")
+            })
+            
         }
     }
     
@@ -484,17 +466,18 @@ extension IAPView: URLSessionDownloadDelegate {
             if totalMBsWritten == "0.0" {
                 IAPs.shared.downloadProgresses[productId] = "0.0"
             }
-            if IAPs.shared.downloadProgresses[productId] != totalMBsWritten {
-                IAPs.shared.downloadProgresses[productId] = totalMBsWritten
-                let totalMBsExpectedToWrite = String(format: "%.1f", Float(totalBytesExpectedToWrite)/1000000)
-                // TODO: update UI in the view
-                print ("updateDownloadProgress('\(productId)', '\(percentageNumber)%', '\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M')")
-                downloadingStatus.text = "\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M 点击暂停"
-                progressView.progress = percentageNumber/100
-                //                let jsCode = "updateDownloadProgress('\(productId)', '\(percentageNumber)%', '\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M')"
-                //                self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                //                }
-            }
+            // MARK: Since we have moved to native, we can update UI as frequently as we want.
+            //if IAPs.shared.downloadProgresses[productId] != totalMBsWritten {
+            IAPs.shared.downloadProgresses[productId] = totalMBsWritten
+            let totalMBsExpectedToWrite = String(format: "%.1f", Float(totalBytesExpectedToWrite)/1000000)
+            // MARK: update UI in main queue
+            DispatchQueue.main.async(execute: {
+                self.downloadingStatus.text = "\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M 点击暂停"
+                self.progressView.progress = percentageNumber/100
+            })
+            currentDownloadStatus = .downloading
+            print ("updateDownloadProgress('\(productId)', '\(percentageNumber)%', '\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M')")
+            //}
         }
     }
     
@@ -506,14 +489,17 @@ extension IAPView: URLSessionDownloadDelegate {
             print(error.localizedDescription)
             Alert.present("下载失败，您可以稍后再试", message: error.localizedDescription)
             if let productId = session.configuration.identifier {
-                // TODO: Update UI in the view
-                //                let jsCode = "iapActions('\(productId)', 'pendingdownload');"
-                //                self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                //                }
+                DispatchQueue.main.async(execute: {
+                    self.switchUI("pendingdownload")
+                })
                 IAP.trackIAPActions("download fail", productId: productId)
             }
-            downloadingView.isHidden = true
-            
+            DispatchQueue.main.async(execute: {
+                self.switchUI("pendingdownload")
+                self.currentDownloadStatus = .remote
+                self.progressView.progress = 0
+                self.downloadingStatus.text = "点击此处重新下载"
+            })
         }
     }
     

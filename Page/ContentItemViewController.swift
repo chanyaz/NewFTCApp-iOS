@@ -492,7 +492,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         lead = ""
                         userCommentsOrder = "story"
                         styleContainerStyle = ""
-                        storyTheme = "<div style=\"padding-top: 14px;\"></div>"
+                        storyTheme = "电子书"
                         if let image = dataObject?.image {
                             imageHTML = "<div class=\"leftPic image portrait-img ebook-image-container\" style=\"margin-bottom:0;\"><div class=\"ebook-image-inner\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div></div>"
                         } else {

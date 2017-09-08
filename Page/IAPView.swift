@@ -73,7 +73,7 @@ class IAPView: UIView {
         }
     }
     
-    fileprivate func switchUI(_ actionType: String) {
+    public func switchUI(_ actionType: String) {
         switch actionType {
         case "success":
             print ("show open and delete button")
@@ -116,7 +116,7 @@ class IAPView: UIView {
     
     private func setButton(_ button: UIButton?, title: String, disabledTitle: String,  positions: [NSLayoutAttribute], width: String, type: String) {
         if let button = button {
-            var maxButtonWidth: CGFloat = 200
+            let maxButtonWidth: CGFloat = 200
             let frameWidth = frame.width
             var buttonWidth: CGFloat
             switch width {
@@ -227,8 +227,10 @@ class IAPView: UIView {
     }
     
     public func tryProduct(_ sender: UIButton) {
-        sender.isEnabled = false
         print ("try product")
+        if let id = dataObject?.id {
+            IAP.tryBook(id)
+        }
     }
     
     public func openProduct(_ sender: UIButton) {
@@ -387,11 +389,13 @@ extension IAPView: URLSessionDownloadDelegate {
             let documentDirectoryPath:String = path[0]
             let fileManager = FileManager()
             let destinationURLForFile = URL(fileURLWithPath: documentDirectoryPath.appendingFormat("/\(productId)"))
+            var newStatus = "new"
             
             print ("\(productId) file downloaded to: \(location.absoluteURL)")
             if fileManager.fileExists(atPath: destinationURLForFile.path){
                 //showFileWithPath(path: destinationURLForFile.path)
                 print ("the file exists, you can open it. ")
+                newStatus = "success"
             } else {
                 do {
                     try fileManager.moveItem(at: location, to: destinationURLForFile)
@@ -412,10 +416,12 @@ extension IAPView: URLSessionDownloadDelegate {
                     }
                     
                     IAP.trackIAPActions("download success", productId: productId)
+                    newStatus = "success"
                     if productId.hasPrefix("try") {
                         // TODO: - This is a trial file, open it immediately
+                        print ("open the try book")
                         /*
-                         print ("open the try book")
+                         
                          let config = FolioReaderConfig()
                          config.scrollDirection = .horizontal
                          config.allowSharing = false
@@ -426,6 +432,7 @@ extension IAPView: URLSessionDownloadDelegate {
                          self.webView.evaluateJavaScript(jsCode) { (result, error) in
                          }
                          */
+                        newStatus = "new"
                         if let fileLocation = Download.checkFilePath(fileUrl: productId, for: .documentDirectory) {
                             DispatchQueue.main.async {
                                 // TODO: uncomment after installing the Folio reader
@@ -436,17 +443,16 @@ extension IAPView: URLSessionDownloadDelegate {
                                 IAP.trackIAPActions("download excerpt success", productId: productId)
                             }
                         }
-                        return
                     }
                 }catch{
                     print("An error occurred while moving file to destination url")
                     IAP.trackIAPActions("save fail", productId: productId)
+                    switchUI("fail")
                 }
+                DispatchQueue.main.async(execute: {
+                    self.switchUI(newStatus)
+                })
             }
-            
-            DispatchQueue.main.async(execute: {
-                self.switchUI("success")
-            })
             
         }
     }

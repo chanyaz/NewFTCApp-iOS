@@ -255,12 +255,44 @@ struct Meta {
 
 struct AdMobTrack {
     static func launch() {
-        // MARK: This target might not need admob tracking, just clear the func
         if UIDevice.current.userInterfaceIdiom == .pad {
             ACTConversionReporter.report(withConversionID: "937693643", label: "Qe7aCL-Kx2MQy6OQvwM", value: "1.00", isRepeatable: false)
         } else {
             ACTConversionReporter.report(withConversionID: "937693643", label: "TvNTCJmOiGMQy6OQvwM", value: "1.00", isRepeatable: false)
         }
+    }
+}
+
+struct DeviceToken {
+    public static let url = "https://noti.ftimg.net/iphone-collect.php"
+    // MARK: - Post device token to server
+    func forwardTokenToServer(deviceToken token: Data) {
+        let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
+        print("device token: \(hexEncodedToken)")
+        // MARK: calculate appNumber based on your bundel ID
+        let bundleID = Bundle.main.bundleIdentifier ?? ""
+        let appNumber: String
+        switch bundleID {
+        case "com.ft.ftchinese.ipad":
+            appNumber = "1"
+        case "com.ft.ftchinese.mobile":
+            appNumber = "2"
+        default:
+            appNumber = "0"
+        }
+        // MARK: get device type
+        var deviceType: String
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            deviceType = "pad"
+        case .phone:
+            deviceType = "phone"
+        default:
+            deviceType = "unspecified"
+        }
+        let timeZone = TimeZone.current.abbreviation() ?? ""
+        let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
+        PostData.sendDeviceToken(body: urlEncoded)
     }
 }
 

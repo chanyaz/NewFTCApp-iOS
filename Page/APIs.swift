@@ -266,6 +266,38 @@ struct AdMobTrack {
     }
 }
 
+struct DeviceToken {
+    static let url = "https://noti.ftimg.net/iphone-collect.php"
+    // MARK: - Post device token to server
+    static func forwardTokenToServer(deviceToken token: Data) {
+        let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
+        print("device token: \(hexEncodedToken)")
+        // MARK: calculate appNumber based on your bundel ID
+        let bundleID = Bundle.main.bundleIdentifier ?? ""
+        let appNumber: String
+        switch bundleID {
+        case "com.ft.ftchinese.ipad":
+            appNumber = "1"
+        case "com.ft.ftchinese.mobile":
+            appNumber = "2"
+        default:
+            appNumber = "0"
+        }
+        // MARK: get device type
+        var deviceType: String
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            deviceType = "pad"
+        case .phone:
+            deviceType = "phone"
+        default:
+            deviceType = "unspecified"
+        }
+        let timeZone = TimeZone.current.abbreviation() ?? ""
+        let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
+        PostData.sendDeviceToken(body: urlEncoded)
+    }
+}
 
 /*
  enum AppError : Error {

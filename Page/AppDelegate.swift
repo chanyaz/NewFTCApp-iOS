@@ -127,7 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         checkImpressions()
         checkImpressionTimer?.invalidate()
         UIApplication.shared.applicationIconBadgeNumber = 0
-
+        
         //        if AppLaunch.sharedInstance.launched == true {
         //            if let rootViewController = window?.rootViewController {
         //                rootViewController.showAudioPlayer()
@@ -223,11 +223,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: WXApiDelegate {
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        return WXApi.handleOpen(url, delegate: self)
+        if let urlScheme = url.scheme {
+            switch urlScheme {
+            case "ftchinese":
+                print ("this is a ftchinese url")
+            default:
+                return WXApi.handleOpen(url, delegate: self)
+            }
+        }
+        return false
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return WXApi.handleOpen(url, delegate: self)
+        if let urlScheme = url.scheme {
+            switch urlScheme {
+            case "ftchinese":
+                NotificationHelper.handle(url)
+                return true
+            default:
+                return WXApi.handleOpen(url, delegate: self)
+            }
+        }
+        return false
+        
     }
     
     func onReq(_ req: BaseReq!) {

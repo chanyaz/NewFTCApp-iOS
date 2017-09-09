@@ -40,6 +40,19 @@ struct NotificationHelper {
         }
     }
     
+    static func handle(_ url: URL) {
+        if let topController = UIApplication.topViewController() {
+            // MARK: If the top view controller is already there, for example, when the app is activated from background
+            topController.openLink(url)        } else {
+            // MARK: When an app is launched rather than awakened, should wait for several seconds before topViewController is not nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(3000)) {
+                if let topController = UIApplication.topViewController() {
+                    topController.openLink(url)
+                }
+            }
+        }
+    }
+    
     
     // MARK: User tap on a remote notification. This should be public.
     public static func open(_ action: String?, id: String?, title: String?) {

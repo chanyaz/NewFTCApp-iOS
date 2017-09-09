@@ -142,7 +142,7 @@ struct LinkPattern {
     static let video = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/video/([0-9]+)"]
     static let photonews = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
     static let tag = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
-    static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+)"]
+    static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
 }
 
 struct SupplementContent {

@@ -33,8 +33,8 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.tag) {
                     id = contentId
                     type = "tag"
-                } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.other) {
-                    id = contentId
+                } else if urlString.matchingStrings(regexes: LinkPattern.other) != nil {
+                    id = urlString
                     type = "webpage"
                 }
                 if let type = type, type == "tag" {

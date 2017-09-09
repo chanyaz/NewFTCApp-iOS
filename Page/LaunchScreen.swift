@@ -151,7 +151,7 @@ class LaunchScreen: UIViewController {
             view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0))
         }
     }
-
+    
     
     public func retryAd() {
         print ("Try to parse the ad schedule to decide if you can show an ad now")
@@ -204,6 +204,9 @@ class LaunchScreen: UIViewController {
             view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 21))
             
             // MARK: Request user to review only if the app starts without the launch ad
+            if AppLaunch.sharedInstance.from == "notification" {
+                happyUser.canTryRequestReview = false
+            }
             happyUser.requestReview()
         }
     }
@@ -547,7 +550,7 @@ class LaunchScreen: UIViewController {
         }
         //self.dismiss(animated: true, completion: nil)
     }
-
+    
 }
 
 struct AppLaunch {
@@ -555,4 +558,5 @@ struct AppLaunch {
     var launched = false
     var adShowed = false
     var fullScreenDismissed = false
+    var from: String?
 }

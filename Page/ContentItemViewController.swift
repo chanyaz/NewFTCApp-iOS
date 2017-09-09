@@ -276,7 +276,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         if let type = dataObject?.type {
             switch type {
-            case "video", "interactive", "photonews", "photo":
+            case "video", "interactive", "photonews", "photo", "gym", "special":
                 renderWebView()
             case "story":
                 if (dataObject?.cbody) != nil {

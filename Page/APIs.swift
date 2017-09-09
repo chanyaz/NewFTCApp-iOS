@@ -73,7 +73,7 @@ struct APIs {
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
         case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
-        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&i=3&001"
+        case "interactive", "gym", "special": urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
         case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
         case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
         case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
@@ -254,6 +254,16 @@ struct Meta {
          "name": "栏目"
         ]
     ]
+}
+
+struct AdMobTrack {
+    static func launch() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            ACTConversionReporter.report(withConversionID: "937693643", label: "Qe7aCL-Kx2MQy6OQvwM", value: "1.00", isRepeatable: false)
+        } else {
+            ACTConversionReporter.report(withConversionID: "937693643", label: "TvNTCJmOiGMQy6OQvwM", value: "1.00", isRepeatable: false)
+        }
+    }
 }
 
 

@@ -253,6 +253,17 @@ struct Meta {
 }
 
 
+struct AdMobTrack {
+    static func launch() {
+        // MARK: This target might not need admob tracking, just clear the func
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            ACTConversionReporter.report(withConversionID: "937693643", label: "Qe7aCL-Kx2MQy6OQvwM", value: "1.00", isRepeatable: false)
+        } else {
+            ACTConversionReporter.report(withConversionID: "937693643", label: "TvNTCJmOiGMQy6OQvwM", value: "1.00", isRepeatable: false)
+        }
+    }
+}
+
 /*
  enum AppError : Error {
  case invalidResource(String, String)

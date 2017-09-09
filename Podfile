@@ -13,6 +13,7 @@ target 'Page' do
 pod 'Google/Analytics'
 pod 'WechatOpenSDK'
 pod 'FolioReaderKit'
+pod 'GoogleConversionTracking'
 end
 
 
@@ -20,4 +21,5 @@ target 'FTCC' do
 pod 'Google/Analytics'
 pod 'WechatOpenSDK'
 pod 'FolioReaderKit'
+pod 'GoogleConversionTracking'
 end

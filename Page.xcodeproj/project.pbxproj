@@ -17,6 +17,8 @@
 		50A704C31EEB689900660022 /* ContentFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C01EEB689900660022 /* ContentFetch.swift */; };
 		50A704C41EEB689900660022 /* ContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C11EEB689900660022 /* ContentItem.swift */; };
 		50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C21EEB689900660022 /* ContentFetchResults.swift */; };
+		50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
+		50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
 		50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9BA0E1F230A73002A188F /* LeakAvoider.swift */; };
 		50DA6E7E1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */; };
 		50DA6E7F1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */; };
@@ -329,6 +331,7 @@
 		50A704C01EEB689900660022 /* ContentFetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetch.swift; sourceTree = "<group>"; };
 		50A704C11EEB689900660022 /* ContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentItem.swift; sourceTree = "<group>"; };
 		50A704C21EEB689900660022 /* ContentFetchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchResults.swift; sourceTree = "<group>"; };
+		50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		50D9BA0E1F230A73002A188F /* LeakAvoider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakAvoider.swift; sourceTree = "<group>"; };
 		50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkRequestHelper.swift; sourceTree = "<group>"; };
 		50DA6E801F4037C8006B4CDE /* story.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = story.html; path = FTChinese/story.html; sourceTree = "<group>"; };
@@ -584,6 +587,14 @@
 			name = Channel;
 			sourceTree = "<group>";
 		};
+		50D4BD3E1F6382B600DD64E1 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */,
+			);
+			name = Notification;
+			sourceTree = "<group>";
+		};
 		50D9BA101F230A87002A188F /* Performance */ = {
 			isa = PBXGroup;
 			children = (
@@ -718,6 +729,7 @@
 		6037DD3E1F2878D7007DB2FF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				50D4BD3E1F6382B600DD64E1 /* Notification */,
 				602CD2981F565FDC00FFC1EA /* IAP */,
 				60986A4B1F1CAC5E00583157 /* Share */,
 				600BD6A01F1DBB080077C104 /* Push */,
@@ -1495,6 +1507,7 @@
 				6021532D1F397C650077A7AF /* OpenInSafari.swift in Sources */,
 				6021532E1F397C650077A7AF /* CellData.swift in Sources */,
 				6021532F1F397C650077A7AF /* SpeechDefaultVoice.swift in Sources */,
+				50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				602153301F397C650077A7AF /* WeChatShare.swift in Sources */,
 				602153311F397C650077A7AF /* CoverCellRegular.swift in Sources */,
 				602153321F397C650077A7AF /* Ad.swift in Sources */,
@@ -1629,6 +1642,7 @@
 				60CA7BC11EF26251000CD9B4 /* AdLayout.swift in Sources */,
 				AFD8AF601F380A6200508A91 /* OneTalkCell.swift in Sources */,
 				6072F9F31F57ED280035AD92 /* IAP.swift in Sources */,
+				50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				50A704C41EEB689900660022 /* ContentItem.swift in Sources */,
 				60D4B8F31EE7A22C00A4506D /* StyleExtensions.swift in Sources */,
 				F24B79961F5555FA001B62A2 /* CustomPresentationController.swift in Sources */,

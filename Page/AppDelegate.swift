@@ -21,24 +21,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        // MARK: - Don't Set the default background overall color. It will affect the action sheet
+        // MARK: - Important: Don't Set the default background overall color. It will affect the action sheet
         // window?.tintColor = UIColor(hex: Color.Content.background)
         
+        // MARK: Register for notification
         if #available(iOS 10.0, *) {
             let center = UNUserNotificationCenter.current()
             center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-                //print("authorization granted: \(granted)")
-                
             }
-            //print("register for remote notifications")
             UIApplication.shared.registerForRemoteNotifications()
         } else {
             // Fallback on earlier versions
             let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(notificationSettings)
         }
+        
+        // if launched from a tap on a notification
+        NotificationHelper.handle(launchOptions)
         startCheckImpressionTimer()
         setupGoogleAnalytics()
+        AdMobTrack.launch()
         
         // WeChat API
         WXApi.registerApp(WeChat.appId)
@@ -52,6 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 AppLaunch.sharedInstance.fullScreenDismissed = true
             }
         }
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
 
         return true
     }

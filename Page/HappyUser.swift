@@ -43,6 +43,7 @@ public class HappyUser {
         // MARK: Request user to review
         let currentLaunchCount: Int = UserDefaults.standard.integer(forKey: launchCountKey)
         let ratePrompted: Bool = UserDefaults.standard.bool(forKey: ratePromptKey)
+        // MARK: check for situations where you don't want to trigger request review
         if ratePrompted != true && currentLaunchCount >= requestReviewFrequency && canTryRequestReview == true {
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()

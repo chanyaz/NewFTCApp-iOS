@@ -56,7 +56,7 @@
 ### Core data
 
 ### Notifications
-1. Working On: Handle Notification Types
+1. Done: Handle Notification Types
 2. Move Notification Extensions
 
 ### Today Widget

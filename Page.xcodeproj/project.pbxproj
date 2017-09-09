@@ -19,6 +19,8 @@
 		50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C21EEB689900660022 /* ContentFetchResults.swift */; };
 		50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
 		50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
+		50D4BD461F63BB2400DD64E1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD451F63BB2400DD64E1 /* NotificationService.swift */; };
+		50D4BD4A1F63BB2400DD64E1 /* FT富媒体速递.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9BA0E1F230A73002A188F /* LeakAvoider.swift */; };
 		50DA6E7E1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */; };
 		50DA6E7F1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */; };
@@ -302,6 +304,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		50D4BD481F63BB2400DD64E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60D3C8B51EBFF5DC0085BEF6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50D4BD421F63BB2400DD64E1;
+			remoteInfo = "FT富媒体速递";
+		};
 		60D3C8D61EBFF5DC0085BEF6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 60D3C8B51EBFF5DC0085BEF6 /* Project object */;
@@ -318,6 +327,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		50D4BD4E1F63BB2400DD64E1 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				50D4BD4A1F63BB2400DD64E1 /* FT富媒体速递.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0A7D7B864CCCA3E26CFE8430 /* Pods_FTCC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FTCC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25F43C0D286D295E626A3347 /* Pods-FTCC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FTCC.release.xcconfig"; path = "Pods/Target Support Files/Pods-FTCC/Pods-FTCC.release.xcconfig"; sourceTree = "<group>"; };
@@ -332,6 +355,9 @@
 		50A704C11EEB689900660022 /* ContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentItem.swift; sourceTree = "<group>"; };
 		50A704C21EEB689900660022 /* ContentFetchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchResults.swift; sourceTree = "<group>"; };
 		50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
+		50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FT富媒体速递.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		50D4BD451F63BB2400DD64E1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		50D4BD471F63BB2400DD64E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50D9BA0E1F230A73002A188F /* LeakAvoider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakAvoider.swift; sourceTree = "<group>"; };
 		50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkRequestHelper.swift; sourceTree = "<group>"; };
 		50DA6E801F4037C8006B4CDE /* story.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = story.html; path = FTChinese/story.html; sourceTree = "<group>"; };
@@ -511,6 +537,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		50D4BD401F63BB2400DD64E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		602153601F397C650077A7AF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -593,6 +626,15 @@
 				50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */,
 			);
 			name = Notification;
+			sourceTree = "<group>";
+		};
+		50D4BD441F63BB2400DD64E1 /* FT富媒体速递 */ = {
+			isa = PBXGroup;
+			children = (
+				50D4BD451F63BB2400DD64E1 /* NotificationService.swift */,
+				50D4BD471F63BB2400DD64E1 /* Info.plist */,
+			);
+			path = "FT富媒体速递";
 			sourceTree = "<group>";
 		};
 		50D9BA101F230A87002A188F /* Performance */ = {
@@ -916,6 +958,7 @@
 			isa = PBXGroup;
 			children = (
 				60D3C8BF1EBFF5DC0085BEF6 /* Page */,
+				50D4BD441F63BB2400DD64E1 /* FT富媒体速递 */,
 				60D3C8D81EBFF5DC0085BEF6 /* PageTests */,
 				60D3C8E31EBFF5DC0085BEF6 /* PageUITests */,
 				60D3C8BE1EBFF5DC0085BEF6 /* Products */,
@@ -931,6 +974,7 @@
 				60D3C8D51EBFF5DC0085BEF6 /* PageTests.xctest */,
 				60D3C8E01EBFF5DC0085BEF6 /* PageUITests.xctest */,
 				602153841F397C660077A7AF /* FTCC.app */,
+				50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1116,6 +1160,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50D4BD4B1F63BB2400DD64E1 /* Build configuration list for PBXNativeTarget "FT富媒体速递" */;
+			buildPhases = (
+				50D4BD3F1F63BB2400DD64E1 /* Sources */,
+				50D4BD401F63BB2400DD64E1 /* Frameworks */,
+				50D4BD411F63BB2400DD64E1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FT富媒体速递";
+			productName = "FT富媒体速递";
+			productReference = 50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		602153091F397C650077A7AF /* FTCC */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 602153811F397C650077A7AF /* Build configuration list for PBXNativeTarget "FTCC" */;
@@ -1146,10 +1207,12 @@
 				60D3C8BB1EBFF5DC0085BEF6 /* Resources */,
 				FC6CF36DA877F64564628B17 /* [CP] Embed Pods Frameworks */,
 				BE0979D002260C5C3C5434BB /* [CP] Copy Pods Resources */,
+				50D4BD4E1F63BB2400DD64E1 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				50D4BD491F63BB2400DD64E1 /* PBXTargetDependency */,
 			);
 			name = Page;
 			productName = Page;
@@ -1202,6 +1265,11 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Oliver Zhang";
 				TargetAttributes = {
+					50D4BD421F63BB2400DD64E1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = CAEDT8EKGV;
+						ProvisioningStyle = Automatic;
+					};
 					602153091F397C650077A7AF = {
 						DevelopmentTeam = CAEDT8EKGV;
 					};
@@ -1250,11 +1318,19 @@
 				602153091F397C650077A7AF /* FTCC */,
 				60D3C8D41EBFF5DC0085BEF6 /* PageTests */,
 				60D3C8DF1EBFF5DC0085BEF6 /* PageUITests */,
+				50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		50D4BD411F63BB2400DD64E1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		602153631F397C650077A7AF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1457,6 +1533,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		50D4BD3F1F63BB2400DD64E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D4BD461F63BB2400DD64E1 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6021530B1F397C650077A7AF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1710,6 +1794,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		50D4BD491F63BB2400DD64E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */;
+			targetProxy = 50D4BD481F63BB2400DD64E1 /* PBXContainerItemProxy */;
+		};
 		60D3C8D71EBFF5DC0085BEF6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 60D3C8BC1EBFF5DC0085BEF6 /* Page */;
@@ -1742,6 +1831,32 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		50D4BD4C1F63BB2400DD64E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = CAEDT8EKGV;
+				INFOPLIST_FILE = "FT富媒体速递/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT-----";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		50D4BD4D1F63BB2400DD64E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = CAEDT8EKGV;
+				INFOPLIST_FILE = "FT富媒体速递/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT-----";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		602153821F397C650077A7AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 580171059509F2486AE61ABB /* Pods-FTCC.debug.xcconfig */;
@@ -1878,6 +1993,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 49D317245F6FADFF9F030C2B /* Pods-Page.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Page/Page.entitlements;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
@@ -1895,6 +2011,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A29483176D936DEAA1FA473 /* Pods-Page.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Page/Page.entitlements;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
@@ -1965,6 +2082,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		50D4BD4B1F63BB2400DD64E1 /* Build configuration list for PBXNativeTarget "FT富媒体速递" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50D4BD4C1F63BB2400DD64E1 /* Debug */,
+				50D4BD4D1F63BB2400DD64E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		602153811F397C650077A7AF /* Build configuration list for PBXNativeTarget "FTCC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

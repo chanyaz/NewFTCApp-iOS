@@ -30,9 +30,10 @@ extension UITabBarController {
             BottomAudioPlayer.sharedInstance.playerShowed = true
             let audioPlayerView = UIView()
             //            let playerHeight: CGFloat = AudioPlayerStyle.height
-            let playerHeight: CGFloat = 1
-            audioPlayerView.backgroundColor = UIColor(hex: "#12a5b3", alpha: 0)
-            audioPlayerView.backgroundColor = UIColor.clear
+            let playerHeight: CGFloat = 250
+//            audioPlayerView.backgroundColor = UIColor.clear
+            
+            
             let playerX = UIScreen.main.bounds.origin.x
             let playerY = UIScreen.main.bounds.origin.y + UIScreen.main.bounds.height - playerHeight
             let playerWidth = UIScreen.main.bounds.width
@@ -47,6 +48,7 @@ extension UITabBarController {
             audioPlayerView.addSubview(controller.view)
             controller.view.frame = audioPlayerView.bounds
             controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            controller.view.backgroundColor = UIColor(hex: "#12a5b3", alpha: 0)
             // MARK: tell the childviewcontroller it's contained in it's parent
             controller.didMove(toParentViewController: self)
             view.insertSubview(audioPlayerView, aboveSubview: tabBar)

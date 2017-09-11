@@ -118,6 +118,17 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 name: Notification.Name(rawValue: Event.languagePreferenceChanged),
                 object: nil
             )
+            
+            // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(changeFont),
+                name: Notification.Name(rawValue: Event.changeFont),
+                object: nil
+            )
+            
+            
+            
             // MARK: If the sub type is a user comment, render web view directly
             if subType == .UserComments || dataObject?.type == "webpage" || dataObject?.type == "ebook" {
                 renderWebView()
@@ -166,6 +177,17 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let jsCode = jsCodeHeadline + jsCodeBody
         //print (jsCode)
         self.webView?.evaluateJavaScript(jsCode) { (result, error) in
+            if error != nil {
+                print ("some thing wrong with javascript: \(String(describing: error))")
+            } else {
+                print ("javascript result is \(String(describing: result))")
+            }
+        }
+    }
+    
+    public func changeFont() {
+        let jsCode = "showOverlay('font-setting');"
+        webView?.evaluateJavaScript(jsCode) { (result, error) in
             if error != nil {
                 print ("some thing wrong with javascript: \(String(describing: error))")
             } else {

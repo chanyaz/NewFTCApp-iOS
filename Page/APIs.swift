@@ -112,6 +112,7 @@ struct Event {
     static let englishStatusChange = "English Status Change"
     static let languageSelected = "Language Selected in Story Page"
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
+    static let changeFont = "switch font"
     static let newAdCreativeDownloaded = "New Ad Creative Downloaded"
     static func paidPostUpdate(for page: String) -> String {
         let paidPostUpdated = "Paid Post Update"

@@ -54,16 +54,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     @IBOutlet weak var fontButton: UIBarButtonItem!
     
     @IBAction func changeFont(_ sender: UIBarButtonItem) {
-        if let currentContentItemView = modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!){
-            let jsCode = "showOverlay('font-setting');"
-            currentContentItemView.webView?.evaluateJavaScript(jsCode) { (result, error) in
-                if error != nil {
-                    print ("some thing wrong with javascript: \(String(describing: error))")
-                } else {
-                    print ("javascript result is \(String(describing: result))")
-                }
-            }
-        }
+        let object = currentPageIndex
+        let name = Notification.Name(rawValue: Event.changeFont)
+        NotificationCenter.default.post(name: name, object: object)
     }
     
     var isFullScreenAdOn = false

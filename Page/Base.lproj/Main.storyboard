@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -128,6 +128,12 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kpf-ts-v6Y"/>
+                                    <barButtonItem image="FontSize" id="Adh-zQ-XUN">
+                                        <connections>
+                                            <action selector="changeFont:" destination="naC-T6-XIm" id="Tkg-45-eGs"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="zUT-Ag-a6y"/>
                                     <barButtonItem image="Comment" id="x2W-Ox-VaF">
                                         <connections>
                                             <action selector="launchComment:" destination="naC-T6-XIm" id="z50-yh-cVk"/>
@@ -153,6 +159,7 @@
                     <connections>
                         <outlet property="actionButton" destination="QUo-79-Rea" id="RkP-Hh-BaA"/>
                         <outlet property="bookMark" destination="x2W-Ox-VaF" id="qi4-DH-MB1"/>
+                        <outlet property="fontButton" destination="Adh-zQ-XUN" id="cFt-4k-r0A"/>
                         <outlet property="saveButton" destination="YtK-AK-8Df" id="gbh-As-uvB"/>
                         <outlet property="toolBar" destination="bc2-gr-Zq9" id="5gL-RI-qW5"/>
                     </connections>
@@ -165,7 +172,7 @@
         <scene sceneID="4zl-sf-b6a">
             <objects>
                 <collectionViewController storyboardIdentifier="DataViewController" hidesBottomBarWhenPushed="YES" id="jsX-Jz-ZNR" customClass="DataViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="mky-l3-zIb">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="mky-l3-zIb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="CDq-cg-CSX">
@@ -684,7 +691,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Kih-19-Ipx" customClass="NewsNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="新闻" image="NewsDim" selectedImage="News" id="o6H-tl-sO3"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N3C-QK-VoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="N3C-QK-VoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -743,7 +750,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QXG-H9-h2U" customClass="EnglishNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="每日英语" image="EnglishDim" selectedImage="English" id="Oqv-LY-RGD"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3tL-ZB-8jq">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="3tL-ZB-8jq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -762,7 +769,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FJL-lv-f58" customClass="AcademyNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="FT商学院" image="AcademyDim" selectedImage="Academy" id="T8K-4b-0vj"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BXf-ud-JED">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="BXf-ud-JED">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -781,7 +788,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ImL-Tl-Ta2" customClass="VideoNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="3" title="视频" image="VideoDim" selectedImage="Video" id="Hoc-Bx-w6J"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZoQ-TI-cN8">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ZoQ-TI-cN8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -800,7 +807,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LG1-Md-6Qy" customClass="MyFTNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="4" title="我的FT" image="MyFTDim" selectedImage="MyFT" id="ddG-YK-4fi"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Sg5-kk-PM6">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Sg5-kk-PM6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -980,6 +987,7 @@
         <image name="EnglishDim" width="25" height="25"/>
         <image name="FastBackBtn" width="26" height="24"/>
         <image name="FastForwardBtn" width="26" height="24"/>
+        <image name="FontSize" width="36" height="36"/>
         <image name="HideBtn" width="17" height="9"/>
         <image name="ListBtn" width="17" height="16"/>
         <image name="LoveBtn" width="20" height="18"/>

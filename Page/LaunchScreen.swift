@@ -18,6 +18,7 @@ class LaunchScreen: UIViewController {
     // MARK: - Find out whether the user is happy and prompt rating if he/she is happy
     public let happyUser = HappyUser()
     public var showCloseButton = true
+    public var isBetweenPages = false
     private lazy var timer: Timer? = nil
     
     // MARK: - If the app use a native launch ad, suppress the pop up one
@@ -535,13 +536,21 @@ class LaunchScreen: UIViewController {
     
     // MARK: Remove the overlay and reveal the web view. This should be public.
     func close() {
+
         player?.pause()
         player = nil
+        
         if let t = token {
             player?.removeTimeObserver(t)
             token = nil
         }
         timer?.invalidate()
+        
+        //MARK: If the full page ad is between pages, don't remove it in time
+        if isBetweenPages == true {
+            return
+        }
+        
         self.view.superview?.removeFromSuperview()
         self.removeFromParentViewController()
         AppLaunch.sharedInstance.fullScreenDismissed = true

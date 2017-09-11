@@ -35,12 +35,13 @@ struct AppNavigation {
                  "url":"http://www.ftchinese.com/channel/china.html",
                  "regularLayout": "",
                  "screenName":"homepage/china",
-                 "coverTheme":"Red"
+                 "coverTheme":"Wheat"
                 ],
                 ["title": "全球",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/world.html?type=json",
                  "url":"http://www.ftchinese.com/channel/world.html",
-                 "screenName":"homepage/world"
+                 "screenName":"homepage/world",
+                 "coverTheme":"Pink"
                 ],
                 ["title": "金融市场",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
@@ -50,17 +51,20 @@ struct AppNavigation {
                 ["title": "管理",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/management.html?type=json",
                  "url":"http://www.ftchinese.com/channel/management.html",
-                 "screenName":"homepage/management"
+                 "screenName":"homepage/management",
+                 "coverTheme": "Blue"
                 ],
                 ["title": "生活时尚",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
                  "url":"http://www.ftchinese.com/channel/lifestyle.html",
-                 "screenName":"homepage/lifestyle"
+                 "screenName":"homepage/lifestyle",
+                 "coverTheme": "Lifestyle"
                 ],
                 ["title": "专栏",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
                  "url":"http://www.ftchinese.com/channel/column.html",
-                 "screenName":"homepage/column"
+                 "screenName":"homepage/column",
+                 "coverTheme": "Opinion"
                 ],
                 ["title": "热门文章",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/weekly.html?type=json",

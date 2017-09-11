@@ -49,13 +49,8 @@ class BookCell: CustomCell {
     
     @IBOutlet weak var readButton: UIButton!
     @IBAction func read(_ sender: UIButton) {
-        if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController,
-            let topController = UIApplication.topViewController() {
-            contentItemViewController.dataObject = itemCell
-            contentItemViewController.hidesBottomBarWhenPushed = true
-            contentItemViewController.themeColor = themeColor
-            contentItemViewController.action = "read"
-            topController.navigationController?.pushViewController(contentItemViewController, animated: true)
+        if let id = itemCell?.id {
+            IAP.readBook(id)
         }
     }
     

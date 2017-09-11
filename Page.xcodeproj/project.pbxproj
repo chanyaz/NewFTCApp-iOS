@@ -17,6 +17,15 @@
 		50A704C31EEB689900660022 /* ContentFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C01EEB689900660022 /* ContentFetch.swift */; };
 		50A704C41EEB689900660022 /* ContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C11EEB689900660022 /* ContentItem.swift */; };
 		50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C21EEB689900660022 /* ContentFetchResults.swift */; };
+		50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
+		50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
+		50D4BD461F63BB2400DD64E1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD451F63BB2400DD64E1 /* NotificationService.swift */; };
+		50D4BD4A1F63BB2400DD64E1 /* FT富媒体速递.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		50D4BD551F63BE1700DD64E1 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D4BD541F63BE1700DD64E1 /* NotificationCenter.framework */; };
+		50D4BD581F63BE1700DD64E1 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD571F63BE1700DD64E1 /* TodayViewController.swift */; };
+		50D4BD5B1F63BE1700DD64E1 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50D4BD591F63BE1700DD64E1 /* MainInterface.storyboard */; };
+		50D4BD5F1F63BE1700DD64E1 /* FT今日焦点.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 50D4BD531F63BE1700DD64E1 /* FT今日焦点.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		50D4BD651F63BF7500DD64E1 /* TodayItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD641F63BF7500DD64E1 /* TodayItemCell.swift */; };
 		50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9BA0E1F230A73002A188F /* LeakAvoider.swift */; };
 		50DA6E7E1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */; };
 		50DA6E7F1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */; };
@@ -54,6 +63,8 @@
 		6019A9D41F4C457D00B8FB69 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9D01F4C457D00B8FB69 /* FollowCell.xib */; };
 		601AC21B1F4870780004196A /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = 601AC21A1F4870780004196A /* search.html */; };
 		601AC21C1F4870780004196A /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = 601AC21A1F4870780004196A /* search.html */; };
+		601CBA7A1F60D91100F952B1 /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */; };
+		601CBA7B1F60D92900F952B1 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */; };
 		6021530C1F397C650077A7AF /* DetailModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608C55201EF78FA100AF27CB /* DetailModelController.swift */; };
 		6021530D1F397C650077A7AF /* DataForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A411F1CAC5300583157 /* DataForShare.swift */; };
 		6021530E1F397C650077A7AF /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */; };
@@ -298,6 +309,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		50D4BD481F63BB2400DD64E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60D3C8B51EBFF5DC0085BEF6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50D4BD421F63BB2400DD64E1;
+			remoteInfo = "FT富媒体速递";
+		};
+		50D4BD5D1F63BE1700DD64E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60D3C8B51EBFF5DC0085BEF6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50D4BD521F63BE1700DD64E1;
+			remoteInfo = "FT今日焦点";
+		};
 		60D3C8D61EBFF5DC0085BEF6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 60D3C8B51EBFF5DC0085BEF6 /* Project object */;
@@ -314,6 +339,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		50D4BD4E1F63BB2400DD64E1 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				50D4BD5F1F63BE1700DD64E1 /* FT今日焦点.appex in Embed App Extensions */,
+				50D4BD4A1F63BB2400DD64E1 /* FT富媒体速递.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0A7D7B864CCCA3E26CFE8430 /* Pods_FTCC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FTCC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25F43C0D286D295E626A3347 /* Pods-FTCC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FTCC.release.xcconfig"; path = "Pods/Target Support Files/Pods-FTCC/Pods-FTCC.release.xcconfig"; sourceTree = "<group>"; };
@@ -327,6 +367,17 @@
 		50A704C01EEB689900660022 /* ContentFetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetch.swift; sourceTree = "<group>"; };
 		50A704C11EEB689900660022 /* ContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentItem.swift; sourceTree = "<group>"; };
 		50A704C21EEB689900660022 /* ContentFetchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchResults.swift; sourceTree = "<group>"; };
+		50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
+		50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FT富媒体速递.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		50D4BD451F63BB2400DD64E1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		50D4BD471F63BB2400DD64E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50D4BD531F63BE1700DD64E1 /* FT今日焦点.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FT今日焦点.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		50D4BD541F63BE1700DD64E1 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		50D4BD571F63BE1700DD64E1 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		50D4BD5A1F63BE1700DD64E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		50D4BD5C1F63BE1700DD64E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50D4BD631F63BF5C00DD64E1 /* FT今日焦点.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "FT今日焦点.entitlements"; sourceTree = "<group>"; };
+		50D4BD641F63BF7500DD64E1 /* TodayItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayItemCell.swift; sourceTree = "<group>"; };
 		50D9BA0E1F230A73002A188F /* LeakAvoider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakAvoider.swift; sourceTree = "<group>"; };
 		50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkRequestHelper.swift; sourceTree = "<group>"; };
 		50DA6E801F4037C8006B4CDE /* story.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = story.html; path = FTChinese/story.html; sourceTree = "<group>"; };
@@ -506,6 +557,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		50D4BD401F63BB2400DD64E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D4BD501F63BE1700DD64E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D4BD551F63BE1700DD64E1 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		602153601F397C650077A7AF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -580,6 +646,35 @@
 				503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */,
 			);
 			name = Channel;
+			sourceTree = "<group>";
+		};
+		50D4BD3E1F6382B600DD64E1 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */,
+			);
+			name = Notification;
+			sourceTree = "<group>";
+		};
+		50D4BD441F63BB2400DD64E1 /* FT富媒体速递 */ = {
+			isa = PBXGroup;
+			children = (
+				50D4BD451F63BB2400DD64E1 /* NotificationService.swift */,
+				50D4BD471F63BB2400DD64E1 /* Info.plist */,
+			);
+			path = "FT富媒体速递";
+			sourceTree = "<group>";
+		};
+		50D4BD561F63BE1700DD64E1 /* FT今日焦点 */ = {
+			isa = PBXGroup;
+			children = (
+				50D4BD631F63BF5C00DD64E1 /* FT今日焦点.entitlements */,
+				50D4BD571F63BE1700DD64E1 /* TodayViewController.swift */,
+				50D4BD641F63BF7500DD64E1 /* TodayItemCell.swift */,
+				50D4BD591F63BE1700DD64E1 /* MainInterface.storyboard */,
+				50D4BD5C1F63BE1700DD64E1 /* Info.plist */,
+			);
+			path = "FT今日焦点";
 			sourceTree = "<group>";
 		};
 		50D9BA101F230A87002A188F /* Performance */ = {
@@ -716,6 +811,7 @@
 		6037DD3E1F2878D7007DB2FF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				50D4BD3E1F6382B600DD64E1 /* Notification */,
 				602CD2981F565FDC00FFC1EA /* IAP */,
 				60986A4B1F1CAC5E00583157 /* Share */,
 				600BD6A01F1DBB080077C104 /* Push */,
@@ -902,6 +998,8 @@
 			isa = PBXGroup;
 			children = (
 				60D3C8BF1EBFF5DC0085BEF6 /* Page */,
+				50D4BD441F63BB2400DD64E1 /* FT富媒体速递 */,
+				50D4BD561F63BE1700DD64E1 /* FT今日焦点 */,
 				60D3C8D81EBFF5DC0085BEF6 /* PageTests */,
 				60D3C8E31EBFF5DC0085BEF6 /* PageUITests */,
 				60D3C8BE1EBFF5DC0085BEF6 /* Products */,
@@ -917,6 +1015,8 @@
 				60D3C8D51EBFF5DC0085BEF6 /* PageTests.xctest */,
 				60D3C8E01EBFF5DC0085BEF6 /* PageUITests.xctest */,
 				602153841F397C660077A7AF /* FTCC.app */,
+				50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */,
+				50D4BD531F63BE1700DD64E1 /* FT今日焦点.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1034,6 +1134,7 @@
 				98E4C552B29D499F07BAE4DE /* Pods_PageTests.framework */,
 				80C2B3C0A377090D17D2E03A /* Pods_PageUITests.framework */,
 				0A7D7B864CCCA3E26CFE8430 /* Pods_FTCC.framework */,
+				50D4BD541F63BE1700DD64E1 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1102,6 +1203,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50D4BD4B1F63BB2400DD64E1 /* Build configuration list for PBXNativeTarget "FT富媒体速递" */;
+			buildPhases = (
+				50D4BD3F1F63BB2400DD64E1 /* Sources */,
+				50D4BD401F63BB2400DD64E1 /* Frameworks */,
+				50D4BD411F63BB2400DD64E1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FT富媒体速递";
+			productName = "FT富媒体速递";
+			productReference = 50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		50D4BD521F63BE1700DD64E1 /* FT今日焦点 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50D4BD601F63BE1700DD64E1 /* Build configuration list for PBXNativeTarget "FT今日焦点" */;
+			buildPhases = (
+				50D4BD4F1F63BE1700DD64E1 /* Sources */,
+				50D4BD501F63BE1700DD64E1 /* Frameworks */,
+				50D4BD511F63BE1700DD64E1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FT今日焦点";
+			productName = "FT今日焦点";
+			productReference = 50D4BD531F63BE1700DD64E1 /* FT今日焦点.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		602153091F397C650077A7AF /* FTCC */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 602153811F397C650077A7AF /* Build configuration list for PBXNativeTarget "FTCC" */;
@@ -1132,10 +1267,13 @@
 				60D3C8BB1EBFF5DC0085BEF6 /* Resources */,
 				FC6CF36DA877F64564628B17 /* [CP] Embed Pods Frameworks */,
 				BE0979D002260C5C3C5434BB /* [CP] Copy Pods Resources */,
+				50D4BD4E1F63BB2400DD64E1 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				50D4BD491F63BB2400DD64E1 /* PBXTargetDependency */,
+				50D4BD5E1F63BE1700DD64E1 /* PBXTargetDependency */,
 			);
 			name = Page;
 			productName = Page;
@@ -1188,6 +1326,16 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Oliver Zhang";
 				TargetAttributes = {
+					50D4BD421F63BB2400DD64E1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = CAEDT8EKGV;
+						ProvisioningStyle = Automatic;
+					};
+					50D4BD521F63BE1700DD64E1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = CAEDT8EKGV;
+						ProvisioningStyle = Automatic;
+					};
 					602153091F397C650077A7AF = {
 						DevelopmentTeam = CAEDT8EKGV;
 					};
@@ -1236,11 +1384,28 @@
 				602153091F397C650077A7AF /* FTCC */,
 				60D3C8D41EBFF5DC0085BEF6 /* PageTests */,
 				60D3C8DF1EBFF5DC0085BEF6 /* PageUITests */,
+				50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */,
+				50D4BD521F63BE1700DD64E1 /* FT今日焦点 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		50D4BD411F63BB2400DD64E1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D4BD511F63BE1700DD64E1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D4BD5B1F63BE1700DD64E1 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		602153631F397C650077A7AF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1443,6 +1608,23 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		50D4BD3F1F63BB2400DD64E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D4BD461F63BB2400DD64E1 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D4BD4F1F63BE1700DD64E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D4BD651F63BF7500DD64E1 /* TodayItemCell.swift in Sources */,
+				50D4BD581F63BE1700DD64E1 /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6021530B1F397C650077A7AF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1453,6 +1635,7 @@
 				602153B91F399E9A0077A7AF /* NewsNavigationController.swift in Sources */,
 				6021530E1F397C650077A7AF /* HeaderView.swift in Sources */,
 				6021530F1F397C650077A7AF /* UIImage+Attachments.swift in Sources */,
+				601CBA7A1F60D91100F952B1 /* ListPerColumnViewController.swift in Sources */,
 				602153101F397C650077A7AF /* English.swift in Sources */,
 				602153111F397C650077A7AF /* AdView.swift in Sources */,
 				602153121F397C650077A7AF /* DeviceInfo.swift in Sources */,
@@ -1492,12 +1675,14 @@
 				6021532D1F397C650077A7AF /* OpenInSafari.swift in Sources */,
 				6021532E1F397C650077A7AF /* CellData.swift in Sources */,
 				6021532F1F397C650077A7AF /* SpeechDefaultVoice.swift in Sources */,
+				50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				602153301F397C650077A7AF /* WeChatShare.swift in Sources */,
 				602153311F397C650077A7AF /* CoverCellRegular.swift in Sources */,
 				602153321F397C650077A7AF /* Ad.swift in Sources */,
 				6055EF9D1F506276006F8A83 /* CustomCell.swift in Sources */,
 				602153351F397C650077A7AF /* ContentFetchResults.swift in Sources */,
 				602153361F397C650077A7AF /* NSLayoutManager+Attachments.swift in Sources */,
+				601CBA7B1F60D92900F952B1 /* ListTableViewCell.swift in Sources */,
 				602153371F397C650077A7AF /* ContentFetch.swift in Sources */,
 				602153381F397C650077A7AF /* AdCellRegular.swift in Sources */,
 				602153391F397C650077A7AF /* Content.swift in Sources */,
@@ -1625,6 +1810,7 @@
 				60CA7BC11EF26251000CD9B4 /* AdLayout.swift in Sources */,
 				AFD8AF601F380A6200508A91 /* OneTalkCell.swift in Sources */,
 				6072F9F31F57ED280035AD92 /* IAP.swift in Sources */,
+				50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				50A704C41EEB689900660022 /* ContentItem.swift in Sources */,
 				60D4B8F31EE7A22C00A4506D /* StyleExtensions.swift in Sources */,
 				F24B79961F5555FA001B62A2 /* CustomPresentationController.swift in Sources */,
@@ -1692,6 +1878,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		50D4BD491F63BB2400DD64E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */;
+			targetProxy = 50D4BD481F63BB2400DD64E1 /* PBXContainerItemProxy */;
+		};
+		50D4BD5E1F63BE1700DD64E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 50D4BD521F63BE1700DD64E1 /* FT今日焦点 */;
+			targetProxy = 50D4BD5D1F63BE1700DD64E1 /* PBXContainerItemProxy */;
+		};
 		60D3C8D71EBFF5DC0085BEF6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 60D3C8BC1EBFF5DC0085BEF6 /* Page */;
@@ -1705,6 +1901,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		50D4BD591F63BE1700DD64E1 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				50D4BD5A1F63BE1700DD64E1 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		602153891F3990880077A7AF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1724,6 +1928,58 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		50D4BD4C1F63BB2400DD64E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = CAEDT8EKGV;
+				INFOPLIST_FILE = "FT富媒体速递/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT-----";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		50D4BD4D1F63BB2400DD64E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = CAEDT8EKGV;
+				INFOPLIST_FILE = "FT富媒体速递/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT-----";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		50D4BD611F63BE1700DD64E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = CAEDT8EKGV;
+				INFOPLIST_FILE = "FT今日焦点/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT----";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		50D4BD621F63BE1700DD64E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = CAEDT8EKGV;
+				INFOPLIST_FILE = "FT今日焦点/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT----";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		602153821F397C650077A7AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 580171059509F2486AE61ABB /* Pods-FTCC.debug.xcconfig */;
@@ -1947,6 +2203,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		50D4BD4B1F63BB2400DD64E1 /* Build configuration list for PBXNativeTarget "FT富媒体速递" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50D4BD4C1F63BB2400DD64E1 /* Debug */,
+				50D4BD4D1F63BB2400DD64E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		50D4BD601F63BE1700DD64E1 /* Build configuration list for PBXNativeTarget "FT今日焦点" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50D4BD611F63BE1700DD64E1 /* Debug */,
+				50D4BD621F63BE1700DD64E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		602153811F397C650077A7AF /* Build configuration list for PBXNativeTarget "FTCC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

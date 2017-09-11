@@ -22,6 +22,7 @@
  #import "GoogleConversionPing.h"
  */
 
+#import "ACTReporter.h"
 
 #import <Google/Analytics.h>
 

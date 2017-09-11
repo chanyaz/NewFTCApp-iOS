@@ -20,6 +20,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     var pageTitle: String = ""
     var themeColor: String?
     var currentLanguageIndex: Int?
+    var action: String?
     
     // MARK: show in full screen
     var isFullScreen = false
@@ -275,7 +276,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         if let type = dataObject?.type {
             switch type {
-            case "video", "interactive", "photonews", "photo":
+            case "video", "interactive", "photonews", "photo", "gym", "special":
                 renderWebView()
             case "story":
                 if (dataObject?.cbody) != nil {
@@ -492,9 +493,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         lead = ""
                         userCommentsOrder = "story"
                         styleContainerStyle = ""
-                        storyTheme = "<div style=\"padding-top: 14px;\"></div>"
+                        storyTheme = "电子书"
                         if let image = dataObject?.image {
-                            imageHTML = "<div class=\"leftPic image portrait-img\" style=\"margin-bottom:0;\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+                            imageHTML = "<div class=\"leftPic image portrait-img ebook-image-container\" style=\"margin-bottom:0;\"><div class=\"ebook-image-inner\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div></div>"
                         } else {
                             imageHTML = ""
                         }
@@ -833,9 +834,10 @@ extension ContentItemViewController: UITextViewDelegate {
 // MARK: Buy and Download Buttons
 extension ContentItemViewController {
     fileprivate func insertIAPView() {
+        let verticalPadding: CGFloat = 10
         let iapView = IAPView()
         let containerViewFrame = containerView.frame
-        let width = view.frame.width
+        let width: CGFloat = view.frame.width
         let height: CGFloat = 44
         iapView.frame = CGRect(x: 0, y: containerViewFrame.height - height, width: width, height: height)
         iapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -843,12 +845,16 @@ extension ContentItemViewController {
         iapView.translatesAutoresizingMaskIntoConstraints = false
         iapView.themeColor = themeColor
         iapView.dataObject = dataObject
+        iapView.verticalPadding = verticalPadding
+        iapView.action = self.action      
         iapView.initUI()
         
         view.addSubview(iapView)
-        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -verticalPadding))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: height))
+        
     }
 }
 

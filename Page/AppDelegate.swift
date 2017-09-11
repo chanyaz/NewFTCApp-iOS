@@ -21,24 +21,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        // MARK: - Don't Set the default background overall color. It will affect the action sheet
+        // MARK: - Important: Don't Set the default background overall color. It will affect the action sheet
         // window?.tintColor = UIColor(hex: Color.Content.background)
         
+        // MARK: Register for notification
         if #available(iOS 10.0, *) {
             let center = UNUserNotificationCenter.current()
             center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-                //print("authorization granted: \(granted)")
-                
             }
-            //print("register for remote notifications")
             UIApplication.shared.registerForRemoteNotifications()
         } else {
             // Fallback on earlier versions
             let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(notificationSettings)
         }
+        
+        // if launched from a tap on a notification
+        NotificationHelper.handle(launchOptions)
         startCheckImpressionTimer()
         setupGoogleAnalytics()
+        AdMobTrack.launch()
         
         // WeChat API
         WXApi.registerApp(WeChat.appId)
@@ -52,7 +54,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 AppLaunch.sharedInstance.fullScreenDismissed = true
             }
         }
-
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        
         return true
     }
     
@@ -77,38 +81,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Received device token
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-        self.forwardTokenToServer(deviceToken: deviceToken)
+        DeviceToken.forwardTokenToServer(deviceToken: deviceToken)
     }
     
-    // MARK: - Post device token to server
-    func forwardTokenToServer(deviceToken token: Data) {
-        let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
-        print("device token: \(hexEncodedToken)")
-        
-        var appNumber: String
-        var deviceType: String
-        
-        switch UIDevice.current.userInterfaceIdiom {
-        case .pad:
-            deviceType = "pad"
-            appNumber = "1"
-            
-        case .phone:
-            deviceType = "phone"
-            appNumber = "2"
-            
-        default:
-            deviceType = "unspecified"
-            appNumber = "0"
-        }
-        
-        let timeZone = TimeZone.current.abbreviation() ?? ""
-        
-        let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
-        
-        PostData.sendDeviceToken(body: urlEncoded)
-    }
+    
     
     // MARK: - Register device errorred.
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -123,6 +99,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Received remote notification
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         print(userInfo)
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        if let aps = userInfo["aps"] as? NSDictionary {
+            let title: String = (aps["alert"] as? [String:String])?["title"] ?? "为您推荐"
+            //let lead: String = (aps["alert"] as? [String:String])?["body"] ?? ""
+            if let notiAction = userInfo["action"], let id = userInfo["id"] {
+                if application.applicationState == .inactive || application.applicationState == .background{
+                    NotificationHelper.open(notiAction as? String, id: id as? String, title: title)
+                    //rootViewController.openNotification(notiAction as? String, id: id as? String, title: title)
+                } else {
+                    //                        let alert = UIAlertController(title: title, message: lead, preferredStyle: UIAlertControllerStyle.alert)
+                    //                        alert.addAction(UIAlertAction(title: "去看看", style: .default, handler: { (action: UIAlertAction) in
+                    //                            rootViewController.openNotification(notiAction as? String, id: id as? String, title: title)
+                    //                        }))
+                    //                        alert.addAction(UIAlertAction(title: "不感兴趣", style: UIAlertActionStyle.default, handler: nil))
+                    //                        rootViewController.present(alert, animated: true, completion: nil)
+                }
+            }
+            
+        }
+        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -130,6 +126,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         checkImpressions()
         checkImpressionTimer?.invalidate()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        
         //        if AppLaunch.sharedInstance.launched == true {
         //            if let rootViewController = window?.rootViewController {
         //                rootViewController.showAudioPlayer()
@@ -150,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         startCheckImpressionTimer()
-        
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -225,11 +223,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: WXApiDelegate {
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        return WXApi.handleOpen(url, delegate: self)
+        if let urlScheme = url.scheme {
+            switch urlScheme {
+            case "ftchinese":
+                print ("this is a ftchinese url")
+            default:
+                return WXApi.handleOpen(url, delegate: self)
+            }
+        }
+        return false
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return WXApi.handleOpen(url, delegate: self)
+        if let urlScheme = url.scheme {
+            switch urlScheme {
+            case "ftchinese":
+                NotificationHelper.handle(url)
+                return true
+            default:
+                return WXApi.handleOpen(url, delegate: self)
+            }
+        }
+        return false
+        
     }
     
     func onReq(_ req: BaseReq!) {

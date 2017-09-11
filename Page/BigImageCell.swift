@@ -139,15 +139,23 @@ class BigImageCell: CustomCell {
     }
     
     @IBAction func tapSoundButton(_ sender: Any) {
-        if let audioFileUrl = itemCell?.audioFileUrl {
-            AudioContent.sharedInstance.body["title"] = self.itemCell?.headline
+   
+//        if let rootViewController = window?.rootViewController as? UITabBarController {
+//            rootViewController.showAudioPlayer()
+//        }
+        
+        print("cell  item--\(String(describing: itemCell?.headline))")
+        
+        if let itemCell = itemCell,let audioFileUrl = itemCell.audioFileUrl {
+//            TabBarAudioContent.sharedInstance.body["title"] = self.itemCell?.headline
+//            TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+//            TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
+            AudioContent.sharedInstance.body["title"] = itemCell.headline
             AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-            AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(String(describing: self.itemCell?.id))"
-            
+            AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
+            TabBarAudioContent.sharedInstance.item = itemCell
         }
-        if let rootViewController = window?.rootViewController as? UITabBarController {
-            rootViewController.showAudioPlayer()
-        }
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
     
         
     }

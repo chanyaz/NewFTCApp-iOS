@@ -13,6 +13,21 @@ import MediaPlayer
 import WebKit
 import SafariServices
 
+class TabBarAudioContent {
+    static let sharedInstance = TabBarAudioContent()
+    var body = [String: String]()
+    var item: ContentItem?
+    var player:AVPlayer? = nil
+    var playerItem: AVPlayerItem? = nil
+    var title: String? = nil
+    var audioUrl: URL? = nil
+    var duration: CMTime? = nil
+    var time:CMTime? = nil
+    var sliderValue:Float? = nil
+    var parsedUrlString:String? = nil
+    var isPlaying:Bool=false
+    
+}
 
 
 class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate{
@@ -355,7 +370,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         ShareHelper.sharedInstance.webPageImageIcon = ""
         parseAudioMessage()
         //        prepareForAudioPlay(url:audioUrlString)
-        prepareAudioPlay()
+//        prepareAudioPlay()
 //        getPlayingUrl()
         
         enableBackGroundMode()
@@ -568,6 +583,60 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         playDuration.text = "-\((duration-time).durationText)"
         playTime.text = time.durationText
     }
+    
+    private func getDataFromeTab(){
+        //            获取从tabBar中播放的数据
+        player = TabBarAudioContent.sharedInstance.player
+        playerItem = TabBarAudioContent.sharedInstance.playerItem
+        //        let isPlaying = TabBarAudioContent.sharedInstance.isPlaying
+        if player != nil {
+            
+        }else {
+            
+        }
+        
+        var currentTimeFromTab: NSNumber = 0
+        if let c = TabBarAudioContent.sharedInstance.playerItem?.currentTime() {
+            let currentTime1 = CMTimeGetSeconds(c)
+            if currentTime1.isNaN == false {
+                currentTimeFromTab = currentTime1 as NSNumber
+            }
+        }
+        
+        if let player = player{
+            if TabBarAudioContent.sharedInstance.isPlaying{
+                playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+                try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+                try? AVAudioSession.sharedInstance().setActive(true)
+                player.play()
+                player.replaceCurrentItem(with: playerItem)
+            }else{
+                playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+                player.pause()
+            }
+            //            nowPlayingCenter.updateTimeForPlayerItem(player)
+            
+            // MARK: - Update audio play progress
+            player.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
+                if let d = self?.playerItem?.duration {
+                    let duration = CMTimeGetSeconds(d)
+                    if duration.isNaN == false {
+                        self?.progressSlider.maximumValue = Float(duration)
+                        if self?.progressSlider.isHighlighted == false {
+                            self?.progressSlider.value = Float((CMTimeGetSeconds(time)))
+                        }
+                        self?.updatePlayTime(current: time, duration: d)
+                    }
+                }
+            }
+            
+            print("getDataFromeTab player----\(player)--playerItem---\(String(describing: playerItem))")
+        }
+        addPlayerItemObservers()
+        
+        print("getDataFromeTab--\(currentTimeFromTab)----\(String(describing: player))")
+    }
+
     
     private func parseAudioMessage() {
         let body = AudioContent.sharedInstance.body

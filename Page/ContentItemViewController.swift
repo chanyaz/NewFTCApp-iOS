@@ -122,7 +122,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
             NotificationCenter.default.addObserver(
                 self,
-                selector: #selector(changeFont),
+                selector: #selector(changeFont(_:)),
                 name: Notification.Name(rawValue: Event.changeFont),
                 object: nil
             )
@@ -138,6 +138,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             navigationController?.delegate = self
         }
     }
+    
+
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,7 +188,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
     }
     
-    public func changeFont() {
+    public func changeFont(_ notification: Notification) {
+        if let currentIndex = notification.object as? Int {
         let jsCode = "showOverlay('font-setting');"
         webView?.evaluateJavaScript(jsCode) { (result, error) in
             if error != nil {
@@ -194,7 +198,27 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 print ("javascript result is \(String(describing: result))")
             }
         }
+        }
     }
+    
+    //    func paidPostUpdate(_ notification: Notification) {
+    //        if let itemCell = notification.object as? ContentItem {
+    //            let section = itemCell.section
+    //            let row = itemCell.row
+    //            if fetches.fetchResults.count > section {
+    //                if fetches.fetchResults[section].items.count > row {
+    //                    if itemCell.adModel?.headline != nil{
+    //                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
+    //                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
+    //                        collectionView?.reloadData()
+    //                    } else {
+    //                        print ("Paid Post: The adModel has no headline")
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //
     
     private func getDetailInfo() {
         if let id = dataObject?.id, dataObject?.type == "story" {

@@ -62,6 +62,17 @@ struct Color {
         static let signBackground = "#ecd4b4"
     }
     
+    struct Theme {
+        static func get(_ theme: String) -> (background: String, border: String, title: String, tag: String, lead: String) {
+            switch theme {
+                case "Red":
+                    return (background: "#9E2F50", border: "#FFF1E0", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
+            default:
+                return (background: "#FFF1E0", border: "#e9decf", title: "#333333", tag: "#9E2F50", lead: "#777777")
+            }
+        }
+    }
+    
 }
 
 struct FontSize {

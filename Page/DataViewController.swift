@@ -18,6 +18,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
     var cellWidth: CGFloat = 0
     var themeColor: String? = nil
+    var coverTheme: String?
     // MARK: Search
     fileprivate lazy var searchBar: UISearchBar? = nil
     fileprivate var searchKeywords: String? = nil {
@@ -66,6 +67,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
             collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
             collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
+            collectionView?.register(UINib.init(nibName: "ThemeCoverCell", bundle: nil), forCellWithReuseIdentifier: "ThemeCoverCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
             collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
@@ -396,6 +398,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "ThemeCoverCell":
+            if let cell = cellItem as? ThemeCoverCell {
+                cell.coverTheme = coverTheme
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         case "BigImageCell":
             if let cell = cellItem as? BigImageCell {
                 cell.cellWidth = cellWidth
@@ -603,7 +612,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         reuseIdentifier = "PaidPostCell"
                     }
                 } else if isCover {
-                    reuseIdentifier = "CoverCell"
+                    if coverTheme != nil {
+                        reuseIdentifier = "ThemeCoverCell"
+                    } else {
+                        reuseIdentifier = "CoverCell"
+                    }
                 } else {
                     reuseIdentifier = "ChannelCell"
                 }

@@ -21,6 +21,7 @@ import UIKit
 
 class ModelController: NSObject, UIPageViewControllerDataSource {
     var pageTitles: [String] = []
+    var coverThemes: [String?] = []
     var pageThemeColor: String? = nil
     var tabName: String?
     

@@ -33,9 +33,9 @@ struct AppNavigation {
                 ["title": "中国",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json",
                  "url":"http://www.ftchinese.com/channel/china.html",
-                 "compactLayout": "Simple Headline",
                  "regularLayout": "",
-                 "screenName":"homepage/china"
+                 "screenName":"homepage/china",
+                 "coverTheme":"Red"
                 ],
                 ["title": "全球",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/world.html?type=json",

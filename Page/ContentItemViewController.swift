@@ -46,6 +46,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 //                extendedLayoutIncludesOpaqueBars = true
                 // MARK: add as a childviewcontroller
                 controller.showCloseButton = false
+                controller.isBetweenPages = true
                 addChildViewController(controller)
                 // MARK: Add the child's View as a subview
                 self.view.addSubview(controller.view)

@@ -264,9 +264,9 @@ struct AdMobTrack {
 }
 
 struct DeviceToken {
-    public static let url = "https://noti.ftimg.net/iphone-collect.php"
+    static let url = "https://noti.ftimg.net/iphone-collect.php"
     // MARK: - Post device token to server
-    func forwardTokenToServer(deviceToken token: Data) {
+    static func forwardTokenToServer(deviceToken token: Data) {
         let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
         print("device token: \(hexEncodedToken)")
         // MARK: calculate appNumber based on your bundel ID

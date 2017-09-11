@@ -39,6 +39,8 @@
 15. Done: Add new layout to display all cover
 16. Done: User comments
 17. Display column layout on iPad
+18. Working On: Show Font Size preference
+
 
 ### Sharing
 1. Done: WeChat
@@ -57,9 +59,9 @@
 
 ### Notifications
 1. Done: Handle Notification Types
-2. Move Notification Extensions
+2. Done: Move Notification Extensions
 
-### Today Widget
+### Done: Today Widget
 
 ### In-App Purchase: StoreKit
 1. Done: eBook
@@ -97,7 +99,7 @@ Data View:
 9. Done: Show Image if there's time
 10. Done: Parse Video Ad into native
 11. Special Report: Adjustment based on API
-12. In-Page Full Screen: Disable Close Button and Function
+12. Done: In-Page Full Screen: Disable Close Button and Function
 13. MPU New: Adjustment based on Date
 
 

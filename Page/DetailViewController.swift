@@ -51,6 +51,21 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         }
     }
     
+    @IBOutlet weak var fontButton: UIBarButtonItem!
+    
+    @IBAction func changeFont(_ sender: UIBarButtonItem) {
+        if let currentContentItemView = modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!){
+            let jsCode = "showOverlay('font-setting');"
+            currentContentItemView.webView?.evaluateJavaScript(jsCode) { (result, error) in
+                if error != nil {
+                    print ("some thing wrong with javascript: \(String(describing: error))")
+                } else {
+                    print ("javascript result is \(String(describing: result))")
+                }
+            }
+        }
+    }
+    
     var isFullScreenAdOn = false
     
     override var prefersStatusBarHidden: Bool {
@@ -258,6 +273,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         actionButton.tintColor = buttonTint
         bookMark.tintColor = buttonTint
         saveButton.tintColor = buttonTint
+        fontButton.tintColor = buttonTint
         
         //saveButton.setBackgroundImage(UIImage(named: "Clip"), for: .normal, barMetrics: .default)
         // saveButton.image = UIImage(named: "Clip")

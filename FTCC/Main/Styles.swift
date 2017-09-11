@@ -28,11 +28,18 @@ struct Color {
         static let background = "#f7e9d8"
     }
     
+
+    
     struct Button {
         static let tint = "#057b93"
         static let highlight = "#f6801a"
+        static let highlightFont = "#FFF1E0"
+        static let highlightBorder = "#FF8833"
         static let standard = "#26747a"
+        static let standardFont = "#777777"
+        static let standardBorder = "#FAAE76"
     }
+    
     
     struct Header {
         static let text = "#333333"

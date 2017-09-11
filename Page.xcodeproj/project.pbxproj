@@ -63,8 +63,6 @@
 		6019A9D41F4C457D00B8FB69 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9D01F4C457D00B8FB69 /* FollowCell.xib */; };
 		601AC21B1F4870780004196A /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = 601AC21A1F4870780004196A /* search.html */; };
 		601AC21C1F4870780004196A /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = 601AC21A1F4870780004196A /* search.html */; };
-		601CBA7A1F60D91100F952B1 /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */; };
-		601CBA7B1F60D92900F952B1 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */; };
 		6021530C1F397C650077A7AF /* DetailModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608C55201EF78FA100AF27CB /* DetailModelController.swift */; };
 		6021530D1F397C650077A7AF /* DataForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A411F1CAC5300583157 /* DataForShare.swift */; };
 		6021530E1F397C650077A7AF /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */; };
@@ -190,6 +188,8 @@
 		6054B2871F6628B300E34990 /* ThemeCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6054B2841F6628B300E34990 /* ThemeCoverCell.swift */; };
 		6054B2881F6628B300E34990 /* ThemeCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6054B2851F6628B300E34990 /* ThemeCoverCell.xib */; };
 		6054B2891F6628B300E34990 /* ThemeCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6054B2851F6628B300E34990 /* ThemeCoverCell.xib */; };
+		6054B28A1F669DCA00E34990 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */; };
+		6054B28B1F669DCE00E34990 /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */; };
 		6055EF971F5021C1006F8A83 /* PaidPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055EF951F5021C1006F8A83 /* PaidPostCell.swift */; };
 		6055EF981F5021C1006F8A83 /* PaidPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055EF951F5021C1006F8A83 /* PaidPostCell.swift */; };
 		6055EF991F5021C1006F8A83 /* PaidPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6055EF961F5021C1006F8A83 /* PaidPostCell.xib */; };
@@ -280,8 +280,6 @@
 		F24B79951F5555FA001B62A2 /* CustomPresentationAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */; };
 		F24B79961F5555FA001B62A2 /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */; };
 		F24B79971F5555FA001B62A2 /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */; };
-		F258A5B51F60DBF70095253A /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */; };
-		F258A5B61F60DBFA0095253A /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */; };
 		F258A5B81F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
 		F258A5B91F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
 		F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AA1F39A2BC00FAA8C0 /* close.png */; };
@@ -1640,12 +1638,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6021530C1F397C650077A7AF /* DetailModelController.swift in Sources */,
+				6054B28A1F669DCA00E34990 /* ListTableViewCell.swift in Sources */,
 				6021530D1F397C650077A7AF /* DataForShare.swift in Sources */,
-				F258A5B51F60DBF70095253A /* ListTableViewCell.swift in Sources */,
 				602153B91F399E9A0077A7AF /* NewsNavigationController.swift in Sources */,
 				6021530E1F397C650077A7AF /* HeaderView.swift in Sources */,
 				6021530F1F397C650077A7AF /* UIImage+Attachments.swift in Sources */,
-				601CBA7A1F60D91100F952B1 /* ListPerColumnViewController.swift in Sources */,
 				602153101F397C650077A7AF /* English.swift in Sources */,
 				602153111F397C650077A7AF /* AdView.swift in Sources */,
 				602153121F397C650077A7AF /* DeviceInfo.swift in Sources */,
@@ -1677,7 +1674,6 @@
 				F24B79951F5555FA001B62A2 /* CustomPresentationAnimation.swift in Sources */,
 				602153291F397C650077A7AF /* ArticleStyle.swift in Sources */,
 				6021532B1F397C650077A7AF /* ChatViewController.swift in Sources */,
-				F258A5B61F60DBFA0095253A /* ListPerColumnViewController.swift in Sources */,
 				602153B51F399E9A0077A7AF /* CustomNavigationController.swift in Sources */,
 				60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */,
 				6021532C1F397C650077A7AF /* AudioPlayer.swift in Sources */,
@@ -1693,7 +1689,6 @@
 				602153351F397C650077A7AF /* ContentFetchResults.swift in Sources */,
 				602153361F397C650077A7AF /* NSLayoutManager+Attachments.swift in Sources */,
 				6054B2871F6628B300E34990 /* ThemeCoverCell.swift in Sources */,
-				601CBA7B1F60D92900F952B1 /* ListTableViewCell.swift in Sources */,
 				602153371F397C650077A7AF /* ContentFetch.swift in Sources */,
 				602153381F397C650077A7AF /* AdCellRegular.swift in Sources */,
 				602153391F397C650077A7AF /* Content.swift in Sources */,
@@ -1739,6 +1734,7 @@
 				602153B31F399E9A0077A7AF /* AppNavigation.swift in Sources */,
 				600C0D001F5CDEA500226F84 /* APIs.swift in Sources */,
 				602153561F397C650077A7AF /* PushHelper.swift in Sources */,
+				6054B28B1F669DCE00E34990 /* ListPerColumnViewController.swift in Sources */,
 				6019A9D21F4C457D00B8FB69 /* FollowCell.swift in Sources */,
 				602153571F397C650077A7AF /* LaunchScreen.swift in Sources */,
 				F2E090731F5A6A3900F4409F /* MySettingViewController.swift in Sources */,

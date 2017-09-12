@@ -69,7 +69,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
-            let jsCode = "window.gConnectionType = '\(Connection.current())';"
+            let jsCode = "window.gConnectionType = '\(Connection.current())';checkFontsize();"
             let userScript = WKUserScript(
                 source: jsCode,
                 injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
@@ -139,8 +139,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
     }
     
-
-
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,15 +189,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     public func changeFont(_ notification: Notification) {
-        if let currentIndex = notification.object as? Int {
-        let jsCode = "showOverlay('font-setting');"
-        webView?.evaluateJavaScript(jsCode) { (result, error) in
-            if error != nil {
-                print ("some thing wrong with javascript: \(String(describing: error))")
-            } else {
-                print ("javascript result is \(String(describing: result))")
+        if let currentItem = notification.object as? ContentItem,
+            currentItem.id == dataObject?.id {
+            let jsCode = "showOverlay('font-setting');"
+            webView?.evaluateJavaScript(jsCode) { (result, error) in
+                if error != nil {
+                    print ("some thing wrong with javascript: \(String(describing: error))")
+                } else {
+                    print ("javascript result is \(String(describing: result))")
+                }
             }
-        }
         }
     }
     
@@ -893,7 +894,7 @@ extension ContentItemViewController {
         iapView.themeColor = themeColor
         iapView.dataObject = dataObject
         iapView.verticalPadding = verticalPadding
-        iapView.action = self.action      
+        iapView.action = self.action
         iapView.initUI()
         
         view.addSubview(iapView)

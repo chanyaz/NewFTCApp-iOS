@@ -54,7 +54,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     @IBOutlet weak var fontButton: UIBarButtonItem!
     
     @IBAction func changeFont(_ sender: UIBarButtonItem) {
-        let object = currentPageIndex
+        let object = contentPageData[currentPageIndex]
         let name = Notification.Name(rawValue: Event.changeFont)
         NotificationCenter.default.post(name: name, object: object)
     }

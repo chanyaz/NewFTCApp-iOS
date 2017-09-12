@@ -11,7 +11,7 @@ import UIKit
 class HeaderView: UICollectionReusableView {
 
     
-    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var title: UIButton!
     var themeColor: String? = nil
     var contentSection: ContentSection? = nil {
         didSet {
@@ -20,15 +20,9 @@ class HeaderView: UICollectionReusableView {
     }
     
     func updateUI() {
-        title.text = contentSection?.title
-        title.textColor = UIColor.white
-        //self.backgroundColor = UIColor(hex: Color.Tab.background)
-        if let theme = themeColor {
-            self.backgroundColor = UIColor(hex: theme)
-
-        }
-        //title.font = title.font.bold()
-
+        title.setTitle(contentSection?.title, for: .normal)
+        title.tintColor = UIColor(hex: Color.Content.headline)
+        self.backgroundColor = UIColor(hex: Color.Content.background)
     }
     
 }

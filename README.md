@@ -1,6 +1,16 @@
 # New FTChinese iOS App
 
 ## Development Milestones
+### Task at Hand: 
+1. Make all channel pages available
+2. Update Ads
+3. Big 5 Version
+
+### Bugs
+1. 金融英语速读无法调整字号
+2. 金融英语速读无法评论
+3. 金融英语速读无法听
+4. 每日英语双语阅读的Switch颜色需要更换
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
@@ -13,6 +23,7 @@
 8. Done: Title View: Image for News Channel
 9. Infinite Scrolling in Home and Channel Pages
 
+
 ### APIs
 1. Done: Stories
 2. Done: Retrieve and convert other types of API. 
@@ -20,6 +31,23 @@
 4. Videos: 
 5. Switch Between Domains for APIs
 6. Stories By Date
+
+
+### Advertising: 
+1. Done: Retrieve Ad info from Dolphin's script string
+2. Done: Send third party impressions until they are confirmed
+3. Done: Tap link for Ad Views
+4. Done: Tap Link in content view
+5. Done: Launch Screen Ad
+6. Done: Native Banner
+7. Done: Web Banner
+8. Done: Paid Post
+9. Done: Show Image if there's time
+10. Done: Parse Video Ad into native
+11. Special Report: Adjustment based on API
+12. Done: In-Page Full Screen: Disable Close Button and Function
+13. MPU New: Adjustment based on Date
+
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 
@@ -87,20 +115,7 @@ Data View:
 
 ### Done: Search
 
-### Advertising: 
-1. Done: Retrieve Ad info from Dolphin's script string
-2. Done: Send third party impressions until they are confirmed
-3. Done: Tap link for Ad Views
-4. Done: Tap Link in content view
-5. Done: Launch Screen Ad
-6. Done: Native Banner
-7. Done: Web Banner
-8. Done: Paid Post
-9. Done: Show Image if there's time
-10. Done: Parse Video Ad into native
-11. Special Report: Adjustment based on API
-12. Done: In-Page Full Screen: Disable Close Button and Function
-13. MPU New: Adjustment based on Date
+
 
 
 ### Login and Registration

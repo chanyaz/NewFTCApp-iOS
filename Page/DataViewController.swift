@@ -644,7 +644,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "List":
                 if fetches.fetchResults[sectionIndex].title != "" {
                     reuseIdentifier = "HeaderView"
-                    sectionSize = CGSize(width: view.frame.width, height: 44)
+                    sectionSize = CGSize(width: view.frame.width, height: 60)
                 } else {
                     reuseIdentifier = nil
                     sectionSize = CGSize.zero

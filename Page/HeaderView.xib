@@ -12,24 +12,35 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HeaderView" id="U6b-Vx-4bR" customClass="HeaderView" customModule="FTCC" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Header" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KR0-M6-J1d">
-                    <rect key="frame" x="14" y="13" width="292" height="24"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I57-bn-6ld">
+                    <rect key="frame" x="14" y="22" width="292" height="38"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <state key="normal" title="Button"/>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mQJ-KJ-ZUn">
+                    <rect key="frame" x="14" y="14" width="292" height="8"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="8" id="jzW-Lc-rB2"/>
+                    </constraints>
+                </view>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="KR0-M6-J1d" secondAttribute="trailing" constant="14" id="1zg-Eq-d2d"/>
-                <constraint firstItem="KR0-M6-J1d" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="6X9-H3-d5F"/>
-                <constraint firstItem="KR0-M6-J1d" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="14" id="sRC-qh-aCO"/>
+                <constraint firstAttribute="trailing" secondItem="mQJ-KJ-ZUn" secondAttribute="trailing" constant="14" id="AxK-xS-xCb"/>
+                <constraint firstAttribute="trailing" secondItem="I57-bn-6ld" secondAttribute="trailing" constant="14" id="GIV-vw-a5g"/>
+                <constraint firstItem="I57-bn-6ld" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="14" id="ODk-7A-pPo"/>
+                <constraint firstItem="mQJ-KJ-ZUn" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="14" id="fIl-4G-gY0"/>
+                <constraint firstItem="mQJ-KJ-ZUn" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="14" id="gq4-qh-hmu"/>
+                <constraint firstItem="I57-bn-6ld" firstAttribute="top" secondItem="mQJ-KJ-ZUn" secondAttribute="bottom" id="iCr-4a-i9z"/>
+                <constraint firstAttribute="bottom" secondItem="I57-bn-6ld" secondAttribute="bottom" id="qtm-BS-cgO"/>
             </constraints>
             <connections>
-                <outlet property="title" destination="KR0-M6-J1d" id="Zky-Jz-hFa"/>
+                <outlet property="title" destination="I57-bn-6ld" id="knz-Cc-ezW"/>
             </connections>
+            <point key="canvasLocation" x="26" y="57"/>
         </collectionReusableView>
     </objects>
 </document>

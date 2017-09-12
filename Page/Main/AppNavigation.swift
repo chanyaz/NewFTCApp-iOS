@@ -67,8 +67,7 @@ struct AppNavigation {
                  "coverTheme": "Opinion"
                 ],
                 ["title": "热门文章",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/weekly.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/weekly.html",
+                 "url":"http://www.ftchinese.com/channel/weekly.html?webview=ftcapp",
                  "compactLayout": "Simple Headline",
                  "regularLayout": "",
                  "screenName":"homepage/mostpopular"
@@ -107,29 +106,34 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
-                 "url":"http://www.ftchinese.com/channel/english.html",
-                 "screenName":"english"
+                 "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=english",
+                 "url":"http://www.ftchinese.com/channel/english.html?webview=ftcapp",
+                 "screenName":"english",
+                 "coverTheme": ""
                 ],
                 ["title": "英语电台",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/radio.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/radio.html",
-                 "screenName":"english/radio"
+                 "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=radio",
+                 "url":"http://www.ftchinese.com/channel/radio.html?webview=ftcapp",
+                 "screenName":"english/radio",
+                 "coverTheme": ""
                 ],
                 ["title": "双语阅读",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/ce.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/ce.html",
-                 "screenName":"english/read"
+                 "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=ce",
+                 "url":"http://www.ftchinese.com/channel/ce.html?webview=ftcapp",
+                 "screenName":"english/read",
+                 "coverTheme": ""
                 ],
                 ["title": "金融英语速读",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/speedread.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/speedread.html",
-                 "screenName":"english/speedread"
+                 "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=speedread",
+                 "url":"http://www.ftchinese.com/channel/speedread.html?webview=ftcapp",
+                 "screenName":"english/speedread",
+                 "coverTheme": ""
                 ],
                 ["title": "原声视频",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/ev.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/ev.html",
-                 "screenName":"english/video"
+                 "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=ev",
+                 "url":"http://www.ftchinese.com/channel/ev.html?webview=ftcapp",
+                 "screenName":"english/video",
+                 "coverTheme": ""
                 ]
             ]
         ],
@@ -140,18 +144,16 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test?001",
-                 "url":"http://www.ftchinese.com/channel/mba.html",
+                 "url":"http://www.ftchinese.com/channel/mba.html?webview=ftcapp",
                  "screenName":"ftacademy"
                 ],
                 ["title": "热点观察",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/mba.html?type=json",
                  "url":"http://www.ftchinese.com/channel/mba.html",
                  "screenName":"ftacademy/hottopic"
                 ],
                 ["title": "MBA训练营",
                  "api":"https://d37m993yiqhccr.cloudfront.net/channel/mbagym.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/mbagym.html",
+                 "url":"http://www.ftchinese.com/channel/mbagym.html?webview=ftcapp",
                  "screenName":"ftacademy/mbagym"
                 ],
                 ["title": "互动小测",
@@ -173,23 +175,19 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 ["title": "最新",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/stream.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/stream.html",
+                 "url":"http://www.ftchinese.com/channel/stream.html?webview=ftcapp",
                  "screenName":"video"
                 ],
                 ["title": "商业",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/business.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/business.html",
+                 "url":"http://www.ftchinese.com/channel/business.html?webview=ftcapp",
                  "screenName":"ftacademy/business"
                 ],
                 ["title": "政经",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/vpolitics.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/vpolitics.html",
+                 "url":"http://www.ftchinese.com/channel/vpolitics.html?webview=ftcapp",
                  "screenName":"ftacademy/politics"
                 ],
                 ["title": "有色眼镜",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/channel/videotinted.html?type=json",
-                 "url":"http://www.ftchinese.com/channel/videotinted.html",
+                 "url":"http://www.ftchinese.com/channel/videotinted.html?webview=ftcapp",
                  "screenName":"ftacademy/tinted"
                 ]
             ]

@@ -39,7 +39,7 @@
 15. Done: Add new layout to display all cover
 16. Done: User comments
 17. Display column layout on iPad
-18. Working On: Show Font Size preference
+18. Done: Show Font Size preference
 
 
 ### Sharing

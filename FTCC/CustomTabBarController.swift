@@ -13,15 +13,6 @@ import MediaPlayer
 import WebKit
 import SafariServices
 
-class TabBarAudioContent {
-    static let sharedInstance = TabBarAudioContent()
-//    var body = [String: String]()
-//    var item: ContentItem?
-    var player:AVPlayer? = nil
-    var playerItem: AVPlayerItem? = nil
-    var title: String? = nil
-    var audioUrl: URL? = nil
-}
 
 class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     
@@ -40,77 +31,87 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     
     var item: ContentItem?
     var themeColor: String?
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var preAudio: UIButton!
-    @IBOutlet weak var nextAudio: UIButton!
-    @IBOutlet weak var playAndPauseButton: UIButton!
-    @IBOutlet weak var progressSlider: UISlider!
-    @IBOutlet weak var playTime: UILabel!
-    @IBOutlet weak var playDuration: UILabel!
-    @IBOutlet weak var playStatus: UILabel!
     
-    var button: UIButton?
+    
+    
+    //    var button: UIButton?
     //    var view1 = CustomTab(frame:CGRect(x:0,y:0,width:50,height:40))
     var tabView = CustomTab()
-    var lable = CustomTab().audioLable.text
-//    var animation = CustomPresentationAnimationController(isPresenting: false)
+    
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return UIStatusBarStyle.lightContent
     }
     override func viewDidLoad() {
-
+        
         super.viewDidLoad()
-
+        
         
         let width = UIScreen.main.bounds.width
         let height = self.view.bounds.height
-//        let tabBarHeight = self.tabBar.
-        tabView.frame = CGRect(x:0,y:height - 50,width:width,height:50)
-        tabView.backgroundColor = UIColor.red
+        tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
+        tabView.frame = CGRect(x:0,y:height - 90,width:width,height:90)
+        
         self.tabBar.addSubview(tabView)
         
-        tabView.button.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+        tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
         self.tabBar.isHidden = true
+        view.insertSubview(self.tabView, aboveSubview: self.tabBar)
+        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.taptextField))
+        //        tabView.button.addGestureRecognizer(tapGestureRecognizer)
+        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
         
-        view.insertSubview(self.tabView, belowSubview: self.tabBar)
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.taptextField))
-        tabView.button.addGestureRecognizer(tapGestureRecognizer)
-        //        tabView.addGestureRecognizer(tapGestureRecognizer)
+        tabView.playAndPauseButton.addTarget(self, action: #selector(taptextField), for: UIControlEvents.touchUpInside)
+        tabView.upSwipeButton.addGestureRecognizer(tapGestureRecognizer1)
         self.delegate = self
-        self.tabBar.backgroundColor =  UIColor.yellow
-        //        self.reloadInputViews()
         
-        
+        tabView.progressSlider.addTarget(self, action: #selector(changeSlider), for: UIControlEvents.valueChanged)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
-
+    
+    func changeSlider(_ sender: UISlider) {
+        let currentValue = sender.value
+        let currentTime = CMTimeMake(Int64(currentValue), 1)
+        //        playerItem?.seek(to: currentTime)
+        TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
+        print("sliderValueChanged button\(currentTime)")
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         
     }
     override func viewDidAppear(_ animated: Bool) {
         
     }
-    func changeAudio(){
-        self.tabBar.backgroundColor = UIColor.blue
-        print("item audioLable sharedInstance\(String(describing: TabBarAudioContent.sharedInstance.title)) ")
-        print("item audioLable1\(String(describing:self.tabView.audioLable.text )) ")
+    //    把此页面的所有信息都传给AudioPlayBar,包括player，playerItem
+    func openAudio(){
         
-//    func changeAudio(title:String){
-        self.tabView.audioLable.attributedText = NSAttributedString(string:"1111")
-        print("item audioLable22\(String(describing:self.tabView.audioLable.text )) ") 
-        self.lable = TabBarAudioContent.sharedInstance.title
-        tabView.audioLable.backgroundColor = UIColor.yellow
-        tabView.button.backgroundColor = UIColor.yellow
+        if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
+            let tabItem = TabBarAudioContent.sharedInstance.item
+            
+            if let tabItem = tabItem ,let audioFileUrl = tabItem.audioFileUrl {
+                
+                //                AudioContent.sharedInstance.body["title"] = tabItem.headline
+                //                AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                //                AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(tabItem.id)"
+                TabBarAudioContent.sharedInstance.body["title"] = tabItem.headline
+                TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(tabItem.id)"
+                audioPlayerController.item = tabItem
+            }
+            
+            audioPlayerController.modalPresentationStyle = .custom
+            self.present(audioPlayerController, animated: true, completion: nil)
+            
+        }
+        
     }
-   
     
-    func taptextField(sender: UITapGestureRecognizer) {
     
-        print("item11---\(String(describing: AudioContent.sharedInstance.body["title"]))")
+    
+    
+    func taptextField(sender: UIButton) {
+        //    func taptextField(sender: UITapGestureRecognizer) {
         isShowPlayBlock = true
         let  player = TabBarAudioContent.sharedInstance.player
         let  playerItem = TabBarAudioContent.sharedInstance.playerItem
@@ -119,43 +120,44 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             print("item11 palyer isExist \(String(describing: playerItem))")
             if player?.rate != 0 && player?.error == nil {
                 print("palyer item pause)")
+                tabView.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+                TabBarAudioContent.sharedInstance.isPlaying = false
                 player?.pause()
-                tabView.button.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+                
             } else {
                 print("palyer item play)")
+                tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+                TabBarAudioContent.sharedInstance.isPlaying = true
                 try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
                 
                 // MARK: - Continue audio when device is in background
                 try? AVAudioSession.sharedInstance().setActive(true)
                 player?.play()
                 player?.replaceCurrentItem(with: playerItem)
-                tabView.button.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+                
             }
         }
-//        let aa = storyboard?.instantiateViewController(withIdentifier: "AudioPlayerController") as! AudioPlayerController
-//        aa.modalPresentationStyle = UIModalPresentationStyle.custom
-//        aa.transitioningDelegate = self
-//        UIApplication.shared.keyWindow?.rootViewController?.present(aa, animated: true, completion: nil)
-//        self.addChildViewController(aa)
-
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-  
+    
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         print("tabBarController didSelect")
     }
-
-
+    private func updatePlayTime(current time: CMTime, duration: CMTime) {
+        self.tabView.playDuration.text = "-\((duration-time).durationText)"
+        self.tabView.playTime.text = time.durationText
+    }
+    
     func parseAudioMessage() {
-        let body = AudioContent.sharedInstance.body
+        let body = TabBarAudioContent.sharedInstance.body
+        //        let body = AudioContent.sharedInstance.body
         print("interactiveUrl---\(body)")
         if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
-            print (title)
             audioTitle = title
             audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
             audioId = interactiveUrl.replacingOccurrences(
@@ -164,11 +166,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
                 options: .regularExpression
             )
             ShareHelper.sharedInstance.webPageTitle = title
-            //            print("interactiveUrl---\(title)")
         }
     }
     
-
     
     func prepareAudioPlay() {
         print("audioUrlString prepareAudioPlay\(audioUrlString)")
@@ -178,10 +178,10 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             var audioUrl = url
             let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: "")
             if let localAudioFile = download.checkDownloadedFileInDirectory(cleanAudioUrl) {
-                print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
             }
-    
+            
+            TabBarAudioContent.sharedInstance.parsedUrlString = cleanAudioUrl
             // MARK: -delete progressSlider setting here
             
             let asset = AVURLAsset(url: audioUrl)
@@ -191,7 +191,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             
             if player != nil {
                 print("url item palyer exist")
-//                return
             }else {
                 print("url item palyer do not exist")
                 player = AVPlayer()
@@ -199,10 +198,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             playerLayer=AVPlayerLayer(player: player!)
             playerLayer?.frame=CGRect(x: 0, y: 0, width: 10, height: 50)
             self.view.layer.addSublayer(playerLayer!)
-//            queuePlayer = AVQueuePlayer(playerItem:playerItem)
-//            queuePlayer?.insert(playerItem!, after: playerItem)
-//            queuePlayer?.advanceToNextItem()
-            
+            TabBarAudioContent.sharedInstance.isPlaying = true
             // MARK: - If user is using wifi, buffer the audio immediately
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
@@ -211,34 +207,58 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             
             // MARK: - Update audio play progress
             player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
+                
                 if let d = self?.playerItem?.duration {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
                     let duration = CMTimeGetSeconds(d)
                     if duration.isNaN == false {
-//                        self?.progressSlider.maximumValue = Float(duration)
-//                        if self?.progressSlider.isHighlighted == false {
-//                            self?.progressSlider.value = Float((CMTimeGetSeconds(time)))
-//                        }
-//                        self?.updatePlayTime(current: time, duration: d)
+                        //                        self?.tabView.progressSlider.maximumValue = Float(duration)
+                        //                        if self?.tabView.progressSlider.isHighlighted == false {
+                        //                            self?.tabView.progressSlider.value = Float((CMTimeGetSeconds(time)))
+                        //                        }
+                        TabBarAudioContent.sharedInstance.duration = d
+                        TabBarAudioContent.sharedInstance.time = time
+                        
+                        
+                        //                        self?.updatePlayTime(current: time, duration: d)
                     }
                 }
+                
+                
             }
-            print("url item palyer continue?")
+            
+            
+            // MARK: - Observe download status change
+            //            NotificationCenter.default.addObserver(
+            //                self,
+            //                selector: #selector(AudioPlayerController.handleDownloadStatusChange(_:)),
+            //                name: Notification.Name(rawValue: download.downloadStatusNotificationName),
+            //                object: nil
+            //            )
             //
+            //            // MARK: - Observe download progress change
+            //            NotificationCenter.default.addObserver(
+            //                self,
+            //                selector: #selector(AudioPlayerController.handleDownloadProgressChange(_:)),
+            //                name: Notification.Name(rawValue: download.downloadProgressNotificationName),
+            //                object: nil
+            //            )
+            
             // MARK: - Observe Audio Route Change and Update UI accordingly
-//            NotificationCenter.default.addObserver(
-//                self,
-//                selector: #selector(AudioPlayerBar.updatePlayButtonUI),
-//                // MARK: - It has to be NSNotification, not Notification
-//                name: NSNotification.Name.AVAudioSessionRouteChange,
-//                object: nil
-//            )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(self.updatePlayButtonUI),
+                // MARK: - It has to be NSNotification, not Notification
+                name: NSNotification.Name.AVAudioSessionRouteChange,
+                object: nil
+            )
             addPlayerItemObservers()
         }
     }
     
     func updateAVPlayerWithLocalUrl() {
         if let localAudioFile = download.checkDownloadedFileInDirectory(audioUrlString) {
-            let currentSliderValue = self.progressSlider.value
+            let currentSliderValue = tabView.progressSlider.value
             let audioUrl = URL(fileURLWithPath: localAudioFile)
             let asset = AVURLAsset(url: audioUrl)
             removePlayerItemObservers()
@@ -261,7 +281,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     
     private func addPlayerItemObservers() {
         // MARK: - Observe Play to the End
-        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        NotificationCenter.default.addObserver(self,selector:#selector(AudioPlayerController.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
         
         // MARK: - Update buffer status
         playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
@@ -269,31 +289,32 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
         playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
     }
     
-    //    private func updatePlayTime(current time: CMTime, duration: CMTime) {
-    //        playDuration.text = "-\((duration-time).durationText)"
-    //        playTime.text = time.durationText
-    //    }
     
-//    public func updatePlayButtonUI() {
-//        if let player = player {
-//            if (player.rate != 0) && (player.error == nil) {
-//                
-//                self.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-//            } else {
-//                self.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-//            }
-//        }
-//    }
-
+    
+    public func updatePlayButtonUI() {
+        if let player = player {
+            if (player.rate != 0) && (player.error == nil) {
+                
+                tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+            } else {
+                tabView.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+            }
+        }
+    }
+    
     func playerDidFinishPlaying() {
+        print("finish playing")
         let startTime = CMTimeMake(0, 1)
-        self.playerItem?.seek(to: startTime)
-        self.player?.pause()
-//        self.progressSlider.value = 0
-        self.tabView.button.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+        TabBarAudioContent.sharedInstance.player?.pause()
+        TabBarAudioContent.sharedInstance.playerItem?.seek(to: startTime)
+        //        self.button?.setTitle("finish", for: .normal)
+        //        self.playerItem?.seek(to: startTime)
+        //        self.player?.pause()
+        self.tabView.progressSlider.value = 0
+        self.tabView.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
         nowPlayingCenter.updateTimeForPlayerItem(player)
-        let stopedPlayerItem: AVPlayerItem = NSNotification().object as! AVPlayerItem
-        stopedPlayerItem.seek(to: kCMTimeZero)
+        //        let stopedPlayerItem: AVPlayerItem = NSNotification().object as! AVPlayerItem
+        //        stopedPlayerItem.seek(to: kCMTimeZero)
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -304,30 +325,30 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
                     // Show loader
                     print ("is loading...")
                     self.tabView.audioLable.text = "加载中..."
-//                    playStatus.text = "加载中..."
+                    //                    playStatus.text = "加载中..."
                     
                 case "playbackLikelyToKeepUp":
                     // Hide loader
                     print ("should be playing. Duration is \(String(describing: playerItem?.duration))")
                     self.tabView.audioLable.text = audioTitle
-//                    playStatus.text = audioTitle
+                //                    playStatus.text = audioTitle
                 case "playbackBufferFull":
                     // Hide loader
                     self.tabView.audioLable.text = audioTitle
                     print ("load successfully")
-//                    playStatus.text = audioTitle
+                //                    playStatus.text = audioTitle
                 default:
                     self.tabView.audioLable.text = audioTitle
-//                    playStatus.text = audioTitle
+                    //                    playStatus.text = audioTitle
                     break
                 }
             }
-//            if let time = playerItem?.currentTime(), let duration = playerItem?.duration {
-//                updatePlayTime(current: time, duration: duration)
-//            }
+            if let time = playerItem?.currentTime(), let duration = playerItem?.duration {
+                updatePlayTime(current: time, duration: duration)
+            }
             nowPlayingCenter.updateTimeForPlayerItem(player)
         }
     }
-  
-
+    
+    
 }

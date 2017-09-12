@@ -67,13 +67,21 @@
                                     <action selector="buy:" destination="gTV-IL-0wX" eventType="touchUpInside" id="mJt-6g-KW4"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uXQ-Br-Ji3">
+                                <rect key="frame" x="278" y="151" width="31" height="30"/>
+                                <state key="normal" title="阅读"/>
+                                <connections>
+                                    <action selector="read:" destination="gTV-IL-0wX" eventType="touchUpInside" id="SZP-rg-A1l"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="uXQ-Br-Ji3" secondAttribute="bottom" constant="14" id="6mP-jp-one"/>
                             <constraint firstItem="63A-Fz-18z" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="14" id="8F8-bX-jiF"/>
                             <constraint firstItem="63A-Fz-18z" firstAttribute="top" secondItem="dD2-9f-YHY" secondAttribute="bottom" constant="14" id="9RB-ka-IrE"/>
                             <constraint firstItem="ZeZ-uA-ElO" firstAttribute="top" secondItem="dD2-9f-YHY" secondAttribute="bottom" constant="14" id="BXL-J9-pWS"/>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="63A-Fz-18z" secondAttribute="bottom" constant="20" symbolic="YES" id="DTH-MS-XFy"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="63A-Fz-18z" secondAttribute="bottom" constant="14" id="DTH-MS-XFy"/>
                             <constraint firstAttribute="trailing" secondItem="ZeZ-uA-ElO" secondAttribute="trailing" constant="14" id="GD7-ls-qwX"/>
                             <constraint firstAttribute="bottom" secondItem="fbg-cX-t0H" secondAttribute="bottom" constant="14" id="Ne1-By-lrW"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="14" id="OIq-Sz-gYA"/>
@@ -83,6 +91,7 @@
                             <constraint firstAttribute="bottom" secondItem="5D4-wy-PyN" secondAttribute="bottom" constant="14" id="bDQ-OR-H5w"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="top" secondItem="yfD-Kf-wUR" secondAttribute="top" id="dOv-cV-L5y"/>
                             <constraint firstAttribute="trailing" secondItem="RXw-TM-ab8" secondAttribute="trailing" constant="14" id="e3b-Db-ggg"/>
+                            <constraint firstAttribute="trailing" secondItem="uXQ-Br-Ji3" secondAttribute="trailing" constant="14" id="eak-oa-OE9"/>
                             <constraint firstItem="fbg-cX-t0H" firstAttribute="leading" secondItem="5D4-wy-PyN" secondAttribute="trailing" constant="14" id="gmi-GJ-FZ6"/>
                             <constraint firstItem="RXw-TM-ab8" firstAttribute="top" secondItem="ZeZ-uA-ElO" secondAttribute="bottom" constant="8" symbolic="YES" id="jGz-yD-J2W"/>
                             <constraint firstAttribute="width" constant="323" id="kxf-id-qLZ"/>
@@ -109,6 +118,7 @@
                 <outlet property="headline" destination="ZeZ-uA-ElO" id="XP8-Ai-3NJ"/>
                 <outlet property="imageView" destination="63A-Fz-18z" id="eQD-GB-bMY"/>
                 <outlet property="lead" destination="RXw-TM-ab8" id="HkM-JG-whT"/>
+                <outlet property="readButton" destination="uXQ-Br-Ji3" id="LcA-Xu-0ur"/>
             </connections>
             <point key="canvasLocation" x="-374.5" y="-396.5"/>
         </collectionViewCell>

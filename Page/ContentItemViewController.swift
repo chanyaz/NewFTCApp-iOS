@@ -20,6 +20,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     var pageTitle: String = ""
     var themeColor: String?
     var currentLanguageIndex: Int?
+    var action: String?
     
     // MARK: show in full screen
     var isFullScreen = false
@@ -45,6 +46,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 //                extendedLayoutIncludesOpaqueBars = true
                 // MARK: add as a childviewcontroller
                 controller.showCloseButton = false
+                controller.isBetweenPages = true
                 addChildViewController(controller)
                 // MARK: Add the child's View as a subview
                 self.view.addSubview(controller.view)
@@ -67,7 +69,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
-            let jsCode = "window.gConnectionType = '\(Connection.current())';"
+            let jsCode = "window.gConnectionType = '\(Connection.current())';checkFontsize();"
             let userScript = WKUserScript(
                 source: jsCode,
                 injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
@@ -116,6 +118,17 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 name: Notification.Name(rawValue: Event.languagePreferenceChanged),
                 object: nil
             )
+            
+            // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(changeFont(_:)),
+                name: Notification.Name(rawValue: Event.changeFont),
+                object: nil
+            )
+            
+            
+            
             // MARK: If the sub type is a user comment, render web view directly
             if subType == .UserComments || dataObject?.type == "webpage" || dataObject?.type == "ebook" {
                 renderWebView()
@@ -125,6 +138,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             navigationController?.delegate = self
         }
     }
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -171,6 +187,39 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             }
         }
     }
+    
+    public func changeFont(_ notification: Notification) {
+        if let currentItem = notification.object as? ContentItem,
+            currentItem.id == dataObject?.id {
+            let jsCode = "showOverlay('font-setting');"
+            webView?.evaluateJavaScript(jsCode) { (result, error) in
+                if error != nil {
+                    print ("some thing wrong with javascript: \(String(describing: error))")
+                } else {
+                    print ("javascript result is \(String(describing: result))")
+                }
+            }
+        }
+    }
+    
+    //    func paidPostUpdate(_ notification: Notification) {
+    //        if let itemCell = notification.object as? ContentItem {
+    //            let section = itemCell.section
+    //            let row = itemCell.row
+    //            if fetches.fetchResults.count > section {
+    //                if fetches.fetchResults[section].items.count > row {
+    //                    if itemCell.adModel?.headline != nil{
+    //                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
+    //                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
+    //                        collectionView?.reloadData()
+    //                    } else {
+    //                        print ("Paid Post: The adModel has no headline")
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //
     
     private func getDetailInfo() {
         if let id = dataObject?.id, dataObject?.type == "story" {
@@ -275,7 +324,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         if let type = dataObject?.type {
             switch type {
-            case "video", "interactive", "photonews", "photo":
+            case "video", "interactive", "photonews", "photo", "gym", "special":
                 renderWebView()
             case "story":
                 if (dataObject?.cbody) != nil {
@@ -492,9 +541,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         lead = ""
                         userCommentsOrder = "story"
                         styleContainerStyle = ""
-                        storyTheme = "<div style=\"padding-top: 14px;\"></div>"
+                        storyTheme = "电子书"
                         if let image = dataObject?.image {
-                            imageHTML = "<div class=\"leftPic image portrait-img\" style=\"margin-bottom:0;\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div>"
+                            imageHTML = "<div class=\"leftPic image portrait-img ebook-image-container\" style=\"margin-bottom:0;\"><div class=\"ebook-image-inner\"><figure data-url=\"\(image)\" class=\"loading\"></figure></div></div>"
                         } else {
                             imageHTML = ""
                         }
@@ -523,7 +572,16 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     let followAuthors = getFollow("author")
                     let followColumns = getFollow("column")
                     
-                    if let adHTMLPath = Bundle.main.path(forResource: "story", ofType: "html"){
+                    let resourceFileName: String
+                    switch type {
+                    case "ebook":
+                        resourceFileName = "ebook"
+                        insertIAPView()
+                    default:
+                        resourceFileName = "story"
+                    }
+                    
+                    if let adHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                             let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: finalBody)
@@ -806,7 +864,6 @@ extension ContentItemViewController: WKScriptMessageHandler {
     }
 }
 
-
 extension ContentItemViewController: UIScrollViewDelegate {
     // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
     // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
@@ -822,6 +879,32 @@ extension ContentItemViewController: UITextViewDelegate {
     }
 }
 
+// MARK: Buy and Download Buttons
+extension ContentItemViewController {
+    fileprivate func insertIAPView() {
+        let verticalPadding: CGFloat = 10
+        let iapView = IAPView()
+        let containerViewFrame = containerView.frame
+        let width: CGFloat = view.frame.width
+        let height: CGFloat = 44
+        iapView.frame = CGRect(x: 0, y: containerViewFrame.height - height, width: width, height: height)
+        iapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        // MARK: This is important for autolayout constraints to kick in properly
+        iapView.translatesAutoresizingMaskIntoConstraints = false
+        iapView.themeColor = themeColor
+        iapView.dataObject = dataObject
+        iapView.verticalPadding = verticalPadding
+        iapView.action = self.action
+        iapView.initUI()
+        
+        view.addSubview(iapView)
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -verticalPadding))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: height))
+        
+    }
+}
 
 
 //extension String {

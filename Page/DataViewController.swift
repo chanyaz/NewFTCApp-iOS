@@ -18,6 +18,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
     var cellWidth: CGFloat = 0
     var themeColor: String? = nil
+    var coverTheme: String?
     // MARK: Search
     fileprivate lazy var searchBar: UISearchBar? = nil
     fileprivate var searchKeywords: String? = nil {
@@ -66,6 +67,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
             collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
             collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
+            collectionView?.register(UINib.init(nibName: "ThemeCoverCell", bundle: nil), forCellWithReuseIdentifier: "ThemeCoverCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
             collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
@@ -396,6 +398,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "ThemeCoverCell":
+            if let cell = cellItem as? ThemeCoverCell {
+                cell.coverTheme = coverTheme
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         case "BigImageCell":
             if let cell = cellItem as? BigImageCell {
                 cell.cellWidth = cellWidth
@@ -457,6 +466,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.pageTitle = pageTitle
+                cell.themeColor = themeColor
                 return cell
             }
         case "FollowCell":
@@ -602,7 +612,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         reuseIdentifier = "PaidPostCell"
                     }
                 } else if isCover {
-                    reuseIdentifier = "CoverCell"
+                    if coverTheme != nil {
+                        reuseIdentifier = "ThemeCoverCell"
+                    } else {
+                        reuseIdentifier = "CoverCell"
+                    }
                 } else {
                     reuseIdentifier = "ChannelCell"
                 }
@@ -680,9 +694,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "ebook":
                 if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
                     contentItemViewController.dataObject = selectedItem
+                    contentItemViewController.hidesBottomBarWhenPushed = true
+                    contentItemViewController.themeColor = themeColor
                     navigationController?.pushViewController(contentItemViewController, animated: true)
                 }
-
+                
             case "ViewController":
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
                     navigationController?.pushViewController(chatViewController, animated: true)
@@ -767,9 +783,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     // TODO: - How do users share a product?
     
     // MARK: - Product information from app store, need to be online to access
-    fileprivate var products = [SKProduct]()
+    // fileprivate var products = [SKProduct]()
     
-
+    
     
     
     
@@ -780,28 +796,28 @@ extension DataViewController {
     
     // MARK: - load IAP products and update UI
     fileprivate func loadProducts() {
-        products = []
+        IAPs.shared.products = []
         FTCProducts.store.requestProducts{[weak self] success, products in
             if success {
                 if let products = products {
-                    self?.products = products
+                    //self?.products = products
+                    IAPs.shared.products = products
                 }
             }
             // MARK: - Get product regardless of the request result
-            print ("product loaded: \(String(describing: self?.products))")
+            print ("product loaded: \(String(describing: IAPs.shared.products))")
             
-            if let products = self?.products {
-                let contentSections = ContentSection(
-                    title: "",
-                    items: IAP.get(products, in: "ebook"),
-                    type: "List",
-                    adid: ""
-                )
-                let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
-                let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-                let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-                self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
-            }
+            let contentSections = ContentSection(
+                title: "",
+                items: IAP.get(IAPs.shared.products, in: "ebook"),
+                type: "List",
+                adid: ""
+            )
+            let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
+            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+            
             
             //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
             //            self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")

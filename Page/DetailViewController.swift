@@ -51,6 +51,14 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         }
     }
     
+    @IBOutlet weak var fontButton: UIBarButtonItem!
+    
+    @IBAction func changeFont(_ sender: UIBarButtonItem) {
+        let object = contentPageData[currentPageIndex]
+        let name = Notification.Name(rawValue: Event.changeFont)
+        NotificationCenter.default.post(name: name, object: object)
+    }
+    
     var isFullScreenAdOn = false
     
     override var prefersStatusBarHidden: Bool {
@@ -258,6 +266,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         actionButton.tintColor = buttonTint
         bookMark.tintColor = buttonTint
         saveButton.tintColor = buttonTint
+        fontButton.tintColor = buttonTint
         
         //saveButton.setBackgroundImage(UIImage(named: "Clip"), for: .normal, barMetrics: .default)
         // saveButton.image = UIImage(named: "Clip")

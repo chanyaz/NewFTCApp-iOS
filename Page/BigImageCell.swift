@@ -64,17 +64,19 @@ class BigImageCell: CustomCell {
         
         // MARK: sound Button, love buttons and other FTCC buttons
         if let themeColorString = self.themeColor {
-            let themeColor = UIColor(hex: themeColorString)
+            let themeColor = UIColor(hex: themeColorString, alpha: 0.7)
             soundButton.layer.backgroundColor = themeColor.cgColor
-            soundButton.layer.cornerRadius = 15
-            
+            soundButton.layer.cornerRadius = 17.5
+        }
+        if let themeColorString = self.themeColor {
+            let themeColor = UIColor(hex: themeColorString)
             // MARK: border for the image bottom
             imageBorder.backgroundColor = themeColor
             
             tagButton.backgroundColor = themeColor
             tagButton.setTitleColor(UIColor.white, for: .normal)
             
-            tagButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5)
+            tagButton.contentEdgeInsets = UIEdgeInsetsMake(5,15,5,15)
             
             // MARK: get item tag
             if let firstTag = itemCell?.tag.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression) {
@@ -83,9 +85,7 @@ class BigImageCell: CustomCell {
                 tagButton.isHidden = true
             }
         }
-        
-        
-        
+        lead.font = UIFont(name: "Helvetica-Light", size: 16.0)
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right
         let containerViewMargins = containerView.layoutMargins.left + containerView.layoutMargins.right
@@ -114,10 +114,14 @@ class BigImageCell: CustomCell {
         if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineHeightMultiple = 1.4
+            paragraphStyle.lineBreakMode = .byTruncatingTail
             let setStr = NSMutableAttributedString.init(string: leadText)
             setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
             lead.attributedText = setStr
         }
+        
+        
+        
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
@@ -129,6 +133,68 @@ class BigImageCell: CustomCell {
                 self?.imageView.image = cellContentItem.coverImage
             })
             //print ("should load image here")
+        }
+        
+        
+    }
+    
+    @IBAction func tapSoundButton(_ sender: Any) {
+   
+//        if let rootViewController = window?.rootViewController as? UITabBarController {
+//            rootViewController.showAudioPlayer()
+//        }
+        
+        print("cell  item--\(String(describing: itemCell?.headline))")
+        
+        if let itemCell = itemCell,let audioFileUrl = itemCell.audioFileUrl {
+//            TabBarAudioContent.sharedInstance.body["title"] = self.itemCell?.headline
+//            TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+//            TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
+            AudioContent.sharedInstance.body["title"] = itemCell.headline
+            AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+            AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
+            TabBarAudioContent.sharedInstance.item = itemCell
+        }
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
+    
+        
+    }
+    
+    @IBAction func tapTagButton(_ sender: UIButton) {
+        if let tag = sender.currentTitle {
+            if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+                let tagAPI = APIs.get(tag, type: "tag")
+                
+                dataViewController.dataObject = ["title": tag,
+                                                 "api": tagAPI,
+                                                 "url":"",
+                                                 "screenName":"tag/\(tag)"]
+                dataViewController.pageTitle = tag
+                if let topViewController = UIApplication.topViewController() {
+                    topViewController.navigationController?.pushViewController(dataViewController, animated: true)
+                }
+            }
+        }
+    }
+    var isLove:Bool = false
+    @IBAction func tapLoveButton(_ sender: UIButton) {
+        if !isLove{
+            loveButton.setImage(UIImage(named:"LoveActive"), for: UIControlState.normal)
+            isLove = true
+        }else{
+            loveButton.setImage(UIImage(named:"Love"), for: UIControlState.normal)
+            isLove = false
+        }
+        
+    }
+    var isComment:Bool = false
+    @IBAction func tapCommentButton(_ sender: UIButton) {
+        if !isComment{
+            commentButton.setImage(UIImage(named:"CommentActiveCount"), for: UIControlState.normal)
+            isComment = true
+        }else{
+            commentButton.setImage(UIImage(named:"CommentCount"), for: UIControlState.normal)
+            isComment = false
         }
         
     }

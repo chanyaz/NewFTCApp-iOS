@@ -18,6 +18,7 @@ class LaunchScreen: UIViewController {
     // MARK: - Find out whether the user is happy and prompt rating if he/she is happy
     public let happyUser = HappyUser()
     public var showCloseButton = true
+    public var isBetweenPages = false
     private lazy var timer: Timer? = nil
     
     // MARK: - If the app use a native launch ad, suppress the pop up one
@@ -151,7 +152,7 @@ class LaunchScreen: UIViewController {
             view.addConstraint(NSLayoutConstraint(item: overlay, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0))
         }
     }
-
+    
     
     public func retryAd() {
         print ("Try to parse the ad schedule to decide if you can show an ad now")
@@ -204,6 +205,9 @@ class LaunchScreen: UIViewController {
             view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 21))
             
             // MARK: Request user to review only if the app starts without the launch ad
+            if AppLaunch.sharedInstance.from == "notification" {
+                happyUser.canTryRequestReview = false
+            }
             happyUser.requestReview()
         }
     }
@@ -532,13 +536,21 @@ class LaunchScreen: UIViewController {
     
     // MARK: Remove the overlay and reveal the web view. This should be public.
     func close() {
+
         player?.pause()
         player = nil
+        
         if let t = token {
             player?.removeTimeObserver(t)
             token = nil
         }
         timer?.invalidate()
+        
+        //MARK: If the full page ad is between pages, don't remove it in time
+        if isBetweenPages == true {
+            return
+        }
+        
         self.view.superview?.removeFromSuperview()
         self.removeFromParentViewController()
         AppLaunch.sharedInstance.fullScreenDismissed = true
@@ -547,7 +559,7 @@ class LaunchScreen: UIViewController {
         }
         //self.dismiss(animated: true, completion: nil)
     }
-
+    
 }
 
 struct AppLaunch {
@@ -555,4 +567,5 @@ struct AppLaunch {
     var launched = false
     var adShowed = false
     var fullScreenDismissed = false
+    var from: String?
 }

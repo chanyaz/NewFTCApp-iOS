@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 struct Color {
-    // Those nested structures are grouped mostly according to their functions
+    // MARK: Grouped mostly based on functions
     struct Content {
         static let headline = "#000000"
         static let body = "#333333"
@@ -30,6 +30,12 @@ struct Color {
     
     struct Button {
         static let tint = "#057b93"
+        static let highlight = "#FF8833"
+        static let highlightFont = "#FFF1E0"
+        static let highlightBorder = "#FF8833"
+        static let standard = "#F2DFCE"
+        static let standardFont = "#777777"
+        static let standardBorder = "#FAAE76"
     }
     
     struct Header {
@@ -56,7 +62,27 @@ struct Color {
         static let signBackground = "#ecd4b4"
     }
     
+    struct Theme {
+        static func get(_ theme: String) -> (background: String, border: String, title: String, tag: String, lead: String) {
+            switch theme {
+            case "Red":
+                return (background: "#9E2F50", border: "#9E2F50", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
+            case "Opinion":
+                return (background: "#cce6ff", border: "#cce6ff", title: "#333333", tag: "#0f5499", lead: "#777777")
+            case "Wheat":
+                return (background: "#f2dfce", border: "#f2dfce", title: "#333333", tag: "#9E2F50", lead: "#777777")
+            case "Lifestyle":
+                return (background: "#e0cdac", border: "#e0cdac", title: "#333333", tag: "#9E2F50", lead: "#777777")
+                case "Blue":
+                return (background: "#0f5499", border: "#0f5499", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
+            default:
+                return (background: "#FFF1E0", border: "#e9decf", title: "#333333", tag: "#9E2F50", lead: "#777777")
+            }
+        }
+    }
+    
 }
+
 
 struct FontSize {
     static let bodyExtraSize: CGFloat = 3.0

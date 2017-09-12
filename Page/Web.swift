@@ -13,7 +13,6 @@ extension UIViewController: SFSafariViewControllerDelegate{
     // MARK: Handle All the Recogizable Links Here
     func openLink(_ url: URL) {
         if let urlScheme = url.scheme {
-            
             switch urlScheme {
             case "http", "https":
                 let webVC = SFSafariViewController(url: url)
@@ -34,8 +33,8 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.tag) {
                     id = contentId
                     type = "tag"
-                } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.other) {
-                    id = contentId
+                } else if urlString.matchingStrings(regexes: LinkPattern.other) != nil {
+                    id = urlString
                     type = "webpage"
                 }
                 if let type = type, type == "tag" {
@@ -104,12 +103,14 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 req.scope = "snsapi_userinfo"
                 req.state = "weliveinfinancialtimes"
                 WXApi.send(req)
-                
+            case "ftchinese":
+                // MARK: Handle tapping from today extension
+                let action = url.host
+                let id = url.lastPathComponent
+                NotificationHelper.open(action, id: id, title: "title")
             default:
                 break
             }
-            
         }
-        
     }
 }

@@ -28,7 +28,12 @@ struct APIs {
         let urlString: String
         switch type {
         case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
-        case "tag": urlString = "\(domain)\(type)/\(id)?type=json"
+        case "tag":
+            if let encodedTag = id.removingPercentEncoding?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+                urlString = "\(domain)\(type)/\(encodedTag)?type=json"
+            } else {
+                urlString = "\(domain)\(type)/\(id)?type=json"
+            }
         case "follow":
             // TODO: Calculate the url string for follow
             let followTypes = Meta.map
@@ -55,7 +60,6 @@ struct APIs {
         default:
             urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         }
-        print ("api url is \(urlString)")
         return urlString
     }
     
@@ -69,7 +73,7 @@ struct APIs {
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
         case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
-        case "interactive": urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&i=3&001"
+        case "interactive", "gym", "special": urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
         case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
         case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
         case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
@@ -108,6 +112,7 @@ struct Event {
     static let englishStatusChange = "English Status Change"
     static let languageSelected = "Language Selected in Story Page"
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
+    static let changeFont = "switch font"
     static let newAdCreativeDownloaded = "New Ad Creative Downloaded"
     static func paidPostUpdate(for page: String) -> String {
         let paidPostUpdated = "Paid Post Update"
@@ -138,7 +143,7 @@ struct LinkPattern {
     static let video = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/video/([0-9]+)"]
     static let photonews = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
     static let tag = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
-    static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+)"]
+    static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
 }
 
 struct SupplementContent {
@@ -252,6 +257,48 @@ struct Meta {
     ]
 }
 
+struct AdMobTrack {
+    static func launch() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            ACTConversionReporter.report(withConversionID: "937693643", label: "Qe7aCL-Kx2MQy6OQvwM", value: "1.00", isRepeatable: false)
+        } else {
+            ACTConversionReporter.report(withConversionID: "937693643", label: "TvNTCJmOiGMQy6OQvwM", value: "1.00", isRepeatable: false)
+        }
+    }
+}
+
+struct DeviceToken {
+    static let url = "https://noti.ftimg.net/iphone-collect.php"
+    // MARK: - Post device token to server
+    static func forwardTokenToServer(deviceToken token: Data) {
+        let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
+        print("device token: \(hexEncodedToken)")
+        // MARK: calculate appNumber based on your bundel ID
+        let bundleID = Bundle.main.bundleIdentifier ?? ""
+        let appNumber: String
+        switch bundleID {
+        case "com.ft.ftchinese.ipad":
+            appNumber = "1"
+        case "com.ft.ftchinese.mobile":
+            appNumber = "2"
+        default:
+            appNumber = "0"
+        }
+        // MARK: get device type
+        var deviceType: String
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            deviceType = "pad"
+        case .phone:
+            deviceType = "phone"
+        default:
+            deviceType = "unspecified"
+        }
+        let timeZone = TimeZone.current.abbreviation() ?? ""
+        let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
+        PostData.sendDeviceToken(body: urlEncoded)
+    }
+}
 
 /*
  enum AppError : Error {

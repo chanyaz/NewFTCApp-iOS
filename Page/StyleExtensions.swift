@@ -33,6 +33,24 @@ extension UIColor {
         )
     }
     
+    
+    convenience init(hex: String, alpha: CGFloat) {
+        let hexString = hex.replacingOccurrences(of: "#", with: "")
+        let scanner = Scanner(string: hexString)
+        scanner.scanLocation = 0
+        var rgbValue: UInt64 = 0
+        scanner.scanHexInt64(&rgbValue)
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff,
+            alpha: alpha
+        )
+    }
+    
     public convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid green component")
@@ -69,6 +87,15 @@ extension UIImage {
         guard let cgImage = image?.cgImage else { return nil }
         self.init(cgImage: cgImage)
     }
+    func imageWithImage(image: UIImage, scaledToSize newSize: CGSize) -> UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        image.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!;
+    }
 }
 
 extension UIViewController {
@@ -88,36 +115,7 @@ extension UIViewController {
     }
     
     
-    public func showAudioPlayer() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let controller = storyboard.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
-            let audioPlayerView = UIView()
-//            let playerHeight: CGFloat = AudioPlayerStyle.height
-            let playerHeight: CGFloat = 50
-            let playerX = UIScreen.main.bounds.origin.x
-            let playerY = UIScreen.main.bounds.origin.y + UIScreen.main.bounds.height - playerHeight
-            let playerWidth = UIScreen.main.bounds.width
-            
-            
-            audioPlayerView.frame = CGRect(x: playerX, y: playerY, width: playerWidth, height: playerHeight)
-            audioPlayerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            
-            // MARK: add as a childviewcontroller
-            addChildViewController(controller)
-            // MARK: Add the child's View as a subview
-            audioPlayerView.addSubview(controller.view)
-            controller.view.frame = audioPlayerView.bounds
-            controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            // MARK: tell the childviewcontroller it's contained in it's parent
-            controller.didMove(toParentViewController: self)
-            if let tabBarViewController = self as? UITabBarController {
-                view.insertSubview(audioPlayerView, aboveSubview: tabBarViewController.tabBar)
-            } else {
-                let lastViewIndex = view.subviews.count - 1
-                view.insertSubview(audioPlayerView, at: lastViewIndex)
-            }
-        }
-    }
+
     
     public func showLaunchScreen() {
         // MARK: You can't insert a view controller into a navigation controller

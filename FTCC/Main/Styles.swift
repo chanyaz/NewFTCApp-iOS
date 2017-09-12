@@ -13,9 +13,9 @@ struct Color {
     struct Content {
         static let headline = "#000000"
         static let body = "#333333"
-        static let lead = "#777777"
-        static let border = "#e9decf"
-        static let background = "#FFF1E0"
+        static let lead = "#000000"
+        static let border = "#cecece"
+        static let background = "#FFFFFF"
         static let tag = "#9E2F50"
         static let time = "#8b572a"
     }
@@ -23,23 +23,32 @@ struct Color {
     struct Tab {
         static let text = "#333333"
         static let normalText = "#555555"
-        static let highlightedText = "#c0282e"
+        static let highlightedText = "#12a5b3"
         static let border = "#d4c9bc"
         static let background = "#f7e9d8"
     }
     
+
+    
     struct Button {
         static let tint = "#057b93"
+        static let highlight = "#f6801a"
+        static let highlightFont = "#FFF1E0"
+        static let highlightBorder = "#FF8833"
+        static let standard = "#26747a"
+        static let standardFont = "#777777"
+        static let standardBorder = "#FAAE76"
     }
+    
     
     struct Header {
         static let text = "#333333"
     }
     
     struct ChannelScroller {
-        static let text = "#565656"
-        static let highlightedText = "#c0282c"
-        static let background = "#fff9f5"
+        static let text = "#000000"
+        static let highlightedText = "#12a5b3"
+        static let background = "#FFFFFF"
         //static let background = "#e8dbcb"
         
         //static let background = "#FFFFFF"
@@ -47,13 +56,24 @@ struct Color {
     }
     
     struct Navigation {
-        static let border = "#d5c6b3"
+        static let border = "#000000"
     }
     
     struct Ad {
         static let background = "#f6e9d8"
         static let sign = "#555555"
         static let signBackground = "#ecd4b4"
+    }
+    
+    struct Theme {
+        static func get(_ theme: String) -> (background: String, border: String, title: String, tag: String, lead: String) {
+            switch theme {
+            case "Red":
+                return (background: "#9E2F50", border: "#FFF1E0", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
+            default:
+                return (background: "#FFF1E0", border: "#e9decf", title: "#333333", tag: "#9E2F50", lead: "#777777")
+            }
+        }
     }
     
 }

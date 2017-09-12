@@ -39,6 +39,8 @@
 15. Done: Add new layout to display all cover
 16. Done: User comments
 17. Display column layout on iPad
+18. Done: Show Font Size preference
+
 
 ### Sharing
 1. Done: WeChat
@@ -56,14 +58,14 @@
 ### Core data
 
 ### Notifications
-1. Handle Notification Types
-2. Move Notification Extensions
+1. Done: Handle Notification Types
+2. Done: Move Notification Extensions
 
-### Today Widget
+### Done: Today Widget
 
-### Store
-1. eBook
-2. eReader
+### In-App Purchase: StoreKit
+1. Done: eBook
+2. Done: eReader
 
 ### Done: myFT
 1. Done: Follow: Save the preference as a Dictionary. a. In content page; b. In MyFT Page Channel List
@@ -81,6 +83,8 @@ Data View:
 
 ## Completed Tasks
 
+### In-App Purchase
+
 ### Done: Search
 
 ### Advertising: 
@@ -94,11 +98,16 @@ Data View:
 8. Done: Paid Post
 9. Done: Show Image if there's time
 10. Done: Parse Video Ad into native
+11. Special Report: Adjustment based on API
+12. Done: In-Page Full Screen: Disable Close Button and Function
+13. MPU New: Adjustment based on Date
+
 
 ### Login and Registration
 1. Done: Normal Login
 2. Done: Normal Registration
 3. Done: WeChat
+
 
 ### Audio
 1. Done: Speech to Text

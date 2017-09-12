@@ -17,10 +17,15 @@ class ChannelModelController: ModelController{
         if let p = AppNavigation.getNavigationPropertyData(for: tabName, of: "Channels" ) {
             pageData = p
         }
+
         updateThemeColor(for: tabName)
         pageTitles = pageData.map { (value: [String: String]) -> String in
             return value["title"] ?? ""
         }
+        coverThemes = pageData.map { (value: [String: String]) -> String? in
+            return value["coverTheme"]
+        }
+        print ("coverThemes is \(coverThemes)")
         self.tabName = tabName
     }
     
@@ -35,6 +40,7 @@ class ChannelModelController: ModelController{
         //print(dataViewController.view.frame)
         dataViewController.dataObject = self.pageData[index]
         dataViewController.pageTitle = self.pageTitles[index]
+        dataViewController.coverTheme = self.coverThemes[index]
         dataViewController.themeColor = self.pageThemeColor
         return dataViewController
     }

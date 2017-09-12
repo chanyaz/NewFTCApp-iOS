@@ -113,9 +113,9 @@ class ContentItem{
             return
         }
         //print ("\(loadURL.absoluteString) should be loaded just once")
-        let loadRequest = URLRequest(url:loadURL)
+        let request = URLRequest(url:loadURL)
         
-        URLSession.shared.dataTask(with: loadRequest, completionHandler: { (data, response, error) in
+        URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
             if let error = error {
                 DispatchQueue.main.async {
                     completion(self, error as NSError?)

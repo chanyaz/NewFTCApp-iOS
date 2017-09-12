@@ -167,8 +167,6 @@ struct Download {
         }
     }
     
-    
-    //https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&tag=%E7%A7%91%E6%8A%80,%E4%B8%AD%E5%9B%BD%E7%BB%8F%E6%B5%8E,%E7%89%B9%E6%9C%97%E6%99%AE
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
         let fileName = urlString.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
             .replacingOccurrences(of: "[?].*", with: "", options: .regularExpression)

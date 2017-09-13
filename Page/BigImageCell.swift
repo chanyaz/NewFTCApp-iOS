@@ -72,14 +72,12 @@ class BigImageCell: CustomCell {
             let themeColor = UIColor(hex: themeColorString)
             // MARK: border for the image bottom
             imageBorder.backgroundColor = themeColor
-            
             tagButton.backgroundColor = themeColor
             tagButton.setTitleColor(UIColor.white, for: .normal)
-            
             tagButton.contentEdgeInsets = UIEdgeInsetsMake(5,15,5,15)
             
             // MARK: get item tag
-            if let firstTag = itemCell?.tag.replacingOccurrences(of: "[,，].*$", with: "", options: .regularExpression) {
+            if let firstTag = itemCell?.tag.getFirstTag(Meta.reservedTags) {
                 tagButton.setTitle(firstTag, for: .normal)
             } else {
                 tagButton.isHidden = true

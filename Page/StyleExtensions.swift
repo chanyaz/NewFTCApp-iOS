@@ -261,6 +261,20 @@ extension UIView {
             self.alpha = 0.0
         }, completion: completion)
     }
+    
+//    func addOverlay(_ image: UIImage, to background: UIImageView, of size: CGFloat) {
+//        let overlayHeight = background.frame.height * size
+//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: overlayHeight, height: overlayHeight))
+//        imageView.image = image
+//        if let containerView = background.superview {
+//        containerView.insertSubview(imageView, aboveSubview: background)
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        containerView.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: background, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 0))
+//        containerView.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: background, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+//        containerView.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayHeight))
+//        containerView.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayHeight))
+//        }
+//    }
 }
 
 
@@ -289,5 +303,21 @@ extension String {
             .replacingOccurrences(of: "</script>", with: "{JSScriptTagEnd}")
             .replacingOccurrences(of: "<script>", with: "{JSScriptTagStart}")
         return newString
+    }
+    func getFirstTag(_ blackList: [String]) -> String? {
+        let cleanedString = self.replacingOccurrences(
+                            of: "[,，]+",
+                            with: ",",
+                            options: .regularExpression
+                    )
+        let newArray = cleanedString.components(separatedBy: ",")
+        let newArrayCleaned = newArray.filter{
+            !blackList.contains($0)
+        }
+        if newArrayCleaned.count > 0 {
+            return newArrayCleaned[0]
+        } else {
+            return nil
+        }
     }
 }

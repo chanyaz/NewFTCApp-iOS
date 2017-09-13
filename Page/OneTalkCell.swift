@@ -126,14 +126,20 @@ class OneTalkCell: UITableViewCell {
              //saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
             
+            
         } else if self.cellData.saysType == .image {
+            
             let saysContentView = UIImageView(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
             saysContentView.image = self.cellData.saysImage
             print(self.cellData.saysImage)
             saysContentView.contentMode = .scaleToFill
              //saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
+            
+            
         } else if self.cellData.saysType == .card {
+            
+            
             let coverY = saysWhatY + self.cellData.titleHeight
             let descriptionY = coverY + self.cellData.coverHeight
             
@@ -149,9 +155,17 @@ class OneTalkCell: UITableViewCell {
             
             //coverView:
             let coverView = UIImageView(frame: CGRect(x:saysWhatX, y:coverY,width:self.cellData.coverWidth,height:self.cellData.coverHeight))
-            coverView.image = self.cellData.coverImage
+            coverView.backgroundColor = UIColor(hex: "#f7e9d8")
+           
+            self.cellData.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { _ in
+                coverView.image = self.cellData.coverImage
+                print("Execut 2ed")
+            })
             coverView.contentMode = .scaleToFill
             self.addSubview(coverView)
+            print("Execut 1st")
+            
+            
             
             //descriptionView:
             if(self.cellData.saysWhat.description != "") {

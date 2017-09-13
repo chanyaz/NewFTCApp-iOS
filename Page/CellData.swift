@@ -92,7 +92,7 @@ struct SaysWhat {
 }
 
 
-struct CellData {
+class CellData {
     //基本字段
     var headImage: String = ""
     var whoSays: Member = .no
@@ -150,14 +150,18 @@ struct CellData {
     
     
     init(whoSays who: Member, saysWhat say: SaysWhat) {
+        
         if who == .robot {
+            
             self.headImage = "robotPortrait"
             //self.bubbleImage = "robotBub"
             self.bubbleImage = "robotSayBubble"
             self.textColor = UIColor.black
             self.bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12 )
             self.bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)
+            
         } else if who == .you {
+            
             self.headImage = "youPortrait"
             //self.bubbleImage = "youBub"
             self.bubbleImage = "youSayBubble"
@@ -165,6 +169,7 @@ struct CellData {
             self.bubbleImageInsets = UIEdgeInsetsMake(8, 12, 10, 20)
             self.bubbleStrechInsets = UIEdgeInsetsMake(18.5, 18.5, 18.5, 24)
         }
+        
         self.whoSays = who
         self.saysWhat = say
         
@@ -174,8 +179,10 @@ struct CellData {
             print("hereherehere")
             
             self.buildTextCellData(textContent: say.content)
+            
         } else if say.type == .image { //缩放图片大小得到实际图形尺寸,并得到UIImage对象self.saysImage
             //let imageUrlStr = "http://ts1.mm.bing.net/th?id=OIP.UkcKcCStZUP_60o1QYH06wEoDS&pid=15.1"
+            //self.buildImageCellData(imageUrl: say.url)
             self.buildImageCellData(imageUrl: say.url)
             
         } else if say.type == .card {
@@ -193,7 +200,7 @@ struct CellData {
     }
     
     //创建Text类型数据的可变方法
-    mutating func buildTextCellData(textContent text: String) {//wycNOTE: mutating func:可以在mutating方法中修改结构体属性
+     func buildTextCellData(textContent text: String) {//wycNOTE: mutating func:可以在mutating方法中修改结构体属性
         let font = UIFont.systemFont(ofSize:18)
         self.normalFont = font
         let atts = [NSFontAttributeName: font]
@@ -219,8 +226,9 @@ struct CellData {
         self.saysWhatHeight = computeHeight
     }
     
-    //创建Image类型数据的可变方法
-    mutating func buildImageCellData(imageUrl imageUrlStr: String) {
+
+    //创建Image类型数据的方法
+     func buildImageCellData(imageUrl imageUrlStr: String) {
         print(imageUrlStr)
         
         let myUIImage = self.buidUIImage(url:imageUrlStr)
@@ -252,9 +260,8 @@ struct CellData {
             self.buildTextCellData(textContent: "Sorry，没能成功得到图片")
         }
     }
-    
     //创建Card类型数据的可变方法
-    mutating func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String) {
+     func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String) {
         //处理title
         let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
         self.titleFont = titleFont
@@ -271,11 +278,12 @@ struct CellData {
         
         //处理cover
         // FIXME: This code always crash when network is off. As a good habit, never use force unwrap in your code.
+        /*
         let myUIImage = self.buidUIImage(url: coverUrlStr)
         if let realUIImage = myUIImage {
             self.coverImage = realUIImage
         }
-        
+        */
         
         
         //处理description
@@ -302,6 +310,7 @@ struct CellData {
         self.bubbleImageHeight = self.saysWhatHeight + self.bubbleImageInsets.top + self.bubbleImageInsets.bottom
     }
     
+    //同步加载image的方法：
     func buidUIImage(url theUrl:String) -> UIImage? {
         //if let url = theUrl {
             let fm = FileManager.default
@@ -318,6 +327,73 @@ struct CellData {
         //}
         //return UIImage(named: "landscape.jpeg")
     }
+    
+    //异步加载image的方法：
+    func asyncBuildImage(url imageUrl: String, completion: @escaping () -> Void) {
+     
+        if let imgUrl = URL(string: imageUrl) {
+            let imgRequest = URLRequest(url: imgUrl)
+            
+            URLSession.shared.dataTask(with: imgRequest, completionHandler: { (data, response, error) in
+                if error != nil{
+                    DispatchQueue.main.async {
+                        print("error")
+                        completion()
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion()
+                    }
+                    return
+                }
+                
+                let myUIImage = UIImage(data: data) //NOTE: 由于闭包可以在func范围之外生存，闭包中如果有参数类型是struct/enum，那么它将被复制一个新值作为参数。如果这个闭包会允许这个参数发生改变（即以闭包为其中一个参数的func是mutate的），那么闭包会产生一个副本,造成不必要的后果。所以struct中的mutate func中的escape closure的参数不能是self，也不能在closure内部改变self的属性。改为class，则可以。
+                if let realUIImage = myUIImage { //如果成功获取了图片
+                    self.coverImage = realUIImage
+                    
+                } else { //如果没成功获取图片，则改为text类型回复
+                    self.saysType = .text
+                    self.buildTextCellData(textContent: "Sorry，没能成功得到图片")
+                }
+                
+                DispatchQueue.main.async {
+                    completion()
+                }
+                
+                
+            }).resume()
+            
+        }
+    }
+
+ 
 }
+
+/*
+ func asnycBuildUIImage(url theUrl:String) -> UIImage? {
+ if let imgUrl = URL(string: theUrl) {
+ let imgRequest = URLRequest(url: imgUrl)
+ 
+ URLSession.shared.dataTask(with: imgRequest, completionHandler: { (data, response, error) in
+ if let data = data {
+ self.saysUIImage(data: data)
+ } else {
+ let
+ }
+ 
+ }).resume()
+ }
+ 
+ }
+ */
+/*
+ itemCell?.loadImage(type:"cover", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+ self?.imageView.image = cellContentItem.coverImage
+ })
+ */
+
 
 

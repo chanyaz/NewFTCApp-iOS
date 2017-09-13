@@ -46,6 +46,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KeL-S7-nAv">
+                                <rect key="frame" x="14" y="163" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Jkk-jm-JWd"/>
+                                    <constraint firstAttribute="width" constant="44" id="XKN-QR-Cr3"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -55,11 +62,13 @@
                             <constraint firstAttribute="bottom" secondItem="q1a-Jy-xur" secondAttribute="bottom" constant="20" symbolic="YES" id="Ck6-ux-mbr"/>
                             <constraint firstAttribute="width" constant="313" id="ErL-2b-3go"/>
                             <constraint firstItem="AFL-Ml-oxU" firstAttribute="top" secondItem="UwZ-ZF-PTZ" secondAttribute="bottom" constant="14" id="KjN-Ut-fBr"/>
+                            <constraint firstItem="KeL-S7-nAv" firstAttribute="leading" secondItem="AFL-Ml-oxU" secondAttribute="leading" id="TQp-lU-uGN"/>
                             <constraint firstAttribute="trailing" secondItem="UwZ-ZF-PTZ" secondAttribute="trailing" constant="14" id="WvE-Wr-dIR"/>
                             <constraint firstItem="UwZ-ZF-PTZ" firstAttribute="leading" secondItem="eYz-WN-SZc" secondAttribute="leading" constant="14" id="XXn-No-RWl"/>
                             <constraint firstItem="q1a-Jy-xur" firstAttribute="leading" secondItem="eYz-WN-SZc" secondAttribute="leading" constant="14" id="eZK-JV-i9t"/>
                             <constraint firstItem="AFL-Ml-oxU" firstAttribute="leading" secondItem="eYz-WN-SZc" secondAttribute="leading" constant="14" id="sRJ-DJ-u4r"/>
                             <constraint firstItem="q1a-Jy-xur" firstAttribute="top" secondItem="AFL-Ml-oxU" secondAttribute="bottom" constant="8" symbolic="YES" id="tiX-iQ-abh"/>
+                            <constraint firstItem="KeL-S7-nAv" firstAttribute="bottom" secondItem="AFL-Ml-oxU" secondAttribute="bottom" id="z4H-Ok-C7M"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -79,6 +88,7 @@
                 <outlet property="headlineTrailingConstraint" destination="WvE-Wr-dIR" id="n5T-e1-e21"/>
                 <outlet property="imageView" destination="AFL-Ml-oxU" id="CRU-ON-w9x"/>
                 <outlet property="lead" destination="q1a-Jy-xur" id="RyT-JO-90x"/>
+                <outlet property="overlayImage" destination="KeL-S7-nAv" id="bG4-vS-M0P"/>
             </connections>
             <point key="canvasLocation" x="-1.5" y="-14"/>
         </collectionViewCell>

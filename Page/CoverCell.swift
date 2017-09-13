@@ -24,6 +24,7 @@ class CoverCell: CustomCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var headlineLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var headlineTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var overlayImage: UIImageView!
     
     
     
@@ -81,6 +82,17 @@ class CoverCell: CustomCell {
                 self?.imageView.image = cellContentItem.coverImage
             })
             //print ("should load image here")
+        }
+        
+        if let image = UIImage(named: "VideoPlayOverlay"),
+            itemCell?.type == "video",
+            let cellWidth = cellWidth {
+            let overlayWidth = max(cellWidth * 0.15, 20)
+            self.addConstraint(NSLayoutConstraint(item: overlayImage, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayWidth))
+            self.addConstraint(NSLayoutConstraint(item: overlayImage, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayWidth))
+            overlayImage.image = image
+        } else {
+            overlayImage.image = nil
         }
     }
 }

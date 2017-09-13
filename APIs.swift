@@ -255,6 +255,19 @@ struct Meta {
          "name": "栏目"
         ]
     ]
+    static let reservedTags = [
+        "QuizPlus",
+        "单选题",
+        "SurveyPlus",
+        "置顶",
+        "低调",
+        "精华",
+        "小测",
+        "生活时尚",
+        "深度阅读",
+        "教程",
+        "测试"
+    ]
 }
 
 struct AdMobTrack {

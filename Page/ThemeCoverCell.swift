@@ -13,18 +13,21 @@ import UIKit
 
 class ThemeCoverCell: CoverCell {
     
-
+    
     @IBOutlet weak var innerView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var topic: UILabel!
     var coverTheme: String?
     override func updateUI() {
         super.updateUI()
-        topic.text = itemCell?.tag.replacingOccurrences(
-            of: "[,，].*$",
-            with: "",
-            options: .regularExpression
-        )
+//        topic.text = itemCell?.tag
+//            .replacingOccurrences(of: "^QuizPlus[,，]+", with: "", options: .regularExpression)
+//            .replacingOccurrences(
+//                of: "[,，].*$",
+//                with: "",
+//                options: .regularExpression
+//        )
+        topic.text = itemCell?.tag.getFirstTag(Meta.reservedTags)
         if let coverTheme = coverTheme {
             let backgroundColor = UIColor(hex: Color.Theme.get(coverTheme).background)
             topic.textColor = UIColor(hex: Color.Theme.get(coverTheme).tag)
@@ -34,7 +37,7 @@ class ThemeCoverCell: CoverCell {
             innerView.layer.borderColor = UIColor(hex: Color.Theme.get(coverTheme).border).cgColor
             innerView.layer.borderWidth = 1
             bottomView.backgroundColor = UIColor.clear
-
+            
         }
     }
     

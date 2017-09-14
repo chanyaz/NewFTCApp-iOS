@@ -612,8 +612,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         reuseIdentifier = "PaidPostCell"
                     }
                 } else if isCover {
-                    if coverTheme != nil {
-                        reuseIdentifier = "ThemeCoverCell"
+                    if let coverTheme = coverTheme {
+                        reuseIdentifier = Color.Theme.getCellIndentifier(coverTheme)
                     } else {
                         reuseIdentifier = "CoverCell"
                     }
@@ -777,18 +777,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
     }
     
-    
-    // MARK: - In-app purchase start
-    
-    // TODO: - How do users share a product?
-    
-    // MARK: - Product information from app store, need to be online to access
-    // fileprivate var products = [SKProduct]()
-    
-    
-    
-    
-    
 }
 
 
@@ -854,31 +842,19 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         return CGSize(width: widthPerItem, height: heightPerItem)
     }
     
-    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
     
-    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }
-
-
 
 // MARK: Handle links here
 extension DataViewController: WKNavigationDelegate {

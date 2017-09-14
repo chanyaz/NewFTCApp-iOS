@@ -73,10 +73,18 @@ struct Color {
                 return (background: "#f2dfce", border: "#f2dfce", title: "#333333", tag: "#9E2F50", lead: "#777777")
             case "Lifestyle":
                 return (background: "#e0cdac", border: "#e0cdac", title: "#333333", tag: "#9E2F50", lead: "#777777")
-                case "Blue":
+            case "Blue":
                 return (background: "#0f5499", border: "#0f5499", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
             default:
                 return (background: "#FFF1E0", border: "#e9decf", title: "#333333", tag: "#9E2F50", lead: "#777777")
+            }
+        }
+        static func getCellIndentifier(_ theme: String) -> String {
+            switch theme {
+            case "Video":
+                return "VideoCoverCell"
+            default:
+                return "ThemeCoverCell"
             }
         }
     }

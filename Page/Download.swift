@@ -123,7 +123,6 @@ struct Download {
         }
     }
     
-    
     public static func manageFiles(_ types: [String], for directory: FileManager.SearchPathDirectory) {
         if let documentsUrl =  FileManager.default.urls(for: directory, in: .userDomainMask).first {
             do {
@@ -169,6 +168,7 @@ struct Download {
     
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
         let fileName = urlString.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
+            .replacingOccurrences(of: ".html?.*pageid=", with: "-", options: .regularExpression)
             .replacingOccurrences(of: "[?].*", with: "", options: .regularExpression)
             .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
             .replacingOccurrences(of: "-type-json", with: ".json")
@@ -177,26 +177,22 @@ struct Download {
             let forceFileName = fileName.replacingOccurrences(of: ".\(ext)", with: "")
                 .replacingOccurrences(of: ".", with: "")
             let finalFileName = "\(forceFileName).\(ext)"
-            print ("\(urlString) is converted into file name of \(finalFileName)")
+            //print ("\(urlString) is converted into file name of \(finalFileName)")
             return finalFileName
         }
-        print ("\(urlString) is converted into file name of \(fileName)")
+        //print ("\(urlString) is converted into file name of \(fileName)")
         return fileName
     }
     
     public static func removeFiles(_ fileTypes: [String]){
         if let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             do {
-                // Get the directory contents urls (including subfolders urls)
+                // MARK: Get the directory contents urls, including subfolders urls
                 let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
-                // print(directoryContents)
-                
-                // if you want to filter the directory contents you can do like this:
+                // MARK: filter the directory contents
                 let creativeTypes = fileTypes
                 let creativeFiles = directoryContents.filter{ creativeTypes.contains($0.pathExtension) }
-                
                 for creativeFile in creativeFiles {
-                    // print(creativeFile.lastPathComponent)
                     let creativeFileString = creativeFile.lastPathComponent
                     try FileManager.default.removeItem(at: creativeFile)
                     print("remove file from documents folder: \(creativeFileString)")
@@ -267,7 +263,6 @@ struct Download {
         }
         return contentItems
     }
-    
     
     // MARK: - Retrieve a property value from the user default's "my purchase" key
     public static func getPropertyFromUserDefault(_ id: String, property: String) -> String? {

@@ -61,6 +61,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QBh-pP-bZU">
+                                <rect key="frame" x="105.5" y="184" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="32T-WV-Ajr"/>
+                                    <constraint firstAttribute="height" constant="44" id="nrd-BX-1dy"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -81,6 +88,8 @@
                             <constraint firstItem="UwZ-ZF-PTZ" firstAttribute="top" secondItem="GE7-7n-Ylu" secondAttribute="bottom" constant="8" symbolic="YES" id="TmY-DI-ROY"/>
                             <constraint firstAttribute="trailing" secondItem="UwZ-ZF-PTZ" secondAttribute="trailing" constant="28" id="WvE-Wr-dIR"/>
                             <constraint firstItem="UwZ-ZF-PTZ" firstAttribute="leading" secondItem="eYz-WN-SZc" secondAttribute="leading" constant="28" id="XXn-No-RWl"/>
+                            <constraint firstItem="AFL-Ml-oxU" firstAttribute="bottom" secondItem="QBh-pP-bZU" secondAttribute="bottom" id="YCu-5I-j63"/>
+                            <constraint firstItem="AFL-Ml-oxU" firstAttribute="leading" secondItem="QBh-pP-bZU" secondAttribute="leading" id="dcO-aG-7iN"/>
                             <constraint firstItem="q1a-Jy-xur" firstAttribute="leading" secondItem="eYz-WN-SZc" secondAttribute="leading" constant="28" id="eZK-JV-i9t"/>
                             <constraint firstItem="I11-7J-zif" firstAttribute="leading" secondItem="eYz-WN-SZc" secondAttribute="leading" constant="14" id="hag-HB-85m"/>
                             <constraint firstItem="AFL-Ml-oxU" firstAttribute="height" secondItem="I11-7J-zif" secondAttribute="height" multiplier="2" id="odp-R8-lC8"/>
@@ -106,6 +115,7 @@
                 <outlet property="imageView" destination="AFL-Ml-oxU" id="CRU-ON-w9x"/>
                 <outlet property="innerView" destination="B4D-Ef-Cse" id="9cs-vM-N9d"/>
                 <outlet property="lead" destination="q1a-Jy-xur" id="RyT-JO-90x"/>
+                <outlet property="overlayImage" destination="QBh-pP-bZU" id="BXm-kz-I3s"/>
                 <outlet property="topic" destination="GE7-7n-Ylu" id="GUR-kw-6hG"/>
             </connections>
             <point key="canvasLocation" x="-1.5" y="-12"/>

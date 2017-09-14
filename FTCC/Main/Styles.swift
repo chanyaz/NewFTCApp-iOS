@@ -75,6 +75,14 @@ struct Color {
                 return (background: "#FFF1E0", border: "#e9decf", title: "#333333", tag: "#9E2F50", lead: "#777777")
             }
         }
+        static func getCellIndentifier(_ theme: String) -> String {
+            switch theme {
+            case "Video":
+                return "VideoCoverCell"
+            default:
+                return "ThemeCoverCell"
+            }
+        }
     }
     
 }

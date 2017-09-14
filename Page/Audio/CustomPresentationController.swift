@@ -26,31 +26,31 @@ class CustomPresentationController: UIPresentationController {
         
         // Add the dimming view and the presented view to the heirarchy
         dimmingView.frame = containerView.bounds
-        containerView.addSubview(dimmingView)
+//        containerView.addSubview(dimmingView)
         containerView.addSubview(presentedView)
         
         // Fade in the dimming view alongside the transition
         if let transitionCoordinator = self.presentingViewController.transitionCoordinator {
             transitionCoordinator.animate(alongsideTransition: {(context: UIViewControllerTransitionCoordinatorContext!) -> Void in
-                self.dimmingView.alpha = 3.0
+//                self.dimmingView.alpha = 3.0
             }, completion:nil)
         }
     }
     override func presentationTransitionDidEnd(_ completed: Bool) {
         if !completed {
-            self.dimmingView.removeFromSuperview()
+//            self.dimmingView.removeFromSuperview()
         }
     }
     override func dismissalTransitionWillBegin() {
         if let transitionCoordinator = self.presentingViewController.transitionCoordinator {
             transitionCoordinator.animate(alongsideTransition: {(context: UIViewControllerTransitionCoordinatorContext!) -> Void in
-                self.dimmingView.alpha  = 2.0
+//                self.dimmingView.alpha  = 2.0
             }, completion:nil)
         }
     }
     override func dismissalTransitionDidEnd(_ completed: Bool) {
         if completed {
-            self.dimmingView.removeFromSuperview()
+//            self.dimmingView.removeFromSuperview()
         }
     }
     override var frameOfPresentedViewInContainerView: CGRect{
@@ -60,12 +60,13 @@ class CustomPresentationController: UIPresentationController {
             else {
                 return CGRect()
         }
-        
-        // We don't want the presented view to fill the whole container view, so inset it's frame
-//        var frame = containerView.bounds;
-//        frame = frame.insetBy(dx: 50.0, dy: 50.0)
-        
-        let frame = CGRect(x:0,y:400,width:containerView.bounds.width,height:200)
+        var frame :CGRect
+        if !((self.presentedViewController as? ListPerColumnViewController) != nil) {
+             frame = CGRect(x:0,y:0,width:containerView.bounds.width,height:containerView.bounds.height)
+        }else{
+            frame = CGRect(x:0,y:250,width:containerView.bounds.width,height:containerView.bounds.height-250)
+        }
+
         return frame
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -76,9 +77,9 @@ class CustomPresentationController: UIPresentationController {
 //            else {
 //                return
 //        }
-        
+
         coordinator.animate(alongsideTransition: {(context: UIViewControllerTransitionCoordinatorContext!) -> Void in
-            self.dimmingView.frame  = CGRect(x:0,y:0,width:300,height:100)
+//            self.dimmingView.frame  = CGRect(x:0,y:0,width:300,height:100)
             //            self.dimmingView.frame = containerView.bounds
         }, completion:nil)
     }

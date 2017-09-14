@@ -1,14 +1,14 @@
 //
-//  CustomPresentationController.swift
+//  CustomPresentionCon.swift
 //  Page
 //
-//  Created by huiyun.he on 28/08/2017.
+//  Created by huiyun.he on 12/09/2017.
 //  Copyright © 2017 Oliver Zhang. All rights reserved.
 //
 
 import UIKit
 
-class CustomPresentController: UIPresentationController {
+class CustomPresentionCon: UIPresentationController {
     lazy var dimmingView :UIView = {
         let view = UIView(frame: self.containerView!.bounds)
         
@@ -26,7 +26,7 @@ class CustomPresentController: UIPresentationController {
         
         // Add the dimming view and the presented view to the heirarchy
         dimmingView.frame = containerView.bounds
-        containerView.addSubview(dimmingView)
+        //        containerView.addSubview(dimmingView)
         containerView.addSubview(presentedView)
         
         // Fade in the dimming view alongside the transition
@@ -38,7 +38,7 @@ class CustomPresentController: UIPresentationController {
     }
     override func presentationTransitionDidEnd(_ completed: Bool) {
         if !completed {
-            self.dimmingView.removeFromSuperview()
+            //            self.dimmingView.removeFromSuperview()
         }
     }
     override func dismissalTransitionWillBegin() {
@@ -50,7 +50,6 @@ class CustomPresentController: UIPresentationController {
     }
     override func dismissalTransitionDidEnd(_ completed: Bool) {
         if completed {
-            self.dimmingView.removeFromSuperview()
         }
     }
     override var frameOfPresentedViewInContainerView: CGRect{
@@ -61,26 +60,15 @@ class CustomPresentController: UIPresentationController {
                 return CGRect()
         }
         
-        // We don't want the presented view to fill the whole container view, so inset it's frame
-//        var frame = containerView.bounds;
-//        frame = frame.insetBy(dx: 50.0, dy: 50.0)
         
-        let frame = CGRect(x:0,y:250,width:containerView.bounds.width,height:containerView.bounds.height-250)
+        let frame = CGRect(x:0,y:0,width:containerView.bounds.width,height:containerView.bounds.height)
         return frame
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-//        guard
-//            let containerView = containerView
-//            else {
-//                return
-//        }
-        
         coordinator.animate(alongsideTransition: {(context: UIViewControllerTransitionCoordinatorContext!) -> Void in
-            self.dimmingView.frame  = CGRect(x:0,y:0,width:300,height:100)
-            //            self.dimmingView.frame = containerView.bounds
         }, completion:nil)
     }
-
+    
 }

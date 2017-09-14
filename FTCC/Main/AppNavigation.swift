@@ -22,7 +22,7 @@ struct AppNavigation {
             "isNavLightContent": false,
             "Channels": [
                 ["title": "文章",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
+                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
                  "compactLayout": "All Cover",
                  "regularLayout": "",
                  "url":"http://www.ftchinese.com/channel/datanews.html",

@@ -14,26 +14,27 @@ struct AdLayout {
         if newContentSections.count < 1 {
             return newContentSections
         }
+        let topBanner = ContentSection(
+            title: "Top Banner",
+            items: [],
+            type: "Banner",
+            adid: "20220101"
+        )
+        let MPU1 = ContentSection(
+            title: "MPU 1",
+            items: [],
+            type: "MPU",
+            adid: "20220003"
+        )
+        let bottomBanner = ContentSection(
+            title: "Bottom Banner",
+            items: [],
+            type: "Banner",
+            adid: "20220114"
+        )
         switch layout {
         case "home":
-            let topBanner = ContentSection(
-                title: "Top Banner",
-                items: [],
-                type: "Banner",
-                adid: "20220101"
-            )
-            let MPU1 = ContentSection(
-                title: "MPU 1",
-                items: [],
-                type: "MPU",
-                adid: "20220003"
-            )
-            let bottomBanner = ContentSection(
-                title: "Bottom Banner",
-                items: [],
-                type: "Banner",
-                adid: "20220114"
-            )
+
             // MARK: Create the Info Ad
             let paidPostItem = ContentItem(id: "20220121", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
             
@@ -78,7 +79,21 @@ struct AdLayout {
             // MARK: - Break up the first section into two or more, depending on how you want to layout ads
             newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
-            
+        case "Video":
+            if newContentSections[0].items.count > 0 {
+                newContentSections[0].items[0].isCover = true
+            }
+            if newContentSections.count > 2 {
+                if newContentSections[0].items.count + newContentSections[1].items.count > 6 {
+                    newContentSections.insert(MPU1, at: 2)
+                }
+            }
+            newContentSections.insert(topBanner, at: 0)
+            if newContentSections.count > 3 {
+                newContentSections.append(bottomBanner)
+            }
+            newContentSections = Content.updateSectionRowIndex(newContentSections)
+            return newContentSections
         default:
             newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections

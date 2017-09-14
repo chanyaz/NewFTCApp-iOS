@@ -25,6 +25,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     // MARK: show in full screen
     var isFullScreen = false
     
+
+    
     // MARK: sub type such as user comments
     var subType: ContentSubType = .None
     
@@ -69,18 +71,27 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
-            let jsCode = "window.gConnectionType = '\(Connection.current())';checkFontsize();"
-            let userScript = WKUserScript(
-                source: jsCode,
-                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
-                forMainFrameOnly: true
-            )
-            contentController.addUserScript(userScript)
+            if let type=dataObject?.type {
+                let jsCode = JSCodes.get(type)
+                let userScript = WKUserScript(
+                    source: jsCode,
+                    injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                    forMainFrameOnly: true
+                )
+                contentController.addUserScript(userScript)
+            }
             contentController.add(self, name: "alert")
             contentController.add(self, name: "follow")
             config.userContentController = contentController
             
             config.allowsInlineMediaPlayback = true
+            if dataObject?.type == "video" {
+                if #available(iOS 10.0, *) {
+                    config.mediaTypesRequiringUserActionForPlayback = .init(rawValue: 0)
+                } else {
+                    // Fallback on earlier versions
+                }
+            }
             
             // MARK: Add the webview as a subview of containerView
             if isFullScreen == false {
@@ -139,9 +150,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
     }
     
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -159,14 +167,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         //        self.webView?.removeObserver(self, forKeyPath: "estimatedProgress")
         //        self.webView?.removeObserver(self, forKeyPath: "canGoBack")
         //        self.webView?.removeObserver(self, forKeyPath: "canGoForward")
-        //
-        //        // MARK: - Stop loading and remove message handlers to avoid leak
-        //        self.webView?.stopLoading()
-        //        self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
-        //        self.webView?.configuration.userContentController.removeAllUserScripts()
-        //
-        //        // MARK: - Remove delegate to deal with crashes on iOS 8
-        //        self.webView?.navigationDelegate = nil
+        
+        // MARK: - Stop loading and remove message handlers to avoid leak
+        self.webView?.stopLoading()
+        self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
+        self.webView?.configuration.userContentController.removeAllUserScripts()
+        
+        // MARK: - Remove delegate to deal with crashes on iOS 8
+        self.webView?.navigationDelegate = nil
         self.webView?.scrollView.delegate = nil
         print ("deinit content item view controller successfully! ")
     }

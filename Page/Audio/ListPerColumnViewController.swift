@@ -1,31 +1,39 @@
 //
-//  ListPerColumnViewController.swift
+//  listPerColumnViewController.swift
 //  Page
 //
-//  Created by huiyun.he on 04/09/2017.
+//  Created by huiyun.he on 24/08/2017.
 //  Copyright © 2017 Oliver Zhang. All rights reserved.
 //
-
 
 import UIKit
 import AVKit
 import MediaPlayer
 
-
-class ContentItemContent {
-    static let sharedInstance = ContentItemContent()
-    var item: ContentItem?
+public extension AVPlayer {
+    enum RepeatMode {
+        case None
+        case One
+        case Loop // for AVQueuePlayer
+        case Order
+        case Random
+    }
 }
+let playMode = ["顺序播放", "列表循环", "单曲循环", "随机播放"]
+let playModeImage = ["BigPlayButton", "DeleteButton", "PauseButton", "PlayButton"]
 class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIViewControllerTransitioningDelegate {
     public var directory: String? = nil
     public let reloadView = "reloadView"
-    let customTabBarController = CustomTabBarController()
     var AudioLists = ContentFetchResults(
         apiUrl: "",
         fetchResults: [ContentSection]()
     )
+    var fetchListResults: [ContentSection]?
     var item: ContentItem?
+    var changePlayModeButton:UIButton? = nil
     @IBOutlet weak var listTableView: UITableView!
+    @IBOutlet weak var changePlayModeView: UIView!
+    //    @IBOutlet weak var changePlayModeButton: UIButton!
     @IBOutlet weak var exitButton: UIButton!
     @IBAction func exit(_ sender: UIButton) {
         self.dismiss(animated: true)
@@ -40,14 +48,32 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        customTabBarController.item = item
+        self.transitioningDelegate = self
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
-        //        self.transitioningDelegate = self
-        //        self.modalPresentationStyle = .custom
-        //        listTableView?.register(UINib(nibName: "AudioListsTableViewCell", bundle: nil), forCellReuseIdentifier: "AudioListsTableViewCell")
-        
+        self.changePlayModeView.frame =  CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50)
+        changePlayModeButton = UIButton(type: UIButtonType.system)
+        changePlayModeButton?.setTitle("随机播放", for: .normal)
+        changePlayModeButton?.setImage(UIImage(named:"BigPlayButton"), for: .normal)
+        changePlayModeButton?.setTitleColor(UIColor.red, for: .normal)
+        //        button.setBackgroundImage(UIImage(named:"Audio"), for: .normal)
+        changePlayModeButton?.titleEdgeInsets = UIEdgeInsets(top: 6, left: 50, bottom: 6, right: 25)
+        changePlayModeButton?.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 15)
+        changePlayModeButton?.frame = CGRect(x: 0, y: 0, width: 260, height: 50)
+        self.changePlayModeView.addSubview(changePlayModeButton!)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
+        changePlayModeButton?.addGestureRecognizer(tapGestureRecognizer)
+    }
+    var i:Int=0
+    func tapGesture(sender: UITapGestureRecognizer) {
+        i+=1
+        if i >= playMode.count{
+            i = 0
+        }
+        TabBarAudioContent.sharedInstance.mode = i
+
+        changePlayModeButton?.setTitle(playMode[i], for: .normal)
+        changePlayModeButton?.setImage(UIImage(named:playModeImage[i]), for: .normal)
     }
     
     override func didReceiveMemoryWarning() {
@@ -62,8 +88,8 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-         return 5
-//        return AudioLists.fetchResults[0].items.count
+        //        return AudioLists.fetchResults[0].items.count
+        return  (fetchListResults?[0].items.count)!
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -76,7 +102,8 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         
         let cellItem = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath)
         if let cell = cellItem as? ListTableViewCell {
-            cell.itemCell = AudioLists.fetchResults[0].items[indexPath.row]
+            //            cell.itemCell = AudioLists.fetchResults[0].items[indexPath.row]
+            cell.itemCell = fetchListResults?[0].items[indexPath.row]
             return cell
         }
         
@@ -84,40 +111,18 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        item = AudioLists.fetchResults[0].items[indexPath.row]
-        //        当点击一行，更新ContentItemViewController中的内容
-        //        self.dismiss(animated: true)
+
         
-        
-        if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController
+        if (storyboard?.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController) != nil
         {
             
+//            audioPlayerBar.item = fetchListResults?[0].items[indexPath.row]
+            TabBarAudioContent.sharedInstance.item = fetchListResults?[0].items[indexPath.row]
             
-            //            NotificationCenter.default.post(name: "ReloadView", object: self)
-            print("update contentItemViewController content")
-            //            contentItemViewController.fetchesDataObject = AudioLists
-            ContentItemContent.sharedInstance.item = item
-            //            contentItemViewController.dataObject = item
-            contentItemViewController.modalPresentationStyle = UIModalPresentationStyle.custom
-            //            self.present(contentItemViewController, animated: true, completion: nil)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
             self.dismiss(animated: true)
         }
         
-        
-        //        if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
-        //            if let audioFileUrl = item?.audioFileUrl {
-        //
-        //                AudioContent.sharedInstance.body["title"] = item?.headline
-        //                AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-        //                AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(String(describing: item?.id))"
-        //                audioPlayerController.item = item
-        //                self.addChildViewController(audioPlayerController)
-        //                self.view.addSubview(audioPlayerController.view)
-        //                audioPlayerController.view.frame = CGRect(x:0,y:self.view.bounds.height-200,width:self.view.bounds.width,height:200)
-        //
-        //            }
-        //        }
     }
     //init 不能少，写在viewDidLoad中不生效
     
@@ -127,12 +132,6 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     
-    //    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!)  {
-    //        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    //
-    //        self.commonInit()
-    //    }
-    
     func commonInit() {
         self.modalPresentationStyle = .custom
         self.transitioningDelegate = self
@@ -141,6 +140,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         
         if presented == self {
+            print("present ")
             return CustomPresentationController(presentedViewController: presented, presenting: presenting)
         }
         
@@ -149,19 +149,22 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
         if presented == self {
+            print("present animation")
             return CustomPresentationAnimation(isPresenting: true)
         }
         else {
+            print("present nil")
             return nil
         }
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
+        print("present dismiss nil")
         if dismissed == self {
             return CustomPresentationAnimation(isPresenting: false)
         }
         else {
+            print("present dismiss nil11")
             return nil
         }
     }

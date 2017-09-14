@@ -30,21 +30,44 @@ class CustomPresentationAnimation: NSObject, UIViewControllerAnimatedTransitioni
         return duration
     }
     func animatePresentationWithTransitionContext(_ transitionContext: UIViewControllerContextTransitioning) {
-        
-        
-        let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
-        let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)
-        
         let containerView = transitionContext.containerView
-        // Position the presented view off the top of the container view
-        presentedControllerView?.frame = transitionContext.finalFrame(for: presentedController!)
-        presentedControllerView?.center.y -= containerView.bounds.size.height
         
-        containerView.addSubview(presentedControllerView!)
+//        let presentingController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? CustomTabBarController
+        
+        var presentedControllerView :UIView
+        if !((transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? CustomTabBarController) != nil){
+            presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+        }else{
+            presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+        }
+//        let presentingControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
+        let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
+
+        
+
+       
+        
+        // Position the presented view off the top of the container view
+        presentedControllerView.frame = transitionContext.finalFrame(for: presentedController!)
+        presentedControllerView.center.y += containerView.bounds.size.height
+        
+        containerView.addSubview(presentedControllerView)
+        
+ 
+ 
+//        let tabBarHeight = presentingController?.tabView.bounds.height
+
+        
+
         
         // Animate the presented view to it's final position
         UIView.animate(withDuration: self.duration, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-            presentedControllerView?.center.y += containerView.bounds.size.height
+            
+            
+//            presentingController?.tabView.transform = CGAffineTransform(translationX: 0, y: tabBarHeight!)
+            presentedControllerView.center.y -= containerView.bounds.size.height
+            
+            
         }, completion: {(completed: Bool) -> Void in
             transitionContext.completeTransition(completed)
         })
@@ -52,12 +75,34 @@ class CustomPresentationAnimation: NSObject, UIViewControllerAnimatedTransitioni
     
     func animateDismissalWithTransitionContext(_ transitionContext: UIViewControllerContextTransitioning) {
         
-        let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)
         let containerView = transitionContext.containerView
+        
+        var presentingControllerView :UIView
+//        var presentedController:UIViewController
+        
+        if !((transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? AudioPlayerController) != nil){
+            
+           presentingControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
+
+        }else{
+           presentingControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
+        }
+        
+        
+//        let  presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)  as? CustomTabBarController
+        
+        
+        
         
         //         Animate the presented view off the bottom of the view
         UIView.animate(withDuration: self.duration, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-            presentedControllerView?.center.y += containerView.bounds.size.height
+           
+            
+            presentingControllerView.center.y += containerView.bounds.size.height
+            
+//            presentedController?.tabView.transform = CGAffineTransform.identity
+//            presentedController?.tabView.isHidden = false
+            
         }, completion: {(completed: Bool) -> Void in
             transitionContext.completeTransition(completed)
         })

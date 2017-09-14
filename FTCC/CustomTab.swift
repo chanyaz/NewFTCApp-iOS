@@ -64,11 +64,37 @@ class CustomTab: UIView {
             name: Notification.Name(rawValue: "updateMiniPlay"),
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playFinish),
+            name: Notification.Name(rawValue: "playFinish"),
+            object: nil
+        )
+        
+        
     }
+    
+    
+    func playFinish(){
+        print("playFinish000----")
+        // seek(to: kCMTimeZero)只能放到此处，并且值为kCMTimeZero，有时间可以适当调整duration 和time之间的差值
+        TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
+        TabBarAudioContent.sharedInstance.isPlaying = false
+        //        点击相同的语音就不会运行此处，点击不同的会运行
+        //       progressSlider.value = 0
+        //       playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+        //       upSwipeButton.backgroundColor = UIColor.red
+        
+    }
+    //    不能放在外面，因为此处不会运行，该放在能及时更新的地方
+    //   此函数执行了切换后的值，最后面跳回去是什么原因呢？
+    //    最终还执行这里
     func updateMiniPlay(){
+        
         audioLable.text=TabBarAudioContent.sharedInstance.item?.headline
         let duration = TabBarAudioContent.sharedInstance.duration
         let time = TabBarAudioContent.sharedInstance.time
+//        print("playFinish11----\(String(describing: duration?.durationText))")
         if let duration = duration, let time = time{
             playDuration.text = "-\((duration-time).durationText)"
             playTime.text = time.durationText
@@ -80,24 +106,21 @@ class CustomTab: UIView {
                     progressSlider.value = Float((CMTimeGetSeconds(time)))
                 }
             }
-            
+            if duration == time{
+//                print("playFinish22----")
+                progressSlider.value = 0
+                playDuration.text = "-\(duration.durationText)"
+                playTime.text = "00:00"
+                playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+            }
         }
-        //        let playerItem = TabBarAudioContent.sharedInstance.playerItem
-        //        let player = TabBarAudioContent.sharedInstance.player
-        //        if let player = player{
+        //       放在此处合适么？放此处是一直处于监控状态
         if TabBarAudioContent.sharedInstance.isPlaying{
-            //                print("isPlaying true")
             playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-            try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try? AVAudioSession.sharedInstance().setActive(true)
-            //                player.play()
-            //                player.replaceCurrentItem(with: playerItem)
+            
         }else{
-            //                print("isPlaying false")
             playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-            //                player.pause()
         }
-        //        }
         
     }
     required init?(coder aDecoder: NSCoder) {

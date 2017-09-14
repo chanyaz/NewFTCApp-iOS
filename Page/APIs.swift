@@ -128,6 +128,7 @@ struct Key {
     static let languagePreference = "Language Preference"
     static let domainIndex = "Domain Index"
     static let searchHistory = "Search History"
+    static let audioHistory = "Audio History"
 }
 
 // MARK: - Use a server side image service so that you can request images that are just large enough
@@ -268,7 +269,8 @@ struct Meta {
         "教程",
         "测试",
         "FT商学院",
-        "英语电台"
+        "英语电台",
+        "视频"
     ]
 }
 
@@ -312,6 +314,17 @@ struct DeviceToken {
         let timeZone = TimeZone.current.abbreviation() ?? ""
         let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
         PostData.sendDeviceToken(body: urlEncoded)
+    }
+}
+
+struct JSCodes {
+    static func get(_ type: String) -> String {
+        switch type {
+        case "video":
+            return "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
+        default:
+            return "window.gConnectionType = '\(Connection.current())';checkFontsize();"
+        }
     }
 }
 

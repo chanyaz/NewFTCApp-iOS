@@ -153,7 +153,7 @@ class BigImageCell: CustomCell {
         }
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
     
-        
+        print("TabBarAudioContent.sharedInstance.body\(TabBarAudioContent.sharedInstance.body)")
     }
     
     @IBAction func tapTagButton(_ sender: UIButton) {

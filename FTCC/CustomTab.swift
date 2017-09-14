@@ -94,7 +94,7 @@ class CustomTab: UIView {
         audioLable.text=TabBarAudioContent.sharedInstance.item?.headline
         let duration = TabBarAudioContent.sharedInstance.duration
         let time = TabBarAudioContent.sharedInstance.time
-        print("playFinish11----\(String(describing: duration?.durationText))")
+//        print("playFinish11----\(String(describing: duration?.durationText))")
         if let duration = duration, let time = time{
             playDuration.text = "-\((duration-time).durationText)"
             playTime.text = time.durationText
@@ -107,7 +107,7 @@ class CustomTab: UIView {
                 }
             }
             if duration == time{
-                print("playFinish22----")
+//                print("playFinish22----")
                 progressSlider.value = 0
                 playDuration.text = "-\(duration.durationText)"
                 playTime.text = "00:00"

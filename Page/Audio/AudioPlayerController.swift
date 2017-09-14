@@ -405,6 +405,10 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         progressSlider.setThumbImage(aa, for: .normal)
         progressSlider.maximumTrackTintColor = UIColor.white
         progressSlider.minimumTrackTintColor = UIColor(hex: "#05d5e9")
+        self.webAudioView.layer.zPosition = 1
+        self.containerView.layer.zPosition = 3
+//        self.webAudioView.layer.frame = CGRect(x: 0, y: 10, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

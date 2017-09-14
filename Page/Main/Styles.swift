@@ -16,6 +16,7 @@ struct Color {
         static let lead = "#777777"
         static let border = "#e9decf"
         static let background = "#FFF1E0"
+        static let backgroundForSectionCover = "#f2dfce"
         static let tag = "#9E2F50"
         static let time = "#8b572a"
     }
@@ -75,6 +76,8 @@ struct Color {
                 return (background: "#e0cdac", border: "#e0cdac", title: "#333333", tag: "#9E2F50", lead: "#777777")
             case "Blue":
                 return (background: "#0f5499", border: "#0f5499", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
+            case "Video":
+                return (background: "#33302e", border: "#33302e", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
             default:
                 return (background: "#FFF1E0", border: "#e9decf", title: "#333333", tag: "#9E2F50", lead: "#777777")
             }

@@ -225,6 +225,10 @@
 		60986A481F1CAC5300583157 /* ShareHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A431F1CAC5300583157 /* ShareHelper.swift */; };
 		60986A491F1CAC5300583157 /* ShareImageActivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A441F1CAC5300583157 /* ShareImageActivityProvider.swift */; };
 		60986A4A1F1CAC5300583157 /* WeChatShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A451F1CAC5300583157 /* WeChatShare.swift */; };
+		60B855481F6A118600FE190E /* VideoCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B855461F6A118600FE190E /* VideoCoverCell.swift */; };
+		60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B855461F6A118600FE190E /* VideoCoverCell.swift */; };
+		60B8554A1F6A118600FE190E /* VideoCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B855471F6A118600FE190E /* VideoCoverCell.xib */; };
+		60B8554B1F6A118600FE190E /* VideoCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B855471F6A118600FE190E /* VideoCoverCell.xib */; };
 		60C03D6A1EFE4470003ABDE4 /* DetailModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C03D691EFE4470003ABDE4 /* DetailModelDelegate.swift */; };
 		60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65A1F17402500E6F77D /* HappyUser.swift */; };
 		60C0D65E1F17415A00E6F77D /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */; };
@@ -473,6 +477,8 @@
 		60986A431F1CAC5300583157 /* ShareHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareHelper.swift; path = Share/ShareHelper.swift; sourceTree = "<group>"; };
 		60986A441F1CAC5300583157 /* ShareImageActivityProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareImageActivityProvider.swift; path = Share/ShareImageActivityProvider.swift; sourceTree = "<group>"; };
 		60986A451F1CAC5300583157 /* WeChatShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WeChatShare.swift; path = Share/WeChatShare.swift; sourceTree = "<group>"; };
+		60B855461F6A118600FE190E /* VideoCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCoverCell.swift; sourceTree = "<group>"; };
+		60B855471F6A118600FE190E /* VideoCoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCoverCell.xib; sourceTree = "<group>"; };
 		60C03D691EFE4470003ABDE4 /* DetailModelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailModelDelegate.swift; sourceTree = "<group>"; };
 		60C0D65A1F17402500E6F77D /* HappyUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HappyUser.swift; sourceTree = "<group>"; };
 		60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
@@ -1099,6 +1105,8 @@
 		60F4C1741EFCEBE500F21EB6 /* Compact */ = {
 			isa = PBXGroup;
 			children = (
+				60B855461F6A118600FE190E /* VideoCoverCell.swift */,
+				60B855471F6A118600FE190E /* VideoCoverCell.xib */,
 				6054B2841F6628B300E34990 /* ThemeCoverCell.swift */,
 				6054B2851F6628B300E34990 /* ThemeCoverCell.xib */,
 				60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */,
@@ -1427,6 +1435,7 @@
 				F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */,
 				60814F631F580FB200041801 /* BookCell.xib in Resources */,
 				6021538F1F39990E0077A7AF /* LaunchScreen.storyboard in Resources */,
+				60B8554B1F6A118600FE190E /* VideoCoverCell.xib in Resources */,
 				6055EF9A1F5021C1006F8A83 /* PaidPostCell.xib in Resources */,
 				601AC21C1F4870780004196A /* search.html in Resources */,
 				602153691F397C650077A7AF /* ad.html in Resources */,
@@ -1489,6 +1498,7 @@
 				602153C41F39A4390077A7AF /* ShareIcon.jpg in Resources */,
 				602153C31F39A4390077A7AF /* mute.png in Resources */,
 				6019A9D31F4C457D00B8FB69 /* FollowCell.xib in Resources */,
+				60B8554A1F6A118600FE190E /* VideoCoverCell.xib in Resources */,
 				6054B2881F6628B300E34990 /* ThemeCoverCell.xib in Resources */,
 				60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */,
 			);
@@ -1718,6 +1728,7 @@
 				6021532E1F397C650077A7AF /* CellData.swift in Sources */,
 				6021532F1F397C650077A7AF /* SpeechDefaultVoice.swift in Sources */,
 				50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
+				60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */,
 				602153301F397C650077A7AF /* WeChatShare.swift in Sources */,
 				602153311F397C650077A7AF /* CoverCellRegular.swift in Sources */,
 				602153321F397C650077A7AF /* Ad.swift in Sources */,
@@ -1876,6 +1887,7 @@
 				60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */,
 				50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */,
 				6054B2861F6628B300E34990 /* ThemeCoverCell.swift in Sources */,
+				60B855481F6A118600FE190E /* VideoCoverCell.swift in Sources */,
 				604FF94B1EEF7649005D2A41 /* ChannelCell.swift in Sources */,
 				F258A5B81F613E9B0095253A /* AudioPlayerView.swift in Sources */,
 				F2D7926B1F5CEBF4005A7588 /* ListTableViewCell.swift in Sources */,

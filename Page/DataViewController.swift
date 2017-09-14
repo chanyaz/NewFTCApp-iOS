@@ -60,7 +60,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     if #available(iOS 10.0, *) {
                         flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
                     } else {
-                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 110)
+                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 250)
                     }
                     cellWidth = availableWidth
                 }
@@ -68,6 +68,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
             collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
             collectionView?.register(UINib.init(nibName: "ThemeCoverCell", bundle: nil), forCellWithReuseIdentifier: "ThemeCoverCell")
+            collectionView?.register(UINib.init(nibName: "VideoCoverCell", bundle: nil), forCellWithReuseIdentifier: "VideoCoverCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
             collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
@@ -405,6 +406,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "VideoCoverCell":
+            if let cell = cellItem as? VideoCoverCell {
+                cell.coverTheme = coverTheme
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         case "BigImageCell":
             if let cell = cellItem as? BigImageCell {
                 cell.cellWidth = cellWidth
@@ -562,6 +570,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         } else if layoutStrategy == "All Cover" {
             reuseIdentifier = "BigImageCell"
+        } else if layoutStrategy == "Video" {
+            reuseIdentifier = "VideoCoverCell"
         } else {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
@@ -642,7 +652,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 reuseIdentifier = "Ad"
                 sectionSize = CGSize(width: 300, height: 600)
             case "List":
-                if fetches.fetchResults[sectionIndex].title != "" {
+                if ![""].contains(fetches.fetchResults[sectionIndex].title) {
                     reuseIdentifier = "HeaderView"
                     sectionSize = CGSize(width: view.frame.width, height: 60)
                 } else {
@@ -833,7 +843,8 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         // TODO: Should do the layout based on cell's properties
         if indexPath.row == 0 && indexPath.section == 1{
             widthPerItem = (availableWidth / itemsPerRow) * 2
-            heightPerItem = widthPerItem * 0.618
+            //heightPerItem = widthPerItem * 0.618
+            heightPerItem = widthPerItem * 3
         } else {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = widthPerItem * 0.618

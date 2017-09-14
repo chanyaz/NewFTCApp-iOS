@@ -176,7 +176,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: - Remove delegate to deal with crashes on iOS 8
         self.webView?.navigationDelegate = nil
         self.webView?.scrollView.delegate = nil
-        print ("deinit content item view controller successfully! ")
+        print ("deinit content item view controller of \(pageTitle) successfully! ")
     }
     
     public func handleLanguagePreferenceChange() {

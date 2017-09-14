@@ -558,8 +558,8 @@
 		F2E090671F5A6A3900F4409F /* MySubscribeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySubscribeViewController.swift; sourceTree = "<group>"; };
 		F2E090681F5A6A3900F4409F /* MyWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWalletViewController.swift; sourceTree = "<group>"; };
 		F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInfoViewController.swift; sourceTree = "<group>"; };
-		F2E090771F5A721E00F4409F /* CustomTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTab.swift; path = ../FTCC/CustomTab.swift; sourceTree = "<group>"; };
-		F2E090781F5A721E00F4409F /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTabBarController.swift; path = ../FTCC/CustomTabBarController.swift; sourceTree = "<group>"; };
+		F2E090771F5A721E00F4409F /* CustomTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTab.swift; path = FTCC/CustomTab.swift; sourceTree = "<group>"; };
+		F2E090781F5A721E00F4409F /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTabBarController.swift; path = FTCC/CustomTabBarController.swift; sourceTree = "<group>"; };
 		F2E0907D1F5A736E00F4409F /* CustomAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimation.swift; sourceTree = "<group>"; };
 		F2E0907E1F5A736E00F4409F /* CustomPresentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPresentController.swift; sourceTree = "<group>"; };
 		F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCellRegular.swift; sourceTree = "<group>"; };
@@ -772,6 +772,8 @@
 				602153931F399AC80077A7AF /* Assets.xcassets */,
 				602153851F397C660077A7AF /* Page copy-Info.plist */,
 				6021538E1F39990E0077A7AF /* LaunchScreen.storyboard */,
+				F2E090771F5A721E00F4409F /* CustomTab.swift */,
+				F2E090781F5A721E00F4409F /* CustomTabBarController.swift */,
 				F2E0905B1F5A6A3900F4409F /* Column */,
 				F2E090631F5A6A3900F4409F /* PersonInformation */,
 				602153BB1F399EA30077A7AF /* Main */,
@@ -1040,8 +1042,6 @@
 				6037DD401F28798D007DB2FF /* Supporting Files */,
 				60D4B9021EE7D95800A4506D /* FTChinese */,
 				602153861F397D280077A7AF /* FTCC */,
-				F2E090771F5A721E00F4409F /* CustomTab.swift */,
-				F2E090781F5A721E00F4409F /* CustomTabBarController.swift */,
 			);
 			path = Page;
 			sourceTree = "<group>";

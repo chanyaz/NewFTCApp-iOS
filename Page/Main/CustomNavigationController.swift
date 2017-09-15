@@ -12,6 +12,8 @@ import UIKit
 
 class CustomNavigationController: UINavigationController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
     var tabName: String? = nil
+    var isLightContent = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
         tabBarController?.tabBar.tintColor = AppNavigation.getThemeColor(for: tabName)
@@ -19,7 +21,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         if let currentTabName = tabName {
-            let isLightContent = AppNavigation.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
+            isLightContent = AppNavigation.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
             if isLightContent == true {
                 return UIStatusBarStyle.lightContent
             }

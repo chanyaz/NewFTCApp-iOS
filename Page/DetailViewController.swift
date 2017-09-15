@@ -264,18 +264,21 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         toolBar.isTranslucent = false
         
         // MARK: Set style for the language switch
+        var isLightContent = false
+        
+        if let nav = navigationController as? CustomNavigationController {
+            isLightContent = nav.isLightContent
+        }
         
         // TODO: Set themeColor based on whether it is lightcontent
         if let themeColor = themeColor,
-            themeColor != "#c0282e" {
+            isLightContent == true {
             languages?.backgroundColor = UIColor(hex: themeColor)
             languages?.tintColor = UIColor(hex: Color.Content.background)
         } else {
             languages?.backgroundColor = UIColor(hex: Color.Content.background)
             languages?.tintColor = buttonTint
         }
-        
-        
         
         // MARK: Set style for the bottom buttons
         actionButton.tintColor = buttonTint

@@ -109,7 +109,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 forMainFrameOnly: true
             )
             contentController.addUserScript(userScript)
-            contentController.add(self, name: "alert")
+            // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
+            contentController.add(LeakAvoider(delegate:self), name: "alert")
             config.userContentController = contentController
             
             config.allowsInlineMediaPlayback = true

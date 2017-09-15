@@ -173,6 +173,13 @@ struct AppNavigation {
                     "coverTheme": "Wheat"
                 ],
                 [
+                    "title": "商学院观察",
+                    "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=mbastory",
+                    "url":"http://www.ftchinese.com/channel/mba.html",
+                    "screenName":"ftacademy/read",
+                    "coverTheme": "Wheat"
+                ],
+                [
                     "title": "深度阅读",
                     "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=mbaread",
                     "url":"http://www.ftchinese.com/channel/mba.html",

@@ -898,7 +898,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     let pageData = withAd.contentItems
                     currentPageIndex = withAd.pageIndex
                     pageData[currentPageIndex].isLandingPage = true
-                    
+                    detailViewController.themeColor = themeColor
                     detailViewController.contentPageData = pageData
                     detailViewController.currentPageIndex = currentPageIndex
                     navigationController?.pushViewController(detailViewController, animated: true)

@@ -23,13 +23,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="313" height="278"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AFL-Ml-oxU">
-                                <rect key="frame" x="14" y="60.5" width="285" height="147"/>
+                                <rect key="frame" x="14" y="60.5" width="285" height="163.5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="AFL-Ml-oxU" secondAttribute="height" multiplier="91:47" id="JBE-BU-wJ8"/>
+                                    <constraint firstAttribute="width" secondItem="AFL-Ml-oxU" secondAttribute="height" multiplier="408:234" id="JBE-BU-wJ8"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1a-Jy-xur">
-                                <rect key="frame" x="14" y="215.5" width="285" height="42.5"/>
+                                <rect key="frame" x="14" y="232" width="285" height="26"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Lead">
                                         <attributes>
@@ -47,7 +47,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KeL-S7-nAv">
-                                <rect key="frame" x="14" y="163" width="44" height="44"/>
+                                <rect key="frame" x="14" y="179.5" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Jkk-jm-JWd"/>
                                     <constraint firstAttribute="width" constant="44" id="XKN-QR-Cr3"/>

@@ -109,9 +109,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 forMainFrameOnly: true
             )
             contentController.addUserScript(userScript)
-            contentController.add(self, name: "alert")
+            // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
+            contentController.add(LeakAvoider(delegate:self), name: "alert")
             config.userContentController = contentController
-            
             config.allowsInlineMediaPlayback = true
             
             // MARK: Add the webview as a subview of containerView
@@ -680,13 +680,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     func openPlay(sender: UIButton?){
         
-        //        customTabBarController.removePlayerItemObservers()
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
         
         print("palyer item isExist url")
 
-        //     修改的代码
         let body = TabBarAudioContent.sharedInstance.body
 //        let body = AudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
@@ -718,13 +716,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         let url = (playerItem?.asset as? AVURLAsset)?.url
         //     修改的代码结束
         
-        
-        //        let  player = customTabBarController.player
         TabBarAudioContent.sharedInstance.player = player
-        //        let  playerItem = customTabBarController.playerItem
-        
-        print("url item first-0-player000--\(String(describing: player))")
-        print("url item first-0-playerItem000--\(String(describing: playerItem))")
         self.nowPlayingCenter.updateTimeForPlayerItem(player)
         
         //    获取用户点击的音频的url，下面url这个目前获取的为空，不对
@@ -735,20 +727,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             //判断url是否与当前播放的音频是否为同一个，
             //即 比较url与TabBarAudioContent.sharedInstance.audioUrl
             //如果一样，不进行操作
-            //如果不一样，将URL进行播放，同时令customTabBarController.playerItem等于url
             if (TabBarAudioContent.sharedInstance.audioUrl) != nil {
                 print("url item second---\(url == TabBarAudioContent.sharedInstance.audioUrl)")
                 
                 if url == TabBarAudioContent.sharedInstance.audioUrl {
                     print("url item second same play---")
                     //如果当前播放一样，直接忽略点击，继续播放
-                    //                    此处有个漏洞，假如播放完成，继续播放相同的就不播放了；这个需要去解决
-                    //                    播放一段时间继续点击会重新开始，应该把上次播放的playItem保存下来，保存值应为time。点击一下会先跳到初始值，这是为什么？
+                    //  此处有个漏洞，假如播放完成，继续播放相同的就不播放了；这个需要去解决
+                    //播放一段时间继续点击会重新开始，应该把上次播放的playItem保存下来，保存值应为time。点击一下会先跳到初始值，这是为什么？
                     
                     if let currrentPlayingTime = TabBarAudioContent.sharedInstance.time{
                         print("url item second currrentPlayingTime-\(String(describing: currrentPlayingTime))")
-                        //                        let currentItem = player?.currentItem
-                        //                        currentItem?.seek(to: currrentPlayingTime)
                         self.playerItem?.seek(to: currrentPlayingTime)
                     }
                     
@@ -771,7 +760,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             } else {
                 // customTabBarController.removePlayerItemObservers()
                 TabBarAudioContent.sharedInstance.audioUrl = url
-                print("url item first-1--\(String(describing: TabBarAudioContent.sharedInstance.audioUrl))")
                 // 开始播放
                 player?.play()
                 player?.replaceCurrentItem(with: playerItem)
@@ -909,6 +897,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
                     let pageData = withAd.contentItems
                     currentPageIndex = withAd.pageIndex
+                    pageData[currentPageIndex].isLandingPage = true
                     
                     detailViewController.contentPageData = pageData
                     detailViewController.currentPageIndex = currentPageIndex

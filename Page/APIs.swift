@@ -318,9 +318,10 @@ struct DeviceToken {
 }
 
 struct JSCodes {
+    static let autoPlayVideoType = "autoPlayVideo"
     static func get(_ type: String) -> String {
         switch type {
-        case "video":
+        case autoPlayVideoType:
             return "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
         default:
             return "window.gConnectionType = '\(Connection.current())';checkFontsize();"

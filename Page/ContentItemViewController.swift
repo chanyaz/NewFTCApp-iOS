@@ -65,14 +65,19 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             view.backgroundColor = webViewBG
             //            self.edgesForExtendedLayout = []
             //            self.extendedLayoutIncludesOpaqueBars = false
-            
+
             
             let config = WKWebViewConfiguration()
-            
+
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
-            if let type=dataObject?.type {
-                let jsCode = JSCodes.get(type)
+            if let type = dataObject?.type {
+                let jsCode: String
+                if type == "video" && dataObject?.isLandingPage == true {
+                    jsCode = JSCodes.get(JSCodes.autoPlayVideoType)
+                } else {
+                    jsCode = JSCodes.get(type)
+                }
                 let userScript = WKUserScript(
                     source: jsCode,
                     injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
@@ -80,10 +85,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 )
                 contentController.addUserScript(userScript)
             }
-            contentController.add(self, name: "alert")
-            contentController.add(self, name: "follow")
-            config.userContentController = contentController
             
+            // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
+            contentController.add(LeakAvoider(delegate:self), name: "alert")
+            contentController.add(LeakAvoider(delegate:self), name: "follow")
+
+            config.userContentController = contentController
+
             config.allowsInlineMediaPlayback = true
             if dataObject?.type == "video" {
                 if #available(iOS 10.0, *) {
@@ -92,7 +100,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     // Fallback on earlier versions
                 }
             }
-            
+
             // MARK: Add the webview as a subview of containerView
             if isFullScreen == false {
                 webView = WKWebView(frame: containerView.bounds, configuration: config)
@@ -176,7 +184,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: - Remove delegate to deal with crashes on iOS 8
         self.webView?.navigationDelegate = nil
         self.webView?.scrollView.delegate = nil
-        print ("deinit content item view controller successfully! ")
+        print ("deinit content item view controller of \(pageTitle) successfully! ")
     }
     
     public func handleLanguagePreferenceChange() {

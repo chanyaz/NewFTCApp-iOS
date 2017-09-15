@@ -112,7 +112,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
             contentController.add(LeakAvoider(delegate:self), name: "alert")
             config.userContentController = contentController
-            
             config.allowsInlineMediaPlayback = true
             
             // MARK: Add the webview as a subview of containerView
@@ -898,6 +897,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
                     let pageData = withAd.contentItems
                     currentPageIndex = withAd.pageIndex
+                    pageData[currentPageIndex].isLandingPage = true
                     
                     detailViewController.contentPageData = pageData
                     detailViewController.currentPageIndex = currentPageIndex

@@ -72,7 +72,12 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
             if let type = dataObject?.type {
-                let jsCode = JSCodes.get(type)
+                let jsCode: String
+                if type == "video" && dataObject?.isLandingPage == true {
+                    jsCode = JSCodes.get(JSCodes.autoPlayVideoType)
+                } else {
+                    jsCode = JSCodes.get(type)
+                }
                 let userScript = WKUserScript(
                     source: jsCode,
                     injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
@@ -84,9 +89,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
             contentController.add(LeakAvoider(delegate:self), name: "alert")
             contentController.add(LeakAvoider(delegate:self), name: "follow")
-            
 
-            
             config.userContentController = contentController
 
             config.allowsInlineMediaPlayback = true

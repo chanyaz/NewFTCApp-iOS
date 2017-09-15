@@ -11,7 +11,7 @@
 2. 金融英语速读无法评论
 3. 金融英语速读无法听
 4. 每日英语双语阅读的Switch颜色需要更换
-5. 视频的Bug：退出页面还在播，不在画面内的自动播
+5. 视频的Bug：退出页面还在播，已经翻页的还在播放
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 

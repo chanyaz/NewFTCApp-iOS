@@ -21,6 +21,7 @@ class ContentItem{
     
     var section: Int
     var row: Int
+    var isLandingPage = false
     
     var isCover = false
     var hideTopBorder: Bool?

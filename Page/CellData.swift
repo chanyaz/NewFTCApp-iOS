@@ -6,6 +6,8 @@
 //  Copyright © 2017 Oliver Zhang. All rights reserved.
 //
 
+// MODEL: UI Independent
+
 import Foundation
 
 enum Member {
@@ -103,7 +105,6 @@ class CellData {
     var textColor = UIColor.black
     
     //基本尺寸
-
     var bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12)//文字嵌入气泡的边距
     var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)//气泡点九拉伸时的边距
     var cellInsets = UIEdgeInsetsMake(10, 5, 15, 5)//头像嵌入Cell的最小边距
@@ -113,40 +114,58 @@ class CellData {
     
     var maxTextWidth = CGFloat(240)//文字最大宽度
     var maxTextHeight = CGFloat(10000.0) //文字最大高度
-    var maxImageWidth = CGFloat(200) //图像消息的图片最大宽度
-    var maxImageHeight = CGFloat(400) //图像消息的图片最大高度
+    var defaultImageWidth = CGFloat(240)//图片消息还未获取到图片数据时默认图片宽度
+    var defaultImageHeight = CGFloat(135)//图片消息还未获取到图片数据时默认图片高度
+    //var maxImageWidth = CGFloat(200) //图像消息的图片最大宽度
+    //var maxImageHeight = CGFloat(400) //图像消息的图片最大高度
     var coverWidth = CGFloat(240)
     var coverHeight = CGFloat(135)//Cover图像统一是16*19的，这里统一为240*135
     
-    //计算得到的图形实际尺寸
+    //根据（文字长短）动态计算得到的图形实际尺寸，后文会计算
     var bubbleImageWidth = CGFloat(0) //气泡宽度
     var bubbleImageHeight = CGFloat(0) //气泡高度
-    var saysWhatWidth = CGFloat(0) // 文字宽度
+    var saysWhatWidth = CGFloat(0) // 宽度
     var saysWhatHeight = CGFloat(0) //文字高度
     var titleWidth = CGFloat(0)
     var titleHeight = CGFloat(0)
     var descriptionWidth = CGFloat(0)
     var descriptionHeight = CGFloat(0)
     
-    // 一些必须在数据里生成的和view相关的对象
-    var strechedBubbleImage = UIImage()
-    var saysImage = UIImage()
-    var coverImage = UIImage()
-    var normalFont = UIFont()
-    var titleFont = UIFont()
-    var descriptionFont = UIFont()
     
+    //计算属性：依赖于上述两种尺寸或者依赖于
+    var headImageWithInsets: CGFloat {
+        get {
+            return cellInsets.left + headImageLength + betweenHeadAndBubble
+        }
+    }
+    /*
+    var bubbleImageX = CGFloat(0)//依赖oneTalkCell
+    var bubbleImageY = CGFloat(0)
+    var saysWhatX = CGFloat(0)
+    var saysWhatY = CGFloat(0)
+     */
     //计算得到的cell的几种高度
     var cellHeightByHeadImage:CGFloat {
         get {
-            return headImageLength + cellInsets.top + cellInsets.bottom //60
+            return self.headImageLength + cellInsets.top + cellInsets.bottom //60
         }
     }
     var cellHeightByBubble: CGFloat {
         get {
-            return bubbleImageHeight + bubbleInsets.top + bubbleInsets.bottom
+            return self.bubbleImageHeight + bubbleInsets.top + bubbleInsets.bottom
         }
     }
+    
+    // 一些必须在数据里生成的和view相关的对象
+    var strechedBubbleImage = UIImage()
+
+    //var downLoadImage: UIImage? = nil//用于存储异步加载的UIImage对象
+    var normalFont = UIFont()
+    var titleFont = UIFont()
+    var descriptionFont = UIFont()
+    
+    
+    
     
     
     init(whoSays who: Member, saysWhat say: SaysWhat) {
@@ -181,11 +200,11 @@ class CellData {
             self.buildTextCellData(textContent: say.content)
             
         } else if say.type == .image { //缩放图片大小得到实际图形尺寸,并得到UIImage对象self.saysImage
-            //let imageUrlStr = "http://ts1.mm.bing.net/th?id=OIP.UkcKcCStZUP_60o1QYH06wEoDS&pid=15.1"
-            //self.buildImageCellData(imageUrl: say.url)
-            self.buildImageCellData(imageUrl: say.url)
+            //直接全部交给另一个线程处理
+            self.buildImageCellData()
             
         } else if say.type == .card {
+            
             self.buildCardCellData(
                 title: say.title,
                 coverUrl: say.coverUrl,
@@ -199,7 +218,7 @@ class CellData {
         
     }
     
-    //创建Text类型数据的可变方法
+    //创建Text类型数据:
      func buildTextCellData(textContent text: String) {//wycNOTE: mutating func:可以在mutating方法中修改结构体属性
         let font = UIFont.systemFont(ofSize:18)
         self.normalFont = font
@@ -227,10 +246,14 @@ class CellData {
     }
     
 
-    //创建Image类型数据的方法
-     func buildImageCellData(imageUrl imageUrlStr: String) {
-        print(imageUrlStr)
+    //创建Image类型数据:
+    
+     func buildImageCellData() {
         
+        self.bubbleImageWidth = self.defaultImageWidth + bubbleImageInsets.left + bubbleImageInsets.right
+        self.bubbleImageHeight = self.defaultImageHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
+
+        /*
         let myUIImage = self.buidUIImage(url:imageUrlStr)
         
         if let realUIImage = myUIImage { //如果成功获取了图片
@@ -259,8 +282,11 @@ class CellData {
             self.saysType = .text
             self.buildTextCellData(textContent: "Sorry，没能成功得到图片")
         }
+         */
     }
-    //创建Card类型数据的可变方法
+    
+    
+    //创建Card类型数据:
      func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String) {
         //处理title
         let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
@@ -276,7 +302,7 @@ class CellData {
         self.titleHeight = size.size.height
         
         
-        //处理cover
+        //处理cover:交给另一个线程asyncBuildImage处理
         // FIXME: This code always crash when network is off. As a good habit, never use force unwrap in your code.
         /*
         let myUIImage = self.buidUIImage(url: coverUrlStr)
@@ -312,7 +338,6 @@ class CellData {
     
     //同步加载image的方法：
     func buidUIImage(url theUrl:String) -> UIImage? {
-        //if let url = theUrl {
             let fm = FileManager.default
             let path = "\(Bundle.main.resourcePath!)/\(String(describing: theUrl))"
             print(path)
@@ -324,51 +349,9 @@ class CellData {
                 myUIImage = UIImage(data: imageData as Data)
             }
             return myUIImage
-        //}
-        //return UIImage(named: "landscape.jpeg")
     }
     
-    //异步加载image的方法：
-    func asyncBuildImage(url imageUrl: String, completion: @escaping () -> Void) {
-     
-        if let imgUrl = URL(string: imageUrl) {
-            let imgRequest = URLRequest(url: imgUrl)
-            
-            URLSession.shared.dataTask(with: imgRequest, completionHandler: { (data, response, error) in
-                if error != nil{
-                    DispatchQueue.main.async {
-                        print("error")
-                        completion()
-                    }
-                    return
-                }
-                
-                guard let data = data else {
-                    DispatchQueue.main.async {
-                        completion()
-                    }
-                    return
-                }
-                
-                let myUIImage = UIImage(data: data) //NOTE: 由于闭包可以在func范围之外生存，闭包中如果有参数类型是struct/enum，那么它将被复制一个新值作为参数。如果这个闭包会允许这个参数发生改变（即以闭包为其中一个参数的func是mutate的），那么闭包会产生一个副本,造成不必要的后果。所以struct中的mutate func中的escape closure的参数不能是self，也不能在closure内部改变self的属性。改为class，则可以。
-                if let realUIImage = myUIImage { //如果成功获取了图片
-                    self.coverImage = realUIImage
-                    
-                } else { //如果没成功获取图片，则改为text类型回复
-                    self.saysType = .text
-                    self.buildTextCellData(textContent: "Sorry，没能成功得到图片")
-                }
-                
-                DispatchQueue.main.async {
-                    completion()
-                }
-                
-                
-            }).resume()
-            
-        }
-    }
-
+   
  
 }
 
@@ -394,6 +377,7 @@ class CellData {
  self?.imageView.image = cellContentItem.coverImage
  })
  */
+
 
 
 

@@ -27,7 +27,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
         didSet {
             print("tableReloadData")
-            self.talkListBlock.reloadData()
+            self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
             //let num = talkData.count
             let currentIndexPath = IndexPath(row: talkData.count-1, section: 0)
             //let firstIndexPath = IndexPath(row: 0, section: 0)
@@ -37,7 +37,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
  
-    
+    var robotResCellData: CellData? = nil
     
     
 
@@ -63,7 +63,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             self.talkData.append(currentYouCellData)
             
             self.inputBlock.text = ""
-            self.createTalkRequest(myInputText:currentYourTalk)
+            self.createTalkRequest(myInputText:currentYourTalk, completion: { _ in
+                if let robotRes = self.robotResCellData {
+                    //print(robotRes)
+                    self.talkData.append(robotRes)
+                }
+                
+            })
             /* 使用本地测试数据
             var currentRobotCellData = CellData()
             switch currentYourTalk {
@@ -98,14 +104,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
             let deltaY = keyboardFrame.size.height
             
-             print("deltaY:\(deltaY)")
+             //print("deltaY:\(deltaY)")
             let animation:(() -> Void) = {
                 self.view.transform = CGAffineTransform(translationX: 0,y: -deltaY)
                 self.view.setNeedsUpdateConstraints()
                 self.view.setNeedsLayout()
-                print("showAnimate:\(showAnimateExecute)")
+                //print("showAnimate:\(showAnimateExecute)")
                 showAnimateExecute += 1
-                print("self.view.frame:\(self.view.frame)")
+                //print("self.view.frame:\(self.view.frame)")
             }
 
             UIView.animate(
@@ -167,22 +173,96 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.talkData.count
     }
-    
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let currentCellData = self.talkData[indexPath.row]
-        let currentHeight = max(currentCellData.cellHeightByHeadImage, currentCellData.cellHeightByBubble)
-        return currentHeight
-    }
- 
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let cellData = self.talkData[indexPath.row]
+        let currentRow = indexPath.row
+        let cellData = self.talkData[currentRow] //获取到
+        
+        // 根据对话内容长短及self.frame尺寸得到相关位置尺寸
+        /*
+        let headImageWithInsets = self.cellData.cellInsets.left + self.cellData.headImageLength + self.cellData.betweenHeadAndBubble //60
+        let bubbleImageX = (whoSays == .robot) ? headImageWithInsets : self.frame.width - headImageWithInsets - self.cellData.bubbleImageWidth
+        let bubbleImageY = self.frame.minY + self.cellData.bubbleInsets.top
+ 
+        let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
+        let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
+        */
+        
         let cell = OneTalkCell(cellData, reuseId:"Talk")
+        if (cellData.saysWhat.type == .card) {
+            self.asyncBuildImage(url: cellData.saysWhat.coverUrl, completion: { downloadedImg in
+                if let realImage = downloadedImg {
+                    //cellData.downLoadImage = realImage
+                    cell.coverView.image = realImage
+                  
+                }
+               
+            })
+        } else if (cellData.saysWhat.type == .image) {
+            self.asyncBuildImage(url: cellData.saysWhat.url, completion: {
+                downloadedImg in
+                
+                if let realImage = downloadedImg { //如果成功获取了图片
+                    cell.saysImageView.image = realImage
+                    /*
+                    let saysImageWidth = realImage.size.width
+                    let saysImageHeight = realImage.size.height
+                    let saysRwh = saysImageWidth / saysImageHeight
+                    
+                    var adjustImageWidth = CGFloat()
+                    var adjustImageHeight = CGFloat()
+                    
+                    let standardRwh = cellData.maxImageWidth / cellData.maxImageHeight
+                    if saysRwh > standardRwh {
+                        adjustImageWidth = cellData.maxImageWidth
+                        adjustImageHeight = adjustImageWidth * saysImageHeight / saysImageWidth
+                    } else {
+                        adjustImageHeight = cellData.maxImageHeight
+                        adjustImageWidth = adjustImageHeight * saysImageWidth / saysImageHeight
+                    }
+                    
+                    //重新计算bubbleImageView和saysWhat的位置。 NOTE:因为以下几个值同时依赖view和model，且要更新controller中的关键数组（数组每一项的构建是通过model的方法），故在controller里面计算
+                    let bubbleImageX = (cellData.whoSays == .robot) ? cellData.headImageWithInsets : cell.frame.width - cellData.headImageWithInsets - cellData.bubbleImageWidth
+                    let bubbleImageY = cell.frame.minY + cellData.bubbleInsets.top
+                    
+                    let saysWhatX = bubbleImageX + cellData.bubbleImageInsets.left
+                    let saysWhatY = bubbleImageY + cellData.bubbleImageInsets.top
+                    
+                    //重新计算bubbleImage的尺寸
+                    let bubbleImageWidth = adjustImageWidth + cellData.bubbleImageInsets.left + cellData.bubbleImageInsets.right
+                    let bubbleImageHeight = adjustImageHeight + cellData.bubbleImageInsets.top + cellData.bubbleImageInsets.bottom
+                    
+                    //根据bubbleImageView的位置、尺寸，重置其frame属性
+                    cell.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: bubbleImageWidth, height:bubbleImageHeight)//更新self.bubbleImageView.frame
+                    
+                    //根据saysWhat的位置、尺寸，重置saysImageView的frame属性
+                    cell.saysImageView.frame = CGRect(x: saysWhatX, y: saysWhatY, width: adjustImageWidth, height: adjustImageHeight)//更新saysContentView.frame
+                    cell.saysImageView.image = realImage
+                    //更新cellData数组
+                    self.talkData[currentRow].bubbleImageHeight = bubbleImageHeight
+                    self.talkData[currentRow].bubbleImageWidth = bubbleImageWidth
+                    
+                    self.talkData[currentRow].saysWhatWidth = adjustImageWidth
+                    self.talkData[currentRow].saysWhatHeight = adjustImageHeight
+                    
+                 
+                    */
+
+                    
+                }
+            })
+        }
         return cell
         
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let currentCellData = self.talkData[indexPath.row]
+        //print("cellHeightByBubble:\(currentCellData.cellHeightByBubble)")
+        let currentHeight = max(currentCellData.cellHeightByHeadImage, currentCellData.cellHeightByBubble)
+        return currentHeight
+    }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let currentYourTalk = textField.text {
@@ -191,13 +271,60 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             self.talkData.append(currentYouCellData)
             
             textField.text = ""
-            self.createTalkRequest(myInputText:currentYourTalk)
+            self.createTalkRequest(myInputText:currentYourTalk, completion: { _ in
+                if let robotRes = self.robotResCellData {
+                    self.talkData.append(robotRes)
+                }
+                
+            })
 
         }
         return true
     }
+    //异步加载image的方法：
+    func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
+        
+        if let imgUrl = URL(string: imageUrl) {
+            let imgRequest = URLRequest(url: imgUrl)
+            
+            URLSession.shared.dataTask(with: imgRequest, completionHandler: { (data, response, error) in
+                if error != nil{
+                    DispatchQueue.main.async {//返回主线程更新UI
+                        completion(nil)
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                    return
+                }
+                
+                let myUIImage = UIImage(data: data) //NOTE: 由于闭包可以在func范围之外生存，闭包中如果有参数类型是struct/enum，那么它将被复制一个新值作为参数。如果这个闭包会允许这个参数发生改变（即以闭包为其中一个参数的func是mutate的），那么闭包会产生一个副本,造成不必要的后果。所以struct中的mutate func中的escape closure的参数不能是self，也不能在closure内部改变self的属性。改为class，则可以。
+                
+                 if let realUIImage = myUIImage { //如果成功获取了图片
+                    //cellData.downLoadImage = realUIImage
+                    DispatchQueue.main.async {
+                        completion(realUIImage)
+                    }
+                    
+                 
+                 } else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                 }
+                
+               
+                
+            }).resume()
+            
+        }
+    }
     
-    func createTalkRequest (myInputText inputText:String = "") {
+    func createTalkRequest (myInputText inputText:String = "", completion: @escaping () -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
         let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
         
@@ -231,28 +358,42 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
       
             (URLSession.shared.dataTask(with: talkRequest) {
                 (data,response,error) in
-                var explainRobotTalk = ""
-                var responseCellData:CellData? = nil
+                //var explainRobotTalk = ""
+                //var responseCellData:CellData? = nil
                 if error != nil {
-                    explainRobotTalk = "Error: \(String(describing: error))"
-                    //print(explainRobotTalk)
-                    //return
-                } else if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                    explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
-                    //print()
-                    //return
-                } else if let data = data, let dataString = String(data: data, encoding: .utf8){
-                    print("Overview Data:\(dataString)")
-                    explainRobotTalk = dataString
-                    responseCellData = createResponseCellData(data: data)
-                    
-                } else {
-                    explainRobotTalk = "Some do catch error when execute createResponseCellData."
+                    //explainRobotTalk = "Error: \(String(describing: error))"
+                    DispatchQueue.main.async {//返回主线程更新UI
+                        completion()
+                    }
+                    return
+                   
                 }
-                let explainRobotSaysWhat = SaysWhat(saysType: .text, saysContent: explainRobotTalk)
-                let explainRobotCellData = CellData(whoSays: .robot, saysWhat: explainRobotSaysWhat)
-                let robotCellData = responseCellData ?? explainRobotCellData
-                self.talkData.append(robotCellData)
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                    //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
+                    DispatchQueue.main.async {//返回主线程更新UI
+                        completion()
+                    }
+                    return
+                    
+                }
+                
+                if let data = data, let dataString = String(data: data, encoding: .utf8){
+                    print("Overview Data:\(dataString)")
+                    //explainRobotTalk = dataString
+                    self.robotResCellData = createResponseCellData(data: data)
+                   // createResponseCellData(data: Data)
+                    
+                    DispatchQueue.main.async {//返回主线程更新UI
+                        completion()
+                    }
+                    
+                }
+                
+                //let explainRobotSaysWhat = SaysWhat(saysType: .text, saysContent: explainRobotTalk)
+                //let explainRobotCellData = CellData(whoSays: .robot, saysWhat: explainRobotSaysWhat)
+                //let robotCellData = responseCellData ?? explainRobotCellData
+                //self.talkData.append(robotCellData)
 
                 
                 

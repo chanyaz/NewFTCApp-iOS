@@ -172,7 +172,7 @@
         <scene sceneID="4zl-sf-b6a">
             <objects>
                 <collectionViewController storyboardIdentifier="DataViewController" hidesBottomBarWhenPushed="YES" id="jsX-Jz-ZNR" customClass="DataViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="mky-l3-zIb">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="mky-l3-zIb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="CDq-cg-CSX">
@@ -691,7 +691,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Kih-19-Ipx" customClass="NewsNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="新闻" image="NewsDim" selectedImage="News" id="o6H-tl-sO3"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="N3C-QK-VoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N3C-QK-VoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -750,7 +750,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QXG-H9-h2U" customClass="EnglishNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="每日英语" image="EnglishDim" selectedImage="English" id="Oqv-LY-RGD"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="3tL-ZB-8jq">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3tL-ZB-8jq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -769,7 +769,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FJL-lv-f58" customClass="AcademyNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="FT商学院" image="AcademyDim" selectedImage="Academy" id="T8K-4b-0vj"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="BXf-ud-JED">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BXf-ud-JED">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -788,7 +788,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ImL-Tl-Ta2" customClass="VideoNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="3" title="视频" image="VideoDim" selectedImage="Video" id="Hoc-Bx-w6J"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ZoQ-TI-cN8">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZoQ-TI-cN8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -807,7 +807,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LG1-Md-6Qy" customClass="MyFTNavigationController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="4" title="我的FT" image="MyFTDim" selectedImage="MyFT" id="ddG-YK-4fi"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Sg5-kk-PM6">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Sg5-kk-PM6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -978,16 +978,16 @@
         <image name="Academy" width="25" height="25"/>
         <image name="AcademyDim" width="25" height="25"/>
         <image name="BigPlayButton" width="48" height="48"/>
-        <image name="Clip" width="24" height="24"/>
+        <image name="Clip" width="20" height="18"/>
         <image name="CloseBtn" width="13" height="13"/>
-        <image name="Comment" width="24" height="24"/>
+        <image name="Comment" width="19" height="18"/>
         <image name="DownLoadBtn" width="19" height="18"/>
         <image name="DownloadButton" width="36" height="36"/>
         <image name="English" width="25" height="25"/>
         <image name="EnglishDim" width="25" height="25"/>
         <image name="FastBackBtn" width="26" height="24"/>
         <image name="FastForwardBtn" width="26" height="24"/>
-        <image name="FontSize" width="36" height="36"/>
+        <image name="FontSize" width="20" height="20"/>
         <image name="HideBtn" width="17" height="9"/>
         <image name="ListBtn" width="17" height="16"/>
         <image name="LoveBtn" width="20" height="18"/>
@@ -1000,7 +1000,7 @@
         <image name="PauseButton" width="36" height="36"/>
         <image name="PreBtn" width="14" height="16"/>
         <image name="SettingsButton" width="36" height="36"/>
-        <image name="Share" width="24" height="24"/>
+        <image name="Share" width="19" height="20"/>
         <image name="ShareBtn" width="19" height="20"/>
         <image name="Video" width="25" height="25"/>
         <image name="VideoDim" width="25" height="25"/>

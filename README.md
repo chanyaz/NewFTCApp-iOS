@@ -2,12 +2,14 @@
 
 ## Development Milestones
 ### Task at Hand: 
-1. Make all channel pages available
+1. Done: Make all channel pages available
 2. Update Ads
 3. Big 5 Version
+4. 恢复购买
+5. 高端会员
 
 ### Bugs
-1. 金融英语速读无法调整字号
+1. 金融英语速读无法调整字号：创建设置页面
 2. 金融英语速读无法评论
 3. 金融英语速读无法听
 4. Done: 每日英语双语阅读的Switch颜色需要更换

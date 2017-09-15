@@ -44,8 +44,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
+        let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil || dataObject["type"] == "follow" || dataObject["type"] == "read" || dataObject["type"] == "clip"  || dataObject["type"] == "iap" {
+        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting"].contains(dataObjectType){
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -336,6 +337,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
             } else if type == "iap" {
                 loadProducts()
+            } else if type == "setting" {
+                loadSettings()
             } else {
                 let urlString = APIs.get("", type: type)
                 getAPI(urlString)
@@ -684,9 +687,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         try? AVAudioSession.sharedInstance().setActive(true)
         
         print("palyer item isExist url")
-
+        
         let body = TabBarAudioContent.sharedInstance.body
-//        let body = AudioContent.sharedInstance.body
+        //        let body = AudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
             audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
             audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
@@ -791,7 +794,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
         
     }
-
+    
     
     func removePlayerItemObservers() {
         NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
@@ -965,6 +968,20 @@ extension DataViewController {
     
 }
 
+extension DataViewController {
+    
+    // MARK: - load settings and update UI
+    fileprivate func loadSettings() {
+        let contentSections = Settings.get()
+        let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+        self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+    }
+    
+    
+}
+
 
 fileprivate let itemsPerRow: CGFloat = 3
 fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -1003,7 +1020,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
     }
-
+    
 }
 
 // MARK: Handle links here

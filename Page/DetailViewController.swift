@@ -270,7 +270,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             isLightContent = nav.isLightContent
         }
         
-        // TODO: Set themeColor based on whether it is lightcontent
+        // Mark: Set themeColor based on whether it is lightcontent
         if let themeColor = themeColor,
             isLightContent == true {
             languages?.backgroundColor = UIColor(hex: themeColor)
@@ -285,10 +285,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         bookMark.tintColor = buttonTint
         saveButton.tintColor = buttonTint
         fontButton.tintColor = buttonTint
-        
-        //saveButton.setBackgroundImage(UIImage(named: "Clip"), for: .normal, barMetrics: .default)
-        // saveButton.image = UIImage(named: "Clip")
-        
         checkSaveButton()
     }
     

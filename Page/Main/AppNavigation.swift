@@ -282,9 +282,9 @@ struct AppNavigation {
                  "screenName":"myft"
                 ],
                 [
-                    "title": "偏好",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/users/mytopics?type=json",
-                    "url":"http://www.ftchinese.com/users/mytopics",
+                    "title": "设置",
+                    "type": "setting",
+                    "compactLayout": "",
                     "screenName":"myft/preference"
                 ],
                 [

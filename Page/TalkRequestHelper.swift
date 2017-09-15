@@ -28,7 +28,7 @@ func createResponseCellData(data:Data) -> CellData? {
                         
                         let contentStr = content as? String
                         robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                        //print(contentStr)
+                       
                         
                     } else {
                         let contentStr = "This is a Text, the data miss some important fields."

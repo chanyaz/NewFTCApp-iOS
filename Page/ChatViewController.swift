@@ -23,6 +23,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
      let imageCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType: .image, saysImage: "landscape.jpeg"))
      let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"澳洲高端葡萄酒势头强劲",saysDescription:"一瓶1951年奔富葛兰许拍出5万澳元的澳洲历史最高价。澳洲高端葡萄酒国际地位正在提高，中国是第一大市场。",saysCover:"https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fi.ftimg.net%2Fpicture%2F9%2F000072299_piclink.jpg?source=ftchinese",saysUrl:"http://www.ftchinese.com/story/001073823"))
     */
+    /*
     var talkData = Array(repeating: CellData(), count: 4) {
     
         didSet {
@@ -36,7 +37,24 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
         }
     }
- 
+    */
+    var talkData = Array(repeating: CellData(), count: 4)
+    
+    var historyTalkData:[[String:String]] = Array(repeating: buildTalkDatum(), count: 4) {
+        didSet {
+            print("tableReloadData")
+            self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
+            let currentIndexPath = IndexPath(row: historyTalkData.count-1, section: 0)
+            self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+        }
+    }
+    
+    
+    
+   
+    
+
+    
     var robotResCellData: CellData? = nil
     
     
@@ -70,22 +88,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 }
                 
             })
-            /* 使用本地测试数据
-            var currentRobotCellData = CellData()
-            switch currentYourTalk {
-            case "text":
-                currentRobotCellData = self.textCellData
-                self.talkData.append(currentRobotCellData)
-            case "image":
-                currentRobotCellData = self.imageCellData
-                self.talkData.append(currentRobotCellData)
-            case "card":
-                currentRobotCellData = self.cardCellData
-                self.talkData.append(currentRobotCellData)
-            default:
-                self.createTalkRequest(myInputText:currentYourTalk)
-            }
-            */
+            
         }
 
     }
@@ -171,24 +174,53 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
      */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.talkData.count
+        //return self.talkData.count
+        return self.historyTalkData.count
     }
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let currentRow = indexPath.row
-        let cellData = self.talkData[currentRow] //获取到
+        //let cellData = self.talkData[currentRow] //获取到
+        let oneTalkData = self.historyTalkData[currentRow]
+        var saysWhat: SaysWhat
+        var member:Member
+        if let valueForMember = oneTalkData["member"] {
+            switch valueForMember {
+                case "robot":
+                    member = .robot
+                case "you":
+                    member = .you
+                default:
+                    member = .no
+            }
+        } else {
+            member = .no
+        }
         
-        // 根据对话内容长短及self.frame尺寸得到相关位置尺寸
-        /*
-        let headImageWithInsets = self.cellData.cellInsets.left + self.cellData.headImageLength + self.cellData.betweenHeadAndBubble //60
-        let bubbleImageX = (whoSays == .robot) ? headImageWithInsets : self.frame.width - headImageWithInsets - self.cellData.bubbleImageWidth
-        let bubbleImageY = self.frame.minY + self.cellData.bubbleInsets.top
- 
-        let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
-        let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
-        */
+        var type:Infotype
+        if let valueForType = oneTalkData["type"] {
+            switch valueForType {
+                case "text":
+                    type = .text
+                    saysWhat = SaysWhat(saysType: type, saysContent: oneTalkData["content"])
+                case "image":
+                    type = .image
+                    saysWhat = SaysWhat(saysType: type, saysImage: oneTalkData["url"])
+                case "card":
+                    type = .card
+                    saysWhat = SaysWhat(saysType: type, saysTitle: oneTalkData["title"], saysDescription: oneTalkData["description"], saysCover: oneTalkData["coverUrl"], saysUrl: oneTalkData["url"])
+                default:
+                    type = .error
+                    saysWhat = SaysWhat(saysType: .text, saysContent: "data error")
+                
+            }
+        } else {
+            saysWhat = SaysWhat(saysType: .text, saysContent: "data error")
+        }
         
+     
+        let cellData = CellData(whoSays: member, saysWhat: saysWhat)
         let cell = OneTalkCell(cellData, reuseId:"Talk")
         if (cellData.saysWhat.type == .card) {
             self.asyncBuildImage(url: cellData.saysWhat.coverUrl, completion: { downloadedImg in
@@ -220,6 +252,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     
     
+    //MARK:点击键盘中Return按键后发生的事件
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let currentYourTalk = textField.text {
             let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
@@ -237,7 +270,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
         return true
     }
-    //异步加载image的方法：
+    
+    //异步加载image：
     func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
         let optimizedUrl = optimizedImageURL(imageUrl, width: 240, height: 135)
         print("ImageUrl:\(imageUrl)")
@@ -366,11 +400,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
     
-    /*
-    func saveTalkData() {
-        //let historyTalkData = NSKeyedArchiver.archivedData(withRootObject: self.talkData)
-    }
-    */
+ 
     func encodeTheData(data:[CellData]) {
         
     }
@@ -413,8 +443,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
-        self.talkData.append(self.textCellData)
-       
+        //self.talkData.append(self.textCellData)
+        self.historyTalkData.append(defaultRobTalkDatum)
 
     }
 

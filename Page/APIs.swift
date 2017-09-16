@@ -329,7 +329,28 @@ struct JSCodes {
     }
 }
 
+//"阅读偏好": [
+//"title": "字号",
+//"action": "fontSetting"
+//],
+//"语言": [
+//"title": "字号",
+//"action": "fontSetting"
+//]
+
+
 struct Settings {
+    static let settingsPage = [
+        (
+            title: "阅读偏好",
+            items: [
+                (
+                    title: "字号",
+                    action: "fontSetting"
+                )
+            ]
+        )
+    ]
     static func get() -> [ContentSection] {
         var contentSections = [ContentSection]()
         let fontSetting = ContentItem(

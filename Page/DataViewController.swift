@@ -972,7 +972,7 @@ extension DataViewController {
     
     // MARK: - load settings and update UI
     fileprivate func loadSettings() {
-        let contentSections = Settings.get()
+        let contentSections = Settings.page
         let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass

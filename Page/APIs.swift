@@ -340,52 +340,38 @@ struct JSCodes {
 
 
 struct Settings {
-    static let settingsPage = [
-        (
+    static let page = [
+        ContentSection(
             title: "阅读偏好",
             items: [
-                (
-                    title: "字号",
-                    action: "fontSetting"
-                )
-            ]
-        )
+                ContentItem(
+                    id: "font",
+                    image: "",
+                    headline: "字号设置",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "language",
+                    image: "",
+                    headline: "语言偏好",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0)
+            ],
+            type: "list",
+            adid: nil)
     ]
-    static func get() -> [ContentSection] {
-        var contentSections = [ContentSection]()
-        let fontSetting = ContentItem(
-            id: "font",
-            image: "",
-            headline: "字号设置",
-            lead: "",
-            type: "setting",
-            preferSponsorImage: "",
-            tag: "",
-            customLink: "",
-            timeStamp: 0,
-            section: 0,
-            row: 0)
-        let languageSetting = ContentItem(
-            id: "language",
-            image: "",
-            headline: "语言偏好",
-            lead: "",
-            type: "setting",
-            preferSponsorImage: "",
-            tag: "",
-            customLink: "",
-            timeStamp: 0,
-            section: 0,
-            row: 0)
-        let readingSettings = ContentSection(
-            title: "阅读偏好",
-            items: [fontSetting, languageSetting],
-            type: "setting",
-            adid: nil
-        )
-        contentSections.append(readingSettings)
-        return contentSections
-    }
 }
 
 /*

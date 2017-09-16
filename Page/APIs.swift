@@ -345,7 +345,7 @@ struct Settings {
             title: "阅读偏好",
             items: [
                 ContentItem(
-                    id: "font",
+                    id: "font-setting",
                     image: "",
                     headline: "字号设置",
                     lead: "",
@@ -357,7 +357,7 @@ struct Settings {
                     section: 0,
                     row: 0),
                 ContentItem(
-                    id: "language",
+                    id: "language-preference",
                     image: "",
                     headline: "语言偏好",
                     lead: "",
@@ -369,8 +369,40 @@ struct Settings {
                     section: 0,
                     row: 0)
             ],
-            type: "list",
-            adid: nil)
+            type: "Group",
+            adid: nil
+        ),
+        ContentSection(
+            title: "流量与缓存",
+            items: [
+                ContentItem(
+                    id: "clear-cache",
+                    image: "",
+                    headline: "清除缓存",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "image-data",
+                    image: "",
+                    headline: "使用数据时不下载图片",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0)
+            ],
+            type: "Group",
+            adid: nil
+        )
     ]
 }
 

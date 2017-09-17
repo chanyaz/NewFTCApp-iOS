@@ -47,7 +47,8 @@ struct AppNavigation {
                     "title": "金融市场",
                     "api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
                     "url":"http://www.ftchinese.com/channel/markets.html",
-                    "screenName":"homepage/markets"
+                    "screenName":"homepage/markets",
+                    "coverTheme": "OutOfBox"
                 ],
                 [
                     "title": "管理",
@@ -61,7 +62,8 @@ struct AppNavigation {
                     "api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
                     "url":"http://www.ftchinese.com/channel/lifestyle.html",
                     "screenName":"homepage/lifestyle",
-                    "coverTheme": "Lifestyle"
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox-LifeStyle"
                 ],
                 [
                     "title": "专栏",
@@ -79,8 +81,11 @@ struct AppNavigation {
                 ],
                 [
                     "title": "数据新闻",
+                    "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=datanews",
                     "url":"http://www.ftchinese.com/channel/datanews.html?webview=ftcapp",
-                    "screenName":"homepage/datanews"
+                    "screenName":"homepage/datanews",
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox"
                 ],
                 [
                     "title": "FTCC",
@@ -156,35 +161,40 @@ struct AppNavigation {
                     "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=hotcourse",
                     "url":"http://www.ftchinese.com/channel/mba.html",
                     "screenName":"ftacademy/hottopic",
-                    "coverTheme": "Wheat"
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox"
                 ],
                 [
                     "title": "MBA训练营",
                     "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=mbacamp",
                     "url":"http://www.ftchinese.com/channel/mbagym.html?webview=ftcapp",
                     "screenName":"ftacademy/mbagym",
-                    "coverTheme": "Wheat"
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox"
                 ],
                 [
                     "title": "互动小测",
                     "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=quizplus",
                     "url":"http://www.ftchinese.com/channel/mba.html",
                     "screenName":"ftacademy/quiz",
-                    "coverTheme": "Wheat"
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox"
                 ],
                 [
                     "title": "商学院观察",
                     "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=mbastory",
                     "url":"http://www.ftchinese.com/channel/mba.html",
                     "screenName":"ftacademy/read",
-                    "coverTheme": "Wheat"
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox"
                 ],
                 [
                     "title": "深度阅读",
                     "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=mbaread",
                     "url":"http://www.ftchinese.com/channel/mba.html",
                     "screenName":"ftacademy/read",
-                    "coverTheme": "Wheat"
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox"
                 ]
             ]
         ],

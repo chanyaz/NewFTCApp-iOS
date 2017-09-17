@@ -78,6 +78,10 @@ struct Color {
                 return (background: "#0f5499", border: "#0f5499", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
             case "Video":
                 return (background: "#33302e", border: "#33302e", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
+            case "OutOfBox":
+                return (background: "#f2dfce", border: "#f2dfce", title: "#333333", tag: "#9E2F50", lead: "#777777")
+            case "OutOfBox-LifeStyle":
+                return (background: "#e0cdac", border: "#e0cdac", title: "#333333", tag: "#9E2F50", lead: "#777777")
             default:
                 return (background: "#FFF1E0", border: "#e9decf", title: "#333333", tag: "#9E2F50", lead: "#777777")
             }
@@ -86,6 +90,8 @@ struct Color {
             switch theme {
             case "Video":
                 return "VideoCoverCell"
+            case "OutOfBox":
+                return "OutOfBoxCoverCell"
             default:
                 return "ThemeCoverCell"
             }

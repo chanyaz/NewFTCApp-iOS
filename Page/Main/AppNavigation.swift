@@ -74,9 +74,11 @@ struct AppNavigation {
                 ],
                 [
                     "title": "热门文章",
+                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=hot",
                     "url":"http://www.ftchinese.com/channel/weekly.html?webview=ftcapp",
-                    "compactLayout": "Simple Headline",
+                    "compactLayout": "OutOfBox",
                     "regularLayout": "",
+                    "coverTheme": "OutOfBox",
                     "screenName":"homepage/mostpopular"
                 ],
                 [

@@ -13,6 +13,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     var contentPageData = [ContentItem]()
     var currentPageIndex = 0
     var languages: UISegmentedControl?
+    var themeColor: String?
     
     
     @IBOutlet weak var toolBar: UIToolbar!
@@ -138,8 +139,12 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         languages = UISegmentedControl(items: items)
         languages?.selectedSegmentIndex = 0
         
+        
+        
         // MARK: Add target action method
         languages?.addTarget(self, action: #selector(switchLanguage(_:)), for: .valueChanged)
+        
+        
         
         self.navigationItem.titleView = languages
         
@@ -259,18 +264,27 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         toolBar.isTranslucent = false
         
         // MARK: Set style for the language switch
-        languages?.backgroundColor = UIColor(hex: Color.Content.background)
-        languages?.tintColor = buttonTint
+        var isLightContent = false
+        
+        if let nav = navigationController as? CustomNavigationController {
+            isLightContent = nav.isLightContent
+        }
+        
+        // Mark: Set themeColor based on whether it is lightcontent
+        if let themeColor = themeColor,
+            isLightContent == true {
+            languages?.backgroundColor = UIColor(hex: themeColor)
+            languages?.tintColor = UIColor(hex: Color.Content.background)
+        } else {
+            languages?.backgroundColor = UIColor(hex: Color.Content.background)
+            languages?.tintColor = buttonTint
+        }
         
         // MARK: Set style for the bottom buttons
         actionButton.tintColor = buttonTint
         bookMark.tintColor = buttonTint
         saveButton.tintColor = buttonTint
         fontButton.tintColor = buttonTint
-        
-        //saveButton.setBackgroundImage(UIImage(named: "Clip"), for: .normal, barMetrics: .default)
-        // saveButton.image = UIImage(named: "Clip")
-        
         checkSaveButton()
     }
     

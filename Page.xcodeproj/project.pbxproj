@@ -17,6 +17,18 @@
 		50A704C31EEB689900660022 /* ContentFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C01EEB689900660022 /* ContentFetch.swift */; };
 		50A704C41EEB689900660022 /* ContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C11EEB689900660022 /* ContentItem.swift */; };
 		50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C21EEB689900660022 /* ContentFetchResults.swift */; };
+		50C31B331F6CCFF000F4CF61 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B311F6CCFF000F4CF61 /* SettingCell.swift */; };
+		50C31B341F6CCFF000F4CF61 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B311F6CCFF000F4CF61 /* SettingCell.swift */; };
+		50C31B351F6CCFF000F4CF61 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B321F6CCFF000F4CF61 /* SettingCell.xib */; };
+		50C31B361F6CCFF000F4CF61 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B321F6CCFF000F4CF61 /* SettingCell.xib */; };
+		50C31B391F6CD83900F4CF61 /* SimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B371F6CD83900F4CF61 /* SimpleHeaderView.swift */; };
+		50C31B3A1F6CD83900F4CF61 /* SimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B371F6CD83900F4CF61 /* SimpleHeaderView.swift */; };
+		50C31B3B1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B381F6CD83900F4CF61 /* SimpleHeaderView.xib */; };
+		50C31B3C1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B381F6CD83900F4CF61 /* SimpleHeaderView.xib */; };
+		50C31B3F1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B3D1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift */; };
+		50C31B401F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B3D1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift */; };
+		50C31B411F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B3E1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib */; };
+		50C31B421F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B3E1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib */; };
 		50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
 		50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
 		50D4BD461F63BB2400DD64E1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD451F63BB2400DD64E1 /* NotificationService.swift */; };
@@ -373,6 +385,12 @@
 		50A704C01EEB689900660022 /* ContentFetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetch.swift; sourceTree = "<group>"; };
 		50A704C11EEB689900660022 /* ContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentItem.swift; sourceTree = "<group>"; };
 		50A704C21EEB689900660022 /* ContentFetchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchResults.swift; sourceTree = "<group>"; };
+		50C31B311F6CCFF000F4CF61 /* SettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		50C31B321F6CCFF000F4CF61 /* SettingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
+		50C31B371F6CD83900F4CF61 /* SimpleHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleHeaderView.swift; sourceTree = "<group>"; };
+		50C31B381F6CD83900F4CF61 /* SimpleHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleHeaderView.xib; sourceTree = "<group>"; };
+		50C31B3D1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutOfBoxCoverCell.swift; sourceTree = "<group>"; };
+		50C31B3E1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutOfBoxCoverCell.xib; sourceTree = "<group>"; };
 		50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FT富媒体速递.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D4BD451F63BB2400DD64E1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -711,6 +729,8 @@
 			children = (
 				60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */,
 				60CA7BC31EF28AD4000CD9B4 /* HeaderView.xib */,
+				50C31B371F6CD83900F4CF61 /* SimpleHeaderView.swift */,
+				50C31B381F6CD83900F4CF61 /* SimpleHeaderView.xib */,
 			);
 			name = Header;
 			sourceTree = "<group>";
@@ -1107,6 +1127,8 @@
 			children = (
 				60B855461F6A118600FE190E /* VideoCoverCell.swift */,
 				60B855471F6A118600FE190E /* VideoCoverCell.xib */,
+				50C31B3D1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift */,
+				50C31B3E1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib */,
 				6054B2841F6628B300E34990 /* ThemeCoverCell.swift */,
 				6054B2851F6628B300E34990 /* ThemeCoverCell.xib */,
 				60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */,
@@ -1123,6 +1145,8 @@
 				60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */,
 				6019A9CF1F4C457D00B8FB69 /* FollowCell.swift */,
 				6019A9D01F4C457D00B8FB69 /* FollowCell.xib */,
+				50C31B311F6CCFF000F4CF61 /* SettingCell.swift */,
+				50C31B321F6CCFF000F4CF61 /* SettingCell.xib */,
 				6055EF951F5021C1006F8A83 /* PaidPostCell.swift */,
 				6055EF961F5021C1006F8A83 /* PaidPostCell.xib */,
 			);
@@ -1440,8 +1464,10 @@
 				601AC21C1F4870780004196A /* search.html in Resources */,
 				602153691F397C650077A7AF /* ad.html in Resources */,
 				6021536D1F397C650077A7AF /* ChannelCell.xib in Resources */,
+				50C31B361F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
 				50DA6E821F4037C8006B4CDE /* story.html in Resources */,
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
+				50C31B3C1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
 				6021536F1F397C650077A7AF /* ChannelCellRegular.xib in Resources */,
 				602153721F397C650077A7AF /* AdCellRegular.xib in Resources */,
 				602153731F397C650077A7AF /* HeaderView.xib in Resources */,
@@ -1453,6 +1479,7 @@
 				602153771F397C650077A7AF /* ga.js in Resources */,
 				60F1A5261F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
 				6021537A1F397C650077A7AF /* LineCell.xib in Resources */,
+				50C31B421F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,
 				F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */,
 				6019A9D41F4C457D00B8FB69 /* FollowCell.xib in Resources */,
 				6021537C1F397C650077A7AF /* HeadlineCell.xib in Resources */,
@@ -1477,6 +1504,7 @@
 				600C0D021F5CE7B800226F84 /* ebook.html in Resources */,
 				6021538B1F3990880077A7AF /* Main.storyboard in Resources */,
 				50DA6E811F4037C8006B4CDE /* story.html in Resources */,
+				50C31B351F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
 				6084C7CC1F452A210035F60C /* register.html in Resources */,
 				604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */,
 				AF64F57B1F582A1700AFAFFC /* Assets.xcassets in Resources */,
@@ -1490,7 +1518,9 @@
 				AF64F5791F58245300AFAFFC /* youPortrait.png in Resources */,
 				60814F621F580FB200041801 /* BookCell.xib in Resources */,
 				60F1A5251F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
+				50C31B411F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,
 				602153C21F39A4390077A7AF /* cover.jpg in Resources */,
+				50C31B3B1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
 				500139E11F1A7188009EC29D /* GoogleService-Info.plist in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
 				602153C51F39A4390077A7AF /* sound.png in Resources */,
@@ -1730,6 +1760,7 @@
 				50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */,
 				602153301F397C650077A7AF /* WeChatShare.swift in Sources */,
+				50C31B3A1F6CD83900F4CF61 /* SimpleHeaderView.swift in Sources */,
 				602153311F397C650077A7AF /* CoverCellRegular.swift in Sources */,
 				602153321F397C650077A7AF /* Ad.swift in Sources */,
 				6055EF9D1F506276006F8A83 /* CustomCell.swift in Sources */,
@@ -1748,6 +1779,7 @@
 				602153421F397C650077A7AF /* SpeechSettings.swift in Sources */,
 				50DA6E7F1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */,
 				602153431F397C650077A7AF /* Web.swift in Sources */,
+				50C31B401F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */,
 				602153441F397C650077A7AF /* DataViewController.swift in Sources */,
 				602153451F397C650077A7AF /* PagesViewController.swift in Sources */,
 				60F1A52C1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
@@ -1781,6 +1813,7 @@
 				602153B31F399E9A0077A7AF /* AppNavigation.swift in Sources */,
 				600C0D001F5CDEA500226F84 /* APIs.swift in Sources */,
 				602153561F397C650077A7AF /* PushHelper.swift in Sources */,
+				50C31B341F6CCFF000F4CF61 /* SettingCell.swift in Sources */,
 				6054B28B1F669DCE00E34990 /* ListPerColumnViewController.swift in Sources */,
 				6019A9D21F4C457D00B8FB69 /* FollowCell.swift in Sources */,
 				602153571F397C650077A7AF /* LaunchScreen.swift in Sources */,
@@ -1829,6 +1862,7 @@
 				60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */,
 				50DA6E7E1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */,
 				F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */,
+				50C31B391F6CD83900F4CF61 /* SimpleHeaderView.swift in Sources */,
 				F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */,
 				607094AD1EE9436900760A60 /* Tabs.swift in Sources */,
 				600C0D041F5D582500226F84 /* AudioPlayerHelper.swift in Sources */,
@@ -1856,6 +1890,7 @@
 				50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */,
 				60F1A52B1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
 				605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */,
+				50C31B3F1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */,
 				50A704C31EEB689900660022 /* ContentFetch.swift in Sources */,
 				F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */,
 				60124FB91F318C0A00CFA04C /* Content.swift in Sources */,
@@ -1910,6 +1945,7 @@
 				601418081EEA919300DC3EF9 /* IJReachability.swift in Sources */,
 				60D3C8C11EBFF5DC0085BEF6 /* AppDelegate.swift in Sources */,
 				6014180B1EEA9CC000DC3EF9 /* Download.swift in Sources */,
+				50C31B331F6CCFF000F4CF61 /* SettingCell.swift in Sources */,
 				602CD2941F565FD500FFC1EA /* FTCProducts.swift in Sources */,
 				6093F1641EE8EFA4009F16EE /* DetailViewController.swift in Sources */,
 			);

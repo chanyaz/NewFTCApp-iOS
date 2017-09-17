@@ -205,50 +205,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
                 if let realImage = downloadedImg { //如果成功获取了图片
                     cell.saysImageView.image = realImage
-                    /*
-                    let saysImageWidth = realImage.size.width
-                    let saysImageHeight = realImage.size.height
-                    let saysRwh = saysImageWidth / saysImageHeight
-                    
-                    var adjustImageWidth = CGFloat()
-                    var adjustImageHeight = CGFloat()
-                    
-                    let standardRwh = cellData.maxImageWidth / cellData.maxImageHeight
-                    if saysRwh > standardRwh {
-                        adjustImageWidth = cellData.maxImageWidth
-                        adjustImageHeight = adjustImageWidth * saysImageHeight / saysImageWidth
-                    } else {
-                        adjustImageHeight = cellData.maxImageHeight
-                        adjustImageWidth = adjustImageHeight * saysImageWidth / saysImageHeight
-                    }
-                    
-                    //重新计算bubbleImageView和saysWhat的位置。 NOTE:因为以下几个值同时依赖view和model，且要更新controller中的关键数组（数组每一项的构建是通过model的方法），故在controller里面计算
-                    let bubbleImageX = (cellData.whoSays == .robot) ? cellData.headImageWithInsets : cell.frame.width - cellData.headImageWithInsets - cellData.bubbleImageWidth
-                    let bubbleImageY = cell.frame.minY + cellData.bubbleInsets.top
-                    
-                    let saysWhatX = bubbleImageX + cellData.bubbleImageInsets.left
-                    let saysWhatY = bubbleImageY + cellData.bubbleImageInsets.top
-                    
-                    //重新计算bubbleImage的尺寸
-                    let bubbleImageWidth = adjustImageWidth + cellData.bubbleImageInsets.left + cellData.bubbleImageInsets.right
-                    let bubbleImageHeight = adjustImageHeight + cellData.bubbleImageInsets.top + cellData.bubbleImageInsets.bottom
-                    
-                    //根据bubbleImageView的位置、尺寸，重置其frame属性
-                    cell.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: bubbleImageWidth, height:bubbleImageHeight)//更新self.bubbleImageView.frame
-                    
-                    //根据saysWhat的位置、尺寸，重置saysImageView的frame属性
-                    cell.saysImageView.frame = CGRect(x: saysWhatX, y: saysWhatY, width: adjustImageWidth, height: adjustImageHeight)//更新saysContentView.frame
-                    cell.saysImageView.image = realImage
-                    //更新cellData数组
-                    self.talkData[currentRow].bubbleImageHeight = bubbleImageHeight
-                    self.talkData[currentRow].bubbleImageWidth = bubbleImageWidth
-                    
-                    self.talkData[currentRow].saysWhatWidth = adjustImageWidth
-                    self.talkData[currentRow].saysWhatHeight = adjustImageHeight
-                    
-                 
-                    */
-
                     
                 }
             })
@@ -283,8 +239,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     //异步加载image的方法：
     func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
-        
-        if let imgUrl = URL(string: imageUrl) {
+        let optimizedUrl = optimizedImageURL(imageUrl, width: 240, height: 135)
+        print("ImageUrl:\(imageUrl)")
+        print("OptimizedUrl:\(String(describing: optimizedUrl))")
+        if let imgUrl = optimizedUrl {
             let imgRequest = URLRequest(url: imgUrl)
             
             URLSession.shared.dataTask(with: imgRequest, completionHandler: { (data, response, error) in
@@ -323,7 +281,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
         }
     }
-    
+    func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
+        let urlString: String
+        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+            urlString = ImageService.resize(u, width: width, height: height)
+        } else {
+            urlString = imageUrl
+        }
+        if let url =  URL(string: urlString) {
+            return url
+        }
+        return nil
+    }
     func createTalkRequest (myInputText inputText:String = "", completion: @escaping () -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
         let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
@@ -358,10 +327,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
       
             (URLSession.shared.dataTask(with: talkRequest) {
                 (data,response,error) in
-                //var explainRobotTalk = ""
-                //var responseCellData:CellData? = nil
+
                 if error != nil {
-                    //explainRobotTalk = "Error: \(String(describing: error))"
+                    print("Error: \(String(describing: error))")
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion()
                     }
@@ -371,6 +339,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
                 if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                     //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
+                    print("statusCode:\(httpStatus)")
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion()
                     }
@@ -389,11 +358,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     }
                     
                 }
-                
-                //let explainRobotSaysWhat = SaysWhat(saysType: .text, saysContent: explainRobotTalk)
-                //let explainRobotCellData = CellData(whoSays: .robot, saysWhat: explainRobotSaysWhat)
-                //let robotCellData = responseCellData ?? explainRobotCellData
-                //self.talkData.append(robotCellData)
 
                 
                 
@@ -402,7 +366,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
     
-    
+    /*
+    func saveTalkData() {
+        //let historyTalkData = NSKeyedArchiver.archivedData(withRootObject: self.talkData)
+    }
+    */
+    func encodeTheData(data:[CellData]) {
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Execute viewDidLoad")
@@ -442,9 +413,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
-        
         self.talkData.append(self.textCellData)
-
+       
 
     }
 
@@ -452,7 +422,27 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    /*
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        if let loadedData = UserDefaults.value(forKey: "historyTalk") {
+            if let loadedHistoryTalk = NSKeyedUnarchiver.unarchiveObject(with: loadedData as! Data) as? [CellData] {
+                self.talkData = loadedHistoryTalk
+            }
+        } else {
+            self.talkData.append(self.textCellData)
+        }
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(false)
+        let historyTalkData = NSKeyedArchiver.archivedData(withRootObject: self.talkData)
+        UserDefaults().set(historyTalkData, forKey: "historyTalk")
+
+        //let savedTalkData = self.talkData as NSData
+        //Download.saveFile(savedTalkData, filename: "talkDataArr", to: .documentDirectory, as: String?)
+    }
+    */
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

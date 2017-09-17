@@ -270,7 +270,9 @@ struct Meta {
         "测试",
         "FT商学院",
         "英语电台",
-        "视频"
+        "视频",
+        "新闻",
+        "数据新闻"
     ]
 }
 
@@ -318,9 +320,10 @@ struct DeviceToken {
 }
 
 struct JSCodes {
+    static let autoPlayVideoType = "autoPlayVideo"
     static func get(_ type: String) -> String {
         switch type {
-        case "video":
+        case autoPlayVideoType:
             return "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
         default:
             return "window.gConnectionType = '\(Connection.current())';checkFontsize();"

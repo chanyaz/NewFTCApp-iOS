@@ -44,8 +44,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
+        let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil || dataObject["type"] == "follow" || dataObject["type"] == "read" || dataObject["type"] == "clip"  || dataObject["type"] == "iap" {
+        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting"].contains(dataObjectType){
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -53,7 +54,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 flowLayout.minimumLineSpacing = 0
                 //FIXME: Why does this break scrolling?
                 //flowLayout.sectionHeadersPinToVisibleBounds = true
-                let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+                let paddingSpace = sectionInsets.left * (getSizeInfo().itemsPerRow + 1)
                 let availableWidth = view.frame.width - paddingSpace
                 //print("availableWidth : \(availableWidth)")
                 
@@ -70,14 +71,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
             collectionView?.register(UINib.init(nibName: "ThemeCoverCell", bundle: nil), forCellWithReuseIdentifier: "ThemeCoverCell")
             collectionView?.register(UINib.init(nibName: "VideoCoverCell", bundle: nil), forCellWithReuseIdentifier: "VideoCoverCell")
+            collectionView?.register(UINib.init(nibName: "OutOfBoxCoverCell", bundle: nil), forCellWithReuseIdentifier: "OutOfBoxCoverCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
             collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
             collectionView?.register(UINib.init(nibName: "FollowCell", bundle: nil), forCellWithReuseIdentifier: "FollowCell")
+            collectionView?.register(UINib.init(nibName: "SettingCell", bundle: nil), forCellWithReuseIdentifier: "SettingCell")
             collectionView?.register(UINib.init(nibName: "BookCell", bundle: nil), forCellWithReuseIdentifier: "BookCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
             collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
+            collectionView?.register(UINib.init(nibName: "SimpleHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "SimpleHeaderView")
             
             // MARK: Cell for Regular Size
             collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
@@ -109,9 +113,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 forMainFrameOnly: true
             )
             contentController.addUserScript(userScript)
-            contentController.add(self, name: "alert")
+            // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
+            contentController.add(LeakAvoider(delegate:self), name: "alert")
             config.userContentController = contentController
-            
             config.allowsInlineMediaPlayback = true
             
             // MARK: Add the webview as a subview of containerView
@@ -336,6 +340,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
             } else if type == "iap" {
                 loadProducts()
+            } else if type == "setting" {
+                loadSettings()
             } else {
                 let urlString = APIs.get("", type: type)
                 getAPI(urlString)
@@ -415,6 +421,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "OutOfBoxCoverCell":
+            if let cell = cellItem as? OutOfBoxCoverCell {
+                cell.coverTheme = coverTheme
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         case "BigImageCell":
             if let cell = cellItem as? BigImageCell {
                 cell.cellWidth = cellWidth
@@ -487,6 +500,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "SettingCell":
+            if let cell = cellItem as? SettingCell {
+                cell.cellWidth = cellWidth
+                cell.themeColor = themeColor
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         default:
             if let cell = cellItem as? ChannelCell {
                 cell.cellWidth = cellWidth
@@ -527,6 +547,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 headerView.themeColor = themeColor
                 headerView.contentSection = fetches.fetchResults[indexPath.section]
                 return headerView
+            case "SimpleHeaderView":
+                let headerView = headerView as! SimpleHeaderView
+                headerView.themeColor = themeColor
+                headerView.contentSection = fetches.fetchResults[indexPath.section]
+                return headerView
             default:
                 assert(false, "Unknown Identifier")
             }
@@ -550,7 +575,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     // MARK: - Use different cell based on different strategy
-    private func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
+    fileprivate func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
         let section = fetches.fetchResults[indexPath.section]
         let sectionTitle = section.title
         let item = section.items[indexPath.row]
@@ -575,6 +600,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             reuseIdentifier = "BigImageCell"
         } else if layoutStrategy == "Video" {
             reuseIdentifier = "VideoCoverCell"
+        } else if layoutStrategy == "OutOfBox" {
+            reuseIdentifier = "OutOfBoxCoverCell"
         } else {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
@@ -618,6 +645,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "BookCell"
                 } else if item.type == "follow" {
                     reuseIdentifier = "FollowCell"
+                } else if item.type == "setting" {
+                    reuseIdentifier = "SettingCell"
                 } else if item.type == "ad"{
                     if item.adModel == nil || item.adModel?.headline == nil {
                         reuseIdentifier = "LineCell"
@@ -654,10 +683,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "HalfPage":
                 reuseIdentifier = "Ad"
                 sectionSize = CGSize(width: 300, height: 600)
-            case "List":
+            case "List", "Group":
                 if ![""].contains(fetches.fetchResults[sectionIndex].title) {
-                    reuseIdentifier = "HeaderView"
-                    sectionSize = CGSize(width: view.frame.width, height: 60)
+                    switch sectionType {
+                        case "Group":
+                            reuseIdentifier = "SimpleHeaderView"
+                        sectionSize = CGSize(width: view.frame.width, height: 44)
+                    default:
+                        reuseIdentifier = "HeaderView"
+                        sectionSize = CGSize(width: view.frame.width, height: 60)
+                    }
+                    
                 } else {
                     reuseIdentifier = nil
                     sectionSize = CGSize.zero
@@ -684,9 +720,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         try? AVAudioSession.sharedInstance().setActive(true)
         
         print("palyer item isExist url")
-
+        
         let body = TabBarAudioContent.sharedInstance.body
-//        let body = AudioContent.sharedInstance.body
+        //        let body = AudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
             audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
             audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
@@ -791,7 +827,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
         
     }
-
+    
     
     func removePlayerItemObservers() {
         NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
@@ -836,7 +872,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
         } else {
             switch selectedItem.type {
-            case "ad", "follow":
+            case "ad", "follow", "setting":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
             case "ebook":
@@ -897,7 +933,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
                     let pageData = withAd.contentItems
                     currentPageIndex = withAd.pageIndex
-                    
+                    pageData[currentPageIndex].isLandingPage = true
+                    detailViewController.themeColor = themeColor
                     detailViewController.contentPageData = pageData
                     detailViewController.currentPageIndex = currentPageIndex
                     navigationController?.pushViewController(detailViewController, animated: true)
@@ -964,31 +1001,71 @@ extension DataViewController {
     
 }
 
+extension DataViewController {
+    
+    // MARK: - load settings and update UI
+    fileprivate func loadSettings() {
+        let contentSections = Settings.page
+        let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+        self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+    }
+    
+    
+}
 
-fileprivate let itemsPerRow: CGFloat = 3
+
+fileprivate let itemsPerRowForRegular: CGFloat = 3
+fileprivate let itemsPerRowForCompact: CGFloat = 1
 fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
 extension DataViewController : UICollectionViewDelegateFlowLayout {
+    
+    func getSizeInfo() -> (sizeClass: UIUserInterfaceSizeClass, itemsPerRow: CGFloat) {
+        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+        let itemsPerRow: CGFloat
+        let currentSizeClass: UIUserInterfaceSizeClass
+        if horizontalClass != .regular || verticalCass != .regular {
+            itemsPerRow = 1
+            currentSizeClass = .compact
+        } else {
+            itemsPerRow = 3
+            currentSizeClass = .regular
+        }
+        return (currentSizeClass, itemsPerRow)
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         //print ("sizeFor Item At called")
+        let sizeInfo = getSizeInfo()
+        let itemsPerRow = sizeInfo.itemsPerRow
+        let currentSizeClass = sizeInfo.sizeClass
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem: CGFloat
         let heightPerItem: CGFloat
         // TODO: Should do the layout based on cell's properties
-        if indexPath.row == 0 && indexPath.section == 1{
-            widthPerItem = (availableWidth / itemsPerRow) * 2
-            //heightPerItem = widthPerItem * 0.618
-            heightPerItem = widthPerItem * 3
+        let reuseIdentifier = getReuseIdentifierForCell(indexPath)
+        if reuseIdentifier == "SettingCell" {
+            widthPerItem = availableWidth / itemsPerRow
+            heightPerItem = 44
+        } else if indexPath.row == 0 && indexPath.section == 1{
+            if currentSizeClass == .regular {
+                widthPerItem = (availableWidth / itemsPerRow) * 2
+                heightPerItem = widthPerItem * 0.618
+            } else {
+                widthPerItem = availableWidth
+                heightPerItem = widthPerItem * 2
+            }
         } else {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = widthPerItem * 0.618
         }
-        
-        return CGSize(width: widthPerItem, height: heightPerItem)
+        return CGSize(width: widthPerItem, height: heightPerItem)        
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -1002,7 +1079,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
     }
-
+    
 }
 
 // MARK: Handle links here

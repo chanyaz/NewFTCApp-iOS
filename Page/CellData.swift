@@ -10,6 +10,8 @@
 
 import Foundation
 
+
+
 enum Member {
     case robot
     case you
@@ -337,6 +339,7 @@ class CellData {
     }
     
     //同步加载image的方法：
+    /*
     func buidUIImage(url theUrl:String) -> UIImage? {
             let fm = FileManager.default
             let path = "\(Bundle.main.resourcePath!)/\(String(describing: theUrl))"
@@ -350,7 +353,7 @@ class CellData {
             }
             return myUIImage
     }
-    
+    */
    
  
 }

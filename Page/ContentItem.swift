@@ -21,6 +21,7 @@ class ContentItem{
     
     var section: Int
     var row: Int
+    var isLandingPage = false
     
     var isCover = false
     var hideTopBorder: Bool?
@@ -94,10 +95,12 @@ class ContentItem{
     
     func getImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? {
         let urlString: String
-        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+        //MARK: Deal with the stupid API error
+        let imageUrlCleaned = imageUrl.replacingOccurrences(of: "/upload/", with: "/")
+        if let u = imageUrlCleaned.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
             urlString = ImageService.resize(u, width: width, height: height)
         } else {
-            urlString = imageUrl
+            urlString = imageUrlCleaned
         }
         if let url =  URL(string: urlString) {
             return url

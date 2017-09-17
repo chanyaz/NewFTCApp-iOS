@@ -11,6 +11,7 @@ import UIKit
 
 
 class CustomNavigationController: UINavigationController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+    var isLightContent = false
     var tabName: String? = nil
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)

@@ -806,18 +806,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             TabBarAudioContent.sharedInstance.playerItem = playerItem
             
             
-            player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-                
-                if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
-                    let duration = CMTimeGetSeconds(d)
-                    if duration.isNaN == false {
-                        TabBarAudioContent.sharedInstance.duration = d
-                        TabBarAudioContent.sharedInstance.time = time
-                    }
-                }
-                
-            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
             self.addPlayerItemObservers()
             
         }else{
@@ -830,14 +819,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     func removePlayerItemObservers() {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
     }
     func addPlayerItemObservers() {
-        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
     }
     func playerDidFinishPlaying() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: self)
         TabBarAudioContent.sharedInstance.player?.pause()
+        nowPlayingCenter.updateTimeForPlayerItem(player)
+        TabBarAudioContent.sharedInstance.isPlayFinish = true
+        TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
         nowPlayingCenter.updateTimeForPlayerItem(player)
     }
     

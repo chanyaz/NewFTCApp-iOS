@@ -121,6 +121,7 @@ struct Setting {
     }
     
     static func getContentSections(_ id: String) -> [ContentSection] {
+        let selectedIndex = getCurrentOption(id).index
         let contentSection = ContentSection(
             title: "",
             items: [],
@@ -128,19 +129,25 @@ struct Setting {
             adid: nil
         )
         if let allOptions = options[id] {
-            for option in allOptions {
+            for (index, value) in allOptions.enumerated() {
                 let contentItem = ContentItem(
-                    id: option,
+                    id: value,
                     image: "",
-                    headline: option,
+                    headline: value,
                     lead: "",
                     type: "option",
                     preferSponsorImage: "",
                     tag: "",
                     customLink: "",
                     timeStamp: 0,
-                    section: 0, row: 0
+                    section: 0,
+                    row: index
                 )
+                if index == selectedIndex {
+                    contentItem.isSelected = true
+                } else {
+                    contentItem.isSelected = false
+                }
                 contentSection.items.append(contentItem)
             }
         }

@@ -1037,6 +1037,7 @@ extension DataViewController {
         self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
     }
     
+    // MARK: load options and update UI
     fileprivate func loadOptions() {
         if let id = dataObject["id"] {
             let contentSections = Setting.getContentSections(id)

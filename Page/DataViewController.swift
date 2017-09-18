@@ -77,6 +77,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
             collectionView?.register(UINib.init(nibName: "FollowCell", bundle: nil), forCellWithReuseIdentifier: "FollowCell")
             collectionView?.register(UINib.init(nibName: "SettingCell", bundle: nil), forCellWithReuseIdentifier: "SettingCell")
+                        collectionView?.register(UINib.init(nibName: "OptionCell", bundle: nil), forCellWithReuseIdentifier: "OptionCell")
             collectionView?.register(UINib.init(nibName: "BookCell", bundle: nil), forCellWithReuseIdentifier: "BookCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
@@ -509,6 +510,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "OptionCell":
+            if let cell = cellItem as? OptionCell {
+                cell.cellWidth = cellWidth
+                cell.themeColor = themeColor
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         case "EmptyCell":
             return cellItem
         default:
@@ -657,8 +665,10 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "BookCell"
                 } else if item.type == "follow" {
                     reuseIdentifier = "FollowCell"
-                } else if ["setting", "option"].contains(item.type) {
+                } else if item.type == "setting" {
                     reuseIdentifier = "SettingCell"
+                } else if item.type == "option" {
+                    reuseIdentifier = "OptionCell"
                 } else if item.type == "ad"{
                     if item.adModel == nil || item.adModel?.headline == nil {
                         reuseIdentifier = "LineCell"
@@ -1075,7 +1085,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         let heightPerItem: CGFloat
         // TODO: Should do the layout based on cell's properties
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
-        if reuseIdentifier == "SettingCell" {
+        if reuseIdentifier == "SettingCell" || reuseIdentifier == "OptionCell" {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = 44
         } else if reuseIdentifier == "BookCell" {

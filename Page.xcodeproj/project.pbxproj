@@ -39,8 +39,6 @@
 		50D4BD5F1F63BE1700DD64E1 /* FT今日焦点.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 50D4BD531F63BE1700DD64E1 /* FT今日焦点.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		50D4BD651F63BF7500DD64E1 /* TodayItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD641F63BF7500DD64E1 /* TodayItemCell.swift */; };
 		50D9BA0F1F230A73002A188F /* LeakAvoider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9BA0E1F230A73002A188F /* LeakAvoider.swift */; };
-		50DA6E7E1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */; };
-		50DA6E7F1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */; };
 		50DA6E811F4037C8006B4CDE /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = 50DA6E801F4037C8006B4CDE /* story.html */; };
 		50DA6E821F4037C8006B4CDE /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = 50DA6E801F4037C8006B4CDE /* story.html */; };
 		50E535C71F0729900082B181 /* ChannelModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E535C61F0729900082B181 /* ChannelModelDelegate.swift */; };
@@ -106,7 +104,7 @@
 		6021532B1F397C650077A7AF /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60124FB51F316F2400CFA04C /* ChatViewController.swift */; };
 		6021532C1F397C650077A7AF /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6A41F21A6560077C104 /* AudioPlayer.swift */; };
 		6021532D1F397C650077A7AF /* OpenInSafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A421F1CAC5300583157 /* OpenInSafari.swift */; };
-		6021532E1F397C650077A7AF /* CellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5D1F380A2400508A91 /* CellData.swift */; };
+		6021532E1F397C650077A7AF /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5D1F380A2400508A91 /* ChatViewModel.swift */; };
 		6021532F1F397C650077A7AF /* SpeechDefaultVoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6AD1F21A9420077C104 /* SpeechDefaultVoice.swift */; };
 		602153301F397C650077A7AF /* WeChatShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A451F1CAC5300583157 /* WeChatShare.swift */; };
 		602153311F397C650077A7AF /* CoverCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */; };
@@ -286,7 +284,7 @@
 		AF8E93031F124844007CD6DE /* ArticleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93021F124844007CD6DE /* ArticleStyle.swift */; };
 		AF8E93071F125509007CD6DE /* ParseHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93061F125509007CD6DE /* ParseHtml.swift */; };
 		AF8E93091F125889007CD6DE /* AttributedArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E93081F125889007CD6DE /* AttributedArticle.swift */; };
-		AFD8AF5E1F380A2400508A91 /* CellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5D1F380A2400508A91 /* CellData.swift */; };
+		AFD8AF5E1F380A2400508A91 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5D1F380A2400508A91 /* ChatViewModel.swift */; };
 		AFD8AF601F380A6200508A91 /* OneTalkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */; };
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */; };
 		F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */; };
@@ -405,7 +403,6 @@
 		50D4BD631F63BF5C00DD64E1 /* FT今日焦点.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "FT今日焦点.entitlements"; sourceTree = "<group>"; };
 		50D4BD641F63BF7500DD64E1 /* TodayItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayItemCell.swift; sourceTree = "<group>"; };
 		50D9BA0E1F230A73002A188F /* LeakAvoider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakAvoider.swift; sourceTree = "<group>"; };
-		50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkRequestHelper.swift; sourceTree = "<group>"; };
 		50DA6E801F4037C8006B4CDE /* story.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = story.html; path = FTChinese/story.html; sourceTree = "<group>"; };
 		50E535C61F0729900082B181 /* ChannelModelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelModelDelegate.swift; sourceTree = "<group>"; };
 		50EC3A611EF1E18E00BF17AD /* Ad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ad.swift; sourceTree = "<group>"; };
@@ -549,7 +546,7 @@
 		AF8E93021F124844007CD6DE /* ArticleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleStyle.swift; sourceTree = "<group>"; };
 		AF8E93061F125509007CD6DE /* ParseHtml.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHtml.swift; sourceTree = "<group>"; };
 		AF8E93081F125889007CD6DE /* AttributedArticle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedArticle.swift; sourceTree = "<group>"; };
-		AFD8AF5D1F380A2400508A91 /* CellData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellData.swift; sourceTree = "<group>"; };
+		AFD8AF5D1F380A2400508A91 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneTalkCell.swift; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutV.swift; sourceTree = "<group>"; };
 		F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotArticleCellRegular.swift; sourceTree = "<group>"; };
@@ -770,9 +767,8 @@
 			children = (
 				AFD8AF581F3809DC00508A91 /* img */,
 				60124FB51F316F2400CFA04C /* ChatViewController.swift */,
-				AFD8AF5D1F380A2400508A91 /* CellData.swift */,
+				AFD8AF5D1F380A2400508A91 /* ChatViewModel.swift */,
 				AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */,
-				50DA6E7D1F3EFC87006B4CDE /* TalkRequestHelper.swift */,
 			);
 			name = Chat;
 			sourceTree = "<group>";
@@ -1578,7 +1574,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		886899C82F14A377FBC6FF9E /* [CP] Check Pods Manifest.lock */ = {
@@ -1596,7 +1592,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9EEBA5BD08C755F531ACE82B /* [CP] Copy Pods Resources */ = {
@@ -1767,7 +1763,7 @@
 				6021532C1F397C650077A7AF /* AudioPlayer.swift in Sources */,
 				F2E090761F5A6A3900F4409F /* PersonInfoViewController.swift in Sources */,
 				6021532D1F397C650077A7AF /* OpenInSafari.swift in Sources */,
-				6021532E1F397C650077A7AF /* CellData.swift in Sources */,
+				6021532E1F397C650077A7AF /* ChatViewModel.swift in Sources */,
 				6021532F1F397C650077A7AF /* SpeechDefaultVoice.swift in Sources */,
 				50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */,
@@ -1789,7 +1785,6 @@
 				602153401F397C650077A7AF /* ContentItem.swift in Sources */,
 				602153411F397C650077A7AF /* StyleExtensions.swift in Sources */,
 				602153421F397C650077A7AF /* SpeechSettings.swift in Sources */,
-				50DA6E7F1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */,
 				602153431F397C650077A7AF /* Web.swift in Sources */,
 				50C31B401F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */,
 				602153441F397C650077A7AF /* DataViewController.swift in Sources */,
@@ -1873,7 +1868,6 @@
 				605750F31F1461F400552DAC /* WKWebPage.swift in Sources */,
 				600BD6AF1F21A9420077C104 /* PlaySpeech.swift in Sources */,
 				60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */,
-				50DA6E7E1F3EFC87006B4CDE /* TalkRequestHelper.swift in Sources */,
 				F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */,
 				50C31B391F6CD83900F4CF61 /* SimpleHeaderView.swift in Sources */,
 				F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */,
@@ -1893,7 +1887,7 @@
 				602153A31F399E010077A7AF /* CustomNavigationController.swift in Sources */,
 				600BD6A81F21A6570077C104 /* AudioPlayer.swift in Sources */,
 				60986A471F1CAC5300583157 /* OpenInSafari.swift in Sources */,
-				AFD8AF5E1F380A2400508A91 /* CellData.swift in Sources */,
+				AFD8AF5E1F380A2400508A91 /* ChatViewModel.swift in Sources */,
 				6019A9D11F4C457D00B8FB69 /* FollowCell.swift in Sources */,
 				600BD6B01F21A9420077C104 /* SpeechDefaultVoice.swift in Sources */,
 				602E88401F43DD9600BBB4AF /* Alert.swift in Sources */,

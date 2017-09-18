@@ -128,7 +128,7 @@ struct Key {
     static let languagePreference = "Language Preference"
     static let domainIndex = "Domain Index"
     static let searchHistory = "Search History"
-    static let audioHistory = "Audio History"
+    static let audioHistory = ["Audio Headline History","Audio URL History","Audio Id History","Audio Last Play Time History"]
 }
 
 // MARK: - Use a server side image service so that you can request images that are just large enough

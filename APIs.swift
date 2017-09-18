@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MediaPlayer
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
     //private static let base = "https://m.ftimg.net/index.php/jsapi/"
@@ -128,7 +129,7 @@ struct Key {
     static let languagePreference = "Language Preference"
     static let domainIndex = "Domain Index"
     static let searchHistory = "Search History"
-    static let audioHistory = "Audio History"
+    static let audioHistory = ["Audio Headline History","Audio URL History","Audio Id History","Audio Last Play Time History"]
 }
 
 // MARK: - Use a server side image service so that you can request images that are just large enough
@@ -397,6 +398,38 @@ struct Settings {
             adid: nil
         )
     ]
+}
+public func setLastPlayAudio(){
+    if  TabBarAudioContent.sharedInstance.audioUrl != nil {
+
+        var audioHeadLineHistory = UserDefaults.standard.string(forKey: Key.audioHistory[0]) ?? String()
+        var audioUrlHistory = UserDefaults.standard.url(forKey: Key.audioHistory[1]) ?? URL(string: "")
+        var audioIdHistory = UserDefaults.standard.string(forKey: Key.audioHistory[2]) ?? String()
+        var audioLastPlayTimeHistory = UserDefaults.standard.float(forKey: Key.audioHistory[3]) 
+
+        //应该放在能保存下来的地方，点击一下保存一下，点击不同的会替换当前的
+        if let audioHeadLine = TabBarAudioContent.sharedInstance.audioHeadLine{
+            audioHeadLineHistory = audioHeadLine
+        }
+        if let audioUrl = TabBarAudioContent.sharedInstance.audioUrl{
+            audioUrlHistory = audioUrl
+        }
+        if let audioId = TabBarAudioContent.sharedInstance.body["interactiveUrl"]{
+            audioIdHistory = audioId
+        }
+        
+        if let time = TabBarAudioContent.sharedInstance.time{
+            print("getLastPlayAudioUrl time")
+            audioLastPlayTimeHistory = Float((CMTimeGetSeconds(time)))
+        }else{
+            print("getLastPlayAudioUrl 0")
+            audioLastPlayTimeHistory = 0.0
+        }
+        UserDefaults.standard.set(audioHeadLineHistory, forKey: Key.audioHistory[0])
+        UserDefaults.standard.set(audioUrlHistory, forKey: Key.audioHistory[1])
+        UserDefaults.standard.set(audioIdHistory, forKey: Key.audioHistory[2])
+        UserDefaults.standard.set(audioLastPlayTimeHistory, forKey: Key.audioHistory[3])
+    }
 }
 
 /*

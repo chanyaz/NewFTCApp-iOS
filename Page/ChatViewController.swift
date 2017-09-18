@@ -17,28 +17,29 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     // 一些实验数据
       //MARK:属性初始化时不能直接使用其他属性
-    let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"))
-    
-    /* 一些测试数据
-     let imageCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType: .image, saysImage: "landscape.jpeg"))
-     let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"澳洲高端葡萄酒势头强劲",saysDescription:"一瓶1951年奔富葛兰许拍出5万澳元的澳洲历史最高价。澳洲高端葡萄酒国际地位正在提高，中国是第一大市场。",saysCover:"https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fi.ftimg.net%2Fpicture%2F9%2F000072299_piclink.jpg?source=ftchinese",saysUrl:"http://www.ftchinese.com/story/001073823"))
-    */
-    var talkData = Array(repeating: CellData(), count: 4) {
-    
+    //let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"))
+   
+    /*
+    var historyTalkData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4) {
         didSet {
             print("tableReloadData")
             self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
-            //let num = talkData.count
-            let currentIndexPath = IndexPath(row: talkData.count-1, section: 0)
-            //let firstIndexPath = IndexPath(row: 0, section: 0)
-            
+            let currentIndexPath = IndexPath(row: historyTalkData.count-1, section: 0)
             self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-            
         }
     }
- 
-    var robotResCellData: CellData? = nil
-    
+    */
+    var historyTalkData:[[String:String]]? = nil
+    var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4) { //NOTE:只有get 可以省略get
+        didSet {
+            print("tableReloadData")
+            self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
+            let currentIndexPath = IndexPath(row: showingData.count-1, section: 0)
+            self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+
+        }
+        
+    }
     
 
     @IBOutlet weak var talkListBlock: UITableView!
@@ -56,40 +57,52 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.resignFirstResponder()
     }
 
-    @IBAction func sendYourTalk(_ sender: UIButton) {
+    @IBAction func sendYourTalk(_ sender: UIButton) {//MARK:点击“Send"按钮后发生的事件
         if let currentYourTalk = inputBlock.text {
+            let oneTalkData = [
+                "member":"you",
+                "type":"text",
+                "content":currentYourTalk
+            ]
+            self.showingData.append(oneTalkData)
+            /*
             let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
             let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
             self.talkData.append(currentYouCellData)
-            
+            */
             self.inputBlock.text = ""
-            self.createTalkRequest(myInputText:currentYourTalk, completion: { _ in
-                if let robotRes = self.robotResCellData {
+            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
+                if let oneTalkData = talkData {
                     //print(robotRes)
-                    self.talkData.append(robotRes)
+                    self.showingData.append(oneTalkData)
                 }
                 
             })
-            /* 使用本地测试数据
-            var currentRobotCellData = CellData()
-            switch currentYourTalk {
-            case "text":
-                currentRobotCellData = self.textCellData
-                self.talkData.append(currentRobotCellData)
-            case "image":
-                currentRobotCellData = self.imageCellData
-                self.talkData.append(currentRobotCellData)
-            case "card":
-                currentRobotCellData = self.cardCellData
-                self.talkData.append(currentRobotCellData)
-            default:
-                self.createTalkRequest(myInputText:currentYourTalk)
-            }
-            */
+            
         }
 
     }
-    
+    //MARK:点击键盘中Return按键后发生的事件，同上点击“Send"按钮后发生的事件
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let currentYourTalk = textField.text {
+            let oneTalkData = [
+                "member":"you",
+                "type":"text",
+                "content":currentYourTalk
+            ]
+            self.showingData.append(oneTalkData)
+            self.inputBlock.text = ""
+            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
+                if let oneTalkData = talkData {
+                    //print(robotRes)
+                    self.showingData.append(oneTalkData)
+                }
+                
+            })
+
+        }
+        return true
+    }
 
     func keyboardWillShow(_ notification: NSNotification) {
         
@@ -141,8 +154,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let animation:(() -> Void)={
                 self.view.transform = CGAffineTransform.identity
                 self.view.setNeedsUpdateConstraints()
-                //self.view.setNeedsLayout()
-                //self.keyboardNeedLayout = true
             }
             UIView.animate(
                 withDuration: duration,
@@ -151,7 +162,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 animations:animation,
                 completion: nil
             )
-            //self.view.layoutIfNeeded()
              self.view.setNeedsLayout()
         }
         
@@ -164,31 +174,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.resignFirstResponder()
         print("applicationWillResignActive")
     }
-    /*
-    func applicationDidBecomeActive(_ notification:NSNotification){
-        //self.inputBlock.resignFirstResponder()
-        print("applicationDidBecomeActive")
-    }
-     */
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.talkData.count
+        return self.showingData.count
     }
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let currentRow = indexPath.row
-        let cellData = self.talkData[currentRow] //获取到
-        
-        // 根据对话内容长短及self.frame尺寸得到相关位置尺寸
-        /*
-        let headImageWithInsets = self.cellData.cellInsets.left + self.cellData.headImageLength + self.cellData.betweenHeadAndBubble //60
-        let bubbleImageX = (whoSays == .robot) ? headImageWithInsets : self.frame.width - headImageWithInsets - self.cellData.bubbleImageWidth
-        let bubbleImageY = self.frame.minY + self.cellData.bubbleInsets.top
- 
-        let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
-        let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
-        */
-        
+        let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
+        //self.historyTalkData[currentRow]["rowHeight"] =  String(describing: max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble))
         let cell = OneTalkCell(cellData, reuseId:"Talk")
         if (cellData.saysWhat.type == .card) {
             self.asyncBuildImage(url: cellData.saysWhat.coverUrl, completion: { downloadedImg in
@@ -213,39 +208,36 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let currentCellData = self.talkData[indexPath.row]
-        //print("cellHeightByBubble:\(currentCellData.cellHeightByBubble)")
-        let currentHeight = max(currentCellData.cellHeightByHeadImage, currentCellData.cellHeightByBubble)
-        return currentHeight
+        let currentRow = indexPath.row
+        //let cellData = self.talkData[currentRow] //获取到
+        let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
+        return max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble)
     }
-    
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let currentYourTalk = textField.text {
-            let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
-            let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
-            self.talkData.append(currentYouCellData)
-            
-            textField.text = ""
-            self.createTalkRequest(myInputText:currentYourTalk, completion: { _ in
-                if let robotRes = self.robotResCellData {
-                    self.talkData.append(robotRes)
-                }
-                
-            })
-
+    func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
+        let urlString: String
+        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+            urlString = ImageService.resize(u, width: width, height: height)
+        } else {
+            urlString = imageUrl
         }
-        return true
+        if let url =  URL(string: urlString) {
+            return url
+        }
+        return nil
     }
-    //异步加载image的方法：
+    
+  
+    
+    //异步加载image：
     func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
-        let optimizedUrl = optimizedImageURL(imageUrl, width: 240, height: 135)
-        print("ImageUrl:\(imageUrl)")
-        print("OptimizedUrl:\(String(describing: optimizedUrl))")
+        let optimizedUrl = self.optimizedImageURL(imageUrl, width: 240, height: 135)
+        //print("ImageUrl:\(imageUrl)")
+        //print("OptimizedUrl:\(String(describing: optimizedUrl))")
         if let imgUrl = optimizedUrl {
             let imgRequest = URLRequest(url: imgUrl)
             
-            URLSession.shared.dataTask(with: imgRequest, completionHandler: { (data, response, error) in
+            URLSession.shared.dataTask(with: imgRequest, completionHandler: {
+                (data, response, error) in
                 if error != nil{
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion(nil)
@@ -273,30 +265,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     DispatchQueue.main.async {
                         completion(nil)
                     }
-                 }
-                
-               
-                
+                }
             }).resume()
             
         }
     }
-    func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
-        let urlString: String
-        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
-            urlString = ImageService.resize(u, width: width, height: height)
-        } else {
-            urlString = imageUrl
-        }
-        if let url =  URL(string: urlString) {
-            return url
-        }
-        return nil
-    }
-    func createTalkRequest (myInputText inputText:String = "", completion: @escaping () -> Void) {
+        
+   
+        
+   func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
         let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
-        
+    
         let appIdField = "x-msxiaoice-request-app-id"
         let appId = "XI36GDstzRkCzD18Fh"
         
@@ -310,7 +290,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         let signatureField = "x-msxiaoice-request-signature"
 
-        let signature = computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: ["api-version=2017-06-15-Int"], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
+        let signature = ChatViewModel.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: ["api-version=2017-06-15-Int"], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
         print("signature:\(signature)")
         
         if let url = URL(string: urlString),
@@ -331,7 +311,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 if error != nil {
                     print("Error: \(String(describing: error))")
                     DispatchQueue.main.async {//返回主线程更新UI
-                        completion()
+                        completion(nil)
                     }
                     return
                    
@@ -341,7 +321,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
                     print("statusCode:\(httpStatus)")
                     DispatchQueue.main.async {//返回主线程更新UI
-                        completion()
+                        completion(nil)
                     }
                     return
                     
@@ -350,11 +330,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 if let data = data, let dataString = String(data: data, encoding: .utf8){
                     print("Overview Data:\(dataString)")
                     //explainRobotTalk = dataString
-                    self.robotResCellData = createResponseCellData(data: data)
+                    let talkData:[String:String]?
+                    talkData = ChatViewModel.createResponseTalkData(data: data)
                    // createResponseCellData(data: Data)
                     
                     DispatchQueue.main.async {//返回主线程更新UI
-                        completion()
+                        completion(talkData)
                     }
                     
                 }
@@ -366,14 +347,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
     
-    /*
-    func saveTalkData() {
-        //let historyTalkData = NSKeyedArchiver.archivedData(withRootObject: self.talkData)
-    }
-    */
-    func encodeTheData(data:[CellData]) {
-        
-    }
+ 
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Execute viewDidLoad")
@@ -413,7 +388,32 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
-        self.talkData.append(self.textCellData)
+        
+        do {
+            if let savedTalkData = Download.readFile("chatHistoryTalk", for: .cachesDirectory, as: "json") {
+                let jsonAny = try JSONSerialization.jsonObject(with: savedTalkData, options: .mutableContainers)
+                if let jsonDic = jsonAny as? NSArray, let historyTalk = jsonDic as? [[String:String]] {
+                    self.historyTalkData = historyTalk
+                    
+                }
+            }
+        } catch {
+            
+        }
+        if let realHistoryTalkData = self.historyTalkData {
+            let historyNum = realHistoryTalkData.count
+            
+            //MARK:只显示历史会话中最近的10条记录
+            if historyNum > 0 {
+                if historyNum <= 10  {
+                   self.showingData = realHistoryTalkData
+                } else {
+                   self.showingData = Array(realHistoryTalkData[historyNum-10...historyNum-1])
+                }
+  
+            }
+        }
+
        
 
     }
@@ -422,27 +422,36 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    /*
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(false)
-        if let loadedData = UserDefaults.value(forKey: "historyTalk") {
-            if let loadedHistoryTalk = NSKeyedUnarchiver.unarchiveObject(with: loadedData as! Data) as? [CellData] {
-                self.talkData = loadedHistoryTalk
-            }
-        } else {
-            self.talkData.append(self.textCellData)
-        }
-        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(false)
+        self.showingData.append(ChatViewModel.defaultTalkData)//TODO:欢迎语得动态出来
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)
-        let historyTalkData = NSKeyedArchiver.archivedData(withRootObject: self.talkData)
-        UserDefaults().set(historyTalkData, forKey: "historyTalk")
-
-        //let savedTalkData = self.talkData as NSData
-        //Download.saveFile(savedTalkData, filename: "talkDataArr", to: .documentDirectory, as: String?)
-    }
-    */
+        
+        do {
+            var toSaveTalkData:Data
+            if let realHistoryTalkData = self.historyTalkData {
+                let newHistoryTalkData = realHistoryTalkData + self.showingData //要存储的是这个
+                let newHistoryNum = newHistoryTalkData.count
+                
+                //MARK:只存储最近的100条对话记录 // TODO:增加手指下拉动作监测，拉一次多展现10条历史对话记录
+                if newHistoryNum > 0 {
+                    if newHistoryNum <= 100  {
+                        toSaveTalkData = try JSONSerialization.data(withJSONObject: newHistoryTalkData, options:.prettyPrinted)
+                    } else {
+                        toSaveTalkData = try JSONSerialization.data(withJSONObject: newHistoryTalkData[newHistoryNum-100...newHistoryNum-1], options:.prettyPrinted)
+                    }
+                    
+                    Download.saveFile(toSaveTalkData, filename: "chatHistoryTalk", to:.cachesDirectory , as: "json")
+                }
+            }
+        } catch {
+            
+        }
+   }
+  
     deinit {
         NotificationCenter.default.removeObserver(self)
         print ("Chat View Controller deinit successfully")

@@ -18,12 +18,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     // 一些实验数据
       //MARK:属性初始化时不能直接使用其他属性
     //let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"))
-    let defaultTalkData = [
-        "member":"robot",
-        "type":"text",
-        "content":"你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"
-    ]
-
+   
+    /*
     var historyTalkData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4) {
         didSet {
             print("tableReloadData")
@@ -31,6 +27,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let currentIndexPath = IndexPath(row: historyTalkData.count-1, section: 0)
             self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
         }
+    }
+    */
+    var historyTalkData:[[String:String]]? = nil
+    var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4) { //NOTE:只有get 可以省略get
+        didSet {
+            print("tableReloadData")
+            self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
+            let currentIndexPath = IndexPath(row: showingData.count-1, section: 0)
+            self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+
+        }
+        
     }
     
 
@@ -56,7 +64,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 "type":"text",
                 "content":currentYourTalk
             ]
-            self.historyTalkData.append(oneTalkData)
+            self.showingData.append(oneTalkData)
             /*
             let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
             let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
@@ -66,7 +74,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
                 if let oneTalkData = talkData {
                     //print(robotRes)
-                    self.historyTalkData.append(oneTalkData)
+                    self.showingData.append(oneTalkData)
                 }
                 
             })
@@ -82,12 +90,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 "type":"text",
                 "content":currentYourTalk
             ]
-            self.historyTalkData.append(oneTalkData)
+            self.showingData.append(oneTalkData)
             self.inputBlock.text = ""
             self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
                 if let oneTalkData = talkData {
                     //print(robotRes)
-                    self.historyTalkData.append(oneTalkData)
+                    self.showingData.append(oneTalkData)
                 }
                 
             })
@@ -168,13 +176,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.historyTalkData.count
+        return self.showingData.count
     }
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let currentRow = indexPath.row
-        let cellData = ChatViewModel.buildCellData(self.historyTalkData[currentRow])
+        let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
         //self.historyTalkData[currentRow]["rowHeight"] =  String(describing: max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble))
         let cell = OneTalkCell(cellData, reuseId:"Talk")
         if (cellData.saysWhat.type == .card) {
@@ -202,7 +210,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentRow = indexPath.row
         //let cellData = self.talkData[currentRow] //获取到
-        let cellData = ChatViewModel.buildCellData(self.historyTalkData[currentRow])
+        let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
         return max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble)
     }
     func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
@@ -380,8 +388,33 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
-        //self.talkData.append(self.textCellData)
-        self.historyTalkData.append(defaultTalkData)
+        
+        do {
+            if let savedTalkData = Download.readFile("chatHistoryTalk", for: .cachesDirectory, as: "json") {
+                let jsonAny = try JSONSerialization.jsonObject(with: savedTalkData, options: .mutableContainers)
+                if let jsonDic = jsonAny as? NSArray, let historyTalk = jsonDic as? [[String:String]] {
+                    self.historyTalkData = historyTalk
+                    
+                }
+            }
+        } catch {
+            
+        }
+        if let realHistoryTalkData = self.historyTalkData {
+            let historyNum = realHistoryTalkData.count
+            
+            //MARK:只显示历史会话中最近的10条记录
+            if historyNum > 0 {
+                if historyNum <= 10  {
+                   self.showingData = realHistoryTalkData
+                } else {
+                   self.showingData = Array(realHistoryTalkData[historyNum-10...historyNum-1])
+                }
+  
+            }
+        }
+
+       
 
     }
 
@@ -389,27 +422,36 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    /*
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(false)
-        if let loadedData = UserDefaults.value(forKey: "historyTalk") {
-            if let loadedHistoryTalk = NSKeyedUnarchiver.unarchiveObject(with: loadedData as! Data) as? [CellData] {
-                self.talkData = loadedHistoryTalk
-            }
-        } else {
-            self.talkData.append(self.textCellData)
-        }
-        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(false)
+        self.showingData.append(ChatViewModel.defaultTalkData)//TODO:欢迎语得动态出来
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)
-        let historyTalkData = NSKeyedArchiver.archivedData(withRootObject: self.talkData)
-        UserDefaults().set(historyTalkData, forKey: "historyTalk")
-
-        //let savedTalkData = self.talkData as NSData
-        //Download.saveFile(savedTalkData, filename: "talkDataArr", to: .documentDirectory, as: String?)
-    }
-    */
+        
+        do {
+            var toSaveTalkData:Data
+            if let realHistoryTalkData = self.historyTalkData {
+                let newHistoryTalkData = realHistoryTalkData + self.showingData //要存储的是这个
+                let newHistoryNum = newHistoryTalkData.count
+                
+                //MARK:只存储最近的100条对话记录 // TODO:增加手指下拉动作监测，拉一次多展现10条历史对话记录
+                if newHistoryNum > 0 {
+                    if newHistoryNum <= 100  {
+                        toSaveTalkData = try JSONSerialization.data(withJSONObject: newHistoryTalkData, options:.prettyPrinted)
+                    } else {
+                        toSaveTalkData = try JSONSerialization.data(withJSONObject: newHistoryTalkData[newHistoryNum-100...newHistoryNum-1], options:.prettyPrinted)
+                    }
+                    
+                    Download.saveFile(toSaveTalkData, filename: "chatHistoryTalk", to:.cachesDirectory , as: "json")
+                }
+            }
+        } catch {
+            
+        }
+   }
+  
     deinit {
         NotificationCenter.default.removeObserver(self)
         print ("Chat View Controller deinit successfully")

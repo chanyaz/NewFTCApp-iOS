@@ -507,6 +507,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "EmptyCell":
+            return cellItem
         default:
             if let cell = cellItem as? ChannelCell {
                 cell.cellWidth = cellWidth
@@ -519,9 +521,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     
-    override func collectionView(_ collectionView: UICollectionView,
-                                 viewForSupplementaryElementOfKind kind: String,
-                                 at indexPath: IndexPath) -> UICollectionReusableView {
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionElementKindSectionHeader:
             let reuseIdentifier = getReuseIdentifierForSectionHeader(indexPath.section).reuseId ?? ""
@@ -576,11 +576,21 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     // MARK: - Use different cell based on different strategy
     fileprivate func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
-        let section = fetches.fetchResults[indexPath.section]
-        let sectionTitle = section.title
-        let item = section.items[indexPath.row]
-        let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
+        // MARK: - Check if the IndexPath is out of range
+        if fetches.fetchResults.count < indexPath.section + 1 {
+            return "EmptyCell"
+        }
         
+        let section = fetches.fetchResults[indexPath.section]
+        if section.items.count < indexPath.row + 1 {
+            print ("\(section.title) out of range, item count is \(section.items.count) and row is \(indexPath.row)")
+            return "EmptyCell"
+        }
+        
+        // MARK: Go on if the IndexPath is in range
+        let item = section.items[indexPath.row]
+        let sectionTitle = section.title
+        let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {
@@ -686,8 +696,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "List", "Group":
                 if ![""].contains(fetches.fetchResults[sectionIndex].title) {
                     switch sectionType {
-                        case "Group":
-                            reuseIdentifier = "SimpleHeaderView"
+                    case "Group":
+                        reuseIdentifier = "SimpleHeaderView"
                         sectionSize = CGSize(width: view.frame.width, height: 44)
                     default:
                         reuseIdentifier = "HeaderView"
@@ -1057,7 +1067,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = widthPerItem * 0.618
         }
-        return CGSize(width: widthPerItem, height: heightPerItem)        
+        return CGSize(width: widthPerItem, height: heightPerItem)
     }
     
     func collectionView(_ collectionView: UICollectionView,

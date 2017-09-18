@@ -10,8 +10,7 @@
 
 import Foundation
 
-
-
+/********* 几种Model的func中会用到的数据类型 **********************/
 enum Member {
     case robot
     case you
@@ -21,6 +20,7 @@ enum Infotype {
     case text // 文本
     case image // 图片
     case card // 图文
+    case error
 }
 
 struct SaysWhat {
@@ -254,37 +254,6 @@ class CellData {
         
         self.bubbleImageWidth = self.defaultImageWidth + bubbleImageInsets.left + bubbleImageInsets.right
         self.bubbleImageHeight = self.defaultImageHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
-
-        /*
-        let myUIImage = self.buidUIImage(url:imageUrlStr)
-        
-        if let realUIImage = myUIImage { //如果成功获取了图片
-            self.saysImage = realUIImage
-            let saysImageWidth = self.saysImage.size.width
-            let saysImageHeight = self.saysImage.size.height
-            let saysRwh = saysImageWidth / saysImageHeight
-            
-            var adjustImageWidth = CGFloat()
-            var adjustImageHeight = CGFloat()
-            
-            let standardRwh = maxImageWidth/maxImageHeight
-            if saysRwh > standardRwh {
-                adjustImageWidth = maxImageWidth
-                adjustImageHeight = adjustImageWidth * saysImageHeight / saysImageWidth
-            } else {
-                adjustImageHeight = maxImageHeight
-                adjustImageWidth = adjustImageHeight * saysImageWidth / saysImageHeight
-            }
-            
-            self.saysWhatWidth = adjustImageWidth
-            self.saysWhatHeight = adjustImageHeight
-            self.bubbleImageWidth = adjustImageWidth + bubbleImageInsets.left + bubbleImageInsets.right
-            self.bubbleImageHeight = adjustImageHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
-        } else { //如果没成功获取图片，则改为text类型回复
-            self.saysType = .text
-            self.buildTextCellData(textContent: "Sorry，没能成功得到图片")
-        }
-         */
     }
     
     
@@ -302,17 +271,8 @@ class CellData {
             context: nil)
         self.titleWidth = 240
         self.titleHeight = size.size.height
-        
-        
+
         //处理cover:交给另一个线程asyncBuildImage处理
-        // FIXME: This code always crash when network is off. As a good habit, never use force unwrap in your code.
-        /*
-        let myUIImage = self.buidUIImage(url: coverUrlStr)
-        if let realUIImage = myUIImage {
-            self.coverImage = realUIImage
-        }
-        */
-        
         
         //处理description
         if (descriptionStr != "") {
@@ -337,50 +297,227 @@ class CellData {
         self.bubbleImageWidth = self.saysWhatWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
         self.bubbleImageHeight = self.saysWhatHeight + self.bubbleImageInsets.top + self.bubbleImageInsets.bottom
     }
-    
-    //同步加载image的方法：
-    /*
-    func buidUIImage(url theUrl:String) -> UIImage? {
-            let fm = FileManager.default
-            let path = "\(Bundle.main.resourcePath!)/\(String(describing: theUrl))"
-            print(path)
-            var myUIImage: UIImage? = nil
-            if (fm.fileExists(atPath: path)) { //本地资源目录中有该文件
-                myUIImage = UIImage(named: theUrl)
-            } else if let imageUrl = NSURL(string: theUrl),
-                let imageData = NSData(contentsOf: imageUrl as URL) { //使用绝对路径寻找该文件
-                myUIImage = UIImage(data: imageData as Data)
-            }
-            return myUIImage
-    }
-    */
-   
- 
+
 }
 
-/*
- func asnycBuildUIImage(url theUrl:String) -> UIImage? {
- if let imgUrl = URL(string: theUrl) {
- let imgRequest = URLRequest(url: imgUrl)
- 
- URLSession.shared.dataTask(with: imgRequest, completionHandler: { (data, response, error) in
- if let data = data {
- self.saysUIImage(data: data)
- } else {
- let
- }
- 
- }).resume()
- }
- 
- }
- */
-/*
- itemCell?.loadImage(type:"cover", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
- self?.imageView.image = cellContentItem.coverImage
- })
- */
+/******* Model: 提供一些方法，和数据联系紧密，Controller中会用到这些方法 ****/
+class ChatViewModel {
+    
+    static func buildTalkData() -> [String: String] {
+        return [
+            "member":"",
+            "type":"",
+            "content":"",
+            "url":"",
+            "title":"",
+            "description":"",
+            "coverUrl":""
+        ]
+    }
 
 
+    static func buildCellData(_ oneTalkData:[String:String]) -> CellData {//根据historyTalkData数据得到CellData数据
+        //let oneTalkData = self.historyTalkData[row]
+        var saysWhat: SaysWhat
+        var member:Member
+        if let valueForMember = oneTalkData["member"] {
+            switch valueForMember {
+            case "robot":
+                member = .robot
+            case "you":
+                member = .you
+            default:
+                member = .no
+            }
+        } else {
+            member = .no
+        }
+        
+        var type:Infotype
+        if let valueForType = oneTalkData["type"] {
+            switch valueForType {
+            case "text":
+                type = .text
+                saysWhat = SaysWhat(saysType: type, saysContent: oneTalkData["content"])
+            case "image":
+                type = .image
+                saysWhat = SaysWhat(saysType: type, saysImage: oneTalkData["url"])
+            case "card":
+                type = .card
+                saysWhat = SaysWhat(saysType: type, saysTitle: oneTalkData["title"], saysDescription: oneTalkData["description"], saysCover: oneTalkData["coverUrl"], saysUrl: oneTalkData["url"])
+            default:
+                type = .error
+                saysWhat = SaysWhat(saysType: .text, saysContent: "")
+                
+            }
+        } else {
+            saysWhat = SaysWhat(saysType: .text, saysContent: "")
+        }
+        
+        
+        let cellData = CellData(whoSays: member, saysWhat: saysWhat)
+        return cellData
+    }
 
+
+    static func createResponseTalkData(data:Data) ->[String: String]? {
+        //var robotSaysWhat = SaysWhat()
+        //var robotCellData:CellData? = nil
+        var talkData = [
+            "member":"robot",
+            "type":"text"
+        ]
+        do {
+            let jsonAny = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
+            if let jsonDictionary = jsonAny as? NSDictionary,let answer = jsonDictionary["Answer"],let answerArray = answer as? NSArray {
+                let oneAnswer = answerArray[0]
+                
+                if let oneAnswerDic = oneAnswer as? NSDictionary,
+                    let type = oneAnswerDic["Type"], let typeStr = type as? String {
+                    
+                    print(typeStr)
+                    switch typeStr {
+                    case "Text":
+                        if let content = oneAnswerDic["Content"]{
+                            
+                            let contentStr = content as? String
+                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                            talkData["content"] = contentStr
+                            
+                        } else {
+                            let contentStr = "This is a Text, the data miss some important fields."
+                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                            talkData["content"] = contentStr
+                        }
+                        
+                    case "Image":
+                        
+                        if let url = oneAnswerDic["Url"] {
+                            let urlStr = url as? String
+                            //robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
+                            print("This is a Image")
+                            talkData["type"] = "image"
+                            talkData["url"] = urlStr
+                        } else {
+                            let contentStr = "This is a Image, the data miss some important fields."
+                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                            talkData["content"] = contentStr
+                        }
+                        
+                    case "Card":
+                        print("This is a Card")
+                        
+                        if let title = oneAnswerDic["Title"],
+                            let description = oneAnswerDic["Description"],
+                            let coverUrl = oneAnswerDic["CoverUrl"],
+                            let cardUrl = oneAnswerDic["Url"] {
+                            
+                            let titleStr = title as? String
+                            let cardUrlStr = cardUrl as? String
+                            let coverUrlStr = coverUrl as? String
+                            let descriptionStr = description as? String
+                            //robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
+                            talkData["type"] = "card"
+                            talkData["coverUrl"] = coverUrlStr
+                            talkData["title"] = titleStr
+                            talkData["url"] = cardUrlStr
+                            talkData["description"] = descriptionStr
+                            
+                        } else {
+                            let contentStr = "This is a Card, the data miss some important fields."
+                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                            talkData["type"] = "text"
+                            talkData["content"] = contentStr
+                            
+                        }
+                        
+                        
+                    default:
+                        print("An unknow type response data.")
+                        let contentStr = "An unknow type response data."
+                        //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                        talkData["type"] = "text"
+                        talkData["content"] = contentStr
+                    }
+                    
+                } else {
+                    let contentStr = "There is some Error on parsing data Step2"
+                    //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                    talkData["type"] = "text"
+                    talkData["content"] = contentStr
+                }
+                
+            } else {
+                let contentStr = "There is some Error on parsing data Step1"
+                //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                talkData["type"] = "text"
+                talkData["content"] = contentStr
+            }
+            //robotCellData = CellData(whoSays: .robot, saysWhat: robotSaysWhat)
+            return talkData
+            
+        } catch {
+            return nil
+        }
+        
+    }
+
+    static func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
+        print("Execute computeSignature")
+        
+        let verbStr = verb.lowercased()
+        print("verbStr:\(verbStr)")
+        
+        let pathStr = path.lowercased()
+        print("pathStr:\(pathStr)")
+        
+        let paramListStr = paramList.sorted().joined(separator: "&")
+        print("paramListStr:\(paramListStr)")
+        
+        var headerListNew = Array(repeating: "", count: headerList.count)
+        for (index,value) in headerList.enumerated() {
+            headerListNew[index] = value.lowercased()
+        }
+        print("headerListNew:\(headerListNew)")
+        
+        let headerListStr = headerListNew.sorted().joined(separator: ",")
+        //base64EncodedString()
+        let bodyStr = body
+        
+        let secretKeyStr = secretKey
+        print("secretKeyStr:\(secretKeyStr)")
+        
+        let messageStr = "\(verbStr);\(pathStr);\(paramListStr);\(headerListStr);\(bodyStr);\(timestamp);\(secretKeyStr)"
+        
+        print("messageStr:\(messageStr)")
+        
+        let signature = messageStr.HmacSHA1(key: secretKeyStr)
+        return signature
+    }
+
+}
+
+extension String {
+    
+    /// HmacSHA1 Encrypt
+    ///
+    /// -Parameter key: secret key
+    ///
+    func HmacSHA1(key: String) -> String {
+        let cKey = key.cString(using: String.Encoding.utf8)
+        let cData = self.cString(using: String.Encoding.utf8)
+        var result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
+        
+        if let realCKey = cKey, let realCData = cData {
+            CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), realCKey, Int(strlen(realCKey)), realCData, Int(strlen(realCData)), &result)
+            let hmacData:NSData = NSData(bytes: result, length: (Int(CC_SHA1_DIGEST_LENGTH)))
+            let hmacBase64 = hmacData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength76Characters)
+            return String(hmacBase64)
+        } else {
+            return ""
+        }
+        
+        
+    }
+}
 

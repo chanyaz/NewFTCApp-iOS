@@ -814,7 +814,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
             
             TabBarAudioContent.sharedInstance.playerItem = playerItem
-            
+//            setLastPlayAudio()
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
             self.addPlayerItemObservers()

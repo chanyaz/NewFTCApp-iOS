@@ -89,9 +89,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
             contentController.add(LeakAvoider(delegate:self), name: "alert")
             contentController.add(LeakAvoider(delegate:self), name: "follow")
-
+            
             config.userContentController = contentController
-
             config.allowsInlineMediaPlayback = true
             if dataObject?.type == "video" {
                 if #available(iOS 10.0, *) {

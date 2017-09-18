@@ -17,30 +17,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     // 一些实验数据
       //MARK:属性初始化时不能直接使用其他属性
-    let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"))
-    
-    /* 一些测试数据
-     let imageCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType: .image, saysImage: "landscape.jpeg"))
-     let cardCellData = CellData(whoSays: .robot, saysWhat: SaysWhat(saysType:.card,saysTitle:"澳洲高端葡萄酒势头强劲",saysDescription:"一瓶1951年奔富葛兰许拍出5万澳元的澳洲历史最高价。澳洲高端葡萄酒国际地位正在提高，中国是第一大市场。",saysCover:"https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fi.ftimg.net%2Fpicture%2F9%2F000072299_piclink.jpg?source=ftchinese",saysUrl:"http://www.ftchinese.com/story/001073823"))
-    */
-    /*
-    var talkData = Array(repeating: CellData(), count: 4) {
-    
-        didSet {
-            print("tableReloadData")
-            self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
-            //let num = talkData.count
-            let currentIndexPath = IndexPath(row: talkData.count-1, section: 0)
-            //let firstIndexPath = IndexPath(row: 0, section: 0)
-            
-            self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-            
-        }
-    }
-    */
-    var talkData = Array(repeating: CellData(), count: 4)
-    
-    var historyTalkData:[[String:String]] = Array(repeating: buildTalkDatum(), count: 4) {
+    //let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"))
+    let defaultTalkData = [
+        "member":"robot",
+        "type":"text",
+        "content":"你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"
+    ]
+
+    var historyTalkData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4) {
         didSet {
             print("tableReloadData")
             self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
@@ -48,15 +32,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
         }
     }
-    
-    
-    
-   
-    
-
-    
-    var robotResCellData: CellData? = nil
-    
     
 
     @IBOutlet weak var talkListBlock: UITableView!
@@ -74,17 +49,24 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.resignFirstResponder()
     }
 
-    @IBAction func sendYourTalk(_ sender: UIButton) {
+    @IBAction func sendYourTalk(_ sender: UIButton) {//MARK:点击“Send"按钮后发生的事件
         if let currentYourTalk = inputBlock.text {
+            let oneTalkData = [
+                "member":"you",
+                "type":"text",
+                "content":currentYourTalk
+            ]
+            self.historyTalkData.append(oneTalkData)
+            /*
             let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
             let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
             self.talkData.append(currentYouCellData)
-            
+            */
             self.inputBlock.text = ""
-            self.createTalkRequest(myInputText:currentYourTalk, completion: { _ in
-                if let robotRes = self.robotResCellData {
+            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
+                if let oneTalkData = talkData {
                     //print(robotRes)
-                    self.talkData.append(robotRes)
+                    self.historyTalkData.append(oneTalkData)
                 }
                 
             })
@@ -92,7 +74,27 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
 
     }
-    
+    //MARK:点击键盘中Return按键后发生的事件，同上点击“Send"按钮后发生的事件
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let currentYourTalk = textField.text {
+            let oneTalkData = [
+                "member":"you",
+                "type":"text",
+                "content":currentYourTalk
+            ]
+            self.historyTalkData.append(oneTalkData)
+            self.inputBlock.text = ""
+            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
+                if let oneTalkData = talkData {
+                    //print(robotRes)
+                    self.historyTalkData.append(oneTalkData)
+                }
+                
+            })
+
+        }
+        return true
+    }
 
     func keyboardWillShow(_ notification: NSNotification) {
         
@@ -144,8 +146,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let animation:(() -> Void)={
                 self.view.transform = CGAffineTransform.identity
                 self.view.setNeedsUpdateConstraints()
-                //self.view.setNeedsLayout()
-                //self.keyboardNeedLayout = true
             }
             UIView.animate(
                 withDuration: duration,
@@ -154,7 +154,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 animations:animation,
                 completion: nil
             )
-            //self.view.layoutIfNeeded()
              self.view.setNeedsLayout()
         }
         
@@ -167,60 +166,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.resignFirstResponder()
         print("applicationWillResignActive")
     }
-    /*
-    func applicationDidBecomeActive(_ notification:NSNotification){
-        //self.inputBlock.resignFirstResponder()
-        print("applicationDidBecomeActive")
-    }
-     */
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return self.talkData.count
         return self.historyTalkData.count
     }
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let currentRow = indexPath.row
-        //let cellData = self.talkData[currentRow] //获取到
-        let oneTalkData = self.historyTalkData[currentRow]
-        var saysWhat: SaysWhat
-        var member:Member
-        if let valueForMember = oneTalkData["member"] {
-            switch valueForMember {
-                case "robot":
-                    member = .robot
-                case "you":
-                    member = .you
-                default:
-                    member = .no
-            }
-        } else {
-            member = .no
-        }
-        
-        var type:Infotype
-        if let valueForType = oneTalkData["type"] {
-            switch valueForType {
-                case "text":
-                    type = .text
-                    saysWhat = SaysWhat(saysType: type, saysContent: oneTalkData["content"])
-                case "image":
-                    type = .image
-                    saysWhat = SaysWhat(saysType: type, saysImage: oneTalkData["url"])
-                case "card":
-                    type = .card
-                    saysWhat = SaysWhat(saysType: type, saysTitle: oneTalkData["title"], saysDescription: oneTalkData["description"], saysCover: oneTalkData["coverUrl"], saysUrl: oneTalkData["url"])
-                default:
-                    type = .error
-                    saysWhat = SaysWhat(saysType: .text, saysContent: "data error")
-                
-            }
-        } else {
-            saysWhat = SaysWhat(saysType: .text, saysContent: "data error")
-        }
-        
-     
-        let cellData = CellData(whoSays: member, saysWhat: saysWhat)
+        let cellData = ChatViewModel.buildCellData(self.historyTalkData[currentRow])
+        //self.historyTalkData[currentRow]["rowHeight"] =  String(describing: max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble))
         let cell = OneTalkCell(cellData, reuseId:"Talk")
         if (cellData.saysWhat.type == .card) {
             self.asyncBuildImage(url: cellData.saysWhat.coverUrl, completion: { downloadedImg in
@@ -245,41 +200,36 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let currentCellData = self.talkData[indexPath.row]
-        //print("cellHeightByBubble:\(currentCellData.cellHeightByBubble)")
-        let currentHeight = max(currentCellData.cellHeightByHeadImage, currentCellData.cellHeightByBubble)
-        return currentHeight
+        let currentRow = indexPath.row
+        //let cellData = self.talkData[currentRow] //获取到
+        let cellData = ChatViewModel.buildCellData(self.historyTalkData[currentRow])
+        return max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble)
     }
-    
-    
-    //MARK:点击键盘中Return按键后发生的事件
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let currentYourTalk = textField.text {
-            let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
-            let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
-            self.talkData.append(currentYouCellData)
-            
-            textField.text = ""
-            self.createTalkRequest(myInputText:currentYourTalk, completion: { _ in
-                if let robotRes = self.robotResCellData {
-                    self.talkData.append(robotRes)
-                }
-                
-            })
-
+    func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
+        let urlString: String
+        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+            urlString = ImageService.resize(u, width: width, height: height)
+        } else {
+            urlString = imageUrl
         }
-        return true
+        if let url =  URL(string: urlString) {
+            return url
+        }
+        return nil
     }
+    
+  
     
     //异步加载image：
     func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
-        let optimizedUrl = optimizedImageURL(imageUrl, width: 240, height: 135)
-        print("ImageUrl:\(imageUrl)")
-        print("OptimizedUrl:\(String(describing: optimizedUrl))")
+        let optimizedUrl = self.optimizedImageURL(imageUrl, width: 240, height: 135)
+        //print("ImageUrl:\(imageUrl)")
+        //print("OptimizedUrl:\(String(describing: optimizedUrl))")
         if let imgUrl = optimizedUrl {
             let imgRequest = URLRequest(url: imgUrl)
             
-            URLSession.shared.dataTask(with: imgRequest, completionHandler: { (data, response, error) in
+            URLSession.shared.dataTask(with: imgRequest, completionHandler: {
+                (data, response, error) in
                 if error != nil{
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion(nil)
@@ -307,30 +257,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     DispatchQueue.main.async {
                         completion(nil)
                     }
-                 }
-                
-               
-                
+                }
             }).resume()
             
         }
     }
-    func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
-        let urlString: String
-        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
-            urlString = ImageService.resize(u, width: width, height: height)
-        } else {
-            urlString = imageUrl
-        }
-        if let url =  URL(string: urlString) {
-            return url
-        }
-        return nil
-    }
-    func createTalkRequest (myInputText inputText:String = "", completion: @escaping () -> Void) {
+        
+   
+        
+   func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
         let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
-        
+    
         let appIdField = "x-msxiaoice-request-app-id"
         let appId = "XI36GDstzRkCzD18Fh"
         
@@ -344,7 +282,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         let signatureField = "x-msxiaoice-request-signature"
 
-        let signature = computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: ["api-version=2017-06-15-Int"], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
+        let signature = ChatViewModel.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: ["api-version=2017-06-15-Int"], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
         print("signature:\(signature)")
         
         if let url = URL(string: urlString),
@@ -365,7 +303,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 if error != nil {
                     print("Error: \(String(describing: error))")
                     DispatchQueue.main.async {//返回主线程更新UI
-                        completion()
+                        completion(nil)
                     }
                     return
                    
@@ -375,7 +313,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
                     print("statusCode:\(httpStatus)")
                     DispatchQueue.main.async {//返回主线程更新UI
-                        completion()
+                        completion(nil)
                     }
                     return
                     
@@ -384,11 +322,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 if let data = data, let dataString = String(data: data, encoding: .utf8){
                     print("Overview Data:\(dataString)")
                     //explainRobotTalk = dataString
-                    self.robotResCellData = createResponseCellData(data: data)
+                    let talkData:[String:String]?
+                    talkData = ChatViewModel.createResponseTalkData(data: data)
                    // createResponseCellData(data: Data)
                     
                     DispatchQueue.main.async {//返回主线程更新UI
-                        completion()
+                        completion(talkData)
                     }
                     
                 }
@@ -401,9 +340,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     
  
-    func encodeTheData(data:[CellData]) {
-        
-    }
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Execute viewDidLoad")
@@ -444,7 +381,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
         //self.talkData.append(self.textCellData)
-        self.historyTalkData.append(defaultRobTalkDatum)
+        self.historyTalkData.append(defaultTalkData)
 
     }
 

@@ -19,7 +19,7 @@ class TabBarAudioContent {
     var item: ContentItem?
     var player:AVPlayer? = nil
     var playerItem: AVPlayerItem? = nil
-    var title: String? = nil
+    var audioHeadLine: String? = nil
     var audioUrl: URL? = nil
     var duration: CMTime? = nil
     var time:CMTime? = nil
@@ -30,6 +30,7 @@ class TabBarAudioContent {
     var fetchResults: [ContentSection]?
     var items = [ContentItem]()
     var mode:Int?
+
 }
 
 

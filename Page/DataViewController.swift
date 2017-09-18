@@ -89,8 +89,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
             collectionView?.register(UINib.init(nibName: "HotArticleCellRegular", bundle: nil), forCellWithReuseIdentifier: "HotArticleCellRegular")
             // MARK: - Update Styles
-            view.backgroundColor = UIColor(hex: Color.Content.border)
-            collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
+            view.backgroundColor = UIColor(hex: Color.Content.background)
+            collectionView?.backgroundColor = UIColor(hex: Color.Content.background)
             if #available(iOS 10.0, *) {
                 refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
                 collectionView?.refreshControl = refreshControl
@@ -1053,6 +1053,9 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         if reuseIdentifier == "SettingCell" {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = 44
+        } else if reuseIdentifier == "BookCell" {
+            widthPerItem = availableWidth / itemsPerRow
+            heightPerItem = 160 + 14 + 14
         } else if indexPath.row == 0 && indexPath.section == 1{
             if currentSizeClass == .regular {
                 widthPerItem = (availableWidth / itemsPerRow) * 2

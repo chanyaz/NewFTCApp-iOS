@@ -24,7 +24,6 @@ class TabBarAudioContent {
     var duration: CMTime? = nil
     var time:CMTime? = nil
     var sliderValue:Float? = nil
-    var parsedUrlString:String? = nil
     var isPlaying:Bool=false
     var isPlayFinish:Bool=false
     var isPlayStart:Bool=false

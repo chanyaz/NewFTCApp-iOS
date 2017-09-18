@@ -93,24 +93,24 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         preAudio.frame = CGRect(x:margin+buttonWidth+spaceBetweenPreAndForward,y:forwardY,width:buttonWidth,height:buttonHeight)
         preAudio.attributedTitle(for: UIControlState.normal)
-        preAudio.setImage(UIImage(named:"next-s"), for: UIControlState.normal)
+        preAudio.setImage(UIImage(named:"PreBtn"), for: UIControlState.normal)
         preAudio.addTarget(self, action: #selector(switchToPreAudio), for: UIControlEvents.touchUpInside)
         
         nextAudio.frame = CGRect(x:margin+buttonWidth*4+spaceBetweenPreAndForward*3,y:forwardY,width:buttonWidth,height:buttonHeight)
         nextAudio.attributedTitle(for: UIControlState.normal)
-        nextAudio.setImage(UIImage(named:"next"), for: UIControlState.normal)
+        nextAudio.setImage(UIImage(named:"NextBtn"), for: UIControlState.normal)
         nextAudio.addTarget(self, action: #selector(switchToNextAudio), for: UIControlEvents.touchUpInside)
         
         forward.frame = CGRect(x:margin,y:forwardY,width:buttonWidth,height:buttonHeight)
         forward.attributedTitle(for: UIControlState.normal)
-        forward.setImage(UIImage(named:"15"), for: UIControlState.normal)
+        forward.setImage(UIImage(named:"FastForwardBtn"), for: UIControlState.normal)
         forward.addTarget(self, action: #selector(skipForward), for: UIControlEvents.touchUpInside)
         
         
         
         back.frame = CGRect(x:width - margin - buttonWidth,y:forwardY,width:buttonWidth,height:buttonHeight)
         back.attributedTitle(for: UIControlState.normal)
-        back.setImage(UIImage(named:"15s"), for: UIControlState.normal)
+        back.setImage(UIImage(named:"FastBackBtn"), for: UIControlState.normal)
         back.addTarget(self, action: #selector(skipBackward), for: UIControlEvents.touchUpInside)
         
         
@@ -121,22 +121,22 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         list.frame = CGRect(x:margin,y:listY,width:buttonWidth,height:buttonHeight)
         list.attributedTitle(for: UIControlState.normal)
-        list.setImage(UIImage(named:"liebiao"), for: UIControlState.normal)
+        list.setImage(UIImage(named:"ListBtn"), for: UIControlState.normal)
         list.addTarget(self, action: #selector(listAction), for: UIControlEvents.touchUpInside)
         
         downLoad.frame = CGRect(x:margin+buttonWidth+space,y:listY,width:buttonWidth,height:buttonHeight)
         downLoad.attributedTitle(for: UIControlState.normal)
-        downLoad.setImage(UIImage(named:"xiazai"), for: UIControlState.normal)
+        downLoad.setImage(UIImage(named:"DownLoadBtn"), for: UIControlState.normal)
         downLoad.addTarget(self, action: #selector(downLoadAction), for: UIControlEvents.touchUpInside)
         
         love.frame = CGRect(x:margin+buttonWidth*2+space*2,y:listY,width:buttonWidth,height:buttonHeight)
         love.attributedTitle(for: UIControlState.normal)
-        love.setImage(UIImage(named:"xihuan"), for: UIControlState.normal)
+        love.setImage(UIImage(named:"LoveBtn"), for: UIControlState.normal)
         love.addTarget(self, action: #selector(downLoadAction), for: UIControlEvents.touchUpInside)
         
         share.frame = CGRect(x:margin+buttonWidth*3+space*3,y:listY,width:buttonWidth,height:buttonHeight)
         share.attributedTitle(for: UIControlState.normal)
-        share.setImage(UIImage(named:"fenxiang"), for: UIControlState.normal)
+        share.setImage(UIImage(named:"ShareBtn"), for: UIControlState.normal)
         share.addTarget(self, action: #selector(shareAction), for: UIControlEvents.touchUpInside)
         
         
@@ -171,7 +171,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioPlayStatus.frame = CGRect(x:70,y:10,width:width,height:50)
         
         downSwipeButton.frame = CGRect(x:width-60,y:10,width:40,height:40)
-        downSwipeButton.setTitle("下滑", for: .normal)
+        downSwipeButton.setImage(UIImage(named:"HideBtn"), for: UIControlState.normal)
+//        downSwipeButton.setTitle("下滑", for: .normal)
         downSwipeButton.backgroundColor = UIColor.green
         
         audioView.frame = CGRect(x:0,y:height - audioViewHeight+90,width:width,height:audioViewHeight)
@@ -419,7 +420,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     
     func exitAudio(){
         //        let deltaY = self.view.bounds.height
-        UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.tabView.transform = CGAffineTransform(translationX: 0,y:0)
             self.tabView.setNeedsUpdateConstraints()
             
@@ -430,9 +431,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     //    把此页面的所有信息都传给AudioPlayBar,包括player，playerItem
     func openAudio(){
         let deltaY = self.view.bounds.height
-        UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.tabView.transform = CGAffineTransform(translationX: 0,y: -deltaY)
             self.tabView.setNeedsUpdateConstraints()
+//            self.audioView.transform = CGAffineTransform(translationX: 0,y: 90)
+            
             
         }, completion: { (true) in
             print("up animate finish")

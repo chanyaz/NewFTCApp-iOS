@@ -74,6 +74,8 @@ class CoverCell: CustomCell {
         
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        // MARK: - As the cell is reusable, asyn image should always be cleared first
+        imageView.image = nil
         if let loadedImage = itemCell?.coverImage {
             imageView.image = loadedImage
             //print ("image is already loaded, no need to download again. ")

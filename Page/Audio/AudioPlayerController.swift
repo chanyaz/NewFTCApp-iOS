@@ -26,6 +26,8 @@ class TabBarAudioContent {
     var sliderValue:Float? = nil
     var parsedUrlString:String? = nil
     var isPlaying:Bool=false
+    var isPlayFinish:Bool=false
+    var isPlayStart:Bool=false
     var fetchResults: [ContentSection]?
     var items = [ContentItem]()
     var mode:Int?

@@ -240,7 +240,7 @@ class ContentFetch {
             oneItem.lead = item["cshortleadbody"] as? String ?? ""
         }
         
-        //TODO: Get images
+        //MARK: Get images
         var image = item["image"] as? String ?? ""
         if image == "" {
             if let storyPic = item["story_pic"] as? [String: String] {
@@ -248,7 +248,8 @@ class ContentFetch {
             }
         }
         if image != "" {
-            oneItem.image = image
+            // MARK: FTC API has a persistent bug that provide extra string in the image url string
+            oneItem.image = image.replacingOccurrences(of: "/upload/", with: "/")
         }
         
         oneItem.cbody = item["cbody"] as? String

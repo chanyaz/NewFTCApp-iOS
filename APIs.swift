@@ -270,7 +270,9 @@ struct Meta {
         "测试",
         "FT商学院",
         "英语电台",
-        "视频"
+        "视频",
+        "新闻",
+        "数据新闻"
     ]
 }
 
@@ -327,6 +329,74 @@ struct JSCodes {
             return "window.gConnectionType = '\(Connection.current())';checkFontsize();"
         }
     }
+}
+
+
+struct Settings {
+    static let page = [
+        ContentSection(
+            title: "阅读偏好",
+            items: [
+                ContentItem(
+                    id: "font-setting",
+                    image: "",
+                    headline: "字号设置",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "language-preference",
+                    image: "",
+                    headline: "语言偏好",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0)
+            ],
+            type: "Group",
+            adid: nil
+        ),
+        ContentSection(
+            title: "流量与缓存",
+            items: [
+                ContentItem(
+                    id: "clear-cache",
+                    image: "",
+                    headline: "清除缓存",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "image-data",
+                    image: "",
+                    headline: "使用数据时不下载图片",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0)
+            ],
+            type: "Group",
+            adid: nil
+        )
+    ]
 }
 
 /*

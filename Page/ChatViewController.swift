@@ -412,6 +412,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     */
     deinit {
         NotificationCenter.default.removeObserver(self)
+        print ("Chat View Controller deinit successfully")
     }
     /*
     // MARK: - Navigation

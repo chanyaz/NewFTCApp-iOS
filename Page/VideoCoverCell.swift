@@ -16,22 +16,21 @@ class VideoCoverCell: CoverCell {
     var coverTheme: String?
     override func updateUI() {
         super.updateUI()
-        
         if let firstTag = itemCell?.tag.getFirstTag(Meta.reservedTags) {
             topic.text = firstTag
+            topicBorderView.isHidden = false
         } else {
             topic.text = nil
             topicBorderView.isHidden = true
         }
+        
         if let coverTheme = coverTheme {
             let backgroundColor = UIColor(hex: Color.Theme.get(coverTheme).background)
             
             if itemCell?.isCover == true {
                 innerView.backgroundColor = backgroundColor
-                topic.textColor = UIColor(hex: Color.Theme.get(coverTheme).tag)
                 headline.textColor = UIColor(hex: Color.Theme.get(coverTheme).title)
                 lead.textColor = UIColor(hex: Color.Theme.get(coverTheme).lead)
-                topicBorderView.backgroundColor = UIColor(hex: Color.Theme.get(coverTheme).tag)
                 innerView.layer.borderWidth = 0
             } else if itemCell?.row == 0 {
                 let firstSectionColor = UIColor(hex: Color.Content.backgroundForSectionCover)
@@ -42,7 +41,8 @@ class VideoCoverCell: CoverCell {
                 innerView.backgroundColor = UIColor(hex: Color.Content.background)
                 innerView.layer.borderWidth = 1.0
             }
-            
+            topic.textColor = UIColor(hex: Color.Theme.get(coverTheme).tag)
+            topicBorderView.backgroundColor = UIColor(hex: Color.Theme.get(coverTheme).tag)
         }
         
     }

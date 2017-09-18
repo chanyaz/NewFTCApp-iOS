@@ -146,10 +146,12 @@ class BigImageCell: CustomCell {
             TabBarAudioContent.sharedInstance.body["title"] = itemCell.headline
             TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
             TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
-            AudioContent.sharedInstance.body["title"] = itemCell.headline
-            AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-            AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
+//            AudioContent.sharedInstance.body["title"] = itemCell.headline
+//            AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+//            AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
             TabBarAudioContent.sharedInstance.item = itemCell
+            TabBarAudioContent.sharedInstance.audioHeadLine = itemCell.headline
+//            TabBarAudioContent.sharedInstance.audioId = "/index.php/ft/interactive/\(itemCell.id)"
         }
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
     

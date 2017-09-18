@@ -37,6 +37,7 @@ struct Color {
         static let standard = "#F2DFCE"
         static let standardFont = "#777777"
         static let standardBorder = "#FAAE76"
+        static let switchBackground = "#5a8caf"
     }
     
     struct Header {

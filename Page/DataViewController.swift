@@ -46,7 +46,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting"].contains(dataObjectType){
+        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting", "options"].contains(dataObjectType){
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -342,6 +342,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 loadProducts()
             } else if type == "setting" {
                 loadSettings()
+            } else if type == "options" {
+                loadOptions()
             } else {
                 let urlString = APIs.get("", type: type)
                 getAPI(urlString)
@@ -507,6 +509,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "EmptyCell":
+            return cellItem
         default:
             if let cell = cellItem as? ChannelCell {
                 cell.cellWidth = cellWidth
@@ -519,9 +523,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     
-    override func collectionView(_ collectionView: UICollectionView,
-                                 viewForSupplementaryElementOfKind kind: String,
-                                 at indexPath: IndexPath) -> UICollectionReusableView {
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionElementKindSectionHeader:
             let reuseIdentifier = getReuseIdentifierForSectionHeader(indexPath.section).reuseId ?? ""
@@ -576,11 +578,21 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     // MARK: - Use different cell based on different strategy
     fileprivate func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
-        let section = fetches.fetchResults[indexPath.section]
-        let sectionTitle = section.title
-        let item = section.items[indexPath.row]
-        let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
+        // MARK: - Check if the IndexPath is out of range
+        if fetches.fetchResults.count < indexPath.section + 1 {
+            return "EmptyCell"
+        }
         
+        let section = fetches.fetchResults[indexPath.section]
+        if section.items.count < indexPath.row + 1 {
+            print ("\(section.title) out of range, item count is \(section.items.count) and row is \(indexPath.row)")
+            return "EmptyCell"
+        }
+        
+        // MARK: Go on if the IndexPath is in range
+        let item = section.items[indexPath.row]
+        let sectionTitle = section.title
+        let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
         let layoutKey = layoutType()
         let layoutStrategy: String?
         if let layoutValue = dataObject[layoutKey] {
@@ -645,7 +657,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "BookCell"
                 } else if item.type == "follow" {
                     reuseIdentifier = "FollowCell"
-                } else if item.type == "setting" {
+                } else if ["setting", "option"].contains(item.type) {
                     reuseIdentifier = "SettingCell"
                 } else if item.type == "ad"{
                     if item.adModel == nil || item.adModel?.headline == nil {
@@ -686,8 +698,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "List", "Group":
                 if ![""].contains(fetches.fetchResults[sectionIndex].title) {
                     switch sectionType {
-                        case "Group":
-                            reuseIdentifier = "SimpleHeaderView"
+                    case "Group":
+                        reuseIdentifier = "SimpleHeaderView"
                         sectionSize = CGSize(width: view.frame.width, height: 44)
                     default:
                         reuseIdentifier = "HeaderView"
@@ -804,20 +816,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
             
             TabBarAudioContent.sharedInstance.playerItem = playerItem
+//            setLastPlayAudio()
             
-            
-            player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-                
-                if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
-                    let duration = CMTimeGetSeconds(d)
-                    if duration.isNaN == false {
-                        TabBarAudioContent.sharedInstance.duration = d
-                        TabBarAudioContent.sharedInstance.time = time
-                    }
-                }
-                
-            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
             self.addPlayerItemObservers()
             
         }else{
@@ -830,14 +831,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     func removePlayerItemObservers() {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
     }
     func addPlayerItemObservers() {
-        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
     }
     func playerDidFinishPlaying() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: self)
         TabBarAudioContent.sharedInstance.player?.pause()
+        nowPlayingCenter.updateTimeForPlayerItem(player)
+        TabBarAudioContent.sharedInstance.isPlayFinish = true
+        TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
         nowPlayingCenter.updateTimeForPlayerItem(player)
     }
     
@@ -872,7 +876,18 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
         } else {
             switch selectedItem.type {
-            case "ad", "follow", "setting":
+            case "setting":
+                let optionInfo = Setting.get(selectedItem.id)
+                if let optionType = optionInfo.type {
+                    if optionType == "switch" {
+                        return false
+                    } else {
+                        Setting.handle(selectedItem.id, type: optionType, title: selectedItem.headline)
+                    }
+                } else {
+                    return false
+                }
+            case "ad", "follow":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
             case "ebook":
@@ -1012,6 +1027,16 @@ extension DataViewController {
         self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
     }
     
+    fileprivate func loadOptions() {
+        if let id = dataObject["id"] {
+            let contentSections = Setting.getContentSections(id)
+            let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
+            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+        }
+    }
+    
     
 }
 
@@ -1068,7 +1093,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = widthPerItem * 0.618
         }
-        return CGSize(width: widthPerItem, height: heightPerItem)        
+        return CGSize(width: widthPerItem, height: heightPerItem)
     }
     
     func collectionView(_ collectionView: UICollectionView,

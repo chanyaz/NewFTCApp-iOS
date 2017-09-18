@@ -19,16 +19,18 @@ class TabBarAudioContent {
     var item: ContentItem?
     var player:AVPlayer? = nil
     var playerItem: AVPlayerItem? = nil
-    var title: String? = nil
+    var audioHeadLine: String? = nil
     var audioUrl: URL? = nil
     var duration: CMTime? = nil
     var time:CMTime? = nil
     var sliderValue:Float? = nil
-    var parsedUrlString:String? = nil
     var isPlaying:Bool=false
+    var isPlayFinish:Bool=false
+    var isPlayStart:Bool=false
     var fetchResults: [ContentSection]?
     var items = [ContentItem]()
     var mode:Int?
+
 }
 
 

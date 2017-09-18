@@ -128,7 +128,7 @@ struct Key {
     static let languagePreference = "Language Preference"
     static let domainIndex = "Domain Index"
     static let searchHistory = "Search History"
-    static let audioHistory = "Audio History"
+    static let audioHistory = ["Audio Headline History","Audio URL History","Audio Id History","Audio Last Play Time History"]
 }
 
 // MARK: - Use a server side image service so that you can request images that are just large enough
@@ -369,6 +369,18 @@ struct Settings {
                     customLink: "",
                     timeStamp: 0,
                     section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "enable-push",
+                    image: "",
+                    headline: "新闻推送",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
                     row: 0)
             ],
             type: "Group",
@@ -390,9 +402,64 @@ struct Settings {
                     section: 0,
                     row: 0),
                 ContentItem(
-                    id: "image-data",
+                    id: "no-image-with-data",
                     image: "",
                     headline: "使用数据时不下载图片",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0)
+            ],
+            type: "Group",
+            adid: nil
+        ),
+        ContentSection(
+            title: "服务与反馈",
+            items: [
+                ContentItem(
+                    id: "feedback",
+                    image: "",
+                    headline: "反馈",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "app-store",
+                    image: "",
+                    headline: "App Store评分",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "privacy",
+                    image: "",
+                    headline: "隐私协议",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "about",
+                    image: "",
+                    headline: "关于我们",
                     lead: "",
                     type: "setting",
                     preferSponsorImage: "",

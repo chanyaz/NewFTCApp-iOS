@@ -46,7 +46,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting"].contains(dataObjectType){
+        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting", "options"].contains(dataObjectType){
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -342,6 +342,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 loadProducts()
             } else if type == "setting" {
                 loadSettings()
+            } else if type == "options" {
+                loadOptions()
             } else {
                 let urlString = APIs.get("", type: type)
                 getAPI(urlString)
@@ -655,7 +657,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "BookCell"
                 } else if item.type == "follow" {
                     reuseIdentifier = "FollowCell"
-                } else if item.type == "setting" {
+                } else if ["setting", "option"].contains(item.type) {
                     reuseIdentifier = "SettingCell"
                 } else if item.type == "ad"{
                     if item.adModel == nil || item.adModel?.headline == nil {
@@ -874,7 +876,18 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
         } else {
             switch selectedItem.type {
-            case "ad", "follow", "setting":
+            case "setting":
+                let optionInfo = Setting.get(selectedItem.id)
+                if let optionType = optionInfo.type {
+                    if optionType == "switch" {
+                        return false
+                    } else {
+                        Setting.handle(selectedItem.id, type: optionType, title: selectedItem.headline)
+                    }
+                } else {
+                    return false
+                }
+            case "ad", "follow":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
             case "ebook":
@@ -1012,6 +1025,16 @@ extension DataViewController {
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+    }
+    
+    fileprivate func loadOptions() {
+        if let id = dataObject["id"] {
+            let contentSections = Setting.getContentSections(id)
+            let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
+            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+        }
     }
     
     

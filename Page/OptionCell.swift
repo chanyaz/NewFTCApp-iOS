@@ -15,6 +15,7 @@ class OptionCell: CustomCell {
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var tickImage: UIImageView!
     
     override func updateUI() {
         super.updateUI()
@@ -47,6 +48,12 @@ class OptionCell: CustomCell {
             topBorder.backgroundColor = UIColor(hex: Color.Content.border)
         } else {
             topBorder.backgroundColor = UIColor.clear
+        }
+        
+        if itemCell?.isSelected == true {
+            tickImage.isHidden = false
+        } else {
+            tickImage.isHidden = true
         }
         
         

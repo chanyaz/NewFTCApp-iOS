@@ -193,18 +193,18 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioViewWithContent.frame = CGRect(x:0,y:90,width:width,height:height)
         audioView.frame = CGRect(x:0,y:height - audioViewHeight,width:width,height:audioViewHeight)
         viewWithLanguages.backgroundColor = UIColor.white
+        viewWithLanguages.layer.addBorder(edge: UIRectEdge.bottom, color: UIColor.black, thickness: 1)
 //        viewWithLanguages.layer.borderWidth = 1
 //        viewWithLanguages.layer.borderColor = UIColor.black.cgColor
      
-        
-//         viewWithLanguages.layer.frame = CGRect(x: view.frame.width - 1, y: 0, width: 1, height: view.frame.height)
         let items = ["中文", "英文"]
         languages = UISegmentedControl(items: items)
         languages.selectedSegmentIndex = 0
         languages.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
         languages.tintColor = UIColor.white
-        languages.layer.borderColor = UIColor.black.cgColor
-        languages.layer.borderWidth = 1
+//        languages.layer.borderColor = UIColor.black.cgColor
+//        languages.layer.borderWidth = 1
+//        languages.layer.addBorder(edge: UIRectEdge.bottom, color: UIColor.red, thickness: -20)
         let segAttributes: NSDictionary = [
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: UIFont(name: "Avenir-MediumOblique", size: 15)!

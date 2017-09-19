@@ -610,7 +610,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     default:
                         resourceFileName = "story"
                     }
-                    fontClass
                     if let adHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)

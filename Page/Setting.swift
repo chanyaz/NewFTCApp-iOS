@@ -128,6 +128,10 @@ struct Setting {
         switch type {
         case "option":
             handleOption(id, title: title)
+        case "action":
+            handleAction(id, title: title)
+        case "detail":
+            handleDetail(id, title: title)
         default:
             break
         }
@@ -148,6 +152,52 @@ struct Setting {
             optionController.pageTitle = title
             topController.navigationController?.pushViewController(optionController, animated: true)
         }
+    }
+    
+    private static func handleAction(_ id: String, title: String) {
+        switch id {
+        case "clear-cache":
+            removeCache()
+        default:
+            break
+        }
+    }
+    
+    private static func handleDetail(_ id: String, title: String) {
+        //case "feedback", "app-store", "privacy", "about":
+        let urlString: String?
+        switch id {
+        case "feedback":
+            urlString = "http://www.ftchinese.com/m/corp/faq.html"
+        case "app-store":
+            urlString = "itms-apps://itunes.apple.com/us/app/apple-store/id443870811?mt=8"
+        case "privacy":
+            urlString = "http://www.ftchinese.com/m/corp/service.html"
+        case "about":
+            urlString = "http://www.ftchinese.com/m/corp/aboutus.html"
+        default:
+            urlString = nil
+            break
+        }
+        if let urlString = urlString,
+            let url = URL(string: urlString) {
+            UIApplication.topViewController()?.openLink(url)
+        }
+    }
+    
+    static func removeCache() {
+        func cleanCache() {
+            Download.cleanFile(APIs.expireFileTypes, for: .cachesDirectory)
+            Download.cleanFile(APIs.expireFileTypes, for: .documentDirectory)
+            Download.cleanFile(APIs.expireFileTypes, for: .downloadsDirectory)
+        }
+        let alert = UIAlertController(title: "清除缓存", message: "清除所有缓存的文件以节约空间，被删除的文件可以重新下载", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "立即清除",
+                                      style: UIAlertActionStyle.default,
+                                      handler: {_ in cleanCache()}
+        ))
+        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
     }
     
     static func getContentSections(_ id: String) -> [ContentSection] {

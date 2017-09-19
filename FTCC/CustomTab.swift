@@ -58,7 +58,7 @@ class CustomTab: UIView {
         self.smallView.addSubview(progressSlider)
         self.smallView.addSubview(playTime)
         self.smallView.addSubview(playDuration)
-        self.smallView.addSubview(upSwipeButton)
+//        self.smallView.addSubview(upSwipeButton)
 //        smallView.backgroundColor = UIColor.brown
         smallView.frame = CGRect(x:0,y:0,width:width,height:90)
         self.addSubview(smallView)

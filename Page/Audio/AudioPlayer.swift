@@ -93,10 +93,40 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     
     
-    
+    fileprivate var isSaved = false
     @IBAction func love(_ sender: UIBarButtonItem) {
-        print ("love button tapped")
+        if let item = item {
+            if isSaved == false {
+                Download.save(item, to: "clip", uplimit: 50, action: "save")
+                isSaved = true
+                sender.image = UIImage(named: "Delete")
+            } else {
+                Download.save(item, to: "clip", uplimit: 50, action: "delete")
+                isSaved = false
+                sender.image = UIImage(named: "Clip")
+            }
+        }
     }
+    
+    @IBOutlet weak var loveButton: UIBarButtonItem!
+    fileprivate func checkLoveButton() {
+        if let item = item {
+        let key = "Saved clip"
+        let savedItems = UserDefaults.standard.array(forKey: key) as? [[String: String]] ?? [[String: String]]()
+        for savedItem in savedItems {
+            if item.id == savedItem["id"] && item.type == savedItem["type"] {
+                isSaved = true
+                break
+            }
+        }
+        if isSaved == true {
+            loveButton.image = UIImage(named: "Delete")
+        } else {
+            loveButton.image = UIImage(named: "Clip")
+        }
+        }
+    }
+    
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         let currentValue = sender.value
@@ -227,6 +257,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
+        checkLoveButton()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

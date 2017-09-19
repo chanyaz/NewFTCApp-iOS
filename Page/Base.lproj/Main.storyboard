@@ -960,6 +960,7 @@
                         <outlet property="buttonPlayAndPause" destination="ORA-Tv-9TC" id="uof-sl-Feu"/>
                         <outlet property="containerView" destination="bpf-JI-CbO" id="moo-6K-nsL"/>
                         <outlet property="downloadButton" destination="c1b-Uo-59M" id="ZgB-7i-p7s"/>
+                        <outlet property="loveButton" destination="LuU-60-tLx" id="lZW-pd-spt"/>
                         <outlet property="playDuration" destination="XHu-UA-NBY" id="Anc-KS-OUn"/>
                         <outlet property="playStatus" destination="blY-Ma-aQj" id="Jvh-7f-e8u"/>
                         <outlet property="playTime" destination="5Oc-HK-ovk" id="Qok-kF-jCd"/>

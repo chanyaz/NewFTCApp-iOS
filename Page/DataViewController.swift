@@ -753,7 +753,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         print("palyer item isExist url")
         
         let body = TabBarAudioContent.sharedInstance.body
-        //        let body = AudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
             audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
             audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
@@ -763,8 +762,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             let asset = AVURLAsset(url: audioUrl)
             
             playerItem = AVPlayerItem(asset: asset)
-            
-            
+
             if player != nil {
                 print("url item palyer exist")
             }else {
@@ -776,10 +774,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
-            
         }
-        
-        //        customTabBarController.addPlayerItemObservers()
         let url = (playerItem?.asset as? AVURLAsset)?.url
         //     修改的代码结束
         
@@ -807,9 +802,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         print("url item second currrentPlayingTime-\(String(describing: currrentPlayingTime))")
                         self.playerItem?.seek(to: currrentPlayingTime)
                     }
-                    
-                    
-                    //                    return
                 }
                 else{
                     //如果当前播放不一样，播放另一个，同时把当前播放url进行更新
@@ -825,7 +817,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 }
                 
             } else {
-                // customTabBarController.removePlayerItemObservers()
                 TabBarAudioContent.sharedInstance.audioUrl = url
                 // 开始播放
                 player?.play()
@@ -833,12 +824,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 
             }
             
-            
             TabBarAudioContent.sharedInstance.playerItem = playerItem
-            //            setLastPlayAudio()
+            setLastPlayAudio()
             
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
-            self.addPlayerItemObservers()
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: CustomTabBarController())
+            addPlayerItemObservers()
             
         }else{
             print("palyer item not isExist")
@@ -848,20 +838,20 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
     }
     
-    
-    func removePlayerItemObservers() {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
+
+    public func removePlayerItemObservers() {
+        NotificationCenter.default.removeObserver(CustomTabBarController(), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
     }
-    func addPlayerItemObservers() {
-        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
+    public func addPlayerItemObservers() {
+        NotificationCenter.default.addObserver(CustomTabBarController(),selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
     }
-    func playerDidFinishPlaying() {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: self)
+    public func playerDidFinishPlaying() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: CustomTabBarController())
         TabBarAudioContent.sharedInstance.player?.pause()
-        nowPlayingCenter.updateTimeForPlayerItem(player)
+        NowPlayingCenter().updateTimeForPlayerItem(player)
         TabBarAudioContent.sharedInstance.isPlayFinish = true
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
-        nowPlayingCenter.updateTimeForPlayerItem(player)
+        NowPlayingCenter().updateTimeForPlayerItem(player)
     }
     
     // MARK: UICollectionViewDelegate

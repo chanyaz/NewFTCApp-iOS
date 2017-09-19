@@ -263,6 +263,8 @@
 		60D3C8E51EBFF5DC0085BEF6 /* PageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8E41EBFF5DC0085BEF6 /* PageUITests.swift */; };
 		60D461C41F1C4F79009B7196 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D461C31F1C4F79009B7196 /* Track.swift */; };
 		60D4B8F31EE7A22C00A4506D /* StyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */; };
+		60D8F1FF1F71086A00A6FB72 /* account.html in Resources */ = {isa = PBXBuildFile; fileRef = 60D8F1FE1F71086A00A6FB72 /* account.html */; };
+		60D8F2001F71086A00A6FB72 /* account.html in Resources */ = {isa = PBXBuildFile; fileRef = 60D8F1FE1F71086A00A6FB72 /* account.html */; };
 		60F1A5231F5E329E0007F9F3 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A5211F5E329E0007F9F3 /* BigImageCell.swift */; };
 		60F1A5241F5E329E0007F9F3 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A5211F5E329E0007F9F3 /* BigImageCell.swift */; };
 		60F1A5251F5E329E0007F9F3 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F1A5221F5E329E0007F9F3 /* BigImageCell.xib */; };
@@ -527,6 +529,7 @@
 		60D3C8E61EBFF5DC0085BEF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60D461C31F1C4F79009B7196 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleExtensions.swift; sourceTree = "<group>"; };
+		60D8F1FE1F71086A00A6FB72 /* account.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = account.html; path = FTChinese/account.html; sourceTree = "<group>"; };
 		60F1A5211F5E329E0007F9F3 /* BigImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		60F1A5221F5E329E0007F9F3 /* BigImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
 		60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPView.swift; sourceTree = "<group>"; };
@@ -722,6 +725,7 @@
 		50DA6E831F4037D0006B4CDE /* HTML */ = {
 			isa = PBXGroup;
 			children = (
+				60D8F1FE1F71086A00A6FB72 /* account.html */,
 				50DA6E801F4037C8006B4CDE /* story.html */,
 				6084C7CB1F452A210035F60C /* register.html */,
 				600C0D011F5CE7B800226F84 /* ebook.html */,
@@ -1471,6 +1475,7 @@
 				602153881F3985660077A7AF /* Main.storyboard in Resources */,
 				602153661F397C650077A7AF /* CoverCellRegular.xib in Resources */,
 				F2E0906B1F5A6A3900F4409F /* ColumnAllListCell.xib in Resources */,
+				60D8F2001F71086A00A6FB72 /* account.html in Resources */,
 				F29E19B31F39A2BC00FAA8C0 /* sound.png in Resources */,
 				602153671F397C650077A7AF /* Ad.xib in Resources */,
 				F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */,
@@ -1532,6 +1537,7 @@
 				602153C11F39A4390077A7AF /* close.png in Resources */,
 				60CA7BC51EF28AD4000CD9B4 /* HeaderView.xib in Resources */,
 				F234EC741F15D1DB003F6DD0 /* HotArticleCellRegular.xib in Resources */,
+				60D8F1FF1F71086A00A6FB72 /* account.html in Resources */,
 				AF64F5791F58245300AFAFFC /* youPortrait.png in Resources */,
 				60814F621F580FB200041801 /* BookCell.xib in Resources */,
 				60F1A5251F5E329E0007F9F3 /* BigImageCell.xib in Resources */,

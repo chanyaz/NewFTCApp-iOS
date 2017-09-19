@@ -26,6 +26,13 @@ extension UIApplication {
         if let navigationController = controller as? UINavigationController {
             return topViewController(controller: navigationController.visibleViewController)
         }
+        // MARK: If a PagesViewController is returned, get its top view controller
+        if let pagesViewController = controller as? PagesViewController,
+            let pageViewControllers = pagesViewController.pageViewController?.viewControllers,
+            pageViewControllers.count > 0 {
+            let currentViewController = pageViewControllers[0]
+            return currentViewController
+        }
         if let tabController = controller as? UITabBarController {
             if let selected = tabController.selectedViewController {
                 return topViewController(controller: selected)

@@ -12,7 +12,7 @@ import UIKit
 struct APIs {
     //private static let base = "https://m.ftimg.net/index.php/jsapi/"
     private static let domain = "https://d37m993yiqhccr.cloudfront.net/"
-    private static let publicDomain = "http://app003.ftmailbox.com/"
+    public static let publicDomain = "http://app003.ftmailbox.com/"
     private static let webPageDomain = "http://www.ftchinese.com/"
     // MARK: the number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7

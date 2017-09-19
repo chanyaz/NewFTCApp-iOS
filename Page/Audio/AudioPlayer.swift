@@ -93,16 +93,9 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     
     
-    @IBAction func StopAudio(_ sender: UIBarButtonItem) {
-        if let player = player {
-            player.pause()
-            self.player = nil
-        }
-        if let navController = self.navigationController {
-            navController.popViewController(animated: true)
-        } else {
-            self.dismiss(animated: true, completion: nil)
-        }
+    
+    @IBAction func love(_ sender: UIBarButtonItem) {
+        print ("love button tapped")
     }
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {

@@ -13,6 +13,8 @@ struct Setting {
         "font-setting": ["最小","较小","默认","较大","最大"],
         "language-preference": ["简体中文", "繁体中文"]
     ]
+    static let fontSizes: [CGFloat] = [0.8, 0.9, 1, 1.2, 1.6]
+    static let fontClasses = ["smallest first-child", "smaller", "normal", "bigger", "biggest"]
     static func get(_ id: String) -> (type: String?, default: Int, on: Bool) {
         let settingType: String?
         let settingDefault: Int
@@ -48,6 +50,17 @@ struct Setting {
             settingOn = false
         }
         return (settingType, settingDefault, settingOn)
+    }
+    
+    static func getFontClass() -> String {
+        let currentIndex = getCurrentOption("font-setting").index
+        let fontClass: String
+        if currentIndex>=0 && currentIndex < fontClasses.count {
+            fontClass = fontClasses[currentIndex]
+        } else {
+            fontClass = fontClasses[2]
+        }
+        return fontClass
     }
     
     // MARK: Use string to store user's preference so that we can account for the "unknown" situation where the value is nil
@@ -94,6 +107,23 @@ struct Setting {
         return (optionIndex, optionValue)
     }
     
+    static func updateOption(_ id: String, with index: Int, from contentSections: [ContentSection]) -> [ContentSection] {
+        let newIndex = (index >= 0) ? index : 0
+        let indexString = String(newIndex)
+        UserDefaults.standard.set(indexString, forKey: "\(keyPrefix)\(id)")
+        var newContentSections = contentSections
+        if newContentSections.count > 0 {
+            for (key, value) in newContentSections[0].items.enumerated() {
+                if key == newIndex {
+                    value.isSelected = true
+                } else {
+                    value.isSelected = false
+                }
+            }
+        }
+        return newContentSections
+    }
+    
     static func handle(_ id: String, type: String, title: String) {
         switch type {
         case "option":
@@ -137,7 +167,7 @@ struct Setting {
                     lead: "",
                     type: "option",
                     preferSponsorImage: "",
-                    tag: "",
+                    tag: id,
                     customLink: "",
                     timeStamp: 0,
                     section: 0,

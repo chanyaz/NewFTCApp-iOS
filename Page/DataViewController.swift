@@ -77,7 +77,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
             collectionView?.register(UINib.init(nibName: "FollowCell", bundle: nil), forCellWithReuseIdentifier: "FollowCell")
             collectionView?.register(UINib.init(nibName: "SettingCell", bundle: nil), forCellWithReuseIdentifier: "SettingCell")
-                        collectionView?.register(UINib.init(nibName: "OptionCell", bundle: nil), forCellWithReuseIdentifier: "OptionCell")
+            collectionView?.register(UINib.init(nibName: "OptionCell", bundle: nil), forCellWithReuseIdentifier: "OptionCell")
             collectionView?.register(UINib.init(nibName: "BookCell", bundle: nil), forCellWithReuseIdentifier: "BookCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
@@ -184,6 +184,15 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
         TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
+        
+        
+        // MARK: In setting page, you might need to update UI to reflected change in preference
+        if let type = dataObject["type"] {
+            if type == "setting" {
+                loadSettings()
+            }
+        }
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -826,7 +835,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
             
             TabBarAudioContent.sharedInstance.playerItem = playerItem
-//            setLastPlayAudio()
+            //            setLastPlayAudio()
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
             self.addPlayerItemObservers()
@@ -897,6 +906,16 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 } else {
                     return false
                 }
+            case "option":
+                if let optionsId = dataObject["id"] {
+                    let selectedIndex = indexPath.row
+                    fetches = ContentFetchResults(
+                        apiUrl: fetches.apiUrl,
+                        fetchResults: Setting.updateOption(optionsId, with: selectedIndex, from: fetches.fetchResults)
+                    )
+                    collectionView.reloadData()
+                }
+                return true
             case "ad", "follow":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false

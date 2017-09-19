@@ -54,10 +54,24 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     @IBOutlet weak var fontButton: UIBarButtonItem!
     
-    @IBAction func changeFont(_ sender: UIBarButtonItem) {
-        let object = contentPageData[currentPageIndex]
-        let name = Notification.Name(rawValue: Event.changeFont)
-        NotificationCenter.default.post(name: name, object: object)
+    
+    @IBAction func openSetting(_ sender: UIBarButtonItem) {
+        if let settingsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
+            let topController = UIApplication.topViewController() {
+            //                contentItemViewController.dataObject = itemCell
+            //                contentItemViewController.hidesBottomBarWhenPushed = true
+            //                contentItemViewController.themeColor = themeColor
+            //                contentItemViewController.action = "buy"
+            settingsController.dataObject = [
+                "type": "setting",
+                "id": "setting",
+                "compactLayout": "",
+                "title": "设置"
+            ]
+            settingsController.pageTitle = "设置"
+            topController.navigationController?.pushViewController(settingsController, animated: true)
+        }
+        
     }
     
     var isFullScreenAdOn = false

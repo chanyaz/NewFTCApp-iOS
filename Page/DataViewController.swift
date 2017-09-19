@@ -35,7 +35,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var dataObject = [String: String]()
     var pageTitle: String = ""
     
-    fileprivate lazy var webView: WKWebView? = nil
+    public lazy var webView: WKWebView? = nil
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
     
@@ -139,13 +139,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             webView?.clipsToBounds = true
             webView?.scrollView.bounces = false
             
-            if dataObject["type"] == "Search" {
+            if dataObjectType == "Search" {
                 searchBar = UISearchBar()
                 searchBar?.sizeToFit()
                 searchBar?.showsScopeBar = true
                 navigationItem.titleView = searchBar
                 searchBar?.becomeFirstResponder()
                 searchBar?.delegate = self
+                
                 if let url = URL(string: APIs.searchUrl) {
                     let request = URLRequest(url: url)
                     if let adHTMLPath = Bundle.main.path(forResource: "search", ofType: "html"){
@@ -153,6 +154,21 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                             let searchHTML = getSearchHistoryHTML()
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                                 .replacingOccurrences(of: "{search-html}", with: searchHTML)
+                            let storyHTML = storyTemplate as String
+                            self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                        } catch {
+                            //self.webView?.load(request)
+                        }
+                    } else {
+                        self.webView?.load(request)
+                    }
+                }
+            } else if dataObjectType == "account" {
+                if let url = URL(string: urlString) {
+                    let request = URLRequest(url: url)
+                    if let adHTMLPath = Bundle.main.path(forResource: "account", ofType: "html"){
+                        do {
+                            let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                             let storyHTML = storyTemplate as String
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {

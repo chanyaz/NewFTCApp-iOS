@@ -48,8 +48,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     var item: ContentItem?
     var themeColor: String?
     
+    let viewWithLanguages = UIView()
     let audioViewWithContent = UIView()
     let audioView = UIView()
+    
+    var languages = UISegmentedControl()
     let preAudio = UIButton()
     let nextAudio = UIButton()
     let forward = UIButton()
@@ -86,7 +89,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         //        let spaceBetweenTimeAndSlider:CGFloat = 20
         let sliderWidth:CGFloat = 230
         
-        let audioViewHeight:CGFloat = 250
+        let audioViewHeight:CGFloat = 230
         let buttonWidth:CGFloat = 19
         let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
@@ -95,9 +98,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         //        let listY = audioViewHeight - buttonHeight - spaceBetweenListAndView
         let spaceBetweenListAndForward: CGFloat = 50
         let spaceBetweenPreAndForward = (width - margin*2 - buttonWidth*6)/4
-        let forwardY = audioViewHeight - spaceBetweenListAndForward*2 - buttonHeight*2
+//        let forwardY = audioViewHeight - spaceBetweenListAndForward - spaceBetweenListAndView - buttonHeight*2
         
-        
+        let forwardY = spaceBetweenListAndView + spaceBetweenListAndView + buttonHeight*2
         
         preAudio.attributedTitle(for: UIControlState.normal)
         preAudio.setImage(UIImage(named:"PreBtn"), for: UIControlState.normal)
@@ -179,10 +182,30 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         downSwipeButton.frame = CGRect(x:width-60,y:10,width:40,height:40)
         downSwipeButton.setImage(UIImage(named:"HideBtn"), for: UIControlState.normal)
-        //        downSwipeButton.setTitle("下滑", for: .normal)
-        downSwipeButton.backgroundColor = UIColor.green
+
+        viewWithLanguages.frame = CGRect(x:0,y:0,width:width,height:90)
         audioViewWithContent.frame = CGRect(x:0,y:90,width:width,height:height)
         audioView.frame = CGRect(x:0,y:height - audioViewHeight,width:width,height:audioViewHeight)
+        viewWithLanguages.backgroundColor = UIColor.white
+//        viewWithLanguages.layer.borderWidth = 1
+//        viewWithLanguages.layer.borderColor = UIColor.black.cgColor
+     
+        
+//         viewWithLanguages.layer.frame = CGRect(x: view.frame.width - 1, y: 0, width: 1, height: view.frame.height)
+        let items = ["中文", "英文"]
+        languages = UISegmentedControl(items: items)
+        languages.selectedSegmentIndex = 0
+        languages.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
+        languages.tintColor = UIColor.white
+        languages.layer.borderColor = UIColor.black.cgColor
+        languages.layer.borderWidth = 1
+        let segAttributes: NSDictionary = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: UIFont(name: "Avenir-MediumOblique", size: 15)!
+        ]
+        languages.setTitleTextAttributes(segAttributes as [NSObject : AnyObject], for: UIControlState.selected)
+        
+        
         audioView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
         audioView.addSubview(audioPlayStatus)
         audioView.addSubview(audioplayAndPauseButton)
@@ -199,25 +222,34 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioView.addSubview(love)
         audioView.addSubview(share)
         audioViewWithContent.addSubview(webAudioView)
+        viewWithLanguages.addSubview(languages)
         audioViewWithContent.addSubview(audioView)
+        audioViewWithContent.addSubview(viewWithLanguages)
         tabView.addSubview(audioViewWithContent)
         audioView.layer.zPosition = 200
         
         
         
-        tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
+        tabView.backgroundColor = UIColor.clear
         tabView.frame = CGRect(x:0,y:height-90,width:width,height:height+90)
         
         view.addSubview(self.tabView)
         
-        //        self.webAudioView.translatesAutoresizingMaskIntoConstraints = false
-        //        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
-        //        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-        //        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 90))
-        //        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
+
+        self.languages.translatesAutoresizingMaskIntoConstraints = false
+        self.tabView.addConstraint(NSLayoutConstraint(item: languages, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.audioViewWithContent, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        self.tabView.addConstraint(NSLayoutConstraint(item: languages, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.viewWithLanguages, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -20))
+        self.tabView.addConstraint(NSLayoutConstraint(item: languages, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.audioViewWithContent, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 40))
+        self.tabView.addConstraint(NSLayoutConstraint(item: languages, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 180))
+        
+        self.webAudioView.translatesAutoresizingMaskIntoConstraints = false
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.audioViewWithContent, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 90))
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
         
         self.audioProgressSlider.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndForward))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndForward-buttonHeight))
         self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: sliderWidth))
         
@@ -304,9 +336,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         downSwipeButton.addTarget(self, action: #selector(exitAudio), for: UIControlEvents.touchUpInside)
         
-        let swipeGestureRecognizerViewWithContent = UISwipeGestureRecognizer(target: self, action: #selector(self.exitAudio))
-        swipeGestureRecognizerViewWithContent.direction = .down
-        audioViewWithContent.addGestureRecognizer(swipeGestureRecognizerViewWithContent)
+//        let swipeGestureRecognizerViewWithContent = UISwipeGestureRecognizer(target: self, action: #selector(self.exitAudio))
+//        swipeGestureRecognizerViewWithContent.direction = .down
+//        audioViewWithContent.addGestureRecognizer(swipeGestureRecognizerViewWithContent)
         
         player = TabBarAudioContent.sharedInstance.player
         
@@ -1038,10 +1070,10 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             
             try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try? AVAudioSession.sharedInstance().setActive(true)
-            if let player = player {
-                
+//            if let player = player {
+            
                 //                player.play()
-            }
+//            }
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)

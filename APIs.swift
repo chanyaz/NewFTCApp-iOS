@@ -327,7 +327,8 @@ struct JSCodes {
         case autoPlayVideoType:
             return "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
         default:
-            return "window.gConnectionType = '\(Connection.current())';checkFontsize();"
+            let fontClass = Setting.getFontClass()
+            return "window.gConnectionType = '\(Connection.current())';checkFontSize('\(fontClass)');"
         }
     }
 }

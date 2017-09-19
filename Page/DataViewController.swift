@@ -46,7 +46,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting"].contains(dataObjectType){
+        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting", "options"].contains(dataObjectType){
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -77,6 +77,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
             collectionView?.register(UINib.init(nibName: "FollowCell", bundle: nil), forCellWithReuseIdentifier: "FollowCell")
             collectionView?.register(UINib.init(nibName: "SettingCell", bundle: nil), forCellWithReuseIdentifier: "SettingCell")
+            collectionView?.register(UINib.init(nibName: "OptionCell", bundle: nil), forCellWithReuseIdentifier: "OptionCell")
             collectionView?.register(UINib.init(nibName: "BookCell", bundle: nil), forCellWithReuseIdentifier: "BookCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
@@ -89,8 +90,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
             collectionView?.register(UINib.init(nibName: "HotArticleCellRegular", bundle: nil), forCellWithReuseIdentifier: "HotArticleCellRegular")
             // MARK: - Update Styles
-            view.backgroundColor = UIColor(hex: Color.Content.border)
-            collectionView?.backgroundColor = UIColor(hex: Color.Content.border)
+            view.backgroundColor = UIColor(hex: Color.Content.background)
+            collectionView?.backgroundColor = UIColor(hex: Color.Content.background)
             if #available(iOS 10.0, *) {
                 refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
                 collectionView?.refreshControl = refreshControl
@@ -183,6 +184,15 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
         TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
+        
+        
+        // MARK: In setting page, you might need to update UI to reflected change in preference
+        if let type = dataObject["type"] {
+            if type == "setting" {
+                loadSettings()
+            }
+        }
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -342,6 +352,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 loadProducts()
             } else if type == "setting" {
                 loadSettings()
+            } else if type == "options" {
+                loadOptions()
             } else {
                 let urlString = APIs.get("", type: type)
                 getAPI(urlString)
@@ -507,6 +519,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "OptionCell":
+            if let cell = cellItem as? OptionCell {
+                cell.cellWidth = cellWidth
+                cell.themeColor = themeColor
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         case "EmptyCell":
             return cellItem
         default:
@@ -657,6 +676,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "FollowCell"
                 } else if item.type == "setting" {
                     reuseIdentifier = "SettingCell"
+                } else if item.type == "option" {
+                    reuseIdentifier = "OptionCell"
                 } else if item.type == "ad"{
                     if item.adModel == nil || item.adModel?.headline == nil {
                         reuseIdentifier = "LineCell"
@@ -814,7 +835,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
             
             TabBarAudioContent.sharedInstance.playerItem = playerItem
-//            setLastPlayAudio()
+            //            setLastPlayAudio()
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
             self.addPlayerItemObservers()
@@ -874,7 +895,28 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
         } else {
             switch selectedItem.type {
-            case "ad", "follow", "setting":
+            case "setting":
+                let optionInfo = Setting.get(selectedItem.id)
+                if let optionType = optionInfo.type {
+                    if optionType == "switch" {
+                        return false
+                    } else {
+                        Setting.handle(selectedItem.id, type: optionType, title: selectedItem.headline)
+                    }
+                } else {
+                    return false
+                }
+            case "option":
+                if let optionsId = dataObject["id"] {
+                    let selectedIndex = indexPath.row
+                    fetches = ContentFetchResults(
+                        apiUrl: fetches.apiUrl,
+                        fetchResults: Setting.updateOption(optionsId, with: selectedIndex, from: fetches.fetchResults)
+                    )
+                    collectionView.reloadData()
+                }
+                return true
+            case "ad", "follow":
                 print ("Tap an ad. Let the cell handle it by itself. ")
                 return false
             case "ebook":
@@ -1014,6 +1056,17 @@ extension DataViewController {
         self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
     }
     
+    // MARK: load options and update UI
+    fileprivate func loadOptions() {
+        if let id = dataObject["id"] {
+            let contentSections = Setting.getContentSections(id)
+            let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
+            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+        }
+    }
+    
     
 }
 
@@ -1052,9 +1105,12 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         let heightPerItem: CGFloat
         // TODO: Should do the layout based on cell's properties
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
-        if reuseIdentifier == "SettingCell" {
+        if reuseIdentifier == "SettingCell" || reuseIdentifier == "OptionCell" {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = 44
+        } else if reuseIdentifier == "BookCell" {
+            widthPerItem = availableWidth / itemsPerRow
+            heightPerItem = 160 + 14 + 14
         } else if indexPath.row == 0 && indexPath.section == 1{
             if currentSizeClass == .regular {
                 widthPerItem = (availableWidth / itemsPerRow) * 2

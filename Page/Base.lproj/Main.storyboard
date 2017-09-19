@@ -128,21 +128,21 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kpf-ts-v6Y"/>
-                                    <barButtonItem image="FontSize" id="Adh-zQ-XUN">
-                                        <connections>
-                                            <action selector="changeFont:" destination="naC-T6-XIm" id="Tkg-45-eGs"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="zUT-Ag-a6y"/>
                                     <barButtonItem image="Comment" id="x2W-Ox-VaF">
                                         <connections>
                                             <action selector="launchComment:" destination="naC-T6-XIm" id="z50-yh-cVk"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="1Rs-FA-NtB"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="zUT-Ag-a6y"/>
                                     <barButtonItem image="Share" id="QUo-79-Rea">
                                         <connections>
                                             <action selector="actionSheet:" destination="naC-T6-XIm" id="wI9-XR-8SL"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="1Rs-FA-NtB"/>
+                                    <barButtonItem image="FontSize" id="Adh-zQ-XUN">
+                                        <connections>
+                                            <action selector="openSetting:" destination="naC-T6-XIm" id="xQj-nn-kHB"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -895,22 +895,16 @@
                             <toolbar opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f3g-8R-H03">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem systemItem="action" id="NKe-z0-JdB">
+                                    <barButtonItem systemItem="stop" id="LuU-60-tLx">
                                         <connections>
-                                            <action selector="share:" destination="dQw-7K-qie" id="Gcg-cm-K4v"/>
+                                            <action selector="StopAudio:" destination="dQw-7K-qie" id="2fQ-k2-LAm"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="1Xc-nj-nFS"/>
-                                    <barButtonItem title="Item" style="plain" id="VTh-Yh-dFl">
-                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="c1b-Uo-59M" customClass="UIButtonEnhanced" customModule="Page" customModuleProvider="target">
-                                            <rect key="frame" x="82" y="4" width="36" height="36"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <state key="normal" image="DownloadButton"/>
-                                            <connections>
-                                                <action selector="download:" destination="dQw-7K-qie" eventType="touchUpInside" id="0fd-HJ-eRI"/>
-                                            </connections>
-                                        </button>
+                                    <barButtonItem image="SettingsButton" id="jKl-ib-XvH">
+                                        <connections>
+                                            <action selector="settings:" destination="dQw-7K-qie" id="Mis-GL-Loi"/>
+                                        </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="uBp-pm-7mV"/>
                                     <barButtonItem image="BigPlayButton" id="ORA-Tv-9TC">
@@ -919,15 +913,21 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="3MB-ZJ-3dS"/>
-                                    <barButtonItem image="SettingsButton" id="jKl-ib-XvH">
-                                        <connections>
-                                            <action selector="settings:" destination="dQw-7K-qie" id="Mis-GL-Loi"/>
-                                        </connections>
+                                    <barButtonItem image="DownloadButton" style="plain" id="VTh-Yh-dFl">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="c1b-Uo-59M" customClass="UIButtonEnhanced" customModule="Page" customModuleProvider="target">
+                                            <rect key="frame" x="257" y="4" width="36" height="36"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <state key="normal" image="DownloadButton"/>
+                                            <connections>
+                                                <action selector="download:" destination="dQw-7K-qie" eventType="touchUpInside" id="0fd-HJ-eRI"/>
+                                            </connections>
+                                        </button>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="f8p-aS-hn2"/>
-                                    <barButtonItem systemItem="stop" id="LuU-60-tLx">
+                                    <barButtonItem image="AudioShare" style="plain" id="NKe-z0-JdB">
                                         <connections>
-                                            <action selector="StopAudio:" destination="dQw-7K-qie" id="2fQ-k2-LAm"/>
+                                            <action selector="share:" destination="dQw-7K-qie" id="Gcg-cm-K4v"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -977,6 +977,7 @@
     <resources>
         <image name="Academy" width="25" height="25"/>
         <image name="AcademyDim" width="25" height="25"/>
+        <image name="AudioShare" width="19" height="20"/>
         <image name="BigPlayButton" width="48" height="48"/>
         <image name="Clip" width="20" height="18"/>
         <image name="CloseBtn" width="13" height="13"/>

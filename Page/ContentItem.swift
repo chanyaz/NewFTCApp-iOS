@@ -57,7 +57,7 @@ class ContentItem{
     var periodString: String?
     var productPrice: String?
     
-    
+    var isSelected = false
     
     
     var followType: String?

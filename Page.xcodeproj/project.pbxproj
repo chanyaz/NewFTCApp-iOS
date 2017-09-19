@@ -29,6 +29,10 @@
 		50C31B401F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B3D1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift */; };
 		50C31B411F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B3E1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib */; };
 		50C31B421F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B3E1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib */; };
+		50C31B451F7006D500F4CF61 /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B431F7006D500F4CF61 /* OptionCell.swift */; };
+		50C31B461F7006D500F4CF61 /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C31B431F7006D500F4CF61 /* OptionCell.swift */; };
+		50C31B471F7006D500F4CF61 /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B441F7006D500F4CF61 /* OptionCell.xib */; };
+		50C31B481F7006D500F4CF61 /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B441F7006D500F4CF61 /* OptionCell.xib */; };
 		50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
 		50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
 		50D4BD461F63BB2400DD64E1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD451F63BB2400DD64E1 /* NotificationService.swift */; };
@@ -64,6 +68,8 @@
 		600C0D051F5D582500226F84 /* AudioPlayerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600C0D031F5D582500226F84 /* AudioPlayerHelper.swift */; };
 		60124FB61F316F2400CFA04C /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60124FB51F316F2400CFA04C /* ChatViewController.swift */; };
 		60124FB91F318C0A00CFA04C /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60124FB81F318C0A00CFA04C /* Content.swift */; };
+		6013F6BF1F6F99DB00F83462 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6013F6BE1F6F99DB00F83462 /* Setting.swift */; };
+		6013F6C01F6F99DB00F83462 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6013F6BE1F6F99DB00F83462 /* Setting.swift */; };
 		601417701EEA3F7600DC3EF9 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */; };
 		601418081EEA919300DC3EF9 /* IJReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601418071EEA919300DC3EF9 /* IJReachability.swift */; };
 		6014180B1EEA9CC000DC3EF9 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6014180A1EEA9CC000DC3EF9 /* Download.swift */; };
@@ -389,6 +395,8 @@
 		50C31B381F6CD83900F4CF61 /* SimpleHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleHeaderView.xib; sourceTree = "<group>"; };
 		50C31B3D1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutOfBoxCoverCell.swift; sourceTree = "<group>"; };
 		50C31B3E1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutOfBoxCoverCell.xib; sourceTree = "<group>"; };
+		50C31B431F7006D500F4CF61 /* OptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
+		50C31B441F7006D500F4CF61 /* OptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OptionCell.xib; sourceTree = "<group>"; };
 		50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FT富媒体速递.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D4BD451F63BB2400DD64E1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -425,6 +433,7 @@
 		600C0D031F5D582500226F84 /* AudioPlayerHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerHelper.swift; sourceTree = "<group>"; };
 		60124FB51F316F2400CFA04C /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		60124FB81F318C0A00CFA04C /* Content.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
+		6013F6BE1F6F99DB00F83462 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
 		601418071EEA919300DC3EF9 /* IJReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IJReachability.swift; sourceTree = "<group>"; };
 		6014180A1EEA9CC000DC3EF9 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
@@ -770,6 +779,14 @@
 			name = Chat;
 			sourceTree = "<group>";
 		};
+		6013F6C11F6F99EC00F83462 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				6013F6BE1F6F99DB00F83462 /* Setting.swift */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		601418091EEA91BA00DC3EF9 /* Networks */ = {
 			isa = PBXGroup;
 			children = (
@@ -905,6 +922,7 @@
 				605750F41F1499AD00552DAC /* AsyncTextAttachment.swift */,
 				605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */,
 				605750F81F1499F000552DAC /* UIImage+Attachments.swift */,
+				6013F6C11F6F99EC00F83462 /* Settings */,
 				600BD6AB1F21A65E0077C104 /* Audio */,
 				60124FB71F317F8B00CFA04C /* Chat */,
 			);
@@ -1143,6 +1161,8 @@
 				6019A9D01F4C457D00B8FB69 /* FollowCell.xib */,
 				50C31B311F6CCFF000F4CF61 /* SettingCell.swift */,
 				50C31B321F6CCFF000F4CF61 /* SettingCell.xib */,
+				50C31B431F7006D500F4CF61 /* OptionCell.swift */,
+				50C31B441F7006D500F4CF61 /* OptionCell.xib */,
 				6055EF951F5021C1006F8A83 /* PaidPostCell.swift */,
 				6055EF961F5021C1006F8A83 /* PaidPostCell.xib */,
 			);
@@ -1444,6 +1464,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50C31B481F7006D500F4CF61 /* OptionCell.xib in Resources */,
 				602153641F397C650077A7AF /* ChannelScrollerCell.xib in Resources */,
 				602153651F397C650077A7AF /* CoverCell.xib in Resources */,
 				602153941F399AC80077A7AF /* Assets.xcassets in Resources */,
@@ -1520,6 +1541,7 @@
 				500139E11F1A7188009EC29D /* GoogleService-Info.plist in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
 				602153C51F39A4390077A7AF /* sound.png in Resources */,
+				50C31B471F7006D500F4CF61 /* OptionCell.xib in Resources */,
 				50F610611F2CCB9C00E3AABC /* LineCell.xib in Resources */,
 				602153C41F39A4390077A7AF /* ShareIcon.jpg in Resources */,
 				602153C31F39A4390077A7AF /* mute.png in Resources */,
@@ -1729,6 +1751,7 @@
 				6021531A1F397C650077A7AF /* PlaySpeech.swift in Sources */,
 				6021531C1F397C650077A7AF /* ChannelCellRegular.swift in Sources */,
 				6021531D1F397C650077A7AF /* HotArticleCellRegular.swift in Sources */,
+				50C31B461F7006D500F4CF61 /* OptionCell.swift in Sources */,
 				60814F611F580FB200041801 /* BookCell.swift in Sources */,
 				6021531E1F397C650077A7AF /* PageCollectionViewLayoutV.swift in Sources */,
 				6021531F1F397C650077A7AF /* Tabs.swift in Sources */,
@@ -1793,6 +1816,7 @@
 				F2E0906D1F5A6A3900F4409F /* ColumnCollectionViewCell.swift in Sources */,
 				6021534F1F397C650077A7AF /* DownloadHelper.swift in Sources */,
 				602153B41F399E9A0077A7AF /* Styles.swift in Sources */,
+				6013F6C01F6F99DB00F83462 /* Setting.swift in Sources */,
 				F24B79971F5555FA001B62A2 /* CustomPresentationController.swift in Sources */,
 				F2E090751F5A6A3900F4409F /* MyWalletViewController.swift in Sources */,
 				602E88411F43DD9600BBB4AF /* Alert.swift in Sources */,
@@ -1884,6 +1908,7 @@
 				50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */,
 				60F1A52B1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
 				605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */,
+				50C31B451F7006D500F4CF61 /* OptionCell.swift in Sources */,
 				50C31B3F1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */,
 				50A704C31EEB689900660022 /* ContentFetch.swift in Sources */,
 				F2F92B171F0B6C0C00C4E043 /* AdCellRegular.swift in Sources */,
@@ -1908,6 +1933,7 @@
 				608C55251EF7A42D00AF27CB /* ContentItemViewController.swift in Sources */,
 				600BD6AA1F21A6570077C104 /* NowPlayingCenter.swift in Sources */,
 				60C03D6A1EFE4470003ABDE4 /* DetailModelDelegate.swift in Sources */,
+				6013F6BF1F6F99DB00F83462 /* Setting.swift in Sources */,
 				600BD6A71F21A6570077C104 /* AudioHelper.swift in Sources */,
 				6093F1691EE937E8009F16EE /* Model.xcdatamodeld in Sources */,
 				60986A491F1CAC5300583157 /* ShareImageActivityProvider.swift in Sources */,

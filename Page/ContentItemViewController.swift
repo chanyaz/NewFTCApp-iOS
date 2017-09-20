@@ -25,7 +25,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     // MARK: show in full screen
     var isFullScreen = false
     
-
+    
     
     // MARK: sub type such as user comments
     var subType: ContentSubType = .None
@@ -65,10 +65,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             view.backgroundColor = webViewBG
             //            self.edgesForExtendedLayout = []
             //            self.extendedLayoutIncludesOpaqueBars = false
-
+            
             
             let config = WKWebViewConfiguration()
-
+            
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
             if let type = dataObject?.type {
@@ -99,7 +99,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     // Fallback on earlier versions
                 }
             }
-
+            
             // MARK: Add the webview as a subview of containerView
             if isFullScreen == false {
                 webView = WKWebView(frame: containerView.bounds, configuration: config)
@@ -166,7 +166,21 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         if let id = dataObject?.id, let type = dataObject?.type, let headline = dataObject?.headline {
             let screenName = "/\(DeviceInfo.checkDeviceType())/\(type)/\(id)/\(headline)"
             Track.screenView(screenName)
+            
+            if type != "video" {
+                let jsCode = JSCodes.get(type)
+                print ("View will Appear, about to excute this javascript code: \(jsCode)")
+                self.webView?.evaluateJavaScript(jsCode) { (result, error) in
+                    if error != nil {
+                        print ("something is wrong with js code: \(String(describing: error))")
+                    } else {
+                        print ("js code is executed successfully! ")
+                    }
+                }
+            }
+
         }
+        
     }
     
     deinit {
@@ -532,6 +546,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     var adBanner = ""
                     var adMPU = ""
                     var storyTheme = ""
+                    let fontClass = Setting.getFontClass()
                     
                     if subType == .UserComments {
                         finalBody = ""
@@ -595,7 +610,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     default:
                         resourceFileName = "story"
                     }
-                    
                     if let adHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
@@ -620,6 +634,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "['{follow-columns}']", with: followColumns)
                                 .replacingOccurrences(of: "{ad-banner}", with: adBanner)
                                 .replacingOccurrences(of: "{ad-mpu}", with: adMPU)
+                                .replacingOccurrences(of: "{font-class}", with: fontClass)
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             self.webView?.load(request)

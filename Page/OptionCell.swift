@@ -57,8 +57,22 @@ class OptionCell: CustomCell {
         }
         
         
+        updateFontSize()
         
         
+    }
+    
+    private func updateFontSize() {
+        if itemCell?.tag == "font-setting" {
+            let baseFont: CGFloat = 17
+            for (index, fontSize) in Setting.fontSizes.enumerated() {
+                if itemCell?.row == index {
+                    let fontDescriptor = name.font.fontDescriptor
+                    let newFontSize = baseFont * fontSize
+                    name.font = UIFont(descriptor: fontDescriptor, size: newFontSize)
+                }
+            }
+        }
     }
     
 }

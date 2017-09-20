@@ -110,7 +110,7 @@ Data View:
 3. Login and Register
 4. My Subscription
 
-### Big 5 Version
+### Big 5 Version: https://github.com/Insfgg99x/FGReverser
 
 ## Completed Tasks
 

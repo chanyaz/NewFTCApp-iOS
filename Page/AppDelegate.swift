@@ -282,9 +282,15 @@ extension AppDelegate: WXApiDelegate {
                                             print ("Get Wechat Login Data \(data)")
                                             if let JSONString = String(data: data, encoding: .utf8) {
                                                 print ("json string is \(JSONString)")
+                                                let jsCode = "socialLogin('wechat', '\(JSONString)');"
+                                                print(jsCode)
                                                 if let topViewController = UIApplication.topViewController() as? ContentItemViewController {
-                                                    let jsCode = "socialLogin('wechat', '\(JSONString)');"
-                                                    print(jsCode)
+                                                    topViewController.webView?.evaluateJavaScript(jsCode) { (result, error) in
+                                                        if result != nil {
+                                                            print (result ?? "unprintable JS result")
+                                                        }
+                                                    }
+                                                } else if let topViewController = UIApplication.topViewController() as? DataViewController {
                                                     topViewController.webView?.evaluateJavaScript(jsCode) { (result, error) in
                                                         if result != nil {
                                                             print (result ?? "unprintable JS result")

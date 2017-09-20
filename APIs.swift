@@ -8,23 +8,28 @@
 
 import Foundation
 import UIKit
-import MediaPlayer
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
-    //private static let base = "https://m.ftimg.net/index.php/jsapi/"
+    
+    // MARK: Domain Name Used for different types of purposes
+    private static let htmlDomain = "https://danla2f5eudt1.cloudfront.net/"
     private static let domain = "https://d37m993yiqhccr.cloudfront.net/"
-    private static let publicDomain = "http://app003.ftmailbox.com/"
+    public static let publicDomain = "http://app003.ftmailbox.com/"
     private static let webPageDomain = "http://www.ftchinese.com/"
-    // MARK: the number of days you want to keep the cached files
+    
+    // MARK: Number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
+    
+    // MARK: Search is mostly rendered using web
     static let searchUrl = "http://app003.ftmailbox.com/search/"
     static func jsForSearch(_ keywords: String) -> String {
         return "search('\(keywords)');"
     }
     
-    // MARK: the types of files that you want to clean from time to time
+    // MARK: Types of files that you want to clean from time to time
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg"]
     
+    // MARK: Construct url strings for different types of content
     static func get(_ id: String, type: String) -> String {
         let urlString: String
         switch type {
@@ -64,13 +69,14 @@ struct APIs {
         return urlString
     }
     
+    // MARK: Get url string for myFT
     static func get(_ key: String, value: String) -> String {
         return "\(domain)channel/china.html?type=json&\(key)=\(value)"
     }
     
+    // MARK: Use different domains for different types of content
     static func getUrl(_ id: String, type: String) -> String {
         let urlString: String
-        // MARK: Use different domains for different types of content
         switch type {
         // MARK: If there are http resources that you rely on in your page, don't use https as the url base
         case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
@@ -81,17 +87,16 @@ struct APIs {
         default:
             urlString = "\(publicDomain)"
         }
-        // print ("open in web view: \(urlString)")
         return urlString
     }
     
-    
-    
+    // MARK: Add query parameter to the url so that the web pages knows it is opened in our app. Then it'll do things like hide headers.
     static func newQueryForWebPage() -> URLQueryItem {
         return URLQueryItem(name: "webview", value: "ftcapp")
     }
 }
 
+// MARK: - Error message in diffent languages
 struct ErrorMessages {
     struct NoInternet {
         static let en = "Dear reader, you are not connected to the Internet Now. Please connect and try again. "
@@ -105,11 +110,8 @@ struct ErrorMessages {
     }
 }
 
+// MARK: - Use struct to store information so that Xcode can auto-complete codes
 struct Event {
-    //    static func pagePanningEnd (for tab: String) -> String {
-    //        let pagePanningEndName = "Page Panning End"
-    //        return "\(pagePanningEndName) for \(tab)"
-    //    }
     static let englishStatusChange = "English Status Change"
     static let languageSelected = "Language Selected in Story Page"
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
@@ -121,10 +123,9 @@ struct Event {
     }
 }
 
-struct Push {
-    static let deviceTokenUrl = "https://noti.ftimg.net/iphone-collect.php"
-}
 
+
+// MARK: - Use struct to store information so that Xcode can auto-complete codes
 struct Key {
     static let languagePreference = "Language Preference"
     static let domainIndex = "Domain Index"
@@ -132,13 +133,14 @@ struct Key {
     static let audioHistory = ["Audio Headline History","Audio URL History","Audio Id History","Audio Last Play Time History"]
 }
 
-// MARK: - Use a server side image service so that you can request images that are just large enough
+// MARK: - Use a server side image service so that you can request images that are just large enough. If you don't have a image service such as the FT's, you can simply return the same image url.
 struct ImageService {
     static func resize(_ imageUrl: String, width: Int, height: Int) -> String {
         return "https://www.ft.com/__origami/service/image/v2/images/raw/\(imageUrl)?source=ftchinese&width=\(width * 2)&height=\(height * 2)&fit=cover"
     }
 }
 
+// MARK: - Recognize link patterns in your specific web site so that your app opens links intelligently, rather than opening everything with web view or safari view.
 struct LinkPattern {
     static let story = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/story/([0-9]+)"]
     static let interactive = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/interactive/([0-9]+)"]
@@ -148,6 +150,7 @@ struct LinkPattern {
     static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
 }
 
+// MARK: - When you want to add content that are not already in your APIs. For example, you might want to add a most popular section to your home page.
 struct SupplementContent {
     static func insertContent(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
         var newContentSections = contentSections
@@ -157,12 +160,6 @@ struct SupplementContent {
         }
         switch layout {
         case "home":
-            // MARK: Create link to the Microsoft AI chat bot
-            //            let xiaobingItem = ContentItem(id: "Id of the Chat Room", image: "http://i.ftimg.net/picture/0/000068460_piclink.jpg", headline: "微软的人工智能机器人小冰", lead: "微软小冰一直在探索新媒体领域的技术能力，试图通过实时对话和用户交流，实现新闻传播的效果", type: "ViewController", preferSponsorImage: "", tag: "AI", customLink: "", timeStamp: 0, section: 0, row: 0)
-            //            // MARK: Insert the chatbot post under paid post
-            //            if newContentSections.count > 0 && newContentSections[0].items.count > 2 {
-            //                newContentSections[0].items.insert(xiaobingItem, at:2)
-            //            }
             newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
         case "follows":
@@ -206,13 +203,11 @@ struct SupplementContent {
                     }
                 }
             }
-            //print ("request type: \(newContentSections)")
             return newContentSections
         case "ipadhome":
             // MARK: - The first item in the first section should be marked as Cover
             newContentSections[0].items[0].isCover = true
             // MARK: - Break up the first section into two or more, depending on how you want to layout ads
-            
             return newContentSections
         default:
             return newContentSections
@@ -220,7 +215,9 @@ struct SupplementContent {
     }
 }
 
+
 struct Meta {
+    // MARK: - Things your users can follow
     static let map: [[String: Any]] = [
         ["key": "tag",
          "name": "标签"
@@ -257,6 +254,8 @@ struct Meta {
          "name": "栏目"
         ]
     ]
+    
+    // MARK: Tags that are not meant for users to see
     static let reservedTags = [
         "QuizPlus",
         "单选题",
@@ -277,6 +276,7 @@ struct Meta {
     ]
 }
 
+// MARK: - If you are using Admob to track download and performance
 struct AdMobTrack {
     static func launch() {
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -287,6 +287,7 @@ struct AdMobTrack {
     }
 }
 
+// MARK: - For push notification
 struct DeviceToken {
     static let url = "https://noti.ftimg.net/iphone-collect.php"
     // MARK: - Post device token to server
@@ -320,6 +321,7 @@ struct DeviceToken {
     }
 }
 
+// MARK: - JS Codes you might need to execute in your web views
 struct JSCodes {
     static let autoPlayVideoType = "autoPlayVideo"
     static func get(_ type: String) -> String {
@@ -327,12 +329,13 @@ struct JSCodes {
         case autoPlayVideoType:
             return "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
         default:
-            return "window.gConnectionType = '\(Connection.current())';checkFontsize();"
+            let fontClass = Setting.getFontClass()
+            return "window.gConnectionType = '\(Connection.current())';checkFontSize('\(fontClass)');"
         }
     }
 }
 
-
+// MARK: - Setting page
 struct Settings {
     static let page = [
         ContentSection(
@@ -361,6 +364,18 @@ struct Settings {
                     customLink: "",
                     timeStamp: 0,
                     section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "enable-push",
+                    image: "",
+                    headline: "新闻推送",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
                     row: 0)
             ],
             type: "Group",
@@ -382,9 +397,64 @@ struct Settings {
                     section: 0,
                     row: 0),
                 ContentItem(
-                    id: "image-data",
+                    id: "no-image-with-data",
                     image: "",
                     headline: "使用数据时不下载图片",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0)
+            ],
+            type: "Group",
+            adid: nil
+        ),
+        ContentSection(
+            title: "服务与反馈",
+            items: [
+                ContentItem(
+                    id: "feedback",
+                    image: "",
+                    headline: "反馈",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "app-store",
+                    image: "",
+                    headline: "App Store评分",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "privacy",
+                    image: "",
+                    headline: "隐私协议",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
+                    id: "about",
+                    image: "",
+                    headline: "关于我们",
                     lead: "",
                     type: "setting",
                     preferSponsorImage: "",
@@ -399,46 +469,3 @@ struct Settings {
         )
     ]
 }
-public func setLastPlayAudio(){
-    if  TabBarAudioContent.sharedInstance.audioUrl != nil {
-
-        var audioHeadLineHistory = UserDefaults.standard.string(forKey: Key.audioHistory[0]) ?? String()
-        var audioUrlHistory = UserDefaults.standard.url(forKey: Key.audioHistory[1]) ?? URL(string: "")
-        var audioIdHistory = UserDefaults.standard.string(forKey: Key.audioHistory[2]) ?? String()
-        var audioLastPlayTimeHistory = UserDefaults.standard.float(forKey: Key.audioHistory[3]) 
-
-        //应该放在能保存下来的地方，点击一下保存一下，点击不同的会替换当前的
-        if let audioHeadLine = TabBarAudioContent.sharedInstance.audioHeadLine{
-            audioHeadLineHistory = audioHeadLine
-        }
-        if let audioUrl = TabBarAudioContent.sharedInstance.audioUrl{
-            audioUrlHistory = audioUrl
-        }
-        if let audioId = TabBarAudioContent.sharedInstance.body["interactiveUrl"]{
-            audioIdHistory = audioId
-        }
-        
-        if let time = TabBarAudioContent.sharedInstance.time{
-            print("getLastPlayAudioUrl time")
-            audioLastPlayTimeHistory = Float((CMTimeGetSeconds(time)))
-        }else{
-            print("getLastPlayAudioUrl 0")
-            audioLastPlayTimeHistory = 0.0
-        }
-        UserDefaults.standard.set(audioHeadLineHistory, forKey: Key.audioHistory[0])
-        UserDefaults.standard.set(audioUrlHistory, forKey: Key.audioHistory[1])
-        UserDefaults.standard.set(audioIdHistory, forKey: Key.audioHistory[2])
-        UserDefaults.standard.set(audioLastPlayTimeHistory, forKey: Key.audioHistory[3])
-    }
-}
-
-/*
- enum AppError : Error {
- case invalidResource(String, String)
- }
- */
-
-
-//func setTimeout(_ delay:TimeInterval, block:@escaping ()->Void) -> Timer {
-//    return Timer.scheduledTimer(timeInterval: delay, target: BlockOperation(block: block), selector: #selector(Operation.main), userInfo: nil, repeats: false)
-//}

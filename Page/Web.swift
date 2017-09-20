@@ -8,6 +8,7 @@
 
 import Foundation
 import SafariServices
+import StoreKit
 
 extension UIViewController: SFSafariViewControllerDelegate{
     // MARK: Handle All the Recogizable Links Here
@@ -108,6 +109,13 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 let action = url.host
                 let id = url.lastPathComponent
                 NotificationHelper.open(action, id: id, title: "title")
+            case "itms-apps":
+                // MARK: Link to App Store
+                if #available(iOS 10.3, *) {
+                    SKStoreReviewController.requestReview()
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
             default:
                 break
             }

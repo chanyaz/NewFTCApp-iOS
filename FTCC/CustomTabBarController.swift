@@ -48,7 +48,12 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     var item: ContentItem?
     var themeColor: String?
     
+    let deleteButton = UIButton()
+    let viewWithLanguages = UIView()
+    let audioViewWithContent = UIView()
     let audioView = UIView()
+    
+    var languages = UISegmentedControl()
     let preAudio = UIButton()
     let nextAudio = UIButton()
     let forward = UIButton()
@@ -69,6 +74,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     
     var tabView = CustomTab()
     
+    let width = UIScreen.main.bounds.width
+    let height = UIScreen.main.bounds.height
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return UIStatusBarStyle.lightContent
@@ -77,64 +84,68 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         super.viewDidLoad()
         
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height
-        let audioViewHeight:CGFloat = 250
+        
+        
+        let labelMargin:CGFloat = 5
+        //        let spaceBetweenTimeAndSlider:CGFloat = 20
+        let sliderWidth:CGFloat = 230
+        
+        let audioViewHeight:CGFloat = 230
         let buttonWidth:CGFloat = 19
         let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
         let spaceBetweenListAndView: CGFloat = 30
-        let listY = audioViewHeight - buttonHeight - spaceBetweenListAndView
+        //        let listY = audioViewHeight - buttonHeight - spaceBetweenListAndView
         let spaceBetweenListAndForward: CGFloat = 50
         let spaceBetweenPreAndForward = (width - margin*2 - buttonWidth*6)/4
-        let forwardY = audioViewHeight - spaceBetweenListAndForward*2 - buttonHeight*2
+//        let forwardY = audioViewHeight - spaceBetweenListAndForward - spaceBetweenListAndView - buttonHeight*2
         
+        let forwardY = spaceBetweenListAndView + spaceBetweenListAndView + buttonHeight*2
         
-        preAudio.frame = CGRect(x:margin+buttonWidth+spaceBetweenPreAndForward,y:forwardY,width:buttonWidth,height:buttonHeight)
         preAudio.attributedTitle(for: UIControlState.normal)
         preAudio.setImage(UIImage(named:"PreBtn"), for: UIControlState.normal)
         preAudio.addTarget(self, action: #selector(switchToPreAudio), for: UIControlEvents.touchUpInside)
         
-        nextAudio.frame = CGRect(x:margin+buttonWidth*4+spaceBetweenPreAndForward*3,y:forwardY,width:buttonWidth,height:buttonHeight)
+        
         nextAudio.attributedTitle(for: UIControlState.normal)
         nextAudio.setImage(UIImage(named:"NextBtn"), for: UIControlState.normal)
         nextAudio.addTarget(self, action: #selector(switchToNextAudio), for: UIControlEvents.touchUpInside)
         
-        forward.frame = CGRect(x:margin,y:forwardY,width:buttonWidth,height:buttonHeight)
+        
         forward.attributedTitle(for: UIControlState.normal)
         forward.setImage(UIImage(named:"FastForwardBtn"), for: UIControlState.normal)
         forward.addTarget(self, action: #selector(skipForward), for: UIControlEvents.touchUpInside)
         
         
         
-        back.frame = CGRect(x:width - margin - buttonWidth,y:forwardY,width:buttonWidth,height:buttonHeight)
+        
         back.attributedTitle(for: UIControlState.normal)
         back.setImage(UIImage(named:"FastBackBtn"), for: UIControlState.normal)
         back.addTarget(self, action: #selector(skipBackward), for: UIControlEvents.touchUpInside)
         
         
-        audioplayAndPauseButton.frame = CGRect(x:(width/2)-25,y:forwardY-buttonHeight/2,width:buttonWidth*2,height:buttonHeight*2)
+        
         audioplayAndPauseButton.attributedTitle(for: UIControlState.normal)
         audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
         audioplayAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
         
-        list.frame = CGRect(x:margin,y:listY,width:buttonWidth,height:buttonHeight)
+        
         list.attributedTitle(for: UIControlState.normal)
         list.setImage(UIImage(named:"ListBtn"), for: UIControlState.normal)
         list.addTarget(self, action: #selector(listAction), for: UIControlEvents.touchUpInside)
         
-        downLoad.frame = CGRect(x:margin+buttonWidth+space,y:listY,width:buttonWidth,height:buttonHeight)
+        
         downLoad.attributedTitle(for: UIControlState.normal)
         downLoad.setImage(UIImage(named:"DownLoadBtn"), for: UIControlState.normal)
         downLoad.addTarget(self, action: #selector(downLoadAction), for: UIControlEvents.touchUpInside)
         
-        love.frame = CGRect(x:margin+buttonWidth*2+space*2,y:listY,width:buttonWidth,height:buttonHeight)
+        
         love.attributedTitle(for: UIControlState.normal)
         love.setImage(UIImage(named:"LoveBtn"), for: UIControlState.normal)
         love.addTarget(self, action: #selector(downLoadAction), for: UIControlEvents.touchUpInside)
         
-        share.frame = CGRect(x:margin+buttonWidth*3+space*3,y:listY,width:buttonWidth,height:buttonHeight)
+        
         share.attributedTitle(for: UIControlState.normal)
         share.setImage(UIImage(named:"ShareBtn"), for: UIControlState.normal)
         share.addTarget(self, action: #selector(shareAction), for: UIControlEvents.touchUpInside)
@@ -146,15 +157,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         webAudioView.backgroundColor = UIColor.red
         webAudioView.layer.zPosition = 100
         
-        audioPlayTime.frame = CGRect(x:5,y:58,width:50,height:20)
+        //        audioPlayTime.frame = CGRect(x:5,y:58,width:50,height:20)
         audioPlayTime.text = "00:00"
         audioPlayTime.textColor = UIColor.white
         
-        audioPlayDuration.frame = CGRect(x:width-60,y:58,width:70,height:20)
+        //        audioPlayDuration.frame = CGRect(x:width-60,y:58,width:70,height:20)
         audioPlayDuration.text = "00:00"
         audioPlayDuration.textColor = UIColor.white
         
-        audioProgressSlider.frame = CGRect(x:60,y:58,width:width - 140,height:20)
+        //        audioProgressSlider.frame = CGRect(x:60,y:58,width:width - 140,height:20)
         //        progressSlider.value = 0.3
         let progressThumbImage = UIImage(named: "SliderImg")
         let aa = progressThumbImage?.imageWithImage(image: progressThumbImage!, scaledToSize: CGSize(width: 15, height: 15))
@@ -168,22 +179,47 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         audioPlayStatus.text = "audio单曲鉴赏"
         audioPlayStatus.textColor = UIColor.white
-        audioPlayStatus.frame = CGRect(x:70,y:10,width:width,height:50)
+        //        audioPlayStatus.frame = CGRect(x:70,y:10,width:width,height:50)
+        
+        deleteButton.frame = CGRect(x:width-120,y:10,width:40,height:40)
+        deleteButton.setImage(UIImage(named:"DeleteButton"), for: UIControlState.normal)
+        deleteButton.addTarget(self, action: #selector(deleteAudio), for: UIControlEvents.touchUpInside)
         
         downSwipeButton.frame = CGRect(x:width-60,y:10,width:40,height:40)
         downSwipeButton.setImage(UIImage(named:"HideBtn"), for: UIControlState.normal)
-//        downSwipeButton.setTitle("下滑", for: .normal)
-        downSwipeButton.backgroundColor = UIColor.green
+        downSwipeButton.addTarget(self, action: #selector(exitAudio), for: UIControlEvents.touchUpInside)
+
+        viewWithLanguages.frame = CGRect(x:0,y:0,width:width,height:90)
+        audioViewWithContent.frame = CGRect(x:0,y:90,width:width,height:height)
+        audioView.frame = CGRect(x:0,y:height - audioViewHeight,width:width,height:audioViewHeight)
+        viewWithLanguages.backgroundColor = UIColor.white
+        viewWithLanguages.layer.addBorder(edge: UIRectEdge.bottom, color: UIColor.black, thickness: 1)
+//        viewWithLanguages.layer.borderWidth = 1
+//        viewWithLanguages.layer.borderColor = UIColor.black.cgColor
+     
+        let items = ["中文", "英文"]
+        languages = UISegmentedControl(items: items)
+        languages.selectedSegmentIndex = 0
+        languages.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
+        languages.tintColor = UIColor.white
+//        languages.layer.borderColor = UIColor.black.cgColor
+//        languages.layer.borderWidth = 1
+//        languages.layer.addBorder(edge: UIRectEdge.bottom, color: UIColor.red, thickness: -20)
+        let segAttributes: NSDictionary = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: UIFont(name: "Avenir-MediumOblique", size: 15)!
+        ]
+        languages.setTitleTextAttributes(segAttributes as [NSObject : AnyObject], for: UIControlState.selected)
         
-        audioView.frame = CGRect(x:0,y:height - audioViewHeight+90,width:width,height:audioViewHeight)
         audioView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
+        
+        audioView.addSubview(deleteButton)
         audioView.addSubview(audioPlayStatus)
         audioView.addSubview(audioplayAndPauseButton)
         audioView.addSubview(audioProgressSlider)
         audioView.addSubview(audioPlayTime)
         audioView.addSubview(audioPlayDuration)
         audioView.addSubview(downSwipeButton)
-        //        audioView.addSubview(webAudioView)
         audioView.addSubview(back)
         audioView.addSubview(forward)
         audioView.addSubview(nextAudio)
@@ -192,64 +228,150 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioView.addSubview(downLoad)
         audioView.addSubview(love)
         audioView.addSubview(share)
-        tabView.addSubview(webAudioView)
-        
+        audioViewWithContent.addSubview(webAudioView)
+        viewWithLanguages.addSubview(languages)
+        audioViewWithContent.addSubview(audioView)
+        audioViewWithContent.addSubview(viewWithLanguages)
+        tabView.addSubview(audioViewWithContent)
         audioView.layer.zPosition = 200
-        tabView.addSubview(audioView)
         
         
         
-        
-        //        tabView.addSubview(audioPlayStatus)
-        //        tabView.addSubview(audioplayAndPauseButton)
-        //        tabView.addSubview(audioProgressSlider)
-        //        tabView.addSubview(audioPlayTime)
-        //        tabView.addSubview(audioPlayDuration)
-        //        tabView.addSubview(downSwipeButton)
-        //        tabView.addSubview(webAudioView)
-        //        tabView.addSubview(list)
-        
-        tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
+        tabView.backgroundColor = UIColor.clear
         tabView.frame = CGRect(x:0,y:height-90,width:width,height:height+90)
         
         view.addSubview(self.tabView)
         
-        //        self.tabView.translatesAutoresizingMaskIntoConstraints = false
+
+        self.languages.translatesAutoresizingMaskIntoConstraints = false
+        self.tabView.addConstraint(NSLayoutConstraint(item: languages, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.audioViewWithContent, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        self.tabView.addConstraint(NSLayoutConstraint(item: languages, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.viewWithLanguages, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -20))
+        self.tabView.addConstraint(NSLayoutConstraint(item: languages, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.audioViewWithContent, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 40))
+        self.tabView.addConstraint(NSLayoutConstraint(item: languages, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 180))
+        
+        self.webAudioView.translatesAutoresizingMaskIntoConstraints = false
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.audioViewWithContent, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 90))
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
+        
+        self.audioProgressSlider.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndForward-buttonHeight))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: sliderWidth))
+        
+        self.audioPlayTime.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayTime, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: labelMargin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayTime, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.audioProgressSlider, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
         
         
-        //        self.list.translatesAutoresizingMaskIntoConstraints = false
-        //        self.list.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 20))
-        //        self.list.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 20))
-        //        self.list.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 20))
+        self.audioPlayDuration.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayDuration, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -labelMargin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayDuration, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.audioProgressSlider, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        
+        
+        
+        self.forward.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: margin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
+        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        
+        self.back.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -margin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
+        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        
+        self.preAudio.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: spaceBetweenPreAndForward))
+        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
+        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        
+        self.nextAudio.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -spaceBetweenPreAndForward))
+        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
+        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        
+        self.audioplayAndPauseButton.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY+buttonHeight/2))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth*2))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth*2))
+        
+        
+        self.list.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: margin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        
+        
+        self.downLoad.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.list, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
+        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        
+        
+        self.love.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.downLoad, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
+        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        
+        
+        
+        
+        self.share.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.love, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
+        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         
         tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
         self.tabBar.isHidden = true
         
-        //        view.insertSubview(self.audioPlayerView, belowSubview: self.tabBar)
-        
         let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
-        tabView.upSwipeButton.addGestureRecognizer(tapGestureRecognizer1)
+        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
         
         
         tabView.playAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
         
         
-        downSwipeButton.addTarget(self, action: #selector(exitAudio), for: UIControlEvents.touchUpInside)
-        
         player = TabBarAudioContent.sharedInstance.player
         
         playerItem = TabBarAudioContent.sharedInstance.playerItem
         self.delegate = self
-        
-        
-        //        监听不能放在loadView和viewDidLoad中，因为加载好多次
-        //        估计tabBarController先出来，所以获取不到fetchAudioResults
         audioAddGesture()
-        //        print("how much viewDidLoad")
-        //        fetchAudioResults = TabBarAudioContent.sharedInstance.fetchResults
+        
     }
     
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("touches Began")
+    }
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch : UITouch! =  touches.first! as UITouch
+        let location = touch.location(in: self.tabView.smallView)
+        let previousLocation = touch.previousLocation(in: self.tabView.smallView)
+        print("touches Moved tabView.frame.origin.y\(tabView.frame.origin.y)")
+        let offsetY = location.y - previousLocation.y
+        if tabView.frame.origin.y<0{
+            self.tabView.transform = CGAffineTransform(translationX: 0,y: -self.view.bounds.height)
+        }else{
+            tabView.transform = tabView.transform.translatedBy(x: 0, y: offsetY)
+        }
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("touches Ended")
+        if tabView.frame.origin.y<0{
+            self.tabView.transform = CGAffineTransform(translationX: 0,y: -self.view.bounds.height)
+        }else{
+            self.tabView.transform = CGAffineTransform.identity
+        }
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         
@@ -270,25 +392,22 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             name: Notification.Name(rawValue: "reloadView"),
             object: nil
         )
-        print("how much viewDidAppear")
+        print("how much time did view appear?")
         getLastPlayAudio()
     }
     func switchToPreAudio(_ sender: UIButton) {
         count = (urlOrigStrings.count)
         removePlayerItemObservers()
         print("urlString playingIndex pre\(playingIndex)")
-        
-        
+
         if fetchAudioResults != nil {
             playingIndex = playingIndex-1
             if playingIndex < 0{
                 playingIndex = count - 1
                 
             }
-            //            ContentItemContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
             let preUrl = urlOrigStrings[playingIndex].replacingOccurrences(of: " ", with: "%20")
             audioUrlString = preUrl
-            
             updateSingleTonData()
             prepareAudioPlay()
         }
@@ -303,8 +422,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             if playingIndex >= count{
                 playingIndex = 0
             }
-            
-            //            ContentItemContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
             let nextUrl = urlOrigStrings[playingIndex].replacingOccurrences(of: " ", with: "%20")
             print("urlString playingIndex\(playingIndex)")
             
@@ -344,8 +461,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     func downLoadAction(_ sender: Any){
-        print("download button111\( audioUrlString)")
-        
+        let body = TabBarAudioContent.sharedInstance.body
+        if let audioFileUrl = body["audioFileUrl"]{
+            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
+            audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
+        }
         if audioUrlString != "" {
             print("download button\( audioUrlString)")
             if let button = sender as? UIButtonEnhanced {
@@ -357,46 +477,33 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     func shareAction(){
+        item = TabBarAudioContent.sharedInstance.item
         if let item = item {
             self.launchActionSheet(for: item)
         }
     }
-    
+    func deleteAudio(){
+        let alert = UIAlertController(title: "请选择您的操作设置", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(
+            title: "清除所有音频",
+            style: UIAlertActionStyle.default,
+            handler: {_ in self.removeAllAudios() }
+        ))
+        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+//   Fixme:should remove the selected mp3 file instead of all mp3
+    func removeAllAudios() {
+        Download.removeFiles(["mp3"])
+        downLoad.status = .remote
+    }
     deinit {
         removePlayerItemObservers()
-        
-        // MARK: - Remove Observe download status change
-//        NotificationCenter.default.removeObserver(
-//            self,
-//            name: Notification.Name(rawValue: download.downloadStatusNotificationName),
-//            object: nil
-//        )
-//        
-//        // MARK: - Remove Observe download progress change
-//        NotificationCenter.default.removeObserver(
-//            self,
-//            name: Notification.Name(rawValue: download.downloadProgressNotificationName),
-//            object: nil
-//        )
-//        
-//        // MARK: - Remove Observe Audio Route Change and Update UI accordingly
-//        NotificationCenter.default.removeObserver(
-//            self,
-//            // MARK: - It has to be NSNotification, not Notification
-//            name: NSNotification.Name.AVAudioSessionRouteChange,
-//            object: nil
-//        )
-        
-        
-        
+        removeDownloadObserve()
         NotificationCenter.default.removeObserver(self)
-        
-        // MARK: - Stop loading and remove message handlers to avoid leak
         self.webView?.stopLoading()
         self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
         self.webView?.configuration.userContentController.removeAllUserScripts()
-        
-        // MARK: - Remove delegate to deal with crashes on iOS 8
         self.webView?.navigationDelegate = nil
         self.webView?.scrollView.delegate = nil
         
@@ -417,7 +524,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     private func getPlayingUrl(){
-        //        print("urlString fetchAudioResults\(String(describing: fetchAudioResults))")
         var urlAsset : URL?
         var playerItemTemp : AVPlayerItem?
         if let fetchAudioResults = fetchAudioResults {
@@ -437,14 +543,10 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
                 }
             }
         }
-        
-        
         print("urlString playerItems000---\(String(describing: playerItems))")
         
         audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
         for (urlIndex,urlTempString) in (urlOrigStrings.enumerated()) {
-            //            这里面没有执行
-            //            第一次点击audioUrlString为空，第二次点击有值
             print("urlString audioUrlString--\(audioUrlString)")
             print("urlString audioUrlString urlTempString--\(urlTempString)")
             if audioUrlString != "" {
@@ -461,14 +563,13 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     
     
     func exitAudio(){
-        //        let deltaY = self.view.bounds.height
         UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-            self.tabView.transform = CGAffineTransform(translationX: 0,y:0)
+            self.tabView.transform = CGAffineTransform.identity
             self.tabView.setNeedsUpdateConstraints()
-            
         }, completion: { (true) in
-            print("up animate finish")
+            print("exit animate finish")
         })
+        removeDownloadObserve()
     }
     //    把此页面的所有信息都传给AudioPlayBar,包括player，playerItem
     func openAudio(){
@@ -476,28 +577,23 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.tabView.transform = CGAffineTransform(translationX: 0,y: -deltaY)
             self.tabView.setNeedsUpdateConstraints()
-//            self.audioView.transform = CGAffineTransform(translationX: 0,y: 90)
-            
-            
         }, completion: { (true) in
-            print("up animate finish")
+            print("open animate finish")
         })
         playingIndex = 0
         urlOrigStrings = []
         parseAudioMessage()
         getPlayingUrl()
         loadUrl()
+        addDownloadObserve()
         //  getPlayingUrl()需要放在parseAudioMessage()后面，不然第一次audioUrlString为空
-        //     getPlayingUrl()放在此处，playingIndex一直为0？
     }
     
     func pauseOrPlay(sender: UIButton) {
-        //    func taptextField(sender: UITapGestureRecognizer) {
         player = TabBarAudioContent.sharedInstance.player
         playerItem = TabBarAudioContent.sharedInstance.playerItem
-        
         if (player != nil) {
-            print("item11 palyer isExist \(String(describing: playerItem))")
+            print("playerItem isExist \(String(describing: playerItem))")
             if player?.rate != 0 && player?.error == nil {
                 print("palyer item pause)")
                 audioplayAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
@@ -506,7 +602,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
                 player?.pause()
                 
             } else {
-                print("palyer item play)")
+                print("playerItem play)")
                 audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
                 tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
                 TabBarAudioContent.sharedInstance.isPlaying = true
@@ -541,13 +637,10 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             if let localAudioFile = download.checkDownloadedFileInDirectory(cleanAudioUrl) {
                 print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
-                //                downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
+                downLoad.setImage(UIImage(named:"DeleteButton"), for: .normal)
             }
-            // MARK: - Draw a circle around the downloadButton
-            //            downloadButton.drawCircle()
-            
-            // MARK: - Set sourceVC as self so that the alert can be popped out
-            // download.sourceVC = self
+            // MARK: - Draw a circle around the downLoad
+            downLoad.drawCircle()
             
             
             let asset = AVURLAsset(url: audioUrl)
@@ -555,9 +648,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             playerItem = AVPlayerItem(asset: asset)
             
             if player != nil {
-                print("palyer exist")
+                print("player exist")
             }else {
-                print("palyer not exist")
+                print("player not exist")
                 player = AVPlayer()
                 
             }
@@ -566,7 +659,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             TabBarAudioContent.sharedInstance.audioUrl = audioUrl
             TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
             setLastPlayAudio()
-            //            此处闪动一下，应该是被覆盖了
+
             
             try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try? AVAudioSession.sharedInstance().setActive(true)
@@ -575,56 +668,76 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             }
             
             self.audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+            self.tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
             // MARK: - If user is using wifi, buffer the audio immediately
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
             
-            // MARK: - Update audio play progress
-            player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-                if let d = self?.playerItem?.duration {
-                    let duration = CMTimeGetSeconds(d)
-                    if duration.isNaN == false {
-                        self?.audioProgressSlider.maximumValue = Float(duration)
-                        self?.tabView.progressSlider.maximumValue = Float(duration)
-                        if self?.audioProgressSlider.isHighlighted == false {
-                            self?.audioProgressSlider.value = Float((CMTimeGetSeconds(time)))
-                            self?.tabView.progressSlider.value = Float((CMTimeGetSeconds(time)))
-                        }
-                        self?.updatePlayTime(current: time, duration: d)
-                        TabBarAudioContent.sharedInstance.duration = d
-                        TabBarAudioContent.sharedInstance.time = time
+            updateProgressSlider()
+            addDownloadObserve()
+            addPlayerItemObservers()
+        }
+    }
+    func updateProgressSlider(){
+        // MARK: - Update audio play progress
+        player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
+            if let d = self?.playerItem?.duration {
+                let duration = CMTimeGetSeconds(d)
+                if duration.isNaN == false {
+                    self?.audioProgressSlider.maximumValue = Float(duration)
+                    self?.tabView.progressSlider.maximumValue = Float(duration)
+                    if self?.audioProgressSlider.isHighlighted == false {
+                        self?.audioProgressSlider.value = Float((CMTimeGetSeconds(time)))
+                        self?.tabView.progressSlider.value = Float((CMTimeGetSeconds(time)))
                     }
+                    self?.updatePlayTime(current: time, duration: d)
+                    TabBarAudioContent.sharedInstance.duration = d
+                    TabBarAudioContent.sharedInstance.time = time
                 }
             }
+        }
+    }
+    func removeDownloadObserve(){
+        // MARK: - Remove Observe download status change
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name(rawValue: download.downloadStatusNotificationName),
+            object: nil
+        )
+        // MARK: - Remove Observe download progress change
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name(rawValue: download.downloadProgressNotificationName),
+            object: nil
+        )
+    }
+   // MARK: - Observe download status change
+    func addDownloadObserve(){
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.handleDownloadStatusChange(_:)),
+            name: Notification.Name(rawValue: download.downloadStatusNotificationName),
+            object: nil
+        )
+        
+        // MARK: - Observe download progress change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.handleDownloadProgressChange(_:)),
+            name: Notification.Name(rawValue: download.downloadProgressNotificationName),
+            object: nil
+        )
+    }
+    public func updatePlayButtonUI() {
+        if TabBarAudioContent.sharedInstance.isPlaying{
+            audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+            tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
             
-            // MARK: - Observe download status change
-//            NotificationCenter.default.addObserver(
-//                self,
-//                selector: #selector(AudioPlayerController.handleDownloadStatusChange(_:)),
-//                name: Notification.Name(rawValue: download.downloadStatusNotificationName),
-//                object: nil
-//            )
-//            
-//            // MARK: - Observe download progress change
-//            NotificationCenter.default.addObserver(
-//                self,
-//                selector: #selector(AudioPlayerController.handleDownloadProgressChange(_:)),
-//                name: Notification.Name(rawValue: download.downloadProgressNotificationName),
-//                object: nil
-//            )
-//            
-//            // MARK: - Observe Audio Route Change and Update UI accordingly
-//            NotificationCenter.default.addObserver(
-//                self,
-//                selector: #selector(AudioPlayerController.updatePlayButtonUI),
-//                // MARK: - It has to be NSNotification, not Notification
-//                name: NSNotification.Name.AVAudioSessionRouteChange,
-//                object: nil
-//            )
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
-            addPlayerItemObservers()
+        }else{
+            audioplayAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+            tabView.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
         }
     }
     private func updatePlayTime(current time: CMTime, duration: CMTime) {
@@ -638,7 +751,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     
     private func parseAudioMessage() {
         let body = TabBarAudioContent.sharedInstance.body
-        //                let body = AudioContent.sharedInstance.body
         if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
             audioTitle = title
             audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
@@ -657,12 +769,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         print("how much updateMiniPlay")
         audioPlayStatus.text=TabBarAudioContent.sharedInstance.item?.headline
         self.tabView.audioLable.text = TabBarAudioContent.sharedInstance.item?.headline
-
+        
         //        需要获取全局player
         player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
             
             if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-                //                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
                 let duration = CMTimeGetSeconds(d)
                 if duration.isNaN == false {
                     self?.audioProgressSlider.maximumValue = Float(duration)
@@ -678,21 +789,12 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             }
             
         }
-        
-        if TabBarAudioContent.sharedInstance.isPlaying{
-            audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-            tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-            
-        }else{
-            audioplayAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-            tabView.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-        }
+
+        updatePlayButtonUI()
         
         
     }
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return true
-    }
+//  Mark：This function must exist
     @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -709,8 +811,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     }
     func isHideAudio(sender: UISwipeGestureRecognizer){
         if sender.direction == .up{
-            print("up hide audio")
-            
             let deltaY = self.audioView.bounds.height
             UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 self.audioView.transform = CGAffineTransform(translationX: 0,y: deltaY)
@@ -719,7 +819,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
                 print("up animate finish")
             })
         }else if sender.direction == .down{
-            print("down show audio")
             //            let deltaY = self.view.bounds.height
             UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 //                self.containerView.transform = CGAffineTransform.identity
@@ -771,7 +870,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     func reloadAudioView(){
         //        item的值得时刻记住更新，最好传全局变量还是用自身局部变量？，可以从tab中把值传给此audio么？
         //        需要同时更新webView和id 、item等所有一致性变量，应该把他们整合到一起，一起处理循环、下一首、列表更新
-        //        print("reloadAudioView--\(TabBarAudioContent.sharedInstance.item)")
         removePlayerItemObservers()
         if let item = TabBarAudioContent.sharedInstance.item,let audioUrlStrFromList = item.audioFileUrl{
             print("audioUrlStrFromList--\(audioUrlStrFromList)")
@@ -820,22 +918,25 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     }
     
     
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        print("tabBarController didSelect")
-    }
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        print("tabBarController didSelect")
+//    }
     
     func removePlayerItemObservers() {
         print("removePlayerItemObservers")
         NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-
-        
+//        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+//        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+//        playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
     }
     
     func addPlayerItemObservers() {
         // MARK: - Observe Play to the End
         NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-        
-        
+        // MARK: - Update buffer status
+//        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+//        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+//        playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
     }
     func playerDidFinishPlaying() {
         let startTime = CMTimeMake(0, 1)
@@ -845,8 +946,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         self.audioplayAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
         
         nowPlayingCenter.updateTimeForPlayerItem(player)
-        //                orderPlay()
-        //        let mode = TabBarAudioContent.sharedInstance.mode
+        orderPlay()
         if let mode = TabBarAudioContent.sharedInstance.mode {
             switch mode {
             case 0:
@@ -873,14 +973,13 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         playingIndex += 1
         if playingIndex >= count{
             playingIndex = 0
-            
         }
         let nextUrl = urlOrigStrings[playingIndex].replacingOccurrences(of: " ", with: "%20")
         print("urlString playingIndex---\(playingIndex)")
         audioUrlString = nextUrl
         updateSingleTonData()
         prepareAudioPlay()
-        let currentItem = self.player?.currentItem
+        let currentItem = TabBarAudioContent.sharedInstance.player?.currentItem
         let nextItem = playerItems?[playingIndex]
         queuePlayer?.advanceToNextItem()
         currentItem?.seek(to: kCMTimeZero)
@@ -896,7 +995,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioUrlString = nextUrl
         updateSingleTonData()
         prepareAudioPlay()
-        let currentItem = self.player?.currentItem
+        let currentItem = TabBarAudioContent.sharedInstance.player?.currentItem
         let nextItem = playerItems?[playingIndex]
         queuePlayer?.advanceToNextItem()
         currentItem?.seek(to: kCMTimeZero)
@@ -920,15 +1019,101 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         nowPlayingCenter.updateTimeForPlayerItem(player)
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if object is AVPlayerItem {
+            if let k = keyPath {
+                switch k {
+                case "playbackBufferEmpty":
+                    // Show loader
+                    print ("is loading...")
+//                    playStatus.text = "加载中..."
+                    
+                case "playbackLikelyToKeepUp":
+                    // Hide loader
+                    print ("should be playing. Duration is \(String(describing: playerItem?.duration))")
+//                    playStatus.text = audioTitle
+                case "playbackBufferFull":
+                    // Hide loader
+                    print ("load successfully")
+//                    playStatus.text = audioTitle
+                default:
+//                    playStatus.text = audioTitle
+                    break
+                }
+            }
+            if let time = playerItem?.currentTime(), let duration = playerItem?.duration {
+                updatePlayTime(current: time, duration: duration)
+            }
+            nowPlayingCenter.updateTimeForPlayerItem(player)
+        }
+    }
+    private func updateAVPlayerWithLocalUrl() {
+        if let localAudioFile = download.checkDownloadedFileInDirectory(audioUrlString) {
+            let currentSliderValue = self.audioProgressSlider.value
+            let audioUrl = URL(fileURLWithPath: localAudioFile)
+            let asset = AVURLAsset(url: audioUrl)
+            removePlayerItemObservers()
+            playerItem = AVPlayerItem(asset: asset)
+            player?.replaceCurrentItem(with: playerItem)
+            addPlayerItemObservers()
+            let currentTime = CMTimeMake(Int64(currentSliderValue), 1)
+            playerItem?.seek(to: currentTime)
+            nowPlayingCenter.updateTimeForPlayerItem(player)
+            print ("now use local file to play at \(currentTime)")
+        }
+    }
+    
+    public func handleDownloadStatusChange(_ notification: Notification) {
+        DispatchQueue.main.async() {
+            if let object = notification.object as? (id: String, status: DownloadStatus) {
+                let status = object.status
+                let id = object.id
+                // MARK: The Player Need to verify that the current file matches status change
+                let cleanAudioUrl = self.audioUrlString.replacingOccurrences(of: "%20", with: "")
+                print ("Handle download Status Change: \(cleanAudioUrl) =? \(id)")
+                if cleanAudioUrl.contains(id) == true {
+                    switch status {
+                    case .downloading, .remote:
+                        self.downLoad.progress = 0
+                    case .paused, .resumed:
+                        break
+                    case .success:
+                        // MARK: if a file is downloaded, prepare the audio asset again
+                        self.updateAVPlayerWithLocalUrl()
+                        self.downLoad.progress = 0
+                    }
+                    print ("notification received for \(status)")
+                    self.downLoad.status = status
+                    //self.downLoad.progress = 0
+                }
+            }
+        }
+    }
+    
+    public func handleDownloadProgressChange(_ notification: Notification) {
+        DispatchQueue.main.async() {
+            if let object = notification.object as? (id: String, percentage: Float, downloaded: String, total: String) {
+                let id = object.id
+                let percentage = object.percentage
+                // MARK: The Player Need to verify that the current file matches status change
+                let cleanAudioUrl = self.audioUrlString.replacingOccurrences(of: "%20", with: "")
+                if cleanAudioUrl.contains(id) == true {
+                    self.downLoad.progress = percentage/100
+                    self.downLoad.status = .resumed
+                }
+            }
+        }
+    }
+    
     private func getLastPlayAudio() {
         let audioHeadLineHistory = UserDefaults.standard.string(forKey: Key.audioHistory[0]) ?? String()
         let audioUrlHistory = UserDefaults.standard.url(forKey: Key.audioHistory[1]) ?? URL(string: "")
         let audioIdHistory = UserDefaults.standard.string(forKey: Key.audioHistory[2]) ?? String()
         let audioLastPlayTimeHistory = UserDefaults.standard.float(forKey: Key.audioHistory[3])
-             print("getLastPlayAudio---\(audioLastPlayTimeHistory)")
+        print("getLastPlayAudio---\(audioLastPlayTimeHistory)")
         self.audioPlayStatus.text = audioHeadLineHistory
         self.tabView.audioLable.text = audioHeadLineHistory
-
+        
         if audioUrlHistory != nil {
             let asset = AVURLAsset(url: audioUrlHistory!)
             
@@ -944,45 +1129,29 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             
             try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try? AVAudioSession.sharedInstance().setActive(true)
-            if let player = player {
-
-                player.play()
-            }
+//            if let player = player {
+            
+                //                player.play()
+//            }
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
-
-            player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-                if let d = self?.playerItem?.duration {
-                    let duration = CMTimeGetSeconds(d)
-                    if duration.isNaN == false {
-                        self?.audioProgressSlider.maximumValue = Float(duration)
-                        self?.tabView.progressSlider.maximumValue = Float(duration)
-                        if self?.audioProgressSlider.isHighlighted == false {
-                            self?.audioProgressSlider.value = Float((CMTimeGetSeconds(time)))
-                            self?.tabView.progressSlider.value = Float((CMTimeGetSeconds(time)))
-                        }
-                        self?.updatePlayTime(current: time, duration: d)
-                        TabBarAudioContent.sharedInstance.duration = d
-                        TabBarAudioContent.sharedInstance.time = time
-                    }
-                }
-            }
+            updateProgressSlider()
             
             TabBarAudioContent.sharedInstance.playerItem = playerItem
             TabBarAudioContent.sharedInstance.player = player
-
+            
         }
         
-//        if audioIdHistory != nil {
-            audioId = audioIdHistory.replacingOccurrences(
-                of: "^.*interactive/([0-9]+).*$",
-                with: "$1",
-                options: .regularExpression
-            )
-//        }
-        
+        //        if audioIdHistory != nil {
+        audioId = audioIdHistory.replacingOccurrences(
+            of: "^.*interactive/([0-9]+).*$",
+            with: "$1",
+            options: .regularExpression
+        )
+        //        }
+        updatePlayButtonUI()
     }
- 
+    
 }

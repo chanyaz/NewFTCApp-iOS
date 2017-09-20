@@ -307,8 +307,8 @@ struct AppNavigation {
                 ],
                 [
                     "title": "账户",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/users/discover?type=json",
-                    "url":"http://www.ftchinese.com/users/discover",
+                    "type": "account",
+                    "url":"http://app003.ftmailbox.com/iphone-2014.html",
                     "screenName":"myft/account"
                 ]
             ]

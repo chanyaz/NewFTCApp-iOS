@@ -64,7 +64,7 @@ class CustomPresentationController: UIPresentationController {
         if !((self.presentedViewController as? ListPerColumnViewController) != nil) {
              frame = CGRect(x:0,y:0,width:containerView.bounds.width,height:containerView.bounds.height)
         }else{
-            frame = CGRect(x:0,y:250,width:containerView.bounds.width,height:containerView.bounds.height-250)
+            frame = CGRect(x:0,y:300,width:containerView.bounds.width,height:containerView.bounds.height-300)
         }
 
         return frame

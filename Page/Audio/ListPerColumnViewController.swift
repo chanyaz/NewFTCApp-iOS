@@ -30,7 +30,10 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     )
     var fetchListResults: [ContentSection]?
     var item: ContentItem?
+    
     var changePlayModeButton:UIButton? = nil
+    var exitPlayListButton:UIButton? = nil
+    
     @IBOutlet weak var listTableView: UITableView!
     @IBOutlet weak var changePlayModeView: UIView!
     //    @IBOutlet weak var changePlayModeButton: UIButton!
@@ -52,14 +55,17 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
         self.changePlayModeView.frame =  CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50)
+        changePlayModeView.layer.addBorder(edge: .bottom, color: UIColor.black, thickness: 0.5)
+        changePlayModeView.backgroundColor = UIColor.white
         changePlayModeButton = UIButton(type: UIButtonType.system)
         changePlayModeButton?.setTitle("随机播放", for: .normal)
         changePlayModeButton?.setImage(UIImage(named:"BigPlayButton"), for: .normal)
-        changePlayModeButton?.setTitleColor(UIColor.red, for: .normal)
+        changePlayModeButton?.setTitleColor(UIColor.black, for: .normal)
         //        button.setBackgroundImage(UIImage(named:"Audio"), for: .normal)
         changePlayModeButton?.titleEdgeInsets = UIEdgeInsets(top: 6, left: 50, bottom: 6, right: 25)
         changePlayModeButton?.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 15)
         changePlayModeButton?.frame = CGRect(x: 0, y: 0, width: 260, height: 50)
+        
         self.changePlayModeView.addSubview(changePlayModeButton!)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
         changePlayModeButton?.addGestureRecognizer(tapGestureRecognizer)
@@ -94,7 +100,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 60.0
+        return 50.0
     }
     
     
@@ -104,6 +110,13 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         if let cell = cellItem as? ListTableViewCell {
             //            cell.itemCell = AudioLists.fetchResults[0].items[indexPath.row]
             cell.itemCell = fetchListResults?[0].items[indexPath.row]
+            if indexPath.row == TabBarAudioContent.sharedInstance.playingIndex {
+                cell.contentView.backgroundColor = UIColor.cyan
+                cell.downloadButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+        
+            }else{
+                cell.contentView.backgroundColor = UIColor.white
+            }
             return cell
         }
         

@@ -394,6 +394,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 let jsonAny = try JSONSerialization.jsonObject(with: savedTalkData, options: .mutableContainers)
                 if let jsonDic = jsonAny as? NSArray, let historyTalk = jsonDic as? [[String:String]] {
                     self.historyTalkData = historyTalk
+                    //print(self.historyTalkData ?? "")
+                    print("historyTalkData:\(self.historyTalkData?.count ?? 0)")
                     
                 }
             }
@@ -413,9 +415,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
   
             }
         }
-
-       
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -431,19 +430,27 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.viewWillDisappear(false)
         
         do {
+            var toSaveHistoryTalkArr:[[String: String]]
             var toSaveTalkData:Data
             if let realHistoryTalkData = self.historyTalkData {
                 let newHistoryTalkData = realHistoryTalkData + self.showingData //要存储的是这个
+                print("newHistoryTalkData:\(newHistoryTalkData)")
                 let newHistoryNum = newHistoryTalkData.count
-                
+                print("newHistoryNum\(newHistoryNum)")
                 //MARK:只存储最近的100条对话记录 // TODO:增加手指下拉动作监测，拉一次多展现10条历史对话记录
                 if newHistoryNum > 0 {
                     if newHistoryNum <= 100  {
-                        toSaveTalkData = try JSONSerialization.data(withJSONObject: newHistoryTalkData, options:.prettyPrinted)
+                        toSaveHistoryTalkArr = newHistoryTalkData
+                        print("case 1:\(toSaveHistoryTalkArr.count)")
+                        
                     } else {
-                        toSaveTalkData = try JSONSerialization.data(withJSONObject: newHistoryTalkData[newHistoryNum-100...newHistoryNum-1], options:.prettyPrinted)
+                        toSaveHistoryTalkArr = Array(newHistoryTalkData[newHistoryNum-100...newHistoryNum-1])
+                        print("case 2:\(toSaveHistoryTalkArr.count)")
+                        //toSaveTalkData = try JSONSerialization.data(withJSONObject: newHistoryTalkData[newHistoryNum-50...newHistoryNum-1], options:.prettyPrinted)
                     }
-                    
+
+                    toSaveTalkData = try JSONSerialization.data(withJSONObject: toSaveHistoryTalkArr, options:.prettyPrinted)
+                    print("toSaveTalkDataNum:\(toSaveTalkData.count)")
                     Download.saveFile(toSaveTalkData, filename: "chatHistoryTalk", to:.cachesDirectory , as: "json")
                 }
             }

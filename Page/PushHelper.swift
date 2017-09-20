@@ -17,7 +17,7 @@ struct PushHelper {
     
     func sendDeviceToken() {
         if postString != "" && deviceUserId != "no" && deviceTokenSent == false {
-            let url = URL(string: Push.deviceTokenUrl)
+            let url = URL(string: DeviceToken.url)
             let request = NSMutableURLRequest(url:url!)
             let postStringFinal = "\(postString)\(deviceUserId)"
             request.httpMethod = "POST"

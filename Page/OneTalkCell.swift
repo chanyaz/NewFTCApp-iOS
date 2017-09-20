@@ -77,10 +77,6 @@ class OneTalkCell: UITableViewCell {
       }
         
         
-        
-        
-        
-        
         // 根据对话内容长短及self.frame尺寸得到相关位置尺寸,更新self.cellData
         //let headImageWithInsets = self.cellData.cellInsets.left + self.cellData.headImageLength + self.cellData.betweenHeadAndBubble //60
         let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : self.frame.width - self.cellData.headImageWithInsets - self.cellData.bubbleImageWidth
@@ -88,9 +84,7 @@ class OneTalkCell: UITableViewCell {
         
         let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
         let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
-        
-        
-        
+       
         
         // 显示对话气泡背景
         if self.cellData.bubbleImage != "" {
@@ -112,7 +106,6 @@ class OneTalkCell: UITableViewCell {
         
         
         // 显示对话内容 // NOTE:内容在bubble上方才能不被bubble遮挡
-        
         if self.cellData.saysType == .text {
             let saysContentView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
             saysContentView.numberOfLines = 0
@@ -130,38 +123,7 @@ class OneTalkCell: UITableViewCell {
             //saysContentView.image = self.cellData.saysImage
           self.saysImageView.backgroundColor = UIColor(hex: "#f7e9d8")
           self.saysImageView.contentMode = .scaleToFill
-            /*
-            self.cellData.asyncBuildImage(url: self.cellData.saysWhat.url, completion: {
-                _ in
-
-                if let realImage = self.cellData.downLoadImage { //如果成功获取了图片
-                      saysContentView.image = realImage
-                    let saysImageWidth = realImage.size.width
-                    let saysImageHeight = realImage.size.height
-                    let saysRwh = saysImageWidth / saysImageHeight
-                    
-                    var adjustImageWidth = CGFloat()
-                    var adjustImageHeight = CGFloat()
-                    
-                    let standardRwh = self.cellData.maxImageWidth / self.cellData.maxImageHeight
-                    if saysRwh > standardRwh {
-                        adjustImageWidth = self.cellData.maxImageWidth
-                        adjustImageHeight = adjustImageWidth * saysImageHeight / saysImageWidth
-                    } else {
-                        adjustImageHeight = self.cellData.maxImageHeight
-                        adjustImageWidth = adjustImageHeight * saysImageWidth / saysImageHeight
-                    }
-                    
-                
-                    self.cellData.bubbleImageWidth = adjustImageWidth + self.cellData.bubbleImageInsets.left + self.cellData.bubbleImageInsets.right
-                    self.cellData.bubbleImageHeight = adjustImageHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
-                    self.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight)//更新self.bubbleImageView.frame
-                    
-                    saysContentView.frame = CGRect(x: saysWhatX, y: saysWhatY, width: adjustImageWidth, height: adjustImageHeight)//更新saysContentView.frame
-                }
-            })
-            */
-            self.addSubview(self.saysImageView)
+                   self.addSubview(self.saysImageView)
             
             
         } else if self.cellData.saysType == .card {
@@ -176,25 +138,16 @@ class OneTalkCell: UITableViewCell {
             titleView.lineBreakMode = NSLineBreakMode.byWordWrapping
             titleView.text = self.cellData.saysWhat.title
             titleView.font = self.cellData.titleFont
-             //titleView.backgroundColor = UIColor.green
             titleView.textColor = self.cellData.textColor
             self.addSubview(titleView)
             
             //coverView:
             self.coverView = UIImageView(frame: CGRect(x:saysWhatX, y:coverY,width:self.cellData.coverWidth,height:self.cellData.coverHeight))
             coverView.backgroundColor = UIColor(hex: "#f7e9d8")
-           
-            /*
-            self.cellData.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { _ in
-                coverView.image = self.cellData.downLoadImage
-                print("Execut 2ed")
-            })
-             */
+
             coverView.contentMode = .scaleToFill
             self.addSubview(coverView)
             print("Execut 1st")
-            
-            
             
             //descriptionView:
             if(self.cellData.saysWhat.description != "") {

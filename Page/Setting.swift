@@ -26,7 +26,7 @@ struct Setting {
             settingOn = true
         case "language-preference":
             settingType = "option"
-            settingDefault = 0
+            settingDefault = (Locale.preferredLanguages[0].hasPrefix("zh-Hant")) ? 1 : 0
             settingOn = true
         case "enable-push":
             settingType = "switch"
@@ -94,9 +94,7 @@ struct Setting {
         } else {
             optionIndex = get(id).default
         }
-        
         let optionValue: String
-        
         if let currentOptions = options[id],
             optionIndex >= 0,
             optionIndex < currentOptions.count {
@@ -121,6 +119,14 @@ struct Setting {
                 }
             }
         }
+        // MARK: - Extra things to do after updating options
+        switch id {
+        // MARK: - Save language prefence to memory as it might be used frequently
+        case "language-preference":
+            LanguageSetting.shared.currentPrefence = index
+        default:
+            break
+        }
         return newContentSections
     }
     
@@ -140,10 +146,6 @@ struct Setting {
     private static func handleOption(_ id: String, title: String) {
         if let optionController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
             let topController = UIApplication.topViewController() {
-            //                contentItemViewController.dataObject = itemCell
-            //                contentItemViewController.hidesBottomBarWhenPushed = true
-            //                contentItemViewController.themeColor = themeColor
-            //                contentItemViewController.action = "buy"
             optionController.dataObject = [
                 "type": "options",
                 "id": id,
@@ -164,7 +166,6 @@ struct Setting {
     }
     
     private static func handleDetail(_ id: String, title: String) {
-        //case "feedback", "app-store", "privacy", "about":
         let urlString: String?
         switch id {
         case "feedback":
@@ -191,13 +192,30 @@ struct Setting {
             Download.cleanFile(APIs.expireFileTypes, for: .documentDirectory)
             Download.cleanFile(APIs.expireFileTypes, for: .downloadsDirectory)
         }
-        let alert = UIAlertController(title: "清除缓存", message: "清除所有缓存的文件以节约空间，被删除的文件可以重新下载", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "立即清除",
-                                      style: UIAlertActionStyle.default,
-                                      handler: {_ in cleanCache()}
-        ))
-        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-        UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
+        let alert = UIAlertController(
+            title: "清除缓存",
+            message: "清除所有缓存的文件以节约空间，被删除的文件可以重新下载",
+            preferredStyle: UIAlertControllerStyle.alert
+        )
+        alert.addAction(
+            UIAlertAction(
+                title: "立即清除",
+                style: UIAlertActionStyle.default,
+                handler: {_ in cleanCache()}
+            )
+        )
+        alert.addAction(
+            UIAlertAction(
+                title: "取消",
+                style: UIAlertActionStyle.default,
+                handler: nil
+            )
+        )
+        UIApplication.topViewController()?.present(
+            alert,
+            animated: true,
+            completion: nil
+        )
     }
     
     static func getContentSections(_ id: String) -> [ContentSection] {
@@ -232,7 +250,6 @@ struct Setting {
             }
         }
         return [contentSection]
-        
     }
     
 }

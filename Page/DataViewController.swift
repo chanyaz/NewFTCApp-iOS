@@ -274,7 +274,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
         
         // MARK: Get the updated API from Internet
-        contentAPI.fetchContentForUrl(urlString, fetchUpdate: .Always) {
+        let acturalUrlString = APIs.convert(urlString)
+        contentAPI.fetchContentForUrl(acturalUrlString, fetchUpdate: .Always) {
             [weak self] results, error in
             DispatchQueue.main.async {
                 self?.activityIndicator.removeFromSuperview()
@@ -285,7 +286,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 }
                 if let results = results {
                     // MARK: When updating UI from the internet, the viewable ad will be updated too, which makes sense
-                    print ("update UI from the internet with \(urlString)")
+                    print ("update UI from the internet with \(acturalUrlString)")
                     self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
                     // FIXME: It is important to reload Data here, not inside the updateUI. But Why? What's the difference?
                     self?.collectionView?.reloadData()

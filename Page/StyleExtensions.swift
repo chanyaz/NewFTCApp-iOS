@@ -355,4 +355,12 @@ extension String {
             return nil
         }
     }
+    
+    func checkAPIForLanguage() -> String {
+        if LanguageSetting.shared.currentPrefence == 0 {
+            return self
+        } else {
+            return self
+        }
+    }
 }

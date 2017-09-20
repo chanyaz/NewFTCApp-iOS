@@ -59,6 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: - Get current language preference
         LanguageSetting.shared.currentPrefence = Setting.getCurrentOption("language-preference").index
+        
+        //GB2Big5.createDict()
+        
         return true
     }
     

@@ -308,7 +308,7 @@ struct AppNavigation {
                 [
                     "title": "账户",
                     "type": "account",
-                    "url":"\(APIs.publicDomain)iphone-2014.html",
+                    "url":"http://app003.ftmailbox.com/iphone-2014.html",
                     "screenName":"myft/account"
                 ]
             ]

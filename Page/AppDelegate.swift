@@ -57,6 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.shared.applicationIconBadgeNumber = 0
         
+        // MARK: - Get current language preference
+        LanguageSetting.shared.currentPrefence = Setting.getCurrentOption("language-preference").index
+        
+        //GB2Big5.createDict()
+        
         return true
     }
     

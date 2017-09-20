@@ -11,7 +11,7 @@ struct AppNavigation {
     
     // MARK: - Use singleton pattern to pass speech data between view controllers.
     static let sharedInstance = AppNavigation()
-    private static let appMap = [
+    public static let appMap = [
         "News": [
             "title": "FT中文网",
             "title-image":"FTC-Header",

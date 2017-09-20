@@ -30,7 +30,7 @@ class ChannelScrollerCell: UICollectionViewCell {
     
     private func updateUI() {
         if let title = pageData["title"] {
-            channel.text = title
+            channel.text = GB2Big5.convert(title)
         }
         if let cellHeight = cellHeight {
             labelHeight.constant = cellHeight

@@ -21,6 +21,9 @@ class ListTableViewCell: UITableViewCell {
     }
     func updateUI() {
         playHeadline.text = itemCell?.headline
+//        self.contentView.backgroundColor = UIColor.white
+        playHeadline.textColor = UIColor.black
+        playHeadline.font = UIFont(name: "Helvetica-Light", size: 16.0)
     }
     override func awakeFromNib() {
         super.awakeFromNib()

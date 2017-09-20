@@ -30,6 +30,7 @@ class TabBarAudioContent {
     var fetchResults: [ContentSection]?
     var items = [ContentItem]()
     var mode:Int?
+    var playingIndex:Int?
 
 }
 

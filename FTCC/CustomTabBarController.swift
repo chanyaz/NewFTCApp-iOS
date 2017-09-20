@@ -518,6 +518,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             TabBarAudioContent.sharedInstance.body["title"] = fetchAudioResults[0].items[playingIndex].headline
             TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
             TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(fetchAudioResults[0].items[playingIndex].id)"
+            TabBarAudioContent.sharedInstance.playingIndex = playingIndex
             parseAudioMessage()
             loadUrl()
             
@@ -558,6 +559,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             }
         }
         print("urlString playingIndex222--\(playingIndex)")
+        TabBarAudioContent.sharedInstance.playingIndex = playingIndex
         
     }
     

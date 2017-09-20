@@ -292,36 +292,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mnY-w3-xjs">
+                                <rect key="frame" x="0.0" y="0.0" width="359" height="70"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OeX-od-zQa">
+                                        <rect key="frame" x="316" y="24" width="13" height="22"/>
+                                        <state key="normal" image="CloseBtn">
+                                            <color key="titleColor" red="1" green="0.3816322942" blue="0.38209856850000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="exit:" destination="stC-d0-gXl" eventType="touchUpInside" id="baa-Tl-hgE"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="OeX-od-zQa" secondAttribute="trailing" constant="30" id="1U8-3R-5HY"/>
+                                    <constraint firstItem="OeX-od-zQa" firstAttribute="centerY" secondItem="mnY-w3-xjs" secondAttribute="centerY" id="i4c-eh-ivx"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="playback" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4o0-gO-Nyg">
-                                <rect key="frame" x="16" y="28" width="343" height="599"/>
+                                <rect key="frame" x="0.0" y="70" width="359" height="597"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <view key="tableHeaderView" contentMode="scaleToFill" id="mnY-w3-xjs">
-                                    <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OeX-od-zQa">
-                                            <rect key="frame" x="312" y="10" width="17" height="22"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" image="CloseBtn"/>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ListTableViewCell" id="9pg-EJ-HPg" customClass="ListTableViewCell" customModule="FTCC" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="343" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="359" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9pg-EJ-HPg" id="aLv-vU-cck">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="359" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Lu-d8-DVn">
-                                                    <rect key="frame" x="287" y="4" width="36" height="36"/>
+                                                    <rect key="frame" x="303" y="4" width="36" height="36"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="36" id="Oo7-yL-22d"/>
                                                         <constraint firstAttribute="width" constant="36" id="hV7-Yo-aiv"/>
                                                     </constraints>
-                                                    <state key="normal" image="DownloadButton"/>
+                                                    <state key="normal" image="Audio"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="headline" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gg-OT-Udx">
                                                     <rect key="frame" x="28" y="11" width="65" height="21"/>
@@ -346,24 +353,17 @@
                                 </prototypes>
                                 <sections/>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-Qe-a0a">
-                                <rect key="frame" x="16" y="627" width="343" height="40"/>
-                                <state key="normal" title="退出"/>
-                                <connections>
-                                    <action selector="exit:" destination="stC-d0-gXl" eventType="touchUpInside" id="1oL-vW-CsE"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="RYf-Qe-a0a" secondAttribute="trailing" id="CYe-3D-gzH"/>
-                            <constraint firstItem="RYf-Qe-a0a" firstAttribute="leading" secondItem="zt6-Tj-4dH" secondAttribute="leadingMargin" id="GYU-wi-zbL"/>
-                            <constraint firstItem="hcb-2t-5Qh" firstAttribute="top" secondItem="RYf-Qe-a0a" secondAttribute="bottom" id="Mum-Lw-cas"/>
-                            <constraint firstItem="4o0-gO-Nyg" firstAttribute="top" secondItem="UNU-8V-Ky7" secondAttribute="bottom" constant="8" symbolic="YES" id="Vtv-rZ-Q13"/>
-                            <constraint firstItem="4o0-gO-Nyg" firstAttribute="leading" secondItem="zt6-Tj-4dH" secondAttribute="leadingMargin" id="ahP-ga-g1d"/>
+                            <constraint firstItem="mnY-w3-xjs" firstAttribute="trailing" secondItem="zt6-Tj-4dH" secondAttribute="trailingMargin" id="Ro0-Hz-LyW"/>
+                            <constraint firstItem="4o0-gO-Nyg" firstAttribute="top" secondItem="UNU-8V-Ky7" secondAttribute="bottom" constant="50" id="Vtv-rZ-Q13"/>
+                            <constraint firstItem="4o0-gO-Nyg" firstAttribute="leading" secondItem="zt6-Tj-4dH" secondAttribute="leadingMargin" constant="-16" id="ahP-ga-g1d"/>
+                            <constraint firstItem="4o0-gO-Nyg" firstAttribute="top" secondItem="mnY-w3-xjs" secondAttribute="bottom" id="eFD-X3-MQW"/>
+                            <constraint firstItem="mnY-w3-xjs" firstAttribute="top" secondItem="zt6-Tj-4dH" secondAttribute="topMargin" id="fDF-hE-GHu"/>
+                            <constraint firstItem="mnY-w3-xjs" firstAttribute="leading" secondItem="zt6-Tj-4dH" secondAttribute="leadingMargin" constant="-16" id="lVm-Zu-raJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4o0-gO-Nyg" secondAttribute="trailing" id="q72-k5-TrI"/>
-                            <constraint firstItem="hcb-2t-5Qh" firstAttribute="top" secondItem="4o0-gO-Nyg" secondAttribute="bottom" constant="40" id="qb2-dq-nFE"/>
-                            <constraint firstItem="RYf-Qe-a0a" firstAttribute="top" secondItem="4o0-gO-Nyg" secondAttribute="bottom" id="rKb-fh-qsN"/>
+                            <constraint firstItem="hcb-2t-5Qh" firstAttribute="top" secondItem="4o0-gO-Nyg" secondAttribute="bottom" id="qb2-dq-nFE"/>
                         </constraints>
                     </view>
                     <connections>
@@ -374,13 +374,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AP5-cn-K7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4345" y="2026"/>
+            <point key="canvasLocation" x="-4346.3999999999996" y="2025.3373313343329"/>
         </scene>
         <!--Data View Controller-->
         <scene sceneID="4zl-sf-b6a">
             <objects>
                 <collectionViewController storyboardIdentifier="DataViewController" id="jsX-Jz-ZNR" customClass="DataViewController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="mky-l3-zIb">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="mky-l3-zIb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="CDq-cg-CSX">
@@ -654,7 +654,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Kih-19-Ipx" customClass="NewsNavigationController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="新闻" image="NewsDim" selectedImage="News" id="o6H-tl-sO3"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="N3C-QK-VoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N3C-QK-VoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -858,6 +858,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Audio" width="24" height="24"/>
         <image name="BigPlayButton" width="48" height="48"/>
         <image name="CloseBtn" width="13" height="13"/>
         <image name="DownLoadBtn" width="19" height="18"/>

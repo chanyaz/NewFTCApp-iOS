@@ -199,6 +199,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
+        
         TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         
         

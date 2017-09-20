@@ -197,7 +197,6 @@ class CellData {
         self.saysType = say.type
         
         if say.type == .text { // 根据对话文字长短得到图形实际尺寸
-            print("hereherehere")
             
             self.buildTextCellData(textContent: say.content)
             

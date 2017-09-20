@@ -823,7 +823,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     //如果当前播放不一样，播放另一个，同时把当前播放url进行更新
                     print("url item second--开始播放新的-\(String(describing: url))")
                     //消除旧的播放
-                    self.removePlayerItemObservers()
+//                    removePlayerItemObservers()
+                    PlayerObserver().removePlayerItemObservers(self, object: playerItem)
                     // 开始播放
                     
                     player?.replaceCurrentItem(with: playerItem)
@@ -844,8 +845,10 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             setLastPlayAudio()
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: CustomTabBarController())
-            addPlayerItemObservers()
             
+//            addPlayerItemObservers()
+            
+         PlayerObserver().addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
         }else{
             print("palyer item not isExist")
             
@@ -855,13 +858,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
 
-    public func removePlayerItemObservers() {
-        NotificationCenter.default.removeObserver(CustomTabBarController(), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-    }
-    public func addPlayerItemObservers() {
-        NotificationCenter.default.addObserver(CustomTabBarController(),selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-    }
-    public func playerDidFinishPlaying() {
+//    func removePlayerItemObservers() {
+//        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
+//    }
+//    func addPlayerItemObservers() {
+//        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
+//    }
+    func playerDidFinishPlaying() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: CustomTabBarController())
         TabBarAudioContent.sharedInstance.player?.pause()
         NowPlayingCenter().updateTimeForPlayerItem(player)

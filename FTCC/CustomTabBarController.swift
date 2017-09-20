@@ -934,18 +934,18 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     func removePlayerItemObservers() {
         print("removePlayerItemObservers")
         NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
-        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
-        playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
+//        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+//        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+//        playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
     }
     
     func addPlayerItemObservers() {
         // MARK: - Observe Play to the End
         NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
         // MARK: - Update buffer status
-        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
+//        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+//        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+//        playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
     }
     func playerDidFinishPlaying() {
         let startTime = CMTimeMake(0, 1)

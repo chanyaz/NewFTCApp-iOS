@@ -89,4 +89,17 @@ public func setLastPlayAudio(){
         UserDefaults.standard.set(audioLastPlayTimeHistory, forKey: Key.audioHistory[3])
     }
 }
+struct PlayerObserver {
+    public func addPlayerItemObservers(_ observer: Any, _ actionSection: Selector, object anObject: Any?) {
+        NotificationCenter.default.addObserver(observer,selector:actionSection, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: anObject)
+       
+    }
+
+    public func removePlayerItemObservers(_ observer: Any,object anObject: Any?) {
+        NotificationCenter.default.removeObserver(observer, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: anObject)
+    }
+
+}
+
+
 

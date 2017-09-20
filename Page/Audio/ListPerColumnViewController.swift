@@ -51,7 +51,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         self.transitioningDelegate = self
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
-        self.changePlayModeView.frame =  CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50)
+        self.changePlayModeView.frame =  CGRect(x: 0, y: 0, width: self.view.bounds.width-80, height: 50)
         changePlayModeButton = UIButton(type: UIButtonType.system)
         changePlayModeButton?.setTitle("随机播放", for: .normal)
         changePlayModeButton?.setImage(UIImage(named:"BigPlayButton"), for: .normal)

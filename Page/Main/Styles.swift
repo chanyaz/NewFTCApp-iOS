@@ -98,6 +98,10 @@ struct Color {
             }
         }
     }
+    struct AudioList {
+        static let tint = "#29aeba"
+        static let border = "#000000"
+    }
     
 }
 

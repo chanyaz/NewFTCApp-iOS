@@ -27,7 +27,7 @@ class CustomTab: UIView {
         
         playAndPauseButton.frame = CGRect(x:10,y:36,width:50,height:50)
         playAndPauseButton.attributedTitle(for: UIControlState.normal)
-        playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+        playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
         audioLable.frame = CGRect(x:70,y:36,width:250,height:50)
         
         playTime.frame = CGRect(x:5,y:8,width:50,height:20)

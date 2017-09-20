@@ -84,24 +84,42 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         super.viewDidLoad()
         
+        let hideImage = UIImage(named:"HideBtn")
+        let hideHeight = (hideImage?.size.height)!*1.1
+        let hideWidth = (hideImage?.size.width)!*1.1
         
+        let forwardImage = UIImage(named:"FastForwardBtn")
+        let forwardHeight = (forwardImage?.size.height)!*1.1
+        let forwardWidth = (forwardImage?.size.width)!*1.1
         
-        let labelMargin:CGFloat = 5
-        //        let spaceBetweenTimeAndSlider:CGFloat = 20
-        let sliderWidth:CGFloat = 230
+        let backImage = UIImage(named:"FastBackBtn")
+        let backHeight = (backImage?.size.height)!*1.1
+        let backWidth = (backImage?.size.width)!*1.1
+        
+        let preImage = UIImage(named:"PreBtn")
+        let preHeight = (preImage?.size.height)!*1.1
+        let preWidth = (preImage?.size.width)!*1.1
+        
+        let nextImage = UIImage(named:"PreBtn")
+        let nextHeight = (nextImage?.size.height)!*1.1
+        let nextWidth = (nextImage?.size.width)!*1.1
+        
+        let pauseImage = UIImage(named:"PauseBtn")
+        let pauseHeight = (pauseImage?.size.height)!*1.1
+        let pauseWidth = (pauseImage?.size.width)!*1.1
+        
         
         let audioViewHeight:CGFloat = 230
         let buttonWidth:CGFloat = 19
         let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
+        let spaceBetweenSliderAndForward: CGFloat = 65
         let spaceBetweenListAndView: CGFloat = 30
-        //        let listY = audioViewHeight - buttonHeight - spaceBetweenListAndView
-        let spaceBetweenListAndForward: CGFloat = 50
-        let spaceBetweenPreAndForward = (width - margin*2 - buttonWidth*6)/4
-//        let forwardY = audioViewHeight - spaceBetweenListAndForward - spaceBetweenListAndView - buttonHeight*2
+        let spaceBetweenListAndForward: CGFloat = 10
+        let spaceBetweenPreAndForward = (width - margin*2 - forwardWidth - preWidth - pauseWidth - nextWidth - backWidth)/4
         
-        let forwardY = spaceBetweenListAndView + spaceBetweenListAndView + buttonHeight*2
+        let forwardY = spaceBetweenListAndView + spaceBetweenListAndForward + buttonHeight + forwardHeight
         
         preAudio.attributedTitle(for: UIControlState.normal)
         preAudio.setImage(UIImage(named:"PreBtn"), for: UIControlState.normal)
@@ -127,7 +145,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         
         audioplayAndPauseButton.attributedTitle(for: UIControlState.normal)
-        audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+        audioplayAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
         audioplayAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
         
         
@@ -160,11 +178,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         //        audioPlayTime.frame = CGRect(x:5,y:58,width:50,height:20)
         audioPlayTime.text = "00:00"
         audioPlayTime.textColor = UIColor.white
-        
+        audioPlayTime.font = UIFont(name: "Helvetica-Light", size: 16.0)
         //        audioPlayDuration.frame = CGRect(x:width-60,y:58,width:70,height:20)
         audioPlayDuration.text = "00:00"
         audioPlayDuration.textColor = UIColor.white
-        
+        audioPlayDuration.font = UIFont(name: "Helvetica-Light", size: 16.0)
         //        audioProgressSlider.frame = CGRect(x:60,y:58,width:width - 140,height:20)
         //        progressSlider.value = 0.3
         let progressThumbImage = UIImage(named: "SliderImg")
@@ -185,7 +203,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         deleteButton.setImage(UIImage(named:"DeleteButton"), for: UIControlState.normal)
         deleteButton.addTarget(self, action: #selector(deleteAudio), for: UIControlEvents.touchUpInside)
         
-        downSwipeButton.frame = CGRect(x:width-60,y:10,width:40,height:40)
+        downSwipeButton.frame = CGRect(x:width-50,y:15,width:hideWidth,height:hideHeight)
         downSwipeButton.setImage(UIImage(named:"HideBtn"), for: UIControlState.normal)
         downSwipeButton.addTarget(self, action: #selector(exitAudio), for: UIControlEvents.touchUpInside)
 
@@ -193,21 +211,21 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioViewWithContent.frame = CGRect(x:0,y:90,width:width,height:height)
         audioView.frame = CGRect(x:0,y:height - audioViewHeight,width:width,height:audioViewHeight)
         viewWithLanguages.backgroundColor = UIColor.white
-        viewWithLanguages.layer.addBorder(edge: UIRectEdge.bottom, color: UIColor.black, thickness: 1)
-//        viewWithLanguages.layer.borderWidth = 1
-//        viewWithLanguages.layer.borderColor = UIColor.black.cgColor
+        viewWithLanguages.layer.addBorder(edge: UIRectEdge.bottom, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
+
      
         let items = ["中文", "英文"]
         languages = UISegmentedControl(items: items)
         languages.selectedSegmentIndex = 0
-        languages.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
+        languages.backgroundColor = UIColor(hex: "12a5b3", alpha: 1)
         languages.tintColor = UIColor.white
-//        languages.layer.borderColor = UIColor.black.cgColor
-//        languages.layer.borderWidth = 1
-//        languages.layer.addBorder(edge: UIRectEdge.bottom, color: UIColor.red, thickness: -20)
+        languages.layer.borderColor = UIColor(hex: "12a5b3", alpha: 1).cgColor
+        languages.layer.borderWidth = 0.5
+        languages.layer.cornerRadius = 5
+        languages.layer.masksToBounds = true
         let segAttributes: NSDictionary = [
             NSForegroundColorAttributeName: UIColor.black,
-            NSFontAttributeName: UIFont(name: "Avenir-MediumOblique", size: 15)!
+            NSFontAttributeName: UIFont(name: "Avenir-MediumOblique", size: 14)!
         ]
         languages.setTitleTextAttributes(segAttributes as [NSObject : AnyObject], for: UIControlState.selected)
         
@@ -256,82 +274,79 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
         
         self.audioProgressSlider.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndForward-buttonHeight))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenSliderAndForward))
         self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: sliderWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioPlayTime, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 15))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioProgressSlider, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.audioPlayDuration, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -15))
+        
         
         self.audioPlayTime.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayTime, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: labelMargin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayTime, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayTime, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.audioProgressSlider, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
         
         
         self.audioPlayDuration.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayDuration, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -labelMargin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayDuration, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         self.audioView.addConstraint(NSLayoutConstraint(item: audioPlayDuration, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.audioProgressSlider, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
         
         
+        self.back.translatesAutoresizingMaskIntoConstraints = false
+        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: margin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
+        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: backWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: backHeight))
         
         self.forward.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: margin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -margin))
         self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
-        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        
-        self.back.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -margin))
-        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
-        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.audioView.addConstraint(NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: forwardWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: forward, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: forwardHeight))
         
         self.preAudio.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: spaceBetweenPreAndForward))
-        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
-        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: spaceBetweenPreAndForward))
+        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: preWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: preAudio, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: preHeight))
         
         self.nextAudio.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -spaceBetweenPreAndForward))
-        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY))
-        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -spaceBetweenPreAndForward))
+        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant:0))
+        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: nextWidth))
+        self.audioView.addConstraint(NSLayoutConstraint(item: nextAudio, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: nextHeight))
         
         self.audioplayAndPauseButton.translatesAutoresizingMaskIntoConstraints = false
         self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -forwardY+buttonHeight/2))
-        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth*2))
-        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth*2))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: pauseWidth*2))
+        self.audioView.addConstraint(NSLayoutConstraint(item: audioplayAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: pauseHeight*2))
         
         
         self.list.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: margin))
+        self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
         self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.audioView.addConstraint(NSLayoutConstraint(item: list, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         
-        
         self.downLoad.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.list, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
+        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.share, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -space))
         self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
         self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         
-        
         self.love.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.downLoad, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
+        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.list, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
         self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
         self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         
         
-        
-        
         self.share.translatesAutoresizingMaskIntoConstraints = false
-        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.love, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
+        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
         self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         
-        tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+        tabView.playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
         self.tabBar.isHidden = true
         
         let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
@@ -598,15 +613,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             print("playerItem isExist \(String(describing: playerItem))")
             if player?.rate != 0 && player?.error == nil {
                 print("palyer item pause)")
-                audioplayAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-                tabView.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+                audioplayAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+                tabView.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
                 TabBarAudioContent.sharedInstance.isPlaying = false
                 player?.pause()
                 
             } else {
                 print("playerItem play)")
-                audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-                tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+                audioplayAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
+                tabView.playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
                 TabBarAudioContent.sharedInstance.isPlaying = true
                 try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
                 
@@ -669,8 +684,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
                 player.play()
             }
             
-            self.audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-            self.tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+            self.audioplayAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
+            self.tabView.playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
             // MARK: - If user is using wifi, buffer the audio immediately
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
@@ -734,12 +749,12 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     }
     public func updatePlayButtonUI() {
         if TabBarAudioContent.sharedInstance.isPlaying{
-            audioplayAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
-            tabView.playAndPauseButton.setImage(UIImage(named:"BigPauseButton"), for: UIControlState.normal)
+            audioplayAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
+            tabView.playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
             
         }else{
-            audioplayAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-            tabView.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+            audioplayAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+            tabView.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
         }
     }
     private func updatePlayTime(current time: CMTime, duration: CMTime) {
@@ -945,7 +960,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         self.playerItem?.seek(to: startTime)
         self.player?.pause()
         self.audioProgressSlider.value = 0
-        self.audioplayAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+        self.audioplayAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
         
         nowPlayingCenter.updateTimeForPlayerItem(player)
         orderPlay()
@@ -957,8 +972,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
                 randomPlay()
             case 2:
                 onePlay()
-            case 3:
-                randomPlay()
             default:
                 orderPlay()
             }
@@ -1016,8 +1029,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         self.playerItem?.seek(to: startTime)
         self.player?.pause()
         self.audioProgressSlider.value = 0
-        self.tabView.playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-        self.audioplayAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+        self.tabView.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+        self.audioplayAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
         nowPlayingCenter.updateTimeForPlayerItem(player)
     }
     

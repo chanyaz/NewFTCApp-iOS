@@ -21,7 +21,7 @@ class ListTableViewCell: UITableViewCell {
     }
     func updateUI() {
         playHeadline.text = itemCell?.headline
-//        self.contentView.backgroundColor = UIColor.white
+        self.contentView.backgroundColor = UIColor.white
         playHeadline.textColor = UIColor.black
         playHeadline.font = UIFont(name: "Helvetica-Light", size: 16.0)
     }

@@ -41,8 +41,7 @@ struct Color {
         static let standardBorder = "#FAAE76"
         static let switchBackground = "#9E2F50"
     }
-    
-    
+
     struct Header {
         static let text = "#333333"
     }
@@ -84,6 +83,10 @@ struct Color {
                 return "ThemeCoverCell"
             }
         }
+    }
+    struct AudioList {
+        static let tint = "#29aeba"
+        static let border = "#000000"
     }
     
 }

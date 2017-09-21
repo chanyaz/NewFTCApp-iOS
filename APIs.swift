@@ -12,6 +12,27 @@ import UIKit
 struct APIs {
     
     // MARK: Domain Name Used for different types of purposes
+    private static let htmlDomains = [
+        "https://danla2f5eudt1.cloudfront.net/",
+        "https://d2e90etfgpidmd.cloudfront.net/"
+    ]
+    
+    private static let domains = [
+        "https://d37m993yiqhccr.cloudfront.net/",
+        "https://d2e90etfgpidmd.cloudfront.net/"
+    ]
+    
+    // MARK: If there are http resources that you rely on in your page, don't use https as the url base
+    private static let webPageDomains = [
+        "http://www.ftchinese.com/",
+        "http://big5.ftchinese.com/"
+    ]
+    
+    private static let publicDomains = [
+        "http://app003.ftmailbox.com/",
+        "http://big5.ftmailbox.com/"
+    ]
+    // MARK: Domain Name Used for different types of purposes
     private static let htmlDomain = "https://danla2f5eudt1.cloudfront.net/"
     private static let domain = "https://d37m993yiqhccr.cloudfront.net/"
     public static let publicDomain = "http://app003.ftmailbox.com/"
@@ -72,6 +93,25 @@ struct APIs {
     // MARK: Get url string for myFT
     static func get(_ key: String, value: String) -> String {
         return "\(domain)channel/china.html?type=json&\(key)=\(value)"
+    }
+    
+    // MARK: Convert Url String for Alternative Language Such as Big5
+    static func convert(_ from: String) -> String {
+        let currentPreference = LanguageSetting.shared.currentPrefence
+        if currentPreference == 0 {
+            return from
+        }
+        let allDomainArrays = [htmlDomains, domains, webPageDomains, publicDomains]
+        var newString = from
+        for domainArray in allDomainArrays {
+            if currentPreference>0 && currentPreference < domainArray.count {
+                newString = newString.replacingOccurrences(
+                    of: domainArray[0],
+                    with: domainArray[currentPreference]
+                )
+            }
+        }
+        return newString
     }
     
     // MARK: Use different domains for different types of content

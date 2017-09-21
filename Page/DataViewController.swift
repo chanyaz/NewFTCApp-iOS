@@ -764,7 +764,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     let nowPlayingCenter = NowPlayingCenter()
     
     func openPlay(sender: UIButton?){
-        
+         PlayerObserver().removePlayerItemObservers(self, object: playerItem)
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
         
@@ -826,7 +826,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     print("url item second--开始播放新的-\(String(describing: url))")
                     //消除旧的播放
 //                    removePlayerItemObservers()
-                    PlayerObserver().removePlayerItemObservers(self, object: playerItem)
+//                    PlayerObserver().removePlayerItemObservers(self, object: playerItem)
                     // 开始播放
                     
                     player?.replaceCurrentItem(with: playerItem)

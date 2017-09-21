@@ -201,8 +201,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
-        
-        TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
+        FilterDataWithAudioUrl()
+//        TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         
         
         // MARK: In setting page, you might need to update UI to reflected change in preference
@@ -766,7 +766,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     let nowPlayingCenter = NowPlayingCenter()
     
     func openPlay(sender: UIButton?){
-        
+         PlayerObserver().removePlayerItemObservers(self, object: playerItem)
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
         
@@ -828,7 +828,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     print("url item second--开始播放新的-\(String(describing: url))")
                     //消除旧的播放
 //                    removePlayerItemObservers()
-                    PlayerObserver().removePlayerItemObservers(self, object: playerItem)
+//                    PlayerObserver().removePlayerItemObservers(self, object: playerItem)
                     // 开始播放
                     
                     player?.replaceCurrentItem(with: playerItem)
@@ -860,8 +860,24 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
         
     }
-    
+ 
+    func FilterDataWithAudioUrl(){
+        var resultsWithAudioUrl = [ContentSection]()
+        let results = fetches.fetchResults
+        for (_, section) in results.enumerated() {
 
+            print("TabBarAudioContent section.items.count \(section.items.count)")
+            for i in 0 ..< section.items.count {
+                
+                if section.items[i].audioFileUrl != nil{
+                    resultsWithAudioUrl.append(section)
+                }
+            }
+        }
+        TabBarAudioContent.sharedInstance.fetchResults = resultsWithAudioUrl
+//        print("TabBarAudioContent fetchResults 0\(String(describing: resultsWithAudioUrl[0].items[0].audioFileUrl))")
+    }
+    
 //    func removePlayerItemObservers() {
 //        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
 //    }
@@ -871,7 +887,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     func playerDidFinishPlaying() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: CustomTabBarController())
         TabBarAudioContent.sharedInstance.player?.pause()
-        NowPlayingCenter().updateTimeForPlayerItem(player)
         TabBarAudioContent.sharedInstance.isPlayFinish = true
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
         NowPlayingCenter().updateTimeForPlayerItem(player)

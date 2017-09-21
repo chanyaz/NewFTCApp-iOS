@@ -12,7 +12,7 @@ class CustomTab: UIView {
     
     var isHideMessage:Bool?
     let playAndPauseButton = UIButton()
-    let audioLable = UILabel()
+    let playStatus = UILabel()
     let progressSlider = UISlider()
     let playTime = UILabel()
     let playDuration = UILabel()
@@ -25,16 +25,38 @@ class CustomTab: UIView {
         //        let height = UIScreen.main.bounds.height
         let width = UIScreen.main.bounds.width
         
-        playAndPauseButton.frame = CGRect(x:10,y:36,width:50,height:50)
+//        playAndPauseButton.frame = CGRect(x:10,y:36,width:50,height:50)
         playAndPauseButton.attributedTitle(for: UIControlState.normal)
-        playAndPauseButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
-        audioLable.frame = CGRect(x:70,y:36,width:250,height:50)
+        playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+
+        self.playAndPauseButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -5))
+        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 20))
+        self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 40))
+        self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 40))
         
-        playTime.frame = CGRect(x:5,y:8,width:50,height:20)
+        
+//        playStatus.frame = CGRect(x:70,y:36,width:250,height:50)
+        playStatus.text = "单曲鉴赏"
+        playStatus.textColor = UIColor.white
+        playStatus.font = UIFont(name: "Helvetica-Light", size: 16.0)
+        
+        self.playStatus.translatesAutoresizingMaskIntoConstraints = false
+        self.addConstraint(NSLayoutConstraint(item: playStatus, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.playAndPauseButton, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: playStatus, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playAndPauseButton, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 20))
+        self.addConstraint(NSLayoutConstraint(item: playStatus, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -15))
+  
+        
+//        playTime.frame = CGRect(x:5,y:8,width:50,height:20)
         playTime.text = "00:00"
         playTime.textColor = UIColor.white
+        playTime.font = UIFont(name: "Helvetica-Light", size: 14.0)
         
-        progressSlider.frame = CGRect(x:60,y:8,width:width - 140,height:20)
+        self.playTime.translatesAutoresizingMaskIntoConstraints = false
+        self.addConstraint(NSLayoutConstraint(item: playTime, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item: playTime, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.progressSlider, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        
+//        progressSlider.frame = CGRect(x:60,y:8,width:width - 140,height:20)
         //        progressSlider.value = 0.3
         let progressThumbImage = UIImage(named: "SliderImg")
         let aa = progressThumbImage?.imageWithImage(image: progressThumbImage!, scaledToSize: CGSize(width: 15, height: 15))
@@ -42,18 +64,27 @@ class CustomTab: UIView {
         progressSlider.maximumTrackTintColor = UIColor.white
         progressSlider.minimumTrackTintColor = UIColor(hex: "#05d5e9")
         
+
+        self.progressSlider.translatesAutoresizingMaskIntoConstraints = false
+        self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -50))
+        self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playTime, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 15))
+        self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.playDuration, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -15))
         
         
-        playDuration.frame = CGRect(x:width-60,y:8,width:70,height:20)
+//        playDuration.frame = CGRect(x:width-60,y:8,width:70,height:20)
         playDuration.text = "00:00"
         playDuration.textColor = UIColor.white
-        audioLable.text = "单曲鉴赏"
-        audioLable.textColor = UIColor.white
+        playDuration.font = UIFont(name: "Helvetica-Light", size: 14.0)
+        self.playDuration.translatesAutoresizingMaskIntoConstraints = false
+        self.addConstraint(NSLayoutConstraint(item: playDuration, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -10))
+        self.addConstraint(NSLayoutConstraint(item: playDuration, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.progressSlider, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+
         
         upSwipeButton.frame = CGRect(x:width-60,y:50,width:40,height:40)
         upSwipeButton.setTitle("上滑", for: .normal)
         upSwipeButton.backgroundColor = UIColor.blue
-        self.smallView.addSubview(audioLable)
+        self.smallView.addSubview(playStatus)
         self.smallView.addSubview(playAndPauseButton)
         self.smallView.addSubview(progressSlider)
         self.smallView.addSubview(playTime)

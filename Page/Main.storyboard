@@ -296,7 +296,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="359" height="70"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OeX-od-zQa">
-                                        <rect key="frame" x="316" y="24" width="13" height="22"/>
+                                        <rect key="frame" x="330" y="24" width="13" height="22"/>
                                         <state key="normal" image="CloseBtn">
                                             <color key="titleColor" red="1" green="0.3816322942" blue="0.38209856850000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -307,7 +307,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="OeX-od-zQa" secondAttribute="trailing" constant="30" id="1U8-3R-5HY"/>
+                                    <constraint firstAttribute="trailing" secondItem="OeX-od-zQa" secondAttribute="trailing" constant="16" id="1U8-3R-5HY"/>
                                     <constraint firstItem="OeX-od-zQa" firstAttribute="centerY" secondItem="mnY-w3-xjs" secondAttribute="centerY" id="i4c-eh-ivx"/>
                                 </constraints>
                             </view>
@@ -323,12 +323,8 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Lu-d8-DVn">
-                                                    <rect key="frame" x="303" y="4" width="36" height="36"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="36" id="Oo7-yL-22d"/>
-                                                        <constraint firstAttribute="width" constant="36" id="hV7-Yo-aiv"/>
-                                                    </constraints>
-                                                    <state key="normal" image="Audio"/>
+                                                    <rect key="frame" x="326" y="11" width="17" height="22"/>
+                                                    <state key="normal" image="PlayingBtn"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="headline" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gg-OT-Udx">
                                                     <rect key="frame" x="28" y="11" width="65" height="21"/>
@@ -339,7 +335,7 @@
                                             </subviews>
                                             <color key="backgroundColor" red="0.22398734840000001" green="0.71852837049999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="6Lu-d8-DVn" secondAttribute="trailing" constant="20" symbolic="YES" id="a23-Ay-nr4"/>
+                                                <constraint firstAttribute="trailing" secondItem="6Lu-d8-DVn" secondAttribute="trailing" constant="16" id="a23-Ay-nr4"/>
                                                 <constraint firstItem="7Gg-OT-Udx" firstAttribute="leading" secondItem="aLv-vU-cck" secondAttribute="leadingMargin" constant="20" id="hNy-aO-p1Z"/>
                                                 <constraint firstItem="7Gg-OT-Udx" firstAttribute="centerY" secondItem="aLv-vU-cck" secondAttribute="centerY" id="kAY-UZ-gP6"/>
                                                 <constraint firstItem="6Lu-d8-DVn" firstAttribute="centerY" secondItem="7Gg-OT-Udx" secondAttribute="centerY" id="kg2-ZI-1L2"/>
@@ -380,7 +376,7 @@
         <scene sceneID="4zl-sf-b6a">
             <objects>
                 <collectionViewController storyboardIdentifier="DataViewController" id="jsX-Jz-ZNR" customClass="DataViewController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="mky-l3-zIb">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="mky-l3-zIb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="CDq-cg-CSX">
@@ -654,7 +650,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Kih-19-Ipx" customClass="NewsNavigationController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="新闻" image="NewsDim" selectedImage="News" id="o6H-tl-sO3"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N3C-QK-VoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="N3C-QK-VoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -858,7 +854,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Audio" width="24" height="24"/>
         <image name="BigPlayButton" width="48" height="48"/>
         <image name="CloseBtn" width="13" height="13"/>
         <image name="DownLoadBtn" width="19" height="18"/>
@@ -873,6 +868,7 @@
         <image name="NextBtn" width="14" height="16"/>
         <image name="PauseBtn" width="46" height="46"/>
         <image name="PauseButton" width="36" height="36"/>
+        <image name="PlayingBtn" width="17" height="16"/>
         <image name="PreBtn" width="14" height="16"/>
         <image name="SettingsButton" width="36" height="36"/>
         <image name="ShareBtn" width="19" height="20"/>

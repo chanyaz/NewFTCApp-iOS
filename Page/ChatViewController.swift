@@ -12,7 +12,7 @@ import CoreGraphics
 //var globalTalkData = Array(repeating: CellData(), count: 1)
 var keyboardWillShowExecute = 0
 var showAnimateExecute = 0
-class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource {
     
     
     // 一些实验数据
@@ -29,35 +29,49 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
     */
+    var autoScrollWhenTalk = false
     var historyTalkData:[[String:String]]? = nil
     var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4) { //NOTE:只有get 可以省略get
         didSet {
             print("tableReloadData")
             self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
             let currentIndexPath = IndexPath(row: showingData.count-1, section: 0)
+            self.autoScrollWhenTalk=true
             self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+            //autoScrollWhenTalk = false
 
         }
         
     }
+    //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
+    //var showingCell:CellData
     
-
     @IBOutlet weak var talkListBlock: UITableView!
     
     @IBOutlet weak var inputBlock: UITextField!
     
+    @IBAction func touchInputBlock(_ sender: UITextField) {
+        let currentIndexPath = IndexPath(row: showingData.count-1, section: 0)
+        self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
+        self.inputBlock.resignFirstResponder()
+       
+    }
+    
+    
     @IBOutlet weak var bottomToolbar: UIToolbar!
     
-    @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {
+    @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {//When tap
         self.inputBlock.resignFirstResponder()
 
     }
  
-    @IBAction func dismissKeyboardWhenSwipe(_ sender: UISwipeGestureRecognizer) {
+    @IBAction func dismissKeyboardWhenSwipe(_ sender: UISwipeGestureRecognizer) {//When swipe
         self.inputBlock.resignFirstResponder()
     }
+    
 
     @IBAction func sendYourTalk(_ sender: UIButton) {//MARK:点击“Send"按钮后发生的事件
+       
         if let currentYourTalk = inputBlock.text {
             let oneTalkData = [
                 "member":"you",
@@ -65,11 +79,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 "content":currentYourTalk
             ]
             self.showingData.append(oneTalkData)
-            /*
-            let currentYouSaysWhat = SaysWhat(saysType: .text, saysContent: currentYourTalk)
-            let currentYouCellData = CellData(whoSays: .you, saysWhat: currentYouSaysWhat)
-            self.talkData.append(currentYouCellData)
-            */
+        
             self.inputBlock.text = ""
             self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
                 if let oneTalkData = talkData {
@@ -84,6 +94,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     //MARK:点击键盘中Return按键后发生的事件，同上点击“Send"按钮后发生的事件
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
         if let currentYourTalk = textField.text {
             let oneTalkData = [
                 "member":"you",
@@ -103,7 +114,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
         return true
     }
-
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //TODO:区分scroll是.scrollToRow程序导致的，还是人为滚动导致的
+        if(self.autoScrollWhenTalk==false){
+            self.inputBlock.resignFirstResponder()
+            self.autoScrollWhenTalk=true
+        }
+        
+        
+    }
     func keyboardWillShow(_ notification: NSNotification) {
         
         print("show:\(keyboardWillShowExecute)")
@@ -275,13 +295,22 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
    func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
-        let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
+    
     
         let appIdField = "x-msxiaoice-request-app-id"
+    
+        //小冰正式服务器
+        /*
+        let urlString = "https://service.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15"
+        let appId = "XIeQemRXxREgGsyPki"
+        let secret = "4b3f82a71fb54cbe9e4c8f125998c787"
+        */
+        //小冰测试服务器
+        let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
         let appId = "XI36GDstzRkCzD18Fh"
-        
         let secret = "5c3c48acd5434663897109d18a2f62c5"
-        
+ 
+    
         let timestampField = "x-msxiaoice-request-timestamp"
         let timestamp = Int(Date().timeIntervalSince1970)//生成时间戳
         
@@ -347,8 +376,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
     
- 
- 
+    
+        
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Execute viewDidLoad")
@@ -362,14 +392,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         //MARK:监听是否点击Home键以及重新进入界面
         NotificationCenter.default.addObserver(self, selector: #selector(self.applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
         
-        //NotificationCenter.default.addObserver(self, selector: #selector(self.applicationDidBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        
-        /*
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardDidShow, object: nil)
-        
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardDidHide, object: nil)
-         */
         self.talkListBlock.delegate = self
         self.talkListBlock.dataSource = self // MARK:两个协议代理，一个也不能少
         self.inputBlock.delegate = self
@@ -415,6 +437,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
   
             }
         }
+        
+        self.createTalkRequest(myInputText:ChatViewModel.triggerGreetContent, completion: { talkData in
+            if let oneTalkData = talkData {
+                //print(robotRes)
+                self.showingData.append(oneTalkData)
+                self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: { talkData in
+                    if let oneTalkData = talkData {
+                        //print(robotRes)
+                        self.showingData.append(oneTalkData)
+                    }
+                })
+            }
+        })
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -423,7 +459,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
-        self.showingData.append(ChatViewModel.defaultTalkData)//TODO:欢迎语得动态出来
+
+        
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -434,7 +472,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             var toSaveTalkData:Data
             if let realHistoryTalkData = self.historyTalkData {
                 let newHistoryTalkData = realHistoryTalkData + self.showingData //要存储的是这个
-                print("newHistoryTalkData:\(newHistoryTalkData)")
+                //print("newHistoryTalkData:\(newHistoryTalkData)")
                 let newHistoryNum = newHistoryTalkData.count
                 print("newHistoryNum\(newHistoryNum)")
                 //MARK:只存储最近的100条对话记录 // TODO:增加手指下拉动作监测，拉一次多展现10条历史对话记录

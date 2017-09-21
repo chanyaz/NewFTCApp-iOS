@@ -318,6 +318,10 @@ class ChatViewModel {
         "type":"text",
         "content":"你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"
     ]
+    static let triggerGreetContent = "【端用户新对话打开信号，内容无法显示】"
+    
+    static let triggerNewsContent = "【端用户首次打开信号，推荐新闻】"
+    
 
     static func buildCellData(_ oneTalkData:[String:String]) -> CellData {//根据historyTalkData数据得到CellData数据
         //let oneTalkData = self.historyTalkData[row]

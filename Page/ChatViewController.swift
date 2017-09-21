@@ -43,6 +43,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
         
     }
+    //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
+    //var showingCell:CellData
     
     @IBOutlet weak var talkListBlock: UITableView!
     
@@ -293,19 +295,21 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
    func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
-        let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
+    
     
         let appIdField = "x-msxiaoice-request-app-id"
     
         //小冰正式服务器
         /*
+        let urlString = "https://service.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15"
         let appId = "XIeQemRXxREgGsyPki"
         let secret = "4b3f82a71fb54cbe9e4c8f125998c787"
         */
         //小冰测试服务器
+        let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
         let appId = "XI36GDstzRkCzD18Fh"
         let secret = "5c3c48acd5434663897109d18a2f62c5"
-    
+ 
     
         let timestampField = "x-msxiaoice-request-timestamp"
         let timestamp = Int(Date().timeIntervalSince1970)//生成时间戳
@@ -388,14 +392,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         //MARK:监听是否点击Home键以及重新进入界面
         NotificationCenter.default.addObserver(self, selector: #selector(self.applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
         
-        //NotificationCenter.default.addObserver(self, selector: #selector(self.applicationDidBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        
-        /*
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardDidShow, object: nil)
-        
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardDidHide, object: nil)
-         */
         self.talkListBlock.delegate = self
         self.talkListBlock.dataSource = self // MARK:两个协议代理，一个也不能少
         self.inputBlock.delegate = self
@@ -441,6 +437,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
   
             }
         }
+        
+        self.createTalkRequest(myInputText:ChatViewModel.triggerGreetContent, completion: { talkData in
+            if let oneTalkData = talkData {
+                //print(robotRes)
+                self.showingData.append(oneTalkData)
+                self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: { talkData in
+                    if let oneTalkData = talkData {
+                        //print(robotRes)
+                        self.showingData.append(oneTalkData)
+                    }
+                })
+            }
+        })
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -449,7 +459,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
-        self.showingData.append(ChatViewModel.defaultTalkData)//TODO:欢迎语得动态出来
+
+        
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -460,7 +472,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             var toSaveTalkData:Data
             if let realHistoryTalkData = self.historyTalkData {
                 let newHistoryTalkData = realHistoryTalkData + self.showingData //要存储的是这个
-                print("newHistoryTalkData:\(newHistoryTalkData)")
+                //print("newHistoryTalkData:\(newHistoryTalkData)")
                 let newHistoryNum = newHistoryTalkData.count
                 print("newHistoryNum\(newHistoryNum)")
                 //MARK:只存储最近的100条对话记录 // TODO:增加手指下拉动作监测，拉一次多展现10条历史对话记录

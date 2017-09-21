@@ -19,8 +19,8 @@ public extension AVPlayer {
         case Random
     }
 }
-let playMode = ["顺序播放", "列表循环", "单曲循环", "随机播放"]
-let playModeImage = ["BigPlayButton", "DeleteButton", "PauseButton", "PlayButton"]
+let playMode = ["顺序播放", "单曲循环", "随机播放"]
+let playModeImage = ["OrderBtn","OneBtn", "RandomBtn"]
 class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIViewControllerTransitioningDelegate {
     public var directory: String? = nil
     public let reloadView = "reloadView"
@@ -55,20 +55,23 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
         self.changePlayModeView.frame =  CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50)
-        changePlayModeView.layer.addBorder(edge: .bottom, color: UIColor.black, thickness: 0.5)
+        
+        changePlayModeView.layer.addBorder(edge: .bottom, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
         changePlayModeView.backgroundColor = UIColor.white
         changePlayModeButton = UIButton(type: UIButtonType.system)
-        changePlayModeButton?.setTitle("随机播放", for: .normal)
-        changePlayModeButton?.setImage(UIImage(named:"BigPlayButton"), for: .normal)
+        changePlayModeButton?.setTitle("顺序播放", for: .normal)
+        changePlayModeButton?.setImage(UIImage(named:"OrderBtn"), for: .normal)
+        changePlayModeButton?.tintColor = UIColor(hex: Color.AudioList.tint)
         changePlayModeButton?.setTitleColor(UIColor.black, for: .normal)
         //        button.setBackgroundImage(UIImage(named:"Audio"), for: .normal)
-        changePlayModeButton?.titleEdgeInsets = UIEdgeInsets(top: 6, left: 50, bottom: 6, right: 25)
+        changePlayModeButton?.titleEdgeInsets = UIEdgeInsets(top: 6, left: 30, bottom: 6, right: 15)
         changePlayModeButton?.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 15)
-        changePlayModeButton?.frame = CGRect(x: 0, y: 0, width: 260, height: 50)
-        
+        changePlayModeButton?.frame = CGRect(x: 0, y: 0, width: 150, height: 50)
+//        changePlayModeButton?.backgroundColor = UIColor.red
         self.changePlayModeView.addSubview(changePlayModeButton!)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
         changePlayModeButton?.addGestureRecognizer(tapGestureRecognizer)
+        
     }
     var i:Int=0
     func tapGesture(sender: UITapGestureRecognizer) {
@@ -111,11 +114,12 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
             //            cell.itemCell = AudioLists.fetchResults[0].items[indexPath.row]
             cell.itemCell = fetchListResults?[0].items[indexPath.row]
             if indexPath.row == TabBarAudioContent.sharedInstance.playingIndex {
-                cell.contentView.backgroundColor = UIColor.cyan
-                cell.downloadButton.setImage(UIImage(named:"BigPlayButton"), for: UIControlState.normal)
+//                cell.contentView.backgroundColor = UIColor.cyan
+                cell.downloadButton.setImage(UIImage(named:"PlayingBtn"), for: UIControlState.normal)
         
             }else{
-                cell.contentView.backgroundColor = UIColor.white
+                cell.downloadButton.setImage(UIImage(named:""), for: UIControlState.normal)
+//                cell.contentView.backgroundColor = UIColor.white
             }
             return cell
         }
@@ -128,7 +132,6 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         
         if (storyboard?.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController) != nil
         {
-            
 //            audioPlayerBar.item = fetchListResults?[0].items[indexPath.row]
             TabBarAudioContent.sharedInstance.item = fetchListResults?[0].items[indexPath.row]
             

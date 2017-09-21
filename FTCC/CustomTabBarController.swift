@@ -109,7 +109,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         let pauseWidth = (pauseImage?.size.width)!*1.1
         
         
-        let audioViewHeight:CGFloat = 230
+        let audioViewHeight:CGFloat = 220
         let buttonWidth:CGFloat = 19
         let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
@@ -183,11 +183,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         //        audioPlayTime.frame = CGRect(x:5,y:58,width:50,height:20)
         audioPlayTime.text = "00:00"
         audioPlayTime.textColor = UIColor.white
-        audioPlayTime.font = UIFont(name: "Helvetica-Light", size: 16.0)
+        audioPlayTime.font = UIFont(name: "Helvetica-Light", size: 14.0)
         //        audioPlayDuration.frame = CGRect(x:width-60,y:58,width:70,height:20)
         audioPlayDuration.text = "00:00"
         audioPlayDuration.textColor = UIColor.white
-        audioPlayDuration.font = UIFont(name: "Helvetica-Light", size: 16.0)
+        audioPlayDuration.font = UIFont(name: "Helvetica-Light", size: 14.0)
         //        audioProgressSlider.frame = CGRect(x:60,y:58,width:width - 140,height:20)
         //        progressSlider.value = 0.3
         let progressThumbImage = UIImage(named: "SliderImg")
@@ -474,7 +474,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         let currentValue = sender.value
         let currentTime = CMTimeMake(Int64(currentValue), 1)
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
-        
+        playingCenter()
     }
     
     func listAction(){
@@ -715,6 +715,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             updateProgressSlider()
             addDownloadObserve()
             addPlayerItemObservers()
+            playingCenter()
         }
     }
     func updateProgressSlider(){
@@ -828,7 +829,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
 
         updatePlayButtonUI()
-        nowPlayingCenter.updateTimeForPlayerItem(player)
+        playingCenter()
+//        nowPlayingCenter.updateTimeForPlayerItem(player)
         
     }
 //  Mark：This function must exist
@@ -1032,6 +1034,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         currentItem?.seek(to: kCMTimeZero)
         queuePlayer?.insert(currentItem!, after: nil)
         self.player?.play()
+        
     }
     func onePlay(){
         let startTime = CMTimeMake(0, 1)
@@ -1200,7 +1203,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         skipForwardIntervalCommand.preferredIntervals = [NSNumber(value: 15)]
         
         skipForwardIntervalCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-            print("前进1.5s")
+            print("前进15s")
             let currentSliderValue = self.audioProgressSlider.value
             let currentTime = CMTimeMake(Int64(currentSliderValue + 15), 1)
             TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
@@ -1213,7 +1216,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         skipBackwardIntervalCommand.preferredIntervals = [NSNumber(value: 15)]
         skipBackwardIntervalCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-            print("后退1.5s")
+            print("后退15s")
             let currentSliderValue = self.audioProgressSlider.value
             let currentTime = CMTimeMake(Int64(currentSliderValue - 15), 1)
             TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)

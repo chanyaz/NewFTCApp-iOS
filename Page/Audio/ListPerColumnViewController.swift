@@ -132,7 +132,6 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         
         if (storyboard?.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController) != nil
         {
-            
 //            audioPlayerBar.item = fetchListResults?[0].items[indexPath.row]
             TabBarAudioContent.sharedInstance.item = fetchListResults?[0].items[indexPath.row]
             

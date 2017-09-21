@@ -31,7 +31,7 @@ class CustomTab: UIView {
 
         self.playAndPauseButton.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -5))
-        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 20))
         self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 40))
         self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 40))
         
@@ -43,14 +43,14 @@ class CustomTab: UIView {
         
         self.playStatus.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraint(NSLayoutConstraint(item: playStatus, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.playAndPauseButton, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: playStatus, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playAndPauseButton, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item: playStatus, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playAndPauseButton, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 20))
         self.addConstraint(NSLayoutConstraint(item: playStatus, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -15))
   
         
 //        playTime.frame = CGRect(x:5,y:8,width:50,height:20)
         playTime.text = "00:00"
         playTime.textColor = UIColor.white
-        playTime.font = UIFont(name: "Helvetica-Light", size: 16.0)
+        playTime.font = UIFont(name: "Helvetica-Light", size: 14.0)
         
         self.playTime.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraint(NSLayoutConstraint(item: playTime, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 10))
@@ -75,7 +75,7 @@ class CustomTab: UIView {
 //        playDuration.frame = CGRect(x:width-60,y:8,width:70,height:20)
         playDuration.text = "00:00"
         playDuration.textColor = UIColor.white
-        playDuration.font = UIFont(name: "Helvetica-Light", size: 16.0)
+        playDuration.font = UIFont(name: "Helvetica-Light", size: 14.0)
         self.playDuration.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraint(NSLayoutConstraint(item: playDuration, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -10))
         self.addConstraint(NSLayoutConstraint(item: playDuration, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.progressSlider, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))

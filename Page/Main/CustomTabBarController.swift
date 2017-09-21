@@ -10,9 +10,9 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
-//    override func loadView() {
-//        super.loadView()
-//    }
+    //    override func loadView() {
+    //        super.loadView()
+    //    }
     
     
     override var prefersStatusBarHidden : Bool {
@@ -34,6 +34,9 @@ class CustomTabBarController: UITabBarController {
         self.tabBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Tab.border))
         self.tabBar.isTranslucent = false
         
+        // MARK: - Get current language preference
+        LanguageSetting.shared.currentPrefence = Setting.getCurrentOption("language-preference").index
+        
         // MARK: Replace unselected tab icons with original icon
         if let items = self.tabBar.items {
             let tabBarImages = getTabBarImages()
@@ -41,15 +44,17 @@ class CustomTabBarController: UITabBarController {
                 let tabBarItem = items[i]
                 let tabBarImage = tabBarImages[i]
                 tabBarItem.image = tabBarImage?.withRenderingMode(.alwaysOriginal)
+                if LanguageSetting.shared.currentPrefence > 0 {
+                    if let title = tabBarItem.title {
+                        tabBarItem.title = GB2Big5.convert(title)
+                    }
+                }
             }
         }
         
     }
     
-    
 
-    
-    
     func getTabBarImages() -> [UIImage?] {
         let imageNames = ["NewsDim", "EnglishDim", "AcademyDim", "VideoDim", "MyFTDim"]
         let images = imageNames.map { (value: String) -> UIImage? in
@@ -77,7 +82,7 @@ class CustomTabBarController: UITabBarController {
     }
     
     
-
-
+    
+    
     
 }

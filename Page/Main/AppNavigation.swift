@@ -30,7 +30,7 @@ struct AppNavigation {
                 ],
                 [
                     "title": "中国",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json",
+                    "api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",
                     "url":"http://www.ftchinese.com/channel/china.html",
                     "regularLayout": "",
                     "screenName":"homepage/china",
@@ -124,28 +124,28 @@ struct AppNavigation {
             "Channels": [
                 [
                     "title": "英语电台",
-                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=radio",
+                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=radio&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/channel/radio.html?webview=ftcapp",
                     "screenName":"english/radio",
                     "coverTheme": ""
                 ],
                 [
                     "title": "双语阅读",
-                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=ce",
+                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=ce&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/channel/ce.html?webview=ftcapp",
                     "screenName":"english/read",
                     "coverTheme": ""
                 ],
                 [
                     "title": "金融英语速读",
-                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=speedread",
+                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=speedread&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/channel/speedread.html?webview=ftcapp",
                     "screenName":"english/speedread",
                     "coverTheme": ""
                 ],
                 [
                     "title": "原声视频",
-                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=ev",
+                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=ev&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/channel/ev.html?webview=ftcapp",
                     "screenName":"english/video",
                     "coverTheme": ""

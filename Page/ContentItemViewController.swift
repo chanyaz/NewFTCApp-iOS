@@ -658,12 +658,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             // MARK: - If it is other types of content such video and interacrtive features
             if let id = dataObject?.id, let type = dataObject?.type {
-                let urlString: String
+                let urlStringOriginal: String
                 if let customLink = dataObject?.customLink, customLink != "" {
-                    urlString = customLink
+                    urlStringOriginal = customLink
                 } else {
-                    urlString = APIs.getUrl(id, type: type)
+                    urlStringOriginal = APIs.getUrl(id, type: type)
                 }
+                let urlString = APIs.convert(urlStringOriginal)
                 print ("loading \(urlString)")
                 if var urlComponents = URLComponents(string: urlString) {
                     let newQuery = APIs.newQueryForWebPage()

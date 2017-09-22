@@ -114,7 +114,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UITableViewDeleg
     }
     
     
-    func tapItem(_ sender: MyTapGestureRecognizer) {
+    @objc func tapItem(_ sender: MyTapGestureRecognizer) {
         let action = sender.action ?? "unknown"
         let id = sender.id ?? ""
         if let url = URL(string: "ftchinese://\(action)/\(id)") {
@@ -138,7 +138,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UITableViewDeleg
             cell.thumbnail.imageFromServerURL(urlString: "https://www.ft.com/__origami/service/image/v2/images/raw/\(imageUrl)?source=ftchinese&width=208&height=156&fit=cover")
         }
         
-        let tapGesture = MyTapGestureRecognizer(target: self, action: #selector(self.tapItem(_:)))
+        let tapGesture = MyTapGestureRecognizer(target: self, action: #selector(tapItem(_:)))
         tapGesture.action = items[index]["type"]
         tapGesture.id = items[index]["id"]
         tapGesture.title = items[index]["headline"]

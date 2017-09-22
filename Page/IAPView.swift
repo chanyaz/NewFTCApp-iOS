@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import FolioReaderKit
+// import FolioReaderKit
 
 class IAPView: UIView {
     
@@ -497,7 +497,7 @@ extension IAPView: URLSessionDownloadDelegate {
                         // TODO: - This is a trial file, open it immediately
                         print ("open the try book")
                         
-                        
+                        /*
                         let config = FolioReaderConfig()
                         config.scrollDirection = .horizontal
                         config.allowSharing = false
@@ -516,6 +516,8 @@ extension IAPView: URLSessionDownloadDelegate {
                                 IAP.trackIAPActions("download excerpt success", productId: productId)
                             }
                         }
+ */
+                        
                     }
                 }catch{
                     print("An error occurred while moving file to destination url")

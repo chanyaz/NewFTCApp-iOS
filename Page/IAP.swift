@@ -8,7 +8,7 @@
 
 import Foundation
 import StoreKit
-import FolioReaderKit
+// import FolioReaderKit
 
 
 struct IAP {
@@ -274,6 +274,7 @@ struct IAP {
         // MARK: - check if the file exists locally
         if let fileLocation = Download.checkFilePath(fileUrl: tryBookFileName, for: .documentDirectory) {
             print (fileLocation)
+            /*
             let config = FolioReaderConfig()
             config.scrollDirection = .horizontal
             config.allowSharing = false
@@ -284,6 +285,7 @@ struct IAP {
                 let folioReader = FolioReader()
                 folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
             }
+ */
         } else {
             print ("file not found: download it")
             let alert = UIAlertController(title: "文件还没有下载，要现在下载吗？", message: "下载到本地可以打开并阅读", preferredStyle: UIAlertControllerStyle.alert)
@@ -369,6 +371,7 @@ struct IAP {
         // MARK: - check if the file exists locally
         if let fileLocation = Download.checkFilePath(fileUrl: productIdentifier, for: .documentDirectory) {
             print (fileLocation)
+            /*
             let config = FolioReaderConfig()
             config.scrollDirection = .horizontal
             config.allowSharing = false
@@ -379,6 +382,7 @@ struct IAP {
                 let folioReader = FolioReader()
                 folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
             }
+ */
         } else {
             print ("file not found: download it")
             let alert = UIAlertController(title: "文件还没有下载，要现在下载吗？", message: "下载到本地可以打开并阅读", preferredStyle: UIAlertControllerStyle.alert)

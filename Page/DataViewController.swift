@@ -99,7 +99,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
             // MARK: - Get Content Data for the Page
             requestNewContent()
-        } else if let urlString = dataObject["url"] {
+        } else if let urlStringOriginal = dataObject["url"] {
+            let urlString = APIs.convert(urlStringOriginal)
             self.view.backgroundColor = UIColor(hex: Color.Content.background)
             //            self.edgesForExtendedLayout = []
             //            self.extendedLayoutIncludesOpaqueBars = false
@@ -146,8 +147,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 navigationItem.titleView = searchBar
                 searchBar?.becomeFirstResponder()
                 searchBar?.delegate = self
-                
-                if let url = URL(string: APIs.searchUrl) {
+                let urlStringSearch = APIs.convert(APIs.searchUrl)
+                //let urlStringSearch = APIs.searchUrl
+                if let url = URL(string: urlStringSearch) {
                     let request = URLRequest(url: url)
                     if let adHTMLPath = Bundle.main.path(forResource: "search", ofType: "html"){
                         do {

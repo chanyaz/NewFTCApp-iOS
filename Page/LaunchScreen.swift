@@ -154,7 +154,7 @@ class LaunchScreen: UIViewController {
     }
     
     
-    public func retryAd() {
+    @objc public func retryAd() {
         print ("Try to parse the ad schedule to decide if you can show an ad now")
         if let overlay = overlayView {
             for subUIView in overlay.subviews {
@@ -508,7 +508,7 @@ class LaunchScreen: UIViewController {
     }
     
     // MARK: this should be public
-    func clickAd() {
+    @objc func clickAd() {
         let urlString = adSchedule.adLink
         if let url = URL(string: urlString) {
             openLink(url)
@@ -535,7 +535,7 @@ class LaunchScreen: UIViewController {
     
     
     // MARK: Remove the overlay and reveal the web view. This should be public.
-    func close() {
+    @objc func close() {
 
         player?.pause()
         player = nil

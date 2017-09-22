@@ -189,7 +189,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
          */
     }
     
-    public func listen() {
+    @objc public func listen() {
         if let playSpeechViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlaySpeech") as? PlaySpeech {
             // MARK: Prepare for speech body data
             let currentContentItemView = modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!)
@@ -237,7 +237,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     private var actualLanguageIndex = 0
     
     //MARK: This is only triggerd when user actual taps the UISegmentedControl
-    public func switchLanguage(_ sender: UISegmentedControl) {
+    @objc public func switchLanguage(_ sender: UISegmentedControl) {
         // MARK: Save Language Preference
         let languageIndex = sender.selectedSegmentIndex
         UserDefaults.standard.set(languageIndex, forKey: Key.languagePreference)
@@ -249,7 +249,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         
     }
     
-    public func updateEnglishStatus() {
+    @objc public func updateEnglishStatus() {
         //print ("English Status Change Received: \(English.sharedInstance.has)")
         let id = contentPageData[currentPageIndex].id
         let type = contentPageData[currentPageIndex].type

@@ -1391,11 +1391,13 @@
 					50D4BD421F63BB2400DD64E1 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = CAEDT8EKGV;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					50D4BD521F63BE1700DD64E1 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = CAEDT8EKGV;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					602153091F397C650077A7AF = {
@@ -1404,6 +1406,7 @@
 					60D3C8BC1EBFF5DC0085BEF6 = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = CAEDT8EKGV;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -1419,11 +1422,13 @@
 					};
 					60D3C8D41EBFF5DC0085BEF6 = {
 						CreatedOnToolsVersion = 8.3.1;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 60D3C8BC1EBFF5DC0085BEF6;
 					};
 					60D3C8DF1EBFF5DC0085BEF6 = {
 						CreatedOnToolsVersion = 8.3.1;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 60D3C8BC1EBFF5DC0085BEF6;
 					};
@@ -2061,7 +2066,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT-----";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2074,7 +2080,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT-----";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -2087,7 +2094,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT----";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2100,7 +2108,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ft.ftchinese.mobile.FT----";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -2117,7 +2126,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ft.ftchinese.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2134,7 +2143,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ft.ftchinese.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -2261,7 +2270,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ft.ftchinese.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2278,7 +2288,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ft.ftchinese.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -2291,7 +2302,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = oli.zh.PageTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Page.app/Page";
 			};
 			name = Debug;
@@ -2305,7 +2317,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = oli.zh.PageTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Page.app/Page";
 			};
 			name = Release;
@@ -2318,7 +2331,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = oli.zh.PageUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = Page;
 			};
 			name = Debug;
@@ -2331,7 +2345,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = oli.zh.PageUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = Page;
 			};
 			name = Release;

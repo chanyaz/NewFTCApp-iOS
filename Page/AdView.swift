@@ -118,7 +118,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = self.bounds
         playerLayer.backgroundColor = UIColor.clear.cgColor
-        playerLayer.videoGravity = AVLayerVideoGravity.resizeAspect
+        playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
         layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         layer.addSublayer(playerLayer)
         player?.isMuted = true
@@ -213,7 +213,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
     private lazy var bottomView: UIView? = nil
     private lazy var fadeTimer: Timer? = nil
     
-    @objc func playerDidFinishPlaying(_ notification: Notification) {
+    func playerDidFinishPlaying(_ notification: Notification) {
         
         if (notification.object as? AVPlayerItem) != nil {
             print("Video Finished")
@@ -303,7 +303,7 @@ class AdView: UIView, SFSafariViewControllerDelegate {
         self.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    @objc open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
+    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
         if let link = self.adModel?.link, let url = URL(string: link) {
             openLink(url)
         }

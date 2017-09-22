@@ -96,7 +96,7 @@ class FollowCell: UICollectionViewCell {
         
     }
     
-    @objc open func tapName(_ recognizer: UITapGestureRecognizer) {
+    open func tapName(_ recognizer: UITapGestureRecognizer) {
         //print ("name is tapped: \(itemCell?.headline); \(itemCell?.id)")
         if let followType = itemCell?.followType,
             let followKey = itemCell?.id,
@@ -114,7 +114,7 @@ class FollowCell: UICollectionViewCell {
         }
     }
     
-    @objc open func tapAction(_ recognizer: UITapGestureRecognizer) {
+    open func tapAction(_ recognizer: UITapGestureRecognizer) {
         //print ("action is tapped: \(String(describing: itemCell?.headline)); \(String(describing: itemCell?.id)); \(actionButton.state)")
         if let followType = itemCell?.followType,
             let keyword = itemCell?.id {

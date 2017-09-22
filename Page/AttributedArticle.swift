@@ -12,7 +12,7 @@ enum Language {
     case chinese
     case english
 }
-/*
+
 struct AttributedArticle {
     
     let content: ContentItem
@@ -258,4 +258,3 @@ struct AttributedArticle {
         return attrString
     }
 }
-*/

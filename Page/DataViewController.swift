@@ -385,7 +385,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     
-    @objc func paidPostUpdate(_ notification: Notification) {
+    func paidPostUpdate(_ notification: Notification) {
         if let itemCell = notification.object as? ContentItem {
             let section = itemCell.section
             let row = itemCell.row
@@ -404,7 +404,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     
-    @objc func refreshControlDidFire(sender:AnyObject) {
+    func refreshControlDidFire(sender:AnyObject) {
         print ("pull to refresh fired")
         // TODO: Handle Pull to Refresh
         requestNewContent()
@@ -765,7 +765,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var playerItem = TabBarAudioContent.sharedInstance.playerItem
     let nowPlayingCenter = NowPlayingCenter()
     
-    @objc func openPlay(sender: UIButton?){
+    func openPlay(sender: UIButton?){
          PlayerObserver().removePlayerItemObservers(self, object: playerItem)
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
@@ -892,7 +892,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
 //    func addPlayerItemObservers() {
 //        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
 //    }
-    @objc func playerDidFinishPlaying() {
+    func playerDidFinishPlaying() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: CustomTabBarController())
         TabBarAudioContent.sharedInstance.player?.pause()
         TabBarAudioContent.sharedInstance.isPlayFinish = true
@@ -1034,7 +1034,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
     }
     
-    @objc open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
+    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
         //navigationController?.performSegue(withIdentifier: "Show News Detail", sender: self)
         //performSegue(withIdentifier: "Show Detail Content", sender: self)
         //        print ("header view tapped")

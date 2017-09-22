@@ -64,7 +64,7 @@ class CoverCellRegular: UICollectionViewCell {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 10
         let setStr = NSMutableAttributedString.init(string: lead.text!)
-        setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (lead.text!.characters.count)))
+        setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (lead.text!.characters.count)))
         lead.attributedText = setStr
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
         

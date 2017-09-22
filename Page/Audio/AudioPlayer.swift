@@ -497,7 +497,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
     }
     
-    @objc public func updatePlayButtonUI() {
+    public func updatePlayButtonUI() {
         if let player = player {
             if (player.rate != 0) && (player.error == nil) {
                 buttonPlayAndPause.image = UIImage(named:"BigPauseButton")
@@ -532,7 +532,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         //        }
     }
     
-    @objc func playerDidFinishPlaying() {
+    func playerDidFinishPlaying() {
         let startTime = CMTimeMake(0, 1)
         self.playerItem?.seek(to: startTime)
         self.player?.pause()
@@ -571,7 +571,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     
-    @objc public func handleDownloadStatusChange(_ notification: Notification) {
+    public func handleDownloadStatusChange(_ notification: Notification) {
         DispatchQueue.main.async() {
             if let object = notification.object as? (id: String, status: DownloadStatus) {
                 let status = object.status
@@ -598,7 +598,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
     }
     
-    @objc public func handleDownloadProgressChange(_ notification: Notification) {
+    public func handleDownloadProgressChange(_ notification: Notification) {
         DispatchQueue.main.async() {
             if let object = notification.object as? (id: String, percentage: Float, downloaded: String, total: String) {
                 let id = object.id

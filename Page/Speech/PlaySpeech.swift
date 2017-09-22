@@ -79,7 +79,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     }
     
     
-    @objc func setting() {
+    func setting() {
         if let SpeechSettingsViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SpeechSettings") as? SpeechSettings {
             navigationController?.pushViewController(SpeechSettingsViewController, animated: true)
         }
@@ -188,18 +188,18 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
             let titleParagraphStyle = NSMutableParagraphStyle()
             titleParagraphStyle.paragraphSpacing = 20
             let titleAttributes = [
-                NSAttributedStringKey.foregroundColor: UIColor.black,
-                NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 22),
-                NSAttributedStringKey.paragraphStyle:titleParagraphStyle
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: UIFont.boldSystemFont(ofSize: 22),
+                NSParagraphStyleAttributeName:titleParagraphStyle
             ]
             let bodyParagraphStyle = NSMutableParagraphStyle()
             bodyParagraphStyle.paragraphSpacing = 20
             bodyParagraphStyle.lineSpacing = 10
             
             let bodyAttributes = [
-                NSAttributedStringKey.foregroundColor: UIColor.black,
-                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18),
-                NSAttributedStringKey.paragraphStyle:bodyParagraphStyle,
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: UIFont.systemFont(ofSize: 18),
+                NSParagraphStyleAttributeName:bodyParagraphStyle,
                 ]
             let titleAttrString = NSMutableAttributedString(
                 string: title,
@@ -207,8 +207,8 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
             )
             // MARK: - Use deliminator so that the utterance will pause after the title
             let deliminatorAttributes = [
-                NSAttributedStringKey.foregroundColor: UIColor(netHex:0xFFF1E0),
-                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 0)
+                NSForegroundColorAttributeName: UIColor(netHex:0xFFF1E0),
+                NSFontAttributeName: UIFont.systemFont(ofSize: 0)
             ]
             // MARK: - If it's Chinese, use "。", otherwise use ". "
             let delimitorPeriodString: String
@@ -306,9 +306,9 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
         if let mutableAttributedString = audioText {
             if let previouseRange = previouseRange {
-                mutableAttributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: previouseRange)
+                mutableAttributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: previouseRange)
             }
-            mutableAttributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor(netHex:0xF6801A), range: characterRange)
+            mutableAttributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor(netHex:0xF6801A), range: characterRange)
             self.bodytext.attributedText = mutableAttributedString
             self.bodytext.scrollRangeToVisible(characterRange)
         }
@@ -318,7 +318,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         if let mutableAttributedString = audioText {
             if let previouseRange = previouseRange {
-                mutableAttributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: previouseRange)
+                mutableAttributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: previouseRange)
                 self.bodytext.attributedText = mutableAttributedString
                 self.bodytext.scrollRangeToVisible(previouseRange)
             }

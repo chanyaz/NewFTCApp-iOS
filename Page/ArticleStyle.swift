@@ -19,7 +19,6 @@ struct Styles {
 }
 
 extension NSMutableAttributedString {
-    /*
     func addParagraphAttributes(textStyle style: UIFontTextStyle? = nil) {
         var attributes: [String: Any] = [:]
         var lineHeight: CGFloat = 20.0
@@ -29,10 +28,10 @@ extension NSMutableAttributedString {
         if let textStyle = style {
             let font = UIFont.preferredFont(forTextStyle: textStyle)
             lineHeight = font.lineHeight
-            attributes[NSAttributedStringKey.font] = UIFont.preferredFont(forTextStyle: textStyle)
+            attributes[NSFontAttributeName] = UIFont.preferredFont(forTextStyle: textStyle)
         } else {
             let existingAttributes = self.attributes(at: 0, effectiveRange: nil)
-            if let font = existingAttributes[NSAttributedStringKey.font] as? UIFont {
+            if let font = existingAttributes[NSFontAttributeName] as? UIFont {
                 lineHeight = font.lineHeight
             }
         }
@@ -47,12 +46,11 @@ extension NSMutableAttributedString {
         paragraphStyle.lineSpacing = lineHeight * 0.5
         paragraphStyle.paragraphSpacing = lineHeight * 0.5
         
-        attributes[NSAttributedStringKey.paragraphStyle] = paragraphStyle
+        attributes[NSParagraphStyleAttributeName] = paragraphStyle
         
         let range = NSMakeRange(0, self.length)
         addAttributes(attributes, range: range)
     }
-    */
     
     func appendParagraphSeparator() {
         append(NSAttributedString(string: "\n"))
@@ -60,8 +58,7 @@ extension NSMutableAttributedString {
 }
 
 extension String {
-    //MARK: Commented out because of error in SWIFT 4
-    /*
+    
     func toAttributedString(textStyle style: UIFontTextStyle = UIFontTextStyle.body, oblique: Bool = false, bold: Bool = false, color: String = "#333", withLink link: String? = nil) -> NSMutableAttributedString {
         
         var attributes: [String: Any] = [:]
@@ -71,20 +68,19 @@ extension String {
             font = font.bold()
         }
         
-        attributes[NSAttributedStringKey.font] = font
-        attributes[NSAttributedStringKey.foregroundColor] = UIColor(hex: color)        
+        attributes[NSFontAttributeName] = font
+        attributes[NSForegroundColorAttributeName] = UIColor(hex: color)        
         
         if oblique {
-            attributes[NSAttributedStringKey.obliqueness] = 0.2
+            attributes[NSObliquenessAttributeName] = 0.2
         }
         
         if let href = link, let url = NSURL(string: href) {
-            attributes = [NSAttributedStringKey.link.rawValue: url]
+            attributes = [NSLinkAttributeName: url]
         }
         
         return NSMutableAttributedString(string: self, attributes: attributes)
     }
- */
     
     func toAttributedImage(width: CGFloat? = nil) -> NSMutableAttributedString {
         let imageAttachment = NSTextAttachment()

@@ -11,7 +11,7 @@ import UIKit
 
 class ShareImageActivityProvider: UIActivityItemProvider {
     
-    override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any?
+    override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any?
     {
         return ShareHelper.sharedInstance.thumbnail
     }

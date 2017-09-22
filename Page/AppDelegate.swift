@@ -79,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    @objc public func checkImpressions() {
+    public func checkImpressions() {
         //print ("check impressions")
         Impressions.retry()
     }

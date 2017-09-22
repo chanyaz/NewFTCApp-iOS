@@ -200,7 +200,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         print ("deinit content item view controller of \(pageTitle) successfully! ")
     }
     
-    @objc public func handleLanguagePreferenceChange() {
+    public func handleLanguagePreferenceChange() {
         let headlineBody = getHeadlineBody(dataObject)
         let headline = headlineBody.headline.cleanHTMLTags()
         let finalBody = headlineBody.finalBody.cleanHTMLTags()
@@ -217,7 +217,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
     }
     
-    @objc public func changeFont(_ notification: Notification) {
+    public func changeFont(_ notification: Notification) {
         if let currentItem = notification.object as? ContentItem,
             currentItem.id == dataObject?.id {
             let jsCode = "showOverlay('font-setting');"
@@ -788,8 +788,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
     
     
-    // MARK: - Commented out because SWIFT 4 non-compatibility
-    /*
+    
     fileprivate func htmlToAttributedString(_ htmltext: String) -> NSMutableAttributedString? {
         // MARK: remove p tags in text
         let text = htmltext.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
@@ -807,10 +806,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         let bodyFont = UIFont(descriptor: defaultBodyDescriptor, size: bodySize)
         
         let bodyAttributes:[String:AnyObject] = [
-            NSAttributedStringKey.font.rawValue: bodyFont,
+            NSFontAttributeName: bodyFont,
             //NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
-            NSAttributedStringKey.foregroundColor.rawValue: bodyColor,
-            NSAttributedStringKey.paragraphStyle.rawValue: paragraphStyle
+            NSForegroundColorAttributeName: bodyColor,
+            NSParagraphStyleAttributeName: paragraphStyle
         ]
         let attrString = NSMutableAttributedString(string: text, attributes:nil)
         // MARK: Handle bold tag
@@ -822,8 +821,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         boldParagraphStyle.paragraphSpacing = 6.0
         let boldAttributes:[String:AnyObject] = [
             //NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body).bold(),
-            NSAttributedStringKey.font.rawValue: bodyFont.bold(),
-            NSAttributedStringKey.paragraphStyle.rawValue: boldParagraphStyle
+            NSFontAttributeName: bodyFont.bold(),
+            NSParagraphStyleAttributeName: boldParagraphStyle
         ]
         
         if let matches = regex?.matches(in: text, options: [], range: range) {
@@ -832,11 +831,11 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             for match in matches.reversed() {
                 //Properly print match range
                 print(match.range)
-                let value = attrString.attributedSubstring(from: match.range(at: 1)).string
+                let value = attrString.attributedSubstring(from: match.rangeAt(1)).string
                 print (value)
                 //attrString.addAttribute(NSLinkAttributeName, value: "http://www.ft.com/", range: match.rangeAt(0))
-                attrString.addAttributes(boldAttributes, range: match.range(at: 0))
-                attrString.replaceCharacters(in: match.range(at: 0), with: "\(value)")
+                attrString.addAttributes(boldAttributes, range: match.rangeAt(0))
+                attrString.replaceCharacters(in: match.rangeAt(0), with: "\(value)")
             }
         }
         
@@ -846,7 +845,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
         return attrString
     }
- */
     
     
 }

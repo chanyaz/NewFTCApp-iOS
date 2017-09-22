@@ -74,7 +74,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         
     }
     var i:Int=0
-    @objc func tapGesture(sender: UITapGestureRecognizer) {
+    func tapGesture(sender: UITapGestureRecognizer) {
         i+=1
         if i >= playMode.count{
             i = 0

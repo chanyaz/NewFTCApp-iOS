@@ -27,7 +27,7 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         self.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    @objc open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
+    open func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
         if let link = self.itemCell?.adModel?.link, let url = URL(string: link) {
             openLink(url)
         }

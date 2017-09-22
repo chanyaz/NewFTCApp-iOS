@@ -320,7 +320,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         )
         audioAddGesture()
     }
-    @objc func reloadAudioView(){
+    func reloadAudioView(){
         //        item的值得时刻记住更新，最好传全局变量还是用自身局部变量？，可以从tab中把值传给此audio么？
         //        需要同时更新webView和id 、item等所有一致性变量，应该把他们整合到一起，一起处理循环、下一首、列表更新
         removePlayerItemObservers()
@@ -431,7 +431,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         swipeGestureRecognizerUp.delegate = self
         self.webAudioView.addGestureRecognizer(swipeGestureRecognizerUp)
     }
-    @objc func isHideAudio(sender: UISwipeGestureRecognizer){
+    func isHideAudio(sender: UISwipeGestureRecognizer){
         if sender.direction == .up{
             print("up hide audio")
             
@@ -635,7 +635,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
     }
     
-    @objc public func updatePlayButtonUI() {
+    public func updatePlayButtonUI() {
         if let player = player {
             if (player.rate != 0) && (player.error == nil) {
                 //                buttonPlayAndPause.image = UIImage(named:"BigPauseButton")
@@ -846,7 +846,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     
     
     
-    @objc func playerDidFinishPlaying() {
+    func playerDidFinishPlaying() {
         let startTime = CMTimeMake(0, 1)
         self.playerItem?.seek(to: startTime)
         self.player?.pause()
@@ -961,7 +961,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     
     
-    @objc public func handleDownloadStatusChange(_ notification: Notification) {
+    public func handleDownloadStatusChange(_ notification: Notification) {
         DispatchQueue.main.async() {
             if let object = notification.object as? (id: String, status: DownloadStatus) {
                 let status = object.status
@@ -988,7 +988,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         }
     }
     
-    @objc public func handleDownloadProgressChange(_ notification: Notification) {
+    public func handleDownloadProgressChange(_ notification: Notification) {
         DispatchQueue.main.async() {
             if let object = notification.object as? (id: String, percentage: Float, downloaded: String, total: String) {
                 let id = object.id

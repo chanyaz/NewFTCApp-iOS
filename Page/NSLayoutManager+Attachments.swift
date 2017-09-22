@@ -23,7 +23,7 @@ extension NSLayoutManager
         
         var refreshRanges = [NSRange]()
         
-        attributedString.enumerateAttribute(NSAttributedStringKey.attachment, in: range, options: []) { (value, effectiveRange, nil) in
+        attributedString.enumerateAttribute(NSAttachmentAttributeName, in: range, options: []) { (value, effectiveRange, nil) in
             
             guard let foundAttachment = value as? NSTextAttachment, foundAttachment == attachment else
             {

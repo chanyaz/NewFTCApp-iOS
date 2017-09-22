@@ -286,7 +286,7 @@ class IAPView: UIView {
         
     }
     
-    @objc public func buy(_ sender: UIButton) {
+    public func buy(_ sender: UIButton) {
         print ("buy product")
         sender.isEnabled = false
         if let id = dataObject?.id {
@@ -294,21 +294,21 @@ class IAPView: UIView {
         }
     }
     
-    @objc public func tryProduct(_ sender: UIButton) {
+    public func tryProduct(_ sender: UIButton) {
         print ("try product")
         if let id = dataObject?.id {
             IAP.tryBook(id)
         }
     }
     
-    @objc public func openProduct(_ sender: UIButton) {
+    public func openProduct(_ sender: UIButton) {
         print ("open product")
         if let id = dataObject?.id {
             IAP.readBook(id)
         }
     }
     
-    @objc public func removeDownload(_ sender: UIButton) {
+    public func removeDownload(_ sender: UIButton) {
         print ("remove downloaded product")
         if let id = dataObject?.id {
             let newStatus = IAP.removeDownload(id)
@@ -318,7 +318,7 @@ class IAPView: UIView {
         }
     }
     
-    @objc public func download(_ sender: Any) {
+    public func download(_ sender: Any) {
         print ("start downloading product")
         downloadingStatus.text = "准备下载，点击此处取消"
         if let id = dataObject?.id {
@@ -327,7 +327,7 @@ class IAPView: UIView {
         switchUI("downloading")
     }
     
-    @objc public func tapDownloadingStatus(_ recognizer: UITapGestureRecognizer) {
+    public func tapDownloadingStatus(_ recognizer: UITapGestureRecognizer) {
         print ("current download status is now \(currentDownloadStatus)")
         switch currentDownloadStatus {
         case .remote:
@@ -356,7 +356,7 @@ class IAPView: UIView {
         print ("current download status changed to \(currentDownloadStatus)")
     }
     
-    @objc public func cancelDownload(_ sender: UIButton) {
+    public func cancelDownload(_ sender: UIButton) {
         if let id = dataObject?.id {
             IAP.cancelDownload(id)
         }
@@ -367,7 +367,7 @@ class IAPView: UIView {
     
     
     // MARK: This should be public, as it will be called by other classes
-    @objc public func handlePurchaseNotification(_ notification: Notification) {
+    public func handlePurchaseNotification(_ notification: Notification) {
         if let notificationObject = notification.object as? [String: Any?]{
             // MARK: when user buys or restores a product, we should display relevant information
             if let productID = notificationObject["id"] as? String, let actionType = notificationObject["actionType"] as? String {

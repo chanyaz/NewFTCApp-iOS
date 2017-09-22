@@ -129,6 +129,8 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+        let row = tableView.indexPathForSelectedRow?.row
+        TabBarAudioContent.sharedInstance.playingIndex = row
         
         if (storyboard?.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController) != nil
         {

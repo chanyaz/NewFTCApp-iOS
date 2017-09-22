@@ -208,9 +208,12 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         deleteButton.setImage(UIImage(named:"DeleteButton"), for: UIControlState.normal)
         deleteButton.addTarget(self, action: #selector(deleteAudio), for: UIControlEvents.touchUpInside)
         
-        downSwipeButton.frame = CGRect(x:width-50,y:15,width:hideWidth,height:hideHeight)
+        downSwipeButton.frame = CGRect(x:width-50,y:15,width:hideWidth*2,height:hideHeight*2)
         downSwipeButton.setImage(UIImage(named:"HideBtn"), for: UIControlState.normal)
         downSwipeButton.addTarget(self, action: #selector(exitAudio), for: UIControlEvents.touchUpInside)
+//        downSwipeButton.backgroundColor = UIColor.red
+
+        
 
         viewWithLanguages.frame = CGRect(x:0,y:0,width:width,height:90)
         audioViewWithContent.frame = CGRect(x:0,y:90,width:width,height:height)
@@ -474,7 +477,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         let currentValue = sender.value
         let currentTime = CMTimeMake(Int64(currentValue), 1)
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
-        playingCenter()
+        NowPlayingCenter().updatePlayingCenter()
     }
     
     func listAction(){
@@ -624,7 +627,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         getPlayingUrl()
         loadUrl()
         addDownloadObserve()
-        playingCenter()
+//        playingCenter()
         enableBackGroundMode()
         //  getPlayingUrl()需要放在parseAudioMessage()后面，不然第一次audioUrlString为空
     }
@@ -651,7 +654,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
                 
             }
         }
-        playingCenter()
+        NowPlayingCenter().updatePlayingCenter()
     }
     func loadUrl(){
         ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
@@ -715,7 +718,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             updateProgressSlider()
             addDownloadObserve()
             addPlayerItemObservers()
-            playingCenter()
+            NowPlayingCenter().updatePlayingCenter()
         }
     }
     func updateProgressSlider(){
@@ -829,7 +832,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
 
         updatePlayButtonUI()
-        playingCenter()
+//        playingCenter()
 //        nowPlayingCenter.updateTimeForPlayerItem(player)
         
     }
@@ -920,6 +923,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             
             TabBarAudioContent.sharedInstance.item = item
             self.audioPlayStatus.text = item.headline
+            self.tabView.playStatus.text = item.headline
             TabBarAudioContent.sharedInstance.body["title"] = item.headline
             TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioUrlStrFromList
             TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(item.id)"
@@ -1146,38 +1150,39 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         )
         //        }
         updatePlayButtonUI()
-        playingCenter()
+//        加了此函数会show play center,它才是显示的函数而不是updatePlayingInfo()或者updateTimeForPlayerItem()，所以最好放在公共的地方; enableBackGroundMode()能直接放在运行出现的地方呢，以后不再运行？应该是不行，因为需要变化控件值。
+        NowPlayingCenter().updatePlayingCenter()
         enableBackGroundMode()
     }
-    func playingCenter(){
-        var mediaLength: NSNumber = 0
-        if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-            let duration = CMTimeGetSeconds(d)
-            if duration.isNaN == false {
-                mediaLength = duration as NSNumber
-            }
-        }
-        
-        var currentTime: NSNumber = 0
-        if let c = TabBarAudioContent.sharedInstance.playerItem?.currentTime() {
-            let currentTime1 = CMTimeGetSeconds(c)
-            if currentTime1.isNaN == false {
-                currentTime = currentTime1 as NSNumber
-            }
-        }
-        if  let title = TabBarAudioContent.sharedInstance.audioHeadLine {
-            nowPlayingCenter.updateInfo(
-                title: title,
-                artist: "FT中文网",
-                albumArt: UIImage(named: "cover.jpg"),
-                currentTime: currentTime,
-                mediaLength: mediaLength,
-                PlaybackRate: 1.0
-            )
-        }
-        nowPlayingCenter.updateTimeForPlayerItem(TabBarAudioContent.sharedInstance.player)
-
-    }
+//    func playingCenter(){
+//        var mediaLength: NSNumber = 0
+//        if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
+//            let duration = CMTimeGetSeconds(d)
+//            if duration.isNaN == false {
+//                mediaLength = duration as NSNumber
+//            }
+//        }
+//        
+//        var currentTime: NSNumber = 0
+//        if let c = TabBarAudioContent.sharedInstance.playerItem?.currentTime() {
+//            let currentTime1 = CMTimeGetSeconds(c)
+//            if currentTime1.isNaN == false {
+//                currentTime = currentTime1 as NSNumber
+//            }
+//        }
+//        if  let title = TabBarAudioContent.sharedInstance.audioHeadLine {
+//            nowPlayingCenter.updateInfo(
+//                title: title,
+//                artist: "FT中文网",
+//                albumArt: UIImage(named: "cover.jpg"),
+//                currentTime: currentTime,
+//                mediaLength: mediaLength,
+//                PlaybackRate: 1.0
+//            )
+//        }
+//        nowPlayingCenter.updateTimeForPlayerItem(TabBarAudioContent.sharedInstance.player)
+//
+//    }
     private func enableBackGroundMode() {
         // MARK: Receive Messages from Lock Screen
         UIApplication.shared.beginReceivingRemoteControlEvents();

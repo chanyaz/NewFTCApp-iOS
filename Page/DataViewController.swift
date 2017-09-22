@@ -850,12 +850,20 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
 //            addPlayerItemObservers()
             
-         PlayerObserver().addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
+            PlayerObserver().addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
+            if let title = TabBarAudioContent.sharedInstance.body["title"],let _ = player{
+                print("NowPlayingCenter updatePlayingInfo \(title)")
+//                此函数没执行，why？
+                NowPlayingCenter().updatePlayingCenter()
+//                NowPlayingCenter().updatePlayingInfo(player, title:title)
+            }
         }else{
             print("palyer item not isExist")
             
             return
         }
+        
+        
         
     }
  

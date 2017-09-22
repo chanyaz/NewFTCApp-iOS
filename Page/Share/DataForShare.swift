@@ -19,7 +19,7 @@ class DataForShare: NSObject, UIActivityItemSource {
         return ShareHelper.sharedInstance.webPageTitle;
     }
     
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any? {
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any? {
         //Sina Weibo cannot handle arrays. It's either text or image
         var textForShare = ""
         if activityType == UIActivityType.mail {

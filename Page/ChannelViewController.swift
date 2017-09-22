@@ -179,7 +179,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
 
     
-    public func showChat() {
+    @objc public func showChat() {
         if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
             navigationController?.pushViewController(chatViewController, animated: true)
         }
@@ -227,7 +227,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         updateBackBarButton(for: index)
     }
     
-    func showSearch() {
+    @objc func showSearch() {
         if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
             // searchViewController
             dataViewController.dataObject = AppNavigation.search

@@ -124,7 +124,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         
     }
-    func keyboardWillShow(_ notification: NSNotification) {
+    @objc func keyboardWillShow(_ notification: NSNotification) {
         
         print("show:\(keyboardWillShowExecute)")
         keyboardWillShowExecute += 1
@@ -168,7 +168,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
         
     }
-    func keyboardWillHide(_ notification: NSNotification) {
+    @objc func keyboardWillHide(_ notification: NSNotification) {
         print("hide")
         if let userInfo = notification.userInfo, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
             let animation:(() -> Void)={
@@ -189,7 +189,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     
     // TODO:Fix the bug: 当键盘处于弹出时，如果滑动行为导致返回页面一半的话，还是会导致talkBlock缩回键盘之下。目前临时解决方案是inactive状态时，将键盘置于收缩状态。否则键盘的监听会出问题。
-    func applicationWillResignActive(_ notification:NSNotification){
+    @objc func applicationWillResignActive(_ notification:NSNotification){
         //MARK:在该controller为inactive状态时（比如点击了Home键),将键盘置于收缩状态
         self.inputBlock.resignFirstResponder()
         print("applicationWillResignActive")

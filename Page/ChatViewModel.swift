@@ -223,7 +223,7 @@ class CellData {
      func buildTextCellData(textContent text: String) {//wycNOTE: mutating func:可以在mutating方法中修改结构体属性
         let font = UIFont.systemFont(ofSize:18)
         self.normalFont = font
-        let atts = [NSFontAttributeName: font]
+        let atts = [NSAttributedStringKey.font: font]
         let saysWhatNSString = text as NSString
         
         let size = saysWhatNSString.boundingRect(
@@ -259,9 +259,9 @@ class CellData {
     //创建Card类型数据:
      func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String) {
         //处理title
-        let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
+        let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
         self.titleFont = titleFont
-        let atts = [NSFontAttributeName: titleFont]
+        let atts = [NSAttributedStringKey.font: titleFont]
         let titleNSString = titleStr as NSString
         let size = titleNSString.boundingRect(
             with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
@@ -277,7 +277,7 @@ class CellData {
         if (descriptionStr != "") {
             let descriptionFont = UIFont.systemFont(ofSize:18)
             self.descriptionFont = descriptionFont
-            let descriptionAtts = [NSFontAttributeName: descriptionFont]
+            let descriptionAtts = [NSAttributedStringKey.font: descriptionFont]
             let descriptionNSString = descriptionStr as NSString
             
             let descriptionSize = descriptionNSString.boundingRect(

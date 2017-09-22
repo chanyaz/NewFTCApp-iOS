@@ -70,7 +70,7 @@ class PaidPostCell: CustomCell {
                 paragraphStyle.lineSpacing = 8
                 paragraphStyle.lineBreakMode = .byTruncatingTail
                 let setStr = NSMutableAttributedString.init(string: leadText)
-                setStr.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
+                setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
                 lead.attributedText = setStr
             }
             

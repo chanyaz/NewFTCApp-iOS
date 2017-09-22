@@ -31,7 +31,8 @@ class DataForShare: NSObject, UIActivityItemSource {
             let textForShareTailCount = textForShareCredit.characters.count + url.characters.count
             if textForShare.characters.count + textForShareTailCount > textForShareLimit {
                 let index = textForShare.characters.index(textForShare.startIndex, offsetBy: textForShareLimit - textForShareTailCount - 3)
-                textForShare = textForShare.substring(to: index) + "..."
+                //textForShare = textForShare.substring(to: index) + "..."
+                textForShare = String(textForShare[..<index]) + "..."
             }
             textForShare = textForShare + "（分享自 @FT中文网）"
         } else {

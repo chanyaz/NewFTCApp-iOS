@@ -4,8 +4,9 @@
 //
 //  Created by 倪卫国 on 09/07/2017.
 //  Copyright © 2017 Oliver Zhang. All rights reserved.
-//
 
+// MARK: - Commented out as there are imcopatibility issues in SWIFT 4
+/*
 import Foundation
 
 struct Tag {
@@ -156,3 +157,4 @@ extension Scanner {
         return tags
     }
 }
+*/

@@ -71,7 +71,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
                     navigationItem.titleView = imageView
                 }
             } else {
-                navigationItem.title = tabTitle
+                navigationItem.title = GB2Big5.convert(tabTitle ?? "")
             }
             if let navTintColor = AppNavigation.getNavigationProperty(for: currentTabName, of: "navBackGroundColor") {
                 navigationController?.navigationBar.barTintColor = UIColor(hex: navTintColor)

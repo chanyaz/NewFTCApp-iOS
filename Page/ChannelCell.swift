@@ -23,6 +23,7 @@ class ChannelCell: CustomCell {
     @IBOutlet weak var border: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var sign: UILabel!
+    @IBOutlet weak var overlayImage: UIImageView!
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
@@ -70,6 +71,14 @@ class ChannelCell: CustomCell {
             itemCell?.loadImage(type: "thumbnail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
                 self?.imageView.image = cellContentItem.thumbnailImage
             })
+        }
+        
+        
+        if let image = UIImage(named: "VideoPlayOverlay"),
+            itemCell?.type == "video"{
+            overlayImage.image = image
+        } else {
+            overlayImage.image = nil
         }
         
     }

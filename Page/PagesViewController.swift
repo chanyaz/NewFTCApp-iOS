@@ -88,7 +88,5 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
         self.view.backgroundColor = UIColor(hex: Color.Content.background)
     }
-    
-    
 }
 

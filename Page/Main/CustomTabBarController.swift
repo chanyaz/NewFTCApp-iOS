@@ -65,20 +65,16 @@ class CustomTabBarController: UITabBarController {
     
     
     // MARK: On mobile phone, lock the screen to portrait only
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            return UIInterfaceOrientationMask.all
+            return .all
         } else {
-            return UIInterfaceOrientationMask.portrait
+            return .portrait
         }
     }
     
-    override var shouldAutorotate : Bool {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return true
-        } else {
-            return false
-        }
+    override var shouldAutorotate: Bool {
+        return true
     }
     
     

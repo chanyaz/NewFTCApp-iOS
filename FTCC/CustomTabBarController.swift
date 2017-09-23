@@ -33,9 +33,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     
     private var playerItems: [AVPlayerItem]? = []
     private var urls: [URL] = []
-    private var urlStrings: [String]? = []
+//    private var urlStrings: [String]? = []
     private var urlOrigStrings: [String] = []
-    private var urlTempStrings: [String] = []
+//    private var urlTempStrings: [String] = []
     private var urlAssets: [AVURLAsset]? = []
     
     
@@ -564,39 +564,43 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     private func getPlayingUrl(){
-        var urlAsset : URL?
+//        var urlAsset : URL?
         var playerItemTemp : AVPlayerItem?
+        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
         if let fetchAudioResults = fetchAudioResults {
-            for (_, item0) in fetchAudioResults[0].items.enumerated() {
-                print("urlString000---\(item0)")
-                //        for (_, item0) in fetchesAudioObject.fetchResults[0].items.enumerated() {
-                if var fileUrl = item0.audioFileUrl {
+            for (index, item0) in fetchAudioResults[0].items.enumerated() {
+                if let fileUrl = item0.audioFileUrl {
                     urlOrigStrings.append(fileUrl)
-                    fileUrl = fileUrl.replacingOccurrences(of: " ", with: "%20")
-                    fileUrl = fileUrl.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
-                    urlTempStrings.append(fileUrl) //处理后的audioUrlString
-                    fileUrl = fileUrl.replacingOccurrences(of: "%20", with: "")
-                    urlStrings?.append(fileUrl)
-                    urlAsset = URL(string: fileUrl)
-                    playerItemTemp = AVPlayerItem(url: urlAsset!) //可以用于播放的playItem
-                    playerItems?.append(playerItemTemp!)
+                    if audioUrlString == fileUrl{
+                        print("urlString audioUrlString111---\(String(describing: audioUrlString))")
+                        playingUrlStr = fileUrl
+                        playingIndex = index
+                    }
+                    if let urlAsset = URL(string: fileUrl){
+//                        urlAsset = URL(string: fileUrl)
+                        playerItemTemp = AVPlayerItem(url: urlAsset) //可以用于播放的playItem
+                        playerItems?.append(playerItemTemp!)
+                    }
+   
                 }
             }
         }
         print("urlString playerItems000---\(String(describing: playerItems))")
         
-        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
-        for (urlIndex,urlTempString) in (urlOrigStrings.enumerated()) {
-            print("urlString audioUrlString--\(audioUrlString)")
-            print("urlString audioUrlString urlTempString--\(urlTempString)")
-            if audioUrlString != "" {
-                if audioUrlString == urlTempString{
-                    print("urlString audioUrlString111---\(String(describing: audioUrlString))")
-                    playingUrlStr = urlTempString
-                    playingIndex = urlIndex
-                }
-            }
-        }
+//        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
+//        if urlOrigStrings.count>0 {
+//            for (urlIndex,urlOrigString) in (urlOrigStrings.enumerated()) {
+//                print("urlString audioUrlString--\(audioUrlString)")
+//                print("urlString audioUrlString urlTempString--\(urlOrigString)")
+//                if audioUrlString != "" {
+//                    if audioUrlString == urlOrigString{
+//                        print("urlString audioUrlString111---\(String(describing: audioUrlString))")
+//                        playingUrlStr = urlOrigString
+//                        playingIndex = urlIndex
+//                    }
+//                }
+//            }
+//        }
         print("urlString playingIndex222--\(playingIndex)")
         TabBarAudioContent.sharedInstance.playingIndex = playingIndex
         
@@ -625,10 +629,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         urlOrigStrings = []
         parseAudioMessage()
         getPlayingUrl()
-        loadUrl()
-        addDownloadObserve()
-//        playingCenter()
-        enableBackGroundMode()
+//        loadUrl()
+//        addDownloadObserve()
+//        enableBackGroundMode()
         //  getPlayingUrl()需要放在parseAudioMessage()后面，不然第一次audioUrlString为空
     }
     

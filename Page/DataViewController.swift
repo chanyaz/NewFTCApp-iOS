@@ -201,7 +201,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
-        FilterDataWithAudioUrl()
+        filterDataWithAudioUrl()
 //        TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         
         
@@ -759,8 +759,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     var openPlayOne :Bool = false
     var audioUrlString:String = ""
-    //    var player = AudioContent.sharedInstance.player
-    //    var playerItem = AudioContent.sharedInstance.playerItem
     var player = TabBarAudioContent.sharedInstance.player
     var playerItem = TabBarAudioContent.sharedInstance.playerItem
     let nowPlayingCenter = NowPlayingCenter()
@@ -869,7 +867,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
     }
  
-    func FilterDataWithAudioUrl(){
+    func filterDataWithAudioUrl(){
         var resultsWithAudioUrl = [ContentSection]()
         let results = fetches.fetchResults
         for (_, section) in results.enumerated() {

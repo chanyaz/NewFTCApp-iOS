@@ -565,6 +565,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     }
     private func getPlayingUrl(){
 //        var urlAsset : URL?
+        playingIndex = 0
+        urlOrigStrings = []
         var playerItemTemp : AVPlayerItem?
         audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
         if let fetchAudioResults = fetchAudioResults {
@@ -625,11 +627,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }, completion: { (true) in
             print("open animate finish")
         })
-        playingIndex = 0
-        urlOrigStrings = []
         parseAudioMessage()
         getPlayingUrl()
-//        loadUrl()
+        loadUrl()
 //        addDownloadObserve()
 //        enableBackGroundMode()
         //  getPlayingUrl()需要放在parseAudioMessage()后面，不然第一次audioUrlString为空

@@ -32,7 +32,7 @@
         <!--Detail View Controller-->
         <scene sceneID="8jS-Yg-eeT">
             <objects>
-                <viewController storyboardIdentifier="Detail View" extendedLayoutIncludesOpaqueBars="YES" modalTransitionStyle="flipHorizontal" modalPresentationStyle="currentContext" hidesBottomBarWhenPushed="YES" id="naC-T6-XIm" customClass="DetailViewController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Detail View" modalTransitionStyle="flipHorizontal" modalPresentationStyle="currentContext" hidesBottomBarWhenPushed="YES" id="naC-T6-XIm" customClass="DetailViewController" customModule="Page" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5uS-gj-lpA"/>
                         <viewControllerLayoutGuide type="bottom" id="1bF-GV-FCk"/>
@@ -44,23 +44,27 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bc2-gr-Zq9">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem image="barButtonItem:YtK-AK-8Df:image" id="YtK-AK-8Df">
+                                    <barButtonItem image="Clip" id="YtK-AK-8Df">
                                         <connections>
                                             <action selector="save:" destination="naC-T6-XIm" id="XMm-5n-X9Y"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kpf-ts-v6Y"/>
-                                    <barButtonItem title="Item" id="ZU4-Aa-sN1"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="K4B-PP-9kJ"/>
-                                    <barButtonItem image="barButtonItem:x2W-Ox-VaF:image" id="x2W-Ox-VaF">
+                                    <barButtonItem image="Comment" id="x2W-Ox-VaF">
                                         <connections>
                                             <action selector="launchComment:" destination="naC-T6-XIm" id="z50-yh-cVk"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="1Rs-FA-NtB"/>
-                                    <barButtonItem image="barButtonItem:QUo-79-Rea:image" id="QUo-79-Rea">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="zUT-Ag-a6y"/>
+                                    <barButtonItem image="Share" id="QUo-79-Rea">
                                         <connections>
                                             <action selector="actionSheet:" destination="naC-T6-XIm" id="wI9-XR-8SL"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="1Rs-FA-NtB"/>
+                                    <barButtonItem image="FontSize" id="Adh-zQ-XUN">
+                                        <connections>
+                                            <action selector="openSetting:" destination="naC-T6-XIm" id="xQj-nn-kHB"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -77,6 +81,7 @@
                     <connections>
                         <outlet property="actionButton" destination="QUo-79-Rea" id="RkP-Hh-BaA"/>
                         <outlet property="bookMark" destination="x2W-Ox-VaF" id="qi4-DH-MB1"/>
+                        <outlet property="fontButton" destination="Adh-zQ-XUN" id="cFt-4k-r0A"/>
                         <outlet property="saveButton" destination="YtK-AK-8Df" id="gbh-As-uvB"/>
                         <outlet property="toolBar" destination="bc2-gr-Zq9" id="5gL-RI-qW5"/>
                     </connections>

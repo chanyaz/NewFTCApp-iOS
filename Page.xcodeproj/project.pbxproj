@@ -14,6 +14,7 @@
 		503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */; };
 		503A3B0A1EF4C9CD00FB6006 /* ChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */; };
 		5070EDF51EEBD425008A10CE /* ContentSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5070EDF41EEBD425008A10CE /* ContentSection.swift */; };
+		5088A7C91F76951400E72C25 /* Page copy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 602153851F397C660077A7AF /* Page copy-Info.plist */; };
 		50A704C31EEB689900660022 /* ContentFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C01EEB689900660022 /* ContentFetch.swift */; };
 		50A704C41EEB689900660022 /* ContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C11EEB689900660022 /* ContentItem.swift */; };
 		50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C21EEB689900660022 /* ContentFetchResults.swift */; };
@@ -1508,6 +1509,7 @@
 				F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */,
 				602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */,
 				602153771F397C650077A7AF /* ga.js in Resources */,
+				5088A7C91F76951400E72C25 /* Page copy-Info.plist in Resources */,
 				60F1A5261F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
 				6021537A1F397C650077A7AF /* LineCell.xib in Resources */,
 				50C31B421F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,

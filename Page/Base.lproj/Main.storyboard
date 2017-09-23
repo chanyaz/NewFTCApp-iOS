@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +19,7 @@
                         <viewControllerLayoutGuide type="bottom" id="IfR-02-kHw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="502-Ir-ELC">
-                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -38,7 +38,7 @@
                         <viewControllerLayoutGuide type="bottom" id="4ul-bL-qlc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="VwW-z9-Cp0">
-                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -57,7 +57,7 @@
                         <viewControllerLayoutGuide type="bottom" id="8Zv-Qw-d7L"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wNt-SS-31s">
-                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -76,7 +76,7 @@
                         <viewControllerLayoutGuide type="bottom" id="dUM-sn-6cw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Lqt-nf-JAs">
-                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -96,7 +96,7 @@
                         <viewControllerLayoutGuide type="bottom" id="KKN-uw-mrM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zui-UD-yem">
-                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -150,8 +150,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="1bF-GV-FCk" firstAttribute="top" secondItem="bc2-gr-Zq9" secondAttribute="bottom" id="5tP-Al-n6J"/>
                             <constraint firstItem="bc2-gr-Zq9" firstAttribute="leading" secondItem="Vqa-bC-mKn" secondAttribute="leading" id="LTF-h2-fsk"/>
-                            <constraint firstAttribute="bottom" secondItem="bc2-gr-Zq9" secondAttribute="bottom" id="OKh-6D-8eP"/>
                             <constraint firstAttribute="trailing" secondItem="bc2-gr-Zq9" secondAttribute="trailing" id="TWs-VG-yVG"/>
                         </constraints>
                     </view>
@@ -525,7 +525,7 @@
                                 </constraints>
                             </pickerView>
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uk7-Uk-fzg">
-                                <rect key="frame" x="139" y="609" width="97" height="50"/>
+                                <rect key="frame" x="141" y="611" width="93" height="48"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <inset key="contentEdgeInsets" minX="20" minY="8" maxX="20" maxY="8"/>
                                 <state key="normal" title="保存"/>
@@ -695,7 +695,7 @@
                     <tabBarItem key="tabBarItem" title="新闻" image="NewsDim" selectedImage="News" id="o6H-tl-sO3"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="N3C-QK-VoA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -754,7 +754,7 @@
                     <tabBarItem key="tabBarItem" tag="1" title="每日英语" image="EnglishDim" selectedImage="English" id="Oqv-LY-RGD"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="3tL-ZB-8jq">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -773,7 +773,7 @@
                     <tabBarItem key="tabBarItem" tag="2" title="FT商学院" image="AcademyDim" selectedImage="Academy" id="T8K-4b-0vj"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="BXf-ud-JED">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -792,7 +792,7 @@
                     <tabBarItem key="tabBarItem" tag="3" title="视频" image="VideoDim" selectedImage="Video" id="Hoc-Bx-w6J"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZoQ-TI-cN8">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -811,7 +811,7 @@
                     <tabBarItem key="tabBarItem" tag="4" title="我的FT" image="MyFTDim" selectedImage="MyFT" id="ddG-YK-4fi"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Sg5-kk-PM6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -918,7 +918,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="3MB-ZJ-3dS"/>
                                     <barButtonItem image="DownloadButton" style="plain" id="VTh-Yh-dFl">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="c1b-Uo-59M" customClass="UIButtonEnhanced" customModule="Page" customModuleProvider="target">
-                                            <rect key="frame" x="258" y="4" width="36" height="36"/>
+                                            <rect key="frame" x="257" y="4" width="36" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <state key="normal" image="DownloadButton"/>
@@ -982,7 +982,7 @@
         <image name="Academy" width="25" height="25"/>
         <image name="AcademyDim" width="25" height="25"/>
         <image name="AudioShare" width="19" height="20"/>
-        <image name="BigPlayButton" width="48" height="48"/>
+        <image name="BigPlayButton" width="33" height="33"/>
         <image name="Clip" width="20" height="18"/>
         <image name="CloseBtn" width="13" height="13"/>
         <image name="Comment" width="19" height="18"/>

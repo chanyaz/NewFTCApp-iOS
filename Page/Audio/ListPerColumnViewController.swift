@@ -132,14 +132,14 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         let row = tableView.indexPathForSelectedRow?.row
         TabBarAudioContent.sharedInstance.playingIndex = row
         
-        if (storyboard?.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController) != nil
-        {
+//        if (storyboard?.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController) != nil
+//        {
 //            audioPlayerBar.item = fetchListResults?[0].items[indexPath.row]
             TabBarAudioContent.sharedInstance.item = fetchListResults?[0].items[indexPath.row]
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
             self.dismiss(animated: true)
-        }
+//        }
         
     }
     //init 不能少，写在viewDidLoad中不生效

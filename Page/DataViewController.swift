@@ -762,9 +762,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var player = TabBarAudioContent.sharedInstance.player
     var playerItem = TabBarAudioContent.sharedInstance.playerItem
     let nowPlayingCenter = NowPlayingCenter()
-    
+    let playerObserver = PlayerObserver()
     @objc func openPlay(sender: UIButton?){
-         PlayerObserver().removePlayerItemObservers(self, object: playerItem)
+         playerObserver.removePlayerItemObservers(self, object: playerItem)
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
         
@@ -797,7 +797,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         //     修改的代码结束
         
         TabBarAudioContent.sharedInstance.player = player
-        self.nowPlayingCenter.updateTimeForPlayerItem(player)
+//        self.nowPlayingCenter.updateTimeForPlayerItem(player)
         
         //    获取用户点击的音频的url，下面url这个目前获取的为空，不对
         //        let url = (customTabBarController.playerItem?.asset as? AVURLAsset)?.url
@@ -850,11 +850,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
 //            addPlayerItemObservers()
             
-            PlayerObserver().addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
+            playerObserver.addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
             if let title = TabBarAudioContent.sharedInstance.body["title"],let _ = player{
                 print("NowPlayingCenter updatePlayingInfo \(title)")
 //                此函数没执行，why？
-                NowPlayingCenter().updatePlayingCenter()
+//                NowPlayingCenter().updatePlayingCenter()
 //                NowPlayingCenter().updatePlayingInfo(player, title:title)
             }
         }else{
@@ -884,12 +884,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
 //        print("TabBarAudioContent fetchResults 0\(String(describing: resultsWithAudioUrl[0].items[0].audioFileUrl))")
     }
     
-//    func removePlayerItemObservers() {
-//        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-//    }
-//    func addPlayerItemObservers() {
-//        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-//    }
+
     @objc func playerDidFinishPlaying() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: CustomTabBarController())
         TabBarAudioContent.sharedInstance.player?.pause()

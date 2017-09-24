@@ -45,7 +45,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     @IBOutlet weak var playStatus: UILabel!
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     @IBOutlet weak var playerView: UIView!
-    @IBOutlet weak var decorationBottomView: UIView!
     
     @IBAction func ButtonPlayPause(_ sender: UIBarButtonItem) {
         if let player = player {
@@ -280,7 +279,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             playerView.backgroundColor = theme
             toolBar.backgroundColor = theme
             toolBar.barTintColor = theme
-            decorationBottomView.backgroundColor = theme
         }
     }
     

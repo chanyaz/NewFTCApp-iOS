@@ -386,7 +386,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         let previousLocation = touch.previousLocation(in: self.tabView.smallView)
         print("touches Moved tabView.frame.origin.y\(tabView.frame.origin.y)")
         let offsetY = location.y - previousLocation.y
-        if tabView.frame.origin.y<0{
+        if tabView.frame.origin.y<height/2{
             self.tabView.transform = CGAffineTransform(translationX: 0,y: -self.view.bounds.height)
         }else{
             tabView.transform = tabView.transform.translatedBy(x: 0, y: offsetY)

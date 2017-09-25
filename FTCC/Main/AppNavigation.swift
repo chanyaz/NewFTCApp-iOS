@@ -19,8 +19,8 @@ struct AppNavigation {
             "title": "FT iDeas",
             "navColor": "#333333",
             "navBackGroundColor": "#FFFFFF",
-            "navBorderColor": "#000000",
-            "navBorderWidth": "0.5",
+            "navBorderColor": "#b3a9a0",
+            "navBorderWidth": "0.1",
             "isNavLightContent": false,
             "Channels": [
                 ["title": "文章",

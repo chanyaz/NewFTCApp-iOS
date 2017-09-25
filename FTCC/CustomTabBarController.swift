@@ -83,7 +83,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+        let homeTabBarHeight: CGFloat = 95
         let hideImage = UIImage(named:"HideBtn")
         let hideHeight = (hideImage?.size.height)!*1.1
         let hideWidth = (hideImage?.size.width)!*1.1
@@ -174,7 +174,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         share.addTarget(self, action: #selector(shareAction), for: UIControlEvents.touchUpInside)
         
         
-        webAudioView.frame = CGRect(x:0,y:90,width:width,height:height)
+        webAudioView.frame = CGRect(x:0,y:homeTabBarHeight,width:width,height:height)
         webAudioView.isOpaque = true
         webAudioView.layer.backgroundColor = UIColor.yellow.cgColor
         webAudioView.backgroundColor = UIColor.red
@@ -215,8 +215,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
 
         
 
-        viewWithLanguages.frame = CGRect(x:0,y:0,width:width,height:90)
-        audioViewWithContent.frame = CGRect(x:0,y:90,width:width,height:height)
+        viewWithLanguages.frame = CGRect(x:0,y:0,width:width,height:homeTabBarHeight)
+        audioViewWithContent.frame = CGRect(x:0,y:homeTabBarHeight,width:width,height:height)
         audioView.frame = CGRect(x:0,y:height - audioViewHeight,width:width,height:audioViewHeight)
         viewWithLanguages.backgroundColor = UIColor.white
         viewWithLanguages.layer.addBorder(edge: UIRectEdge.bottom, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
@@ -264,7 +264,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         
         tabView.backgroundColor = UIColor.clear
-        tabView.frame = CGRect(x:0,y:height-90,width:width,height:height+90)
+        tabView.frame = CGRect(x:0,y:height-homeTabBarHeight,width:width,height:height+homeTabBarHeight)
         
         view.addSubview(self.tabView)
         
@@ -280,7 +280,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         self.webAudioView.translatesAutoresizingMaskIntoConstraints = false
         self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
         self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.tabView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.audioViewWithContent, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 90))
+        self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.audioViewWithContent, attribute: NSLayoutAttribute.top, multiplier: 1, constant: homeTabBarHeight))
         self.tabView.addConstraint(NSLayoutConstraint(item: webAudioView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
         
         self.audioProgressSlider.translatesAutoresizingMaskIntoConstraints = false
@@ -626,14 +626,14 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             if player?.rate != 0 && player?.error == nil {
                 print("palyer item pause)")
                 audioplayAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
-                tabView.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+                tabView.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
                 TabBarAudioContent.sharedInstance.isPlaying = false
                 player?.pause()
                 
             } else {
                 print("playerItem play)")
                 audioplayAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
-                tabView.playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
+                tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
                 TabBarAudioContent.sharedInstance.isPlaying = true
                 player?.play()
                 player?.replaceCurrentItem(with: playerItem)
@@ -694,7 +694,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             }
             
             self.audioplayAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
-            self.tabView.playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
+            self.tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
             // MARK: - If user is using wifi, buffer the audio immediately
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
@@ -763,11 +763,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     public func updatePlayButtonUI() {
         if TabBarAudioContent.sharedInstance.isPlaying{
             audioplayAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
-            tabView.playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
+            tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
             
         }else{
             audioplayAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
-            tabView.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+            tabView.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
         }
     }
     private func updatePlayTime(current time: CMTime, duration: CMTime) {
@@ -1145,14 +1145,14 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             print("resume speech")
             self?.player?.play()
             self?.audioplayAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
-            self?.tabView.playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
+            self?.tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
             return .success
         }
         MPRemoteCommandCenter.shared().pauseCommand.addTarget {[weak self] event in
             print ("pause speech")
             self?.player?.pause()
             self?.audioplayAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
-            self?.tabView.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+            self?.tabView.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
             
             return .success
         }

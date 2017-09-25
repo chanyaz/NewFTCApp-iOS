@@ -24,16 +24,20 @@ class CustomTab: UIView {
         self.frame = frame
         //        let height = UIScreen.main.bounds.height
         let width = UIScreen.main.bounds.width
-        
+        let homePlayBtn = UIImage(named:"HomePlayBtn")
+        let homePlayBtnHeight = (homePlayBtn?.size.height)!
+        let homePlayBtnWidth = (homePlayBtn?.size.width)!
+        let homeTabBarHeight: CGFloat = 95
+        let bottomMargin: CGFloat = 8
 //        playAndPauseButton.frame = CGRect(x:10,y:36,width:50,height:50)
         playAndPauseButton.attributedTitle(for: UIControlState.normal)
-        playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+        playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
 
         self.playAndPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -5))
+        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -12))
         self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 20))
-        self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 40))
-        self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 40))
+        self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: homePlayBtnWidth))
+        self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: homePlayBtnHeight))
         
         
 //        playStatus.frame = CGRect(x:70,y:36,width:250,height:50)
@@ -66,7 +70,7 @@ class CustomTab: UIView {
         
 
         self.progressSlider.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -50))
+        self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -70))
         self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playTime, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 15))
         self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.playDuration, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -15))
@@ -91,7 +95,7 @@ class CustomTab: UIView {
         self.smallView.addSubview(playDuration)
 //        self.smallView.addSubview(upSwipeButton)
         smallView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
-        smallView.frame = CGRect(x:0,y:0,width:width,height:90)
+        smallView.frame = CGRect(x:0,y:0,width:width,height:homeTabBarHeight)
         self.addSubview(smallView)
         
         

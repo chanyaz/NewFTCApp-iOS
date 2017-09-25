@@ -12,6 +12,9 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     //private var channelScroller: UICollectionView = UICollectionView()
     private let channelScrollerHeight: CGFloat = 44
+    let cellMinWidth: CGFloat = 50
+    
+    
     
     var channelScrollerView: UICollectionView?
     var isUserPanningEnd = false
@@ -91,33 +94,50 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         
         
         //MARK: - if there's only one channel, on need to show navigation scroller
-//        if pageData.count > 1 {
-            // MARK - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-            let fullPageViewRect = self.view.bounds
-            let pageViewRect = CGRect(x: 0, y: channelScrollerHeight, width: fullPageViewRect.width, height: fullPageViewRect.height - channelScrollerHeight)
-            self.pageViewController!.view.frame = pageViewRect
-            
-            // MARK: - Add channelScroller
-            let channelScrollerRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: channelScrollerHeight)
-            let flowLayout = UICollectionViewFlowLayout()
-            channelScrollerView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
-            channelScrollerView?.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
-            //collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
+        //        if pageData.count > 1 {
+        // MARK - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+        let fullPageViewRect = self.view.bounds
+        let pageViewRect = CGRect(x: 0, y: channelScrollerHeight, width: fullPageViewRect.width, height: fullPageViewRect.height - channelScrollerHeight)
+        self.pageViewController!.view.frame = pageViewRect
+        
+        // MARK: - Add channelScroller
+        let channelScrollerRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: channelScrollerHeight)
+        let flowLayout = UICollectionViewFlowLayout()
+        channelScrollerView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
+        channelScrollerView?.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
+        //collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
+        
+        
+        let numberOfChannels = CGFloat(pageData.count)
+        if numberOfChannels > 0 {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
-            flowLayout.estimatedItemSize = CGSize(width: 50, height: channelScrollerHeight)
-            //flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            channelScrollerView?.delegate = self
-            channelScrollerView?.dataSource = self
-            channelScrollerView?.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
-            channelScrollerView?.showsHorizontalScrollIndicator = false
-            //channelScrollerView?.collectionViewLayout.sectionInset =
-            //channelScrollerView.backgroundColor = UIColor(hex: Color.Tab.background)
-            if let channelScrollerView = channelScrollerView {
-                self.view.addSubview(channelScrollerView)
+            let minWidth = max(view.frame.width / numberOfChannels, cellMinWidth)
+            if minWidth > cellMinWidth && numberOfChannels < 4 {
+                print ("The cell width is now \(minWidth)")
+            } else {
+                flowLayout.estimatedItemSize = CGSize(width: cellMinWidth, height: channelScrollerHeight)
             }
-//        }
+        }
+        
+        
+        //flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        channelScrollerView?.delegate = self
+        channelScrollerView?.dataSource = self
+        channelScrollerView?.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
+        channelScrollerView?.showsHorizontalScrollIndicator = false
+        let thickness = Color.ChannelScroller.bottomBorderWidth
+        if thickness > 0 {
+            let borderColor = UIColor(hex: Color.Content.border)
+            channelScrollerView?.layer.addBorder(edge: .bottom, color: borderColor, thickness: thickness)
+        }
+        //channelScrollerView?.collectionViewLayout.sectionInset =
+        //channelScrollerView.backgroundColor = UIColor(hex: Color.Tab.background)
+        if let channelScrollerView = channelScrollerView {
+            self.view.addSubview(channelScrollerView)
+        }
+        //        }
         
         
         
@@ -177,7 +197,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         }
     }
     
-
+    
     
     @objc public func showChat() {
         if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
@@ -218,7 +238,12 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 50, height: channelScrollerHeight)
+        let numberOfChannels = CGFloat(pageData.count)
+        if numberOfChannels > 0 {
+            let minWidth = max(view.frame.width / numberOfChannels, cellMinWidth)
+            return CGSize(width: minWidth, height: channelScrollerHeight)
+        }
+        return CGSize(width: cellMinWidth, height: channelScrollerHeight)
     }
     
     func goToPage(_ index: Int, isUserPanningEnd: Bool) {

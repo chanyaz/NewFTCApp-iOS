@@ -48,15 +48,10 @@ struct Color {
         static let text = "#565656"
         static let highlightedText = "#c0282c"
         static let background = "#fff9f5"
-        //static let background = "#e8dbcb"
-        
-        //static let background = "#FFFFFF"
-        
+        static let showBottomBorder = false
+        static let bottomBorderWidth: CGFloat = 0
     }
     
-    struct Navigation {
-        static let border = "#d5c6b3"
-    }
     
     struct Ad {
         static let background = "#f6e9d8"

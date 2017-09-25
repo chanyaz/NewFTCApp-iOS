@@ -17,6 +17,8 @@ struct AppNavigation {
             "title-image":"FTC-Header",
             "navColor": "#333333",
             "navBackGroundColor": "#f7e9d8",
+            "navBorderColor": "#d5c6b3",
+            "navBorderWidth": "1",
             "isNavLightContent": false,
             "navRightItem": "Search",
             "navLeftItem": "Chat",

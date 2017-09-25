@@ -50,14 +50,8 @@ struct Color {
         static let text = "#000000"
         static let highlightedText = "#12a5b3"
         static let background = "#FFFFFF"
-        //static let background = "#e8dbcb"
-        
-        //static let background = "#FFFFFF"
-        
-    }
-    
-    struct Navigation {
-        static let border = "#000000"
+        static let showBottomBorder = true
+        static let bottomBorderWidth: CGFloat = 0.3
     }
     
     struct Ad {
@@ -84,6 +78,7 @@ struct Color {
             }
         }
     }
+    
     struct AudioList {
         static let tint = "#29aeba"
         static let border = "#000000"

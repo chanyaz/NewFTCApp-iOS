@@ -351,15 +351,15 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         super.viewDidLoad()
         
         let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height
-        let audioViewHeight:CGFloat = 220
+//        let height = UIScreen.main.bounds.height
+//        let audioViewHeight:CGFloat = 220
         let buttonWidth:CGFloat = 19
-        let buttonHeight: CGFloat = 19
+//        let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
-        let spaceBetweenSliderAndForward: CGFloat = 65
+       
         let spaceBetweenListAndView: CGFloat = 30
-        let spaceBetweenListAndForward: CGFloat = 10
+        
        
         //        退出列表不会运行此处，但退出自己到tab，再从tab进入会运行此函数
         self.playlist.translatesAutoresizingMaskIntoConstraints = false

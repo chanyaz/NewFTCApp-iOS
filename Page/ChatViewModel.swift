@@ -120,7 +120,7 @@ class CellData {
     var defaultImageHeight = CGFloat(135)//图片消息还未获取到图片数据时默认图片高度
     //var maxImageWidth = CGFloat(200) //图像消息的图片最大宽度
     //var maxImageHeight = CGFloat(400) //图像消息的图片最大高度
-    var coverWidth = CGFloat(240)
+    var coverWidth = CGFloat(240)//TODO:待修改，因为会超出iPhone 5的边界
     var coverHeight = CGFloat(135)//Cover图像统一是16*19的，这里统一为240*135
     
     //根据（文字长短）动态计算得到的图形实际尺寸，后文会计算

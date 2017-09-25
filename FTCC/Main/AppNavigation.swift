@@ -16,19 +16,25 @@ struct AppNavigation {
     
     private static let appMap = [
         "News": [
-            "title": "FTCC",
+            "title": "FT iDeas",
             "navColor": "#333333",
             "navBackGroundColor": "#FFFFFF",
             "isNavLightContent": false,
             "Channels": [
                 ["title": "文章",
                  "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
-//                 "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=radio&dfadfadfadfadf",
-//                "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
                  "compactLayout": "All Cover",
                  "regularLayout": "",
                  "url":"http://www.ftchinese.com/channel/datanews.html",
                  "screenName":"homepage/ftcc"
+                ],
+                [
+                    "title": "专栏",
+                    "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=mbastory",
+                    "url":"http://www.ftchinese.com/channel/mba.html",
+                    "screenName":"ftacademy/read",
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox"
                 ]
             ]
         ]
@@ -84,5 +90,5 @@ struct AppNavigation {
         }
         return themeColor
     }
-
+    
 }

@@ -14,7 +14,6 @@
 		503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */; };
 		503A3B0A1EF4C9CD00FB6006 /* ChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */; };
 		5070EDF51EEBD425008A10CE /* ContentSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5070EDF41EEBD425008A10CE /* ContentSection.swift */; };
-		5088A7C91F76951400E72C25 /* Page copy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 602153851F397C660077A7AF /* Page copy-Info.plist */; };
 		50A704C31EEB689900660022 /* ContentFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C01EEB689900660022 /* ContentFetch.swift */; };
 		50A704C41EEB689900660022 /* ContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C11EEB689900660022 /* ContentItem.swift */; };
 		50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C21EEB689900660022 /* ContentFetchResults.swift */; };
@@ -446,7 +445,6 @@
 		6019A9D01F4C457D00B8FB69 /* FollowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowCell.xib; sourceTree = "<group>"; };
 		601AC21A1F4870780004196A /* search.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = search.html; path = FTChinese/search.html; sourceTree = "<group>"; };
 		602153841F397C660077A7AF /* FTCC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FTCC.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		602153851F397C660077A7AF /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "/Users/oliverzhang/sandbox/NewFTCApp-iOS/Page copy-Info.plist"; sourceTree = "<absolute>"; };
 		602153871F3985660077A7AF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Page/Main.storyboard; sourceTree = "<group>"; };
 		6021538A1F3990880077A7AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6021538E1F39990E0077A7AF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -561,6 +559,7 @@
 		AF8E93081F125889007CD6DE /* AttributedArticle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedArticle.swift; sourceTree = "<group>"; };
 		AFD8AF5D1F380A2400508A91 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneTalkCell.swift; sourceTree = "<group>"; };
+		F21309201F78A9BA0078A510 /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "../NewFTCApp-iOS9.15自主开发，在tab中加入audiocontroller，audiocontroller上面添加tabView/Page copy-Info.plist"; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutV.swift; sourceTree = "<group>"; };
 		F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotArticleCellRegular.swift; sourceTree = "<group>"; };
 		F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotArticleCellRegular.xib; sourceTree = "<group>"; };
@@ -811,8 +810,8 @@
 			isa = PBXGroup;
 			children = (
 				602153871F3985660077A7AF /* Main.storyboard */,
+				F21309201F78A9BA0078A510 /* Page copy-Info.plist */,
 				602153931F399AC80077A7AF /* Assets.xcassets */,
-				602153851F397C660077A7AF /* Page copy-Info.plist */,
 				6021538E1F39990E0077A7AF /* LaunchScreen.storyboard */,
 				F2E090771F5A721E00F4409F /* CustomTab.swift */,
 				F2E090781F5A721E00F4409F /* CustomTabBarController.swift */,
@@ -1403,6 +1402,11 @@
 					};
 					602153091F397C650077A7AF = {
 						DevelopmentTeam = CAEDT8EKGV;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 					60D3C8BC1EBFF5DC0085BEF6 = {
 						CreatedOnToolsVersion = 8.3.1;
@@ -1509,7 +1513,6 @@
 				F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */,
 				602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */,
 				602153771F397C650077A7AF /* ga.js in Resources */,
-				5088A7C91F76951400E72C25 /* Page copy-Info.plist in Resources */,
 				60F1A5261F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
 				6021537A1F397C650077A7AF /* LineCell.xib in Resources */,
 				50C31B421F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,
@@ -2084,7 +2087,6 @@
 			baseConfigurationReference = 580171059509F2486AE61ABB /* Pods-FTCC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Page/Page.entitlements;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
 				INFOPLIST_FILE = "Page copy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
@@ -2101,7 +2103,6 @@
 			baseConfigurationReference = 25F43C0D286D295E626A3347 /* Pods-FTCC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Page/Page.entitlements;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
 				INFOPLIST_FILE = "Page copy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;

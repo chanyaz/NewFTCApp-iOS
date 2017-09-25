@@ -544,7 +544,7 @@
                                 <items>
                                     <barButtonItem style="plain" id="WZ4-Wo-PfJ">
                                         <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="3pv-fd-CPg">
-                                            <rect key="frame" x="16" y="7" width="266" height="30"/>
+                                            <rect key="frame" x="16" y="7" width="25" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -553,8 +553,8 @@
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="80P-E8-9Dx"/>
                                     <barButtonItem style="plain" id="bab-Ef-f4z">
-                                        <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nNa-b1-EUe">
-                                            <rect key="frame" x="282" y="7" width="22" height="30"/>
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nNa-b1-EUe">
+                                            <rect key="frame" x="268" y="7" width="36" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" title="Send"/>
                                             <connections>

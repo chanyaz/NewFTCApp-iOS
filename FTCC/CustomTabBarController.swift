@@ -240,7 +240,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
         
         audioView.addSubview(deleteButton)
-        audioView.addSubview(audioPlayStatus)
+//        audioView.addSubview(audioPlayStatus)
         audioView.addSubview(audioplayAndPauseButton)
         audioView.addSubview(audioProgressSlider)
         audioView.addSubview(audioPlayTime)
@@ -799,7 +799,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         //        点击list一次也会继续监听，值更新了，但是audioPlayStatus.text没有变化？应该跟监听位置有关系？
         print("how much updateMiniPlay\(String(describing: TabBarAudioContent.sharedInstance.audioHeadLine))")
         audioPlayStatus.text = TabBarAudioContent.sharedInstance.audioHeadLine
-        self.tabView.playStatus.text = "TabBarAudioContent.sharedInstance.audioHeadLine"
+        self.tabView.playStatus.text = TabBarAudioContent.sharedInstance.audioHeadLine
         
         
         updateProgressSlider()

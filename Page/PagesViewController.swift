@@ -78,8 +78,20 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
             if let navTintColor = AppNavigation.getNavigationProperty(for: currentTabName, of: "navBackGroundColor") {
                 navigationController?.navigationBar.barTintColor = UIColor(hex: navTintColor)
                 navigationController?.navigationBar.setBackgroundImage(UIImage.colorForNavBar(color: UIColor(hex: navTintColor)), for: .default)
-                navigationController?.navigationBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Navigation.border))
             }
+            if let navBorderColor = AppNavigation.getNavigationProperty(for: currentTabName, of: "navBorderColor"),
+                let navBorderWidth = AppNavigation.getNavigationProperty(for: currentTabName, of: "navBorderWidth")
+            {
+                let borderColor = UIColor(hex: navBorderColor)
+                let thickness: CGFloat
+                if let doubleValue = Double(navBorderWidth) {
+                    thickness = CGFloat(doubleValue)
+                } else {
+                    thickness = 0
+                }
+                navigationController?.navigationBar.layer.addBorder(edge: .bottom, color: borderColor, thickness: thickness)
+            }
+            
             if let navColor = AppNavigation.getNavigationProperty(for: currentTabName, of: "navColor") {
                 navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor(hex: navColor)]
                 navigationController?.navigationBar.tintColor = UIColor(hex: navColor)

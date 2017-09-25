@@ -17,7 +17,7 @@ PODS:
   - GoogleToolboxForMac/Defines (2.1.1)
   - GoogleToolboxForMac/NSData+zlib (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
-  - WechatOpenSDK (1.7.8)
+  - WechatOpenSDK (1.8.0)
 
 DEPENDENCIES:
   - Google/Analytics
@@ -32,7 +32,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   GoogleConversionTracking: ca8c89abda2bd28bb6472b316eeb4ece9264e279
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
-  WechatOpenSDK: ad1e7be1b66416df847ac50830c798b70c9e365e
+  WechatOpenSDK: 0ee07a8d492299d3e47372a33da5af26524a7576
 
 PODFILE CHECKSUM: f4bcdb1f909bbcf28710786bf861c6c62707827c
 

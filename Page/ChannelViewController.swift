@@ -12,6 +12,9 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     //private var channelScroller: UICollectionView = UICollectionView()
     private let channelScrollerHeight: CGFloat = 44
+    let cellMinWidth: CGFloat = 50
+
+    
     
     var channelScrollerView: UICollectionView?
     var isUserPanningEnd = false
@@ -103,10 +106,22 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             channelScrollerView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
             channelScrollerView?.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
             //collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
+
+        
+        let numberOfChannels = CGFloat(pageData.count)
+        if numberOfChannels > 0 {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
-            flowLayout.estimatedItemSize = CGSize(width: 50, height: channelScrollerHeight)
+            let minWidth = max(view.frame.width / numberOfChannels, cellMinWidth)
+            if minWidth > cellMinWidth && numberOfChannels < 4 {
+                print ("The cell width is now \(minWidth)")
+            } else {
+                flowLayout.estimatedItemSize = CGSize(width: cellMinWidth, height: channelScrollerHeight)
+            }
+        }
+        
+        
             //flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             channelScrollerView?.delegate = self
             channelScrollerView?.dataSource = self
@@ -218,7 +233,12 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 50, height: channelScrollerHeight)
+        let numberOfChannels = CGFloat(pageData.count)
+        if numberOfChannels > 0 {
+        let minWidth = max(view.frame.width / numberOfChannels, cellMinWidth)
+            return CGSize(width: minWidth, height: channelScrollerHeight)
+        }
+        return CGSize(width: cellMinWidth, height: channelScrollerHeight)
     }
     
     func goToPage(_ index: Int, isUserPanningEnd: Bool) {

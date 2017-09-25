@@ -31,7 +31,7 @@ class TabBarAudioContent {
     var items = [ContentItem]()
     var mode:Int?
     var playingIndex:Int?
-
+    
 }
 
 

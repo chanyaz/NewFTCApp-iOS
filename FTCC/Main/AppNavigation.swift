@@ -16,7 +16,7 @@ struct AppNavigation {
     
     private static let appMap = [
         "News": [
-            "title": "FTCC",
+            "title": "FT iDeas",
             "navColor": "#333333",
             "navBackGroundColor": "#FFFFFF",
             "isNavLightContent": false,

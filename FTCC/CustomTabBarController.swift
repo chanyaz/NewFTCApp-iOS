@@ -33,9 +33,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     
     private var playerItems: [AVPlayerItem]? = []
     private var urls: [URL] = []
-    private var urlStrings: [String]? = []
+//    private var urlStrings: [String]? = []
     private var urlOrigStrings: [String] = []
-    private var urlTempStrings: [String] = []
+//    private var urlTempStrings: [String] = []
     private var urlAssets: [AVURLAsset]? = []
     
     
@@ -202,7 +202,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         audioPlayStatus.text = "audio单曲鉴赏"
         audioPlayStatus.textColor = UIColor.white
-        //        audioPlayStatus.frame = CGRect(x:70,y:10,width:width,height:50)
+                audioPlayStatus.frame = CGRect(x:70,y:10,width:width,height:50)
         
         deleteButton.frame = CGRect(x:width-120,y:10,width:40,height:40)
         deleteButton.setImage(UIImage(named:"DeleteButton"), for: UIControlState.normal)
@@ -232,8 +232,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         languages.layer.cornerRadius = 5
         languages.layer.masksToBounds = true
         let segAttributes: NSDictionary = [
-            NSForegroundColorAttributeName: UIColor.black,
-            NSFontAttributeName: UIFont(name: "Avenir-MediumOblique", size: 14)!
+            NSAttributedStringKey.foregroundColor: UIColor.black,
+            NSAttributedStringKey.font: UIFont(name: "Avenir-MediumOblique", size: 14)!
         ]
         languages.setTitleTextAttributes(segAttributes as [NSObject : AnyObject], for: UIControlState.selected)
         
@@ -423,7 +423,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         print("how much time did view appear?")
         getLastPlayAudio()
     }
-    func switchToPreAudio(_ sender: UIButton) {
+   @objc func switchToPreAudio(_ sender: UIButton) {
         count = (urlOrigStrings.count)
         removePlayerItemObservers()
         print("urlString playingIndex pre\(playingIndex)")
@@ -441,7 +441,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
         
     }
-    func switchToNextAudio(_ sender: UIButton) {
+  @objc  func switchToNextAudio(_ sender: UIButton) {
         count = (urlOrigStrings.count)
         if fetchAudioResults != nil {
             
@@ -459,28 +459,28 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             
         }
     }
-    func skipForward(_ sender: UIButton) {
+   @objc func skipForward(_ sender: UIButton) {
         let currentSliderValue = self.audioProgressSlider.value
         let currentTime = CMTimeMake(Int64(currentSliderValue + 15), 1)
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
         self.audioProgressSlider.value = currentSliderValue + 15
         self.tabView.progressSlider.value = currentSliderValue + 15
     }
-    func skipBackward(_ sender: UIButton) {
+   @objc func skipBackward(_ sender: UIButton) {
         let currentSliderValue = self.audioProgressSlider.value
         let currentTime = CMTimeMake(Int64(currentSliderValue - 15), 1)
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
         self.audioProgressSlider.value = currentSliderValue - 15
         self.tabView.progressSlider.value = currentSliderValue - 15
     }
-    func sliderValueChanged(_ sender: UISlider) {
+   @objc func sliderValueChanged(_ sender: UISlider) {
         let currentValue = sender.value
         let currentTime = CMTimeMake(Int64(currentValue), 1)
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
         NowPlayingCenter().updatePlayingCenter()
     }
     
-    func listAction(){
+   @objc func listAction(){
         if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
             listPerColumnViewController.fetchListResults = TabBarAudioContent.sharedInstance.fetchResults
             listPerColumnViewController.modalPresentationStyle = .custom
@@ -488,7 +488,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             
         }
     }
-    func downLoadAction(_ sender: Any){
+   @objc func downLoadAction(_ sender: Any){
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
             audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
@@ -505,7 +505,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     var isLove:Bool = false
-    func favorite(_ sender: Any) {
+    @objc func favorite(_ sender: Any) {
         if !isLove{
             self.love.setImage(UIImage(named:"Clip"), for: UIControlState.normal)
             isLove = true
@@ -515,13 +515,13 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     
-    func shareAction(){
+    @objc func shareAction(){
         item = TabBarAudioContent.sharedInstance.item
         if let item = item {
             self.launchActionSheet(for: item)
         }
     }
-    func deleteAudio(){
+    @objc func deleteAudio(){
         let alert = UIAlertController(title: "请选择您的操作设置", message: nil, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(
             title: "清除所有音频",
@@ -564,46 +564,35 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     private func getPlayingUrl(){
-        var urlAsset : URL?
+        playingIndex = 0
+        urlOrigStrings = []
         var playerItemTemp : AVPlayerItem?
+        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
         if let fetchAudioResults = fetchAudioResults {
-            for (_, item0) in fetchAudioResults[0].items.enumerated() {
-                print("urlString000---\(item0)")
-                //        for (_, item0) in fetchesAudioObject.fetchResults[0].items.enumerated() {
-                if var fileUrl = item0.audioFileUrl {
+            for (index, item0) in fetchAudioResults[0].items.enumerated() {
+                if let fileUrl = item0.audioFileUrl {
                     urlOrigStrings.append(fileUrl)
-                    fileUrl = fileUrl.replacingOccurrences(of: " ", with: "%20")
-                    fileUrl = fileUrl.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
-                    urlTempStrings.append(fileUrl) //处理后的audioUrlString
-                    fileUrl = fileUrl.replacingOccurrences(of: "%20", with: "")
-                    urlStrings?.append(fileUrl)
-                    urlAsset = URL(string: fileUrl)
-                    playerItemTemp = AVPlayerItem(url: urlAsset!) //可以用于播放的playItem
-                    playerItems?.append(playerItemTemp!)
+                    if audioUrlString == fileUrl{
+                        playingUrlStr = fileUrl
+                        playingIndex = index
+                    }
+                    if let urlAsset = URL(string: fileUrl){
+                        playerItemTemp = AVPlayerItem(url: urlAsset) //可以用于播放的playItem
+                        playerItems?.append(playerItemTemp!)
+                    }
+   
                 }
             }
         }
         print("urlString playerItems000---\(String(describing: playerItems))")
         
-        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
-        for (urlIndex,urlTempString) in (urlOrigStrings.enumerated()) {
-            print("urlString audioUrlString--\(audioUrlString)")
-            print("urlString audioUrlString urlTempString--\(urlTempString)")
-            if audioUrlString != "" {
-                if audioUrlString == urlTempString{
-                    print("urlString audioUrlString111---\(String(describing: audioUrlString))")
-                    playingUrlStr = urlTempString
-                    playingIndex = urlIndex
-                }
-            }
-        }
         print("urlString playingIndex222--\(playingIndex)")
         TabBarAudioContent.sharedInstance.playingIndex = playingIndex
         
     }
     
     
-    func exitAudio(){
+    @objc func exitAudio(){
         UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.tabView.transform = CGAffineTransform.identity
             self.tabView.setNeedsUpdateConstraints()
@@ -613,7 +602,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         removeDownloadObserve()
     }
     //    把此页面的所有信息都传给AudioPlayBar,包括player，playerItem
-    func openAudio(){
+    @objc func openAudio(){
         let deltaY = self.view.bounds.height
         UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.tabView.transform = CGAffineTransform(translationX: 0,y: -deltaY)
@@ -621,18 +610,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }, completion: { (true) in
             print("open animate finish")
         })
-        playingIndex = 0
-        urlOrigStrings = []
-        parseAudioMessage()
-        getPlayingUrl()
-        loadUrl()
-        addDownloadObserve()
-//        playingCenter()
+//        parseAudioMessage()
+//        getPlayingUrl()
+//        loadUrl()
+//        addDownloadObserve()
         enableBackGroundMode()
         //  getPlayingUrl()需要放在parseAudioMessage()后面，不然第一次audioUrlString为空
     }
     
-    func pauseOrPlay(sender: UIButton) {
+    @objc func pauseOrPlay(sender: UIButton) {
         player = TabBarAudioContent.sharedInstance.player
         playerItem = TabBarAudioContent.sharedInstance.playerItem
         if (player != nil) {
@@ -719,12 +705,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             addDownloadObserve()
             addPlayerItemObservers()
             NowPlayingCenter().updatePlayingCenter()
+//            NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "updateMiniPlay"), object: nil)
+//            NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "reloadView"), object: nil) //移除此监听，再从哪里增加监听呢？
         }
     }
     func updateProgressSlider(){
+//         playerItem = TabBarAudioContent.sharedInstance.playerItem
         // MARK: - Update audio play progress
         player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-            if let d = self?.playerItem?.duration {
+            if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
                 let duration = CMTimeGetSeconds(d)
                 if duration.isNaN == false {
                     self?.audioProgressSlider.maximumValue = Float(duration)
@@ -804,34 +793,21 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             
         }
     }
-    func updateMiniPlay(){
+    @objc func updateMiniPlay(){
+      // 点击了上下首之后，BigImageCell这里为什么没有更新item的值，但是不点击上下首是会更新的？因为prepareAudio没对item进行更新
         player = TabBarAudioContent.sharedInstance.player
-        //        点击list一次也会继续监听
-        print("how much updateMiniPlay")
-        audioPlayStatus.text=TabBarAudioContent.sharedInstance.item?.headline
-        self.tabView.playStatus.text = TabBarAudioContent.sharedInstance.item?.headline
+        //        点击list一次也会继续监听，值更新了，但是audioPlayStatus.text没有变化？应该跟监听位置有关系？
+        print("how much updateMiniPlay\(String(describing: TabBarAudioContent.sharedInstance.audioHeadLine))")
+        audioPlayStatus.text = TabBarAudioContent.sharedInstance.audioHeadLine
+        self.tabView.playStatus.text = "TabBarAudioContent.sharedInstance.audioHeadLine"
         
-        //        需要获取全局player
-        player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-            
-            if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-                let duration = CMTimeGetSeconds(d)
-                if duration.isNaN == false {
-                    self?.audioProgressSlider.maximumValue = Float(duration)
-                    self?.tabView.progressSlider.maximumValue = Float(duration)
-                    if self?.audioProgressSlider.isHighlighted == false {
-                        self?.audioProgressSlider.value = Float((CMTimeGetSeconds(time)))
-                        self?.tabView.progressSlider.value = Float((CMTimeGetSeconds(time)))
-                    }
-                    self?.updatePlayTime(current: time, duration: d)
-                    TabBarAudioContent.sharedInstance.duration = d
-                    TabBarAudioContent.sharedInstance.time = time
-                }
-            }
-            
-        }
-
+        
+        updateProgressSlider()
         updatePlayButtonUI()
+        
+        parseAudioMessage()
+        getPlayingUrl()
+        loadUrl()
 //        playingCenter()
 //        nowPlayingCenter.updateTimeForPlayerItem(player)
         
@@ -851,7 +827,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         swipeGestureRecognizerUp.delegate = self
         self.webAudioView.addGestureRecognizer(swipeGestureRecognizerUp)
     }
-    func isHideAudio(sender: UISwipeGestureRecognizer){
+    @objc  func isHideAudio(sender: UISwipeGestureRecognizer){
         if sender.direction == .up{
             let deltaY = self.audioView.bounds.height
             UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
@@ -905,12 +881,19 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         self.webView?.navigationDelegate = self
         self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.webView?.scrollView.delegate = self
-        
+//        没点击openAudio,每次点击首页的任何一个播放运行3次，点金audio再退出出后，每次播放执行一次
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(updateMiniPlay),
+//            name: Notification.Name(rawValue: "updateMiniPlay"),
+//            object: nil
+//        )
     }
     
-    func reloadAudioView(){
+    @objc func reloadAudioView(){
         //        item的值得时刻记住更新，最好传全局变量还是用自身局部变量？，可以从tab中把值传给此audio么？
         //        需要同时更新webView和id 、item等所有一致性变量，应该把他们整合到一起，一起处理循环、下一首、列表更新
+//        此函数选择一次list，运行2次，why？需要移除此监听器么？
         removePlayerItemObservers()
         if let item = TabBarAudioContent.sharedInstance.item,let audioUrlStrFromList = item.audioFileUrl{
             print("audioUrlStrFromList--\(audioUrlStrFromList)")
@@ -970,7 +953,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         // MARK: - Observe Play to the End
         NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
     }
-    func playerDidFinishPlaying() {
+    @objc func playerDidFinishPlaying() {
         let startTime = CMTimeMake(0, 1)
         self.playerItem?.seek(to: startTime)
         self.player?.pause()
@@ -1067,7 +1050,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     
-    public func handleDownloadStatusChange(_ notification: Notification) {
+    @objc public func handleDownloadStatusChange(_ notification: Notification) {
         DispatchQueue.main.async() {
             if let object = notification.object as? (id: String, status: DownloadStatus) {
                 let status = object.status
@@ -1094,7 +1077,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     
-    public func handleDownloadProgressChange(_ notification: Notification) {
+    @objc public func handleDownloadProgressChange(_ notification: Notification) {
         DispatchQueue.main.async() {
             if let object = notification.object as? (id: String, percentage: Float, downloaded: String, total: String) {
                 let id = object.id
@@ -1152,37 +1135,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         updatePlayButtonUI()
 //        加了此函数会show play center,它才是显示的函数而不是updatePlayingInfo()或者updateTimeForPlayerItem()，所以最好放在公共的地方; enableBackGroundMode()能直接放在运行出现的地方呢，以后不再运行？应该是不行，因为需要变化控件值。
         NowPlayingCenter().updatePlayingCenter()
-        enableBackGroundMode()
+//        enableBackGroundMode()
     }
-//    func playingCenter(){
-//        var mediaLength: NSNumber = 0
-//        if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-//            let duration = CMTimeGetSeconds(d)
-//            if duration.isNaN == false {
-//                mediaLength = duration as NSNumber
-//            }
-//        }
-//        
-//        var currentTime: NSNumber = 0
-//        if let c = TabBarAudioContent.sharedInstance.playerItem?.currentTime() {
-//            let currentTime1 = CMTimeGetSeconds(c)
-//            if currentTime1.isNaN == false {
-//                currentTime = currentTime1 as NSNumber
-//            }
-//        }
-//        if  let title = TabBarAudioContent.sharedInstance.audioHeadLine {
-//            nowPlayingCenter.updateInfo(
-//                title: title,
-//                artist: "FT中文网",
-//                albumArt: UIImage(named: "cover.jpg"),
-//                currentTime: currentTime,
-//                mediaLength: mediaLength,
-//                PlaybackRate: 1.0
-//            )
-//        }
-//        nowPlayingCenter.updateTimeForPlayerItem(TabBarAudioContent.sharedInstance.player)
-//
-//    }
+
     private func enableBackGroundMode() {
         // MARK: Receive Messages from Lock Screen
         UIApplication.shared.beginReceivingRemoteControlEvents();
@@ -1233,18 +1188,23 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         MPRemoteCommandCenter.shared().skipBackwardCommand.isEnabled = true
         MPRemoteCommandCenter.shared().skipForwardCommand.isEnabled = true
         
-        
-//        没有changePlaybackPositionCommand，小屏进度条没有，但是大屏进度条还是有的；不过点击openAudio小屏和大屏进度都会出现
+
         let changePlaybackPositionCommand = MPRemoteCommandCenter.shared().changePlaybackPositionCommand
-        changePlaybackPositionCommand.isEnabled = false
-//        changePlaybackPositionCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-////           let time =  MPRemoteCommandEvent.timestamp
-////           let positionTime = MPChangePlaybackPositionCommandEvent().positionTime
-//            print("changePlaybackPosition status")
-////            print("changePlaybackPosition status-----\(positionTime)")
-//
-//            return .success;
-//        }
+        changePlaybackPositionCommand.isEnabled = true
+        changePlaybackPositionCommand.addTarget { (MPRemoteCommandEvent:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
+            let changePlaybackPositionCommandEvent = MPRemoteCommandEvent as! MPChangePlaybackPositionCommandEvent
+            let positionTime = changePlaybackPositionCommandEvent.positionTime
+//            self.player seekToTime:CMTimeMake(totlaTime.value*playbackPositionEvent.positionTime/CMTimeGetSeconds(totlaTime), totlaTime.timescale)
+            if let totlaTime = TabBarAudioContent.sharedInstance.player?.currentItem?.duration{
+            
+                let currentTime = CMTimeMake((totlaTime.value) * Int64(positionTime)/Int64(CMTimeGetSeconds(totlaTime)), 1)
+//            TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
+//            NowPlayingCenter().updatePlayingCenter()
+                print("changePlaybackPosition currentTime\(currentTime)")
+                print("changePlaybackPosition currentTime positionTime\(positionTime)")
+            }
+            return .success;
+        }
 
         
     }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -39,6 +39,7 @@
                                 <rect key="frame" x="14" y="52" width="93.5" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="63A-Fz-18z" secondAttribute="height" multiplier="4:3" id="2b5-He-cJh"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="8jR-Gu-spW"/>
                                     <constraint firstAttribute="height" constant="70" id="wX2-6T-OrC"/>
                                 </constraints>
                             </imageView>
@@ -59,6 +60,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="noo-Wy-ULP">
+                                <rect key="frame" x="14" y="102" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="6v6-tb-Y4z"/>
+                                    <constraint firstAttribute="height" constant="20" id="dTt-8B-4HM"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -69,11 +77,13 @@
                             <constraint firstAttribute="trailing" secondItem="ZeZ-uA-ElO" secondAttribute="trailing" constant="14" id="GD7-ls-qwX"/>
                             <constraint firstItem="RXw-TM-ab8" firstAttribute="top" secondItem="63A-Fz-18z" secondAttribute="top" constant="-1" id="MLN-kM-DGR"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="leading" secondItem="yfD-Kf-wUR" secondAttribute="leading" constant="14" id="OIq-Sz-gYA"/>
+                            <constraint firstItem="noo-Wy-ULP" firstAttribute="leading" secondItem="63A-Fz-18z" secondAttribute="leading" id="VDn-9V-xOp"/>
                             <constraint firstItem="63A-Fz-18z" firstAttribute="top" secondItem="ZeZ-uA-ElO" secondAttribute="bottom" constant="8" id="YKr-tN-xZD"/>
                             <constraint firstAttribute="trailing" secondItem="dD2-9f-YHY" secondAttribute="trailing" constant="14" id="ZG1-e4-mxh"/>
                             <constraint firstItem="dD2-9f-YHY" firstAttribute="top" secondItem="yfD-Kf-wUR" secondAttribute="top" id="dOv-cV-L5y"/>
                             <constraint firstItem="fNl-xM-gJP" firstAttribute="top" secondItem="63A-Fz-18z" secondAttribute="bottom" id="e1H-6l-FNE"/>
                             <constraint firstAttribute="trailing" secondItem="RXw-TM-ab8" secondAttribute="trailing" constant="14" id="e3b-Db-ggg"/>
+                            <constraint firstItem="noo-Wy-ULP" firstAttribute="bottom" secondItem="63A-Fz-18z" secondAttribute="bottom" id="gl3-Fu-b8e"/>
                             <constraint firstItem="ZeZ-uA-ElO" firstAttribute="top" secondItem="yfD-Kf-wUR" secondAttribute="top" constant="20" symbolic="YES" id="kEf-Zv-VDh"/>
                             <constraint firstAttribute="width" constant="323" id="kxf-id-qLZ"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="RXw-TM-ab8" secondAttribute="bottom" constant="20" symbolic="YES" id="kzL-tm-25W"/>
@@ -97,9 +107,10 @@
                 <outlet property="headline" destination="ZeZ-uA-ElO" id="XP8-Ai-3NJ"/>
                 <outlet property="imageView" destination="63A-Fz-18z" id="eQD-GB-bMY"/>
                 <outlet property="lead" destination="RXw-TM-ab8" id="HkM-JG-whT"/>
+                <outlet property="overlayImage" destination="noo-Wy-ULP" id="uj0-WR-d4t"/>
                 <outlet property="sign" destination="fNl-xM-gJP" id="Q5s-UF-JpS"/>
             </connections>
-            <point key="canvasLocation" x="-374" y="-419"/>
+            <point key="canvasLocation" x="-374.5" y="-419.5"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -201,7 +201,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
-        FilterDataWithAudioUrl()
+        filterDataWithAudioUrl()
 //        TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         
         
@@ -759,16 +759,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     var openPlayOne :Bool = false
     var audioUrlString:String = ""
-    //    var player = AudioContent.sharedInstance.player
-    //    var playerItem = AudioContent.sharedInstance.playerItem
     var player = TabBarAudioContent.sharedInstance.player
     var playerItem = TabBarAudioContent.sharedInstance.playerItem
     let nowPlayingCenter = NowPlayingCenter()
-    
+    let playerObserver = PlayerObserver()
     @objc func openPlay(sender: UIButton?){
-         PlayerObserver().removePlayerItemObservers(self, object: playerItem)
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        try? AVAudioSession.sharedInstance().setActive(true)
+         playerObserver.removePlayerItemObservers(self, object: playerItem)
+//        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+//        try? AVAudioSession.sharedInstance().setActive(true)
         
         print("palyer item isExist url")
         
@@ -799,7 +797,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         //     修改的代码结束
         
         TabBarAudioContent.sharedInstance.player = player
-        self.nowPlayingCenter.updateTimeForPlayerItem(player)
+//        self.nowPlayingCenter.updateTimeForPlayerItem(player)
         
         //    获取用户点击的音频的url，下面url这个目前获取的为空，不对
         //        let url = (customTabBarController.playerItem?.asset as? AVURLAsset)?.url
@@ -852,11 +850,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
 //            addPlayerItemObservers()
             
-            PlayerObserver().addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
+            playerObserver.addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
             if let title = TabBarAudioContent.sharedInstance.body["title"],let _ = player{
                 print("NowPlayingCenter updatePlayingInfo \(title)")
 //                此函数没执行，why？
-                NowPlayingCenter().updatePlayingCenter()
+            NowPlayingCenter().updatePlayingCenter()
 //                NowPlayingCenter().updatePlayingInfo(player, title:title)
             }
         }else{
@@ -869,7 +867,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
     }
  
-    func FilterDataWithAudioUrl(){
+    func filterDataWithAudioUrl(){
         var resultsWithAudioUrl = [ContentSection]()
         let results = fetches.fetchResults
         for (_, section) in results.enumerated() {
@@ -883,15 +881,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         }
         TabBarAudioContent.sharedInstance.fetchResults = resultsWithAudioUrl
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        try? AVAudioSession.sharedInstance().setActive(true)
 //        print("TabBarAudioContent fetchResults 0\(String(describing: resultsWithAudioUrl[0].items[0].audioFileUrl))")
     }
     
-//    func removePlayerItemObservers() {
-//        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-//    }
-//    func addPlayerItemObservers() {
-//        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-//    }
+
     @objc func playerDidFinishPlaying() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: CustomTabBarController())
         TabBarAudioContent.sharedInstance.player?.pause()
@@ -912,23 +907,39 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     // MARK: - Handle user tapping on a cell
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        
+        let layoutKey = layoutType()
+        let layoutStrategy: String?
+        if let layoutValue = dataObject[layoutKey] {
+            layoutStrategy = layoutValue
+        } else {
+            layoutStrategy = nil
+        }
+//        ,layoutStrategy == "All Cover"
         // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
         let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
         // MARK: if it is an audio file, push the audio view controller
         if let audioFileUrl = selectedItem.audioFileUrl {
             print ("this is an audio")
-            
-            //            let body = AudioContent.sharedInstance.body
-            //            if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"]
-            if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
-                AudioContent.sharedInstance.body["title"] = selectedItem.headline
-                AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-                AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(selectedItem.id)"
-                audioPlayer.item = selectedItem
-                audioPlayer.themeColor = themeColor
-                navigationController?.pushViewController(audioPlayer, animated: true)
+            if layoutStrategy != "All Cover"{
+                //            let body = AudioContent.sharedInstance.body
+                //            if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"]
+                if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
+                    AudioContent.sharedInstance.body["title"] = selectedItem.headline
+                    AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                    AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(selectedItem.id)"
+                    audioPlayer.item = selectedItem
+                    audioPlayer.themeColor = themeColor
+                    navigationController?.pushViewController(audioPlayer, animated: true)
+                }
+            }else if layoutStrategy == "All Cover"{
+                if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+                    contentItemViewController.dataObject = selectedItem
+                    contentItemViewController.hidesBottomBarWhenPushed = true
+                    contentItemViewController.themeColor = themeColor
+                    navigationController?.pushViewController(contentItemViewController, animated: true)
+                }
             }
-            
         } else {
             switch selectedItem.type {
             case "setting":

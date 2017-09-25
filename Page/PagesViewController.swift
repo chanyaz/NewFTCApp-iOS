@@ -64,9 +64,11 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
             let tabTitle = AppNavigation.getNavigationProperty(for: currentTabName, of: "title")
             if let tabTitleImage = AppNavigation.getNavigationProperty(for: currentTabName, of: "title-image") {
                 if let image = UIImage(named: tabTitleImage) {
-                    let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 124, height: 26))
+                    let width: CGFloat = 124
+                    let height: CGFloat = 26
+                    let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
                     imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                    imageView.contentMode = .scaleAspectFit
+                    imageView.contentMode = .center
                     imageView.image = image
                     navigationItem.titleView = imageView
                 }
@@ -86,7 +88,5 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
         self.view.backgroundColor = UIColor(hex: Color.Content.background)
     }
-    
-    
 }
 

@@ -31,7 +31,7 @@ class TabBarAudioContent {
     var items = [ContentItem]()
     var mode:Int?
     var playingIndex:Int?
-
+    
 }
 
 
@@ -285,10 +285,10 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         ShareHelper.sharedInstance.webPageImage = ""
         ShareHelper.sharedInstance.webPageImageIcon = ""
         //        parseAudioMessage()
-        getDataFromeTab()
+//        getDataFromeTab()
         //        prepareAudioPlay()
         //        enableBackGroundMode()
-        getPlayingUrl()
+//        getPlayingUrl()
         let jsCode = "function getContentByMetaTagName(c) {for (var b = document.getElementsByTagName('meta'), a = 0; a < b.length; a++) {if (c == b[a].name || c == b[a].getAttribute('property')) { return b[a].content; }} return '';} var gCoverImage = getContentByMetaTagName('og:image') || '';var gIconImage = getContentByMetaTagName('thumbnail') || '';var gDescription = getContentByMetaTagName('og:description') || getContentByMetaTagName('description') || '';gIconImage=encodeURIComponent(gIconImage);webkit.messageHandlers.callbackHandler.postMessage(gCoverImage + '|' + gIconImage + '|' + gDescription);"
         let userScript = WKUserScript(
             source: jsCode,
@@ -350,8 +350,42 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
+        let audioViewHeight:CGFloat = 220
+        let buttonWidth:CGFloat = 19
+        let buttonHeight: CGFloat = 19
+        let margin:CGFloat = 20
+        let space = (width - margin*2 - buttonWidth*4)/3
+        let spaceBetweenSliderAndForward: CGFloat = 65
+        let spaceBetweenListAndView: CGFloat = 30
+        let spaceBetweenListAndForward: CGFloat = 10
+       
         //        退出列表不会运行此处，但退出自己到tab，再从tab进入会运行此函数
+        self.playlist.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        self.view.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.view.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.view.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         
+//        self.downLoad.translatesAutoresizingMaskIntoConstraints = false
+//        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.share, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -space))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: downLoad, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+//
+//        self.love.translatesAutoresizingMaskIntoConstraints = false
+//        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.list, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+//
+//
+//        self.share.translatesAutoresizingMaskIntoConstraints = false
+//        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.audioView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+//        self.audioView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         
         let duration = TabBarAudioContent.sharedInstance.duration
         let time = TabBarAudioContent.sharedInstance.time

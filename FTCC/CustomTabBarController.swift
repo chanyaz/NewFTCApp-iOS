@@ -202,7 +202,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         audioPlayStatus.text = "audio单曲鉴赏"
         audioPlayStatus.textColor = UIColor.white
-        //        audioPlayStatus.frame = CGRect(x:70,y:10,width:width,height:50)
+                audioPlayStatus.frame = CGRect(x:70,y:10,width:width,height:50)
         
         deleteButton.frame = CGRect(x:width-120,y:10,width:40,height:40)
         deleteButton.setImage(UIImage(named:"DeleteButton"), for: UIControlState.normal)
@@ -564,7 +564,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     private func getPlayingUrl(){
-//        var urlAsset : URL?
         playingIndex = 0
         urlOrigStrings = []
         var playerItemTemp : AVPlayerItem?
@@ -574,12 +573,10 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
                 if let fileUrl = item0.audioFileUrl {
                     urlOrigStrings.append(fileUrl)
                     if audioUrlString == fileUrl{
-                        print("urlString audioUrlString111---\(String(describing: audioUrlString))")
                         playingUrlStr = fileUrl
                         playingIndex = index
                     }
                     if let urlAsset = URL(string: fileUrl){
-//                        urlAsset = URL(string: fileUrl)
                         playerItemTemp = AVPlayerItem(url: urlAsset) //可以用于播放的playItem
                         playerItems?.append(playerItemTemp!)
                     }
@@ -589,20 +586,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
         print("urlString playerItems000---\(String(describing: playerItems))")
         
-//        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
-//        if urlOrigStrings.count>0 {
-//            for (urlIndex,urlOrigString) in (urlOrigStrings.enumerated()) {
-//                print("urlString audioUrlString--\(audioUrlString)")
-//                print("urlString audioUrlString urlTempString--\(urlOrigString)")
-//                if audioUrlString != "" {
-//                    if audioUrlString == urlOrigString{
-//                        print("urlString audioUrlString111---\(String(describing: audioUrlString))")
-//                        playingUrlStr = urlOrigString
-//                        playingIndex = urlIndex
-//                    }
-//                }
-//            }
-//        }
         print("urlString playingIndex222--\(playingIndex)")
         TabBarAudioContent.sharedInstance.playingIndex = playingIndex
         
@@ -627,11 +610,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }, completion: { (true) in
             print("open animate finish")
         })
-        parseAudioMessage()
-        getPlayingUrl()
-        loadUrl()
+//        parseAudioMessage()
+//        getPlayingUrl()
+//        loadUrl()
 //        addDownloadObserve()
-//        enableBackGroundMode()
+        enableBackGroundMode()
         //  getPlayingUrl()需要放在parseAudioMessage()后面，不然第一次audioUrlString为空
     }
     
@@ -722,12 +705,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             addDownloadObserve()
             addPlayerItemObservers()
             NowPlayingCenter().updatePlayingCenter()
+//            NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "updateMiniPlay"), object: nil)
+//            NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "reloadView"), object: nil) //移除此监听，再从哪里增加监听呢？
         }
     }
     func updateProgressSlider(){
+//         playerItem = TabBarAudioContent.sharedInstance.playerItem
         // MARK: - Update audio play progress
         player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-            if let d = self?.playerItem?.duration {
+            if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
                 let duration = CMTimeGetSeconds(d)
                 if duration.isNaN == false {
                     self?.audioProgressSlider.maximumValue = Float(duration)
@@ -808,33 +794,20 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     @objc func updateMiniPlay(){
+      // 点击了上下首之后，BigImageCell这里为什么没有更新item的值，但是不点击上下首是会更新的？因为prepareAudio没对item进行更新
         player = TabBarAudioContent.sharedInstance.player
-        //        点击list一次也会继续监听
-        print("how much updateMiniPlay")
-        audioPlayStatus.text=TabBarAudioContent.sharedInstance.item?.headline
-        self.tabView.playStatus.text = TabBarAudioContent.sharedInstance.item?.headline
+        //        点击list一次也会继续监听，值更新了，但是audioPlayStatus.text没有变化？应该跟监听位置有关系？
+        print("how much updateMiniPlay\(String(describing: TabBarAudioContent.sharedInstance.audioHeadLine))")
+        audioPlayStatus.text = TabBarAudioContent.sharedInstance.audioHeadLine
+        self.tabView.playStatus.text = "TabBarAudioContent.sharedInstance.audioHeadLine"
         
-        //        需要获取全局player
-        player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-            
-            if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-                let duration = CMTimeGetSeconds(d)
-                if duration.isNaN == false {
-                    self?.audioProgressSlider.maximumValue = Float(duration)
-                    self?.tabView.progressSlider.maximumValue = Float(duration)
-                    if self?.audioProgressSlider.isHighlighted == false {
-                        self?.audioProgressSlider.value = Float((CMTimeGetSeconds(time)))
-                        self?.tabView.progressSlider.value = Float((CMTimeGetSeconds(time)))
-                    }
-                    self?.updatePlayTime(current: time, duration: d)
-                    TabBarAudioContent.sharedInstance.duration = d
-                    TabBarAudioContent.sharedInstance.time = time
-                }
-            }
-            
-        }
-
+        
+        updateProgressSlider()
         updatePlayButtonUI()
+        
+        parseAudioMessage()
+        getPlayingUrl()
+        loadUrl()
 //        playingCenter()
 //        nowPlayingCenter.updateTimeForPlayerItem(player)
         
@@ -908,12 +881,19 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         self.webView?.navigationDelegate = self
         self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.webView?.scrollView.delegate = self
-        
+//        没点击openAudio,每次点击首页的任何一个播放运行3次，点金audio再退出出后，每次播放执行一次
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(updateMiniPlay),
+//            name: Notification.Name(rawValue: "updateMiniPlay"),
+//            object: nil
+//        )
     }
     
     @objc func reloadAudioView(){
         //        item的值得时刻记住更新，最好传全局变量还是用自身局部变量？，可以从tab中把值传给此audio么？
         //        需要同时更新webView和id 、item等所有一致性变量，应该把他们整合到一起，一起处理循环、下一首、列表更新
+//        此函数选择一次list，运行2次，why？需要移除此监听器么？
         removePlayerItemObservers()
         if let item = TabBarAudioContent.sharedInstance.item,let audioUrlStrFromList = item.audioFileUrl{
             print("audioUrlStrFromList--\(audioUrlStrFromList)")
@@ -1155,37 +1135,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         updatePlayButtonUI()
 //        加了此函数会show play center,它才是显示的函数而不是updatePlayingInfo()或者updateTimeForPlayerItem()，所以最好放在公共的地方; enableBackGroundMode()能直接放在运行出现的地方呢，以后不再运行？应该是不行，因为需要变化控件值。
         NowPlayingCenter().updatePlayingCenter()
-        enableBackGroundMode()
+//        enableBackGroundMode()
     }
-//    func playingCenter(){
-//        var mediaLength: NSNumber = 0
-//        if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-//            let duration = CMTimeGetSeconds(d)
-//            if duration.isNaN == false {
-//                mediaLength = duration as NSNumber
-//            }
-//        }
-//        
-//        var currentTime: NSNumber = 0
-//        if let c = TabBarAudioContent.sharedInstance.playerItem?.currentTime() {
-//            let currentTime1 = CMTimeGetSeconds(c)
-//            if currentTime1.isNaN == false {
-//                currentTime = currentTime1 as NSNumber
-//            }
-//        }
-//        if  let title = TabBarAudioContent.sharedInstance.audioHeadLine {
-//            nowPlayingCenter.updateInfo(
-//                title: title,
-//                artist: "FT中文网",
-//                albumArt: UIImage(named: "cover.jpg"),
-//                currentTime: currentTime,
-//                mediaLength: mediaLength,
-//                PlaybackRate: 1.0
-//            )
-//        }
-//        nowPlayingCenter.updateTimeForPlayerItem(TabBarAudioContent.sharedInstance.player)
-//
-//    }
+
     private func enableBackGroundMode() {
         // MARK: Receive Messages from Lock Screen
         UIApplication.shared.beginReceivingRemoteControlEvents();
@@ -1236,18 +1188,23 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         MPRemoteCommandCenter.shared().skipBackwardCommand.isEnabled = true
         MPRemoteCommandCenter.shared().skipForwardCommand.isEnabled = true
         
-        
-//        没有changePlaybackPositionCommand，小屏进度条没有，但是大屏进度条还是有的；不过点击openAudio小屏和大屏进度都会出现
+
         let changePlaybackPositionCommand = MPRemoteCommandCenter.shared().changePlaybackPositionCommand
-        changePlaybackPositionCommand.isEnabled = false
-//        changePlaybackPositionCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-////           let time =  MPRemoteCommandEvent.timestamp
-////           let positionTime = MPChangePlaybackPositionCommandEvent().positionTime
-//            print("changePlaybackPosition status")
-////            print("changePlaybackPosition status-----\(positionTime)")
-//
-//            return .success;
-//        }
+        changePlaybackPositionCommand.isEnabled = true
+        changePlaybackPositionCommand.addTarget { (MPRemoteCommandEvent:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
+            let changePlaybackPositionCommandEvent = MPRemoteCommandEvent as! MPChangePlaybackPositionCommandEvent
+            let positionTime = changePlaybackPositionCommandEvent.positionTime
+//            self.player seekToTime:CMTimeMake(totlaTime.value*playbackPositionEvent.positionTime/CMTimeGetSeconds(totlaTime), totlaTime.timescale)
+            if let totlaTime = TabBarAudioContent.sharedInstance.player?.currentItem?.duration{
+            
+                let currentTime = CMTimeMake((totlaTime.value) * Int64(positionTime)/Int64(CMTimeGetSeconds(totlaTime)), 1)
+//            TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
+//            NowPlayingCenter().updatePlayingCenter()
+                print("changePlaybackPosition currentTime\(currentTime)")
+                print("changePlaybackPosition currentTime positionTime\(positionTime)")
+            }
+            return .success;
+        }
 
         
     }

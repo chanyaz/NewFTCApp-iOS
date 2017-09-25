@@ -765,8 +765,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     let playerObserver = PlayerObserver()
     @objc func openPlay(sender: UIButton?){
          playerObserver.removePlayerItemObservers(self, object: playerItem)
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        try? AVAudioSession.sharedInstance().setActive(true)
+//        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+//        try? AVAudioSession.sharedInstance().setActive(true)
         
         print("palyer item isExist url")
         
@@ -854,7 +854,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             if let title = TabBarAudioContent.sharedInstance.body["title"],let _ = player{
                 print("NowPlayingCenter updatePlayingInfo \(title)")
 //                此函数没执行，why？
-//                NowPlayingCenter().updatePlayingCenter()
+            NowPlayingCenter().updatePlayingCenter()
 //                NowPlayingCenter().updatePlayingInfo(player, title:title)
             }
         }else{
@@ -881,6 +881,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         }
         TabBarAudioContent.sharedInstance.fetchResults = resultsWithAudioUrl
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        try? AVAudioSession.sharedInstance().setActive(true)
 //        print("TabBarAudioContent fetchResults 0\(String(describing: resultsWithAudioUrl[0].items[0].audioFileUrl))")
     }
     

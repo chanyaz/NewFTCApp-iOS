@@ -20,6 +20,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var cellWidth: CGFloat = 0
     var themeColor: String? = nil
     var coverTheme: String?
+    var layoutStrategy: String?
     // MARK: Search
     fileprivate lazy var searchBar: UISearchBar? = nil
     fileprivate var searchKeywords: String? = nil {
@@ -49,6 +50,15 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting", "options"].contains(dataObjectType){
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            
+            // MARK: - Get Layout Strategy
+            let layoutKey = layoutType()
+            if let layoutValue = dataObject[layoutKey] {
+                layoutStrategy = layoutValue
+            } else {
+                layoutStrategy = nil
+            }
+            
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
                 flowLayout.minimumInteritemSpacing = 0
                 flowLayout.minimumLineSpacing = 0
@@ -58,7 +68,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 let availableWidth = view.frame.width - paddingSpace
                 //print("availableWidth : \(availableWidth)")
                 
-                if horizontalClass != .regular || verticalCass != .regular {
+                if (horizontalClass != .regular || verticalCass != .regular) && layoutStrategy != "Icons" {
                     if #available(iOS 10.0, *) {
                         flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
                     } else {
@@ -72,6 +82,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "ThemeCoverCell", bundle: nil), forCellWithReuseIdentifier: "ThemeCoverCell")
             collectionView?.register(UINib.init(nibName: "VideoCoverCell", bundle: nil), forCellWithReuseIdentifier: "VideoCoverCell")
             collectionView?.register(UINib.init(nibName: "OutOfBoxCoverCell", bundle: nil), forCellWithReuseIdentifier: "OutOfBoxCoverCell")
+            collectionView?.register(UINib.init(nibName: "IconCell", bundle: nil), forCellWithReuseIdentifier: "IconCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
             collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
             collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
@@ -460,6 +471,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
+        case "IconCell":
+            if let cell = cellItem as? IconCell {
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                return cell
+            }
         case "BigImageCell":
             if let cell = cellItem as? BigImageCell {
                 cell.cellWidth = cellWidth
@@ -630,13 +647,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         let item = section.items[indexPath.row]
         let sectionTitle = section.title
         let isCover = ((indexPath.row == 0 && sectionTitle != "") || item.isCover == true)
-        let layoutKey = layoutType()
-        let layoutStrategy: String?
-        if let layoutValue = dataObject[layoutKey] {
-            layoutStrategy = layoutValue
-        } else {
-            layoutStrategy = nil
-        }
+        
         let reuseIdentifier: String
         
         if layoutStrategy == "Simple Headline" {
@@ -651,6 +662,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             reuseIdentifier = "VideoCoverCell"
         } else if layoutStrategy?.hasPrefix("OutOfBox") == true {
             reuseIdentifier = "OutOfBoxCoverCell"
+        } else if layoutStrategy == "Icons" {
+            reuseIdentifier = "IconCell"
         } else {
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
@@ -1158,6 +1171,9 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         } else if reuseIdentifier == "BookCell" {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = 160 + 14 + 14
+        }  else if reuseIdentifier == "IconCell" {
+            widthPerItem = availableWidth / 3
+            heightPerItem = availableWidth / 3 + 60
         } else if indexPath.row == 0 && indexPath.section == 1{
             if currentSizeClass == .regular {
                 widthPerItem = (availableWidth / itemsPerRow) * 2

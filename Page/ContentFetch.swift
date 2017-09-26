@@ -54,6 +54,7 @@ class ContentFetch {
             }
             
             do {
+                print ("content fetch result is back with data, about to handle the data")
                 let resultsDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
                 let contentSections = self.formatJSON(resultsDictionary)
                 //MARK: Save the JSON File to Documents Directory

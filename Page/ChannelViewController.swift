@@ -17,6 +17,8 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     
     var channelScrollerView: UICollectionView?
+    var scrollerCellIdentifier = "ChannelScrollerCell"
+    
     var isUserPanningEnd = false
     var currentChannelIndex: Int = 0 {
         didSet {
@@ -105,6 +107,8 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         let flowLayout = UICollectionViewFlowLayout()
         channelScrollerView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
         channelScrollerView?.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
+        channelScrollerView?.register(UINib.init(nibName: "FixedWidthChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "FixedWidthChannelScrollerCell")
+        
         
         let numberOfChannels = CGFloat(pageData.count)
         if numberOfChannels > 0 {
@@ -114,6 +118,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             let minWidth = max(view.frame.width / numberOfChannels, cellMinWidth)
             if minWidth > cellMinWidth && numberOfChannels < 4 {
                 print ("The cell width is now \(minWidth)")
+                scrollerCellIdentifier = "FixedWidthChannelScrollerCell"
             } else {
                 flowLayout.estimatedItemSize = CGSize(width: cellMinWidth, height: channelScrollerHeight)
             }
@@ -217,7 +222,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChannelScrollerCell", for: indexPath as IndexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: scrollerCellIdentifier, for: indexPath as IndexPath)
         if let cell = cell as? ChannelScrollerCell {
             //cell.cellHeight.constant = channelScrollerHeight
             if indexPath.row == currentChannelIndex {

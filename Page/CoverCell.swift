@@ -31,6 +31,13 @@ class CoverCell: CustomCell {
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
+        func addOverlayConstraints(_ cellWidth: CGFloat?) {
+            if let cellWidth = cellWidth {
+                let overlayWidth = max(cellWidth * 0.15, 20)
+                self.addConstraint(NSLayoutConstraint(item: overlayImage, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayWidth))
+                self.addConstraint(NSLayoutConstraint(item: overlayImage, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayWidth))
+            }
+        }
         // MARK: - Update Styles and Layouts
         containerView.backgroundColor = UIColor(hex: Color.Content.background)
         headline.textColor = UIColor(hex: Color.Content.headline)
@@ -42,7 +49,6 @@ class CoverCell: CustomCell {
         layoutMargins.bottom = 0
         containerView.layoutMargins.left = 0
         containerView.layoutMargins.right = 0
-        
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right
         let containerViewMargins = containerView.layoutMargins.left + containerView.layoutMargins.right
@@ -52,15 +58,9 @@ class CoverCell: CustomCell {
             let containerWidth = cellWidth - cellMargins - containerViewMargins
             containerViewWidthConstraint.constant = containerWidth
         }
-        
         // MARK: - Update dispay of the cell
         let headlineString = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        //        let headlineString: String?
-        //        headlineString = "南五环边上学梦：北京首所打工子弟"
         headline.text = headlineString
-        
-
-        
         if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineHeightMultiple = 1.4
@@ -68,10 +68,6 @@ class CoverCell: CustomCell {
             setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
             lead.attributedText = setStr
         }
-        
-        
-        
-        
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Tab.background)
         // MARK: - As the cell is reusable, asyn image should always be cleared first
@@ -85,21 +81,21 @@ class CoverCell: CustomCell {
             })
             //print ("should load image here")
         }
-        
         let itemType = itemCell?.type
         let caudio = itemCell?.caudio ?? ""
         let eaudio = itemCell?.eaudio ?? ""
         let audioFileUrl = itemCell?.audioFileUrl ?? ""
-        
-        if let image = UIImage(named: "VideoPlayOverlay"),
-            itemType == "video" || caudio != "" || eaudio != "" || audioFileUrl != "",
-            let cellWidth = cellWidth {
-            let overlayWidth = max(cellWidth * 0.15, 20)
-            self.addConstraint(NSLayoutConstraint(item: overlayImage, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayWidth))
-            self.addConstraint(NSLayoutConstraint(item: overlayImage, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayWidth))
-            overlayImage.image = image
+        let image: UIImage?
+        if itemType == "video" {
+            image = UIImage(named: "VideoPlayOverlay")
+        } else if caudio != "" || eaudio != "" || audioFileUrl != "" {
+            image = UIImage(named: "AudioPlayOverlay")
         } else {
-            overlayImage.image = nil
+            image = nil
         }
+        if image != nil {
+            addOverlayConstraints(cellWidth)
+        }
+        overlayImage.image = image
     }
 }

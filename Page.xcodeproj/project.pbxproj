@@ -275,6 +275,8 @@
 		60F1A52C1F5E98DE0007F9F3 /* IAPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */; };
 		60F1A52E1F5EAD0D0007F9F3 /* IAPs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */; };
 		60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */; };
+		60F3D1471F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */; };
+		60F3D1481F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */; };
 		60F4C16D1EFCEBA500F21EB6 /* CoverCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */; };
 		60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */; };
 		60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */; };
@@ -536,6 +538,7 @@
 		60F1A5221F5E329E0007F9F3 /* BigImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
 		60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPView.swift; sourceTree = "<group>"; };
 		60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPs.swift; sourceTree = "<group>"; };
+		60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FixedWidthChannelScrollerCell.xib; sourceTree = "<group>"; };
 		60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverCellRegular.swift; sourceTree = "<group>"; };
 		60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCellRegular.xib; sourceTree = "<group>"; };
 		60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCellRegular.swift; sourceTree = "<group>"; };
@@ -684,6 +687,7 @@
 				50E535C61F0729900082B181 /* ChannelModelDelegate.swift */,
 				503A3B071EF4C9CD00FB6006 /* ChannelScrollerCell.swift */,
 				503A3B081EF4C9CD00FB6006 /* ChannelScrollerCell.xib */,
+				60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */,
 			);
 			name = Channel;
 			sourceTree = "<group>";
@@ -1501,6 +1505,7 @@
 				602153691F397C650077A7AF /* ad.html in Resources */,
 				6021536D1F397C650077A7AF /* ChannelCell.xib in Resources */,
 				50C31B361F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
+				60F3D1481F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */,
 				50DA6E821F4037C8006B4CDE /* story.html in Resources */,
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
 				50C31B3C1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
@@ -1559,6 +1564,7 @@
 				602153C21F39A4390077A7AF /* cover.jpg in Resources */,
 				50C31B3B1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
 				500139E11F1A7188009EC29D /* GoogleService-Info.plist in Resources */,
+				60F3D1471F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
 				602153C51F39A4390077A7AF /* sound.png in Resources */,
 				50C31B471F7006D500F4CF61 /* OptionCell.xib in Resources */,

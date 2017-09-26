@@ -200,12 +200,13 @@ struct ImageService {
 
 // MARK: - Recognize link patterns in your specific web site so that your app opens links intelligently, rather than opening everything with web view or safari view.
 struct LinkPattern {
-    static let story = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/story/([0-9]+)"]
+    static let story = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/story/([0-9]+)","http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=([0-9]+)&impressionId=[a-z0-9A-Z]+$"]
     static let interactive = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/interactive/([0-9]+)"]
     static let video = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/video/([0-9]+)"]
     static let photonews = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
     static let tag = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
     static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
+    //other:"http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=[0-9]+&impressionId=[a-z0-9A-Z]+$"
 }
 
 // MARK: - When you want to add content that are not already in your APIs. For example, you might want to add a most popular section to your home page.

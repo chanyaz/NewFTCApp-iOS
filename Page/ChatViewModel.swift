@@ -97,6 +97,8 @@ struct SaysWhat {
 
 
 class CellData {
+    //是否为历史记录分割线
+    var isHistoryCutline = false
     //基本字段
     var headImage: String = ""
     var whoSays: Member = .no
@@ -169,7 +171,9 @@ class CellData {
     
     
     
-    
+    init(cutline isHistoryCutline:Bool) {
+        self.isHistoryCutline = isHistoryCutline
+    }
     init(whoSays who: Member, saysWhat say: SaysWhat) {
         
         if who == .robot {

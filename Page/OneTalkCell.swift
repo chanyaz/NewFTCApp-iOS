@@ -34,7 +34,12 @@ class OneTalkCell: UITableViewCell {
     init(_ data:CellData, reuseId cellId:String) {//NOTE: View通过ChatViewController得到Model的数据
         self.cellData = data
         super.init(style: UITableViewCellStyle.default, reuseIdentifier:cellId)
-        buildTheCell()
+        if data.isHistoryCutline == false  {
+           buildTheCell()
+        } else {
+           buildCutlineCell()
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,7 +56,15 @@ class OneTalkCell: UITableViewCell {
         //print("Click card")
     }
    
-   
+    private func buildCutlineCell(){
+        /*
+        let cutlineContentView = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 20))
+        cutlineContentView.text = self.cellData.saysWhat.title
+        titleView.font = self.cellData.titleFont
+        titleView.textColor = self.cellData.textColor
+        self.addSubview(titleView)
+         */
+    }
     private func buildTheCell() {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         

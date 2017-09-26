@@ -47,18 +47,26 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     //var showingCell:CellData
     
     @IBOutlet weak var talkListBlock: UITableView!
+    //@IBOutlet weak var bottomToolbar: UIToolbar!
+
+    @IBOutlet weak var bottomBar: UIView!
+    //@IBOutlet weak var inputBlock: UITextField!
     
     @IBOutlet weak var inputBlock: UITextField!
-    
+    /*
     @IBAction func touchInputBlock(_ sender: UITextField) {
         let currentIndexPath = IndexPath(row: showingData.count-1, section: 0)
         self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
         self.inputBlock.resignFirstResponder()
        
     }
+    */
     
-    
-    @IBOutlet weak var bottomToolbar: UIToolbar!
+    @IBAction func touchInputBlock(_ sender: UITextField) {
+        let currentIndexPath = IndexPath(row: showingData.count-1, section: 0)
+        self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
+        self.inputBlock.resignFirstResponder()
+    }
     
     @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {//When tap
         self.inputBlock.resignFirstResponder()
@@ -69,7 +77,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.resignFirstResponder()
     }
     
-
+    /*
     @IBAction func sendYourTalk(_ sender: UIButton) {//MARK:点击“Send"按钮后发生的事件
        
         if let currentYourTalk = inputBlock.text {
@@ -86,11 +94,28 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     //print(robotRes)
                     self.showingData.append(oneTalkData)
                 }
-                
             })
-            
         }
-
+    }
+ */
+    
+    @IBAction func sendYourTalk(_ sender: UIButton) {
+        if let currentYourTalk = inputBlock.text {
+            let oneTalkData = [
+                "member":"you",
+                "type":"text",
+                "content":currentYourTalk
+            ]
+            self.showingData.append(oneTalkData)
+            
+            self.inputBlock.text = ""
+            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
+                if let oneTalkData = talkData {
+                    //print(robotRes)
+                    self.showingData.append(oneTalkData)
+                }
+            })
+        }
     }
     //MARK:点击键盘中Return按键后发生的事件，同上点击“Send"按钮后发生的事件
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -399,13 +424,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.talkListBlock.backgroundColor = UIColor(hex: "#fff1e0")
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
-        self.bottomToolbar.backgroundColor = UIColor(hex: "#f7e9d8")
+        self.bottomBar.backgroundColor = UIColor(hex: "#f7e9d8")
         
         // MARK：为bottomToolbar添加上边框
         let border = CALayer()
-        border.frame = CGRect(x:0, y:0, width:self.bottomToolbar.frame.width, height:1)
+        border.frame = CGRect(x:0, y:0, width:self.view.frame.width, height:1)
+        border.zPosition = 999.0
         border.backgroundColor = UIColor(hex: "#dddddd").cgColor
-        self.bottomToolbar.layer.addSublayer(border)
+        self.bottomBar.layer.addSublayer(border)
         
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert

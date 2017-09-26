@@ -25,18 +25,19 @@ struct AppNavigation {
             "Channels": [
                 [
                     "title": "文章",
+//                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
                     "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
                     "compactLayout": "All Cover",
                     "regularLayout": "",
                     "url":"http://www.ftchinese.com/channel/datanews.html",
-                    "screenName":"homepage/ftcc"
+                    "screenName":"ftcc/home"
                 ],
                 [
                     "title": "专栏",
-                    "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=mbastory",
+                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcccolumns",
                     "url":"http://www.ftchinese.com/channel/mba.html",
-                    "screenName":"ftacademy/read",
-                    "compactLayout": "OutOfBox",
+                    "screenName":"ftcc/columns",
+                    "compactLayout": "Icons",
                     "coverTheme": "OutOfBox"
                 ]
             ]

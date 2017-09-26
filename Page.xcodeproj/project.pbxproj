@@ -277,6 +277,10 @@
 		60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */; };
 		60F3D1471F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */; };
 		60F3D1481F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */; };
+		60F3D14B1F7A5B9900D115FC /* IconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F3D1491F7A5B9900D115FC /* IconCell.swift */; };
+		60F3D14C1F7A5B9900D115FC /* IconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F3D1491F7A5B9900D115FC /* IconCell.swift */; };
+		60F3D14D1F7A5B9900D115FC /* IconCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F3D14A1F7A5B9900D115FC /* IconCell.xib */; };
+		60F3D14E1F7A5B9900D115FC /* IconCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F3D14A1F7A5B9900D115FC /* IconCell.xib */; };
 		60F4C16D1EFCEBA500F21EB6 /* CoverCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */; };
 		60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */; };
 		60F4C1711EFCEBC000F21EB6 /* ChannelCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */; };
@@ -539,6 +543,8 @@
 		60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPView.swift; sourceTree = "<group>"; };
 		60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPs.swift; sourceTree = "<group>"; };
 		60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FixedWidthChannelScrollerCell.xib; sourceTree = "<group>"; };
+		60F3D1491F7A5B9900D115FC /* IconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCell.swift; sourceTree = "<group>"; };
+		60F3D14A1F7A5B9900D115FC /* IconCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IconCell.xib; sourceTree = "<group>"; };
 		60F4C16B1EFCEBA500F21EB6 /* CoverCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverCellRegular.swift; sourceTree = "<group>"; };
 		60F4C16C1EFCEBA500F21EB6 /* CoverCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverCellRegular.xib; sourceTree = "<group>"; };
 		60F4C16F1EFCEBC000F21EB6 /* ChannelCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCellRegular.swift; sourceTree = "<group>"; };
@@ -1158,6 +1164,8 @@
 				6054B2841F6628B300E34990 /* ThemeCoverCell.swift */,
 				6054B2851F6628B300E34990 /* ThemeCoverCell.xib */,
 				60FEBB4F1EF0CEAE00C3EBB6 /* CoverCell.swift */,
+				60F3D1491F7A5B9900D115FC /* IconCell.swift */,
+				60F3D14A1F7A5B9900D115FC /* IconCell.xib */,
 				60FEBB501EF0CEAE00C3EBB6 /* CoverCell.xib */,
 				60F1A5211F5E329E0007F9F3 /* BigImageCell.swift */,
 				60F1A5221F5E329E0007F9F3 /* BigImageCell.xib */,
@@ -1500,6 +1508,7 @@
 				60814F631F580FB200041801 /* BookCell.xib in Resources */,
 				6021538F1F39990E0077A7AF /* LaunchScreen.storyboard in Resources */,
 				60B8554B1F6A118600FE190E /* VideoCoverCell.xib in Resources */,
+				60F3D14E1F7A5B9900D115FC /* IconCell.xib in Resources */,
 				6055EF9A1F5021C1006F8A83 /* PaidPostCell.xib in Resources */,
 				601AC21C1F4870780004196A /* search.html in Resources */,
 				602153691F397C650077A7AF /* ad.html in Resources */,
@@ -1543,6 +1552,7 @@
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
 				600C0D021F5CE7B800226F84 /* ebook.html in Resources */,
+				60F3D14D1F7A5B9900D115FC /* IconCell.xib in Resources */,
 				6021538B1F3990880077A7AF /* Main.storyboard in Resources */,
 				50DA6E811F4037C8006B4CDE /* story.html in Resources */,
 				50C31B351F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
@@ -1610,7 +1620,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		886899C82F14A377FBC6FF9E /* [CP] Check Pods Manifest.lock */ = {
@@ -1628,7 +1638,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9EEBA5BD08C755F531ACE82B /* [CP] Copy Pods Resources */ = {
@@ -1837,6 +1847,7 @@
 				6021535C1F397C650077A7AF /* IJReachability.swift in Sources */,
 				6021535D1F397C650077A7AF /* AppDelegate.swift in Sources */,
 				6055EF981F5021C1006F8A83 /* PaidPostCell.swift in Sources */,
+				60F3D14C1F7A5B9900D115FC /* IconCell.swift in Sources */,
 				F2E090791F5A721E00F4409F /* CustomTab.swift in Sources */,
 				60F1A5241F5E329E0007F9F3 /* BigImageCell.swift in Sources */,
 				6021535E1F397C650077A7AF /* Download.swift in Sources */,
@@ -1899,6 +1910,7 @@
 				50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */,
 				60F1A52B1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
 				605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */,
+				60F3D14B1F7A5B9900D115FC /* IconCell.swift in Sources */,
 				50C31B451F7006D500F4CF61 /* OptionCell.swift in Sources */,
 				50C31B3F1F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */,
 				50A704C31EEB689900660022 /* ContentFetch.swift in Sources */,

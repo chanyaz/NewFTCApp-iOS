@@ -306,7 +306,15 @@ extension CALayer {
     }
 }
 
-
+extension UILabel {
+    func addTextSpacing(value: Any) {
+        if let textString = text {
+            let attributedString = NSMutableAttributedString(string: textString)
+            attributedString.addAttribute(NSAttributedStringKey.kern, value: value, range: NSRange(location: 0, length: attributedString.length - 1))
+            attributedText = attributedString
+        }
+    }
+}
 // MARK: Set background color for UIButton
 extension UIButton {
     func setBackgroundColor(color: UIColor, forState: UIControlState) {

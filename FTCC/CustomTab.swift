@@ -28,13 +28,12 @@ class CustomTab: UIView {
         let homePlayBtnHeight = (homePlayBtn?.size.height)!
         let homePlayBtnWidth = (homePlayBtn?.size.width)!
         let homeTabBarHeight: CGFloat = 95
-        let bottomMargin: CGFloat = 8
-//        playAndPauseButton.frame = CGRect(x:10,y:36,width:50,height:50)
+        let playAndPauseBtnBottomMargin: CGFloat = 12
         playAndPauseButton.attributedTitle(for: UIControlState.normal)
         playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
 
         self.playAndPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -12))
+        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -playAndPauseBtnBottomMargin))
         self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 20))
         self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: homePlayBtnWidth))
         self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: homePlayBtnHeight))

@@ -25,6 +25,7 @@ struct AppNavigation {
             "Channels": [
                 [
                     "title": "文章",
+//                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
                     "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
                     "compactLayout": "All Cover",
                     "regularLayout": "",

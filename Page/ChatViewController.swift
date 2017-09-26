@@ -36,8 +36,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             //autoScrollWhenTalk = false
         }
     }
-    
-    
+    // TODO:解决该view hidden时，键盘收回的问题
     //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
     //var showingCell:CellData
     

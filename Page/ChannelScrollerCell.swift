@@ -12,7 +12,6 @@ class ChannelScrollerCell: UICollectionViewCell {
     
     @IBOutlet weak var channel: UILabel!
     @IBOutlet weak var underLine: UIView!
-    @IBOutlet weak var labelHeight: NSLayoutConstraint!
     
     var cellHeight: CGFloat?
     var pageData = [String: String]() {
@@ -36,9 +35,7 @@ class ChannelScrollerCell: UICollectionViewCell {
             }
            
         }
-        if let cellHeight = cellHeight {
-            labelHeight.constant = cellHeight
-        }
+
         if isSelected == true {
             channel.textColor = AppNavigation.getThemeColor(for: tabName)
             channel.font = channel.font.bold()

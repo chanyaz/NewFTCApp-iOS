@@ -79,7 +79,13 @@ struct AdLayout {
             // MARK: - Break up the first section into two or more, depending on how you want to layout ads
             newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections
-        case "Video", "OutOfBox", "OurOfBox-LifeStyle":
+        case "OutOfBox-No-Ad":
+            if newContentSections[0].items.count > 0 {
+                newContentSections[0].items[0].isCover = true
+            }
+            newContentSections = Content.updateSectionRowIndex(newContentSections)
+            return newContentSections
+        case "Video", "OutOfBox", "OutOfBox-LifeStyle":
             if newContentSections[0].items.count > 0 {
                 newContentSections[0].items[0].isCover = true
             }

@@ -16,19 +16,20 @@ struct AppNavigation {
     
     private static let appMap = [
         "News": [
-            "title": "FT iDeas",
+            "title": "FT想法",
             "navColor": "#333333",
             "navBackGroundColor": "#FFFFFF",
             "navBorderColor": "#b3a9a0",
             "navBorderWidth": "0.1",
             "isNavLightContent": false,
             "Channels": [
-                ["title": "文章",
-                 "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
-                 "compactLayout": "All Cover",
-                 "regularLayout": "",
-                 "url":"http://www.ftchinese.com/channel/datanews.html",
-                 "screenName":"homepage/ftcc"
+                [
+                    "title": "文章",
+                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
+                    "compactLayout": "All Cover",
+                    "regularLayout": "",
+                    "url":"http://www.ftchinese.com/channel/datanews.html",
+                    "screenName":"homepage/ftcc"
                 ],
                 [
                     "title": "专栏",

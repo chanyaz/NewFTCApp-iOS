@@ -32,15 +32,6 @@ struct AppNavigation {
                     "Insert Content": "home"
                 ],
                 [
-                    "title": "想法",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
-                    "regularLayout": "",
-                    "compactLayout": "OutOfBox-No-Ad",
-                    "coverTheme": "OutOfBox-Blue",
-                    "url":"http://www.ftchinese.com/channel/datanews.html",
-                    "screenName":"homepage/ftcc"
-                ],
-                [
                     "title": "中国",
                     "api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",
                     "url":"http://www.ftchinese.com/channel/china.html",
@@ -68,6 +59,15 @@ struct AppNavigation {
                     "url":"http://www.ftchinese.com/channel/management.html",
                     "screenName":"homepage/management",
                     "coverTheme": "Blue"
+                ],
+                [
+                    "title": "思维播客",
+                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
+                    "regularLayout": "",
+                    "compactLayout": "OutOfBox-No-Ad",
+                    "coverTheme": "OutOfBox-Blue",
+                    "url":"http://www.ftchinese.com/channel/datanews.html",
+                    "screenName":"homepage/ftcc"
                 ],
                 [
                     "title": "生活时尚",

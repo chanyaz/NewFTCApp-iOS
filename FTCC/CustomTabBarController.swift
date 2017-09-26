@@ -369,6 +369,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         player = TabBarAudioContent.sharedInstance.player
         
         playerItem = TabBarAudioContent.sharedInstance.playerItem
+       
+        tabView.isHidden = true
         self.delegate = self
         audioAddGesture()
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
@@ -421,7 +423,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             object: nil
         )
         print("how much time did view appear?")
-        getLastPlayAudio()
+//        getLastPlayAudio()
     }
    @objc func switchToPreAudio(_ sender: UIButton) {
         count = (urlOrigStrings.count)
@@ -794,6 +796,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     @objc func updateMiniPlay(){
+        tabView.isHidden = false
       // 点击了上下首之后，BigImageCell这里为什么没有更新item的值，但是不点击上下首是会更新的？因为prepareAudio没对item进行更新
         player = TabBarAudioContent.sharedInstance.player
         //        点击list一次也会继续监听，值更新了，但是audioPlayStatus.text没有变化？应该跟监听位置有关系？

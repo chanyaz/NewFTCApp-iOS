@@ -31,6 +31,10 @@ class ChannelScrollerCell: UICollectionViewCell {
     private func updateUI() {
         if let title = pageData["title"] {
             channel.text = GB2Big5.convert(title)
+            if Color.ChannelScroller.addTextSpace{
+                channel.addTextSpacing(value: 12)
+            }
+           
         }
         if let cellHeight = cellHeight {
             labelHeight.constant = cellHeight
@@ -46,3 +50,5 @@ class ChannelScrollerCell: UICollectionViewCell {
         }
     }
 }
+
+

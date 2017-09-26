@@ -151,11 +151,11 @@ class BigImageCell: CustomCell {
 //            AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
             TabBarAudioContent.sharedInstance.item = itemCell
             TabBarAudioContent.sharedInstance.audioHeadLine = itemCell.headline
-//            TabBarAudioContent.sharedInstance.audioId = "/index.php/ft/interactive/\(itemCell.id)"
         }
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
     
         print("TabBarAudioContent.sharedInstance.body\(TabBarAudioContent.sharedInstance.body)")
+        
     }
     
     @IBAction func tapTagButton(_ sender: UIButton) {

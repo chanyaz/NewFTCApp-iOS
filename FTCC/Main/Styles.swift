@@ -52,6 +52,7 @@ struct Color {
         static let background = "#FFFFFF"
         static let showBottomBorder = true
         static let bottomBorderWidth: CGFloat = 0.3
+        static let addTextSpace = true
     }
     
     struct Ad {

@@ -50,6 +50,7 @@ struct Color {
         static let background = "#fff9f5"
         static let showBottomBorder = false
         static let bottomBorderWidth: CGFloat = 0
+        static let addTextSpace = false
     }
     
     

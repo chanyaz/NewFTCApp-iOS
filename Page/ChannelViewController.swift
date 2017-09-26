@@ -105,8 +105,6 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         let flowLayout = UICollectionViewFlowLayout()
         channelScrollerView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
         channelScrollerView?.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
-        //collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
-        
         
         let numberOfChannels = CGFloat(pageData.count)
         if numberOfChannels > 0 {
@@ -120,7 +118,6 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
                 flowLayout.estimatedItemSize = CGSize(width: cellMinWidth, height: channelScrollerHeight)
             }
         }
-        
         
         //flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         channelScrollerView?.delegate = self
@@ -241,7 +238,9 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         let numberOfChannels = CGFloat(pageData.count)
         if numberOfChannels > 0 {
             let minWidth = max(view.frame.width / numberOfChannels, cellMinWidth)
-            return CGSize(width: minWidth, height: channelScrollerHeight)
+            if minWidth > cellMinWidth && numberOfChannels < 4 {
+                return CGSize(width: minWidth, height: channelScrollerHeight)
+            }
         }
         return CGSize(width: cellMinWidth, height: channelScrollerHeight)
     }

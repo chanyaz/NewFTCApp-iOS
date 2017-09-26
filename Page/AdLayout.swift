@@ -34,7 +34,6 @@ struct AdLayout {
         )
         switch layout {
         case "home":
-
             // MARK: Create the Info Ad
             let paidPostItem = ContentItem(id: "20220121", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
             
@@ -107,7 +106,6 @@ struct AdLayout {
     }
     
     static func insertFullScreenAd(to items: [ContentItem], for index: Int)->(contentItems: [ContentItem], pageIndex: Int){
-        
         var newItems = items
         var newPageIndex = index
         var insertionPointAfter = index + 2

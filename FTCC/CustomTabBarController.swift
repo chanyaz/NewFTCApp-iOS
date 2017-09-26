@@ -686,7 +686,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             TabBarAudioContent.sharedInstance.playerItem = playerItem
             TabBarAudioContent.sharedInstance.audioUrl = audioUrl
             TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
-            setLastPlayAudio()
+//            setLastPlayAudio()
 
             
 //            try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)

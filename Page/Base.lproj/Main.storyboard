@@ -920,7 +920,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="3MB-ZJ-3dS"/>
                                     <barButtonItem image="DownloadButton" style="plain" id="VTh-Yh-dFl">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="c1b-Uo-59M" customClass="UIButtonEnhanced" customModule="Page" customModuleProvider="target">
-                                            <rect key="frame" x="257.33333333333331" y="902.33333333333337" width="36" height="36"/>
+                                            <rect key="frame" x="257.33333333333331" y="9" width="36" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <state key="normal" image="DownloadButton"/>

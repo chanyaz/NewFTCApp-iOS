@@ -24,35 +24,16 @@ extension UITabBarController {
             print ("audio already initiated")
             return
         }
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let controller = storyboard.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
-            BottomAudioPlayer.sharedInstance.playerShowed = true
-            let audioPlayerView = UIView()
-            //            let playerHeight: CGFloat = AudioPlayerStyle.height
-            let playerHeight: CGFloat = 250
-//            audioPlayerView.backgroundColor = UIColor.clear
-            
-            
-            let playerX = UIScreen.main.bounds.origin.x
-            let playerY = UIScreen.main.bounds.origin.y + UIScreen.main.bounds.height - playerHeight
-            let playerWidth = UIScreen.main.bounds.width
-            
-            
-            audioPlayerView.frame = CGRect(x: playerX, y: playerY, width: playerWidth, height: playerHeight)
-            audioPlayerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            
-            // MARK: add as a childviewcontroller
-            addChildViewController(controller)
-            // MARK: Add the child's View as a subview
-            audioPlayerView.addSubview(controller.view)
-            controller.view.frame = audioPlayerView.bounds
-            controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            controller.view.backgroundColor = UIColor(hex: "#12a5b3", alpha: 0)
-            // MARK: tell the childviewcontroller it's contained in it's parent
-            controller.didMove(toParentViewController: self)
-            view.insertSubview(audioPlayerView, aboveSubview: tabBar)
-
+                BottomAudioPlayer.sharedInstance.playerShowed = true
+                self.addChildViewController(controller)
+                self.view.addSubview(controller.view)
+               controller.view.frame = CGRect(x:0,y:self.view.bounds.height-95,width:self.view.bounds.width,height:95)
+               
+                controller.didMove(toParentViewController: self)
+                controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                controller.view.backgroundColor = UIColor(hex: "#12a5b3", alpha: 0)
         }
     }
     

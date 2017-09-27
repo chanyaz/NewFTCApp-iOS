@@ -900,9 +900,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         }
         TabBarAudioContent.sharedInstance.fetchResults = resultsWithAudioUrl
-//        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-//        try? AVAudioSession.sharedInstance().setActive(true)
-//        print("TabBarAudioContent fetchResults 0\(String(describing: resultsWithAudioUrl[0].items[0].audioFileUrl))")
     }
     
 

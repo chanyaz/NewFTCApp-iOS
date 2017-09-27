@@ -31,6 +31,7 @@ class TabBarAudioContent {
     var items = [ContentItem]()
     var mode:Int?
     var playingIndex:Int?
+    var audioHeightInTabBar:CGFloat? = nil
     
 }
 
@@ -68,8 +69,8 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     private var playingIndex:Int = 0
     private var playingUrl:URL? = nil
     var count:Int = 0
-    
-    @IBOutlet weak var webAudioView: UIWebView!
+    var tabView = CustomTab()
+//    @IBOutlet weak var webAudioView: UIWebView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var preAudio: UIButton!
     @IBOutlet weak var nextAudio: UIButton!
@@ -304,9 +305,9 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         )
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
-        self.webView = WKWebView(frame: self.webAudioView.frame, configuration: config)
-        self.webAudioView.addSubview(self.webView!)
-        self.webAudioView.clipsToBounds = true
+//        self.webView = WKWebView(frame: self.webAudioView.frame, configuration: config)
+//        self.webAudioView.addSubview(self.webView!)
+//        self.webAudioView.clipsToBounds = true
         self.webView?.scrollView.bounces = false
         self.webView?.navigationDelegate = self
         self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -351,42 +352,53 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         super.viewDidLoad()
         
         let width = UIScreen.main.bounds.width
-//        let height = UIScreen.main.bounds.height
+        let height = UIScreen.main.bounds.height
+        
+//        let homeTabBarHeight: CGFloat = 95
+//        let hideImage = UIImage(named:"HideBtn")
+//        let hideHeight = (hideImage?.size.height)!*1.1
+//        let hideWidth = (hideImage?.size.width)!*1.1
+//
+
+        
 //        let audioViewHeight:CGFloat = 220
         let buttonWidth:CGFloat = 19
-//        let buttonHeight: CGFloat = 19
+        let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
-       
+//        let spaceBetweenSliderAndForward: CGFloat = 65
         let spaceBetweenListAndView: CGFloat = 30
+//        let spaceBetweenListAndForward: CGFloat = 10
+//        let spaceBetweenPreAndForward = (width - margin*2 - forwardWidth - preWidth - pauseWidth - nextWidth - backWidth)/4
         
+
        
         //        退出列表不会运行此处，但退出自己到tab，再从tab进入会运行此函数
         self.playlist.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-        self.view.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
-        self.view.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.view.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        
-    
+        self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
+
+
         self.downloadButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.share, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -space))
-        self.view.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
-        self.view.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.view.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.share, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -space))
+        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
 
         self.collect.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addConstraint(NSLayoutConstraint(item: collect, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playlist, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
-        self.view.addConstraint(NSLayoutConstraint(item: collect, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
-        self.view.addConstraint(NSLayoutConstraint(item: collect, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.view.addConstraint(NSLayoutConstraint(item: collect, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.containerView.addConstraint(NSLayoutConstraint(item: collect, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playlist, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
+        self.containerView.addConstraint(NSLayoutConstraint(item: collect, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.containerView.addConstraint(NSLayoutConstraint(item: collect, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.containerView.addConstraint(NSLayoutConstraint(item: collect, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
 
 
         self.share.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-        self.view.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
-        self.view.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.view.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
+        self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
         
         let duration = TabBarAudioContent.sharedInstance.duration
         let time = TabBarAudioContent.sharedInstance.time
@@ -406,17 +418,67 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         loadUrl()
         navigationItem.title = item?.headline
         initStyle()
+        self.containerView.isHidden = true
+        containerView.layer.zPosition = 100
+        tabView.layer.zPosition = 200
+        tabView.frame = CGRect(x:0,y:0,width:width,height:95)
+        self.view.addSubview(tabView)
+        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
+        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
+       
         
     }
-    
-    func loadUrl(){
-        ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
-        let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
-        print("webView getDataFromeTab url--\(url)")
-        if let url = URL(string:url) {
-            let req = URLRequest(url:url)
-            webView?.load(req)
+    @objc func openAudio(){
+        removeChildController()
+        addChildController()
+
+        let deltaY = self.view.bounds.height
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.containerView.isHidden = false
+//            self.tabView.isHidden = true
+//            self.tabView.transform = CGAffineTransform(translationX: 0,y: 90)
+            self.containerView.transform = CGAffineTransform(translationX: 0,y: -self.containerView.bounds.height)
+            self.tabView.setNeedsUpdateConstraints()
+            
+        }, completion: { (true) in
+            print("open animate finish")
+        })
+    }
+
+    func removeChildController(){
+        print("remove  ChildController")
+        if let rootViewController = window?.rootViewController as? UITabBarController {
+            
+            if let vc = rootViewController.childViewControllers.last{
+                vc.willMove(toParentViewController: nil)
+                vc.view.removeFromSuperview()
+                vc.removeFromParentViewController()
+            }
+//            window?.rootViewController as? UITabBarController = nil
         }
+        
+    }
+    var window:UIWindow?
+    func addChildController(){
+        print("add  ChildController")
+        if let rootViewController = window?.rootViewController as? UITabBarController {
+        rootViewController.addChildViewController(self)
+        rootViewController.view.addSubview(self.view)
+        self.view.frame = CGRect(x:0,y:self.view.bounds.height-495,width:self.view.bounds.width,height:495)
+
+        self.didMove(toParentViewController: self)
+        self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.backgroundColor = UIColor(hex: "#12a5b3", alpha: 0)
+        }
+    }
+    func loadUrl(){
+//        ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
+//        let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
+//        print("webView getDataFromeTab url--\(url)")
+//        if let url = URL(string:url) {
+//            let req = URLRequest(url:url)
+//            webView?.load(req)
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -443,8 +505,8 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         progressSlider.setThumbImage(aa, for: .normal)
         progressSlider.maximumTrackTintColor = UIColor.white
         progressSlider.minimumTrackTintColor = UIColor(hex: "#05d5e9")
-        self.webAudioView.layer.zPosition = 1
-        self.containerView.layer.zPosition = 3
+//        self.webAudioView.layer.zPosition = 1
+//        self.containerView.layer.zPosition = 3
 //        self.webAudioView.layer.frame = CGRect(x: 0, y: 10, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
     }
@@ -459,12 +521,12 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         let swipeGestureRecognizerDown = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
         swipeGestureRecognizerDown.direction = .down
         swipeGestureRecognizerDown.delegate = self
-        self.webAudioView.addGestureRecognizer(swipeGestureRecognizerDown)
+//        self.webAudioView.addGestureRecognizer(swipeGestureRecognizerDown)
         
         let swipeGestureRecognizerUp = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
         swipeGestureRecognizerUp.direction = .up
         swipeGestureRecognizerUp.delegate = self
-        self.webAudioView.addGestureRecognizer(swipeGestureRecognizerUp)
+//        self.webAudioView.addGestureRecognizer(swipeGestureRecognizerUp)
     }
     @objc func isHideAudio(sender: UISwipeGestureRecognizer){
         if sender.direction == .up{

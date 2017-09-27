@@ -348,7 +348,9 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         super.viewDidLoad()
         
         let width = UIScreen.main.bounds.width
+
 //        let height = UIScreen.main.bounds.height
+
         
         let homeTabBarHeight: CGFloat = 95
 

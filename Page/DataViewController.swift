@@ -622,7 +622,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         default:
             assert(false, "Unexpected element kind")
         }
-        
+        let reuseIdentifier = getReuseIdentifierForSectionHeader(indexPath.section).reuseId ?? ""
+        let headerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: reuseIdentifier,
+            for: indexPath
+        )
+        return headerView
     }
     
     // Calculate Height for Headers

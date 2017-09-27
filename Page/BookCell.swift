@@ -88,7 +88,7 @@ class BookCell: CustomCell {
         
         
         // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        imageView.backgroundColor = UIColor(hex: Color.Image.background)
         // MARK: - initialize image view as it will be reused. If you don't do this, the cell might show wrong image when you scroll.
         imageView.image = nil
         if let loadedImage = itemCell?.thumbnailImage {

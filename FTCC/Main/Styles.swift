@@ -85,6 +85,10 @@ struct Color {
         static let border = "#000000"
     }
     
+    struct Image {
+        static let background = "#cbc1b7"
+    }
+    
 }
 
 struct FontSize {

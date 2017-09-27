@@ -59,11 +59,12 @@ class ChannelCell: CustomCell {
         
         sign.text = nil
         
-        // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
-        // MARK: - initialize image view as it will be reused. If you don't do this, the cell might show wrong image when you scroll.
-        imageView.image = nil
         
+        // MARK: - Load the image of the item
+        imageView.backgroundColor = UIColor(hex: Color.Image.background)
+        imageView.contentMode = .scaleAspectFit
+        // MARK: - As the cell is reusable, asyn image should always be cleared first
+        imageView.image = UIImage(named: "Watermark")
         if let loadedImage = itemCell?.thumbnailImage {
             imageView.image = loadedImage
             //print ("image is already loaded, no need to download again. ")

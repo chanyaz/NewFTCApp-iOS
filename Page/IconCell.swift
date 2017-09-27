@@ -19,7 +19,7 @@ class IconCell: CustomCell {
     override func updateUI() {
         title.text = itemCell?.headline
         // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        imageView.backgroundColor = UIColor(hex: Color.Image.background)
         // MARK: - As the cell is reusable, asyn image should always be cleared first
         imageView.image = nil
         if let loadedImage = itemCell?.coverImage {

@@ -101,6 +101,9 @@ struct Color {
         static let border = "#000000"
     }
     
+    struct Image {
+        static let background = "#d7ccc2"
+    }
 }
 
 

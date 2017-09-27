@@ -63,7 +63,7 @@ class ChannelCellRegular: UICollectionViewCell {
         lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         
         // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        imageView.backgroundColor = UIColor(hex: Color.Image.background)
 //        if let loadedImage = itemCell?.largeImage {
 //            imageView.image = loadedImage
 //        } else {

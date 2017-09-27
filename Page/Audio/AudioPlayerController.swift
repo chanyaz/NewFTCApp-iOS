@@ -69,7 +69,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     private var playingIndex:Int = 0
     private var playingUrl:URL? = nil
     var count:Int = 0
-//    var tabView = CustomTab()
+    var tabView = CustomSmallPlayView()
 //    @IBOutlet weak var webAudioView: UIWebView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var preAudio: UIButton!
@@ -83,7 +83,6 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     @IBOutlet weak var playlist: UIButton!
     @IBOutlet weak var share: UIButton!
     @IBOutlet weak var downloadButton: UIButtonEnhanced!
-    //    @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var forward: UIButton!
     @IBOutlet weak var back: UIButton!
     @IBOutlet weak var multiple: UIButton!
@@ -97,10 +96,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     }
     @IBAction func openPlayList(_ sender: UIButton) {
         if let listPerColumnViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListPerColumnViewController") as? ListPerColumnViewController {
-            //            listPerColumnViewController.AudioLists = fetchesAudioObject
             listPerColumnViewController.fetchListResults = TabBarAudioContent.sharedInstance.fetchResults
-            
-            
             listPerColumnViewController.modalPresentationStyle = .custom
             self.present(listPerColumnViewController, animated: false, completion: nil)
         }
@@ -352,13 +348,9 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         super.viewDidLoad()
         
         let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height
+//        let height = UIScreen.main.bounds.height
         
-//        let homeTabBarHeight: CGFloat = 95
-//        let hideImage = UIImage(named:"HideBtn")
-//        let hideHeight = (hideImage?.size.height)!*1.1
-//        let hideWidth = (hideImage?.size.width)!*1.1
-//
+        let homeTabBarHeight: CGFloat = 95
 
         
 //        let audioViewHeight:CGFloat = 220
@@ -366,10 +358,8 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
-//        let spaceBetweenSliderAndForward: CGFloat = 65
         let spaceBetweenListAndView: CGFloat = 30
-//        let spaceBetweenListAndForward: CGFloat = 10
-//        let spaceBetweenPreAndForward = (width - margin*2 - forwardWidth - preWidth - pauseWidth - nextWidth - backWidth)/4
+
         
 
        
@@ -419,13 +409,12 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         navigationItem.title = item?.headline
         initStyle()
         self.containerView.isHidden = true
-//        self.tabView.isHidden = true
         containerView.layer.zPosition = 100
-//        tabView.layer.zPosition = 200
-//        tabView.frame = CGRect(x:0,y:0,width:width,height:95)
-//        self.view.addSubview(tabView)
-//        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
-//        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
+        tabView.layer.zPosition = 200
+        tabView.frame = CGRect(x:0,y:0,width:width,height:homeTabBarHeight)
+        self.view.addSubview(tabView)
+        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
+        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
        
         
     }
@@ -436,10 +425,9 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
 //        let deltaY = self.view.bounds.height
         UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.containerView.isHidden = false
-//            self.tabView.isHidden = false
-//            self.tabView.transform = CGAffineTransform(translationX: 0,y: self.tabView.bounds.height)
+            self.tabView.transform = CGAffineTransform(translationX: 0,y: self.tabView.bounds.height)
             self.containerView.transform = CGAffineTransform(translationX: 0,y: 0)
-//            self.tabView.setNeedsUpdateConstraints()
+            self.tabView.setNeedsUpdateConstraints()
             
         }, completion: { (true) in
             print("open animate finish")
@@ -452,9 +440,8 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         
         if let rootViewController = window?.rootViewController as? UITabBarController {
             print("audio view height0 \(self.view.frame.height)")
-//            不执行这个函数
+//           The program doesn't execute here because there is no UITabBarController
             if let vc = rootViewController.childViewControllers.last{
-                print("audio view height1 \(self.view.frame.height)")
                 vc.willMove(toParentViewController: rootViewController)
                 vc.view.removeFromSuperview()
                 vc.removeFromParentViewController()

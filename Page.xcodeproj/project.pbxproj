@@ -301,6 +301,8 @@
 		AFD8AF5E1F380A2400508A91 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5D1F380A2400508A91 /* ChatViewModel.swift */; };
 		AFD8AF601F380A6200508A91 /* OneTalkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */; };
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */; };
+		F2218ABA1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
+		F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
 		F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */; };
 		F234EC741F15D1DB003F6DD0 /* HotArticleCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */; };
 		F23BF9F01F170E090052FDB4 /* PageCollectionViewLayoutH.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */; };
@@ -570,6 +572,7 @@
 		AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneTalkCell.swift; sourceTree = "<group>"; };
 		F21309201F78A9BA0078A510 /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "../NewFTCApp-iOS9.15自主开发，在tab中加入audiocontroller，audiocontroller上面添加tabView/Page copy-Info.plist"; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutV.swift; sourceTree = "<group>"; };
+		F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallPlayView.swift; sourceTree = "<group>"; };
 		F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotArticleCellRegular.swift; sourceTree = "<group>"; };
 		F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotArticleCellRegular.xib; sourceTree = "<group>"; };
 		F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutH.swift; sourceTree = "<group>"; };
@@ -902,6 +905,7 @@
 				F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */,
 				F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */,
 				F258A5B71F613E9A0095253A /* AudioPlayerView.swift */,
+				F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */,
 			);
 			name = Player;
 			sourceTree = "<group>";
@@ -1850,6 +1854,7 @@
 				60F3D14C1F7A5B9900D115FC /* IconCell.swift in Sources */,
 				F2E090791F5A721E00F4409F /* CustomTab.swift in Sources */,
 				60F1A5241F5E329E0007F9F3 /* BigImageCell.swift in Sources */,
+				F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */,
 				6021535E1F397C650077A7AF /* Download.swift in Sources */,
 				6021535F1F397C650077A7AF /* DetailViewController.swift in Sources */,
 				F24B79931F5555FA001B62A2 /* AudioPlayerController.swift in Sources */,
@@ -1920,6 +1925,7 @@
 				F23BF9F01F170E090052FDB4 /* PageCollectionViewLayoutH.swift in Sources */,
 				60CA7BC11EF26251000CD9B4 /* AdLayout.swift in Sources */,
 				AFD8AF601F380A6200508A91 /* OneTalkCell.swift in Sources */,
+				F2218ABA1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */,
 				6072F9F31F57ED280035AD92 /* IAP.swift in Sources */,
 				50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				50A704C41EEB689900660022 /* ContentItem.swift in Sources */,

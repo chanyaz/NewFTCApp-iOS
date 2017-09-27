@@ -892,7 +892,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         for (_, section) in results.enumerated() {
 
             print("TabBarAudioContent section.items.count \(section.items.count)")
-            for i in 0 ..< section.items.count {
+            for _ in 0 ..< section.items.count {
                 
 //                if section.items[i].audioFileUrl != nil{
                     resultsWithAudioUrl.append(section)

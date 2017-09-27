@@ -66,7 +66,7 @@ class CoverCellRegular: UICollectionViewCell {
         let setStr = NSMutableAttributedString.init(string: lead.text!)
         setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (lead.text!.characters.count)))
         lead.attributedText = setStr
-        imageView.backgroundColor = UIColor(hex: Color.Tab.background)
+        imageView.backgroundColor = UIColor(hex: Color.Image.background)
         
         if let loadedImage = itemCell?.coverImage {
             imageView.image = loadedImage

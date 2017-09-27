@@ -121,11 +121,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         let forwardY = spaceBetweenListAndView + spaceBetweenListAndForward + buttonHeight + forwardHeight
         
-        
-
-
-        
-        
         preAudio.attributedTitle(for: UIControlState.normal)
         preAudio.setImage(UIImage(named:"PreBtn"), for: UIControlState.normal)
         preAudio.addTarget(self, action: #selector(switchToPreAudio), for: UIControlEvents.touchUpInside)
@@ -180,16 +175,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         webAudioView.backgroundColor = UIColor.red
         webAudioView.layer.zPosition = 100
         
-        //        audioPlayTime.frame = CGRect(x:5,y:58,width:50,height:20)
+
         audioPlayTime.text = "00:00"
         audioPlayTime.textColor = UIColor.white
         audioPlayTime.font = UIFont(name: "Helvetica-Light", size: 14.0)
-        //        audioPlayDuration.frame = CGRect(x:width-60,y:58,width:70,height:20)
+
         audioPlayDuration.text = "00:00"
         audioPlayDuration.textColor = UIColor.white
         audioPlayDuration.font = UIFont(name: "Helvetica-Light", size: 14.0)
-        //        audioProgressSlider.frame = CGRect(x:60,y:58,width:width - 140,height:20)
-        //        progressSlider.value = 0.3
+
         let progressThumbImage = UIImage(named: "SliderImg")
         let aa = progressThumbImage?.imageWithImage(image: progressThumbImage!, scaledToSize: CGSize(width: 15, height: 15))
         audioProgressSlider.setThumbImage(aa, for: .normal)
@@ -211,9 +205,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         downSwipeButton.frame = CGRect(x:width-50,y:15,width:hideWidth*2,height:hideHeight*2)
         downSwipeButton.setImage(UIImage(named:"HideBtn"), for: UIControlState.normal)
         downSwipeButton.addTarget(self, action: #selector(exitAudio), for: UIControlEvents.touchUpInside)
-//        downSwipeButton.backgroundColor = UIColor.red
-
-        
+   
 
         viewWithLanguages.frame = CGRect(x:0,y:0,width:width,height:homeTabBarHeight)
         audioViewWithContent.frame = CGRect(x:0,y:homeTabBarHeight,width:width,height:height)
@@ -240,7 +232,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
         
         audioView.addSubview(deleteButton)
-//        audioView.addSubview(audioPlayStatus)
         audioView.addSubview(audioplayAndPauseButton)
         audioView.addSubview(audioProgressSlider)
         audioView.addSubview(audioPlayTime)
@@ -552,7 +543,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     }
     //    playingIndex应该放在时刻跟新的地方获取
     func updateSingleTonData(){
-        if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].audioFileUrl {
+        if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].caudio {
             TabBarAudioContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
             self.tabView.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
             self.audioPlayStatus.text = fetchAudioResults[0].items[playingIndex].headline
@@ -572,7 +563,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
         if let fetchAudioResults = fetchAudioResults {
             for (index, item0) in fetchAudioResults[0].items.enumerated() {
-                if let fileUrl = item0.audioFileUrl {
+                if let fileUrl = item0.caudio {
                     urlOrigStrings.append(fileUrl)
                     if audioUrlString == fileUrl{
                         playingUrlStr = fileUrl
@@ -898,7 +889,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         //        需要同时更新webView和id 、item等所有一致性变量，应该把他们整合到一起，一起处理循环、下一首、列表更新
 //        此函数选择一次list，运行2次，why？需要移除此监听器么？
         removePlayerItemObservers()
-        if let item = TabBarAudioContent.sharedInstance.item,let audioUrlStrFromList = item.audioFileUrl{
+        if let item = TabBarAudioContent.sharedInstance.item,let audioUrlStrFromList = item.caudio  {
             print("audioUrlStrFromList--\(audioUrlStrFromList)")
             audioUrlString = audioUrlStrFromList
             audioUrlString = audioUrlString.replacingOccurrences(of: " ", with: "%20")

@@ -63,11 +63,9 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         changePlayModeButton?.setImage(UIImage(named:"OrderBtn"), for: .normal)
         changePlayModeButton?.tintColor = UIColor(hex: Color.AudioList.tint)
         changePlayModeButton?.setTitleColor(UIColor.black, for: .normal)
-        //        button.setBackgroundImage(UIImage(named:"Audio"), for: .normal)
         changePlayModeButton?.titleEdgeInsets = UIEdgeInsets(top: 6, left: 30, bottom: 6, right: 15)
         changePlayModeButton?.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 15)
         changePlayModeButton?.frame = CGRect(x: 0, y: 0, width: 150, height: 50)
-//        changePlayModeButton?.backgroundColor = UIColor.red
         self.changePlayModeView.addSubview(changePlayModeButton!)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
         changePlayModeButton?.addGestureRecognizer(tapGestureRecognizer)
@@ -111,15 +109,11 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         
         let cellItem = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath)
         if let cell = cellItem as? ListTableViewCell {
-            //            cell.itemCell = AudioLists.fetchResults[0].items[indexPath.row]
             cell.itemCell = fetchListResults?[0].items[indexPath.row]
             if indexPath.row == TabBarAudioContent.sharedInstance.playingIndex {
-//                cell.contentView.backgroundColor = UIColor.cyan
                 cell.downloadButton.setImage(UIImage(named:"PlayingBtn"), for: UIControlState.normal)
-        
             }else{
                 cell.downloadButton.setImage(UIImage(named:""), for: UIControlState.normal)
-//                cell.contentView.backgroundColor = UIColor.white
             }
             return cell
         }
@@ -131,16 +125,10 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
 
         let row = tableView.indexPathForSelectedRow?.row
         TabBarAudioContent.sharedInstance.playingIndex = row
-        
-//        if (storyboard?.instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController) != nil
-//        {
-//            audioPlayerBar.item = fetchListResults?[0].items[indexPath.row]
             TabBarAudioContent.sharedInstance.item = fetchListResults?[0].items[indexPath.row]
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
             self.dismiss(animated: true)
-//        }
-        
     }
     //init 不能少，写在viewDidLoad中不生效
     

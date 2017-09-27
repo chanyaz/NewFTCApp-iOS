@@ -793,7 +793,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
         
-        print("palyer item isExist url")
+        print("player item exist url")
         
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
@@ -807,9 +807,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             playerItem = AVPlayerItem(asset: asset)
 
             if player != nil {
-                print("url item palyer exist")
+                print("item player exist")
             }else {
-                print("url item palyer do not exist")
+                print("item player do not exist")
                 player = AVPlayer()
             }
             TabBarAudioContent.sharedInstance.isPlaying = true
@@ -819,72 +819,45 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         }
         let url = (playerItem?.asset as? AVURLAsset)?.url
-        //     修改的代码结束
-        
+
         TabBarAudioContent.sharedInstance.player = player
-//        self.nowPlayingCenter.updateTimeForPlayerItem(player)
-        
-        //    获取用户点击的音频的url，下面url这个目前获取的为空，不对
-        //        let url = (customTabBarController.playerItem?.asset as? AVURLAsset)?.url
-        print("url item first-0-url000-\(String(describing: url))")
+
+        print("item first url-0000-\(String(describing: url))")
         if (player != nil){
-            
-            //判断url是否与当前播放的音频是否为同一个，
-            //即 比较url与TabBarAudioContent.sharedInstance.audioUrl
-            //如果一样，不进行操作
             if (TabBarAudioContent.sharedInstance.audioUrl) != nil {
-                print("url item second---\(url == TabBarAudioContent.sharedInstance.audioUrl)")
+                print("item second url---\(url == TabBarAudioContent.sharedInstance.audioUrl)")
                 
                 if url == TabBarAudioContent.sharedInstance.audioUrl {
-                    print("url item second same play---")
-                    //如果当前播放一样，直接忽略点击，继续播放
-                    //  此处有个漏洞，假如播放完成，继续播放相同的就不播放了；这个需要去解决
-                    //播放一段时间继续点击会重新开始，应该把上次播放的playItem保存下来，保存值应为time。点击一下会先跳到初始值，这是为什么？
-                    
+                    print("item second same play---")
                     if let currrentPlayingTime = TabBarAudioContent.sharedInstance.time{
                         print("url item second currrentPlayingTime-\(String(describing: currrentPlayingTime))")
                         self.playerItem?.seek(to: currrentPlayingTime)
                     }
                 }
                 else{
-                    //如果当前播放不一样，播放另一个，同时把当前播放url进行更新
-                    print("url item second--开始播放新的-\(String(describing: url))")
-                    //消除旧的播放
-//                    removePlayerItemObservers()
-//                    PlayerObserver().removePlayerItemObservers(self, object: playerItem)
-                    // 开始播放
-                    
+                    print("item new second play url---\(String(describing: url))")
                     player?.replaceCurrentItem(with: playerItem)
                     player?.play()
-                    //当前播放url进行更新
+                    //The current playback url is updated
                     TabBarAudioContent.sharedInstance.audioUrl = url
                 }
                 
             } else {
                 TabBarAudioContent.sharedInstance.audioUrl = url
-                // 开始播放
                 player?.play()
                 player?.replaceCurrentItem(with: playerItem)
                 
             }
             
             TabBarAudioContent.sharedInstance.playerItem = playerItem
-//            setLastPlayAudio()
-            
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: CustomTabBarController())
-            
-//            addPlayerItemObservers()
-            
             playerObserver.addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
             if let title = TabBarAudioContent.sharedInstance.body["title"],let _ = player{
                 print("NowPlayingCenter updatePlayingInfo \(title)")
-//                此函数没执行，why？
-            NowPlayingCenter().updatePlayingCenter()
-//                NowPlayingCenter().updatePlayingInfo(player, title:title)
+                NowPlayingCenter().updatePlayingCenter()
             }
         }else{
-            print("palyer item not isExist")
-            
+            print("player item not isExist")
             return
         }
         
@@ -898,11 +871,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         for (_, section) in results.enumerated() {
 
             print("TabBarAudioContent section.items.count \(section.items.count)")
-            for _ in 0 ..< section.items.count {
+            for i in 0 ..< section.items.count {
                 
-//                if section.items[i].audioFileUrl != nil{
+                if section.items[i].caudio != nil || section.items[i].eaudio != nil{
                     resultsWithAudioUrl.append(section)
-//                }
+                }
             }
         }
         TabBarAudioContent.sharedInstance.fetchResults = resultsWithAudioUrl
@@ -928,22 +901,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     // MARK: - Handle user tapping on a cell
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        
-        let layoutKey = layoutType()
-        let layoutStrategy: String?
-        if let layoutValue = dataObject[layoutKey] {
-            layoutStrategy = layoutValue
-        } else {
-            layoutStrategy = nil
-        }
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {    
 //        ,layoutStrategy == "All Cover"
         // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
         let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
         // MARK: if it is an audio file, push the audio view controller
         if let audioFileUrl = selectedItem.audioFileUrl {
             print ("this is an audio")
-            if layoutStrategy != "All Cover"{
+
                 //            let body = AudioContent.sharedInstance.body
                 //            if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"]
                 if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
@@ -954,14 +919,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     audioPlayer.themeColor = themeColor
                     navigationController?.pushViewController(audioPlayer, animated: true)
                 }
-            }else if layoutStrategy == "All Cover"{
-                if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
-                    contentItemViewController.dataObject = selectedItem
-                    contentItemViewController.hidesBottomBarWhenPushed = true
-                    contentItemViewController.themeColor = themeColor
-                    navigationController?.pushViewController(contentItemViewController, animated: true)
-                }
-            }
+           
         } else {
             switch selectedItem.type {
             case "setting":

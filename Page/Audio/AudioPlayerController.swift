@@ -31,14 +31,11 @@ class TabBarAudioContent {
     var items = [ContentItem]()
     var mode:Int?
     var playingIndex:Int?
-    var audioHeightInTabBar:CGFloat? = nil
-    
 }
 
 
 class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate,UIGestureRecognizerDelegate{
 
-    var mode: AVPlayer.RepeatMode = .None
     private var audioTitle = ""
     private var audioUrlString = ""
     private var audioId = ""

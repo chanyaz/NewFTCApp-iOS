@@ -21,6 +21,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var themeColor: String? = nil
     var coverTheme: String?
     var layoutStrategy: String?
+    
+    fileprivate let itemsPerRowForRegular: CGFloat = 3
+    fileprivate let itemsPerRowForCompact: CGFloat = 1
+    fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    
+    
     // MARK: Search
     fileprivate lazy var searchBar: UISearchBar? = nil
     fileprivate var searchKeywords: String? = nil {
@@ -894,9 +900,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         }
         TabBarAudioContent.sharedInstance.fetchResults = resultsWithAudioUrl
-//        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-//        try? AVAudioSession.sharedInstance().setActive(true)
-//        print("TabBarAudioContent fetchResults 0\(String(describing: resultsWithAudioUrl[0].items[0].audioFileUrl))")
     }
     
 
@@ -1131,9 +1134,7 @@ extension DataViewController {
 }
 
 
-fileprivate let itemsPerRowForRegular: CGFloat = 3
-fileprivate let itemsPerRowForCompact: CGFloat = 1
-fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+
 
 extension DataViewController : UICollectionViewDelegateFlowLayout {
     

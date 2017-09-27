@@ -102,10 +102,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sWT-HH-k2y">
-                                <rect key="frame" x="16" y="20" width="288" height="548"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </webView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2br-oq-yax">
                                 <rect key="frame" x="0.0" y="338" width="320" height="230"/>
                                 <subviews>
@@ -226,11 +222,11 @@
                                 <constraints>
                                     <constraint firstItem="2U7-GJ-2jf" firstAttribute="centerY" secondItem="d4Z-bM-p77" secondAttribute="centerY" id="0pi-t8-VGy"/>
                                     <constraint firstAttribute="height" constant="230" id="1QH-tf-hG3"/>
-                                    <constraint firstItem="qe8-Rk-4vJ" firstAttribute="leading" secondItem="d4Z-bM-p77" secondAttribute="trailing" constant="50" id="4mc-Gx-K3M"/>
                                     <constraint firstItem="a24-Eu-Esc" firstAttribute="centerY" secondItem="GmR-Wf-Tyq" secondAttribute="centerY" id="CTh-dL-6wb"/>
                                     <constraint firstAttribute="trailing" secondItem="rzX-RV-w5b" secondAttribute="trailing" constant="20" symbolic="YES" id="DEa-LC-uF3"/>
                                     <constraint firstAttribute="trailing" secondItem="bvV-Nk-cRf" secondAttribute="trailing" constant="15" id="DLO-h1-7PQ"/>
                                     <constraint firstItem="d4Z-bM-p77" firstAttribute="leading" secondItem="2br-oq-yax" secondAttribute="leading" constant="20" symbolic="YES" id="F3r-oo-9tP"/>
+                                    <constraint firstAttribute="trailing" secondItem="iwF-86-4Hl" secondAttribute="trailing" constant="96" id="GIL-Iu-UkW"/>
                                     <constraint firstItem="GmR-Wf-Tyq" firstAttribute="leading" secondItem="2br-oq-yax" secondAttribute="leading" constant="15" id="H5X-2x-pdr"/>
                                     <constraint firstItem="rzX-RV-w5b" firstAttribute="top" secondItem="2br-oq-yax" secondAttribute="top" constant="20" symbolic="YES" id="Kh6-67-r5F"/>
                                     <constraint firstItem="d4Z-bM-p77" firstAttribute="top" secondItem="GmR-Wf-Tyq" secondAttribute="bottom" constant="35" id="LNi-Ce-HPE"/>
@@ -239,24 +235,20 @@
                                     <constraint firstAttribute="bottom" secondItem="ieI-78-tdM" secondAttribute="bottom" constant="31" id="Mhf-vs-f9b"/>
                                     <constraint firstItem="ieI-78-tdM" firstAttribute="top" secondItem="2U7-GJ-2jf" secondAttribute="bottom" constant="26" id="Rr6-Xa-aFb"/>
                                     <constraint firstItem="ieI-78-tdM" firstAttribute="leading" secondItem="2br-oq-yax" secondAttribute="leading" constant="20" symbolic="YES" id="WRK-Rd-Uor"/>
-                                    <constraint firstItem="CBA-7g-OiY" firstAttribute="leading" secondItem="iwF-86-4Hl" secondAttribute="trailing" constant="50" id="Zcq-Xr-NlO"/>
                                     <constraint firstAttribute="trailing" secondItem="CBA-7g-OiY" secondAttribute="trailing" constant="20" symbolic="YES" id="dLH-Yz-Pks"/>
                                     <constraint firstItem="CBA-7g-OiY" firstAttribute="centerY" secondItem="d4Z-bM-p77" secondAttribute="centerY" id="pge-9z-PqQ"/>
                                     <constraint firstItem="iwF-86-4Hl" firstAttribute="centerY" secondItem="d4Z-bM-p77" secondAttribute="centerY" id="tBt-B6-r3h"/>
                                     <constraint firstItem="2U7-GJ-2jf" firstAttribute="centerX" secondItem="2br-oq-yax" secondAttribute="centerX" id="tZJ-Y0-R0m"/>
                                     <constraint firstItem="qe8-Rk-4vJ" firstAttribute="centerY" secondItem="d4Z-bM-p77" secondAttribute="centerY" id="wkM-ee-iSO"/>
+                                    <constraint firstItem="qe8-Rk-4vJ" firstAttribute="leading" secondItem="2br-oq-yax" secondAttribute="leading" constant="96" id="yY8-AR-I3t"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="sWT-HH-k2y" firstAttribute="leading" secondItem="epX-h6-dar" secondAttribute="leadingMargin" id="6Tf-If-Yzo"/>
                             <constraint firstItem="2br-oq-yax" firstAttribute="leading" secondItem="epX-h6-dar" secondAttribute="leading" id="CQN-hj-haQ"/>
-                            <constraint firstItem="sWT-HH-k2y" firstAttribute="top" secondItem="8Gm-7K-UjX" secondAttribute="bottom" id="En3-g2-psV"/>
                             <constraint firstItem="eyQ-J4-vFF" firstAttribute="top" secondItem="2br-oq-yax" secondAttribute="bottom" id="KCK-T3-Nmd"/>
                             <constraint firstAttribute="trailing" secondItem="2br-oq-yax" secondAttribute="trailing" id="NjA-ol-ZRV"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="sWT-HH-k2y" secondAttribute="trailing" id="Olt-SZ-UxV"/>
-                            <constraint firstItem="eyQ-J4-vFF" firstAttribute="top" secondItem="sWT-HH-k2y" secondAttribute="bottom" id="SZM-Yd-HEa"/>
                         </constraints>
                     </view>
                     <connections>
@@ -274,7 +266,6 @@
                         <outlet property="preAudio" destination="qe8-Rk-4vJ" id="BRe-4b-7tP"/>
                         <outlet property="progressSlider" destination="a24-Eu-Esc" id="dqB-g5-47E"/>
                         <outlet property="share" destination="M9r-vW-t5D" id="ZJK-Hl-Pi9"/>
-                        <outlet property="webAudioView" destination="sWT-HH-k2y" id="PCY-5Y-5hz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="onz-hs-1Dd" userLabel="First Responder" sceneMemberID="firstResponder"/>

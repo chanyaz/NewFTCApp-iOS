@@ -10,15 +10,6 @@ import UIKit
 import AVKit
 import MediaPlayer
 
-public extension AVPlayer {
-    enum RepeatMode {
-        case None
-        case One
-        case Loop // for AVQueuePlayer
-        case Order
-        case Random
-    }
-}
 let playMode = ["顺序播放", "单曲循环", "随机播放"]
 let playModeImage = ["OrderBtn","OneBtn", "RandomBtn"]
 class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIViewControllerTransitioningDelegate {

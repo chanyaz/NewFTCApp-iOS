@@ -797,9 +797,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
-            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
-            audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
+//            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
+            
+            audioUrlString = audioFileUrl.replacingOccurrences(
+                of: "^(http).+(album/)",
+                with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
+                options: .regularExpression
+            )
+             print("audioUrlString by regularExpression--\(audioUrlString)")
         }
+
+    audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         if let url = URL(string: audioUrlString) {
             let audioUrl = url
             let asset = AVURLAsset(url: audioUrl)

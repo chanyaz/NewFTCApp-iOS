@@ -371,7 +371,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touches Began")
+//        print("touches Began")
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch : UITouch! =  touches.first! as UITouch
@@ -386,7 +386,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touches Ended")
+//        print("touches Ended")
         if tabView.frame.origin.y<0{
             self.tabView.transform = CGAffineTransform(translationX: 0,y: -self.view.bounds.height)
         }else{
@@ -646,8 +646,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     }
     
     private func prepareAudioPlay() {
-        audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
-        
+        audioUrlString = audioUrlString.replacingOccurrences(
+            of: "^(http).+(album/)",
+            with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
+            options: .regularExpression
+        )
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
             var audioUrl = url
@@ -677,11 +680,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             TabBarAudioContent.sharedInstance.playerItem = playerItem
             TabBarAudioContent.sharedInstance.audioUrl = audioUrl
             TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
-//            setLastPlayAudio()
 
-            
-//            try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-//            try? AVAudioSession.sharedInstance().setActive(true)
             if let player = player {
                 player.play()
             }
@@ -893,7 +892,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             print("audioUrlStrFromList--\(audioUrlStrFromList)")
             audioUrlString = audioUrlStrFromList
             audioUrlString = audioUrlString.replacingOccurrences(of: " ", with: "%20")
-            //            audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
             print("audioUrlStrFromList--\(audioUrlString)")
             prepareAudioPlay()
             //            updateSingleTonData()
@@ -909,8 +907,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             parseAudioMessage()
             loadUrl()
         }
-        
-        
     }
     
     
@@ -961,15 +957,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             case 0:
                 orderPlay()
             case 1:
-                randomPlay()
-            case 2:
                 onePlay()
+            case 2:
+                randomPlay()
             default:
                 orderPlay()
             }
         }
         else{
-            loopPlay()
+            orderPlay()
         }
     }
     
@@ -1009,14 +1005,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         queuePlayer?.insert(nextItem!, after: currentItem)
         self.player?.play()
     }
-    func loopPlay(){
-        let currentItem = self.player?.currentItem
-        queuePlayer?.advanceToNextItem()
-        currentItem?.seek(to: kCMTimeZero)
-        queuePlayer?.insert(currentItem!, after: nil)
-        self.player?.play()
-        
-    }
+
     func onePlay(){
         let startTime = CMTimeMake(0, 1)
         self.playerItem?.seek(to: startTime)
@@ -1086,52 +1075,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }
     }
     
-    private func getLastPlayAudio() {
-        let audioHeadLineHistory = UserDefaults.standard.string(forKey: Key.audioHistory[0]) ?? String()
-        let audioUrlHistory = UserDefaults.standard.url(forKey: Key.audioHistory[1]) ?? URL(string: "")
-        let audioIdHistory = UserDefaults.standard.string(forKey: Key.audioHistory[2]) ?? String()
-        let audioLastPlayTimeHistory = UserDefaults.standard.float(forKey: Key.audioHistory[3])
-        print("getLastPlayAudio---\(audioLastPlayTimeHistory)")
-        self.audioPlayStatus.text = audioHeadLineHistory
-        self.tabView.playStatus.text = audioHeadLineHistory
-        
-        if audioUrlHistory != nil {
-            let asset = AVURLAsset(url: audioUrlHistory!)
-            
-            playerItem = AVPlayerItem(asset: asset)
-            
-            if player != nil {
-                print("player exist")
-            }else {
-                print("player not exist")
-                player = AVPlayer()
-                
-            }
-            let statusType = IJReachability().connectedToNetworkOfType()
-            if statusType == .wiFi {
-                player?.replaceCurrentItem(with: playerItem)
-            }
-            updateProgressSlider()
-            
-            TabBarAudioContent.sharedInstance.playerItem = playerItem
-            TabBarAudioContent.sharedInstance.player = player
-            TabBarAudioContent.sharedInstance.audioHeadLine = audioHeadLineHistory
-            
-        }
-        
-        //        if audioIdHistory != nil {
-        audioId = audioIdHistory.replacingOccurrences(
-            of: "^.*interactive/([0-9]+).*$",
-            with: "$1",
-            options: .regularExpression
-        )
-        //        }
-        updatePlayButtonUI()
-//        加了此函数会show play center,它才是显示的函数而不是updatePlayingInfo()或者updateTimeForPlayerItem()，所以最好放在公共的地方; enableBackGroundMode()能直接放在运行出现的地方呢，以后不再运行？应该是不行，因为需要变化控件值。
-        NowPlayingCenter().updatePlayingCenter()
-//        enableBackGroundMode()
-    }
-
     private func enableBackGroundMode() {
         // MARK: Receive Messages from Lock Screen
         UIApplication.shared.beginReceivingRemoteControlEvents();

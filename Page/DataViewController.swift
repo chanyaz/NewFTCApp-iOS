@@ -894,9 +894,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             print("TabBarAudioContent section.items.count \(section.items.count)")
             for i in 0 ..< section.items.count {
                 
-                if section.items[i].audioFileUrl != nil{
+//                if section.items[i].audioFileUrl != nil{
                     resultsWithAudioUrl.append(section)
-                }
+//                }
             }
         }
         TabBarAudioContent.sharedInstance.fetchResults = resultsWithAudioUrl

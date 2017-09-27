@@ -69,7 +69,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
     private var playingIndex:Int = 0
     private var playingUrl:URL? = nil
     var count:Int = 0
-    var tabView = CustomTab()
+//    var tabView = CustomTab()
 //    @IBOutlet weak var webAudioView: UIWebView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var preAudio: UIButton!
@@ -419,43 +419,48 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         navigationItem.title = item?.headline
         initStyle()
         self.containerView.isHidden = true
+//        self.tabView.isHidden = true
         containerView.layer.zPosition = 100
-        tabView.layer.zPosition = 200
-        tabView.frame = CGRect(x:0,y:0,width:width,height:95)
-        self.view.addSubview(tabView)
-        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
-        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
+//        tabView.layer.zPosition = 200
+//        tabView.frame = CGRect(x:0,y:0,width:width,height:95)
+//        self.view.addSubview(tabView)
+//        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
+//        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
        
         
     }
     @objc func openAudio(){
         removeChildController()
-        addChildController()
+//        addChildController()
 
-        let deltaY = self.view.bounds.height
+//        let deltaY = self.view.bounds.height
         UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.containerView.isHidden = false
-//            self.tabView.isHidden = true
-//            self.tabView.transform = CGAffineTransform(translationX: 0,y: 90)
-            self.containerView.transform = CGAffineTransform(translationX: 0,y: -self.containerView.bounds.height)
-            self.tabView.setNeedsUpdateConstraints()
+//            self.tabView.isHidden = false
+//            self.tabView.transform = CGAffineTransform(translationX: 0,y: self.tabView.bounds.height)
+            self.containerView.transform = CGAffineTransform(translationX: 0,y: 0)
+//            self.tabView.setNeedsUpdateConstraints()
             
         }, completion: { (true) in
             print("open animate finish")
         })
+
     }
 
     func removeChildController(){
         print("remove  ChildController")
+        
         if let rootViewController = window?.rootViewController as? UITabBarController {
-            
+            print("audio view height0 \(self.view.frame.height)")
+//            不执行这个函数
             if let vc = rootViewController.childViewControllers.last{
-                vc.willMove(toParentViewController: nil)
+                print("audio view height1 \(self.view.frame.height)")
+                vc.willMove(toParentViewController: rootViewController)
                 vc.view.removeFromSuperview()
                 vc.removeFromParentViewController()
             }
-//            window?.rootViewController as? UITabBarController = nil
         }
+        
         
     }
     var window:UIWindow?
@@ -465,7 +470,7 @@ class AudioPlayerController: UIViewController,WKScriptMessageHandler,UIScrollVie
         rootViewController.addChildViewController(self)
         rootViewController.view.addSubview(self.view)
         self.view.frame = CGRect(x:0,y:self.view.bounds.height-495,width:self.view.bounds.width,height:495)
-
+            print("audio view height \(self.view.frame.height)")
         self.didMove(toParentViewController: self)
         self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.backgroundColor = UIColor(hex: "#12a5b3", alpha: 0)

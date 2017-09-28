@@ -35,8 +35,6 @@
 		50C31B481F7006D500F4CF61 /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C31B441F7006D500F4CF61 /* OptionCell.xib */; };
 		50D4BD3C1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
 		50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */; };
-		50D4BD461F63BB2400DD64E1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD451F63BB2400DD64E1 /* NotificationService.swift */; };
-		50D4BD4A1F63BB2400DD64E1 /* FT富媒体速递.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		50D4BD551F63BE1700DD64E1 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D4BD541F63BE1700DD64E1 /* NotificationCenter.framework */; };
 		50D4BD581F63BE1700DD64E1 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D4BD571F63BE1700DD64E1 /* TodayViewController.swift */; };
 		50D4BD5B1F63BE1700DD64E1 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50D4BD591F63BE1700DD64E1 /* MainInterface.storyboard */; };
@@ -343,13 +341,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		50D4BD481F63BB2400DD64E1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 60D3C8B51EBFF5DC0085BEF6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 50D4BD421F63BB2400DD64E1;
-			remoteInfo = "FT富媒体速递";
-		};
 		50D4BD5D1F63BE1700DD64E1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 60D3C8B51EBFF5DC0085BEF6 /* Project object */;
@@ -381,7 +372,6 @@
 			dstSubfolderSpec = 13;
 			files = (
 				50D4BD5F1F63BE1700DD64E1 /* FT今日焦点.appex in Embed App Extensions */,
-				50D4BD4A1F63BB2400DD64E1 /* FT富媒体速递.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,9 +400,6 @@
 		50C31B431F7006D500F4CF61 /* OptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
 		50C31B441F7006D500F4CF61 /* OptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OptionCell.xib; sourceTree = "<group>"; };
 		50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
-		50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FT富媒体速递.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		50D4BD451F63BB2400DD64E1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		50D4BD471F63BB2400DD64E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50D4BD531F63BE1700DD64E1 /* FT今日焦点.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FT今日焦点.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D4BD541F63BE1700DD64E1 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		50D4BD571F63BE1700DD64E1 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -481,6 +468,8 @@
 		602E883F1F43DD9600BBB4AF /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		60362DBA01D0F57A6C7932A5 /* Pods_Page.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Page.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		603726B01F72050E0084F938 /* LanguageSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageSetting.swift; sourceTree = "<group>"; };
+		604B99051F7CC05B00C60281 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		604B99071F7CC05B00C60281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		604FF9491EEF7649005D2A41 /* ChannelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
 		604FF94A1EEF7649005D2A41 /* ChannelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCell.xib; sourceTree = "<group>"; };
 		6054B2841F6628B300E34990 /* ThemeCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeCoverCell.swift; sourceTree = "<group>"; };
@@ -609,13 +598,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		50D4BD401F63BB2400DD64E1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		50D4BD501F63BE1700DD64E1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -707,15 +689,6 @@
 				50D4BD3B1F6382A700DD64E1 /* NotificationHelper.swift */,
 			);
 			name = Notification;
-			sourceTree = "<group>";
-		};
-		50D4BD441F63BB2400DD64E1 /* FT富媒体速递 */ = {
-			isa = PBXGroup;
-			children = (
-				50D4BD451F63BB2400DD64E1 /* NotificationService.swift */,
-				50D4BD471F63BB2400DD64E1 /* Info.plist */,
-			);
-			path = "FT富媒体速递";
 			sourceTree = "<group>";
 		};
 		50D4BD561F63BE1700DD64E1 /* FT今日焦点 */ = {
@@ -920,6 +893,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		604B99041F7CC05B00C60281 /* FTC Notification Service Extension */ = {
+			isa = PBXGroup;
+			children = (
+				604B99051F7CC05B00C60281 /* NotificationService.swift */,
+				604B99071F7CC05B00C60281 /* Info.plist */,
+			);
+			path = "FTC Notification Service Extension";
+			sourceTree = "<group>";
+		};
 		604FF94D1EEF8BBE005D2A41 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -1066,8 +1048,8 @@
 			isa = PBXGroup;
 			children = (
 				60D3C8BF1EBFF5DC0085BEF6 /* Page */,
-				50D4BD441F63BB2400DD64E1 /* FT富媒体速递 */,
 				50D4BD561F63BE1700DD64E1 /* FT今日焦点 */,
+				604B99041F7CC05B00C60281 /* FTC Notification Service Extension */,
 				60D3C8D81EBFF5DC0085BEF6 /* PageTests */,
 				60D3C8E31EBFF5DC0085BEF6 /* PageUITests */,
 				60D3C8BE1EBFF5DC0085BEF6 /* Products */,
@@ -1083,7 +1065,6 @@
 				60D3C8D51EBFF5DC0085BEF6 /* PageTests.xctest */,
 				60D3C8E01EBFF5DC0085BEF6 /* PageUITests.xctest */,
 				602153841F397C660077A7AF /* FTCC.app */,
-				50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */,
 				50D4BD531F63BE1700DD64E1 /* FT今日焦点.appex */,
 			);
 			name = Products;
@@ -1281,23 +1262,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 50D4BD4B1F63BB2400DD64E1 /* Build configuration list for PBXNativeTarget "FT富媒体速递" */;
-			buildPhases = (
-				50D4BD3F1F63BB2400DD64E1 /* Sources */,
-				50D4BD401F63BB2400DD64E1 /* Frameworks */,
-				50D4BD411F63BB2400DD64E1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "FT富媒体速递";
-			productName = "FT富媒体速递";
-			productReference = 50D4BD431F63BB2400DD64E1 /* FT富媒体速递.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		50D4BD521F63BE1700DD64E1 /* FT今日焦点 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 50D4BD601F63BE1700DD64E1 /* Build configuration list for PBXNativeTarget "FT今日焦点" */;
@@ -1350,7 +1314,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				50D4BD491F63BB2400DD64E1 /* PBXTargetDependency */,
 				50D4BD5E1F63BE1700DD64E1 /* PBXTargetDependency */,
 			);
 			name = Page;
@@ -1400,16 +1363,10 @@
 		60D3C8B51EBFF5DC0085BEF6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Oliver Zhang";
 				TargetAttributes = {
-					50D4BD421F63BB2400DD64E1 = {
-						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = CAEDT8EKGV;
-						LastSwiftMigration = 0900;
-						ProvisioningStyle = Automatic;
-					};
 					50D4BD521F63BE1700DD64E1 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = CAEDT8EKGV;
@@ -1470,7 +1427,6 @@
 			targets = (
 				60D3C8BC1EBFF5DC0085BEF6 /* Page */,
 				50D4BD521F63BE1700DD64E1 /* FT今日焦点 */,
-				50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */,
 				602153091F397C650077A7AF /* FTCC */,
 				60D3C8D41EBFF5DC0085BEF6 /* PageTests */,
 				60D3C8DF1EBFF5DC0085BEF6 /* PageUITests */,
@@ -1479,13 +1435,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		50D4BD411F63BB2400DD64E1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		50D4BD511F63BE1700DD64E1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1624,7 +1573,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		886899C82F14A377FBC6FF9E /* [CP] Check Pods Manifest.lock */ = {
@@ -1642,7 +1591,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9EEBA5BD08C755F531ACE82B /* [CP] Copy Pods Resources */ = {
@@ -1714,14 +1663,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		50D4BD3F1F63BB2400DD64E1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				50D4BD461F63BB2400DD64E1 /* NotificationService.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		50D4BD4F1F63BE1700DD64E1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2000,11 +1941,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		50D4BD491F63BB2400DD64E1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 50D4BD421F63BB2400DD64E1 /* FT富媒体速递 */;
-			targetProxy = 50D4BD481F63BB2400DD64E1 /* PBXContainerItemProxy */;
-		};
 		50D4BD5E1F63BE1700DD64E1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 50D4BD521F63BE1700DD64E1 /* FT今日焦点 */;
@@ -2050,42 +1986,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		50D4BD4C1F63BB2400DD64E1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CAEDT8EKGV;
-				INFOPLIST_FILE = "FT富媒体速递/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ft.ftchinese.mobile.richnotification;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		50D4BD4D1F63BB2400DD64E1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CAEDT8EKGV;
-				INFOPLIST_FILE = "FT富媒体速递/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ft.ftchinese.mobile.richnotification;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
 		50D4BD611F63BE1700DD64E1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2270,8 +2170,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 49D317245F6FADFF9F030C2B /* Pods-Page.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Page/Page.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
@@ -2293,8 +2195,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A29483176D936DEAA1FA473 /* Pods-Page.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Page/Page.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
@@ -2349,7 +2253,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = oli.zh.PageUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = Page;
 			};
@@ -2363,7 +2267,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = oli.zh.PageUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = Page;
 			};
@@ -2372,15 +2276,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		50D4BD4B1F63BB2400DD64E1 /* Build configuration list for PBXNativeTarget "FT富媒体速递" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				50D4BD4C1F63BB2400DD64E1 /* Debug */,
-				50D4BD4D1F63BB2400DD64E1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		50D4BD601F63BE1700DD64E1 /* Build configuration list for PBXNativeTarget "FT今日焦点" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

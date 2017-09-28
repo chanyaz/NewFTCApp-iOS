@@ -14,6 +14,7 @@
 3. 金融英语速读无法听
 4. Done: 每日英语双语阅读的Switch颜色需要更换
 5. Done: 视频的Bug：退出页面还在播，已经翻页的还在播放
+6. 下啦刷新设置页面
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 

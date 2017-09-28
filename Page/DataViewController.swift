@@ -225,6 +225,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         // MARK: In setting page, you might need to update UI to reflected change in preference
         if let type = dataObject["type"] {
             if type == "setting" {
+                
                 loadSettings()
             }
         }
@@ -367,6 +368,10 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             self.fetches = resultsWithAds
             self.collectionView?.reloadData()
         }
+        
+        activityIndicator.removeFromSuperview()
+        refreshControl.endRefreshing()
+        
     }
     
     
@@ -996,7 +1001,7 @@ extension DataViewController {
         let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-        self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+        updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
     }
     
     // MARK: load options and update UI
@@ -1006,7 +1011,8 @@ extension DataViewController {
             let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-            self.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+            updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+            
         }
     }
     

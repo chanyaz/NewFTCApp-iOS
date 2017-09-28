@@ -121,4 +121,24 @@ extension UIViewController: SFSafariViewControllerDelegate{
             }
         }
     }
+    
+    func openLocalHTMLFile(_ fileLocation: String) {
+        print ("open html file from location: \(fileLocation)")
+        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+            detailViewController.contentPageData = [ContentItem(
+                id: fileLocation,
+                image: "",
+                headline: "",
+                lead: "",
+                type: "htmlfile",
+                preferSponsorImage: "",
+                tag: "",
+                customLink: "",
+                timeStamp: 0,
+                section: 0,
+                row: 0)]
+            self.navigationController?.pushViewController(detailViewController, animated: true)
+            return
+        }
+    }
 }

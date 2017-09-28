@@ -116,7 +116,7 @@ struct AppNavigation {
                     "type": "iap",
                     "subtype":"ebook",
                     "compactLayout": "books",
-                    "screenName":"homepage/ftintelligence"
+                    "screenName":"homepage/ebook"
                 ]
             ]
         ],
@@ -190,7 +190,7 @@ struct AppNavigation {
                     "title": "商学院观察",
                     "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=mbastory",
                     "url":"http://www.ftchinese.com/channel/mba.html",
-                    "screenName":"ftacademy/read",
+                    "screenName":"ftacademy/mbastory",
                     "compactLayout": "OutOfBox",
                     "coverTheme": "OutOfBox"
                 ],

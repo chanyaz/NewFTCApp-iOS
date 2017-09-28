@@ -496,6 +496,15 @@ extension IAPView: URLSessionDownloadDelegate {
                     if productId.hasPrefix("try") {
                         // TODO: - This is a trial file, open it immediately
                         print ("open the try book")
+                        if let fileLocation = Download.checkFilePath(fileUrl: productId, for: .documentDirectory) {
+                            DispatchQueue.main.async {
+                                if let topController = UIApplication.topViewController() {
+                                    topController.openLocalHTMLFile(fileLocation)
+                                }
+                                print ("should open the file at \(fileLocation)")
+                                IAP.trackIAPActions("download excerpt success", productId: productId)
+                            }
+                        }
                         
                         /*
                         let config = FolioReaderConfig()

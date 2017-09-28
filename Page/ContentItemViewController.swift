@@ -504,6 +504,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         if let type = dataObject?.type, ["story", "ebook"].contains(type) {
             // MARK: If it is a story
             if let id = dataObject?.id {
+                print("type-- story")
                 let urlString = APIs.getUrl(id, type: type)
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
@@ -669,6 +670,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             // MARK: - If it is other types of content such video and interacrtive features
             if let id = dataObject?.id, let type = dataObject?.type {
+                print("type-- video")
                 let urlStringOriginal: String
                 if let customLink = dataObject?.customLink, customLink != "" {
                     urlStringOriginal = customLink

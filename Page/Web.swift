@@ -137,6 +137,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 timeStamp: 0,
                 section: 0,
                 row: 0)]
+            detailViewController.showBottomBar = false
             self.navigationController?.pushViewController(detailViewController, animated: true)
             return
         }

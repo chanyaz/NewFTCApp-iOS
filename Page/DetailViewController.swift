@@ -75,6 +75,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     }
     
     var isFullScreenAdOn = false
+    var showBottomBar = true
     
     override var prefersStatusBarHidden: Bool {
         if isFullScreenAdOn {
@@ -106,6 +107,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     var bottomBarHeight: CGFloat?
     var fullPageViewRect: CGRect?
     
+    
     fileprivate func setPageViewFrame() {
         if let fullPageViewRect = fullPageViewRect {
             let pageViewHeight: CGFloat
@@ -124,7 +126,12 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // TODO: Add the bottom bar here instead of in the
         
         // MARK: - Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-        bottomBarHeight = toolBar.frame.height + 1
+        if showBottomBar == true {
+            bottomBarHeight = toolBar.frame.height + 1
+        } else {
+            bottomBarHeight = 0
+            toolBar.isHidden = true
+        }
         fullPageViewRect = self.view.bounds
         setPageViewFrame()
         let startingViewController: ContentItemViewController = self.modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!)!

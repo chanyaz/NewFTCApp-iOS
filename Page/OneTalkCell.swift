@@ -55,7 +55,60 @@ class OneTalkCell: UITableViewCell {
         }
         //print("Click card")
     }
-   
+    //异步加载image：
+    private func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
+        let optimizedUrl = self.optimizedImageURL(imageUrl, width: 240, height: 135)
+        //print("ImageUrl:\(imageUrl)")
+        //print("OptimizedUrl:\(String(describing: optimizedUrl))")
+        if let imgUrl = optimizedUrl {
+            let imgRequest = URLRequest(url: imgUrl)
+            
+            URLSession.shared.dataTask(with: imgRequest, completionHandler: {
+                (data, response, error) in
+                if error != nil{
+                    DispatchQueue.main.async {//返回主线程更新UI
+                        completion(nil)
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                    return
+                }
+                
+                let myUIImage = UIImage(data: data) //NOTE: 由于闭包可以在func范围之外生存，闭包中如果有参数类型是struct/enum，那么它将被复制一个新值作为参数。如果这个闭包会允许这个参数发生改变（即以闭包为其中一个参数的func是mutate的），那么闭包会产生一个副本,造成不必要的后果。所以struct中的mutate func中的escape closure的参数不能是self，也不能在closure内部改变self的属性。改为class，则可以。
+                
+                if let realUIImage = myUIImage { //如果成功获取了图片
+                    //cellData.downLoadImage = realUIImage
+                    DispatchQueue.main.async {
+                        completion(realUIImage)
+                    }
+                    
+                    
+                } else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                }
+            }).resume()
+            
+        }
+    }
+    private func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
+        let urlString: String
+        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+            urlString = ImageService.resize(u, width: width, height: height)
+        } else {
+            urlString = imageUrl
+        }
+        if let url =  URL(string: urlString) {
+            return url
+        }
+        return nil
+    }
     private func buildCutlineCell(){
         self.selectionStyle = UITableViewCellSelectionStyle.none
         self.backgroundColor = UIColor(hex: "#fff1e0")
@@ -140,7 +193,21 @@ class OneTalkCell: UITableViewCell {
             //saysContentView.image = self.cellData.saysImage
           self.saysImageView.backgroundColor = UIColor(hex: "#f7e9d8")
           self.saysImageView.contentMode = .scaleToFill
-                   self.addSubview(self.saysImageView)
+            
+            self.asyncBuildImage(url: self.cellData.saysWhat.url, completion: {
+                downloadedImg in
+                
+                if let realImage = downloadedImg { //如果成功获取了图片
+                    self.saysImageView.image = realImage
+                    
+                }
+            })
+            
+          self.addSubview(self.saysImageView)
+            
+           
+            
+            
             
             
         } else if self.cellData.saysType == .card {
@@ -163,6 +230,14 @@ class OneTalkCell: UITableViewCell {
             coverView.backgroundColor = UIColor(hex: "#f7e9d8")
 
             coverView.contentMode = .scaleToFill
+            
+            self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
+                if let realImage = downloadedImg {
+                    //cellData.downLoadImage = realImage
+                    self.coverView.image = realImage
+                    
+                }
+            })
             self.addSubview(coverView)
             print("Execut 1st")
             

@@ -48,12 +48,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var inputBlock: UITextField!
  
     @IBAction func touchInputBlock(_ sender: UITextField) {
-        let currentIndexPath = IndexPath(row: showingData.count-1, section: 0)
+        let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
         self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
         self.inputBlock.resignFirstResponder()
     }
     
     @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {//When tap
+        let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
+        self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
         self.inputBlock.resignFirstResponder()
 
     }
@@ -61,8 +63,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBAction func dismissKeyboardWhenSwipe(_ sender: UISwipeGestureRecognizer) {//When swipe
         self.inputBlock.resignFirstResponder()
     }
-    
- 
+    /*
+    @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+   */
     //MARK:点击bottom bar 右部的“发送”按钮后发送用户输入的文字
     @IBAction func sendYourTalk(_ sender: UIButton) {
         if let currentYourTalk = inputBlock.text {
@@ -112,12 +117,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         return true
     }
     
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //TODO:区分scroll是.scrollToRow程序导致的，还是人为滚动导致的
-        if(self.autoScrollWhenTalk==false){
+        //if(self.autoScrollWhenTalk==false){
             self.inputBlock.resignFirstResponder()
-            self.autoScrollWhenTalk=true
-        }
+            //self.autoScrollWhenTalk=true
+        //}
         
         
     }
@@ -201,6 +207,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         //let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
         let cellData = self.showingCellData[currentRow]
         let cell = OneTalkCell(cellData, reuseId:"Talk")
+        /*
         if (cellData.saysWhat.type == .card) {
             self.asyncBuildImage(url: cellData.saysWhat.coverUrl, completion: { downloadedImg in
                 if let realImage = downloadedImg {
@@ -219,6 +226,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 }
             })
         }
+         */
         return cell
         
     }
@@ -232,64 +240,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             return max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble)
         }
     }
-    func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
-        let urlString: String
-        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
-            urlString = ImageService.resize(u, width: width, height: height)
-        } else {
-            urlString = imageUrl
-        }
-        if let url =  URL(string: urlString) {
-            return url
-        }
-        return nil
-    }
+    
     
   
     
-    //异步加载image：
-    func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
-        let optimizedUrl = self.optimizedImageURL(imageUrl, width: 240, height: 135)
-        //print("ImageUrl:\(imageUrl)")
-        //print("OptimizedUrl:\(String(describing: optimizedUrl))")
-        if let imgUrl = optimizedUrl {
-            let imgRequest = URLRequest(url: imgUrl)
-            
-            URLSession.shared.dataTask(with: imgRequest, completionHandler: {
-                (data, response, error) in
-                if error != nil{
-                    DispatchQueue.main.async {//返回主线程更新UI
-                        completion(nil)
-                    }
-                    return
-                }
-                
-                guard let data = data else {
-                    DispatchQueue.main.async {
-                        completion(nil)
-                    }
-                    return
-                }
-                
-                let myUIImage = UIImage(data: data) //NOTE: 由于闭包可以在func范围之外生存，闭包中如果有参数类型是struct/enum，那么它将被复制一个新值作为参数。如果这个闭包会允许这个参数发生改变（即以闭包为其中一个参数的func是mutate的），那么闭包会产生一个副本,造成不必要的后果。所以struct中的mutate func中的escape closure的参数不能是self，也不能在closure内部改变self的属性。改为class，则可以。
-                
-                 if let realUIImage = myUIImage { //如果成功获取了图片
-                    //cellData.downLoadImage = realUIImage
-                    DispatchQueue.main.async {
-                        completion(realUIImage)
-                    }
-                    
-                 
-                 } else {
-                    DispatchQueue.main.async {
-                        completion(nil)
-                    }
-                }
-            }).resume()
-            
-        }
-    }
-        
+    
    
         
    func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
@@ -429,10 +384,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if historyNum > 0 {
                 if historyNum <= 10  {
                    self.showingData = realHistoryTalkData
+                   self.historyTalkData = []
                 } else {
                    self.showingData = Array(realHistoryTalkData[historyNum-10...historyNum-1])
+                   self.historyTalkData = Array(realHistoryTalkData[0...historyNum-11])
                 }
-            }//否则self.showingData不变
+            }//否则self.showingData不变, self.historyTalkData不变
+            
         }
         
         var initShowingCellData = [CellData]()
@@ -440,9 +398,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let oneCellData = ChatViewModel.buildCellData(data)
             initShowingCellData.append(oneCellData)
         }
+        initShowingCellData.append(CellData(cutline:true)) //此时不涉及showingData的问题，showingData是为了存储的数据，而历史记录数据不用存储
         self.showingCellData = initShowingCellData
         
-        self.showingCellData.append(CellData(cutline:true))//此时不涉及showingData的问题，showingData是为了存储的数据，而历史记录数据不用存储
         
         self.createTalkRequest(myInputText:ChatViewModel.triggerGreetContent, completion: { talkData in
             if let oneTalkData = talkData {

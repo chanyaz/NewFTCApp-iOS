@@ -146,9 +146,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             )
             
             
-            
+            let typeString = dataObject?.type ?? ""
             // MARK: If the sub type is a user comment, render web view directly
-            if subType == .UserComments || dataObject?.type == "webpage" || dataObject?.type == "ebook" {
+            if subType == .UserComments || ["webpage", "ebook", "htmlfile"].contains(typeString)  {
                 renderWebView()
             } else {
                 getDetailInfo()
@@ -653,6 +653,17 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     self.webView?.loadHTMLString(storyHTML, baseURL:url)
                 } catch {
                     print ("register page is not loaded correctly")
+                }
+            }
+        } else if dataObject?.type == "htmlfile"{
+            if let adHTMLPath = dataObject?.id {
+                let url = URL(string: APIs.getUrl("register", type: "register"))
+                do {
+                    let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let storyHTML = (storyTemplate as String)
+                    self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                } catch {
+                    print ("html file is not loaded correctly")
                 }
             }
         } else {

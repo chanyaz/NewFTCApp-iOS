@@ -273,19 +273,21 @@ struct IAP {
         let tryBookFileName = "try." + productIdentifier
         // MARK: - check if the file exists locally
         if let fileLocation = Download.checkFilePath(fileUrl: tryBookFileName, for: .documentDirectory) {
-            print (fileLocation)
-            /*
-            let config = FolioReaderConfig()
-            config.scrollDirection = .horizontal
-            config.allowSharing = false
-            config.tintColor = UIColor(netHex: 0x9E2F50)
-            config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
-            config.enableTTS = false
             if let topController = UIApplication.topViewController() {
-                let folioReader = FolioReader()
-                folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
+                topController.openLocalHTMLFile(fileLocation)
             }
- */
+            /*
+             let config = FolioReaderConfig()
+             config.scrollDirection = .horizontal
+             config.allowSharing = false
+             config.tintColor = UIColor(netHex: 0x9E2F50)
+             config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
+             config.enableTTS = false
+             if let topController = UIApplication.topViewController() {
+             let folioReader = FolioReader()
+             folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
+             }
+             */
         } else {
             print ("file not found: download it")
             let alert = UIAlertController(title: "文件还没有下载，要现在下载吗？", message: "下载到本地可以打开并阅读", preferredStyle: UIAlertControllerStyle.alert)
@@ -326,8 +328,8 @@ struct IAP {
                 print ("The file already exists. No need to download. Update Interface")
                 newStatus = "fail"
             }
-//            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-//            }
+            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
+            //            }
             IAPs.shared.downloadDelegate?.switchUI(newStatus)
             trackIAPActions("download excerpt", productId: productID)
         }
@@ -370,19 +372,22 @@ struct IAP {
     public static func readBook(_ productIdentifier: String) {
         // MARK: - check if the file exists locally
         if let fileLocation = Download.checkFilePath(fileUrl: productIdentifier, for: .documentDirectory) {
-            print (fileLocation)
             /*
-            let config = FolioReaderConfig()
-            config.scrollDirection = .horizontal
-            config.allowSharing = false
-            config.tintColor = UIColor(netHex: 0x9E2F50)
-            config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
-            config.enableTTS = false
+             let config = FolioReaderConfig()
+             config.scrollDirection = .horizontal
+             config.allowSharing = false
+             config.tintColor = UIColor(netHex: 0x9E2F50)
+             config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
+             config.enableTTS = false
+             if let topController = UIApplication.topViewController() {
+             let folioReader = FolioReader()
+             folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
+             }
+             */
+            
             if let topController = UIApplication.topViewController() {
-                let folioReader = FolioReader()
-                folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
+                topController.openLocalHTMLFile(fileLocation)
             }
- */
         } else {
             print ("file not found: download it")
             let alert = UIAlertController(title: "文件还没有下载，要现在下载吗？", message: "下载到本地可以打开并阅读", preferredStyle: UIAlertControllerStyle.alert)
@@ -436,7 +441,7 @@ struct IAP {
         IAPs.shared.downloadTasks[productId]?.resume()
         trackIAPActions("resume download", productId: productId)
     }
-
+    
     
     public static func cancelDownload(_ productId: String) {
         IAPs.shared.downloadTasks[productId]?.cancel()

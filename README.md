@@ -2,19 +2,16 @@
 
 ## Development Milestones
 ### Task at Hand: 
-1. Done: Make all channel pages available
+1. 电子书阅读
 2. Update Ads
 3. Big 5 Version
 4. 恢复购买
 5. 高端会员
 
 ### Bugs
-1. 金融英语速读无法调整字号：创建设置页面
 2. 金融英语速读无法评论
 3. 金融英语速读无法听
-4. Done: 每日英语双语阅读的Switch颜色需要更换
-5. Done: 视频的Bug：退出页面还在播，已经翻页的还在播放
-6. 下啦刷新设置页面
+
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
@@ -26,6 +23,7 @@
 7. Calendar
 8. Done: Title View: Image for News Channel
 9. Infinite Scrolling in Home and Channel Pages
+10. Done: Make all channel pages available
 
 
 ### APIs
@@ -51,6 +49,7 @@
 11. Special Report: Adjustment based on API
 12. Done: In-Page Full Screen: Disable Close Button and Function
 13. MPU New: Adjustment based on Date
+14. Implement new ad setting
 
 
 ### Content Page: 
@@ -167,6 +166,11 @@ track "listen to story" end event
 
 ### Bug List: 
 1. Done: Why can't MyFT be stored locally? It's because file name is not correct. 
+1. Done: 金融英语速读无法调整字号：创建设置页面
+4. Done: 每日英语双语阅读的Switch颜色需要更换
+5. Done: 视频的Bug：退出页面还在播，已经翻页的还在播放
+6. Done: 下啦刷新设置页面
+
 
 ## How To Start
 $ sudo gem install cocoapods

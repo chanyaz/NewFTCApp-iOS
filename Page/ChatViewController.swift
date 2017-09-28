@@ -30,9 +30,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         didSet {
             print("tableReloadData")
             self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
+            print("showingCellDataNum:\(showingCellData.count)")
             let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
             //self.autoScrollWhenTalk=true
-            self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+            self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
             //autoScrollWhenTalk = false
         }
     }
@@ -225,7 +226,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let currentRow = indexPath.row
         //let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
         let cellData = self.showingCellData[currentRow]
-        return max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble)
+        if cellData.isHistoryCutline {
+            return cellData.cutlineCellHeight
+        }else {
+            return max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble)
+        }
     }
     func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
         let urlString: String
@@ -411,9 +416,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 let jsonAny = try JSONSerialization.jsonObject(with: savedTalkData, options: .mutableContainers)
                 if let jsonDic = jsonAny as? NSArray, let historyTalk = jsonDic as? [[String:String]] {
                     self.historyTalkData = historyTalk
-                    //print(self.historyTalkData ?? "")
-                    print("historyTalkData:\(self.historyTalkData?.count ?? 0)")
-                    
+                    print("historyTalkDataNum:\(self.historyTalkData?.count ?? 0)")
                 }
             }
         } catch {
@@ -421,7 +424,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
         if let realHistoryTalkData = self.historyTalkData {
             let historyNum = realHistoryTalkData.count
-            
+            print("historyNum:\(historyNum)")
             //MARK:只显示历史会话中最近的10条记录
             if historyNum > 0 {
                 if historyNum <= 10  {
@@ -439,7 +442,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
         self.showingCellData = initShowingCellData
         
-        
+        self.showingCellData.append(CellData(cutline:true))//此时不涉及showingData的问题，showingData是为了存储的数据，而历史记录数据不用存储
         
         self.createTalkRequest(myInputText:ChatViewModel.triggerGreetContent, completion: { talkData in
             if let oneTalkData = talkData {
@@ -449,12 +452,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 self.showingCellData.append(oneCellData)
                 
                 
-                self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: { talkData in
-                    if let oneTalkData = talkData {
+                self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: { contentTalkData in
+                    if let realContentTalkData = contentTalkData {
                         //print(robotRes)
-                        self.showingData.append(oneTalkData)
-                        let oneCellData = ChatViewModel.buildCellData(oneTalkData)
-                        self.showingCellData.append(oneCellData)
+                        self.showingData.append(realContentTalkData)
+                        let oneContentCellData = ChatViewModel.buildCellData(realContentTalkData)
+                        self.showingCellData.append(oneContentCellData)
                     }
                 })
             }

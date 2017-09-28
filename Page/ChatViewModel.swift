@@ -107,7 +107,7 @@ class CellData {
     var saysType: Infotype = .text
     var saysWhat = SaysWhat()
     var textColor = UIColor.black
-    
+    var cutlineColor = UIColor(hex: "#999999")
     //基本尺寸
     var bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12)//文字嵌入气泡的边距
     var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)//气泡点九拉伸时的边距
@@ -124,6 +124,7 @@ class CellData {
     //var maxImageHeight = CGFloat(400) //图像消息的图片最大高度
     var coverWidth = CGFloat(240)//TODO:待修改，因为会超出iPhone 5的边界
     var coverHeight = CGFloat(135)//Cover图像统一是16*19的，这里统一为240*135
+    var cutlineCellHeight = CGFloat(50)
     
     //根据（文字长短）动态计算得到的图形实际尺寸，后文会计算
     var bubbleImageWidth = CGFloat(0) //气泡宽度
@@ -142,12 +143,7 @@ class CellData {
             return cellInsets.left + headImageLength + betweenHeadAndBubble
         }
     }
-    /*
-    var bubbleImageX = CGFloat(0)//依赖oneTalkCell
-    var bubbleImageY = CGFloat(0)
-    var saysWhatX = CGFloat(0)
-    var saysWhatY = CGFloat(0)
-     */
+
     //计算得到的cell的几种高度
     var cellHeightByHeadImage:CGFloat {
         get {
@@ -164,16 +160,20 @@ class CellData {
     var strechedBubbleImage = UIImage()
 
     //var downLoadImage: UIImage? = nil//用于存储异步加载的UIImage对象
-    var normalFont = UIFont()
-    var titleFont = UIFont()
-    var descriptionFont = UIFont()
+    var normalFont = UIFont.systemFont(ofSize:18)
+    var titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
+    var cutlineFont = UIFont.systemFont(ofSize:10)
+    var descriptionFont = UIFont.systemFont(ofSize:18)
     
     
     
-    
+    //分割线CellData数据构造器：
     init(cutline isHistoryCutline:Bool) {
         self.isHistoryCutline = isHistoryCutline
+
     }
+    
+    //对话CellData数据构造器：
     init(whoSays who: Member, saysWhat say: SaysWhat) {
         
         if who == .robot {
@@ -225,9 +225,9 @@ class CellData {
     
     //创建Text类型数据:
      func buildTextCellData(textContent text: String) {//wycNOTE: mutating func:可以在mutating方法中修改结构体属性
-        let font = UIFont.systemFont(ofSize:18)
-        self.normalFont = font
-        let atts = [NSAttributedStringKey.font: font]
+        //let font = UIFont.systemFont(ofSize:18)
+        //self.normalFont = font
+        let atts = [NSAttributedStringKey.font: self.normalFont]
         let saysWhatNSString = text as NSString
         
         let size = saysWhatNSString.boundingRect(
@@ -263,9 +263,9 @@ class CellData {
     //创建Card类型数据:
      func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String) {
         //处理title
-        let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
-        self.titleFont = titleFont
-        let atts = [NSAttributedStringKey.font: titleFont]
+       // let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
+        //self.titleFont = titleFont
+        let atts = [NSAttributedStringKey.font: self.titleFont]
         let titleNSString = titleStr as NSString
         let size = titleNSString.boundingRect(
             with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
@@ -279,9 +279,9 @@ class CellData {
         
         //处理description
         if (descriptionStr != "") {
-            let descriptionFont = UIFont.systemFont(ofSize:18)
-            self.descriptionFont = descriptionFont
-            let descriptionAtts = [NSAttributedStringKey.font: descriptionFont]
+            //let descriptionFont = UIFont.systemFont(ofSize:18)
+            //self.descriptionFont = descriptionFont
+            let descriptionAtts = [NSAttributedStringKey.font: self.descriptionFont]
             let descriptionNSString = descriptionStr as NSString
             
             let descriptionSize = descriptionNSString.boundingRect(

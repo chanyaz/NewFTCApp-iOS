@@ -484,9 +484,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
    @objc func downLoadAction(_ sender: Any){
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
-            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
-            audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "https://du3rcmbgk4e8q.cloudfront.net/album/")
+            
+            audioUrlString = audioFileUrl.replacingOccurrences(
+                of: "^(http).+(album/)",
+                with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
+                options: .regularExpression
+            )
+            audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         }
+    
         if audioUrlString != "" {
             print("download button\( audioUrlString)")
             if let button = sender as? UIButtonEnhanced {
@@ -541,48 +547,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         
         print ("tabbar deinit successfully and observer removed")
     }
-    //    playingIndex应该放在时刻跟新的地方获取
-    func updateSingleTonData(){
-        if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].caudio {
-            TabBarAudioContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
-            self.tabView.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
-            self.audioPlayStatus.text = fetchAudioResults[0].items[playingIndex].headline
-            TabBarAudioContent.sharedInstance.body["title"] = fetchAudioResults[0].items[playingIndex].headline
-            TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-            TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(fetchAudioResults[0].items[playingIndex].id)"
-            TabBarAudioContent.sharedInstance.playingIndex = playingIndex
-            parseAudioMessage()
-            loadUrl()
-            
-        }
-    }
-    private func getPlayingUrl(){
-        playingIndex = 0
-        urlOrigStrings = []
-        var playerItemTemp : AVPlayerItem?
-        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
-        if let fetchAudioResults = fetchAudioResults {
-            for (index, item0) in fetchAudioResults[0].items.enumerated() {
-                if let fileUrl = item0.caudio {
-                    urlOrigStrings.append(fileUrl)
-                    if audioUrlString == fileUrl{
-                        playingUrlStr = fileUrl
-                        playingIndex = index
-                    }
-                    if let urlAsset = URL(string: fileUrl){
-                        playerItemTemp = AVPlayerItem(url: urlAsset) //可以用于播放的playItem
-                        playerItems?.append(playerItemTemp!)
-                    }
-   
-                }
-            }
-        }
-        print("urlString playerItems000---\(String(describing: playerItems))")
-        
-        print("urlString playingIndex222--\(playingIndex)")
-        TabBarAudioContent.sharedInstance.playingIndex = playingIndex
-        
-    }
+
     
     
     @objc func exitAudio(){
@@ -603,10 +568,6 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
         }, completion: { (true) in
             print("open animate finish")
         })
-//        parseAudioMessage()
-//        getPlayingUrl()
-//        loadUrl()
-//        addDownloadObserve()
         enableBackGroundMode()
         //  getPlayingUrl()需要放在parseAudioMessage()后面，不然第一次audioUrlString为空
     }
@@ -644,18 +605,62 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
             webView?.load(req)
         }
     }
-    
+    //    playingIndex应该放在时刻跟新的地方获取
+    func updateSingleTonData(){
+        if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].caudio {
+            TabBarAudioContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
+            self.tabView.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
+            self.audioPlayStatus.text = fetchAudioResults[0].items[playingIndex].headline
+            TabBarAudioContent.sharedInstance.body["title"] = fetchAudioResults[0].items[playingIndex].headline
+            TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+            TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(fetchAudioResults[0].items[playingIndex].id)"
+            TabBarAudioContent.sharedInstance.playingIndex = playingIndex
+            parseAudioMessage()
+            loadUrl()
+            
+        }
+    }
+    private func getPlayingUrl(){
+        playingIndex = 0
+        urlOrigStrings = []
+        var playerItemTemp : AVPlayerItem?
+        print("urlString  start audioUrlString--\(audioUrlString)")
+//        audioUrlString = audioUrlString.replacingOccurrences(of: "%20", with: " ")
+        if let fetchAudioResults = fetchAudioResults {
+            for (index, item0) in fetchAudioResults[0].items.enumerated() {
+                if let fileUrl = item0.caudio {
+                    urlOrigStrings.append(fileUrl)
+                    if audioUrlString == fileUrl{
+                        playingUrlStr = fileUrl
+                        playingIndex = index
+                    }
+                    if let urlAsset = URL(string: fileUrl){
+                        playerItemTemp = AVPlayerItem(url: urlAsset) //可以用于播放的playItem
+                        playerItems?.append(playerItemTemp!)
+                    }
+                    
+                }
+            }
+        }
+        print("urlString filtered audioUrlString --\(audioUrlString)")
+//        print("urlString playerItems000---\(String(describing: playerItems))")
+        
+        print("urlString playingIndex222--\(playingIndex)")
+        TabBarAudioContent.sharedInstance.playingIndex = playingIndex
+        
+    }
     private func prepareAudioPlay() {
         audioUrlString = audioUrlString.replacingOccurrences(
             of: "^(http).+(album/)",
             with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
             options: .regularExpression
         )
+        audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
             var audioUrl = url
             //print ("checking the file in documents: \(audioUrlString)")
-            let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: "")
+            let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: " ")
             if let localAudioFile = download.checkDownloadedFileInDirectory(cleanAudioUrl) {
                 print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
@@ -774,15 +779,17 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate,WKSc
     private func parseAudioMessage() {
         let body = TabBarAudioContent.sharedInstance.body
         if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
+            print("clean audioUrlString--\(audioFileUrl)")
             audioTitle = title
-            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
+            audioUrlString = audioFileUrl
+//            audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
             audioId = interactiveUrl.replacingOccurrences(
                 of: "^.*interactive/([0-9]+).*$",
                 with: "$1",
                 options: .regularExpression
             )
             ShareHelper.sharedInstance.webPageTitle = title
-            
+            print("parsed audioUrlString--\(audioUrlString)")
         }
     }
     @objc func updateMiniPlay(){

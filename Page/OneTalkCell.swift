@@ -57,14 +57,18 @@ class OneTalkCell: UITableViewCell {
     }
    
     private func buildCutlineCell(){
-        /*
-        let cutlineContentView = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 20))
-        cutlineContentView.text = self.cellData.saysWhat.title
-        titleView.font = self.cellData.titleFont
-        titleView.textColor = self.cellData.textColor
-        self.addSubview(titleView)
-         */
+        self.selectionStyle = UITableViewCellSelectionStyle.none
+        self.backgroundColor = UIColor(hex: "#fff1e0")
+
+        let cutlineContentView = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.cellData.cutlineCellHeight))
+        cutlineContentView.text = "———— 以上为历史聊天内容 ————"
+        cutlineContentView.font = self.cellData.cutlineFont
+        cutlineContentView.textColor = self.cellData.cutlineColor
+        cutlineContentView.textAlignment = .center
+        self.addSubview(cutlineContentView)
+        
     }
+    
     private func buildTheCell() {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         

@@ -70,7 +70,101 @@ public func setLastPlayAudio(){
         UserDefaults.standard.set(audioLastPlayTimeHistory, forKey: Key.audioHistory[3])
     }
 }
-struct PlayerObserver {
+class PlayerAPI {
+
+    let nowPlayingCenter = NowPlayingCenter()
+    func openPlay(){
+        var player = TabBarAudioContent.sharedInstance.player
+        var playerItem = TabBarAudioContent.sharedInstance.playerItem
+        var audioUrlString:String = ""
+        self.removePlayerItemObservers(self, object: playerItem)
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        try? AVAudioSession.sharedInstance().setActive(true)
+        
+        print("player item exist url")
+        
+        let body = TabBarAudioContent.sharedInstance.body
+        if let audioFileUrl = body["audioFileUrl"]{
+            audioUrlString = audioFileUrl.replacingOccurrences(
+                of: "^(http).+(album/)",
+                with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
+                options: .regularExpression
+            )
+            audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            print("audioUrlString by encoding--\(audioUrlString)")
+        }
+        
+        
+        if let url = URL(string: audioUrlString) {
+            let audioUrl = url
+            let asset = AVURLAsset(url: audioUrl)
+            
+//            playerItem = AVPlayerItem(asset: asset)
+            playerItem = AVPlayerItem(asset: asset)
+            if player != nil {
+                print("item player exist")
+            }else {
+                print("item player do not exist")
+//                player = AVPlayer()
+                player = AVPlayer()
+            }
+            TabBarAudioContent.sharedInstance.isPlaying = true
+            let statusType = IJReachability().connectedToNetworkOfType()
+            if statusType == .wiFi {
+                player?.replaceCurrentItem(with: playerItem)
+            }
+        }
+        let url = (playerItem?.asset as? AVURLAsset)?.url
+        
+        TabBarAudioContent.sharedInstance.player = player
+        
+        print("item first url-0000-\(String(describing: url))")
+        if (player != nil){
+            if (TabBarAudioContent.sharedInstance.audioUrl) != nil {
+                print("item second url---\(url == TabBarAudioContent.sharedInstance.audioUrl)")
+                
+                if url == TabBarAudioContent.sharedInstance.audioUrl {
+                    print("item second same play---")
+                    if let currrentPlayingTime = TabBarAudioContent.sharedInstance.time{
+                        print("url item second currrentPlayingTime-\(String(describing: currrentPlayingTime))")
+                        playerItem?.seek(to: currrentPlayingTime)
+                    }
+                }
+                else{
+                    print("item new second play url---\(String(describing: url))")
+                    player?.replaceCurrentItem(with: playerItem)
+                    player?.play()
+                    //The current playback url is updated
+                    TabBarAudioContent.sharedInstance.audioUrl = url
+                }
+                
+            } else {
+                TabBarAudioContent.sharedInstance.audioUrl = url
+                player?.play()
+                player?.replaceCurrentItem(with: playerItem)
+                
+            }
+            
+            TabBarAudioContent.sharedInstance.playerItem = playerItem
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: CustomTabBarController())
+            self.addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
+            if let title = TabBarAudioContent.sharedInstance.body["title"],let _ = player{
+                print("NowPlayingCenter updatePlayingInfo \(title)")
+                NowPlayingCenter().updatePlayingCenter()
+            }
+        }else{
+            print("player item not isExist")
+            return
+        }
+ 
+    }
+    @objc func playerDidFinishPlaying() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: CustomTabBarController())
+        TabBarAudioContent.sharedInstance.player?.pause()
+        TabBarAudioContent.sharedInstance.isPlayFinish = true
+        TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
+      NowPlayingCenter().updateTimeForPlayerItem(TabBarAudioContent.sharedInstance.player)
+    }
     public func addPlayerItemObservers(_ observer: Any, _ actionSection: Selector, object anObject: Any?) {
         NotificationCenter.default.addObserver(observer,selector:actionSection, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: anObject)
        

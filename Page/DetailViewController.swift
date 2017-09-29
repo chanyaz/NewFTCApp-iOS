@@ -291,7 +291,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             isLightContent = nav.isLightContent
         }
         
-
         // Mark: Set themeColor based on whether it is lightcontent
         if let themeColor = themeColor,
             isLightContent == true {

@@ -337,6 +337,27 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                             //print ("File already exists. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         }
                         Download.downloadUrl(apiUrl, to: .cachesDirectory, as: "json")
+                        
+                        if Download.readFile(item.image, for: .cachesDirectory, as: "cover") == nil {
+                            item.loadImage(
+                                type:"cover",
+                                width: ImageSize.cover.width,
+                                height: ImageSize.cover.height,
+                                completion:{ (cellContentItem, error) in
+                                    print ("\(item.image) is prefetched! ")
+                            }
+                            )
+                        }
+                        if Download.readFile(item.image, for: .cachesDirectory, as: "thumbnail") == nil {
+                            item.loadImage(
+                                type:"thumbnail",
+                                width: ImageSize.thumbnail.width,
+                                height: ImageSize.thumbnail.height,
+                                completion:{ (cellContentItem, error) in
+                                    print ("\(item.image) is prefetched! ")
+                            }
+                            )
+                        }
                     }
                 }
             }

@@ -106,6 +106,10 @@ struct Color {
     }
 }
 
+struct ImageSize {
+    static let cover = (width: 408, height: 234)
+    static let thumbnail = (width: 187, height: 140)
+}
 
 struct FontSize {
     static let bodyExtraSize: CGFloat = 3.0

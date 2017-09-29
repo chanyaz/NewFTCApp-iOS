@@ -108,12 +108,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             } else {
                 webView = WKWebView(frame: self.view.bounds, configuration: config)
                 view = webView
-                view.clipsToBounds = true
+                view.clipsToBounds = false
             }
-            
             webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            
-            
+
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
             //            webView = WKWebView(frame: self.view.bounds, configuration: config)
             //            self.view = self.webView

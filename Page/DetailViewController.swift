@@ -291,10 +291,15 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             isLightContent = nav.isLightContent
         }
         
+
         // Mark: Set themeColor based on whether it is lightcontent
         if let themeColor = themeColor,
             isLightContent == true {
             languages?.backgroundColor = UIColor(hex: themeColor)
+            languages?.tintColor = UIColor(hex: Color.Content.background)
+        } else if let navTintColor = navigationController?.navigationBar.barTintColor,
+            isLightContent == true {
+            languages?.backgroundColor = navTintColor
             languages?.tintColor = UIColor(hex: Color.Content.background)
         } else {
             languages?.backgroundColor = UIColor(hex: Color.Content.background)

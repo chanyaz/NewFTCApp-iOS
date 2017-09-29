@@ -146,7 +146,7 @@ class PlayerAPI {
             }
             
             TabBarAudioContent.sharedInstance.playerItem = playerItem
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: CustomTabBarController())
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
             self.addPlayerItemObservers(self, #selector(self.playerDidFinishPlaying), object: playerItem)
             if let title = TabBarAudioContent.sharedInstance.body["title"],let _ = player{
                 print("NowPlayingCenter updatePlayingInfo \(title)")

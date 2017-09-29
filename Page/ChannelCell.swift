@@ -61,18 +61,7 @@ class ChannelCell: CustomCell {
         
         
         // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Image.background)
-        imageView.contentMode = .scaleAspectFit
-        // MARK: - As the cell is reusable, asyn image should always be cleared first
-        imageView.image = UIImage(named: "Watermark")
-        if let loadedImage = itemCell?.thumbnailImage {
-            imageView.image = loadedImage
-            //print ("image is already loaded, no need to download again. ")
-        } else {
-            itemCell?.loadImage(type: "thumbnail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-                self?.imageView.image = cellContentItem.thumbnailImage
-            })
-        }
+        loadImage("thumbnail")
         
         let itemType = itemCell?.type
         let caudio = itemCell?.caudio ?? ""
@@ -120,7 +109,31 @@ class ChannelCell: CustomCell {
     
     
     
-    
+    private func loadImage(_ type: String) {
+        // MARK: - Load the image of the item
+        imageView.backgroundColor = UIColor(hex: Color.Image.background)
+        imageView.contentMode = .scaleAspectFit
+        // MARK: - As the cell is reusable, asyn image should always be cleared first
+        imageView.image = UIImage(named: "Watermark")
+        let imageType = "cover"
+        if let loadedImage = itemCell?.coverImage {
+            imageView.image = loadedImage
+            print ("image is already loaded, no need to dowqnload again. ")
+        } else if let image = itemCell?.image,
+            let downloadedImageData = Download.readFile(image, for: .cachesDirectory, as: imageType){
+            imageView.image = UIImage(data: downloadedImageData)
+            print ("image is already downloaded to cache, no need to download again. ")
+        } else {
+            itemCell?.loadImage(type:imageType, width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+                // MARK: - Since cover cell is resued, you should always check if it is the right image
+                if self?.itemCell?.image == cellContentItem.image {
+                    self?.imageView.image = cellContentItem.coverImage
+                } else {
+                    print ("image should not be displayed as the cell is resued!" )
+                }
+            })
+        }
+    }
 
     
     

@@ -40,4 +40,5 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
             topController.present(webVC, animated: true, completion: nil)
         }
     }
+    
 }

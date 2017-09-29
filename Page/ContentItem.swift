@@ -132,7 +132,6 @@ class ContentItem{
                 }
                 return
             }
-            
             let returnedImage = UIImage(data: data)
             switch type {
             case "thumbnail":
@@ -142,6 +141,7 @@ class ContentItem{
             default:
                 self.detailImage = returnedImage
             }
+            Download.saveFile(data, filename: self.image, to: .cachesDirectory, as: type)
             DispatchQueue.main.async {
                 completion(self, nil)
             }

@@ -109,9 +109,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             // MARK: - Update Styles
             view.backgroundColor = UIColor(hex: Color.Content.background)
             collectionView?.backgroundColor = UIColor(hex: Color.Content.background)
-            if #available(iOS 10.0, *) {
-                refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
-                collectionView?.refreshControl = refreshControl
+            // MARK: - show refresh controll only when there is api
+            if dataObject["api"] != nil {
+                if #available(iOS 10.0, *) {
+                    refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
+                    collectionView?.refreshControl = refreshControl
+                }
             }
             
             // MARK: - Get Content Data for the Page
@@ -219,7 +222,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
         filterDataWithAudioUrl()
-//        TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
+        //        TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         
         
         // MARK: In setting page, you might need to update UI to reflected change in preference
@@ -787,7 +790,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         return (reuseId: reuseIdentifier, sectionSize: sectionSize)
     }
     
-
+    
     var playerAPI = PlayerAPI()
     @objc func openPlay(sender: UIButton?){
         playerAPI.openPlay()
@@ -796,7 +799,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         var resultsWithAudioUrl = [ContentSection]()
         let results = fetches.fetchResults
         for (_, section) in results.enumerated() {
-
+            
             print("TabBarAudioContent section.items.count \(section.items.count)")
             for i in 0 ..< section.items.count {
                 
@@ -808,8 +811,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         TabBarAudioContent.sharedInstance.fetchResults = resultsWithAudioUrl
     }
     
-
-
+    
+    
     
     // MARK: UICollectionViewDelegate
     
@@ -823,24 +826,24 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     // MARK: - Handle user tapping on a cell
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {    
-//        ,layoutStrategy == "All Cover"
+        //        ,layoutStrategy == "All Cover"
         // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
         let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
         // MARK: if it is an audio file, push the audio view controller
         if let audioFileUrl = selectedItem.audioFileUrl {
             print ("this is an audio")
-
-                //            let body = AudioContent.sharedInstance.body
-                //            if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"]
-                if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
-                    AudioContent.sharedInstance.body["title"] = selectedItem.headline
-                    AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-                    AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(selectedItem.id)"
-                    audioPlayer.item = selectedItem
-                    audioPlayer.themeColor = themeColor
-                    navigationController?.pushViewController(audioPlayer, animated: true)
-                }
-           
+            
+            //            let body = AudioContent.sharedInstance.body
+            //            if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"]
+            if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
+                AudioContent.sharedInstance.body["title"] = selectedItem.headline
+                AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(selectedItem.id)"
+                audioPlayer.item = selectedItem
+                audioPlayer.themeColor = themeColor
+                navigationController?.pushViewController(audioPlayer, animated: true)
+            }
+            
         } else {
             switch selectedItem.type {
             case "setting":

@@ -313,7 +313,10 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 if urlString.range(of: "mailto:") != nil{
                     UIApplication.shared.openURL(url)
                 } else {
-                    openInView (urlString)
+                    if let topController = UIApplication.topViewController() {
+                        topController.openLink(url)
+                    }
+                    //openInView (urlString)
                 }
                 decisionHandler(.cancel)
             } else {
@@ -326,35 +329,35 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     
     // FIXME: - This is very simlar to the same func in ViewController. Consider optimize the code.
-    func openInView(_ urlString : String) {
-        ShareHelper.sharedInstance.webPageUrl = urlString
-        let segueId = "Audio To WKWebView"
-        if #available(iOS 9.0, *) {
-            // MARK: - Use Safariview for iOS 9 and above
-            if urlString.range(of: "www.ftchinese.com") == nil && urlString.range(of: "i.ftimg.net") == nil {
-                // MARK: - When opening an outside url which we have no control over
-                if let url = URL(string:urlString) {
-                    if let urlScheme = url.scheme?.lowercased() {
-                        if ["http", "https"].contains(urlScheme) {
-                            // MARK: - Can open with SFSafariViewController
-                            let webVC = SFSafariViewController(url: url)
-                            webVC.delegate = self
-                            self.present(webVC, animated: true, completion: nil)
-                        } else {
-                            // MARK: - When Scheme is not supported or no scheme is given, use openURL
-                            UIApplication.shared.openURL(url)
-                        }
-                    }
-                }
-            } else {
-                // MARK: Open a url on a page that we have control over
-                self.performSegue(withIdentifier: segueId, sender: nil)
-            }
-        } else {
-            // MARK: Fallback on earlier versions
-            self.performSegue(withIdentifier: segueId, sender: nil)
-        }
-    }
+//    func openInView(_ urlString : String) {
+//        ShareHelper.sharedInstance.webPageUrl = urlString
+//        let segueId = "Audio To WKWebView"
+//        if #available(iOS 9.0, *) {
+//            // MARK: - Use Safariview for iOS 9 and above
+//            if urlString.range(of: "www.ftchinese.com") == nil && urlString.range(of: "i.ftimg.net") == nil {
+//                // MARK: - When opening an outside url which we have no control over
+//                if let url = URL(string:urlString) {
+//                    if let urlScheme = url.scheme?.lowercased() {
+//                        if ["http", "https"].contains(urlScheme) {
+//                            // MARK: - Can open with SFSafariViewController
+//                            let webVC = SFSafariViewController(url: url)
+//                            webVC.delegate = self
+//                            self.present(webVC, animated: true, completion: nil)
+//                        } else {
+//                            // MARK: - When Scheme is not supported or no scheme is given, use openURL
+//                            UIApplication.shared.openURL(url)
+//                        }
+//                    }
+//                }
+//            } else {
+//                // MARK: Open a url on a page that we have control over
+//                self.performSegue(withIdentifier: segueId, sender: nil)
+//            }
+//        } else {
+//            // MARK: Fallback on earlier versions
+//            self.performSegue(withIdentifier: segueId, sender: nil)
+//        }
+//    }
     
     private func parseAudioMessage() {
         let body = AudioContent.sharedInstance.body

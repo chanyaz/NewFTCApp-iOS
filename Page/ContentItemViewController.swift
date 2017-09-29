@@ -108,12 +108,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             } else {
                 webView = WKWebView(frame: self.view.bounds, configuration: config)
                 view = webView
-                view.clipsToBounds = true
+                view.clipsToBounds = false
             }
-            
             webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            
-            
+
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
             //            webView = WKWebView(frame: self.view.bounds, configuration: config)
             //            self.view = self.webView
@@ -146,9 +144,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             )
             
             
-            
+            let typeString = dataObject?.type ?? ""
             // MARK: If the sub type is a user comment, render web view directly
-            if subType == .UserComments || dataObject?.type == "webpage" || dataObject?.type == "ebook" {
+            if subType == .UserComments || ["webpage", "ebook", "htmlfile"].contains(typeString)  {
                 renderWebView()
             } else {
                 getDetailInfo()
@@ -656,6 +654,17 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     print ("register page is not loaded correctly")
                 }
             }
+        } else if dataObject?.type == "htmlfile"{
+            if let adHTMLPath = dataObject?.id {
+                let url = URL(string: APIs.getUrl("register", type: "register"))
+                do {
+                    let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let storyHTML = (storyTemplate as String)
+                    self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                } catch {
+                    print ("html file is not loaded correctly")
+                }
+            }
         } else {
             // MARK: - If it is other types of content such video and interacrtive features
             if let id = dataObject?.id, let type = dataObject?.type {
@@ -916,10 +925,11 @@ extension ContentItemViewController: UITextViewDelegate {
 extension ContentItemViewController {
     fileprivate func insertIAPView() {
         let verticalPadding: CGFloat = 10
+        let buttonHeight: CGFloat = 34
         let iapView = IAPView()
         let containerViewFrame = containerView.frame
         let width: CGFloat = view.frame.width
-        let height: CGFloat = 44
+        let height: CGFloat = buttonHeight + 2 * verticalPadding
         iapView.frame = CGRect(x: 0, y: containerViewFrame.height - height, width: width, height: height)
         iapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         // MARK: This is important for autolayout constraints to kick in properly
@@ -929,9 +939,9 @@ extension ContentItemViewController {
         iapView.verticalPadding = verticalPadding
         iapView.action = self.action
         iapView.initUI()
-        
         view.addSubview(iapView)
-        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -verticalPadding))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.lessThanOrEqual, toItem: containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.lessThanOrEqual, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: height))

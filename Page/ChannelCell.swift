@@ -74,14 +74,19 @@ class ChannelCell: CustomCell {
             })
         }
         
-        
-        if let image = UIImage(named: "VideoPlayOverlay"),
-            itemCell?.type == "video"{
-            overlayImage.image = image
+        let itemType = itemCell?.type
+        let caudio = itemCell?.caudio ?? ""
+        let eaudio = itemCell?.eaudio ?? ""
+        let audioFileUrl = itemCell?.audioFileUrl ?? ""
+        let image: UIImage?
+        if itemType == "video" {
+            image = UIImage(named: "VideoPlayOverlay")
+        } else if caudio != "" || eaudio != "" || audioFileUrl != "" {
+            image = UIImage(named: "AudioPlayOverlay")
         } else {
-            overlayImage.image = nil
+            image = nil
         }
-        
+        overlayImage.image = image
     }
     
 

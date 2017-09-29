@@ -68,7 +68,7 @@ class CoverCell: CustomCell {
             setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
             lead.attributedText = setStr
         }
-
+        
         loadImage("cover")
         
         let itemType = itemCell?.type
@@ -107,7 +107,16 @@ class CoverCell: CustomCell {
             itemCell?.loadImage(type:imageType, width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
                 // MARK: - Since cover cell is resued, you should always check if it is the right image
                 if self?.itemCell?.image == cellContentItem.image {
-                    self?.imageView.image = cellContentItem.coverImage
+                    if let imageView = self?.imageView {
+                        UIView.transition(with: imageView,
+                                          duration: 0.3,
+                                          options: .transitionCrossDissolve,
+                                          animations: {
+                                            imageView.image = cellContentItem.coverImage
+                        },
+                                          completion: nil
+                        )
+                    }
                 } else {
                     print ("image should not be displayed as the cell is resued!" )
                 }

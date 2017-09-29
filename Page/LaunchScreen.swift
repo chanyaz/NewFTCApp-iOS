@@ -536,7 +536,7 @@ class LaunchScreen: UIViewController {
     
     // MARK: Remove the overlay and reveal the web view. This should be public.
     @objc func close() {
-
+        
         player?.pause()
         player = nil
         
@@ -551,8 +551,18 @@ class LaunchScreen: UIViewController {
             return
         }
         
-        self.view.superview?.removeFromSuperview()
-        self.removeFromParentViewController()
+        UIView.transition(
+            with: view,
+            duration: 0.5,
+            options: .curveEaseIn,
+            animations: {
+                //self.view.alpha = 0
+                self.view.center = CGPoint(x: self.view.center.x, y: -self.view.center.y)
+        }) { (finished) in
+            self.view.superview?.removeFromSuperview()
+            self.removeFromParentViewController()
+        }
+        
         AppLaunch.sharedInstance.fullScreenDismissed = true
         if let topViewController = UIApplication.topViewController() {
             topViewController.setNeedsStatusBarAppearanceUpdate()

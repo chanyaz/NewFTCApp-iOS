@@ -927,10 +927,11 @@ extension ContentItemViewController: UITextViewDelegate {
 extension ContentItemViewController {
     fileprivate func insertIAPView() {
         let verticalPadding: CGFloat = 10
+        let buttonHeight: CGFloat = 34
         let iapView = IAPView()
         let containerViewFrame = containerView.frame
         let width: CGFloat = view.frame.width
-        let height: CGFloat = 44
+        let height: CGFloat = buttonHeight + 2 * verticalPadding
         iapView.frame = CGRect(x: 0, y: containerViewFrame.height - height, width: width, height: height)
         iapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         // MARK: This is important for autolayout constraints to kick in properly
@@ -940,9 +941,9 @@ extension ContentItemViewController {
         iapView.verticalPadding = verticalPadding
         iapView.action = self.action
         iapView.initUI()
-        
         view.addSubview(iapView)
-        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -verticalPadding))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.lessThanOrEqual, toItem: containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.lessThanOrEqual, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: height))

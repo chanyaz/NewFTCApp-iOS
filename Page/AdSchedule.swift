@@ -173,8 +173,6 @@ class AdSchedule {
                                     self.backupImage = UIImage(contentsOfFile: templatePath)
                                 }
                             }
-                        
-                            
                             if let showSoundButtonBool = currentCreative["showSoundButton"] {
                                 if showSoundButtonBool == "yes" {
                                     self.showSoundButton = true

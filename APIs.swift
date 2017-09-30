@@ -32,17 +32,14 @@ struct APIs {
         "http://app003.ftmailbox.com/",
         "http://big5.ftmailbox.com/"
     ]
-    // MARK: Domain Name Used for different types of purposes
-    private static let htmlDomain = "https://danla2f5eudt1.cloudfront.net/"
-    private static let domain = "https://d37m993yiqhccr.cloudfront.net/"
-    public static let publicDomain = "http://app003.ftmailbox.com/"
-    private static let webPageDomain = "http://www.ftchinese.com/"
+    
     
     // MARK: Number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
     
     // MARK: Search is mostly rendered using web
-    static let searchUrl = "http://app003.ftmailbox.com/search/"
+    //static let searchUrl = "http://app003.ftmailbox.com/search/"
+    static let searchUrl = "http://www.ftchinese.com/search/"
     static func jsForSearch(_ keywords: String) -> String {
         return "search('\(keywords)');"
     }
@@ -50,9 +47,23 @@ struct APIs {
     // MARK: Types of files that you want to clean from time to time
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg"]
     
+    
+    private static func getUrlStringInLanguage(_ from: [String]) -> String {
+        let currentPrefence = LanguageSetting.shared.currentPrefence
+        let urlString: String
+        if currentPrefence > 0 && currentPrefence < domains.count{
+            urlString = from[currentPrefence]
+        } else {
+            urlString = from[0]
+        }
+        return urlString
+    }
+    
     // MARK: Construct url strings for different types of content
     static func get(_ id: String, type: String) -> String {
         let urlString: String
+        let domain = getUrlStringInLanguage(domains)
+        
         switch type {
         case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         case "tag":
@@ -92,6 +103,7 @@ struct APIs {
     
     // MARK: Get url string for myFT
     static func get(_ key: String, value: String) -> String {
+        let domain = getUrlStringInLanguage(domains)
         return "\(domain)channel/china.html?type=json&\(key)=\(value)"
     }
     
@@ -117,15 +129,25 @@ struct APIs {
     // MARK: Use different domains for different types of content
     static func getUrl(_ id: String, type: String) -> String {
         let urlString: String
+        let webPageDomain = getUrlStringInLanguage(webPageDomains)
+        let publicDomain = getUrlStringInLanguage(publicDomains)
         switch type {
-        // MARK: If there are http resources that you rely on in your page, don't use https as the url base
-        case "video": urlString = "\(publicDomain)\(type)/\(id)?webview=ftcapp&002"
-        case "interactive", "gym", "special": urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
-        case "story": urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
-        case "photonews", "photo": urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
-        case "register": urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
+        case "video":
+            urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&002"
+        case "interactive", "gym", "special":
+            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
+        case "story":
+            urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
+        case "photonews", "photo":
+            urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
+        case "register":
+            urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
+        case "htmlbook":
+            urlString = "\(webPageDomain)htmlbook"
+        case "htmlfile":
+            urlString = "\(webPageDomain)htmlfile"
         default:
-            urlString = "\(publicDomain)"
+            urlString = "\(webPageDomain)"
         }
         return urlString
     }
@@ -182,12 +204,13 @@ struct ImageService {
 
 // MARK: - Recognize link patterns in your specific web site so that your app opens links intelligently, rather than opening everything with web view or safari view.
 struct LinkPattern {
-    static let story = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/story/([0-9]+)"]
+    static let story = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/story/([0-9]+)","http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=([0-9]+)&impressionId=[a-z0-9A-Z]+$"]
     static let interactive = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/interactive/([0-9]+)"]
     static let video = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/video/([0-9]+)"]
     static let photonews = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
     static let tag = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
     static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
+    //other:"http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=[0-9]+&impressionId=[a-z0-9A-Z]+$"
 }
 
 // MARK: - When you want to add content that are not already in your APIs. For example, you might want to add a most popular section to your home page.
@@ -254,7 +277,6 @@ struct SupplementContent {
         }
     }
 }
-
 
 struct Meta {
     // MARK: - Things your users can follow
@@ -509,3 +531,5 @@ struct Settings {
         )
     ]
 }
+
+

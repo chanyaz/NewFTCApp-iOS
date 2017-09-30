@@ -274,7 +274,7 @@ struct IAP {
         // MARK: - check if the file exists locally
         if let fileLocation = Download.checkFilePath(fileUrl: tryBookFileName, for: .documentDirectory) {
             if let topController = UIApplication.topViewController() {
-                topController.openLocalHTMLFile(fileLocation)
+                topController.openHTMLBook(fileLocation)
             }
             /*
              let config = FolioReaderConfig()
@@ -386,7 +386,7 @@ struct IAP {
              */
             
             if let topController = UIApplication.topViewController() {
-                topController.openLocalHTMLFile(fileLocation)
+                topController.openHTMLBook(fileLocation)
             }
         } else {
             print ("file not found: download it")

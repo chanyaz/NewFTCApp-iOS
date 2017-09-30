@@ -83,10 +83,10 @@ public struct FTCProducts {
             "title":"精选2016，展望2017",
             "teaser":" 2017年，我们熟悉的那个世界是否正在远去？",
             "image":"http://i.ftimg.net/picture/9/000068669_piclink.jpg",
-            "download": "https://danla2f5eudt1.cloudfront.net/interactive/7457",
+            "download": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html",
             //"download": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese.epub",
             //"downloadfortry": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese_Short.epub"
-            "downloadfortry": "https://danla2f5eudt1.cloudfront.net/interactive/7457"
+            "downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.lunch1",

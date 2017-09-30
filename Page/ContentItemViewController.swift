@@ -146,7 +146,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             let typeString = dataObject?.type ?? ""
             // MARK: If the sub type is a user comment, render web view directly
-            if subType == .UserComments || ["webpage", "ebook", "htmlfile"].contains(typeString)  {
+            if subType == .UserComments || ["webpage", "ebook", "htmlbook"].contains(typeString)  {
                 renderWebView()
             } else {
                 getDetailInfo()
@@ -502,7 +502,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         if let type = dataObject?.type, ["story", "ebook"].contains(type) {
             // MARK: If it is a story
             if let id = dataObject?.id {
-                print("type-- story")
                 let urlString = APIs.getUrl(id, type: type)
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
@@ -655,14 +654,34 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 }
             }
         } else if dataObject?.type == "htmlfile"{
-            if let adHTMLPath = dataObject?.id {
-                let url = URL(string: APIs.getUrl("register", type: "register"))
+            // MARK: - If there's a need to open just the HTML file
+                        if let adHTMLPath = dataObject?.id {
+                            let url = URL(string: APIs.getUrl("htmlfile", type: "htmlfile"))
+                            do {
+                                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                                let storyHTML = (storyTemplate as String)
+                                self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                            } catch {
+                                print ("html file is not loaded correctly")
+                            }
+                        }
+        } else if dataObject?.type == "htmlbook"{
+            // MARK: - Open HTML Body Content from the html-book.html local file
+            let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
+            let resourceFileName = "html-book"
+            if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"),
+                let contentHTMLPath = dataObject?.id,
+            let url = url {
                 do {
-                    let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                    let storyHTML = (storyTemplate as String)
-                    self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                    let templateNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let template = templateNSString as String
+                    let contentNSString = try NSString(contentsOfFile:contentHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let content = contentNSString as String
+                    let contentHTML = template.replacingOccurrences(of: "{html-book-content}", with: content)
+                    self.webView?.loadHTMLString(contentHTML, baseURL:url)
                 } catch {
-                    print ("html file is not loaded correctly")
+                    print ("cannot open the html book file")
+                    //self.webView?.load(request)
                 }
             }
         } else {

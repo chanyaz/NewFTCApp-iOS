@@ -122,7 +122,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
         }
     }
     
-    func openLocalHTMLFile(_ fileLocation: String) {
+    func openHTMLBook(_ fileLocation: String) {
         print ("open html file from location: \(fileLocation)")
 //        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
 //            detailViewController.contentPageData = [ContentItem(
@@ -148,7 +148,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                                 image: "",
                                 headline: "",
                                 lead: "",
-                                type: "htmlfile",
+                                type: "htmlbook",
                                 preferSponsorImage: "",
                                 tag: "",
                                 customLink: "",
@@ -157,6 +157,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                                 row: 0)
             contentItemViewController.pageTitle = "FT电子书"
             contentItemViewController.isFullScreen = true
+            contentItemViewController.hidesBottomBarWhenPushed = true
             //contentItemViewController.themeColor = self.pageThemeColor
             navigationController?.pushViewController(contentItemViewController, animated: true)
         }

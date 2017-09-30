@@ -142,6 +142,10 @@ struct APIs {
             urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
         case "register":
             urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
+        case "htmlbook":
+            urlString = "\(webPageDomain)htmlbook"
+        case "htmlfile":
+            urlString = "\(webPageDomain)htmlfile"
         default:
             urlString = "\(webPageDomain)"
         }

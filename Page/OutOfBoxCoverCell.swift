@@ -9,17 +9,5 @@
 import UIKit
 
 class OutOfBoxCoverCell: VideoCoverCell {
-    override func updateUI() {
-        super.updateUI()
-//        imageView.layer.cornerRadius = 8
-//        imageView.clipsToBounds = true
-        imageView.layer.shadowOffset = CGSize(width: 0, height: 4)
-        imageView.layer.shadowColor = UIColor.black.cgColor
-        imageView.layer.shadowRadius = 4
-        imageView.layer.shadowOpacity = 0.618
-        imageView.layer.masksToBounds = false;
-        imageView.clipsToBounds = false;
-        
-    }
 
 }

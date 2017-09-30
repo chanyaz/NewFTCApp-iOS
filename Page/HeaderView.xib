@@ -16,25 +16,15 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I57-bn-6ld">
-                    <rect key="frame" x="14" y="22" width="292" height="38"/>
+                    <rect key="frame" x="14" y="0.0" width="292" height="60"/>
                     <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="28"/>
                     <state key="normal" title="Button"/>
                 </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mQJ-KJ-ZUn">
-                    <rect key="frame" x="14" y="14" width="292" height="8"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="8" id="jzW-Lc-rB2"/>
-                    </constraints>
-                </view>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="mQJ-KJ-ZUn" secondAttribute="trailing" constant="14" id="AxK-xS-xCb"/>
+                <constraint firstItem="I57-bn-6ld" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="FIi-2P-rT1"/>
                 <constraint firstAttribute="trailing" secondItem="I57-bn-6ld" secondAttribute="trailing" constant="14" id="GIV-vw-a5g"/>
                 <constraint firstItem="I57-bn-6ld" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="14" id="ODk-7A-pPo"/>
-                <constraint firstItem="mQJ-KJ-ZUn" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="14" id="fIl-4G-gY0"/>
-                <constraint firstItem="mQJ-KJ-ZUn" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="14" id="gq4-qh-hmu"/>
-                <constraint firstItem="I57-bn-6ld" firstAttribute="top" secondItem="mQJ-KJ-ZUn" secondAttribute="bottom" id="iCr-4a-i9z"/>
                 <constraint firstAttribute="bottom" secondItem="I57-bn-6ld" secondAttribute="bottom" id="qtm-BS-cgO"/>
             </constraints>
             <connections>

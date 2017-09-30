@@ -62,6 +62,7 @@ class ChannelCell: CustomCell {
         
         // MARK: - Load the image of the item
         loadImage("thumbnail")
+        addShadow(imageView, of: 2)
         
         let itemType = itemCell?.type
         let caudio = itemCell?.caudio ?? ""
@@ -115,7 +116,7 @@ class ChannelCell: CustomCell {
         imageView.contentMode = .scaleAspectFit
         // MARK: - As the cell is reusable, asyn image should always be cleared first
         imageView.image = UIImage(named: "Watermark")
-        let imageType = "cover"
+        let imageType = type
         if let loadedImage = itemCell?.coverImage {
             imageView.image = loadedImage
             print ("image is already loaded, no need to dowqnload again. ")

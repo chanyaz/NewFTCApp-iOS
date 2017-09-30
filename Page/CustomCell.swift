@@ -41,4 +41,13 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         }
     }
     
+    public func addShadow(_ imageView: UIImageView, of radius: CGFloat) {
+        imageView.layer.shadowOffset = CGSize(width: 0, height: radius)
+        imageView.layer.shadowColor = UIColor.black.cgColor
+        imageView.layer.shadowRadius = radius
+        imageView.layer.shadowOpacity = 0.618
+        imageView.layer.masksToBounds = false
+        imageView.clipsToBounds = false
+    }
+    
 }

@@ -276,18 +276,6 @@ struct IAP {
             if let topController = UIApplication.topViewController() {
                 topController.openHTMLBook(fileLocation)
             }
-            /*
-             let config = FolioReaderConfig()
-             config.scrollDirection = .horizontal
-             config.allowSharing = false
-             config.tintColor = UIColor(netHex: 0x9E2F50)
-             config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
-             config.enableTTS = false
-             if let topController = UIApplication.topViewController() {
-             let folioReader = FolioReader()
-             folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
-             }
-             */
         } else {
             print ("file not found: download it")
             let alert = UIAlertController(title: "文件还没有下载，要现在下载吗？", message: "下载到本地可以打开并阅读", preferredStyle: UIAlertControllerStyle.alert)
@@ -328,8 +316,6 @@ struct IAP {
                 print ("The file already exists. No need to download. Update Interface")
                 newStatus = "fail"
             }
-            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-            //            }
             IAPs.shared.downloadDelegate?.switchUI(newStatus)
             trackIAPActions("download excerpt", productId: productID)
         }

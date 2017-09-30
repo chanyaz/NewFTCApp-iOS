@@ -32,10 +32,23 @@ struct AdLayout {
             type: "Banner",
             adid: "20220114"
         )
+        // MARK: Create the Info Ad
+        let paidPostItem = ContentItem(
+            id: "20220121",
+            image: "",
+            headline: "",
+            lead: "",
+            type: "ad",
+            preferSponsorImage: "",
+            tag: "",
+            customLink: "",
+            timeStamp: 0,
+            section: 0,
+            row: 0
+        )
+
         switch layout {
-        case "home":
-            // MARK: Create the Info Ad
-            let paidPostItem = ContentItem(id: "20220121", image: "", headline: "", lead: "", type: "ad", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
+        case "home", "Video", "OutOfBox", "OutOfBox-LifeStyle":
             
             // MARK: - The first item in the first section should be marked as Cover.
             // MARk: - Make sure items has a least one child to avoid potential run time error.

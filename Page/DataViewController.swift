@@ -70,6 +70,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 flowLayout.minimumLineSpacing = 0
                 //FIXME: Why does this break scrolling?
                 //flowLayout.sectionHeadersPinToVisibleBounds = true
+                //flowLayout.sectionInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
+                
+                let collectionViewInsets = UIEdgeInsetsMake(14, 0, 0, 0)
+                collectionView?.contentInset = collectionViewInsets;
+                collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(collectionViewInsets.top, 0, collectionViewInsets.bottom, 0);
+                
+                
                 let paddingSpace = sectionInsets.left * (getSizeInfo().itemsPerRow + 1)
                 let availableWidth = view.frame.width - paddingSpace
                 //print("availableWidth : \(availableWidth)")
@@ -670,7 +677,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         //return CGSize(width: 300, height: 250)
     }
     
-    
     // MARK: - Use different cell based on different strategy
     fileprivate func getReuseIdentifierForCell(_ indexPath: IndexPath) -> String {
         // MARK: - Check if the IndexPath is out of range
@@ -691,7 +697,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         
         let reuseIdentifier: String
         
-        if layoutStrategy == "Simple Headline" {
+        if item.type == "ad"{
+            if item.adModel == nil || item.adModel?.headline == nil {
+                reuseIdentifier = "LineCell"
+            } else {
+                reuseIdentifier = "PaidPostCell"
+            }
+        } else if layoutStrategy == "Simple Headline" {
             if isCover {
                 reuseIdentifier = "CoverCell"
             } else {
@@ -752,12 +764,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "SettingCell"
                 } else if item.type == "option" {
                     reuseIdentifier = "OptionCell"
-                } else if item.type == "ad"{
-                    if item.adModel == nil || item.adModel?.headline == nil {
-                        reuseIdentifier = "LineCell"
-                    } else {
-                        reuseIdentifier = "PaidPostCell"
-                    }
                 } else if isCover {
                     if let coverTheme = coverTheme {
                         reuseIdentifier = Color.Theme.getCellIndentifier(coverTheme)

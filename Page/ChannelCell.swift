@@ -24,6 +24,7 @@ class ChannelCell: CustomCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var sign: UILabel!
     @IBOutlet weak var overlayImage: UIImageView!
+    @IBOutlet weak var tagLabel: UILabel!
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
@@ -77,6 +78,14 @@ class ChannelCell: CustomCell {
             image = nil
         }
         overlayImage.image = image
+        
+        // MARK: - update the tagView
+        tagLabel.textColor = UIColor(hex: Color.Content.tag)
+        if let firstTag = itemCell?.tag.getFirstTag(Meta.reservedTags) {
+            tagLabel.text = firstTag
+        } else {
+            tagLabel.text = nil
+        }
     }
     
     

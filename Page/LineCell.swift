@@ -32,9 +32,9 @@ class LineCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = UIColor(hex: Color.Content.background)
-        //border.backgroundColor = UIColor(hex: Color.Content.border)
+        border.backgroundColor = UIColor(hex: Color.Content.border)
         // MARK: - since we switch to a new design, we don't really need the border color
-        border.backgroundColor = .clear
+        //border.backgroundColor = .clear
     }
     
     private func updateUI() {

@@ -25,6 +25,7 @@ class ChannelCell: CustomCell {
     @IBOutlet weak var sign: UILabel!
     @IBOutlet weak var overlayImage: UIImageView!
     @IBOutlet weak var tagLabel: UILabel!
+    @IBOutlet weak var headlineTopMarginConstraint: NSLayoutConstraint!
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
@@ -83,8 +84,10 @@ class ChannelCell: CustomCell {
         tagLabel.textColor = UIColor(hex: Color.Content.tag)
         if let firstTag = itemCell?.tag.getFirstTag(Meta.reservedTags) {
             tagLabel.text = firstTag
+            headlineTopMarginConstraint.constant = 8
         } else {
             tagLabel.text = nil
+            headlineTopMarginConstraint.constant = 0
         }
     }
     

@@ -55,6 +55,16 @@ class VideoCoverCell: CoverCell {
             topic.textColor = borderColor
             topicBorderView.backgroundColor = borderColor
         }
+        // MARK: - Tap the topic view to open tag page
+        topic.isUserInteractionEnabled = true
+        let tapTagRecognizer = UITapGestureRecognizer(target:self, action:#selector(tapTag(_:)))
+        topic.addGestureRecognizer(tapTagRecognizer)
     }
     
+    @objc open func tapTag(_ recognizer: UITapGestureRecognizer) {
+        if let topController = UIApplication.topViewController(),
+            let tag = topic.text {
+            topController.openDataView(tag, of: "tag")
+        }
+    }
 }

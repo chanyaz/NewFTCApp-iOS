@@ -152,13 +152,21 @@ class ChannelCell: CustomCell {
                 }
             })
         }
+        
+        // MARK: - Tap the tag label to open tag page
+        tagLabel.isUserInteractionEnabled = true
+        let tapTagRecognizer = UITapGestureRecognizer(target:self, action:#selector(tapTag(_:)))
+        tagLabel.addGestureRecognizer(tapTagRecognizer)
     }
     
     
-    
+    @objc open func tapTag(_ recognizer: UITapGestureRecognizer) {
+        if let topController = UIApplication.topViewController(),
+            let tag = tagLabel.text {
+            topController.openDataView(tag, of: "tag")
+        }
+    }
 }
-
-//TODO: Paid Post Ad should be moved to a subclass rather than the channel cell
 
 
 

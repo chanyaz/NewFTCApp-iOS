@@ -52,4 +52,5 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         imageView.clipsToBounds = false
     }
     
+    
 }

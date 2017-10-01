@@ -29,7 +29,7 @@ struct AppNavigation {
                     "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=home&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/",
                     "compactLayout": "home",
-                    //"coverTheme": "OutOfBox",
+                    "coverTheme": "Classic",
                     "screenName":"homepage",
                     "Insert Content": "home"
                 ],

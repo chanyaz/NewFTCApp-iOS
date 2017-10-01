@@ -72,6 +72,8 @@ struct Color {
         }
         static func getCellIndentifier(_ theme: String) -> String {
             switch theme {
+            case "Classic":
+                return "ClassicCoverCell"
             case "Video":
                 return "VideoCoverCell"
             default:

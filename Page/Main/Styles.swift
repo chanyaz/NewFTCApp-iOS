@@ -63,6 +63,8 @@ struct Color {
     struct Theme {
         static func get(_ theme: String) -> (background: String, border: String, title: String, tag: String, lead: String) {
             switch theme {
+            case "Classic":
+                return (background: "#FFF1E0", border: "#FFF1E0", title: "#333333", tag: "#9E2F50", lead: "#777777")
             case "Red":
                 return (background: "#9E2F50", border: "#9E2F50", title: "#FFFFFF", tag: "#FFFFFF", lead: "#FFFFFF")
             case "Opinion":
@@ -87,6 +89,8 @@ struct Color {
         }
         static func getCellIndentifier(_ theme: String) -> String {
             switch theme {
+            case "Classic":
+                return "ClassicCoverCell"
             case "Video":
                 return "VideoCoverCell"
             case "OutOfBox":

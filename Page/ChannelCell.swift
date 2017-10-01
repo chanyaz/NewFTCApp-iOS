@@ -126,9 +126,18 @@ class ChannelCell: CustomCell {
         // MARK: - As the cell is reusable, asyn image should always be cleared first
         imageView.image = UIImage(named: "Watermark")
         let imageType = type
-        if let loadedImage = itemCell?.coverImage {
+        let loadedImage: UIImage?
+        switch imageType {
+        case "cover":
+            loadedImage = itemCell?.coverImage
+        case "thumbnail":
+            loadedImage = itemCell?.thumbnailImage
+        default:
+            loadedImage = itemCell?.detailImage
+        }
+        if let loadedImage = loadedImage {
             imageView.image = loadedImage
-            print ("image is already loaded, no need to dowqnload again. ")
+            print ("image is already loaded, no need to download again. ")
         } else if let image = itemCell?.image,
             let downloadedImageData = Download.readFile(image, for: .cachesDirectory, as: imageType){
             imageView.image = UIImage(data: downloadedImageData)

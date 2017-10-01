@@ -39,17 +39,8 @@ extension UIViewController: SFSafariViewControllerDelegate{
                     type = "webpage"
                 }
                 if let type = type, type == "tag" {
-                    if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
-                        if let id = id {
-                            dataViewController.dataObject = ["title": id,
-                                                             "api": APIs.get(id, type: type),
-                                                             "url":"",
-                                                             "screenName":"tag/\(id)"]
-                            dataViewController.pageTitle = id
-                            self.navigationController?.pushViewController(dataViewController, animated: true)
-                            return
-                        }
-                    }
+                    openDataView(id, of: type)
+                    return
                 }
                 if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
                     if let id = id,
@@ -160,6 +151,18 @@ extension UIViewController: SFSafariViewControllerDelegate{
             contentItemViewController.hidesBottomBarWhenPushed = true
             //contentItemViewController.themeColor = self.pageThemeColor
             navigationController?.pushViewController(contentItemViewController, animated: true)
+        }
+    }
+    
+    func openDataView(_ id: String?, of type: String) {
+        if let id = id,
+            let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+                dataViewController.dataObject = ["title": id,
+                                                 "api": APIs.get(id, type: type),
+                                                 "url":"",
+                                                 "screenName":"tag/\(id)"]
+                dataViewController.pageTitle = id
+                self.navigationController?.pushViewController(dataViewController, animated: true)
         }
     }
 }

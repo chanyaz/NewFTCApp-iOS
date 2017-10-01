@@ -70,7 +70,7 @@ class CoverCell: CustomCell {
         }
         
         loadImage("cover")
-        addShadow(imageView, of: 4)
+        //addShadow(imageView, of: 4)
         
         let itemType = itemCell?.type
         let caudio = itemCell?.caudio ?? ""

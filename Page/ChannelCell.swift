@@ -64,7 +64,7 @@ class ChannelCell: CustomCell {
         
         // MARK: - Load the image of the item
         loadImage("thumbnail")
-        addShadow(imageView, of: 2)
+        //addShadow(imageView, of: 2)
         
         let itemType = itemCell?.type
         let caudio = itemCell?.caudio ?? ""

@@ -89,6 +89,11 @@ class ChannelCell: CustomCell {
             tagLabel.text = nil
             headlineTopMarginConstraint.constant = 0
         }
+        
+        // MARK: - Tap the tag label to open tag page
+        tagLabel.isUserInteractionEnabled = true
+        let tapTagRecognizer = UITapGestureRecognizer(target:self, action:#selector(tapTag(_:)))
+        tagLabel.addGestureRecognizer(tapTagRecognizer)
     }
     
     
@@ -174,10 +179,7 @@ class ChannelCell: CustomCell {
             })
         }
         
-        // MARK: - Tap the tag label to open tag page
-        tagLabel.isUserInteractionEnabled = true
-        let tapTagRecognizer = UITapGestureRecognizer(target:self, action:#selector(tapTag(_:)))
-        tagLabel.addGestureRecognizer(tapTagRecognizer)
+
     }
     
     

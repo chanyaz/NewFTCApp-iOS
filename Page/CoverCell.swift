@@ -90,6 +90,8 @@ class CoverCell: CustomCell {
         overlayImage.image = image
     }
     
+    
+    
     private func loadImage(_ type: String) {
         // MARK: - Load the image of the item
         imageView.backgroundColor = UIColor(hex: Color.Image.background)
@@ -115,22 +117,32 @@ class CoverCell: CustomCell {
             print ("image is already downloaded to cache, no need to download again. ")
         } else {
             itemCell?.loadImage(type:imageType, width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-                // MARK: - Since cover cell is resued, you should always check if it is the right image
+                // MARK: - Since channel cell is resued, you should always check if it is the right image
                 if self?.itemCell?.image == cellContentItem.image {
                     if let imageView = self?.imageView {
                         UIView.transition(with: imageView,
                                           duration: 0.3,
                                           options: .transitionCrossDissolve,
                                           animations: {
-                                            imageView.image = cellContentItem.coverImage
+                                            let loadedImage: UIImage?
+                                            switch imageType {
+                                            case "cover":
+                                                loadedImage = cellContentItem.coverImage
+                                            case "thumbnail":
+                                                loadedImage = cellContentItem.thumbnailImage
+                                            default:
+                                                loadedImage = cellContentItem.detailImage
+                                            }
+                                            imageView.image = loadedImage
                         },
                                           completion: nil
                         )
                     }
                 } else {
-                    print ("image should not be displayed as the cell is resued!" )
+                    print ("image should not be displayed as the cell is reused!" )
                 }
             })
         }
     }
+    
 }

@@ -72,6 +72,15 @@ struct AppNavigation {
                     "screenName":"homepage/ftcc"
                 ],
                 [
+                    "title": "测试",
+                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
+                    "regularLayout": "",
+                    "compactLayout": "OutOfBox-No-Ad",
+                    "coverTheme": "OutOfBox-Blue",
+                    "url":"http://www.ftchinese.com/channel/datanews.html",
+                    "screenName":"homepage/ftcc"
+                ],
+                [
                     "title": "生活时尚",
                     "api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
                     "url":"http://www.ftchinese.com/channel/lifestyle.html",

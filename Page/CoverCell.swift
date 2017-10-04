@@ -12,11 +12,6 @@ import UIKit
 
 class CoverCell: CustomCell {
     
-    // MARK: - Style settings for this class
-    let imageWidth = 408   // 16 * 52
-    let imageHeight = 234  // 9 * 52
-    
-    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
     @IBOutlet weak var lead: UILabel!
@@ -25,9 +20,6 @@ class CoverCell: CustomCell {
     @IBOutlet weak var headlineLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var headlineTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var overlayImage: UIImageView!
-    
-    
-    
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
@@ -69,7 +61,7 @@ class CoverCell: CustomCell {
             lead.attributedText = setStr
         }
         
-        loadImage("cover")
+        loadImage("cover", to: imageView)
         //addShadow(imageView, of: 4)
         
         let itemType = itemCell?.type
@@ -92,57 +84,9 @@ class CoverCell: CustomCell {
     
     
     
-    private func loadImage(_ type: String) {
-        // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Image.background)
-        imageView.contentMode = .scaleAspectFit
-        // MARK: - As the cell is reusable, asyn image should always be cleared first
-        imageView.image = UIImage(named: "Watermark")
-        let imageType = type
-        let loadedImage: UIImage?
-        switch imageType {
-        case "cover":
-            loadedImage = itemCell?.coverImage
-        case "thumbnail":
-            loadedImage = itemCell?.thumbnailImage
-        default:
-            loadedImage = itemCell?.detailImage
-        }
-        if let loadedImage = loadedImage {
-            imageView.image = loadedImage
-            print ("image is already loaded, no need to download again. ")
-        } else if let image = itemCell?.image,
-            let downloadedImageData = Download.readFile(image, for: .cachesDirectory, as: imageType){
-            imageView.image = UIImage(data: downloadedImageData)
-            print ("image is already downloaded to cache, no need to download again. ")
-        } else {
-            itemCell?.loadImage(type:imageType, width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-                // MARK: - Since channel cell is resued, you should always check if it is the right image
-                if self?.itemCell?.image == cellContentItem.image {
-                    if let imageView = self?.imageView {
-                        UIView.transition(with: imageView,
-                                          duration: 0.3,
-                                          options: .transitionCrossDissolve,
-                                          animations: {
-                                            let loadedImage: UIImage?
-                                            switch imageType {
-                                            case "cover":
-                                                loadedImage = cellContentItem.coverImage
-                                            case "thumbnail":
-                                                loadedImage = cellContentItem.thumbnailImage
-                                            default:
-                                                loadedImage = cellContentItem.detailImage
-                                            }
-                                            imageView.image = loadedImage
-                        },
-                                          completion: nil
-                        )
-                    }
-                } else {
-                    print ("image should not be displayed as the cell is reused!" )
-                }
-            })
-        }
-    }
+
+    
+    
+    
     
 }

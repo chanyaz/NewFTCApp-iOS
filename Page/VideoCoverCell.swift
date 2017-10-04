@@ -16,6 +16,7 @@ class VideoCoverCell: CoverCell {
     var coverTheme: String?
     override func updateUI() {
         super.updateUI()
+        return
         if let firstTag = itemCell?.tag.getFirstTag(Meta.reservedTags) {
             topic.text = firstTag
             topicBorderView.isHidden = false

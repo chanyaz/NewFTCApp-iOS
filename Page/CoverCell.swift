@@ -30,29 +30,36 @@ class CoverCell: CustomCell {
                 self.addConstraint(NSLayoutConstraint(item: overlayImage, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: overlayWidth))
             }
         }
-        // MARK: - Update Styles and Layouts
-        containerView.backgroundColor = UIColor(hex: Color.Content.background)
-        headline.textColor = UIColor(hex: Color.Content.headline)
-        headline.font = headline.font.bold()
-        lead.textColor = UIColor(hex: Color.Content.lead)
-        layoutMargins.left = 0
-        layoutMargins.right = 0
-        layoutMargins.top = 0
-        layoutMargins.bottom = 0
-        containerView.layoutMargins.left = 0
-        containerView.layoutMargins.right = 0
-        // MARK: - Use calculated cell width to diplay auto-sizing cells
-        let cellMargins = layoutMargins.left + layoutMargins.right
-        let containerViewMargins = containerView.layoutMargins.left + containerView.layoutMargins.right
-        //let headlineActualWidth: CGFloat?
-        if let cellWidth = cellWidth {
-            self.contentView.translatesAutoresizingMaskIntoConstraints = false
-            let containerWidth = cellWidth - cellMargins - containerViewMargins
-            containerViewWidthConstraint.constant = containerWidth
+        super.updateUI()
+        // MARK: - Update Styles and Layouts only Once
+        if isCellReused == false {
+            
+            containerView.backgroundColor = UIColor(hex: Color.Content.background)
+            headline.font = headline.font.bold()
+            layoutMargins.left = 0
+            layoutMargins.right = 0
+            layoutMargins.top = 0
+            layoutMargins.bottom = 0
+            containerView.layoutMargins.left = 0
+            containerView.layoutMargins.right = 0
+            // MARK: - Use calculated cell width to diplay auto-sizing cells
+            let cellMargins = layoutMargins.left + layoutMargins.right
+            let containerViewMargins = containerView.layoutMargins.left + containerView.layoutMargins.right
+            //let headlineActualWidth: CGFloat?
+            if let cellWidth = cellWidth {
+                self.contentView.translatesAutoresizingMaskIntoConstraints = false
+                let containerWidth = cellWidth - cellMargins - containerViewMargins
+                containerViewWidthConstraint.constant = containerWidth
+            }
+            isCellReused = true
+        
         }
-        // MARK: - Update dispay of the cell
+        
+        // MARK: - Update content of the cell eveny time
         let headlineString = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         headline.text = headlineString
+        headline.textColor = UIColor(hex: Color.Content.headline)
+        lead.textColor = UIColor(hex: Color.Content.lead)
         if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineHeightMultiple = 1.4
@@ -80,11 +87,22 @@ class CoverCell: CustomCell {
             addOverlayConstraints(cellWidth)
         }
         overlayImage.image = image
+        
+        //print ("update ui called. cell width is \(cellWidth)")
     }
     
     
     
-
+    //    override func prepareForReuse() {
+    //        super.prepareForReuse()
+    //        print ("prepare for reuse called. cell width is \(cellWidth)")
+    //    }
+    //
+    //    // TODO: Since the cell is reused, put all the things that are only needed once here.
+    //    override func awakeFromNib() {
+    //        super.awakeFromNib()
+    //        print ("awake from nib called. cell width is \(cellWidth)")
+    //    }
     
     
     

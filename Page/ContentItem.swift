@@ -43,6 +43,9 @@ class ContentItem{
     var relatedStories: [[String: Any]]?
     var relatedVideos: [[String: Any]]?
     
+    var attributedLead: NSMutableAttributedString?
+    var overlayButtonImage: UIImage?
+    
     // MARK: Audio File Url for Interactive such as FT Radio
     var audioFileUrl: String?
     

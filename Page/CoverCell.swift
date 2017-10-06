@@ -20,6 +20,7 @@ class CoverCell: CustomCell {
     @IBOutlet weak var headlineLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var headlineTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var overlayImage: UIImageView!
+    var isCoverCellReused = false
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
@@ -32,8 +33,7 @@ class CoverCell: CustomCell {
         }
         super.updateUI()
         // MARK: - Update Styles and Layouts only Once
-        if isCellReused == false {
-            
+        if isCoverCellReused == false {
             containerView.backgroundColor = UIColor(hex: Color.Content.background)
             headline.font = headline.font.bold()
             layoutMargins.left = 0
@@ -51,47 +51,23 @@ class CoverCell: CustomCell {
                 let containerWidth = cellWidth - cellMargins - containerViewMargins
                 containerViewWidthConstraint.constant = containerWidth
             }
-            isCellReused = true
-        
+            addOverlayConstraints(cellWidth)
+            isCoverCellReused = true
         }
-        
-        // MARK: - Update content of the cell eveny time
-        let headlineString = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        headline.text = headlineString
+        // MARK: - Update content of the cell eveny time            
+        headline.text = itemCell?.headline
         headline.textColor = UIColor(hex: Color.Content.headline)
         lead.textColor = UIColor(hex: Color.Content.lead)
-        if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineHeightMultiple = 1.4
-            let setStr = NSMutableAttributedString.init(string: leadText)
-            setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (leadText.characters.count)))
-            lead.attributedText = setStr
-        }
-        
+        // FIXME: This is a dilema: use attributed text and performance is bad, use text and line height is gone.
+        lead.text = itemCell?.lead
+        //lead.attributedText = itemCell?.attributedLead
         loadImage("cover", to: imageView)
         //addShadow(imageView, of: 4)
-        
-        let itemType = itemCell?.type
-        let caudio = itemCell?.caudio ?? ""
-        let eaudio = itemCell?.eaudio ?? ""
-        let audioFileUrl = itemCell?.audioFileUrl ?? ""
-        let image: UIImage?
-        if itemType == "video" {
-            image = UIImage(named: "VideoPlayOverlay")
-        } else if caudio != "" || eaudio != "" || audioFileUrl != "" {
-            image = UIImage(named: "AudioPlayOverlay")
-        } else {
-            image = nil
-        }
-        if image != nil {
-            addOverlayConstraints(cellWidth)
-        }
-        overlayImage.image = image
-        
+        overlayImage.image = itemCell?.overlayButtonImage
         //print ("update ui called. cell width is \(cellWidth)")
+        
+        
     }
-    
-    
     
     //    override func prepareForReuse() {
     //        super.prepareForReuse()

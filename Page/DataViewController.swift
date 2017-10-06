@@ -491,6 +491,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             if let cell = cellItem as? CoverCell {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "ThemeCoverCell":
@@ -498,6 +499,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.coverTheme = coverTheme
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "VideoCoverCell":
@@ -505,6 +507,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.coverTheme = coverTheme
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "ClassicCoverCell":
@@ -512,6 +515,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.coverTheme = coverTheme
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "OutOfBoxCoverCell":
@@ -519,12 +523,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.coverTheme = coverTheme
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "IconCell":
             if let cell = cellItem as? IconCell {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "BigImageCell":
@@ -533,29 +539,34 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.themeColor = self.themeColor
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.soundButton.addTarget(self, action: #selector(self.openPlay), for: UIControlEvents.touchUpInside)
+                cell.updateUI()
                 return cell
             }
         case "HeadlineCell":
             if let cell = cellItem as? HeadlineCell {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "CoverCellRegular":
             if let cell = cellItem as? CoverCellRegular {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "ChannelCellRegular":
             if let cell = cellItem as? ChannelCellRegular {
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "AdCellRegular":
             if let cell = cellItem as? AdCellRegular {
                 cell.cellWidth = cellWidth
+                cell.updateUI()
                 //when itemCell change in AdCellRegular, updateUI() will be executed.After adding ad,comment the code
                 //                if cell.bounds.height<330{
                 //                    cell.adHint.isHidden=true
@@ -567,6 +578,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         case "HotArticleCellRegular":
             if let cell = cellItem as? HotArticleCellRegular {
                 cell.cellWidth = cellWidth
+                cell.updateUI()
                 //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
@@ -582,6 +594,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.pageTitle = pageTitle
+                cell.updateUI()
                 return cell
             }
         case "BookCell":
@@ -590,6 +603,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.pageTitle = pageTitle
                 cell.themeColor = themeColor
+                cell.updateUI()
                 return cell
             }
         case "FollowCell":
@@ -597,6 +611,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.cellWidth = cellWidth
                 cell.themeColor = themeColor
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "SettingCell":
@@ -604,6 +619,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.cellWidth = cellWidth
                 cell.themeColor = themeColor
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "OptionCell":
@@ -611,6 +627,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.cellWidth = cellWidth
                 cell.themeColor = themeColor
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
                 return cell
             }
         case "EmptyCell":
@@ -620,11 +637,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.pageTitle = pageTitle
+                cell.updateUI()
                 return cell
             }
         }
         return cellItem
     }
+    
     
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

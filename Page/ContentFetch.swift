@@ -110,17 +110,23 @@ class ContentFetch {
                     for (row, item) in items.enumerated() {
                         let id = item["id"] as? String ?? ""
                         let image = item["image"] as? String ?? ""
-                        let headline = item["headline"] as? String ?? ""
-                        let lead = item["longlead"] as? String ?? ""
+                        let headline = (item["headline"] as? String ?? "")
+                            .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+                        let lead = (item["longlead"] as? String ?? "")
+                            .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
                         let shortlead = item["shortlead"] as? String ?? ""
+                            .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
                         let type = item["type"] as? String ?? ""
                         let preferSponsorImage = item["preferSponsorImage"] as? String ?? ""
                         let tag = item["tag"] as? String ?? ""
                         let customLink = item["customLink"] as? String ?? ""
+                            .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
                         let timeStampString = item["timeStamp"] as? String ?? "0"
                         let timeStamp = TimeInterval(timeStampString) ?? 0
                         let caudio = item["caudio"] as? String ?? ""
+                            .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
                         let eaudio = item["eaudio"] as? String ?? ""
+                            .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
                         
                         // MARK: Note that section may not be continuous
                         let oneItem = ContentItem(
@@ -140,6 +146,11 @@ class ContentFetch {
                         if shortlead.range(of: ".mp3$", options: .regularExpression) != nil {
                             oneItem.audioFileUrl = shortlead
                         }
+                        // MARK: Calculate the attributed string for lead so that the cells don't have to calculate it repeatedly
+                        oneItem.attributedLead = getAttributedLead(lead)
+                        // MARK: Get the overlay button image so that you don't have to do it in the cell updateUI
+                        oneItem.overlayButtonImage = getOverlayButtonImage(oneItem)
+                        
                         // MARK: If there is audio field, then the story has audio
                         oneItem.caudio = caudio
                         oneItem.eaudio = eaudio
@@ -172,10 +183,13 @@ class ContentFetch {
                     image = storyPic["smallbutton"] ?? storyPic["cover"] ?? storyPic["bigbutton"] ??  ""
                 }
             }
-            let headline = item["cheadline"] as? String ?? ""
-            var lead = item["clongleadbody"] as? String ?? ""
+            let headline = (item["cheadline"] as? String ?? "")
+                .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+            var lead = (item["clongleadbody"] as? String ?? "")
+                .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
             if lead == "" {
-                lead = item["cshortleadbody"] as? String ?? ""
+                lead = (item["cshortleadbody"] as? String ?? "")
+                    .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
             }
             let type = item["type"] as? String ?? "story"
             let preferSponsorImage = ""
@@ -197,6 +211,9 @@ class ContentFetch {
                 section: 0,
                 row:row
             )
+            // MARK: Calculate the attributed string for lead so that the cells don't have to calculate it repeatedly
+            oneItem.attributedLead = getAttributedLead(lead)
+            oneItem.overlayButtonImage = getOverlayButtonImage(oneItem)
             itemCollection.append(oneItem)
         }
         let title = ""
@@ -234,12 +251,18 @@ class ContentFetch {
         )
         
         //MARK: It is necessary to return the headline, lead, tag
-        oneItem.headline = item["cheadline"] as? String ?? ""
+        oneItem.headline = (item["cheadline"] as? String ?? "")
+            .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         oneItem.tag = item["tag"] as? String ?? ""
-        oneItem.lead = item["clongleadbody"] as? String ?? ""
+        oneItem.lead = (item["clongleadbody"] as? String ?? "")
+            .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         if oneItem.lead == "" {
-            oneItem.lead = item["cshortleadbody"] as? String ?? ""
+            oneItem.lead = (item["cshortleadbody"] as? String ?? "")
+                .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         }
+        // MARK: Calculate the attributed string for lead so that the cells don't have to calculate it repeatedly
+        oneItem.attributedLead = getAttributedLead(oneItem.lead)
+        oneItem.overlayButtonImage = getOverlayButtonImage(oneItem)
         
         //MARK: Get images
         var image = item["image"] as? String ?? ""
@@ -283,6 +306,30 @@ class ContentFetch {
         )
         contentSections.append(contentSection)
         return contentSections
+    }
+    
+    private func getAttributedLead(_ lead: String) -> NSMutableAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.4
+        let setStr = NSMutableAttributedString.init(string: lead)
+        setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (lead.characters.count)))
+        return setStr
+    }
+    
+    private func getOverlayButtonImage(_ itemCell: ContentItem?) -> UIImage? {
+        let itemType = itemCell?.type
+        let caudio = itemCell?.caudio ?? ""
+        let eaudio = itemCell?.eaudio ?? ""
+        let audioFileUrl = itemCell?.audioFileUrl ?? ""
+        let image: UIImage?
+        if itemType == "video" {
+            image = UIImage(named: "VideoPlayOverlay")
+        } else if caudio != "" || eaudio != "" || audioFileUrl != "" {
+            image = UIImage(named: "AudioPlayOverlay")
+        } else {
+            image = nil
+        }
+        return image
     }
     
     

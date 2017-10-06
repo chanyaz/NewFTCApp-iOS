@@ -28,7 +28,7 @@
                                     <constraint firstAttribute="width" secondItem="AFL-Ml-oxU" secondAttribute="height" multiplier="408:234" id="JBE-BU-wJ8"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1a-Jy-xur">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1a-Jy-xur">
                                 <rect key="frame" x="14" y="232" width="285" height="26"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Lead">

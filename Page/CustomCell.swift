@@ -12,12 +12,8 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
     
     // MARK: - Cell width set by collection view controller
     var cellWidth: CGFloat?
-    var isCellReused = false
-    var itemCell: ContentItem? {
-        didSet {
-            updateUI()
-        }
-    }
+    //var isCellReused = false
+    var itemCell: ContentItem?
     var themeColor: String?
     
     func updateUI() {}

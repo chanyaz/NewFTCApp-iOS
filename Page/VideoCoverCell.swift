@@ -14,9 +14,16 @@ class VideoCoverCell: CoverCell {
     @IBOutlet weak var topic: UILabel!
     @IBOutlet weak var innerView: UIView!
     var coverTheme: String?
+    var isVideoCoverCellReused = false
     override func updateUI() {
         super.updateUI()
-        return
+        if isVideoCoverCellReused == false {
+            // MARK: - Tap the topic view to open tag page
+            topic.isUserInteractionEnabled = true
+            let tapTagRecognizer = UITapGestureRecognizer(target:self, action:#selector(tapTag(_:)))
+            topic.addGestureRecognizer(tapTagRecognizer)
+            isVideoCoverCellReused = true
+        }
         if let firstTag = itemCell?.tag.getFirstTag(Meta.reservedTags) {
             topic.text = firstTag
             topicBorderView.isHidden = false
@@ -56,11 +63,18 @@ class VideoCoverCell: CoverCell {
             topic.textColor = borderColor
             topicBorderView.backgroundColor = borderColor
         }
-        // MARK: - Tap the topic view to open tag page
-        topic.isUserInteractionEnabled = true
-        let tapTagRecognizer = UITapGestureRecognizer(target:self, action:#selector(tapTag(_:)))
-        topic.addGestureRecognizer(tapTagRecognizer)
+        print ("update UI called: \(String(describing: itemCell?.row)). \(itemCell?.headline)")
     }
+    
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        print ("prepare for reuse called: \(String(describing: itemCell?.row)). \(itemCell?.headline)")
+//    }
+//
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        print ("awake from nib called: \(String(describing: itemCell?.row)). \(itemCell?.headline)")
+//    }
     
     @objc open func tapTag(_ recognizer: UITapGestureRecognizer) {
         if let topController = UIApplication.topViewController(),
@@ -68,4 +82,5 @@ class VideoCoverCell: CoverCell {
             topController.openDataView(tag, of: "tag")
         }
     }
+    
 }

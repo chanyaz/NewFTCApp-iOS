@@ -14,11 +14,7 @@ class LineCell: UICollectionViewCell {
     @IBOutlet weak var borderWidthConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var borderLeading: NSLayoutConstraint!
-    var cellWidth: CGFloat? {
-        didSet {
-            updateUI()
-        }
-    }
+    var cellWidth: CGFloat?
     
     var pageTitle = ""
     

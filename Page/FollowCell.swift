@@ -20,11 +20,7 @@ class FollowCell: UICollectionViewCell {
     
     // MARK: - Cell width set by collection view controller
     var cellWidth: CGFloat?
-    var itemCell: ContentItem? {
-        didSet {
-            updateUI()
-        }
-    }
+    var itemCell: ContentItem?
     var themeColor: String?
     
     

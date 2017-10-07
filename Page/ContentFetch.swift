@@ -150,6 +150,7 @@ class ContentFetch {
                         oneItem.attributedLead = getAttributedLead(lead)
                         // MARK: Get the overlay button image so that you don't have to do it in the cell updateUI
                         oneItem.overlayButtonImage = getOverlayButtonImage(oneItem)
+                        oneItem.mainTag = tag.getFirstTag(Meta.reservedTags)
                         
                         // MARK: If there is audio field, then the story has audio
                         oneItem.caudio = caudio
@@ -214,6 +215,7 @@ class ContentFetch {
             // MARK: Calculate the attributed string for lead so that the cells don't have to calculate it repeatedly
             oneItem.attributedLead = getAttributedLead(lead)
             oneItem.overlayButtonImage = getOverlayButtonImage(oneItem)
+            oneItem.mainTag = tag.getFirstTag(Meta.reservedTags)
             itemCollection.append(oneItem)
         }
         let title = ""
@@ -263,6 +265,7 @@ class ContentFetch {
         // MARK: Calculate the attributed string for lead so that the cells don't have to calculate it repeatedly
         oneItem.attributedLead = getAttributedLead(oneItem.lead)
         oneItem.overlayButtonImage = getOverlayButtonImage(oneItem)
+        oneItem.mainTag = oneItem.tag.getFirstTag(Meta.reservedTags)
         
         //MARK: Get images
         var image = item["image"] as? String ?? ""

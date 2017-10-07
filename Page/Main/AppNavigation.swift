@@ -24,15 +24,6 @@ struct AppNavigation {
             "navLeftItem": "Chat",
             "Channels": [
                 [
-                    "title": "测试",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
-                    "regularLayout": "",
-                    "compactLayout": "OutOfBox-No-Ad",
-                    "coverTheme": "OutOfBox-Blue",
-                    "url":"http://www.ftchinese.com/channel/datanews.html",
-                    "screenName":"homepage/ftcc"
-                ],
-                [
                     "title": "首页",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
                     "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=home&dfadfadfadfadf",
@@ -41,6 +32,24 @@ struct AppNavigation {
                     "coverTheme": "Classic",
                     "screenName":"homepage",
                     "Insert Content": "home"
+                ],
+                [
+                    "title": "新测试",
+                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
+                    "regularLayout": "",
+                    "compactLayout": "SmoothCover-No-Ad",
+                    "coverTheme": "OutOfBox-Blue",
+                    "url":"http://www.ftchinese.com/channel/datanews.html",
+                    "screenName":"homepage/ftcc"
+                ],
+                [
+                    "title": "测试",
+                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
+                    "regularLayout": "",
+                    "compactLayout": "OutOfBox-No-Ad",
+                    "coverTheme": "OutOfBox-Blue",
+                    "url":"http://www.ftchinese.com/channel/datanews.html",
+                    "screenName":"homepage/ftcc"
                 ],
                 [
                     "title": "中国",

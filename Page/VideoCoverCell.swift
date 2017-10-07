@@ -63,7 +63,7 @@ class VideoCoverCell: CoverCell {
             topic.textColor = borderColor
             topicBorderView.backgroundColor = borderColor
         }
-        print ("update UI called: \(String(describing: itemCell?.row)). \(itemCell?.headline)")
+        print ("update UI called: \(String(describing: itemCell?.row)). \(String(describing: itemCell?.headline))")
     }
     
 //    override func prepareForReuse() {

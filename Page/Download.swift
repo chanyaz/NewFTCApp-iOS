@@ -55,7 +55,7 @@ struct Download {
         do {
             let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileURL = DocumentDirURL.appendingPathComponent(fileName)
-            //print ("read file of \(fileURL)")
+            print ("read file of \(fileURL)")
             return (try? Data(contentsOf: fileURL))
         } catch {
             return nil

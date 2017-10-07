@@ -90,11 +90,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     cellWidth = availableWidth
                 }
             }
+            
+            
             collectionView?.register(UINib.init(nibName: "ChannelCell", bundle: nil), forCellWithReuseIdentifier: "ChannelCell")
             collectionView?.register(UINib.init(nibName: "CoverCell", bundle: nil), forCellWithReuseIdentifier: "CoverCell")
             collectionView?.register(UINib.init(nibName: "ThemeCoverCell", bundle: nil), forCellWithReuseIdentifier: "ThemeCoverCell")
             collectionView?.register(UINib.init(nibName: "VideoCoverCell", bundle: nil), forCellWithReuseIdentifier: "VideoCoverCell")
             collectionView?.register(UINib.init(nibName: "ClassicCoverCell", bundle: nil), forCellWithReuseIdentifier: "ClassicCoverCell")
+            collectionView?.register(UINib.init(nibName: "SmoothCoverCell", bundle: nil), forCellWithReuseIdentifier: "SmoothCoverCell")
             collectionView?.register(UINib.init(nibName: "OutOfBoxCoverCell", bundle: nil), forCellWithReuseIdentifier: "OutOfBoxCoverCell")
             collectionView?.register(UINib.init(nibName: "IconCell", bundle: nil), forCellWithReuseIdentifier: "IconCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
@@ -518,6 +521,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.updateUI()
                 return cell
             }
+        case "SmoothCoverCell":
+            if let cell = cellItem as? SmoothCoverCell {
+                cell.coverTheme = coverTheme
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.updateUI()
+                return cell
+            }
         case "OutOfBoxCoverCell":
             if let cell = cellItem as? OutOfBoxCoverCell {
                 cell.coverTheme = coverTheme
@@ -587,6 +598,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.pageTitle = pageTitle
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.cellWidth = cellWidth
+                cell.updateUI()
                 return cell
             }
         case "PaidPostCell":
@@ -742,6 +754,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             reuseIdentifier = "VideoCoverCell"
         } else if layoutStrategy?.hasPrefix("OutOfBox") == true {
             reuseIdentifier = "OutOfBoxCoverCell"
+        } else if layoutStrategy?.hasPrefix("SmoothCover") == true {
+            reuseIdentifier = "SmoothCoverCell"
         } else if layoutStrategy == "Icons" {
             reuseIdentifier = "IconCell"
         } else {
@@ -1078,7 +1092,6 @@ extension DataViewController {
 
 
 
-
 extension DataViewController : UICollectionViewDelegateFlowLayout {
     
     func getSizeInfo() -> (sizeClass: UIUserInterfaceSizeClass, itemsPerRow: CGFloat) {
@@ -1095,6 +1108,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         }
         return (currentSizeClass, itemsPerRow)
     }
+    
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -1145,7 +1159,10 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         return sectionInsets.left
     }
     
+ 
+    
 }
+
 
 // MARK: Handle links here
 extension DataViewController: WKNavigationDelegate {

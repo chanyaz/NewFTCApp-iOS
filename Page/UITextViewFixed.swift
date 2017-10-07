@@ -5,7 +5,7 @@
 //  Created by 倪卫国 on 09/07/2017.
 //  Copyright © 2017 Oliver Zhang. All rights reserved.
 //
-
+/*
 import UIKit
 
 // Remove NSTextContainer gap
@@ -24,3 +24,4 @@ class UITextViewFixed: UITextView {
     }
 
 }
+ */

@@ -59,8 +59,8 @@ class CoverCell: CustomCell {
         headline.textColor = UIColor(hex: Color.Content.headline)
         lead.textColor = UIColor(hex: Color.Content.lead)
         // FIXME: This is a dilema: use attributed text and performance is bad, use text and line height is gone.
-        lead.text = itemCell?.lead
-        //lead.attributedText = itemCell?.attributedLead
+        //lead.text = itemCell?.lead
+        lead.attributedText = itemCell?.attributedLead
         loadImage("cover", to: imageView)
         //addShadow(imageView, of: 4)
         overlayImage.image = itemCell?.overlayButtonImage

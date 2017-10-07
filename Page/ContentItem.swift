@@ -45,6 +45,7 @@ class ContentItem{
     
     var attributedLead: NSMutableAttributedString?
     var overlayButtonImage: UIImage?
+    var mainTag: String?
     
     // MARK: Audio File Url for Interactive such as FT Radio
     var audioFileUrl: String?

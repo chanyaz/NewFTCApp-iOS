@@ -33,7 +33,7 @@
                                     <constraint firstAttribute="width" secondItem="AFL-Ml-oxU" secondAttribute="height" multiplier="408:234" id="JBE-BU-wJ8"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Lead" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1a-Jy-xur">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Lead" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1a-Jy-xur">
                                 <rect key="frame" x="28" y="242" width="257" height="46"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                 <nil key="textColor"/>

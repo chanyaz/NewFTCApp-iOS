@@ -33,7 +33,7 @@ class LineCell: UICollectionViewCell {
         //border.backgroundColor = .clear
     }
     
-    private func updateUI() {
+    public func updateUI() {
         if let cellWidth = cellWidth {
             //MARK: Use this to suppress useless warnings in log
             self.contentView.translatesAutoresizingMaskIntoConstraints = false

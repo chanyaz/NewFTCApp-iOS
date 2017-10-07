@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Oliver Zhang. All rights reserved.
 //
 
+/*
 import Foundation
 import WebKit
 class WKWebPage {
@@ -20,3 +21,4 @@ class WKWebPage {
 //            webView = WKWebView(frame: .zero, configuration: webConfiguration)
 
 }
+*/

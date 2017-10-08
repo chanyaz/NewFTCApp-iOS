@@ -61,6 +61,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         apiUrl: "",
         fetchResults: [ContentSection]()
     )
+
+    
+    var angle :Double = 0
     let imageWidth = 408   // 16 * 52
     let imageHeight = 234  // 9 * 52
     private var playingUrlStr:String? = ""
@@ -85,6 +88,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     @IBOutlet weak var forward: UIButton!
     @IBOutlet weak var back: UIButton!
     
+    
     @IBAction func hideAudioButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
         
@@ -98,6 +102,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
     }
     @IBAction func ButtonPlayPause(_ sender: UIButton) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
         if let player = player {
             print("ButtonPlayPause\(player)")
             if player.rate != 0 && player.error == nil {
@@ -288,7 +293,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
         
-
+        
         playStatus.textColor = UIColor(hex: Color.Content.background)
         let themeColor = UIColor(hex: Color.Content.headline)
         audioImage.backgroundColor = themeColor
@@ -301,22 +306,70 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         getPlayingUrl()
         addPlayerItemObservers()
         updateProgressSlider()
-        let data = fetchAudioResults![0].items[2]
-        if let loadedImage = data.coverImage {
+        let data = fetchAudioResults![0].items[playingIndex]
+        getLoadedImage(item: data)
+        updatePlayButtonUI()
+        self.playStatus.text = fetchAudioResults![0].items[playingIndex].headline
+        rotateAnimation()
+        
+    }
+    func getLoadedImage(item: ContentItem){
+        if let loadedImage = item.coverImage {
             audioImage.image = loadedImage
+            clipImage()
             print ("image is already loaded, no need to download again. ")
         } else {
-            data.loadImage(type:"cover", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
+            item.loadImage(type:"cover", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
                 self?.audioImage.image = cellContentItem.coverImage
+                print ("image type is cover. ")
+                self?.clipImage()
             })
         }
-        
-        audioImage.layer.cornerRadius = 125
-        audioImage.layer.borderWidth = 7
-        audioImage.layer.borderColor = UIColor(hex: "#138f9b").cgColor
-        audioImage.clipsToBounds = true
+
     }
-    
+    func clipImage(){
+//        var loadedAudioImage :UIImage? = nil
+        let audioImageWidth = audioImage.bounds.width
+        let audioImageHeight = audioImage.bounds.height
+        let borderWidth :CGFloat = 8
+        let ovalWidth = audioImageHeight
+        let clipX = audioImageWidth/2-audioImageHeight/2
+        let clipY :CGFloat = 0
+        UIGraphicsBeginImageContextWithOptions(audioImage.bounds.size, false, 0)
+        let ctx = UIGraphicsGetCurrentContext()
+        ctx!.setFillColor( UIColor(hex: "#138f9b").cgColor)
+        ctx?.addEllipse(in: CGRect(x: clipX, y: clipY, width: ovalWidth, height: ovalWidth))
+        ctx?.fillPath()
+
+        let circlePath = UIBezierPath(ovalIn: CGRect(x: borderWidth+clipX, y: clipY + borderWidth, width: audioImageHeight-2 * borderWidth, height: audioImageHeight-2 * borderWidth))
+        circlePath.addClip()
+        audioImage.image?.draw(in: CGRect(x: borderWidth, y: borderWidth, width: audioImageWidth, height:audioImageHeight ))
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        self.audioImage.image = image
+        UIGraphicsEndImageContext()
+    }
+    func rotateAnimate(){
+        //        let animation = CABasicAnimation(keyPath: "transform.rotate.z")
+        let animation = CABasicAnimation(keyPath: "opacity")
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.duration = 0.25
+        animation.autoreverses = true
+        animation.fillMode = kCAFillModeForwards
+        animation.repeatCount = 2
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        containerView.layer.add(animation, forKey: "opacity")
+    }
+    func rotateAnimation(){
+        let endAngle = CGAffineTransform(rotationAngle:CGFloat(angle*(Double.pi/180.0)))
+        UIView.animate(withDuration: 0.1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.audioImage.transform = endAngle
+        },completion: { (true) in
+            self.angle+=10
+            self.rotateAnimation()
+        })
+
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
@@ -344,6 +397,10 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         progressSlider.setThumbImage(aa, for: .normal)
         progressSlider.maximumTrackTintColor = UIColor.white
         progressSlider.minimumTrackTintColor = UIColor(hex: "#05d5e9")
+        
+        self.view.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0.8)
+        containerView.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0.9)
+        audioImage.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0)
     }
     
     @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -402,6 +459,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             prepareAudioPlay()
             TabBarAudioContent.sharedInstance.item = item
             self.playStatus.text = item.headline
+            getLoadedImage(item: item)
             TabBarAudioContent.sharedInstance.body["title"] = item.headline
             TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioUrlStrFromList
             TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(item.id)"
@@ -417,6 +475,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         parseAudioMessage()
         //            获取从tabBar中播放的数据
         playStatus.text=TabBarAudioContent.sharedInstance.item?.headline
+        getLoadedImage(item: TabBarAudioContent.sharedInstance.item!)
+        
         player = TabBarAudioContent.sharedInstance.player
         playerItem = TabBarAudioContent.sharedInstance.playerItem
         //        let isPlaying = TabBarAudioContent.sharedInstance.isPlaying
@@ -563,7 +623,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].caudio {
             TabBarAudioContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
             self.tabView.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
-            self.audioImage.image = fetchAudioResults[0].items[playingIndex].coverImage
+//            self.audioImage.image = fetchAudioResults[0].items[playingIndex].coverImage
+            getLoadedImage(item: fetchAudioResults[0].items[playingIndex])
+            
             TabBarAudioContent.sharedInstance.body["title"] = fetchAudioResults[0].items[playingIndex].headline
             TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
             TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(fetchAudioResults[0].items[playingIndex].id)"

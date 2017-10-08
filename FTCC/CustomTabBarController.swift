@@ -58,7 +58,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
         tabView.upSwipeButton.addGestureRecognizer(tapGestureRecognizer1)
 
         tabView.progressSlider.addTarget(self, action: #selector(changeSlider), for: UIControlEvents.valueChanged)
-        
+        tabView.isHidden = true
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
         addPlayerItemObservers()
@@ -139,6 +139,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     @objc func updateMiniPlay(){
+        tabView.isHidden = false
         if let item = TabBarAudioContent.sharedInstance.item{
             player = TabBarAudioContent.sharedInstance.player
             self.tabView.playStatus.text = item.headline
@@ -172,6 +173,16 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             print("audioUrlStrFromList--\(audioUrlStrFromList)")
             self.tabView.playStatus.text = item.headline
 //           为什么 TabBarAudioContent.sharedInstance.audioHeadLine 一直保持初始值？因为点击首页播放按钮触发的赋值动作，collectionView中cell监听的动作只要其他地方监听会一直触发动作（有待继续核实）
+            
+        }
+        print("audioUrlStrFromList isplaying？--\(TabBarAudioContent.sharedInstance.isPlaying)")
+        
+//        updatePlayButtonUI()
+//        反着的原因是可能是初始监控为true的原因
+        if TabBarAudioContent.sharedInstance.isPlaying{
+            tabView.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
+        }else{
+            tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
         }
     }
 

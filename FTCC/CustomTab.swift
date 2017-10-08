@@ -79,8 +79,9 @@ class CustomTab: UIView {
 
         
         upSwipeButton.frame = CGRect(x:width-60,y:50,width:40,height:40)
-        upSwipeButton.setTitle("上滑", for: .normal)
-        upSwipeButton.backgroundColor = UIColor.blue
+//        upSwipeButton.setTitle("上滑", for: .normal)
+        upSwipeButton.setImage(UIImage(named:"CloseBtn"), for: UIControlState.normal)
+//        upSwipeButton.backgroundColor = UIColor.blue
         self.smallView.addSubview(playStatus)
         self.smallView.addSubview(playAndPauseButton)
         self.smallView.addSubview(progressSlider)

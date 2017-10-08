@@ -28,7 +28,7 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         if let link = self.itemCell?.adModel?.link,
             let url = URL(string: link),
             let topController = UIApplication.topViewController() {
-                topController.openLink(url)
+            topController.openLink(url)
         }
     }
     
@@ -86,16 +86,18 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
         } else if let image = itemCell?.image {
             DispatchQueue.global().async {
                 let downloadedImageData = Download.readFile(image, for: .cachesDirectory, as: imageType)
-                DispatchQueue.main.async {
-                    if let downloadedImageData = downloadedImageData {
+                if let downloadedImageData = downloadedImageData {
+                    DispatchQueue.main.async {
                         imageView?.image = UIImage(data: downloadedImageData)
-                        print ("image is already downloaded to cache, no need to download again. ")
-                    } else {
-                        print ("image is not loaded, download it now \(String(describing: self.itemCell?.image))")
-                        self.itemCell?.loadImage(type:imageType, width: imageInfo.imageWidth, height: imageInfo.imageHeight, completion: { [weak self](cellContentItem, error) in
-                            // MARK: - Since channel cell is resued, you should always check if it is the right image
-                            if self?.itemCell?.image == cellContentItem.image {
-                                if let imageView = imageView {
+                    }
+                    print ("image is already downloaded to cache, no need to download again. ")
+                } else {
+                    print ("image is not loaded, download it now \(String(describing: self.itemCell?.image))")
+                    self.itemCell?.loadImage(type:imageType, width: imageInfo.imageWidth, height: imageInfo.imageHeight, completion: { [weak self](cellContentItem, error) in
+                        // MARK: - Since channel cell is resued, you should always check if it is the right image
+                        if self?.itemCell?.image == cellContentItem.image {
+                            if let imageView = imageView {
+                                DispatchQueue.main.async {
                                     UIView.transition(with: imageView,
                                                       duration: 0.3,
                                                       options: .transitionCrossDissolve,
@@ -114,11 +116,11 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
                                                       completion: nil
                                     )
                                 }
-                            } else {
-                                print ("image should not be displayed as the cell is reused!" )
                             }
-                        })
-                    }
+                        } else {
+                            print ("image should not be displayed as the cell is reused!" )
+                        }
+                    })
                 }
             }
         }

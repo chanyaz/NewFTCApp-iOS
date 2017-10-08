@@ -24,6 +24,7 @@ class SmoothCoverCell: UICollectionViewCell {
     
     @IBOutlet weak var lead: UILabel!
     
+    @IBOutlet weak var overlayImageView: UIImageView!
     @IBOutlet weak var imageView: UIImageView!
     var isSmoothCoverReused = false
     
@@ -39,17 +40,23 @@ class SmoothCoverCell: UICollectionViewCell {
             lead.textColor = UIColor(hex: Color.Content.lead)
             topicView.textColor = UIColor(hex: Color.Content.tag)
             borderView.backgroundColor = UIColor(hex: Color.Content.tag)
+            // MARK: Tap the topic view to open tag page
+            topicView.isUserInteractionEnabled = true
+            let tapTagRecognizer = UITapGestureRecognizer(target:self, action:#selector(tapTag(_:)))
+            topicView.addGestureRecognizer(tapTagRecognizer)
         }
         headline.text = itemCell?.headline
         lead.attributedText = itemCell?.attributedLead
         topicView.text = itemCell?.mainTag
         //lead.text = itemCell?.lead
         loadImage("cover")
+        overlayImageView.image = itemCell?.overlayButtonImage
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = CellHelper.shared.placeHolderImage
+        overlayImageView.image = nil
     }
     
     
@@ -124,6 +131,13 @@ class SmoothCoverCell: UICollectionViewCell {
                     })
                 }
             }
+        }
+    }
+    
+    @objc open func tapTag(_ recognizer: UITapGestureRecognizer) {
+        if let topController = UIApplication.topViewController(),
+            let tag = topicView.text {
+            topController.openDataView(tag, of: "tag")
         }
     }
     

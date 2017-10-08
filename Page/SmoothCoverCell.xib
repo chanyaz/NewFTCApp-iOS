@@ -60,6 +60,13 @@
                             <constraint firstAttribute="height" constant="1" id="rYQ-eC-Rxa"/>
                         </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xv3-Vu-3LF">
+                        <rect key="frame" x="14" y="137" width="44" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="0XP-YU-bDl"/>
+                            <constraint firstAttribute="width" constant="44" id="Ow0-GA-XJs"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <constraints>
@@ -75,6 +82,8 @@
                 <constraint firstAttribute="trailing" secondItem="uF9-WL-ruW" secondAttribute="trailing" id="XyM-B0-jks"/>
                 <constraint firstItem="uF9-WL-ruW" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Zf9-p7-e4F"/>
                 <constraint firstItem="Pq1-TK-b5H" firstAttribute="top" secondItem="KMG-6i-XHD" secondAttribute="bottom" constant="8" symbolic="YES" id="bV1-9n-GYA"/>
+                <constraint firstItem="xv3-Vu-3LF" firstAttribute="bottom" secondItem="ROO-DY-Hfo" secondAttribute="bottom" id="cjK-08-UFu"/>
+                <constraint firstItem="xv3-Vu-3LF" firstAttribute="leading" secondItem="ROO-DY-Hfo" secondAttribute="leading" id="ehh-St-gGP"/>
                 <constraint firstItem="KMG-6i-XHD" firstAttribute="top" secondItem="cAI-UD-8xM" secondAttribute="bottom" constant="5" id="hjq-78-V4p"/>
                 <constraint firstItem="ROO-DY-Hfo" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="14" id="k8t-sE-Bw5"/>
                 <constraint firstItem="uF9-WL-ruW" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="m7P-hR-xvH"/>
@@ -89,6 +98,7 @@
                 <outlet property="headline" destination="Pq1-TK-b5H" id="xzQ-0E-nMm"/>
                 <outlet property="imageView" destination="ROO-DY-Hfo" id="kOf-0q-iGh"/>
                 <outlet property="lead" destination="nSu-iB-09g" id="5FF-ol-fcC"/>
+                <outlet property="overlayImageView" destination="xv3-Vu-3LF" id="ZhA-HH-kld"/>
                 <outlet property="topicView" destination="cAI-UD-8xM" id="Gu6-NO-A8l"/>
                 <outlet property="widthConstraint" destination="9OE-XQ-2GQ" id="ABi-DR-1kJ"/>
             </connections>

@@ -200,8 +200,6 @@
 		602CD2971F565FD500FFC1EA /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602CD2931F565FD500FFC1EA /* IAPHelper.swift */; };
 		602E88401F43DD9600BBB4AF /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602E883F1F43DD9600BBB4AF /* Alert.swift */; };
 		602E88411F43DD9600BBB4AF /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602E883F1F43DD9600BBB4AF /* Alert.swift */; };
-		60316BA01F8063EF00C4FEE2 /* ClassicCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60316B9E1F8063EF00C4FEE2 /* ClassicCoverCell.swift */; };
-		60316BA11F8063EF00C4FEE2 /* ClassicCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60316B9E1F8063EF00C4FEE2 /* ClassicCoverCell.swift */; };
 		60316BA21F8063EF00C4FEE2 /* ClassicCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60316B9F1F8063EF00C4FEE2 /* ClassicCoverCell.xib */; };
 		60316BA31F8063EF00C4FEE2 /* ClassicCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60316B9F1F8063EF00C4FEE2 /* ClassicCoverCell.xib */; };
 		603726B11F72050E0084F938 /* LanguageSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603726B01F72050E0084F938 /* LanguageSetting.swift */; };
@@ -480,7 +478,6 @@
 		602CD2921F565FD500FFC1EA /* FTCProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FTCProducts.swift; path = IAP/FTCProducts.swift; sourceTree = "<group>"; };
 		602CD2931F565FD500FFC1EA /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IAPHelper.swift; path = IAP/IAPHelper.swift; sourceTree = "<group>"; };
 		602E883F1F43DD9600BBB4AF /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		60316B9E1F8063EF00C4FEE2 /* ClassicCoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicCoverCell.swift; sourceTree = "<group>"; };
 		60316B9F1F8063EF00C4FEE2 /* ClassicCoverCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassicCoverCell.xib; sourceTree = "<group>"; };
 		60335DE11F7F16010002173B /* html-book.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "html-book.html"; path = "FTChinese/html-book.html"; sourceTree = "<group>"; };
 		60362DBA01D0F57A6C7932A5 /* Pods_Page.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Page.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1164,7 +1161,6 @@
 			children = (
 				6017AAE51F879D63008D3FBF /* SmoothCoverCell.swift */,
 				6017AAE61F879D63008D3FBF /* SmoothCoverCell.xib */,
-				60316B9E1F8063EF00C4FEE2 /* ClassicCoverCell.swift */,
 				60316B9F1F8063EF00C4FEE2 /* ClassicCoverCell.xib */,
 				60B855461F6A118600FE190E /* VideoCoverCell.swift */,
 				60B855471F6A118600FE190E /* VideoCoverCell.xib */,
@@ -1788,7 +1784,6 @@
 				6021534B1F397C650077A7AF /* AudioHelper.swift in Sources */,
 				6021534C1F397C650077A7AF /* Model.xcdatamodeld in Sources */,
 				F2E090701F5A6A3900F4409F /* ColumnViewController.swift in Sources */,
-				60316BA11F8063EF00C4FEE2 /* ClassicCoverCell.swift in Sources */,
 				6021534E1F397C650077A7AF /* ShareImageActivityProvider.swift in Sources */,
 				F2E0906D1F5A6A3900F4409F /* ColumnCollectionViewCell.swift in Sources */,
 				6021534F1F397C650077A7AF /* DownloadHelper.swift in Sources */,
@@ -1911,7 +1906,6 @@
 				600BD6B11F21A9420077C104 /* SpeechSettings.swift in Sources */,
 				60C5586C1F29826A004C4E0E /* Web.swift in Sources */,
 				601417701EEA3F7600DC3EF9 /* DataViewController.swift in Sources */,
-				60316BA01F8063EF00C4FEE2 /* ClassicCoverCell.swift in Sources */,
 				50057FCB1EE977D80092180A /* PagesViewController.swift in Sources */,
 				609763B01F0DCFC100088280 /* AdModel.swift in Sources */,
 				605750F51F1499AD00552DAC /* AsyncTextAttachment.swift in Sources */,

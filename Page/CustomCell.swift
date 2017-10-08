@@ -91,6 +91,7 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
                         imageView?.image = UIImage(data: downloadedImageData)
                         print ("image is already downloaded to cache, no need to download again. ")
                     } else {
+                        print ("image is not loaded, download it now \(String(describing: self.itemCell?.image))")
                         self.itemCell?.loadImage(type:imageType, width: imageInfo.imageWidth, height: imageInfo.imageHeight, completion: { [weak self](cellContentItem, error) in
                             // MARK: - Since channel cell is resued, you should always check if it is the right image
                             if self?.itemCell?.image == cellContentItem.image {

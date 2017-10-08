@@ -513,15 +513,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 cell.updateUI()
                 return cell
             }
-        case "ClassicCoverCell":
-            if let cell = cellItem as? ClassicCoverCell {
-                cell.coverTheme = coverTheme
-                cell.cellWidth = cellWidth
-                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.updateUI()
-                return cell
-            }
-        case "SmoothCoverCell":
+        case "SmoothCoverCell", "ClassicCoverCell":
             if let cell = cellItem as? SmoothCoverCell {
                 cell.coverTheme = coverTheme
                 cell.cellWidth = cellWidth

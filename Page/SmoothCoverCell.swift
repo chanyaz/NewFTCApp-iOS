@@ -24,6 +24,9 @@ class SmoothCoverCell: UICollectionViewCell {
     
     @IBOutlet weak var lead: UILabel!
     
+    @IBOutlet weak var topBorderView: UIView!
+    @IBOutlet weak var bottomSignView: UILabel!
+    @IBOutlet weak var innerView: UIView!
     @IBOutlet weak var overlayImageView: UIImageView!
     @IBOutlet weak var imageView: UIImageView!
     var isSmoothCoverReused = false

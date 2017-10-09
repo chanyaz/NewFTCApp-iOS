@@ -612,6 +612,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="gKa-V0-ONp" secondAttribute="bottom" constant="5" id="AwW-IP-Irs"/>
                                     <constraint firstItem="TuK-b9-ixQ" firstAttribute="top" secondItem="yTZ-tP-kId" secondAttribute="top" constant="5" id="BlN-L8-jBV"/>
                                     <constraint firstItem="TuK-b9-ixQ" firstAttribute="leading" secondItem="gKa-V0-ONp" secondAttribute="trailing" constant="10" id="Kt8-9h-3zh"/>
                                     <constraint firstAttribute="bottom" secondItem="TuK-b9-ixQ" secondAttribute="bottom" constant="5" id="Qdf-Ij-iWW"/>
@@ -619,7 +620,6 @@
                                     <constraint firstItem="gKa-V0-ONp" firstAttribute="top" secondItem="yTZ-tP-kId" secondAttribute="top" constant="5" id="eje-lB-MXA"/>
                                     <constraint firstItem="gKa-V0-ONp" firstAttribute="leading" secondItem="yTZ-tP-kId" secondAttribute="leading" constant="10" id="n5X-8A-d4Z"/>
                                     <constraint firstAttribute="trailing" secondItem="gKa-V0-ONp" secondAttribute="trailing" constant="80" id="tgg-Dh-R3b"/>
-                                    <constraint firstAttribute="bottom" secondItem="gKa-V0-ONp" secondAttribute="bottom" constant="5" id="wh2-Q1-54D"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -637,12 +637,15 @@
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="2Dg-XC-Zh8" appends="YES" id="IRe-aj-Ihh"/>
                             <outletCollection property="gestureRecognizers" destination="ywL-mu-LSF" appends="YES" id="ak7-KH-afT"/>
+                            <outletCollection property="gestureRecognizers" destination="tYS-Kh-gya" appends="YES" id="NcK-9a-ACl"/>
                         </connections>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <connections>
                         <outlet property="bottomBar" destination="yTZ-tP-kId" id="Him-Ty-0SN"/>
                         <outlet property="inputBlock" destination="gKa-V0-ONp" id="NiT-ra-Kp3"/>
+                        <outlet property="myPanGesture" destination="tYS-Kh-gya" id="6qO-m3-8PR"/>
+                        <outlet property="mySwipeGesture" destination="ywL-mu-LSF" id="HJO-gp-8Xa"/>
                         <outlet property="talkListBlock" destination="oOr-Rp-EpX" id="8Qz-HX-dou"/>
                     </connections>
                 </viewController>
@@ -657,6 +660,11 @@
                         <action selector="dismissKeyboardWhenSwipe:" destination="AQa-wQ-fbJ" id="xrC-Q8-L7z"/>
                     </connections>
                 </swipeGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="tYS-Kh-gya">
+                    <connections>
+                        <action selector="whatTodoWhenPan:" destination="AQa-wQ-fbJ" id="x3L-Io-Bhx"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-2141.5999999999999" y="2649.0147783251232"/>
         </scene>

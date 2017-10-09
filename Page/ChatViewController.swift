@@ -34,9 +34,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             //autoScrollWhenTalk = false
         }
     }
-    // TODO:解决该view hidden时，键盘收回的问题
+    //TODO:增加函数事件：当拉到tableView顶部时，再次从historyTalkData中加载10个数据
     //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
-    //var showingCell:CellData
     
     @IBOutlet weak var talkListBlock: UITableView!
 
@@ -202,7 +201,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     
     
-    // TODO:Fix the bug: 当键盘处于弹出时，如果滑动行为导致返回页面一半的话，还是会导致talkBlock缩回键盘之下。目前临时解决方案是inactive状态时，将键盘置于收缩状态。否则键盘的监听会出问题。
     @objc func applicationWillResignActive(_ notification:NSNotification){
         //MARK:在该controller为inactive状态时（比如点击了Home键),将键盘置于收缩状态
         self.inputBlock.resignFirstResponder()

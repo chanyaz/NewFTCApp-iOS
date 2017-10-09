@@ -136,6 +136,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
      */
     @objc func keyboardWillShow(_ notification: NSNotification) {
+        //MARK:键盘显示时滚动到talk list view滚动到底部
+        let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+        self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
         
         print("show:\(keyboardWillShowExecute)")
         keyboardWillShowExecute += 1

@@ -44,12 +44,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var inputBlock: UITextField!
  
     @IBAction func touchInputBlock(_ sender: UITextField) {
+        self.talkListBlock.isScrollEnabled = false;//MARK:这两就话可以瞬间停止UIScrollView的惯性滚动
+        self.talkListBlock.isScrollEnabled = true;
         let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
         self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
         self.inputBlock.resignFirstResponder()
     }
     
     @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {//When tap
+        self.talkListBlock.isScrollEnabled = false;
+        self.talkListBlock.isScrollEnabled = true;
         let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
         self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
         self.inputBlock.resignFirstResponder()
@@ -249,9 +253,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             return max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble)
         }
     }
-    
-    
-  
     
     
    

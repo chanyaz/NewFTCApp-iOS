@@ -25,7 +25,7 @@ class ChannelModelController: ModelController{
         coverThemes = pageData.map { (value: [String: String]) -> String? in
             return value["coverTheme"]
         }
-        print ("coverThemes is \(coverThemes)")
+        //print ("coverThemes is \(coverThemes)")
         self.tabName = tabName
     }
     

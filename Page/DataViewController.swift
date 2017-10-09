@@ -11,7 +11,7 @@ import WebKit
 import StoreKit
 import MediaPlayer
 
-class DataViewController: UICollectionViewController, UINavigationControllerDelegate {
+class DataViewController: UICollectionViewController, UINavigationControllerDelegate, UICollectionViewDataSourcePrefetching {
     var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
@@ -63,6 +63,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 layoutStrategy = layoutValue
             } else {
                 layoutStrategy = nil
+            }
+            
+            collectionView?.dataSource = self
+            collectionView?.delegate = self
+            if #available(iOS 10.0, *) {
+                collectionView?.isPrefetchingEnabled = true
+                collectionView?.prefetchDataSource = self
             }
             
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -355,7 +362,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                                 width: ImageSize.cover.width,
                                 height: ImageSize.cover.height,
                                 completion:{ (cellContentItem, error) in
-                                    print ("\(item.image) is prefetched! ")
+                                    //print ("\(item.image) is prefetched! ")
                             }
                             )
                         }
@@ -365,7 +372,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                                 width: ImageSize.thumbnail.width,
                                 height: ImageSize.thumbnail.height,
                                 completion:{ (cellContentItem, error) in
-                                    print ("\(item.image) is prefetched! ")
+                                    //print ("\(item.image) is prefetched! ")
                             }
                             )
                         }
@@ -488,7 +495,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        // print ("section: \(indexPath.section), row: \(indexPath.row)")
+        print ("cell life: cell for item at section: \(indexPath.section), row: \(indexPath.row)")
         switch reuseIdentifier {
         case "CoverCell":
             if let cell = cellItem as? CoverCell {
@@ -648,7 +655,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         return cellItem
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        print ("cell life: prefetch")
+    }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
@@ -1150,9 +1159,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
     }
-    
- 
-    
+
 }
 
 
@@ -1189,13 +1196,13 @@ extension DataViewController: WKScriptMessageHandler {
 }
 
 
-extension DataViewController {
-    // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
-    // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
-    }
-}
+//extension DataViewController {
+//    // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
+//    // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
+//    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
+//    }
+//}
 
 // MARK: Search Related Functions. As FTC don't have a well-structured https search API yet, use web to render search.
 extension DataViewController: UISearchBarDelegate {

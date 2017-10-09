@@ -12,7 +12,7 @@ import StoreKit
 import MediaPlayer
 
 class DataViewController: UICollectionViewController, UINavigationControllerDelegate, UICollectionViewDataSourcePrefetching {
-    var isLandscape :Bool = false
+    var isLandscape = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
     let flowLayoutH = PageCollectionViewLayoutH()
@@ -927,10 +927,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     // MARK: - Handle user tapping on a cell
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {    
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
+        return handleSelection(selectedItem)
+    }
+    
+    
+    // MARK: - Move the handle cell selection to a function so that it can be used in different cases
+    fileprivate func handleSelection(_ selectedItem: ContentItem) -> Bool {
         //        ,layoutStrategy == "All Cover"
         // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
-        let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
+        
         // MARK: if it is an audio file, push the audio view controller
         if let audioFileUrl = selectedItem.audioFileUrl {
             print ("this is an audio")

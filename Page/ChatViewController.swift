@@ -12,13 +12,10 @@ import CoreGraphics
 //var globalTalkData = Array(repeating: CellData(), count: 1)
 var keyboardWillShowExecute = 0
 var showAnimateExecute = 0
-class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource {
+class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
     
     
-    // 一些实验数据
       //MARK:属性初始化时不能直接使用其他属性
-    //let textCellData = CellData(whoSays: .robot, saysWhat:SaysWhat(saysType: .text, saysContent: "你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"))
-   
   
     var autoScrollWhenTalk = false
     var historyTalkData:[[String:String]]? = nil
@@ -60,14 +57,24 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     }
  
+    @IBOutlet var mySwipeGesture: UISwipeGestureRecognizer!
     @IBAction func dismissKeyboardWhenSwipe(_ sender: UISwipeGestureRecognizer) {//When swipe
+        print("You are swipping")
         self.inputBlock.resignFirstResponder()
     }
-    /*
+    
+   
+    @IBOutlet var myPanGesture: UIPanGestureRecognizer!
+     
+    @IBAction func whatTodoWhenPan(_ sender: UIPanGestureRecognizer) {
+        print("You are panning")
+        self.inputBlock.resignFirstResponder()
+    }
+    
     @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-   */
+ 
     //MARK:点击bottom bar 右部的“发送”按钮后发送用户输入的文字
     @IBAction func sendYourTalk(_ sender: UIButton) {
         if let currentYourTalk = inputBlock.text {
@@ -117,7 +124,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         return true
     }
     
-    
+    /*
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //TODO:区分scroll是.scrollToRow程序导致的，还是人为滚动导致的
         //if(self.autoScrollWhenTalk==false){
@@ -127,7 +134,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         
     }
+     */
     @objc func keyboardWillShow(_ notification: NSNotification) {
+        //MARK:键盘显示时滚动到talk list view滚动到底部
+        let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+        self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
         
         print("show:\(keyboardWillShowExecute)")
         keyboardWillShowExecute += 1
@@ -345,10 +356,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         //MARK:监听是否点击Home键以及重新进入界面
         NotificationCenter.default.addObserver(self, selector: #selector(self.applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
-        
+        //MARK:
         self.talkListBlock.delegate = self
         self.talkListBlock.dataSource = self // MARK:两个协议代理，一个也不能少
         self.inputBlock.delegate = self
+        self.mySwipeGesture.delegate = self
+        self.myPanGesture.delegate = self
+        //elf.myPanGesture.require(toFail: self.talkListBlock.panGestureRecognizer)
+
         
         self.talkListBlock.backgroundColor = UIColor(hex: "#fff1e0")
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线

@@ -239,7 +239,6 @@ class OneTalkCell: UITableViewCell {
                 }
             })
             self.addSubview(coverView)
-            print("Execut 1st")
             
             //descriptionView:
             if(self.cellData.saysWhat.description != "") {

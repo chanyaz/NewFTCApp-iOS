@@ -218,12 +218,45 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         self.webView?.load(request)
                     }
                 }
+            }  else if let listAPI = dataObject["listapi"] {
+                let fileExtention = "html"
+                if let url = URL(string: urlString) {
+                    if let url = URL(string: listAPI) {
+                        Download.getDataFromUrl(url) {(data, response, error)  in
+                            if let data = data, error == nil {
+                                Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtention)
+                            }
+                        }
+                    }
+                    let request = URLRequest(url: url)
+                    if let adHTMLPath = Bundle.main.path(forResource: "list", ofType: "html"){
+                        do {
+                            let defaultString = "Loading..."
+                            let listContentString: String
+                            if let listContentData = Download.readFile(listAPI, for: .cachesDirectory, as: fileExtention) {
+                                listContentString = String(data: listContentData, encoding: String.Encoding.utf8) ?? defaultString
+                            } else {
+                                listContentString = defaultString
+                            }
+                            let listTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                            let listHTML = (listTemplate as String)
+                                .replacingOccurrences(of: "{list-content}", with: listContentString)
+                            print (listHTML)
+                            self.webView?.loadHTMLString(listHTML, baseURL:url)
+                        } catch {
+                            self.webView?.load(request)
+                        }
+                    } else {
+                        self.webView?.load(request)
+                    }
+                }
             } else if let url = URL(string: urlString) {
                 print ("Open url: \(urlString)")
                 let request = URLRequest(url: url)
                 webView?.load(request)
             }
         }
+        
         
         // MARK: Only update the navigation title when it is pushed
         navigationItem.title = pageTitle.removingPercentEncoding
@@ -1159,7 +1192,7 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
     }
-
+    
 }
 
 

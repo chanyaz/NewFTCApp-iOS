@@ -306,7 +306,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         getLoadedImage(item: data)
         updatePlayButtonUI()
         self.playStatus.text = fetchAudioResults![0].items[playingIndex].headline
-        rotateAnimation()
+//        rotateAnimation()
 //        rotateAnimate()
         NotificationCenter.default.addObserver(
             self,
@@ -354,12 +354,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     func rotateAnimate(){
         let animation = CABasicAnimation(keyPath: "transform.rotation")
         animation.fromValue = 0
-        animation.toValue = CGFloat(Double.pi)
-        animation.duration = 0.25
-        animation.autoreverses = true
+        animation.toValue = 2*Double.pi
+        animation.duration = 4
+        animation.autoreverses = false
         animation.fillMode = kCAFillModeForwards
-        animation.repeatCount = 2
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        animation.repeatCount = Float.greatestFiniteMagnitude
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         animation.delegate = self
         audioImage.layer.add(animation, forKey: nil)
     }
@@ -380,8 +380,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
-//        UIApplication.shared.statusBarStyle = .lightContent
-
+        rotateAnimate()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

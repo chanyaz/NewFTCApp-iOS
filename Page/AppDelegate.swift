@@ -262,7 +262,7 @@ extension AppDelegate: WXApiDelegate {
             if let wechatAuthCode = authResp.code {
                 let wechatAccessTokenLink = WeChat.accessTokenPrefix + "appid=" + WeChat.appId + "&secret=" + WeChat.appSecret + "&code=" + wechatAuthCode + "&grant_type=authorization_code"
                 if let url = URL(string: wechatAccessTokenLink) {
-                    Download.getDataFromUrl(url) { (data, response, error)  in
+                    Download.getDataFromUrl(url) {(data, response, error)  in
                         DispatchQueue.main.async { () -> Void in
                             guard let data = data , error == nil else { return }
                             do {
@@ -281,14 +281,14 @@ extension AppDelegate: WXApiDelegate {
                                 }
                                 let userInfoUrlString = "\(WeChat.userInfoPrefix)access_token=\(accessToken)&openid=\(openId)"
                                 if let userInfoUrl = URL(string: userInfoUrlString) {
-                                    Download.getDataFromUrl(userInfoUrl) { (data, response, error)  in
-                                        DispatchQueue.main.async { () -> Void in
-                                            guard let data = data , error == nil else { return }
-                                            print ("Get Wechat Login Data \(data)")
-                                            if let JSONString = String(data: data, encoding: .utf8) {
-                                                print ("json string is \(JSONString)")
-                                                let jsCode = "socialLogin('wechat', '\(JSONString)');"
-                                                print(jsCode)
+                                    Download.getDataFromUrl(userInfoUrl) {(data, response, error)  in
+                                        guard let data = data , error == nil else { return }
+                                        print ("Get Wechat Login Data \(data)")
+                                        if let JSONString = String(data: data, encoding: .utf8) {
+                                            print ("json string is \(JSONString)")
+                                            let jsCode = "socialLogin('wechat', '\(JSONString)');"
+                                            print(jsCode)
+                                            DispatchQueue.main.async { () -> Void in
                                                 if let topViewController = UIApplication.topViewController() as? ContentItemViewController {
                                                     topViewController.webView?.evaluateJavaScript(jsCode) { (result, error) in
                                                         if result != nil {

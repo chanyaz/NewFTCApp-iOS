@@ -481,14 +481,14 @@ class AdSchedule {
     
     private func grabFileFromWeb(url: URL?, fileName: String, parseScheduleForDownload: Bool) {
         if let urlValue = url {
-            Download.getDataFromUrl(urlValue) { (data, response, error)  in
+            Download.getDataFromUrl(urlValue) {[weak self] (data, response, error)  in
                 DispatchQueue.main.async { () -> Void in
                     guard let data = data , error == nil else { return }
-                    self.saveFile(data, filename: fileName)
+                    self?.saveFile(data, filename: fileName)
                     print ("file saved as \(fileName)")
                     if parseScheduleForDownload == true {
                         //print("\(fileName) should be parsed for downloading creatives")
-                        self.parseScheduleForDownloading()
+                        self?.parseScheduleForDownloading()
                     } else {
                         let object = ""
                         let name = Notification.Name(rawValue: Event.newAdCreativeDownloaded)

@@ -168,12 +168,15 @@ struct Download {
     }
     
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
-        let fileName = urlString.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
+        var fileName = urlString.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
             .replacingOccurrences(of: ".html?.*pageid=", with: "-", options: .regularExpression)
             .replacingOccurrences(of: "[?].*", with: "", options: .regularExpression)
             .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
             .replacingOccurrences(of: "-type-json", with: ".json")
             .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
+        if fileName == "" {
+            fileName = "home"
+        }
         if let ext = fileExtension {
             let forceFileName = fileName.replacingOccurrences(of: ".\(ext)", with: "")
                 .replacingOccurrences(of: ".", with: "")

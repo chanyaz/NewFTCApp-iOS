@@ -19,15 +19,11 @@ class CustomNavigationController: UINavigationController, UINavigationController
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        if let currentTabName = tabName {
-            let isLightContent = AppNavigation.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
-            if isLightContent == true {
-                return UIStatusBarStyle.lightContent
-            }
-        }
         return UIStatusBarStyle.default
     }
-    
+//    override var childViewControllerForStatusBarStyle: UIViewController?{
+//        return AudioPlayerController
+//    }
     
     /*
      

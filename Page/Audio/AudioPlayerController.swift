@@ -34,7 +34,7 @@ class TabBarAudioContent {
 }
 
 
-class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate,UIGestureRecognizerDelegate{
+class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate,UIGestureRecognizerDelegate,CAAnimationDelegate{
     
     private var audioTitle = ""
     private var audioUrlString = ""
@@ -72,6 +72,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     var count:Int = 0
     var tabView = CustomSmallPlayView()
     
+    @IBOutlet weak var switchChAndEnAudio: UISegmentedControl!
     let love = UIButton()
     let downloadButton = UIButtonEnhanced()
     let playlist = UIButton()
@@ -102,7 +103,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
     }
     @IBAction func ButtonPlayPause(_ sender: UIButton) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
         if let player = player {
             print("ButtonPlayPause\(player)")
             if player.rate != 0 && player.error == nil {
@@ -311,6 +312,13 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         updatePlayButtonUI()
         self.playStatus.text = fetchAudioResults![0].items[playingIndex].headline
         rotateAnimation()
+//        rotateAnimate()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reloadAudioView),
+            name: Notification.Name(rawValue: "reloadView"),
+            object: nil
+        )
         
     }
     func getLoadedImage(item: ContentItem){
@@ -349,20 +357,20 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         UIGraphicsEndImageContext()
     }
     func rotateAnimate(){
-        //        let animation = CABasicAnimation(keyPath: "transform.rotate.z")
-        let animation = CABasicAnimation(keyPath: "opacity")
+        let animation = CABasicAnimation(keyPath: "transform.rotation")
         animation.fromValue = 0
-        animation.toValue = 1
+        animation.toValue = CGFloat(Double.pi)
         animation.duration = 0.25
         animation.autoreverses = true
         animation.fillMode = kCAFillModeForwards
         animation.repeatCount = 2
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        containerView.layer.add(animation, forKey: "opacity")
+        animation.delegate = self
+        audioImage.layer.add(animation, forKey: nil)
     }
     func rotateAnimation(){
         let endAngle = CGAffineTransform(rotationAngle:CGFloat(angle*(Double.pi/180.0)))
-        UIView.animate(withDuration: 0.1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.audioImage.transform = endAngle
         },completion: { (true) in
             self.angle+=10
@@ -377,6 +385,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
+//        UIApplication.shared.statusBarStyle = .lightContent
+//        self.setNeedsFocusUpdate()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -392,17 +402,98 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     private func initStyle() {
+        switchChAndEnAudio.selectedSegmentIndex = 0
+        switchChAndEnAudio.backgroundColor = UIColor(hex: "12a5b3", alpha: 1)
+        switchChAndEnAudio.tintColor = UIColor.white
+        switchChAndEnAudio.layer.borderColor = UIColor(hex: "12a5b3", alpha: 1).cgColor
+        switchChAndEnAudio.layer.borderWidth = 0.5
+        switchChAndEnAudio.layer.cornerRadius = 5
+        switchChAndEnAudio.layer.masksToBounds = true
+        let segAttributes: NSDictionary = [
+            NSAttributedStringKey.foregroundColor: UIColor.black,
+            NSAttributedStringKey.font: UIFont(name: "Avenir-MediumOblique", size: 14)!
+        ]
+        switchChAndEnAudio.setTitleTextAttributes(segAttributes as [NSObject : AnyObject], for: UIControlState.selected)
+        switchChAndEnAudio.addTarget(self, action: #selector(switchLanguage(_:)), for: .valueChanged)
+        
         let progressThumbImage = UIImage(named: "SliderImg")
         let aa = progressThumbImage?.imageWithImage(image: progressThumbImage!, scaledToSize: CGSize(width: 15, height: 15))
         progressSlider.setThumbImage(aa, for: .normal)
         progressSlider.maximumTrackTintColor = UIColor.white
         progressSlider.minimumTrackTintColor = UIColor(hex: "#05d5e9")
+        if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
+            print("progress value")
+            let duration = CMTimeGetSeconds(d)
+             progressSlider.maximumValue = Float(duration)
+            if let currrentPlayingTime = TabBarAudioContent.sharedInstance.time{
+                progressSlider.value = Float((CMTimeGetSeconds(currrentPlayingTime)))
+                self.updatePlayTime(current: currrentPlayingTime, duration: d)
+            }
+        }
+
         
         self.view.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0.8)
         containerView.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0.9)
         audioImage.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0)
     }
-    
+    @objc public func switchLanguage(_ sender: UISegmentedControl) {
+        let languageIndex = sender.selectedSegmentIndex
+        let item0 = TabBarAudioContent.sharedInstance.item
+        print ("language is switched manually to \(languageIndex)")
+        if languageIndex == 1{
+            if let eaudioUrl = item0?.eaudio{
+                audioUrlString = eaudioUrl
+                print("engilsh audioUrlString--\(audioUrlString)")
+            }else if let caudioUrl = item0?.caudio, item0?.eaudio==nil{
+                audioUrlString = caudioUrl
+            }
+        }else{
+            if let caudioUrl = item0?.caudio{
+                audioUrlString = caudioUrl
+                print("chinese audioUrlString--\(audioUrlString)")
+            }
+        }
+        
+        audioUrlString = audioUrlString.replacingOccurrences(
+            of: "^(http).+(album/)",
+            with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
+            options: .regularExpression
+        )
+        audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        if let url = URL(string: audioUrlString) {
+            var audioUrl = url
+            let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: " ")
+            if let localAudioFile = download.checkDownloadedFileInDirectory(cleanAudioUrl) {
+                print ("The Audio is already downloaded")
+                audioUrl = URL(fileURLWithPath: localAudioFile)
+                downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
+            }
+            // MARK: - Draw a circle around the downloadButton
+            downloadButton.drawCircle()
+            
+            let asset = AVURLAsset(url: audioUrl)
+            
+            playerItem = AVPlayerItem(asset: asset)
+            
+            if player != nil {
+                
+            }else {
+                player = AVPlayer()
+                
+            }
+            
+            TabBarAudioContent.sharedInstance.playerItem = playerItem
+
+            if let player = player {
+                player.play()
+            }
+            let statusType = IJReachability().connectedToNetworkOfType()
+            if statusType == .wiFi {
+                player?.replaceCurrentItem(with: playerItem)
+            }
+        }
+        
+    }
     @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -623,7 +714,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].caudio {
             TabBarAudioContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
             self.tabView.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
-//            self.audioImage.image = fetchAudioResults[0].items[playingIndex].coverImage
             getLoadedImage(item: fetchAudioResults[0].items[playingIndex])
             
             TabBarAudioContent.sharedInstance.body["title"] = fetchAudioResults[0].items[playingIndex].headline
@@ -657,6 +747,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             object: nil
         )
         NotificationCenter.default.removeObserver(self)
+        
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name(rawValue: "reloadView"),
+            object: nil
+        )
         print ("deinit successfully and observer removed")
     }
     
@@ -1007,6 +1103,11 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             return nil
         }
     }
+   
+//    override var preferredStatusBarStyle: UIStatusBarStyle{
+//        return UIStatusBarStyle.lightContent
+//    }
+
     
 }
 

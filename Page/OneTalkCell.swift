@@ -270,11 +270,11 @@ class OneTalkCell: UITableViewCell {
                     //self.coverView.image = realImage
                     
                     DispatchQueue.main.async {
-                        UIView.transition(with: self.saysImageView,
+                        UIView.transition(with: self.coverView,
                                           duration: 0.3,
                                           options: .transitionCrossDissolve,
                                           animations: {
-                                            self.saysImageView.image = realImage
+                                            self.coverView.image = realImage
                         },
                                           completion: nil
                         )

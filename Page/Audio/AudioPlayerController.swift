@@ -44,13 +44,13 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     //    private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = DownloadHelper(directory: "audio")
-    
+    private let playerAPI = PlayerAPI()
     private var queuePlayer:AVQueuePlayer?
     private var playerItems: [AVPlayerItem]? = []
     private var urls: [URL] = []
     private var urlStrings: [String]? = []
     private var urlOrigStrings: [String] = []
-    private var urlTempStrings: [String] = []
+    private var urlTempString = ""
     private var urlAssets: [AVURLAsset]? = []
     
     var item: ContentItem?
@@ -103,7 +103,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
     }
     @IBAction func ButtonPlayPause(_ sender: UIButton) {
-//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
         if let player = player {
             print("ButtonPlayPause\(player)")
             if player.rate != 0 && player.error == nil {
@@ -208,12 +208,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     @objc func download(_ sender: Any) {
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
-            audioUrlString = audioFileUrl.replacingOccurrences(
-                of: "^(http).+(album/)",
-                with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
-                options: .regularExpression
-            )
-            audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            audioUrlString = playerAPI.parseAudioUrl(urlString: audioFileUrl)
         }
         
         if audioUrlString != "" {
@@ -316,7 +311,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(reloadAudioView),
-            name: Notification.Name(rawValue: "reloadView"),
+            name: Notification.Name(rawValue: "reloadAudio"),
             object: nil
         )
         
@@ -406,11 +401,11 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         switchChAndEnAudio.backgroundColor = UIColor(hex: "12a5b3", alpha: 1)
         switchChAndEnAudio.tintColor = UIColor.white
         switchChAndEnAudio.layer.borderColor = UIColor(hex: "12a5b3", alpha: 1).cgColor
-        switchChAndEnAudio.layer.borderWidth = 0.5
-        switchChAndEnAudio.layer.cornerRadius = 5
-        switchChAndEnAudio.layer.masksToBounds = true
+//        switchChAndEnAudio.layer.borderWidth = 0.5
+//        switchChAndEnAudio.layer.cornerRadius = 5
+//        switchChAndEnAudio.layer.masksToBounds = true
         let segAttributes: NSDictionary = [
-            NSAttributedStringKey.foregroundColor: UIColor.black,
+            NSAttributedStringKey.foregroundColor: UIColor(hex: "12a5b3"),
             NSAttributedStringKey.font: UIFont(name: "Avenir-MediumOblique", size: 14)!
         ]
         switchChAndEnAudio.setTitleTextAttributes(segAttributes as [NSObject : AnyObject], for: UIControlState.selected)
@@ -453,13 +448,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 print("chinese audioUrlString--\(audioUrlString)")
             }
         }
-        
-        audioUrlString = audioUrlString.replacingOccurrences(
-            of: "^(http).+(album/)",
-            with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
-            options: .regularExpression
-        )
-        audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
+
         if let url = URL(string: audioUrlString) {
             var audioUrl = url
             let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: " ")
@@ -487,6 +477,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             if let player = player {
                 player.play()
             }
+            playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
@@ -526,7 +517,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                         playingUrlStr = fileUrl
                         playingIndex = index
                     }
-                    if let urlAsset = URL(string: fileUrl){
+                    urlTempString = playerAPI.parseAudioUrl(urlString: fileUrl)
+
+                    if let urlAsset = URL(string: urlTempString){
                         playerItemTemp = AVPlayerItem(url: urlAsset) //可以用于播放的playItem
                         playerItems?.append(playerItemTemp!)
                     }
@@ -535,7 +528,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
         }
         print("urlString filtered audioUrlString --\(audioUrlString)")
-        //        print("urlString playerItems000---\(String(describing: playerItems))")
+        print("urlString playerItems---\(String(describing: playerItems))")
         
         print("urlString playingIndex222--\(playingIndex)")
         TabBarAudioContent.sharedInstance.playingIndex = playingIndex
@@ -636,12 +629,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     private func prepareAudioPlay() {
-        audioUrlString = audioUrlString.replacingOccurrences(
-            of: "^(http).+(album/)",
-            with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
-            options: .regularExpression
-        )
-        audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
             var audioUrl = url
@@ -750,7 +739,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         
         NotificationCenter.default.removeObserver(
             self,
-            name: Notification.Name(rawValue: "reloadView"),
+            name: Notification.Name(rawValue: "reloadAudio"),
             object: nil
         )
         print ("deinit successfully and observer removed")
@@ -921,7 +910,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.progressSlider.value = 0
         self.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: .normal)
         nowPlayingCenter.updateTimeForPlayerItem(player)
-        //        orderPlay()
         let mode = TabBarAudioContent.sharedInstance.mode
         print("mode11 \(String(describing: mode))")
         if let mode = TabBarAudioContent.sharedInstance.mode {
@@ -937,6 +925,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
         }
         else{
+            print("mode nil orderPlay")
             orderPlay()
         }
     }
@@ -953,11 +942,13 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         updateSingleTonData()
         prepareAudioPlay()
         let currentItem = TabBarAudioContent.sharedInstance.player?.currentItem
-        let nextItem = playerItems?[playingIndex]
-        queuePlayer?.advanceToNextItem()
-        currentItem?.seek(to: kCMTimeZero)
-        queuePlayer?.insert(nextItem!, after: currentItem)
-        self.player?.play()
+        if let nextItem = playerItems?[playingIndex]{
+            queuePlayer?.advanceToNextItem()
+            currentItem?.seek(to: kCMTimeZero)
+            queuePlayer?.insert(nextItem, after: currentItem)
+            self.player?.play()
+        }
+        
     }
     func randomPlay(){
         let randomIndex = Int(arc4random_uniform(UInt32(urlOrigStrings.count)))
@@ -967,11 +958,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         updateSingleTonData()
         prepareAudioPlay()
         let currentItem = TabBarAudioContent.sharedInstance.player?.currentItem
-        let nextItem = playerItems?[playingIndex]
-        queuePlayer?.advanceToNextItem()
-        currentItem?.seek(to: kCMTimeZero)
-        queuePlayer?.insert(nextItem!, after: currentItem)
-        self.player?.play()
+        if let nextItem = playerItems?[playingIndex]{
+            queuePlayer?.advanceToNextItem()
+            currentItem?.seek(to: kCMTimeZero)
+            queuePlayer?.insert(nextItem, after: currentItem)
+            self.player?.play()
+        }
     }
     func onePlay(){
         let startTime = CMTimeMake(0, 1)
@@ -1104,9 +1096,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
     }
    
-//    override var preferredStatusBarStyle: UIStatusBarStyle{
-//        return UIStatusBarStyle.lightContent
-//    }
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+        return UIStatusBarStyle.lightContent
+    }
 
     
 }

@@ -36,9 +36,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     
     
     
-//    override var preferredStatusBarStyle: UIStatusBarStyle{
-//        return UIStatusBarStyle.lightContent
-//    }
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+        return UIStatusBarStyle.lightContent
+    }
     override func viewDidLoad() {
         
         super.viewDidLoad()

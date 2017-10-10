@@ -18,9 +18,9 @@ class CustomNavigationController: UINavigationController, UINavigationController
         tabBarController?.tabBar.tintColor = AppNavigation.getThemeColor(for: tabName)
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.default
-    }
+//    override var preferredStatusBarStyle : UIStatusBarStyle {
+//        return UIStatusBarStyle.default
+//    }
 //    override var childViewControllerForStatusBarStyle: UIViewController?{
 //        return AudioPlayerController
 //    }

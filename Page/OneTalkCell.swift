@@ -21,7 +21,7 @@ class OneTalkCell: UITableViewCell {
     
     
     var cardUrl = ""
-    
+
     // MARK: 重写Frame:费了好长好长时间才找到解决办法。。。
     override var frame: CGRect {
         didSet {
@@ -50,6 +50,14 @@ class OneTalkCell: UITableViewCell {
         //NOTE:通过openLink方法对cardUrl进行判断，如果是站内文章，就打开app内文章；如果是站外文章，就在app内打开浏览器
         if let openUrl = URL(string:self.cardUrl) {
             if let topController = UIApplication.topViewController() {
+                
+                if let theController = self.parentViewController {
+                    print("theController:\(theController is ChatViewController)")
+                    if let theRealController = theController as? ChatViewController {
+                        print("get the real controller")
+                        theRealController.inputBlock.resignFirstResponder()
+                    }
+                }
                 topController.openLink(openUrl)
             }
         }
@@ -239,7 +247,6 @@ class OneTalkCell: UITableViewCell {
                 }
             })
             self.addSubview(coverView)
-            print("Execut 1st")
             
             //descriptionView:
             if(self.cellData.saysWhat.description != "") {
@@ -261,5 +268,21 @@ class OneTalkCell: UITableViewCell {
             self.bubbleImageView.addGestureRecognizer(tap)
             
         }
+    }
+}
+
+
+
+extension UIView {
+    //MARK:计算属性parentViewController获取本view所在的controller
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder!.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
     }
 }

@@ -26,8 +26,9 @@ struct AppNavigation {
                 [
                     "title": "首页",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
-                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=home&dfadfadfadfadf",
-                    "url":"http://www.ftchinese.com/",
+                    //"api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=home&dfadfadfadfadf",
+                    "url":"http://www.ftchinese.com/?webview=ftcapp&015",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/?webview=ftcapp&bodyonly=yes",
                     "compactLayout": "home",
                     "coverTheme": "Classic",
                     "screenName":"homepage",

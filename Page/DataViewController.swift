@@ -11,7 +11,7 @@ import WebKit
 import StoreKit
 import MediaPlayer
 
-class DataViewController: UICollectionViewController, UINavigationControllerDelegate {
+class DataViewController: UICollectionViewController, UINavigationControllerDelegate, UICollectionViewDataSourcePrefetching {
     var isLandscape :Bool = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
@@ -63,6 +63,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 layoutStrategy = layoutValue
             } else {
                 layoutStrategy = nil
+            }
+            
+            collectionView?.dataSource = self
+            collectionView?.delegate = self
+            if #available(iOS 10.0, *) {
+                collectionView?.isPrefetchingEnabled = true
+                collectionView?.prefetchDataSource = self
             }
             
             if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -211,12 +218,45 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         self.webView?.load(request)
                     }
                 }
+            }  else if let listAPI = dataObject["listapi"] {
+                let fileExtention = "html"
+                if let url = URL(string: urlString) {
+                    if let url = URL(string: listAPI) {
+                        Download.getDataFromUrl(url) {(data, response, error)  in
+                            if let data = data, error == nil {
+                                Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtention)
+                            }
+                        }
+                    }
+                    let request = URLRequest(url: url)
+                    if let adHTMLPath = Bundle.main.path(forResource: "list", ofType: "html"){
+                        do {
+                            let defaultString = "Loading..."
+                            let listContentString: String
+                            if let listContentData = Download.readFile(listAPI, for: .cachesDirectory, as: fileExtention) {
+                                listContentString = String(data: listContentData, encoding: String.Encoding.utf8) ?? defaultString
+                            } else {
+                                listContentString = defaultString
+                            }
+                            let listTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                            let listHTML = (listTemplate as String)
+                                .replacingOccurrences(of: "{list-content}", with: listContentString)
+                            print (listHTML)
+                            self.webView?.loadHTMLString(listHTML, baseURL:url)
+                        } catch {
+                            self.webView?.load(request)
+                        }
+                    } else {
+                        self.webView?.load(request)
+                    }
+                }
             } else if let url = URL(string: urlString) {
                 print ("Open url: \(urlString)")
                 let request = URLRequest(url: url)
                 webView?.load(request)
             }
         }
+        
         
         // MARK: Only update the navigation title when it is pushed
         navigationItem.title = pageTitle.removingPercentEncoding
@@ -355,7 +395,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                                 width: ImageSize.cover.width,
                                 height: ImageSize.cover.height,
                                 completion:{ (cellContentItem, error) in
-                                    print ("\(item.image) is prefetched! ")
+                                    //print ("\(item.image) is prefetched! ")
                             }
                             )
                         }
@@ -365,7 +405,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                                 width: ImageSize.thumbnail.width,
                                 height: ImageSize.thumbnail.height,
                                 completion:{ (cellContentItem, error) in
-                                    print ("\(item.image) is prefetched! ")
+                                    //print ("\(item.image) is prefetched! ")
                             }
                             )
                         }
@@ -488,7 +528,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        // print ("section: \(indexPath.section), row: \(indexPath.row)")
+        print ("cell life: cell for item at section: \(indexPath.section), row: \(indexPath.row)")
         switch reuseIdentifier {
         case "CoverCell":
             if let cell = cellItem as? CoverCell {
@@ -648,7 +688,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         return cellItem
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        print ("cell life: prefetch")
+    }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
@@ -1151,8 +1193,6 @@ extension DataViewController : UICollectionViewDelegateFlowLayout {
         return sectionInsets.left
     }
     
- 
-    
 }
 
 
@@ -1189,13 +1229,13 @@ extension DataViewController: WKScriptMessageHandler {
 }
 
 
-extension DataViewController {
-    // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
-    // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
-    }
-}
+//extension DataViewController {
+//    // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
+//    // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
+//    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
+//    }
+//}
 
 // MARK: Search Related Functions. As FTC don't have a well-structured https search API yet, use web to render search.
 extension DataViewController: UISearchBarDelegate {

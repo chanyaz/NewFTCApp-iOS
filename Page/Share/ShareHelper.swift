@@ -27,7 +27,7 @@ struct ShareHelper {
     static func updateThubmnail(_ url: URL) {
         print("Start downloading \(url) for WeChat Shareing. lastPathComponent: \(url.absoluteString)")
         ShareHelper.sharedInstance.thumbnail = UIImage(named: "ftcicon.jpg")
-        Download.getDataFromUrl(url) { (data, response, error)  in
+        Download.getDataFromUrl(url) {(data, response, error)  in
             DispatchQueue.main.async { () -> Void in
                 guard let data = data , error == nil else {return}
                 ShareHelper.sharedInstance.thumbnail = UIImage(data: data)

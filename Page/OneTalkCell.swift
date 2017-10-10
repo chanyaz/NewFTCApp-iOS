@@ -34,10 +34,13 @@ class OneTalkCell: UITableViewCell {
     init(_ data:CellData, reuseId cellId:String) {//NOTE: View通过ChatViewController得到Model的数据
         self.cellData = data
         super.init(style: UITableViewCellStyle.default, reuseIdentifier:cellId)
-        if data.isHistoryCutline == false  {
-           buildTheCell()
-        } else {
+        if data.isHistoryCutline == true  {
            buildCutlineCell()
+        } else if data.isGetMoreHistory == true {
+           buildGetMoreHistoryCell()
+        }
+        else {
+           buildTheCell()
         }
         
     }
@@ -129,7 +132,17 @@ class OneTalkCell: UITableViewCell {
         self.addSubview(cutlineContentView)
         
     }
-    
+    private func buildGetMoreHistoryCell() {
+        self.selectionStyle = UITableViewCellSelectionStyle.none
+        self.backgroundColor = UIColor(hex: "#fff1e0")
+        
+        let cutlineContentView = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.cellData.getMoreHistoryHeight))
+        cutlineContentView.text = "下拉加载更多历史聊天数据"
+        cutlineContentView.font = self.cellData.getMoreHistoryFont
+        cutlineContentView.textColor = self.cellData.getMoreHistoryColor
+        cutlineContentView.textAlignment = .center
+        self.addSubview(cutlineContentView)
+    }
     private func buildTheCell() {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         
@@ -205,10 +218,22 @@ class OneTalkCell: UITableViewCell {
             self.asyncBuildImage(url: self.cellData.saysWhat.url, completion: {
                 downloadedImg in
                 
+                
                 if let realImage = downloadedImg { //如果成功获取了图片
-                    self.saysImageView.image = realImage
-                    
+                    //self.saysImageView.image = realImage
+                    DispatchQueue.main.async {
+                        UIView.transition(with: self.saysImageView,
+                                          duration: 0.3,
+                                          options: .transitionCrossDissolve,
+                                          animations: {
+                                            self.saysImageView.image = realImage
+                        },
+                                          completion: nil
+                        )
+                    }
                 }
+ 
+                
             })
             
           self.addSubview(self.saysImageView)
@@ -242,7 +267,18 @@ class OneTalkCell: UITableViewCell {
             self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
                 if let realImage = downloadedImg {
                     //cellData.downLoadImage = realImage
-                    self.coverView.image = realImage
+                    //self.coverView.image = realImage
+                    
+                    DispatchQueue.main.async {
+                        UIView.transition(with: self.saysImageView,
+                                          duration: 0.3,
+                                          options: .transitionCrossDissolve,
+                                          animations: {
+                                            self.saysImageView.image = realImage
+                        },
+                                          completion: nil
+                        )
+                    }
                     
                 }
             })

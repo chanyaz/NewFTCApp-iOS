@@ -118,7 +118,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         TabBarAudioContent.sharedInstance.playingIndex = row
             TabBarAudioContent.sharedInstance.item = fetchListResults?[0].items[indexPath.row]
             
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadAudio"), object: self)
             self.dismiss(animated: true)
     }
     //init 不能少，写在viewDidLoad中不生效

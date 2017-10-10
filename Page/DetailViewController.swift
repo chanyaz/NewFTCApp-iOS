@@ -253,7 +253,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         let object = languageIndex
         let name = Notification.Name(rawValue: Event.languagePreferenceChanged)
         NotificationCenter.default.post(name: name, object: object)
-        
     }
     
     @objc public func updateEnglishStatus() {

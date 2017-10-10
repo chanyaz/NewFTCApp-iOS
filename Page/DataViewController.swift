@@ -155,6 +155,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             contentController.addUserScript(userScript)
             // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
             contentController.add(LeakAvoider(delegate:self), name: "alert")
+            contentController.add(LeakAvoider(delegate:self), name: "items")
+            contentController.add(LeakAvoider(delegate:self), name: "selectItem")
             config.userContentController = contentController
             config.allowsInlineMediaPlayback = true
             
@@ -176,7 +178,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             webView?.scrollView.delegate = self
             webView?.navigationDelegate = self
             webView?.clipsToBounds = true
-            webView?.scrollView.bounces = false
+            webView?.scrollView.bounces = true
+            
+            
+            
+            refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
+            webView?.scrollView.addSubview(refreshControl)
             
             if dataObjectType == "Search" {
                 searchBar = UISearchBar()
@@ -219,37 +226,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     }
                 }
             }  else if let listAPI = dataObject["listapi"] {
-                let fileExtention = "html"
-                if let url = URL(string: urlString) {
-                    if let url = URL(string: listAPI) {
-                        Download.getDataFromUrl(url) {(data, response, error)  in
-                            if let data = data, error == nil {
-                                Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtention)
-                            }
-                        }
-                    }
-                    let request = URLRequest(url: url)
-                    if let adHTMLPath = Bundle.main.path(forResource: "list", ofType: "html"){
-                        do {
-                            let defaultString = "Loading..."
-                            let listContentString: String
-                            if let listContentData = Download.readFile(listAPI, for: .cachesDirectory, as: fileExtention) {
-                                listContentString = String(data: listContentData, encoding: String.Encoding.utf8) ?? defaultString
-                            } else {
-                                listContentString = defaultString
-                            }
-                            let listTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                            let listHTML = (listTemplate as String)
-                                .replacingOccurrences(of: "{list-content}", with: listContentString)
-                            print (listHTML)
-                            self.webView?.loadHTMLString(listHTML, baseURL:url)
-                        } catch {
-                            self.webView?.load(request)
-                        }
-                    } else {
-                        self.webView?.load(request)
-                    }
-                }
+                let fileExtension = "html"
+//                if let url = URL(string: listAPI) {
+//                    Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
+//                        if let data = data, error == nil {
+//                            Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
+//                        }
+//                        self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
+//                    }
+//                }
+                requestNewContentForWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+                renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
             } else if let url = URL(string: urlString) {
                 print ("Open url: \(urlString)")
                 let request = URLRequest(url: url)
@@ -265,6 +252,61 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             selector:#selector(paidPostUpdate(_:)),
             name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
             object: nil)
+    }
+    
+    @objc public func refreshWebView(_ sender: Any) {
+        if let listAPI = dataObject["listapi"],
+            let urlStringOriginal = dataObject["url"] {
+            let urlString = APIs.convert(urlStringOriginal)
+            let fileExtension = "html"
+            requestNewContentForWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+        }
+    }
+    
+    private func requestNewContentForWebview(_ listAPI: String, urlString: String, fileExtension: String) {
+        if let url = URL(string: listAPI) {
+            Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
+                if let data = data, error == nil {
+                    Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
+                }
+                self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
+            }
+        }
+    }
+    
+    private func renderWebview (_ listAPI: String, urlString: String, fileExtension: String) {
+        DispatchQueue.global().async {
+            if let url = URL(string: urlString) {
+                let request = URLRequest(url: url)
+                if let adHTMLPath = Bundle.main.path(forResource: "list", ofType: "html") {
+                    do {
+                        let defaultString = "Loading..."
+                        let listContentString: String
+                        if let listContentData = Download.readFile(listAPI, for: .cachesDirectory, as: fileExtension) {
+                            listContentString = String(data: listContentData, encoding: String.Encoding.utf8) ?? defaultString
+                        } else {
+                            listContentString = defaultString
+                        }
+                        let listTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                        let listHTML = (listTemplate as String)
+                            .replacingOccurrences(of: "{list-content}", with: listContentString)
+                        //print (listHTML)
+                        DispatchQueue.main.async {
+                            self.webView?.loadHTMLString(listHTML, baseURL:url)
+                            self.refreshControl.endRefreshing()
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            self.webView?.load(request)
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.webView?.load(request)
+                    }
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -315,7 +357,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         collectionView?.reloadData()
     }
     
-    
     deinit {
         //MARK: Remove Paid Post Observer
         NotificationCenter.default.removeObserver(
@@ -325,8 +366,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         )
         print ("Data View Controller of \(pageTitle) removed successfully")
     }
-    
-    
     
     private func getAPI(_ urlString: String) {
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
@@ -928,22 +967,24 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     // MARK: - Handle user tapping on a cell
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
-        return handleSelection(selectedItem)
+        return handleItemSelect(indexPath)
     }
     
-    
     // MARK: - Move the handle cell selection to a function so that it can be used in different cases
-    fileprivate func handleSelection(_ selectedItem: ContentItem) -> Bool {
-        //        ,layoutStrategy == "All Cover"
-        // TODO: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
-        
+    fileprivate func handleItemSelect(_ indexPath: IndexPath) -> Bool {
+        // MARK: Check the fetchResults to make sure there's no out-of-range error
+        if fetches.fetchResults.count <= indexPath.section {
+            print ("There is not enough sections in fetchResults")
+            return false
+        }
+        if fetches.fetchResults[indexPath.section].items.count <= indexPath.row {
+            print ("Row is \(indexPath.row). There is not enough rows in fetchResults Section")
+            return false
+        }
+        let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
+        // MARK: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
         // MARK: if it is an audio file, push the audio view controller
         if let audioFileUrl = selectedItem.audioFileUrl {
-            print ("this is an audio")
-            
-            //            let body = AudioContent.sharedInstance.body
-            //            if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"]
             if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
                 AudioContent.sharedInstance.body["title"] = selectedItem.headline
                 AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
@@ -952,7 +993,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 audioPlayer.themeColor = themeColor
                 navigationController?.pushViewController(audioPlayer, animated: true)
             }
-            
         } else {
             switch selectedItem.type {
             case "setting":
@@ -973,7 +1013,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         apiUrl: fetches.apiUrl,
                         fetchResults: Setting.updateOption(optionsId, with: selectedIndex, from: fetches.fetchResults)
                     )
-                    collectionView.reloadData()
+                    collectionView?.reloadData()
                 }
                 return true
             case "ad", "follow":
@@ -1012,9 +1052,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                             
                         }
                     }
-                    
-                    let pageDataRaw = pageData1 //+ pageData2
-                    
+                    let pageDataRaw = pageData1
                     
                     /* MARK: - Reorder the page
                      for (sectionIndex, section) in fetches.fetchResults.enumerated() {
@@ -1225,7 +1263,22 @@ extension DataViewController: WKNavigationDelegate {
 // MARK: Handle Message from Web View
 extension DataViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if let body = message.body as? [String: String] {
+        if message.name == "items" {
+            fetches = ContentFetchResults(
+                apiUrl: "",
+                fetchResults: contentAPI.formatJSON(message.body)
+            )
+            prefetch()
+        } else if message.name == "selectItem" {
+            //print (message.body)
+            if let rowString = message.body as? String,
+                let row = Int(rowString) {
+                let indexPath = IndexPath(row: row, section: 0)
+                _ = handleItemSelect(indexPath)
+            } else {
+                print ("item row is not an int: \(message.body)")
+            }
+        } else if let body = message.body as? [String: String] {
             if message.name == "alert" {
                 if let title = body["title"], let lead = body["message"] {
                     Alert.present(title, message: lead)

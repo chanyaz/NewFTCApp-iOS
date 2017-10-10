@@ -45,7 +45,7 @@ struct APIs {
     }
     
     // MARK: Types of files that you want to clean from time to time
-    static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg", "cover", "thumbnail"]
+    static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg", "cover", "thumbnail", "html"]
     
     
     private static func getUrlStringInLanguage(_ from: [String]) -> String {

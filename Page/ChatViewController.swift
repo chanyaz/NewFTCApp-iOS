@@ -77,16 +77,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBAction func whatTodoWhenPan(_ sender: UIPanGestureRecognizer) {
         print("You are panning")
         self.inputBlock.resignFirstResponder()
-        let scrollOffset = self.talkListBlock.contentOffset.y;
+        let scrollOffset = self.talkListBlock.contentOffset.y
         
+        let oldContentSize = self.talkListBlock.contentSize
         var startLocation = CGPoint(x: 0, y: 0)
         var stopLocation = CGPoint(x: 0, y: 0)
         if sender.state == .began {
             startLocation = sender.location(in: self.view)
         } else if (sender.state == .ended) {
             stopLocation = sender.location(in: self.view)
-            self.talkListBlock.isScrollEnabled = false;
-            self.talkListBlock.isScrollEnabled = true;
         }
         let dy = stopLocation.y - startLocation.y
         print("Chat dy:\(dy)")
@@ -119,11 +118,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     print("Chat showingCellData Num:\(self.showingCellData.count)")
                     
                     self.talkListBlock.reloadData()
-                    self.isLoadHistoryDataAtTop = false
+                    let newContentSize = self.talkListBlock.contentSize
+                    let afterContentOffset = self.talkListBlock.contentOffset
+                    let newContentOffset = CGPoint(x: afterContentOffset.x, y: afterContentOffset.y + newContentSize.height - oldContentSize.height)
+                    self.talkListBlock.contentOffset = newContentOffset
+                    self.isLoadHistoryDataAtTop = false                    /*
                     let currentIndexPath = IndexPath(row: 10, section: 0)
                     self.talkListBlock.scrollToRow(at: currentIndexPath, at: .top, animated: false)
-                    self.talkListBlock.isScrollEnabled = false;
-                    self.talkListBlock.isScrollEnabled = true;
+                    */
+                    
                 }
                 
             }

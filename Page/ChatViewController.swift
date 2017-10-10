@@ -93,18 +93,24 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("Chat dy:\(dy)")
         print("Chat scrollOffSet:\(scrollOffset)")
         //MARK:位于顶部时再加载10条历史记录：
-        if(scrollOffset < 0 && dy < 50 && dy > 0) {
-            if(self.addedGetHistorySignToShowingCellData == false) {
+        /* TODO:明天好好理理这一块的逻辑
+        if(scrollOffset <= 0 && sender.state == .changed) {
+            print("Show the getHistorySign")
+            if self.addedGetHistorySignToShowingCellData == false  {
                 self.showingCellData.insert(CellData(getMoreHistory:true), at: 0)
                 self.addedGetHistorySignToShowingCellData = true
             }
             
         }
-        if(scrollOffset < 0 && dy > 50){
-            print("At the top now")
+         */
+        if(scrollOffset <= 0 && dy > 100){
+            print("Load the History data")
+            /*
             if(self.addedGetHistorySignToShowingCellData == true) {
                 self.showingCellData.remove(at: 0)
+                self.addedGetHistorySignToShowingCellData = false
             }
+             */
             var willAddHistoryData: [[String: String]]
             if let realHistoryTalkData = self.historyTalkData {
                 let historyNum = realHistoryTalkData.count

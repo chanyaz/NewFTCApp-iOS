@@ -39,6 +39,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     var isTalkListFirstReloadData = true//用于标志tableView是否是第一次加载数据
     var isLoadHistoryDataAtTop = false
+    
+    var addedGetHistorySignToShowingCellData = false
     //TODO:增加函数事件：当拉到tableView顶部时，再次从historyTalkData中加载10个数据
     //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
     
@@ -91,8 +93,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("Chat dy:\(dy)")
         print("Chat scrollOffSet:\(scrollOffset)")
         //MARK:位于顶部时再加载10条历史记录：
+        if(scrollOffset < 0 && dy < 50 && dy > 0) {
+            if(self.addedGetHistorySignToShowingCellData == false) {
+                self.showingCellData.insert(CellData(getMoreHistory:true), at: 0)
+                self.addedGetHistorySignToShowingCellData = true
+            }
+            
+        }
         if(scrollOffset < 0 && dy > 50){
             print("At the top now")
+            if(self.addedGetHistorySignToShowingCellData == true) {
+                self.showingCellData.remove(at: 0)
+            }
             var willAddHistoryData: [[String: String]]
             if let realHistoryTalkData = self.historyTalkData {
                 let historyNum = realHistoryTalkData.count
@@ -122,7 +134,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     let afterContentOffset = self.talkListBlock.contentOffset
                     let newContentOffset = CGPoint(x: afterContentOffset.x, y: afterContentOffset.y + newContentSize.height - oldContentSize.height)
                     self.talkListBlock.contentOffset = newContentOffset
-                    self.isLoadHistoryDataAtTop = false                    /*
+                    self.isLoadHistoryDataAtTop = false
+                    /*
                     let currentIndexPath = IndexPath(row: 10, section: 0)
                     self.talkListBlock.scrollToRow(at: currentIndexPath, at: .top, animated: false)
                     */

@@ -99,6 +99,9 @@ struct SaysWhat {
 class CellData {
     //是否为历史记录分割线
     var isHistoryCutline = false
+    
+    //是否为获取更多历史数据的提示语单元
+    var isGetMoreHistory = false
     //基本字段
     var headImage: String = ""
     var whoSays: Member = .no
@@ -108,6 +111,7 @@ class CellData {
     var saysWhat = SaysWhat()
     var textColor = UIColor.black
     var cutlineColor = UIColor(hex: "#999999")
+    let getMoreHistoryColor = UIColor(hex: "#999999")
     //基本尺寸
     var bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12)//文字嵌入气泡的边距
     var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)//气泡点九拉伸时的边距
@@ -124,7 +128,9 @@ class CellData {
     //var maxImageHeight = CGFloat(400) //图像消息的图片最大高度
     var coverWidth = CGFloat(240)//TODO:待修改，因为会超出iPhone 5的边界
     var coverHeight = CGFloat(135)//Cover图像统一是16*19的，这里统一为240*135
-    var cutlineCellHeight = CGFloat(50)
+    let cutlineCellHeight = CGFloat(50)
+    let getMoreHistoryHeight = CGFloat(50)
+    
     
     //根据（文字长短）动态计算得到的图形实际尺寸，后文会计算
     var bubbleImageWidth = CGFloat(0) //气泡宽度
@@ -164,8 +170,12 @@ class CellData {
     var titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
     var cutlineFont = UIFont.systemFont(ofSize:10)
     var descriptionFont = UIFont.systemFont(ofSize:18)
-    
-    
+    let getMoreHistoryFont = UIFont.systemFont(ofSize:18)
+    //下拉加载更多历史记录时提示语CellData数据构造器：
+    init(getMoreHistory getMoreHistoryData:Bool) {
+        self.isGetMoreHistory = getMoreHistoryData
+        
+    }
     
     //分割线CellData数据构造器：
     init(cutline isHistoryCutline:Bool) {

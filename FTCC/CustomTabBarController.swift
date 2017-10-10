@@ -36,9 +36,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     
     
     
-    override var preferredStatusBarStyle: UIStatusBarStyle{
-        return UIStatusBarStyle.lightContent
-    }
+//    override var preferredStatusBarStyle: UIStatusBarStyle{
+//        return UIStatusBarStyle.lightContent
+//    }
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -92,17 +92,15 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     }
     //    把此页面的所有信息都传给AudioPlayBar,包括player，playerItem
     @objc func openAudio(){
-        
+
         if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
             let tabItem = TabBarAudioContent.sharedInstance.item
-            
             if let tabItem = tabItem ,let audioFileUrl = tabItem.caudio {
                 TabBarAudioContent.sharedInstance.body["title"] = tabItem.headline
                 TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
                 TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(tabItem.id)"
                 audioPlayerController.item = tabItem
             }
-            
             audioPlayerController.modalPresentationStyle = .custom
             self.present(audioPlayerController, animated: true, completion: nil)
             

@@ -218,10 +218,22 @@ class OneTalkCell: UITableViewCell {
             self.asyncBuildImage(url: self.cellData.saysWhat.url, completion: {
                 downloadedImg in
                 
+                
                 if let realImage = downloadedImg { //如果成功获取了图片
-                    self.saysImageView.image = realImage
-                    
+                    //self.saysImageView.image = realImage
+                    DispatchQueue.main.async {
+                        UIView.transition(with: self.saysImageView,
+                                          duration: 0.3,
+                                          options: .transitionCrossDissolve,
+                                          animations: {
+                                            self.saysImageView.image = realImage
+                        },
+                                          completion: nil
+                        )
+                    }
                 }
+ 
+                
             })
             
           self.addSubview(self.saysImageView)
@@ -255,7 +267,18 @@ class OneTalkCell: UITableViewCell {
             self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
                 if let realImage = downloadedImg {
                     //cellData.downLoadImage = realImage
-                    self.coverView.image = realImage
+                    //self.coverView.image = realImage
+                    
+                    DispatchQueue.main.async {
+                        UIView.transition(with: self.saysImageView,
+                                          duration: 0.3,
+                                          options: .transitionCrossDissolve,
+                                          animations: {
+                                            self.saysImageView.image = realImage
+                        },
+                                          completion: nil
+                        )
+                    }
                     
                 }
             })

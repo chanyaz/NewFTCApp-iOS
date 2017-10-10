@@ -314,7 +314,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             name: Notification.Name(rawValue: "reloadAudio"),
             object: nil
         )
-        
+        setNeedsStatusBarAppearanceUpdate()
     }
     func getLoadedImage(item: ContentItem){
         if let loadedImage = item.coverImage {
@@ -381,7 +381,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
 //        UIApplication.shared.statusBarStyle = .lightContent
-//        self.setNeedsFocusUpdate()
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -528,7 +528,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
         }
         print("urlString filtered audioUrlString --\(audioUrlString)")
-        print("urlString playerItems---\(String(describing: playerItems))")
+//        print("urlString playerItems---\(String(describing: playerItems))")
         
         print("urlString playingIndex222--\(playingIndex)")
         TabBarAudioContent.sharedInstance.playingIndex = playingIndex
@@ -1099,7 +1099,5 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return UIStatusBarStyle.lightContent
     }
-
-    
 }
 

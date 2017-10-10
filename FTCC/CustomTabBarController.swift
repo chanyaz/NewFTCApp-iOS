@@ -37,7 +37,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
-        return UIStatusBarStyle.lightContent
+        return UIStatusBarStyle.default
     }
     override func viewDidLoad() {
         
@@ -103,11 +103,14 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             }
             audioPlayerController.modalPresentationStyle = .custom
             self.present(audioPlayerController, animated: true, completion: nil)
-            
+//            navigationController?.pushViewController(audioPlayerController, animated: true)
         }
         
     }
-
+//    let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController
+//    override var childViewControllerForStatusBarStyle: UIViewController?{
+//        return audioPlayerController
+//    }
     @objc func pauseOrPlay(sender: UIButton) {
         let  player = TabBarAudioContent.sharedInstance.player
         let  playerItem = TabBarAudioContent.sharedInstance.playerItem

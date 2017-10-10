@@ -13,18 +13,43 @@ import UIKit
 class CustomNavigationController: UINavigationController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
     var isLightContent = false
     var tabName: String? = nil
+    var tabView = CustomTab()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
         tabBarController?.tabBar.tintColor = AppNavigation.getThemeColor(for: tabName)
     }
     
-//    override var preferredStatusBarStyle : UIStatusBarStyle {
-//        return UIStatusBarStyle.default
-//    }
-//    override var childViewControllerForStatusBarStyle: UIViewController?{
-//        return AudioPlayerController
-//    }
-    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.default
+    }
+    var window: UIWindow?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let width = UIScreen.main.bounds.width
+        let height = self.view.bounds.height
+        tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.5)
+        tabView.frame = CGRect(x:0,y:height - 90,width:width,height:90)
+//        view.addSubview(self.tabView)
+        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
+        tabView.upSwipeButton.addGestureRecognizer(tapGestureRecognizer1)
+    }
+    @objc func openAudio(){
+        
+        if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
+            let tabItem = TabBarAudioContent.sharedInstance.item
+            if let tabItem = tabItem ,let audioFileUrl = tabItem.caudio {
+                TabBarAudioContent.sharedInstance.body["title"] = tabItem.headline
+                TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(tabItem.id)"
+                audioPlayerController.item = tabItem
+            }
+            audioPlayerController.modalPresentationStyle = .custom
+            self.present(audioPlayerController, animated: true, completion: nil)
+
+//            self.pushViewController(audioPlayerController, animated: false)
+        }
+        
+    }
     /*
      
      // MARK: - https://stackoverflow.com/questions/28949537/uipageviewcontroller-detecting-pan-gestures

@@ -44,7 +44,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     //    private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = DownloadHelper(directory: "audio")
-    
+    private let playerAPI = PlayerAPI()
     private var queuePlayer:AVQueuePlayer?
     private var playerItems: [AVPlayerItem]? = []
     private var urls: [URL] = []
@@ -208,12 +208,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     @objc func download(_ sender: Any) {
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
-            audioUrlString = audioFileUrl.replacingOccurrences(
-                of: "^(http).+(album/)",
-                with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
-                options: .regularExpression
-            )
-            audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            audioUrlString = playerAPI.parseAudioUrl(urlString: audioFileUrl)
         }
         
         if audioUrlString != "" {
@@ -453,13 +448,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 print("chinese audioUrlString--\(audioUrlString)")
             }
         }
-        
-        audioUrlString = audioUrlString.replacingOccurrences(
-            of: "^(http).+(album/)",
-            with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
-            options: .regularExpression
-        )
-        audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
+
         if let url = URL(string: audioUrlString) {
             var audioUrl = url
             let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: " ")
@@ -527,12 +517,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                         playingUrlStr = fileUrl
                         playingIndex = index
                     }
-                    urlTempString = fileUrl.replacingOccurrences(
-                        of: "^(http).+(album/)",
-                        with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
-                        options: .regularExpression
-                    )
-                    urlTempString =  urlTempString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                    urlTempString = playerAPI.parseAudioUrl(urlString: fileUrl)
+
                     if let urlAsset = URL(string: urlTempString){
                         playerItemTemp = AVPlayerItem(url: urlAsset) //可以用于播放的playItem
                         playerItems?.append(playerItemTemp!)
@@ -643,12 +629,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     private func prepareAudioPlay() {
-        audioUrlString = audioUrlString.replacingOccurrences(
-            of: "^(http).+(album/)",
-            with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
-            options: .regularExpression
-        )
-        audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
             var audioUrl = url
@@ -928,7 +910,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.progressSlider.value = 0
         self.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: .normal)
         nowPlayingCenter.updateTimeForPlayerItem(player)
-        //        orderPlay()
         let mode = TabBarAudioContent.sharedInstance.mode
         print("mode11 \(String(describing: mode))")
         if let mode = TabBarAudioContent.sharedInstance.mode {

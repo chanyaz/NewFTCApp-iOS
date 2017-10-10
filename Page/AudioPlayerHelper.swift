@@ -85,13 +85,7 @@ class PlayerAPI {
         
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
-            audioUrlString = audioFileUrl.replacingOccurrences(
-                of: "^(http).+(album/)",
-                with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
-                options: .regularExpression
-            )
-            audioUrlString =  audioUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-            print("audioUrlString by encoding--\(audioUrlString)")
+            audioUrlString = self.parseAudioUrl(urlString: audioFileUrl)
         }
         
         
@@ -174,6 +168,16 @@ class PlayerAPI {
         NotificationCenter.default.removeObserver(observer, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: anObject)
     }
 
+    public func parseAudioUrl(urlString:String)-> String {
+        var parsedUrlString:String = ""
+        parsedUrlString = urlString.replacingOccurrences(
+            of: "^(http).+(album/)",
+            with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
+            options: .regularExpression
+        )
+        parsedUrlString =  parsedUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        return parsedUrlString
+    }
 }
 
 

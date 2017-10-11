@@ -97,26 +97,34 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
         } else if (sender.state == .ended) {
             stopLocation = sender.location(in: self.view)
-            self.isLoadHistoryDataAtTop = true
+            print("Here a")
 
             let dy = stopLocation.y - startLocation.y
             print("Chat dy:\(dy)")
             print("Chat scrollOffSet:\(scrollOffset)")
-            
-            if(scrollOffset <= 0 && dy > 200){
-                print("Load the History data")
+            if(self.addedGetHistorySignToShowingCellData == true) {//MARK:不管pan了多少距离，只要有addedGetHistorySignToShowingCellData，就移除该数据
+                print("Here b")
+                self.isLoadHistoryDataAtTop = true
+                self.showingCellData.remove(at: 0)
+                self.addedGetHistorySignToShowingCellData = false
+                self.talkListBlock.reloadData()
                 
-                 if(self.addedGetHistorySignToShowingCellData == true) {
-                    self.showingCellData.remove(at: 0)
-                    self.talkListBlock.reloadData()
-                 }               
+                self.isLoadHistoryDataAtTop = false
+            }
+            if(scrollOffset <= 0 && dy > 200){
+                print("Here c")
+                self.isLoadHistoryDataAtTop = true
+                
                 var willAddHistoryData: [[String: String]]
                 if let realHistoryTalkData = self.historyTalkData {
                     let historyNum = realHistoryTalkData.count
                     print("Chat historyNum:\(historyNum)")
                     //MARK:只显示历史会话中最近的10条记录
                     if historyNum > 0 {
-                        self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"正在加载历史聊天数据"), at: 0)
+                        print("Here d")
+                        self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"正在加载历史聊天数据..."), at: 0)
+                        self.addedGetHistorySignToShowingCellData = true
+                        self.talkListBlock.reloadData()
                         if historyNum <= 10  {
                             willAddHistoryData = realHistoryTalkData
                             self.historyTalkData = []
@@ -125,8 +133,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                             self.historyTalkData = Array(realHistoryTalkData[0...historyNum-11])
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-                            self.showingCellData.remove(at: 0)
-                            self.addedGetHistorySignToShowingCellData = false
+                            print("Here e")
+                            if(self.addedGetHistorySignToShowingCellData == true) {
+                                self.showingCellData.remove(at: 0)
+                                self.addedGetHistorySignToShowingCellData = false
+                            }
                             self.showingData.insert(contentsOf:willAddHistoryData,at:0)
                             print("Chat showingData Num:\(self.showingData.count)")
                             var willAddHistoryCellData = [CellData]()
@@ -147,15 +158,25 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                             
                         }
                         
+                    } else {
+                        self.isLoadHistoryDataAtTop = false
+                        print("Here f")
                     }
                 
+                } else {
+                    //self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"没有更多历史记录了"), at: 0)
+                    //self.talkListBlock.reloadData()
+                    self.isLoadHistoryDataAtTop = false
+                    print("Here g")
                 }
+                
             }
             
 
         } else if sender.state == .changed {
             print("Show the getHistorySign")
             if scrollOffset <= 0 && self.addedGetHistorySignToShowingCellData == false  {
+                print("Here h")
                 self.isGetMoreHistorySign = true
                 if let realHistoryTalkData = self.historyTalkData {
                     let historyNum = realHistoryTalkData.count

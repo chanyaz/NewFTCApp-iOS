@@ -264,7 +264,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     private func requestNewContentForWebview(_ listAPI: String, urlString: String, fileExtension: String) {
-        if let url = URL(string: listAPI) {
+        let listAPIString = Download.addVersion(listAPI)
+        if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
                 if let data = data, error == nil {
                     Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)

@@ -25,25 +25,33 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4)
     var showingCellData = [CellData]() {
         didSet {
-            if(self.isTalkListFirstReloadData == false && self.isLoadHistoryDataAtTop == false ) {
-                print("tableReloadData")
+            if(self.isTalkListFirstReloadData == false && self.isLoadHistoryDataAtTop == false && self.isGetMoreHistorySign == false) {
+            //if(self.needAutoReloadData == true) {
+                print("chat auto reload data")
+                
                 self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
                 print("showingCellDataNum:\(showingCellData.count)")
                 let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
                 self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
                 print("scroll2")
+             
             }
-            
-            
         }
     }
+    var needAutoReloadData = false
     var isTalkListFirstReloadData = true//用于标志tableView是否是第一次加载数据
     var isLoadHistoryDataAtTop = false
+    var isGetMoreHistorySign = false
     
     var addedGetHistorySignToShowingCellData = false
     //TODO:增加函数事件：当拉到tableView顶部时，再次从historyTalkData中加载10个数据
     //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
-    
+    func scrollTobottomWhenReloadData() {
+        self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
+        print("showingCellDataNum:\(showingCellData.count)")
+        let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+        self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+    }
     @IBOutlet weak var talkListBlock: UITableView!
 
     @IBOutlet weak var bottomBar: UIView!
@@ -77,79 +85,99 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet var myPanGesture: UIPanGestureRecognizer!
      
     @IBAction func whatTodoWhenPan(_ sender: UIPanGestureRecognizer) {
-        print("You are panning")
         self.inputBlock.resignFirstResponder()
         let scrollOffset = self.talkListBlock.contentOffset.y
         
         let oldContentSize = self.talkListBlock.contentSize
         var startLocation = CGPoint(x: 0, y: 0)
         var stopLocation = CGPoint(x: 0, y: 0)
+        
         if sender.state == .began {
             startLocation = sender.location(in: self.view)
+            
         } else if (sender.state == .ended) {
             stopLocation = sender.location(in: self.view)
-        }
-        let dy = stopLocation.y - startLocation.y
-        print("Chat dy:\(dy)")
-        print("Chat scrollOffSet:\(scrollOffset)")
-        //MARK:位于顶部时再加载10条历史记录：
-        /* TODO:明天好好理理这一块的逻辑
-        if(scrollOffset <= 0 && sender.state == .changed) {
+            self.isLoadHistoryDataAtTop = true
+
+            let dy = stopLocation.y - startLocation.y
+            print("Chat dy:\(dy)")
+            print("Chat scrollOffSet:\(scrollOffset)")
+            
+            if(scrollOffset <= 0 && dy > 200){
+                print("Load the History data")
+                
+                 if(self.addedGetHistorySignToShowingCellData == true) {
+                    self.showingCellData.remove(at: 0)
+                    self.talkListBlock.reloadData()
+                 }               
+                var willAddHistoryData: [[String: String]]
+                if let realHistoryTalkData = self.historyTalkData {
+                    let historyNum = realHistoryTalkData.count
+                    print("Chat historyNum:\(historyNum)")
+                    //MARK:只显示历史会话中最近的10条记录
+                    if historyNum > 0 {
+                        self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"正在加载历史聊天数据"), at: 0)
+                        if historyNum <= 10  {
+                            willAddHistoryData = realHistoryTalkData
+                            self.historyTalkData = []
+                        } else {
+                            willAddHistoryData = Array(realHistoryTalkData[historyNum-10...historyNum-1])
+                            self.historyTalkData = Array(realHistoryTalkData[0...historyNum-11])
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                            self.showingCellData.remove(at: 0)
+                            self.addedGetHistorySignToShowingCellData = false
+                            self.showingData.insert(contentsOf:willAddHistoryData,at:0)
+                            print("Chat showingData Num:\(self.showingData.count)")
+                            var willAddHistoryCellData = [CellData]()
+                            for data in willAddHistoryData {
+                                let oneCellData = ChatViewModel.buildCellData(data)
+                                willAddHistoryCellData.append(oneCellData)
+                            }
+                            self.showingCellData.insert(contentsOf:willAddHistoryCellData, at:0)
+                            print("Chat showingCellData Num:\(self.showingCellData.count)")
+                            
+                            self.talkListBlock.reloadData()
+                            
+                            let newContentSize = self.talkListBlock.contentSize
+                            let afterContentOffset = self.talkListBlock.contentOffset
+                            let newContentOffset = CGPoint(x: afterContentOffset.x, y: afterContentOffset.y + newContentSize.height - oldContentSize.height)
+                            self.talkListBlock.contentOffset = newContentOffset
+                            self.isLoadHistoryDataAtTop = false
+                            
+                        }
+                        
+                    }
+                
+                }
+            }
+            
+
+        } else if sender.state == .changed {
             print("Show the getHistorySign")
-            if self.addedGetHistorySignToShowingCellData == false  {
-                self.showingCellData.insert(CellData(getMoreHistory:true), at: 0)
+            if scrollOffset <= 0 && self.addedGetHistorySignToShowingCellData == false  {
+                self.isGetMoreHistorySign = true
+                if let realHistoryTalkData = self.historyTalkData {
+                    let historyNum = realHistoryTalkData.count
+                    print("Chat historyNum:\(historyNum)")
+                    //MARK:只显示历史会话中最近的10条记录
+                    if historyNum > 0 {
+                        self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"下拉加载更多历史聊天数据"), at: 0)
+                    } else {
+                        self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"没有更多历史记录了"), at: 0)
+                    }
+                } else {
+                    self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"没有更多历史记录了"), at: 0)
+                }
                 self.addedGetHistorySignToShowingCellData = true
+                self.talkListBlock.reloadData()
+                self.isGetMoreHistorySign = false
             }
             
         }
-         */
-        if(scrollOffset <= 0 && dy > 100){
-            print("Load the History data")
-            /*
-            if(self.addedGetHistorySignToShowingCellData == true) {
-                self.showingCellData.remove(at: 0)
-                self.addedGetHistorySignToShowingCellData = false
-            }
-             */
-            var willAddHistoryData: [[String: String]]
-            if let realHistoryTalkData = self.historyTalkData {
-                let historyNum = realHistoryTalkData.count
-                print("Chat historyNum:\(historyNum)")
-                //MARK:只显示历史会话中最近的10条记录
-                if historyNum > 0 {
-                    if historyNum <= 10  {
-                        willAddHistoryData = realHistoryTalkData
-                        self.historyTalkData = []
-                    } else {
-                        willAddHistoryData = Array(realHistoryTalkData[historyNum-10...historyNum-1])
-                        self.historyTalkData = Array(realHistoryTalkData[0...historyNum-11])
-                    }
-                    self.showingData.insert(contentsOf:willAddHistoryData,at:0)
-                    print("Chat showingData Num:\(self.showingData.count)")
-                    var willAddHistoryCellData = [CellData]()
-                    for data in willAddHistoryData {
-                        let oneCellData = ChatViewModel.buildCellData(data)
-                        willAddHistoryCellData.append(oneCellData)
-                    }
-                    self.isLoadHistoryDataAtTop = true
-                    self.showingCellData.insert(contentsOf:willAddHistoryCellData, at:0)
-                    print("Chat showingCellData Num:\(self.showingCellData.count)")
-                    
-                    self.talkListBlock.reloadData()
-                    let newContentSize = self.talkListBlock.contentSize
-                    let afterContentOffset = self.talkListBlock.contentOffset
-                    let newContentOffset = CGPoint(x: afterContentOffset.x, y: afterContentOffset.y + newContentSize.height - oldContentSize.height)
-                    self.talkListBlock.contentOffset = newContentOffset
-                    self.isLoadHistoryDataAtTop = false
-                    /*
-                    let currentIndexPath = IndexPath(row: 10, section: 0)
-                    self.talkListBlock.scrollToRow(at: currentIndexPath, at: .top, animated: false)
-                    */
-                    
-                }
-                
-            }
-        }
+        
+        
+        
     }
     
     //MARK:Asks the delegate if two gesture recognizers should be allowed to recognize gestures simultaneously.可以同时识别两种gesture recognizer
@@ -167,14 +195,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             ]
             self.showingData.append(oneTalkData)
             let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+            //self.needAutoReloadData = true
             self.showingCellData.append(oneCellData)
+            //self.needAutoReloadData = false
+            //self.scrollTobottomWhenReloadData()
             self.inputBlock.text = ""
             self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
                 if let oneTalkData = talkData {
                     //print(robotRes)
                     self.showingData.append(oneTalkData)
                     let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                    //self.needAutoReloadData = true
                     self.showingCellData.append(oneCellData)
+                    //self.needAutoReloadData = false
+                    //self.scrollTobottomWhenReloadData()
                 }
             })
         }
@@ -188,16 +222,23 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 "type":"text",
                 "content":currentYourTalk
             ]
+            //self.needAutoReloadData = true
             self.showingData.append(oneTalkData)
+            //self.needAutoReloadData = false
+            //self.scrollTobottomWhenReloadData()
             self.inputBlock.text = ""
             let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+            
             self.showingCellData.append(oneCellData)
             self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
                 if let oneTalkData = talkData {
                     //print(robotRes)
                     self.showingData.append(oneTalkData)
                     let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                    //self.needAutoReloadData = true
                     self.showingCellData.append(oneCellData)
+                    //self.needAutoReloadData = false
+                    //self.scrollTobottomWhenReloadData()
                 }
                 
             })
@@ -509,8 +550,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if let oneTalkData = talkData {
                 //print(robotRes)
                 self.showingData.append(oneTalkData)
+                
                 let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                //self.needAutoReloadData = true
                 self.showingCellData.append(oneCellData)
+                //self.needAutoReloadData = false
+                //self.scrollTobottomWhenReloadData()
                 
                 
                 self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: { contentTalkData in
@@ -518,7 +563,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                         //print(robotRes)
                         self.showingData.append(realContentTalkData)
                         let oneContentCellData = ChatViewModel.buildCellData(realContentTalkData)
+                        //self.needAutoReloadData = true
                         self.showingCellData.append(oneContentCellData)
+                        //self.needAutoReloadData = false
+                        //self.scrollTobottomWhenReloadData()
                     }
                 })
             }

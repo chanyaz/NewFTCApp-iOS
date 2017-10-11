@@ -102,6 +102,8 @@ class CellData {
     
     //是否为获取更多历史数据的提示语单元
     var isGetMoreHistory = false
+    //获取更多历史数据的提示语内容
+    var getMoreHistorySignContent = ""
     //基本字段
     var headImage: String = ""
     var whoSays: Member = .no
@@ -170,11 +172,12 @@ class CellData {
     var titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
     var cutlineFont = UIFont.systemFont(ofSize:10)
     var descriptionFont = UIFont.systemFont(ofSize:18)
-    let getMoreHistoryFont = UIFont.systemFont(ofSize:18)
+    let getMoreHistoryFont = UIFont.systemFont(ofSize:10)
+    
     //下拉加载更多历史记录时提示语CellData数据构造器：
-    init(getMoreHistory getMoreHistoryData:Bool) {
+    init(getMoreHistory getMoreHistoryData:Bool, signContent content: String) {
         self.isGetMoreHistory = getMoreHistoryData
-        
+        self.getMoreHistorySignContent = content
     }
     
     //分割线CellData数据构造器：

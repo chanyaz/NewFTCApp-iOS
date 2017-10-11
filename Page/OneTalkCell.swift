@@ -137,7 +137,7 @@ class OneTalkCell: UITableViewCell {
         self.backgroundColor = UIColor(hex: "#fff1e0")
         
         let cutlineContentView = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.cellData.getMoreHistoryHeight))
-        cutlineContentView.text = "下拉加载更多历史聊天数据"
+        cutlineContentView.text = self.cellData.getMoreHistorySignContent
         cutlineContentView.font = self.cellData.getMoreHistoryFont
         cutlineContentView.textColor = self.cellData.getMoreHistoryColor
         cutlineContentView.textAlignment = .center

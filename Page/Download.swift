@@ -276,5 +276,15 @@ struct Download {
         return nil
     }
     
+    // MARK: - Add a version parameter for request
+    public static func addVersion(_ urlString: String) -> String {
+        let versionFromBundle: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        if urlString.range(of: "?") != nil{
+            return "\(urlString)&v=\(versionFromBundle)"
+        } else {
+            return "\(urlString)?v=\(versionFromBundle)"
+        }
+    }
+    
 }
 

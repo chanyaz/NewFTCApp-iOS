@@ -21,12 +21,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var themeColor: String? = nil
     var coverTheme: String?
     var layoutStrategy: String?
+    // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
+    var isWebViewFirstLoading = true
     
     fileprivate let itemsPerRowForRegular: CGFloat = 3
     fileprivate let itemsPerRowForCompact: CGFloat = 1
     fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    
-    
+
     // MARK: Search
     fileprivate lazy var searchBar: UISearchBar? = nil
     fileprivate var searchKeywords: String? = nil {
@@ -315,19 +316,18 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
+        updateWebviewTraffic()
         filterDataWithAudioUrl()
-        //        TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
-        
-        
+        //TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         // MARK: In setting page, you might need to update UI to reflected change in preference
         if let type = dataObject["type"] {
             if type == "setting" {
-                
                 loadSettings()
             }
         }
-        
     }
+    
+
     
     override func viewWillLayoutSubviews() {
         //         print("33333")//第一次启动出现3次，转屏出现一次
@@ -545,6 +545,22 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         print ("pull to refresh fired")
         // TODO: Handle Pull to Refresh
         requestNewContent()
+    }
+    
+    
+    private func updateWebviewTraffic() {
+        if isWebViewFirstLoading == true {
+            isWebViewFirstLoading = false
+            return
+        }
+        let jsCode = "refreshAllAds();ga('send', 'pageview');"
+        webView?.evaluateJavaScript(jsCode) { (result, error) in
+            //            if error == nil {
+            //                print ("pv recorded and ad refreshed")
+            //            } else {
+            //                print (error ?? "pv record error")
+            //            }
+        }
     }
     
     override func didReceiveMemoryWarning() {

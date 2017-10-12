@@ -489,7 +489,7 @@ class LaunchScreen: UIViewController {
                     urlComponents.queryItems = [newQuery]
                 }
                 if let url = urlComponents.url {
-                    Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
+                    Download.getDataFromUrl(url) {(data, response, error)  in
                         DispatchQueue.main.async { () -> Void in
                             guard let _ = data , error == nil else {
                                 // MARK: Use the original impressionUrlString for Google Analytics

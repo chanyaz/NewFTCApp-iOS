@@ -1012,6 +1012,21 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             }
         } else {
             switch selectedItem.type {
+            case "column":
+                if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+                    dataViewController.dataObject = [
+                                        "title": selectedItem.headline,
+                                        //"api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
+                                        "listapi":"https://danla2f5eudt1.cloudfront.net/column/\(selectedItem.id)?webview=ftcapp&bodyonly=yes",
+                                        "url":"http://www.ftchinese.com/column/\(selectedItem.id)",
+                                        "screenName":"homepage/column/\(selectedItem.id)",
+                                        "compactLayout": "OutOfBox",
+                                        "coverTheme": "OutOfBox-LifeStyle"
+                                        ]
+                    dataViewController.pageTitle = selectedItem.headline
+                    navigationController?.pushViewController(dataViewController, animated: true)
+                    return false
+                }
             case "setting":
                 let optionInfo = Setting.get(selectedItem.id)
                 if let optionType = optionInfo.type {

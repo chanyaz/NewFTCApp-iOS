@@ -34,27 +34,28 @@ struct AppNavigation {
                     "screenName":"homepage",
                     "Insert Content": "home"
                 ],
-                [
-                    "title": "新测试",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
-                    "regularLayout": "",
-                    "compactLayout": "SmoothCover-No-Ad",
-                    "coverTheme": "OutOfBox-Blue",
-                    "url":"http://www.ftchinese.com/channel/datanews.html",
-                    "screenName":"homepage/ftcc"
-                ],
-                [
-                    "title": "测试",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
-                    "regularLayout": "",
-                    "compactLayout": "OutOfBox-No-Ad",
-                    "coverTheme": "OutOfBox-Blue",
-                    "url":"http://www.ftchinese.com/channel/datanews.html",
-                    "screenName":"homepage/ftcc"
-                ],
+//                [
+//                    "title": "新测试",
+//                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
+//                    "regularLayout": "",
+//                    "compactLayout": "SmoothCover-No-Ad",
+//                    "coverTheme": "OutOfBox-Blue",
+//                    "url":"http://www.ftchinese.com/channel/datanews.html",
+//                    "screenName":"homepage/ftcc"
+//                ],
+//                [
+//                    "title": "测试",
+//                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
+//                    "regularLayout": "",
+//                    "compactLayout": "OutOfBox-No-Ad",
+//                    "coverTheme": "OutOfBox-Blue",
+//                    "url":"http://www.ftchinese.com/channel/datanews.html",
+//                    "screenName":"homepage/ftcc"
+//                ],
                 [
                     "title": "中国",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/china.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/china.html",
                     "regularLayout": "",
                     "screenName":"homepage/china",
@@ -62,37 +63,41 @@ struct AppNavigation {
                 ],
                 [
                     "title": "全球",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/channel/world.html?type=json",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/world.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/world.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/world.html",
                     "screenName":"homepage/world",
                     "coverTheme":"Pink"
                 ],
                 [
                     "title": "金融市场",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/markets.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/markets.html",
                     "screenName":"homepage/markets",
                     "coverTheme": "OutOfBox"
                 ],
                 [
                     "title": "管理",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/channel/management.html?type=json",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/management.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/management.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/management.html",
                     "screenName":"homepage/management",
                     "coverTheme": "Blue"
                 ],
-                [
-                    "title": "思维播客",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
-                    "regularLayout": "",
-                    "compactLayout": "OutOfBox-No-Ad",
-                    "coverTheme": "OutOfBox-Blue",
-                    "url":"http://www.ftchinese.com/channel/datanews.html",
-                    "screenName":"homepage/ftcc"
-                ],
+//                [
+//                    "title": "思维播客",
+//                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/ftcc",
+//                    "regularLayout": "",
+//                    "compactLayout": "OutOfBox-No-Ad",
+//                    "coverTheme": "OutOfBox-Blue",
+//                    "url":"http://www.ftchinese.com/channel/datanews.html",
+//                    "screenName":"homepage/ftcc"
+//                ],
                 [
                     "title": "生活时尚",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/lifestyle.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/lifestyle.html",
                     "screenName":"homepage/lifestyle",
                     "compactLayout": "OutOfBox",
@@ -100,14 +105,16 @@ struct AppNavigation {
                 ],
                 [
                     "title": "专栏",
-                    "api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/column.html?webview=ftcapp&bodyonly=yes&ad=no",
                     "url":"http://www.ftchinese.com/channel/column.html",
                     "screenName":"homepage/column",
                     "coverTheme": "Opinion"
                 ],
                 [
                     "title": "热门文章",
-                    "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=hot",
+                    //"api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=hot",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/weekly.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/weekly.html?webview=ftcapp",
                     "compactLayout": "OutOfBox",
                     "regularLayout": "",
@@ -116,7 +123,8 @@ struct AppNavigation {
                 ],
                 [
                     "title": "数据新闻",
-                    "api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=datanews",
+                    //"api":"https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=datanews",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/datanews.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/datanews.html?webview=ftcapp",
                     "screenName":"homepage/datanews",
                     "compactLayout": "OutOfBox",

@@ -112,6 +112,14 @@ struct AppNavigation {
                     "coverTheme": "Opinion"
                 ],
                 [
+                    "title": "特别报导",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/special.html?webview=ftcapp&bodyonly=yes&ad=no&001",
+                    "url":"http://www.ftchinese.com/channel/special.html",
+                    "screenName":"homepage/special",
+                    "coverTheme": "Opinion"
+                ],
+                [
                     "title": "热门文章",
                     //"api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=hot",
                     "listapi":"https://danla2f5eudt1.cloudfront.net/channel/weekly.html?webview=ftcapp&bodyonly=yes",
@@ -158,6 +166,7 @@ struct AppNavigation {
                 [
                     "title": "英语电台",
                     "api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=radio&dfadfadfadfadf",
+                    //"listapi":"https://danla2f5eudt1.cloudfront.net/channel/radio.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/radio.html?webview=ftcapp",
                     "screenName":"english/radio",
                     "coverTheme": ""

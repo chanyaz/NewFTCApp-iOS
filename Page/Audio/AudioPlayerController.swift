@@ -107,10 +107,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         if let player = player {
             print("ButtonPlayPause\(player)")
             if player.rate != 0 && player.error == nil {
+                stopRotateAnimate()
                 player.pause()
                 playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
                 TabBarAudioContent.sharedInstance.isPlaying = false
             } else {
+                resumeRotateAnimate()
                 player.play()
                 player.replaceCurrentItem(with: playerItem)
                 playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
@@ -194,9 +196,16 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     
-    
+    var isLove:Bool = false
     @objc func favorite(_ sender: UIButton) {
         print("hideAudioButton favorite button")
+        if !isLove{
+            self.love.setImage(UIImage(named:"Clip"), for: UIControlState.normal)
+            isLove = true
+        }else{
+            self.love.setImage(UIImage(named:"LoveBtn"), for: UIControlState.normal)
+            isLove = false
+        }
     }
     
     
@@ -307,7 +316,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         updatePlayButtonUI()
         self.playStatus.text = fetchAudioResults![0].items[playingIndex].headline
 //        rotateAnimation()
-//        rotateAnimate()
+//        startRotateAnimate()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(reloadAudioView),
@@ -351,7 +360,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.audioImage.image = image
         UIGraphicsEndImageContext()
     }
-    func rotateAnimate(){
+    func startRotateAnimate(){
         let animation = CABasicAnimation(keyPath: "transform.rotation")
         animation.fromValue = 0
         animation.toValue = 2*Double.pi
@@ -362,6 +371,24 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         animation.delegate = self
         audioImage.layer.add(animation, forKey: nil)
+    }
+    func stopRotateAnimate(){
+        let pausedTime = audioImage.layer.convertTime(CACurrentMediaTime(), from: nil)
+        audioImage.layer.speed = 0.0
+        audioImage.layer.timeOffset = pausedTime
+    }
+    func resumeRotateAnimate(){
+        if (audioImage.layer.timeOffset == 0) {
+            self.startRotateAnimate()
+            return
+        }
+        
+        let pausedTime = audioImage.layer.timeOffset
+        audioImage.layer.speed = 1.0                                       // 开始旋转
+        audioImage.layer.timeOffset = 0.0
+        audioImage.layer.beginTime = 0.0
+        let timeSincePause = audioImage.layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime                                          // 恢复时间
+        audioImage.layer.beginTime = timeSincePause;
     }
     func rotateAnimation(){
         let endAngle = CGAffineTransform(rotationAngle:CGFloat(angle*(Double.pi/180.0)))
@@ -380,7 +407,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
-        rotateAnimate()
+        startRotateAnimate()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

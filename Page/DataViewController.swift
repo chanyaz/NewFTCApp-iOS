@@ -180,9 +180,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             webView?.navigationDelegate = self
             webView?.clipsToBounds = true
             webView?.scrollView.bounces = true
-            
-            
-            
             refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
             webView?.scrollView.addSubview(refreshControl)
             
@@ -228,14 +225,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 }
             }  else if let listAPI = dataObject["listapi"] {
                 let fileExtension = "html"
-//                if let url = URL(string: listAPI) {
-//                    Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
-//                        if let data = data, error == nil {
-//                            Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
-//                        }
-//                        self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
-//                    }
-//                }
                 requestNewContentForWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
                 renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
             } else if let url = URL(string: urlString) {
@@ -265,11 +254,17 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     private func requestNewContentForWebview(_ listAPI: String, urlString: String, fileExtension: String) {
+        view.addSubview(activityIndicator)
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
         let listAPIString = APIs.convert(Download.addVersion(listAPI))
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
                 if let data = data, error == nil {
                     Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
+                }
+                DispatchQueue.main.async {
+                    self?.activityIndicator.removeFromSuperview()
                 }
                 self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
             }

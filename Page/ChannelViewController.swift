@@ -104,8 +104,10 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         
         // MARK: - Add channelScroller
         let channelScrollerRect = CGRect(x: 0, y: 0, width: fullPageViewRect.width, height: channelScrollerHeight)
+        
         let flowLayout = UICollectionViewFlowLayout()
         channelScrollerView = UICollectionView(frame: channelScrollerRect, collectionViewLayout: flowLayout)
+        channelScrollerView?.autoresizingMask = [.flexibleWidth]
         channelScrollerView?.register(UINib.init(nibName: "ChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "ChannelScrollerCell")
         channelScrollerView?.register(UINib.init(nibName: "FixedWidthChannelScrollerCell", bundle: nil), forCellWithReuseIdentifier: "FixedWidthChannelScrollerCell")
         

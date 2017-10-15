@@ -326,24 +326,25 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     override func viewWillLayoutSubviews() {
         //         print("33333")//第一次启动出现3次，转屏出现一次
-        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-        
-        if horizontalClass == .regular && verticalCass == .regular {
-            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
-                isLandscape = true
-                collectionView?.collectionViewLayout=flowLayoutH
-                flowLayoutH.minimumInteritemSpacing = 0
-                flowLayoutH.minimumLineSpacing = 0
-            }
-            
-            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
-                isLandscape = false
-                collectionView?.collectionViewLayout=flowLayout
-                flowLayout.minimumInteritemSpacing = 0
-                flowLayout.minimumLineSpacing = 0
-            }
-        }
+//        print ("view will layout subviews called")
+//        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+//        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+//
+//        if horizontalClass == .regular && verticalCass == .regular {
+//            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+//                isLandscape = true
+//                collectionView?.collectionViewLayout=flowLayoutH
+//                flowLayoutH.minimumInteritemSpacing = 0
+//                flowLayoutH.minimumLineSpacing = 0
+//            }
+//
+//            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+//                isLandscape = false
+//                collectionView?.collectionViewLayout=flowLayout
+//                flowLayout.minimumInteritemSpacing = 0
+//                flowLayout.minimumLineSpacing = 0
+//            }
+//        }
     }
     
     

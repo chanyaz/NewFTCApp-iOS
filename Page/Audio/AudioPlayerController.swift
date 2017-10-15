@@ -408,6 +408,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
         startRotateAnimate()
+        self.setNeedsStatusBarAppearanceUpdate()
+        print("bar status style--\(self.preferredStatusBarStyle)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -445,10 +447,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
             print("progress value")
             let duration = CMTimeGetSeconds(d)
-             progressSlider.maximumValue = Float(duration)
-            if let currrentPlayingTime = TabBarAudioContent.sharedInstance.time{
-                progressSlider.value = Float((CMTimeGetSeconds(currrentPlayingTime)))
-                self.updatePlayTime(current: currrentPlayingTime, duration: d)
+            if duration.isNaN == false {
+                progressSlider.maximumValue = Float(duration)
+                if let currrentPlayingTime = TabBarAudioContent.sharedInstance.time{
+                    progressSlider.value = Float((CMTimeGetSeconds(currrentPlayingTime)))
+                    self.updatePlayTime(current: currrentPlayingTime, duration: d)
+                }
             }
         }
 

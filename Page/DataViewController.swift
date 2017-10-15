@@ -324,8 +324,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     
-    override func viewWillLayoutSubviews() {
-        //         print("33333")//第一次启动出现3次，转屏出现一次
+//    override func viewWillLayoutSubviews() {
+//        //         print("33333")//第一次启动出现3次，转屏出现一次
 //        print ("view will layout subviews called")
 //        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
 //        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
@@ -345,7 +345,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
 //                flowLayout.minimumLineSpacing = 0
 //            }
 //        }
-    }
+//    }
     
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

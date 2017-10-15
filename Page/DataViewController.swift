@@ -27,7 +27,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     fileprivate let itemsPerRowForRegular: CGFloat = 3
     fileprivate let itemsPerRowForCompact: CGFloat = 1
     fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-
+    
     // MARK: Search
     fileprivate lazy var searchBar: UISearchBar? = nil
     fileprivate var searchKeywords: String? = nil {
@@ -322,7 +322,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
     }
     
-
+    
     
     override func viewWillLayoutSubviews() {
         //         print("33333")//第一次启动出现3次，转屏出现一次
@@ -550,11 +550,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
         let jsCode = "refreshAllAds();ga('send', 'pageview');"
         webView?.evaluateJavaScript(jsCode) { (result, error) in
-            //            if error == nil {
-            //                print ("pv recorded and ad refreshed")
-            //            } else {
-            //                print (error ?? "pv record error")
-            //            }
+            if error == nil {
+                print ("pv recorded and ad refreshed")
+            } else {
+                print (error ?? "pv record error")
+                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
+                self.refreshWebView(self.refreshControl)
+            }
         }
     }
     
@@ -1010,14 +1012,14 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             case "column":
                 if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
                     dataViewController.dataObject = [
-                                        "title": selectedItem.headline,
-                                        //"api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
-                                        "listapi":"https://danla2f5eudt1.cloudfront.net/column/\(selectedItem.id)?webview=ftcapp&bodyonly=yes",
-                                        "url":"http://www.ftchinese.com/column/\(selectedItem.id)",
-                                        "screenName":"homepage/column/\(selectedItem.id)",
-                                        "compactLayout": "OutOfBox",
-                                        "coverTheme": "OutOfBox-LifeStyle"
-                                        ]
+                        "title": selectedItem.headline,
+                        //"api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
+                        "listapi":"https://danla2f5eudt1.cloudfront.net/column/\(selectedItem.id)?webview=ftcapp&bodyonly=yes",
+                        "url":"http://www.ftchinese.com/column/\(selectedItem.id)",
+                        "screenName":"homepage/column/\(selectedItem.id)",
+                        "compactLayout": "OutOfBox",
+                        "coverTheme": "OutOfBox-LifeStyle"
+                    ]
                     dataViewController.pageTitle = selectedItem.headline
                     navigationController?.pushViewController(dataViewController, animated: true)
                     return false

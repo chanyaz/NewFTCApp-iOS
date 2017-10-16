@@ -36,7 +36,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
                 //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
                 self.tableViewScrollToBottom(animated: true)
-                print("scroll2")
+                //
+                print("scroll3")
              
             }
         }
@@ -48,7 +49,21 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     var addedGetHistorySignToShowingCellData = false
     
-    var isScrolling = false// 用于存储tableView是否处于滚动状态
+    var isScrolling = false /*{ // MARK:此处可判断到底是否在scrolling,如果牺牲体验，可以使用该方法：即滚动的时候不能弹出键盘
+        
+        didSet {
+            if(self.isScrolling == false) {
+                
+                //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+                //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+                self.inputBlock.isUserInteractionEnabled = true
+            } else {
+                self.inputBlock.isUserInteractionEnabled = false
+            }
+        }
+ 
+        
+    }*/  // 用于存储tableView是否处于滚动状态
     //TODO:增加函数事件：当拉到tableView顶部时，再次从historyTalkData中加载10个数据
     //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
     func scrollTobottomWhenReloadData() {
@@ -65,22 +80,27 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
  
     @IBAction func touchInputBlock(_ sender: UITextField) {
         //self.talkListBlock.isScrollEnabled = false;//MARK:这两就话可以瞬间停止UIScrollView的惯性滚动
-        let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
-        self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
-        //MARK:只要在不滚动的状态下才弹出键盘，否则会出bug
-        if(self.isScrolling == false) {
-            self.inputBlock.resignFirstResponder()
-        //self.talkListBlock.isScrollEnabled = true;
+       
+     
+        
+        /*if(self.isScrolling == false) {
+            sender.isUserInteractionEnabled = true;
+         */
+            ///let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
+            ///self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
+            //self.inputBlock.resignFirstResponder()
+        /*
         } else {
             print("Alert:It is still scrolling")
         }
+         */
     }
-    
+ 
     @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {//When tap
-        self.talkListBlock.isScrollEnabled = false;
-        self.talkListBlock.isScrollEnabled = true;
-        let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
-        self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
+        //self.talkListBlock.isScrollEnabled = false;
+        //self.talkListBlock.isScrollEnabled = true;
+        //let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
+        //self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
         self.inputBlock.resignFirstResponder()
 
     }
@@ -285,55 +305,79 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.isScrolling = true
     }
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        self.isScrolling = true
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            scrollViewDidEndScrolling(self.talkListBlock)
+        }
+    }
+   
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        scrollViewDidEndScrolling(self.talkListBlock)
+    }
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollViewDidEndScrolling(self.talkListBlock)
+    }
+ 
+    func scrollViewDidEndScrolling(_ scrollView: UIScrollView) {
         self.isScrolling = false
     }
+  
     @objc func keyboardWillShow(_ notification: NSNotification) {
         //MARK:键盘显示时滚动到talk list view滚动到底部
-        let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
-        self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-        
-        print("show:\(keyboardWillShowExecute)")
-        keyboardWillShowExecute += 1
-        if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
-            let keyboardBounds = value.cgRectValue
-            let keyboardFrame = self.view.convert(keyboardBounds, to: nil)
-            
-            
-            //print(keyboardFrame.height)
-
-            let deltaY = keyboardFrame.size.height
-            
-             //print("deltaY:\(deltaY)")
-            let animation:(() -> Void) = {
-                self.view.transform = CGAffineTransform(translationX: 0,y: -deltaY)
-                self.view.setNeedsUpdateConstraints()
-                self.view.setNeedsLayout()
-                //print("showAnimate:\(showAnimateExecute)")
-                showAnimateExecute += 1
-                //print("self.view.frame:\(self.view.frame)")
-            }
-
-            UIView.animate(
-                withDuration: duration,
-                delay: 0.0,
-                options: UIViewAnimationOptions(rawValue: curve),
-              
-                animations:animation,
-                completion:nil
-                /*
-                completion: { Void in
-                    self.view.layoutIfNeeded()
+         let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+         self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+        //DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(80)) {
+            print("show:\(keyboardWillShowExecute)")
+            keyboardWillShowExecute += 1
+            if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
+                let keyboardBounds = value.cgRectValue
+                let keyboardFrame = self.view.convert(keyboardBounds, to: nil)
                 
+                
+                //print(keyboardFrame.height)
+
+                let deltaY = keyboardFrame.size.height
+                
+                 //print("deltaY:\(deltaY)")
+                let animation:(() -> Void) = {
+                    self.view.transform = CGAffineTransform(translationX: 0,y: -deltaY)
+                    self.view.setNeedsUpdateConstraints()
+                    self.view.setNeedsLayout()
+                    //print("showAnimate:\(showAnimateExecute)")
+                    showAnimateExecute += 1
+                    //print("self.view.frame:\(self.view.frame)")
                 }
-                 */
-            )
-             self.view.setNeedsLayout()
-            //self.view.layoutIfNeeded()
-            
-            
-        }
+
+                UIView.animate(
+                    withDuration: duration,
+                    delay: 0.0,
+                    options: UIViewAnimationOptions(rawValue: curve),
+                  
+                    animations:animation,
+                    completion:nil
+                    /*
+                    completion: { Void in
+                        self.view.layoutIfNeeded()
+                    
+                    }
+                     */
+                )
+                 self.view.setNeedsLayout()
+                //self.view.layoutIfNeeded()
+                
+                
+            }
+        //}
         
+    }
+    @objc func keyboardDidShow(_ notification:NSNotification){
+        //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+        //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
     }
     @objc func keyboardWillHide(_ notification: NSNotification) {
         print("hide")
@@ -493,18 +537,35 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     //MARK:第一次加载时要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部
     func tableViewScrollToBottom(animated:Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+
+        self.modifiyTheOffset(animated: animated)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(80)) {
             //let numberOfRows = self.talkListBlock.numberOfRows(inSection: 0)
-            let indexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
+            
             //if numberOfRows > 0 {
                 //let indexPath = IndexPath(row: numberOfRows-1, section: 0)
+
+                let indexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
                 self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
+            
                 print("scroll1")
             //}
         }
+        
     }
-        
-        
+    
+    func modifiyTheOffset(animated:Bool) {
+        if(self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height) {
+            print("scroll2")
+            print("here")
+            print("talkListBlock.contentSize.height:\(self.talkListBlock.contentSize.height)")
+            print("talkListBlock.frame.size.height:\(self.talkListBlock.frame.size.height)")
+            let offset = CGPoint(x: 0, y: self.talkListBlock.contentSize.height-self.talkListBlock.frame.size.height)
+            self.talkListBlock.setContentOffset(offset, animated: animated)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Chat Execute viewDidLoad")
@@ -512,7 +573,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         //MARK:监听键盘弹出、收起事件
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow(_:)), name:NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         //MARK:监听是否点击Home键以及重新进入界面
@@ -525,12 +586,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.myPanGesture.delegate = self
         //elf.myPanGesture.require(toFail: self.talkListBlock.panGestureRecognizer)
 
-        
+        self.view.backgroundColor = .white
         self.talkListBlock.backgroundColor = UIColor(hex: "#fff1e0")
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
         self.bottomBar.backgroundColor = UIColor(hex: "#f7e9d8")
-        
+        //self.inputBlock.isUserInteractionEnabled = false
         // MARK：为bottomToolbar添加上边框
         let border = CALayer()
         border.frame = CGRect(x:0, y:0, width:self.view.frame.width, height:1)

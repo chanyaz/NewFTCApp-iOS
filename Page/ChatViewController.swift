@@ -12,6 +12,8 @@ import CoreGraphics
 //var globalTalkData = Array(repeating: CellData(), count: 1)
 var keyboardWillShowExecute = 0
 var showAnimateExecute = 0
+
+var screenWidth = CGFloat(0)
 class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
     
     
@@ -31,8 +33,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
                 self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
                 print("showingCellDataNum:\(showingCellData.count)")
-                let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
-                self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+                //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+                //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+                self.tableViewScrollToBottom(animated: true)
                 print("scroll2")
              
             }
@@ -44,6 +47,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var isGetMoreHistorySign = false
     
     var addedGetHistorySignToShowingCellData = false
+    
+    var isScrolling = false// 用于存储tableView是否处于滚动状态
     //TODO:增加函数事件：当拉到tableView顶部时，再次从historyTalkData中加载10个数据
     //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
     func scrollTobottomWhenReloadData() {
@@ -59,11 +64,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var inputBlock: UITextField!
  
     @IBAction func touchInputBlock(_ sender: UITextField) {
-        self.talkListBlock.isScrollEnabled = false;//MARK:这两就话可以瞬间停止UIScrollView的惯性滚动
-        self.talkListBlock.isScrollEnabled = true;
+        //self.talkListBlock.isScrollEnabled = false;//MARK:这两就话可以瞬间停止UIScrollView的惯性滚动
         let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
         self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
-        self.inputBlock.resignFirstResponder()
+        //MARK:只要在不滚动的状态下才弹出键盘，否则会出bug
+        if(self.isScrolling == false) {
+            self.inputBlock.resignFirstResponder()
+        //self.talkListBlock.isScrollEnabled = true;
+        } else {
+            print("Alert:It is still scrolling")
+        }
     }
     
     @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {//When tap
@@ -272,7 +282,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
        
     }
-    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.isScrolling = true
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.isScrolling = false
+    }
     @objc func keyboardWillShow(_ notification: NSNotification) {
         //MARK:键盘显示时滚动到talk list view滚动到底部
         let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
@@ -478,14 +493,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     //MARK:第一次加载时要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部
     func tableViewScrollToBottom(animated:Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
-            let numberOfRows = self.talkListBlock.numberOfRows(inSection: 0)
-            
-            if numberOfRows > 0 {
-                let indexPath = IndexPath(row: numberOfRows-1, section: 0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+            //let numberOfRows = self.talkListBlock.numberOfRows(inSection: 0)
+            let indexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
+            //if numberOfRows > 0 {
+                //let indexPath = IndexPath(row: numberOfRows-1, section: 0)
                 self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
                 print("scroll1")
-            }
+            //}
         }
     }
         
@@ -538,11 +553,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         } catch {
             
         }
+        var initShowingContainHistory = false
         if let realHistoryTalkData = self.historyTalkData {
             let historyNum = realHistoryTalkData.count
             print("Chat historyNum:\(historyNum)")
             //MARK:只显示历史会话中最近的10条记录
             if historyNum > 0 {
+                initShowingContainHistory = true
                 if historyNum <= 10  {
                    self.showingData = realHistoryTalkData
                    self.historyTalkData = []
@@ -559,7 +576,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let oneCellData = ChatViewModel.buildCellData(data)
             initShowingCellData.append(oneCellData)
         }
-        initShowingCellData.append(CellData(cutline:true)) //此时不涉及showingData的问题，showingData是为了存储的数据，而历史记录数据不用存储
+        if initShowingContainHistory == true {
+            initShowingCellData.append(CellData(cutline:true)) //此时不涉及showingData的问题，showingData是为了存储的数据，而历史记录数据不用存储
+        }
         self.showingCellData = initShowingCellData
         print("Chat showingCellData Num:\(self.showingCellData.count)")
         self.talkListBlock.reloadData()

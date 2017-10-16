@@ -29,6 +29,20 @@ class OneTalkCell: UITableViewCell {
             newFrame.size.width = UIScreen.main.bounds.width
             super.frame = newFrame
         }
+        
+        
+        /*
+        didSet {
+            if(screenWidth == CGFloat(0)) {
+                var newFrame = frame
+                newFrame.size.width = UIScreen.main.bounds.width
+                super.frame = newFrame
+                screenWidth = self.frame.width
+            } else {
+                super.frame.size.width = screenWidth
+            }
+        }
+         */
     }
     
     init(_ data:CellData, reuseId cellId:String) {//NOTE: View通过ChatViewController得到Model的数据
@@ -189,7 +203,7 @@ class OneTalkCell: UITableViewCell {
         
         
         // 根据self.frame尺寸得到相关尺寸
-        let maxBubbleImageWidth = self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen
+        let maxBubbleImageWidth = self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
         let maxTextWidth = maxBubbleImageWidth - self.cellData.bubbleImageInsets.left - self.cellData.bubbleImageInsets.right
         let imageWidth = maxTextWidth
         let imageHeight = maxTextWidth / 16 * 9

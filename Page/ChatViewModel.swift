@@ -115,7 +115,7 @@ class CellData {
     var cutlineColor = UIColor(hex: "#999999")
     let getMoreHistoryColor = UIColor(hex: "#999999")
     //基本尺寸
-    let bubbleShorterLen = CGFloat(20)
+    let bubbleShorterLen = CGFloat(0)
     var bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12)//文字嵌入气泡的边距
     var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)//气泡点九拉伸时的边距
     var cellInsets = UIEdgeInsetsMake(10, 5, 15, 5)//头像嵌入Cell的最小边距

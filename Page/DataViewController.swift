@@ -326,6 +326,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
 //    override func viewWillLayoutSubviews() {
 //        //         print("33333")//第一次启动出现3次，转屏出现一次
+//        super.viewWillLayoutSubviews()
 //        print ("view will layout subviews called")
 //        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
 //        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
@@ -350,7 +351,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        print("22222")//第一次启动不运行，转屏出现一次
+        print("view will transition called. ")//第一次启动不运行，转屏出现一次
         collectionView?.reloadData()
     }
     

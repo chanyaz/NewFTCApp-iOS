@@ -12,6 +12,8 @@ import CoreGraphics
 //var globalTalkData = Array(repeating: CellData(), count: 1)
 var keyboardWillShowExecute = 0
 var showAnimateExecute = 0
+
+var screenWidth = CGFloat(0)
 class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
     
     
@@ -33,7 +35,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 print("showingCellDataNum:\(showingCellData.count)")
                 //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
                 //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-                self.tableViewScrollToBottom(animated: false)
+                self.tableViewScrollToBottom(animated: true)
                 print("scroll2")
              
             }
@@ -45,6 +47,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var isGetMoreHistorySign = false
     
     var addedGetHistorySignToShowingCellData = false
+    
+    var isScrolling = false// 用于存储tableView是否处于滚动状态
     //TODO:增加函数事件：当拉到tableView顶部时，再次从historyTalkData中加载10个数据
     //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
     func scrollTobottomWhenReloadData() {
@@ -60,11 +64,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var inputBlock: UITextField!
  
     @IBAction func touchInputBlock(_ sender: UITextField) {
-        self.talkListBlock.isScrollEnabled = false;//MARK:这两就话可以瞬间停止UIScrollView的惯性滚动
-        self.talkListBlock.isScrollEnabled = true;
+        //self.talkListBlock.isScrollEnabled = false;//MARK:这两就话可以瞬间停止UIScrollView的惯性滚动
         let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
         self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
-        self.inputBlock.resignFirstResponder()
+        //MARK:只要在不滚动的状态下才弹出键盘，否则会出bug
+        if(self.isScrolling == false) {
+            self.inputBlock.resignFirstResponder()
+        //self.talkListBlock.isScrollEnabled = true;
+        } else {
+            print("Alert:It is still scrolling")
+        }
     }
     
     @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {//When tap
@@ -273,7 +282,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
        
     }
-    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.isScrolling = true
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.isScrolling = false
+    }
     @objc func keyboardWillShow(_ notification: NSNotification) {
         //MARK:键盘显示时滚动到talk list view滚动到底部
         let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)

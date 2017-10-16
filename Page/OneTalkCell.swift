@@ -189,7 +189,7 @@ class OneTalkCell: UITableViewCell {
         
         
         // 根据self.frame尺寸得到相关尺寸
-        let maxBubbleImageWidth = self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen
+        let maxBubbleImageWidth = self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
         let maxTextWidth = maxBubbleImageWidth - self.cellData.bubbleImageInsets.left - self.cellData.bubbleImageInsets.right
         let imageWidth = maxTextWidth
         let imageHeight = maxTextWidth / 16 * 9

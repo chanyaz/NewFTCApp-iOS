@@ -31,8 +31,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
                 self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
                 print("showingCellDataNum:\(showingCellData.count)")
-                let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
-                self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+                //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+                //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+                self.tableViewScrollToBottom(animated: false)
                 print("scroll2")
              
             }
@@ -478,14 +479,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     //MARK:第一次加载时要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部
     func tableViewScrollToBottom(animated:Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
-            let numberOfRows = self.talkListBlock.numberOfRows(inSection: 0)
-            
-            if numberOfRows > 0 {
-                let indexPath = IndexPath(row: numberOfRows-1, section: 0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+            //let numberOfRows = self.talkListBlock.numberOfRows(inSection: 0)
+            let indexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
+            //if numberOfRows > 0 {
+                //let indexPath = IndexPath(row: numberOfRows-1, section: 0)
                 self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
                 print("scroll1")
-            }
+            //}
         }
     }
         
@@ -538,11 +539,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         } catch {
             
         }
+        var initShowingContainHistory = false
         if let realHistoryTalkData = self.historyTalkData {
             let historyNum = realHistoryTalkData.count
             print("Chat historyNum:\(historyNum)")
             //MARK:只显示历史会话中最近的10条记录
             if historyNum > 0 {
+                initShowingContainHistory = true
                 if historyNum <= 10  {
                    self.showingData = realHistoryTalkData
                    self.historyTalkData = []
@@ -559,7 +562,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let oneCellData = ChatViewModel.buildCellData(data)
             initShowingCellData.append(oneCellData)
         }
-        initShowingCellData.append(CellData(cutline:true)) //此时不涉及showingData的问题，showingData是为了存储的数据，而历史记录数据不用存储
+        if initShowingContainHistory == true {
+            initShowingCellData.append(CellData(cutline:true)) //此时不涉及showingData的问题，showingData是为了存储的数据，而历史记录数据不用存储
+        }
         self.showingCellData = initShowingCellData
         print("Chat showingCellData Num:\(self.showingCellData.count)")
         self.talkListBlock.reloadData()

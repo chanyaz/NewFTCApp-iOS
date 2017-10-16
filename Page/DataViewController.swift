@@ -308,6 +308,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print ("view will appear called")
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
@@ -315,42 +316,47 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         filterDataWithAudioUrl()
         //TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         // MARK: In setting page, you might need to update UI to reflected change in preference
-        if let type = dataObject["type"] {
-            if type == "setting" {
-                loadSettings()
-            }
+        if let type = dataObject["type"],
+            type == "setting" {
+            loadSettings()
         }
     }
     
+    //    override func viewDidAppear(_ animated: Bool) {
+    //        super.viewDidAppear(animated)
+    //
+    //        print ("view did appear called")
+    //    }
     
     
-//    override func viewWillLayoutSubviews() {
-//        //         print("33333")//第一次启动出现3次，转屏出现一次
-//        print ("view will layout subviews called")
-//        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-//        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-//
-//        if horizontalClass == .regular && verticalCass == .regular {
-//            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
-//                isLandscape = true
-//                collectionView?.collectionViewLayout=flowLayoutH
-//                flowLayoutH.minimumInteritemSpacing = 0
-//                flowLayoutH.minimumLineSpacing = 0
-//            }
-//
-//            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
-//                isLandscape = false
-//                collectionView?.collectionViewLayout=flowLayout
-//                flowLayout.minimumInteritemSpacing = 0
-//                flowLayout.minimumLineSpacing = 0
-//            }
-//        }
-//    }
+    //    override func viewWillLayoutSubviews() {
+    //        //         print("33333")//第一次启动出现3次，转屏出现一次
+    //        super.viewWillLayoutSubviews()
+    //        print ("view will layout subviews called")
+    //        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+    //        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+    //
+    //        if horizontalClass == .regular && verticalCass == .regular {
+    //            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+    //                isLandscape = true
+    //                collectionView?.collectionViewLayout=flowLayoutH
+    //                flowLayoutH.minimumInteritemSpacing = 0
+    //                flowLayoutH.minimumLineSpacing = 0
+    //            }
+    //
+    //            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+    //                isLandscape = false
+    //                collectionView?.collectionViewLayout=flowLayout
+    //                flowLayout.minimumInteritemSpacing = 0
+    //                flowLayout.minimumLineSpacing = 0
+    //            }
+    //        }
+    //    }
     
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        print("22222")//第一次启动不运行，转屏出现一次
+        print("view will transition called. ")//第一次启动不运行，转屏出现一次
         collectionView?.reloadData()
     }
     
@@ -549,6 +555,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             isWebViewFirstLoading = false
             return
         }
+        
         let jsCode = "refreshAllAds();ga('send', 'pageview');"
         webView?.evaluateJavaScript(jsCode) { (result, error) in
             if error == nil {

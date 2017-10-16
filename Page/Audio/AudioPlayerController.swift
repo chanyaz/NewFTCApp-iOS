@@ -364,7 +364,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let animation = CABasicAnimation(keyPath: "transform.rotation")
         animation.fromValue = 0
         animation.toValue = 2*Double.pi
-        animation.duration = 4
+        animation.duration = 20
         animation.autoreverses = false
         animation.fillMode = kCAFillModeForwards
         animation.repeatCount = Float.greatestFiniteMagnitude

@@ -42,11 +42,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
- 
+        let tabViewHeight: CGFloat = 90
         let width = UIScreen.main.bounds.width
         let height = self.view.bounds.height
         tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
-        tabView.frame = CGRect(x:0,y:height - 90,width:width,height:90)
+        tabView.frame = CGRect(x:0,y:height - tabViewHeight,width:width,height:tabViewHeight)
         
         self.tabBar.addSubview(tabView)
         
@@ -55,7 +55,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
         self.tabBar.isHidden = true
         view.addSubview(self.tabView)
         let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
-        tabView.upSwipeButton.addGestureRecognizer(tapGestureRecognizer1)
+        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
+//        tabView.upSwipeButton.addGestureRecognizer(tapGestureRecognizer1)
 
         tabView.progressSlider.addTarget(self, action: #selector(changeSlider), for: UIControlEvents.valueChanged)
         tabView.isHidden = true

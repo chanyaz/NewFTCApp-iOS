@@ -101,6 +101,12 @@ struct ImageSize {
 struct FontSize {
     static let bodyExtraSize: CGFloat = 3.0
     static let padding: CGFloat = 14
+    static let lead: CGFloat = 16
+}
+struct FontType {
+//    "Fang zheng shu song jian ti"
+    static let content = "Helvetica-Light"
+    static let languageControl = "Avenir-MediumOblique"
 }
 
 struct AppGroup {

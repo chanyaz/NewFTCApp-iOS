@@ -434,7 +434,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
 //        switchChAndEnAudio.layer.masksToBounds = true
         let segAttributes: NSDictionary = [
             NSAttributedStringKey.foregroundColor: UIColor(hex: "12a5b3"),
-            NSAttributedStringKey.font: UIFont(name: "Avenir-MediumOblique", size: 14)!
+            NSAttributedStringKey.font: UIFont(name: FontType.languageControl, size: 14)!
         ]
         switchChAndEnAudio.setTitleTextAttributes(segAttributes as [NSObject : AnyObject], for: UIControlState.selected)
         switchChAndEnAudio.addTarget(self, action: #selector(switchLanguage(_:)), for: .valueChanged)

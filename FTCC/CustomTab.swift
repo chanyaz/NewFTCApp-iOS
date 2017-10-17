@@ -44,7 +44,7 @@ class CustomTab: UIView {
 
         playStatus.text = "单曲鉴赏"
         playStatus.textColor = UIColor.white
-        playStatus.font = UIFont(name: "Helvetica-Light", size: 16.0)
+        playStatus.font = UIFont(name: FontType.content, size: 16.0)
         
         self.playStatus.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraint(NSLayoutConstraint(item: playStatus, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.playAndPauseButton, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
@@ -53,7 +53,7 @@ class CustomTab: UIView {
   
         playTime.text = "00:00"
         playTime.textColor = UIColor.white
-        playTime.font = UIFont(name: "Helvetica-Light", size: 14.0)
+        playTime.font = UIFont(name: FontType.content, size: 14.0)
         
         self.playTime.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraint(NSLayoutConstraint(item: playTime, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 10))
@@ -75,7 +75,7 @@ class CustomTab: UIView {
         
         playDuration.text = "00:00"
         playDuration.textColor = UIColor.white
-        playDuration.font = UIFont(name: "Helvetica-Light", size: 14.0)
+        playDuration.font = UIFont(name: FontType.content, size: 14.0)
         self.playDuration.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraint(NSLayoutConstraint(item: playDuration, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -10))
         self.addConstraint(NSLayoutConstraint(item: playDuration, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.progressSlider, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))

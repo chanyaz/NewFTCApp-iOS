@@ -83,7 +83,7 @@ class BigImageCell: CustomCell {
                 tagButton.isHidden = true
             }
         }
-        lead.font = UIFont(name: "Helvetica-Light", size: 16.0)
+        lead.font = UIFont(name: FontType.content, size: 16)
         // MARK: - Use calculated cell width to diplay auto-sizing cells
         let cellMargins = layoutMargins.left + layoutMargins.right
         let containerViewMargins = containerView.layoutMargins.left + containerView.layoutMargins.right

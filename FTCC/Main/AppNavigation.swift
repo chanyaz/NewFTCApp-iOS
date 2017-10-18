@@ -21,6 +21,8 @@ struct AppNavigation {
             "navBackGroundColor": "#FFFFFF",
             "navBorderColor": "#b3a9a0",
             "navBorderWidth": "0.1",
+            "navRightItem": "Search",
+            "navLeftItem": "Person",
             "isNavLightContent": false,
             "Channels": [
                 [

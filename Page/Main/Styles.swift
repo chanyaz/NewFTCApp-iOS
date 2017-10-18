@@ -119,7 +119,10 @@ struct FontSize {
     static let bodyExtraSize: CGFloat = 3.0
     static let padding: CGFloat = 14
 }
-
+struct FontType {
+    static let content = "Helvetica-Light"
+    static let languageControl = "Avenir-MediumOblique"
+}
 struct AppGroup {
     static let name = "group.com.ft.ftchinese.mobile"
 }

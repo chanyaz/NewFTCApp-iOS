@@ -90,6 +90,9 @@ struct Color {
     struct Image {
         static let background = "#cbc1b7"
     }
+    struct NavButton {
+        static let isAudio = false
+    }
     
 }
 

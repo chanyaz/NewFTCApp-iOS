@@ -130,7 +130,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             view.backgroundColor = UIColor(hex: Color.Content.background)
             collectionView?.backgroundColor = UIColor(hex: Color.Content.background)
             // MARK: - show refresh controll only when there is api
-            if dataObject["api"] != nil {
+            if dataObject["api"] != nil || dataObjectType == "follow" {
                 if #available(iOS 10.0, *) {
                     refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
                     collectionView?.refreshControl = refreshControl
@@ -575,6 +575,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 loadSettings()
             } else if type == "options" {
                 loadOptions()
+            } else if type == "follow" {
+                let urlString = APIs.get("follow", type: type)
+                getAPI(urlString)
             } else {
                 let urlString = APIs.get("", type: type)
                 getAPI(urlString)

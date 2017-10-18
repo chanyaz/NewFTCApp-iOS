@@ -320,20 +320,20 @@ struct AppNavigation {
             "navBackGroundColor": "#5a8caf",
             "isNavLightContent": true,
             "Channels": [
-                [
-                    "title": "关注",
-                    "type": "follow",
-                    "screenName":"myft",
-                    "Insert Content": "follows"
+                ["title": "已读",
+                 "type": "read",
+                 "screenName":"myft"
                 ],
                 [
                     "title": "收藏",
                     "type": "clip",
                     "screenName":"myft"
                 ],
-                ["title": "已读",
-                 "type": "read",
-                 "screenName":"myft"
+                [
+                    "title": "关注",
+                    "type": "follow",
+                    "screenName":"myft",
+                    "Insert Content": "follows"
                 ],
                 [
                     "title": "设置",

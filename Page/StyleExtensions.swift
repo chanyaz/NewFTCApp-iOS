@@ -371,4 +371,9 @@ extension String {
             return self
         }
     }
+    
+    func addUrlEncoding() -> String {
+        return self.removingPercentEncoding?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? self
+    }
+
 }

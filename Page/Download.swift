@@ -42,7 +42,7 @@ struct Download {
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
                     file.write(data)
-                    //print("File data was written to \(realFileName) successfully!")
+                    print("write to file: \(realFileName) successfully!")
                 } catch let error as NSError {
                     print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
                 }
@@ -174,6 +174,7 @@ struct Download {
             .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
             .replacingOccurrences(of: "-type-json", with: ".json")
             .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
+        .replacingOccurrences(of: "%", with: "")
         if fileName == "" {
             fileName = "home"
         }

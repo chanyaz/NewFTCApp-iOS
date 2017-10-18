@@ -21,8 +21,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var themeColor: String? = nil
     var coverTheme: String?
     var layoutStrategy: String?
+    var isVisible = false
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
-    var isWebViewFirstLoading = true
+    // var isWebViewFirstLoading = true
     
     fileprivate let itemsPerRowForRegular: CGFloat = 3
     fileprivate let itemsPerRowForCompact: CGFloat = 1
@@ -306,13 +307,16 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
     }
     
+
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print ("view will appear called")
+        isVisible = true
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
-        updateWebviewTraffic()
+        //updateWebviewTraffic()
         filterDataWithAudioUrl()
         //TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         // MARK: In setting page, you might need to update UI to reflected change in preference
@@ -321,6 +325,64 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             loadSettings()
         }
     }
+    
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print ("view did disappear called. ")
+        isVisible = false
+        // MARK: if web view is not used, no need to do anything
+        if webView == nil {
+            return
+        }
+        if #available(iOS 10.0, *) {
+            Timer.scheduledTimer(withTimeInterval: 1.2, repeats: false) { [weak self] timer in
+                if self?.isVisible == false {
+                    if let listAPI = self?.dataObject["listapi"],
+                        let urlStringOriginal = self?.dataObject["url"] {
+                        let fileExtension = "html"
+                        let urlString = APIs.convert(urlStringOriginal)
+                        self?.webViewScrollPoint = self?.webView?.scrollView.contentOffset
+                        self?.renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+                        print ("the view is not visible, render web view called")
+                    }
+                } else {
+                    print ("the view is visible, nothing called")
+                }
+            }
+        }
+    }
+    
+    
+//    private func updateWebviewTraffic() {
+//        if isWebViewFirstLoading == true {
+//            isWebViewFirstLoading = false
+//            return
+//        }
+//
+//
+//        //        if let listAPI = dataObject["listapi"],
+//        //        let urlStringOriginal = dataObject["url"] {
+//        //            let fileExtension = "html"
+//        //            let urlString = APIs.convert(urlStringOriginal)
+//        //            webViewScrollPoint = webView?.scrollView.contentOffset
+//        //            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+//        //        }
+//
+//        //let jsCode = "refreshAllAds();ga('send', 'pageview');"
+//        let jsCode = "ga('send', 'pageview');"
+//        webView?.evaluateJavaScript(jsCode) { (result, error) in
+//            if error == nil {
+//                print ("pv recorded and ad refreshed")
+//            } else {
+//                print (error ?? "pv record error")
+//                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
+//                self.refreshWebView(self.refreshControl)
+//            }
+//        }
+//
+//    }
+    
     
     //    override func viewDidAppear(_ animated: Bool) {
     //        super.viewDidAppear(animated)
@@ -551,33 +613,34 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     private var webViewScrollPoint: CGPoint?
     
-    private func updateWebviewTraffic() {
-        if isWebViewFirstLoading == true {
-            isWebViewFirstLoading = false
-            return
-        }
-
-        
-//        if let listAPI = dataObject["listapi"],
-//        let urlStringOriginal = dataObject["url"] {
-//            let fileExtension = "html"
-//            let urlString = APIs.convert(urlStringOriginal)
-//            webViewScrollPoint = webView?.scrollView.contentOffset
-//            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+//    private func updateWebviewTraffic() {
+//        if isWebViewFirstLoading == true {
+//            isWebViewFirstLoading = false
+//            return
 //        }
-        
-        let jsCode = "refreshAllAds();ga('send', 'pageview');"
-        webView?.evaluateJavaScript(jsCode) { (result, error) in
-            if error == nil {
-                print ("pv recorded and ad refreshed")
-            } else {
-                print (error ?? "pv record error")
-                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
-                self.refreshWebView(self.refreshControl)
-            }
-        }
-        
-    }
+//
+//
+////        if let listAPI = dataObject["listapi"],
+////        let urlStringOriginal = dataObject["url"] {
+////            let fileExtension = "html"
+////            let urlString = APIs.convert(urlStringOriginal)
+////            webViewScrollPoint = webView?.scrollView.contentOffset
+////            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+////        }
+//
+//        //let jsCode = "refreshAllAds();ga('send', 'pageview');"
+//        let jsCode = "ga('send', 'pageview');"
+//        webView?.evaluateJavaScript(jsCode) { (result, error) in
+//            if error == nil {
+//                print ("pv recorded and ad refreshed")
+//            } else {
+//                print (error ?? "pv record error")
+//                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
+//                self.refreshWebView(self.refreshControl)
+//            }
+//        }
+//
+//    }
     
     // MARK: if you are back from a pushed view controller, scroll to the original position
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

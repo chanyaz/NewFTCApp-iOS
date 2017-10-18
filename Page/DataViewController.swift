@@ -549,12 +549,22 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         requestNewContent()
     }
     
+    private var webViewScrollPoint: CGPoint?
     
     private func updateWebviewTraffic() {
         if isWebViewFirstLoading == true {
             isWebViewFirstLoading = false
             return
         }
+
+        
+//        if let listAPI = dataObject["listapi"],
+//        let urlStringOriginal = dataObject["url"] {
+//            let fileExtension = "html"
+//            let urlString = APIs.convert(urlStringOriginal)
+//            webViewScrollPoint = webView?.scrollView.contentOffset
+//            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+//        }
         
         let jsCode = "refreshAllAds();ga('send', 'pageview');"
         webView?.evaluateJavaScript(jsCode) { (result, error) in
@@ -565,6 +575,15 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
                 self.refreshWebView(self.refreshControl)
             }
+        }
+        
+    }
+    
+    // MARK: if you are back from a pushed view controller, scroll to the original position
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        //print ("web view did finish navigation called! Should Scroll to the previous position if you are back from a pushed view controller! ")
+        if let webViewScrollPoint = webViewScrollPoint {
+            webView.scrollView.setContentOffset(webViewScrollPoint, animated: false)
         }
     }
     

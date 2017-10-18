@@ -271,13 +271,19 @@ class LaunchScreen: UIViewController {
             button.layer.cornerRadius = buttonWidth/2
         }
         
-        if adSchedule.adType == "video" {
-            self.view.viewWithTag(111)?.addSubview(button)
-        } else {
-            self.overlayView?.addSubview(button)
-        }
+//        if adSchedule.adType == "video" {
+//            //self.view.viewWithTag(111)?.addSubview(button)
+//            // MARK: add the button directly on view so that it won't be blocked by video
+//            view.addSubview(button)
+//        } else {
+//            self.overlayView?.addSubview(button)
+//        }
+        // MARK: add the button directly on view so that it won't be blocked by video
+        view.addSubview(button)
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(close), for: .touchUpInside)
+        //view.bringSubview(toFront: button)
         
         view.addConstraint(NSLayoutConstraint(item: button, attribute: horizontalLayout, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: horizontalLayout, multiplier: 1, constant: horizontalMargin))
         view.addConstraint(NSLayoutConstraint(item: button, attribute: verticalLayout, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: verticalLayout, multiplier: 1, constant: verticalMargin))
@@ -365,9 +371,11 @@ class LaunchScreen: UIViewController {
         player?.isMuted = true
         player?.play()
         
-        self.view.addSubview(playerController.view)
+        view.addSubview(playerController.view)
+        //playerController.contentOverlayView?.addSubview(<#T##view: UIView##UIView#>)
         playerController.view.tag = 111
         playerController.view.frame = self.view.frame
+        playerController.contentOverlayView?.frame = self.view.frame
         
         // MARK: Label for time at the left bottom
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 21))
@@ -380,12 +388,22 @@ class LaunchScreen: UIViewController {
         label.layer.masksToBounds = true
         label.layer.cornerRadius = 15
         label.tag = 112
-        playerController.view.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label)
         view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 20))
         view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -20))
         view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
         view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
+        //playerController.view.addSubview(label)
+        //        if let avOverlayView = playerController.contentOverlayView {
+        //        avOverlayView.addSubview(label)
+        //        label.translatesAutoresizingMaskIntoConstraints = false
+        //        avOverlayView.translatesAutoresizingMaskIntoConstraints = false
+        //        avOverlayView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: avOverlayView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 20))
+        //        avOverlayView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: avOverlayView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        //        avOverlayView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
+        //        avOverlayView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
+        //        }
         
         if let image = adSchedule.backupImage {
             playerController.view.backgroundColor = UIColor(patternImage: image)
@@ -434,7 +452,7 @@ class LaunchScreen: UIViewController {
             button.setImage(imageForSound, for: .selected)
             button.layer.masksToBounds = true
             button.layer.cornerRadius = 20
-            playerController.view.addSubview(button)
+            view.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(videoMuteSwitch), for: .touchUpInside)
             view.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 16))
@@ -571,6 +589,28 @@ class LaunchScreen: UIViewController {
     }
     
 }
+
+
+class PlayerView: UIView {
+    var player: AVPlayer? {
+        get {
+            return playerLayer.player
+        }
+        
+        set {
+            playerLayer.player = newValue
+        }
+    }
+    
+    var playerLayer: AVPlayerLayer {
+        return layer as! AVPlayerLayer
+    }
+    
+    override class var layerClass: AnyClass {
+        return AVPlayerLayer.self
+    }
+}
+
 
 struct AppLaunch {
     static var sharedInstance = AppLaunch()

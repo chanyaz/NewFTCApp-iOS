@@ -167,10 +167,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             if type != "video" {
                 let jsCode = JSCodes.get(type)
-                print ("View will Appear, about to excute this javascript code: \(jsCode)")
+                //print ("View will Appear, about to excute this javascript code: \(jsCode)")
                 self.webView?.evaluateJavaScript(jsCode) { (result, error) in
                     if error != nil {
-                        print ("something is wrong with js code: \(String(describing: error))")
+                        print ("something is wrong with js code in content item view controller: \(String(describing: error))")
                     } else {
                         print ("js code is executed successfully! ")
                     }

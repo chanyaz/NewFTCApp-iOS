@@ -43,10 +43,12 @@ class DetailModelController: ModelController {
         super.init()
         self.pageData = pageData
         updateThemeColor(for: tabName)
-        self.pageTitles = pageData.map { (value: ContentItem) -> String in
+        pageTitles = pageData.map { (value: ContentItem) -> String in
             return value.headline
         }
-        
+        pageIds = pageData.map { (value: ContentItem) -> String in
+            return value.id
+        }
     }
     
     
@@ -61,6 +63,7 @@ class DetailModelController: ModelController {
         //print(dataViewController.view.frame)
         contentItemViewController.dataObject = self.pageData[index]
         contentItemViewController.pageTitle = self.pageTitles[index]
+        contentItemViewController.pageId = self.pageIds[index]
         contentItemViewController.themeColor = self.pageThemeColor
         return contentItemViewController
     }
@@ -68,7 +71,7 @@ class DetailModelController: ModelController {
     func indexOfViewController(_ viewController: ContentItemViewController) -> Int {
         // Return the index of the given data view controller.
         // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
-        if let currentPageIndex = pageTitles.index(of: viewController.pageTitle) {
+        if let currentPageIndex = pageIds.index(of: viewController.pageId) {
             print ("index Of ViewController: \(currentPageIndex)")
             // TODO: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
             //currentPageTitle = pageTitles[currentPageIndex]

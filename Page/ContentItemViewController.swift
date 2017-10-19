@@ -17,7 +17,8 @@ enum ContentSubType {
 
 class ContentItemViewController: UIViewController, UINavigationControllerDelegate {
     var dataObject: ContentItem?
-    var pageTitle: String = ""
+    var pageTitle = ""
+    var pageId = ""
     var themeColor: String?
     var currentLanguageIndex: Int?
     var action: String?

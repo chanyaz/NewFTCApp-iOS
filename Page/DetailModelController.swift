@@ -47,7 +47,7 @@ class DetailModelController: ModelController {
             return value.headline
         }
         pageIds = pageData.map { (value: ContentItem) -> String in
-            return value.id
+            return "\(value.type)\(value.id)"
         }
     }
     

@@ -92,7 +92,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     @IBAction func hideAudioButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
-        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateBarStyle"), object: self)
         print("this hideAudioButton")
     }
     @objc func openPlayList(_ sender: UIButton) {

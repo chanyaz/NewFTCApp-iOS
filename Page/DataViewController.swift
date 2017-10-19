@@ -148,10 +148,10 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
-            let jsCode = "window.gConnectionType = '\(Connection.current())';"
+            let jsCode = "window.gConnectionType = '\(Connection.current())';window.gNoImageWithData='\(Setting.getSwitchStatus("no-image-with-data"))';"
             let userScript = WKUserScript(
                 source: jsCode,
-                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                injectionTime: WKUserScriptInjectionTime.atDocumentStart,
                 forMainFrameOnly: true
             )
             contentController.addUserScript(userScript)

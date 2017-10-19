@@ -17,7 +17,12 @@ import UIKit
  There is no need to actually create view controllers for each page in advance -- indeed doing so incurs unnecessary overhead. Given the data model, these methods create, configure, and return a new view controller on demand.
  */
 
+// MARK: Delegate Step 1: Create Protocol. Follow the steps to learn how to use protocol and delegate. How to pass data from model to controller https://medium.com/ios-os-x-development/ios-three-ways-to-pass-data-from-model-to-controller-b47cc72a4336
 
+protocol DetailModelDelegate: class {
+    // MARK: When user panning to change page title, the navigation item title should change accordingly
+    func didChangePage(_ item: ContentItem?, index: Int)
+}
 
 
 class DetailModelController: ModelController {
@@ -29,6 +34,7 @@ class DetailModelController: ModelController {
     var currentPageIndex = 0
     var currentItem: ContentItem? = nil {
         didSet {
+            // MARK: Delegate Step 3: let the delegate execute what's supposed to do
             delegate?.didChangePage(currentItem, index: currentPageIndex)
         }
     }

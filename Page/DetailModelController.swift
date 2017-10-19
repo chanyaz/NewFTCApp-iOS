@@ -46,6 +46,7 @@ class DetailModelController: ModelController {
         self.pageTitles = pageData.map { (value: ContentItem) -> String in
             return value.headline
         }
+        
     }
     
     

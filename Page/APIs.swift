@@ -93,7 +93,7 @@ struct APIs {
                 }
             }
             parameterString = parameterString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? parameterString
-            urlString = "\(domain)channel/json.html?pageid=myftfollow\(parameterString)"
+            urlString = "\(domain)channel/json.html?pageid=myftfollow&002\(parameterString)"
             print ("follow request type: \(urlString)")
         default:
             urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"

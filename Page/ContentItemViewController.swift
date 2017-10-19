@@ -90,6 +90,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
             contentController.add(LeakAvoider(delegate:self), name: "alert")
             contentController.add(LeakAvoider(delegate:self), name: "follow")
+            contentController.add(LeakAvoider(delegate:self), name: "clip")
+            contentController.add(LeakAvoider(delegate:self), name: "listen")
             
             config.userContentController = contentController
             config.allowsInlineMediaPlayback = true
@@ -919,6 +921,12 @@ extension ContentItemViewController: WKScriptMessageHandler {
                     }
                     UserDefaults.standard.set(follows, forKey: "follow \(type)")
                 }
+            case "listen":
+                if let audioUrlString = body["audio"] {
+                    print ("should do something to call out the audio view for this url: \(audioUrlString)")
+                }
+            case "clip":
+                print ("clip this: \(body)")
             default:
                 break
             }

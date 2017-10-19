@@ -119,6 +119,12 @@ struct AdLayout {
     }
     
     static func insertFullScreenAd(to items: [ContentItem], for index: Int)->(contentItems: [ContentItem], pageIndex: Int){
+        // MARK: If the app is configured NOT to show full screen ad between pages, return the original value immediately
+        if Color.Ad.showFullScreenAdBetweenPages == false {
+            return (items, index)
+        }
+        
+        // MARK: Otherwise, insert ads based on the following instruction
         var newItems = items
         var newPageIndex = index
         var insertionPointAfter = index + 2

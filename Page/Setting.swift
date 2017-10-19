@@ -83,6 +83,11 @@ struct Setting {
         UserDefaults.standard.set(value, forKey: "\(keyPrefix)\(id)")
     }
     
+    static func getSwitchStatus(_ id: String) -> String {
+        let value = UserDefaults.standard.string(forKey: "\(keyPrefix)\(id)") ?? ""
+        return value
+    }
+    
     static func getCurrentOption(_ id: String) -> (index: Int, value: String) {
         var optionIndex = 0
         if let optionValue = UserDefaults.standard.string(forKey: "\(keyPrefix)\(id)") {

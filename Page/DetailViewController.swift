@@ -428,18 +428,19 @@ extension DetailViewController: DetailModelDelegate {
         //self.navigationItem.title = title
         currentPageIndex = index
         print ("DetailModelDelegate: current item \(index): \(String(describing: item?.headline))")
-        if item?.type == "ad" {
-            navigationController?.setNavigationBarHidden(true, animated: true)
+        if ToolBarStatus.shouldHide == true {
+            navigationController?.setNavigationBarHidden(false, animated: true)
             toolBar.isHidden = true
-            isFullScreenAdOn = true
         } else {
-            navigationController?.setNavigationBarHidden(false, animated: true)
-            toolBar.isHidden = false
-            isFullScreenAdOn = false
-        }
-        if ((item?.caudio) != nil)||((item?.eaudio) != nil){
-            navigationController?.setNavigationBarHidden(false, animated: true)
-            toolBar.isHidden = true
+            if item?.type == "ad" {
+                navigationController?.setNavigationBarHidden(true, animated: true)
+                toolBar.isHidden = true
+                isFullScreenAdOn = true
+            } else {
+                navigationController?.setNavigationBarHidden(false, animated: true)
+                toolBar.isHidden = false
+                isFullScreenAdOn = false
+            }
         }
         checkSaveButton()
         // MARK: Ask the view controller to hide or show status bar

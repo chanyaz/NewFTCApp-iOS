@@ -17,7 +17,12 @@ import UIKit
  There is no need to actually create view controllers for each page in advance -- indeed doing so incurs unnecessary overhead. Given the data model, these methods create, configure, and return a new view controller on demand.
  */
 
+// MARK: Delegate Step 1: Create Protocol. Follow the steps to learn how to use protocol and delegate. How to pass data from model to controller https://medium.com/ios-os-x-development/ios-three-ways-to-pass-data-from-model-to-controller-b47cc72a4336
 
+protocol DetailModelDelegate: class {
+    // MARK: When user panning to change page title, the navigation item title should change accordingly
+    func didChangePage(_ item: ContentItem?, index: Int)
+}
 
 
 class DetailModelController: ModelController {
@@ -29,6 +34,7 @@ class DetailModelController: ModelController {
     var currentPageIndex = 0
     var currentItem: ContentItem? = nil {
         didSet {
+            // MARK: Delegate Step 3: let the delegate execute what's supposed to do
             delegate?.didChangePage(currentItem, index: currentPageIndex)
         }
     }
@@ -37,8 +43,11 @@ class DetailModelController: ModelController {
         super.init()
         self.pageData = pageData
         updateThemeColor(for: tabName)
-        self.pageTitles = pageData.map { (value: ContentItem) -> String in
+        pageTitles = pageData.map { (value: ContentItem) -> String in
             return value.headline
+        }
+        pageIds = pageData.map { (value: ContentItem) -> String in
+            return "\(value.type)\(value.id)"
         }
     }
     
@@ -54,6 +63,7 @@ class DetailModelController: ModelController {
         //print(dataViewController.view.frame)
         contentItemViewController.dataObject = self.pageData[index]
         contentItemViewController.pageTitle = self.pageTitles[index]
+        contentItemViewController.pageId = self.pageIds[index]
         contentItemViewController.themeColor = self.pageThemeColor
         return contentItemViewController
     }
@@ -61,7 +71,7 @@ class DetailModelController: ModelController {
     func indexOfViewController(_ viewController: ContentItemViewController) -> Int {
         // Return the index of the given data view controller.
         // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
-        if let currentPageIndex = pageTitles.index(of: viewController.pageTitle) {
+        if let currentPageIndex = pageIds.index(of: viewController.pageId) {
             print ("index Of ViewController: \(currentPageIndex)")
             // TODO: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
             //currentPageTitle = pageTitles[currentPageIndex]

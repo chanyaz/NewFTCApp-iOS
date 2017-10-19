@@ -59,6 +59,8 @@ struct Color {
         static let background = "#f6e9d8"
         static let sign = "#555555"
         static let signBackground = "#ecd4b4"
+        static let showFullScreenAdBetweenPages = false
+        static let showFullScreenAdWhenLaunch = false
     }
     
     struct Theme {
@@ -137,5 +139,7 @@ struct Share {
     }
 }
 
-
+struct ToolBarStatus {
+    static let shouldHide = true
+}
 

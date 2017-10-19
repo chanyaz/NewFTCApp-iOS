@@ -14,6 +14,10 @@ struct AdLayout {
         if newContentSections.count < 1 {
             return newContentSections
         }
+        var itemsCount = 0
+        for section in newContentSections {
+            itemsCount += section.items.count
+        }
         let topBanner = ContentSection(
             title: "Top Banner",
             items: [],
@@ -77,10 +81,17 @@ struct AdLayout {
             }
             
             // MARK: Insert ads into sections that has larger index so that you don't have to constantly recalculate the new index
-            newContentSections.insert(MPU1, at: 1)
-            newContentSections.insert(topBanner, at: 0)
+            if newContentSections.count >= 2 {
+                if newContentSections[1].items.count > 8 {
+                    newContentSections.insert(MPU1, at: 1)
+                }
+                if newContentSections[0].items.count > 5 {
+                newContentSections.insert(topBanner, at: 0)
+                }
+            }
+            
             // MARK: Make sure there's content between MPU and Bottom Banner
-            if newContentSections.count > 3 {
+            if newContentSections.count > 3  && itemsCount > 10 {
                 newContentSections.append(bottomBanner)
             }
             newContentSections = Content.updateSectionRowIndex(newContentSections)
@@ -119,6 +130,12 @@ struct AdLayout {
     }
     
     static func insertFullScreenAd(to items: [ContentItem], for index: Int)->(contentItems: [ContentItem], pageIndex: Int){
+        // MARK: If the app is configured NOT to show full screen ad between pages, return the original value immediately
+        if Color.Ad.showFullScreenAdBetweenPages == false {
+            return (items, index)
+        }
+        
+        // MARK: Otherwise, insert ads based on the following instruction
         var newItems = items
         var newPageIndex = index
         var insertionPointAfter = index + 2

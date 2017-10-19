@@ -47,7 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: Show the Launch Screen only when there is tabbar controller
         if AppLaunch.sharedInstance.launched == false {
-            if let rootViewController = window?.rootViewController as? UITabBarController {
+            if let rootViewController = window?.rootViewController as? UITabBarController,
+                Color.Ad.showFullScreenAdWhenLaunch == true {
                 rootViewController.showLaunchScreen()
                 AppLaunch.sharedInstance.launched = true
             } else {

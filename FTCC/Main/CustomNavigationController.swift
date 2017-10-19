@@ -69,6 +69,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
         tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.5)
         tabView.frame = CGRect(x:0,y:height - 90,width:width,height:90)
         view.addSubview(self.tabView)
+        tabView.playAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
         let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
         tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
         tabView.progressSlider.addTarget(self, action: #selector(changeSlider), for: UIControlEvents.valueChanged)

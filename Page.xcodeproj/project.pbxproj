@@ -316,6 +316,13 @@
 		F24B79971F5555FA001B62A2 /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */; };
 		F258A5B81F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
 		F258A5B91F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
+		F27D9A7F1F976FA800A95188 /* account.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7A1F976F4600A95188 /* account.html */; };
+		F27D9A801F976FAB00A95188 /* ebook.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7C1F976F4600A95188 /* ebook.html */; };
+		F27D9A821F976FB200A95188 /* html-book.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7B1F976F4600A95188 /* html-book.html */; };
+		F27D9A831F976FB500A95188 /* list.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7D1F976F4600A95188 /* list.html */; };
+		F27D9A841F976FB800A95188 /* register.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A781F976F4600A95188 /* register.html */; };
+		F27D9A851F976FBA00A95188 /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A791F976F4600A95188 /* search.html */; };
+		F27D9A871F976FBE00A95188 /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7E1F976F4600A95188 /* story.html */; };
 		F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AA1F39A2BC00FAA8C0 /* close.png */; };
 		F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AB1F39A2BC00FAA8C0 /* cover.jpg */; };
 		F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AC1F39A2BC00FAA8C0 /* mute.png */; };
@@ -469,13 +476,6 @@
 		602153BE1F39A4390077A7AF /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mute.png; path = Images/mute.png; sourceTree = "<group>"; };
 		602153BF1F39A4390077A7AF /* ShareIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ShareIcon.jpg; path = Images/ShareIcon.jpg; sourceTree = "<group>"; };
 		602153C01F39A4390077A7AF /* sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sound.png; path = Images/sound.png; sourceTree = "<group>"; };
-		6023B91E1F96FF0D00945896 /* account.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = account.html; sourceTree = "<group>"; };
-		6023B91F1F96FF0D00945896 /* list.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = list.html; sourceTree = "<group>"; };
-		6023B9201F96FF0D00945896 /* search.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = search.html; sourceTree = "<group>"; };
-		6023B9211F96FF0D00945896 /* ebook.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ebook.html; sourceTree = "<group>"; };
-		6023B9221F96FF0E00945896 /* register.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = register.html; sourceTree = "<group>"; };
-		6023B9231F96FF0E00945896 /* story.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = story.html; sourceTree = "<group>"; };
-		6023B9241F96FF0E00945896 /* html-book.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "html-book.html"; sourceTree = "<group>"; };
 		602CD2921F565FD500FFC1EA /* FTCProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FTCProducts.swift; path = IAP/FTCProducts.swift; sourceTree = "<group>"; };
 		602CD2931F565FD500FFC1EA /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IAPHelper.swift; path = IAP/IAPHelper.swift; sourceTree = "<group>"; };
 		602E883F1F43DD9600BBB4AF /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -585,6 +585,13 @@
 		F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPresentationAnimation.swift; path = Audio/CustomPresentationAnimation.swift; sourceTree = "<group>"; };
 		F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPresentationController.swift; path = Audio/CustomPresentationController.swift; sourceTree = "<group>"; };
 		F258A5B71F613E9A0095253A /* AudioPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayerView.swift; path = Audio/AudioPlayerView.swift; sourceTree = "<group>"; };
+		F27D9A781F976F4600A95188 /* register.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = register.html; path = Page/FTCC/register.html; sourceTree = SOURCE_ROOT; };
+		F27D9A791F976F4600A95188 /* search.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = search.html; path = Page/FTCC/search.html; sourceTree = SOURCE_ROOT; };
+		F27D9A7A1F976F4600A95188 /* account.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = account.html; path = Page/FTCC/account.html; sourceTree = SOURCE_ROOT; };
+		F27D9A7B1F976F4600A95188 /* html-book.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "html-book.html"; path = "Page/FTCC/html-book.html"; sourceTree = SOURCE_ROOT; };
+		F27D9A7C1F976F4600A95188 /* ebook.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ebook.html; path = Page/FTCC/ebook.html; sourceTree = SOURCE_ROOT; };
+		F27D9A7D1F976F4600A95188 /* list.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = list.html; path = Page/FTCC/list.html; sourceTree = SOURCE_ROOT; };
+		F27D9A7E1F976F4600A95188 /* story.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = story.html; path = Page/FTCC/story.html; sourceTree = SOURCE_ROOT; };
 		F29E19AA1F39A2BC00FAA8C0 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close.png; path = FTCC/Images/close.png; sourceTree = "<group>"; };
 		F29E19AB1F39A2BC00FAA8C0 /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = cover.jpg; path = FTCC/Images/cover.jpg; sourceTree = "<group>"; };
 		F29E19AC1F39A2BC00FAA8C0 /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mute.png; path = FTCC/Images/mute.png; sourceTree = "<group>"; };
@@ -857,13 +864,13 @@
 		6023B9251F96FF1F00945896 /* HTML */ = {
 			isa = PBXGroup;
 			children = (
-				6023B91E1F96FF0D00945896 /* account.html */,
-				6023B9211F96FF0D00945896 /* ebook.html */,
-				6023B9241F96FF0E00945896 /* html-book.html */,
-				6023B91F1F96FF0D00945896 /* list.html */,
-				6023B9221F96FF0E00945896 /* register.html */,
-				6023B9201F96FF0D00945896 /* search.html */,
-				6023B9231F96FF0E00945896 /* story.html */,
+				F27D9A7A1F976F4600A95188 /* account.html */,
+				F27D9A7C1F976F4600A95188 /* ebook.html */,
+				F27D9A7B1F976F4600A95188 /* html-book.html */,
+				F27D9A7D1F976F4600A95188 /* list.html */,
+				F27D9A781F976F4600A95188 /* register.html */,
+				F27D9A791F976F4600A95188 /* search.html */,
+				F27D9A7E1F976F4600A95188 /* story.html */,
 			);
 			path = HTML;
 			sourceTree = "<group>";
@@ -1484,6 +1491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50C31B481F7006D500F4CF61 /* OptionCell.xib in Resources */,
+				F27D9A841F976FB800A95188 /* register.html in Resources */,
 				602153641F397C650077A7AF /* ChannelScrollerCell.xib in Resources */,
 				602153651F397C650077A7AF /* CoverCell.xib in Resources */,
 				602153941F399AC80077A7AF /* Assets.xcassets in Resources */,
@@ -1495,12 +1503,14 @@
 				F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */,
 				60814F631F580FB200041801 /* BookCell.xib in Resources */,
 				6021538F1F39990E0077A7AF /* LaunchScreen.storyboard in Resources */,
+				F27D9A831F976FB500A95188 /* list.html in Resources */,
 				60B8554B1F6A118600FE190E /* VideoCoverCell.xib in Resources */,
 				60F3D14E1F7A5B9900D115FC /* IconCell.xib in Resources */,
 				6055EF9A1F5021C1006F8A83 /* PaidPostCell.xib in Resources */,
 				60316BA31F8063EF00C4FEE2 /* ClassicCoverCell.xib in Resources */,
 				602153691F397C650077A7AF /* ad.html in Resources */,
 				6021536D1F397C650077A7AF /* ChannelCell.xib in Resources */,
+				F27D9A821F976FB200A95188 /* html-book.html in Resources */,
 				50C31B361F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
 				60F3D1481F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */,
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
@@ -1510,9 +1520,13 @@
 				602153731F397C650077A7AF /* HeaderView.xib in Resources */,
 				6017AAEA1F879D63008D3FBF /* SmoothCoverCell.xib in Resources */,
 				602153741F397C650077A7AF /* HotArticleCellRegular.xib in Resources */,
+				F27D9A851F976FBA00A95188 /* search.html in Resources */,
 				F2E0906F1F5A6A3900F4409F /* ColumnMyListCell.xib in Resources */,
+				F27D9A871F976FBE00A95188 /* story.html in Resources */,
+				F27D9A7F1F976FA800A95188 /* account.html in Resources */,
 				F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */,
 				602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */,
+				F27D9A801F976FAB00A95188 /* ebook.html in Resources */,
 				602153771F397C650077A7AF /* ga.js in Resources */,
 				60F1A5261F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
 				6021537A1F397C650077A7AF /* LineCell.xib in Resources */,
@@ -1611,7 +1625,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		886899C82F14A377FBC6FF9E /* [CP] Check Pods Manifest.lock */ = {
@@ -1629,7 +1643,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9EEBA5BD08C755F531ACE82B /* [CP] Copy Pods Resources */ = {

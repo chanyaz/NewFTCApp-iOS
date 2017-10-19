@@ -148,9 +148,18 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // MARK: - Set the navigation item title as an empty string.
         self.navigationItem.title = ""
         
-        //let audioButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(listen))
-        let audioIcon = UIImage(named: "Audio")
-        let audioButton = UIBarButtonItem(image: audioIcon, style: .plain, target: self, action: #selector(listen))
+        var audioIcon: UIImage?
+        var audioButton: UIBarButtonItem?
+        if Color.NavButton.isAudio{
+            //let audioButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(listen))
+            audioIcon = UIImage(named: "Audio")
+            audioButton = UIBarButtonItem(image: audioIcon, style: .plain, target: self, action: #selector(listen))
+        }else{
+            audioIcon = UIImage(named: "Share")
+            audioButton = UIBarButtonItem(image: audioIcon, style: .plain, target: self, action: #selector(actionSheet))
+            navigationController?.setNavigationBarHidden(false, animated: false)
+            toolBar.isHidden = true
+        }
         self.navigationItem.rightBarButtonItem = audioButton
         
         
@@ -427,6 +436,10 @@ extension DetailViewController: DetailModelDelegate {
             navigationController?.setNavigationBarHidden(false, animated: true)
             toolBar.isHidden = false
             isFullScreenAdOn = false
+        }
+        if ((item?.caudio) != nil)||((item?.eaudio) != nil){
+            navigationController?.setNavigationBarHidden(false, animated: true)
+            toolBar.isHidden = true
         }
         checkSaveButton()
         // MARK: Ask the view controller to hide or show status bar

@@ -58,6 +58,8 @@ struct Color {
         static let background = "#f6e9d8"
         static let sign = "#555555"
         static let signBackground = "#ecd4b4"
+        static let showFullScreenAdBetweenPages = true
+        static let showFullScreenAdWhenLaunch = true
     }
     
     struct Theme {
@@ -149,6 +151,10 @@ struct Share {
         static let wechat = "2G178002"
         static let actionsheet = "iosaction"
     }
+}
+
+struct ToolBarStatus {
+    static let shouldHide = false
 }
 
 

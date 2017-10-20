@@ -13,6 +13,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     var contentPageData = [ContentItem]()
     var currentPageIndex = 0
     var languages: UISegmentedControl?
+    var audioButton: UIBarButtonItem?
     var themeColor: String?
     
     
@@ -149,7 +150,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         self.navigationItem.title = ""
         
         var audioIcon: UIImage?
-        var audioButton: UIBarButtonItem?
+        
         if Color.NavButton.isAudio{
             //let audioButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(listen))
             audioIcon = UIImage(named: "Audio")
@@ -279,6 +280,10 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             actualLanguageIndex = 0
         }
         languages?.selectedSegmentIndex = actualLanguageIndex
+        
+        // MARK: Update right nav button
+        checkRightNavButton(type)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -335,6 +340,15 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             saveButton.image = UIImage(named: "Delete")
         } else {
             saveButton.image = UIImage(named: "Clip")
+        }
+    }
+    
+    fileprivate func checkRightNavButton(_ type: String) {
+        // MARK: Update Right Bar Button Item
+        if type == "story" {
+            navigationItem.rightBarButtonItem = audioButton
+        } else {
+            navigationItem.rightBarButtonItem = nil
         }
     }
     
@@ -443,6 +457,11 @@ extension DetailViewController: DetailModelDelegate {
             }
         }
         checkSaveButton()
+        
+        // MARK: Update right nav button
+        if let type = item?.type {
+            checkRightNavButton(type)
+        }
         // MARK: Ask the view controller to hide or show status bar
         setNeedsStatusBarAppearanceUpdate()
     }

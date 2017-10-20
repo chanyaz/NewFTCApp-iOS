@@ -195,7 +195,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 //let urlStringSearch = APIs.searchUrl
                 if let url = URL(string: urlStringSearch) {
                     let request = URLRequest(url: url)
-                    if let adHTMLPath = Bundle.main.path(forResource: "search", ofType: "html"){
+                    let fileName = GB2Big5.convertHTMLFileName("search")
+                    if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html"){
                         do {
                             let searchHTML = getSearchHistoryHTML()
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
@@ -212,10 +213,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             } else if dataObjectType == "account" {
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
-                    if let adHTMLPath = Bundle.main.path(forResource: "account", ofType: "html"){
+                    let fileName = GB2Big5.convertHTMLFileName("account")
+                    if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                            let storyHTML = storyTemplate as String
+                            let storyHTML = GB2Big5.convert(storyTemplate as String)
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             //self.webView?.load(request)
@@ -276,7 +278,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         DispatchQueue.global().async {
             if let url = URL(string: urlString) {
                 let request = URLRequest(url: url)
-                if let adHTMLPath = Bundle.main.path(forResource: "list", ofType: "html") {
+                let fileName = GB2Big5.convertHTMLFileName("list")
+                if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html") {
                     do {
                         let defaultString = "Loading..."
                         let listContentString: String

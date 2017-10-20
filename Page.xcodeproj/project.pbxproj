@@ -79,6 +79,20 @@
 		6019A9D31F4C457D00B8FB69 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9D01F4C457D00B8FB69 /* FollowCell.xib */; };
 		6019A9D41F4C457D00B8FB69 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9D01F4C457D00B8FB69 /* FollowCell.xib */; };
 		601AC21B1F4870780004196A /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = 601AC21A1F4870780004196A /* search.html */; };
+		601C41811F99BC28002D26B2 /* account-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41791F99BAC3002D26B2 /* account-big5.html */; };
+		601C41821F99BC2B002D26B2 /* ebook-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41751F99BAC2002D26B2 /* ebook-big5.html */; };
+		601C41831F99BC30002D26B2 /* html-book-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41781F99BAC3002D26B2 /* html-book-big5.html */; };
+		601C41841F99BC33002D26B2 /* list-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41771F99BAC3002D26B2 /* list-big5.html */; };
+		601C41851F99BC36002D26B2 /* register-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41741F99BAC2002D26B2 /* register-big5.html */; };
+		601C41861F99BC39002D26B2 /* search-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41761F99BAC2002D26B2 /* search-big5.html */; };
+		601C41871F99BC3B002D26B2 /* story-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41731F99BAC1002D26B2 /* story-big5.html */; };
+		601C41881F99BC78002D26B2 /* account-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C417D1F99BAE3002D26B2 /* account-big5.html */; };
+		601C41891F99BC7A002D26B2 /* ebook-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C417C1F99BAE3002D26B2 /* ebook-big5.html */; };
+		601C418A1F99BC7F002D26B2 /* html-book-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C417A1F99BAE2002D26B2 /* html-book-big5.html */; };
+		601C418B1F99BC82002D26B2 /* list-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C417B1F99BAE2002D26B2 /* list-big5.html */; };
+		601C418C1F99BC85002D26B2 /* register-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C417E1F99BAE3002D26B2 /* register-big5.html */; };
+		601C418D1F99BC88002D26B2 /* search-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C417F1F99BAE3002D26B2 /* search-big5.html */; };
+		601C418E1F99BC8B002D26B2 /* story-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41801F99BAE4002D26B2 /* story-big5.html */; };
 		6021530C1F397C650077A7AF /* DetailModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608C55201EF78FA100AF27CB /* DetailModelController.swift */; };
 		6021530D1F397C650077A7AF /* DataForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A411F1CAC5300583157 /* DataForShare.swift */; };
 		6021530E1F397C650077A7AF /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA7BC21EF28AD4000CD9B4 /* HeaderView.swift */; };
@@ -452,6 +466,20 @@
 		6019A9CF1F4C457D00B8FB69 /* FollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
 		6019A9D01F4C457D00B8FB69 /* FollowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowCell.xib; sourceTree = "<group>"; };
 		601AC21A1F4870780004196A /* search.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = search.html; path = FTChinese/search.html; sourceTree = "<group>"; };
+		601C41731F99BAC1002D26B2 /* story-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "story-big5.html"; path = "FTChinese/story-big5.html"; sourceTree = "<group>"; };
+		601C41741F99BAC2002D26B2 /* register-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "register-big5.html"; path = "FTChinese/register-big5.html"; sourceTree = "<group>"; };
+		601C41751F99BAC2002D26B2 /* ebook-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "ebook-big5.html"; path = "FTChinese/ebook-big5.html"; sourceTree = "<group>"; };
+		601C41761F99BAC2002D26B2 /* search-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "search-big5.html"; path = "FTChinese/search-big5.html"; sourceTree = "<group>"; };
+		601C41771F99BAC3002D26B2 /* list-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "list-big5.html"; path = "FTChinese/list-big5.html"; sourceTree = "<group>"; };
+		601C41781F99BAC3002D26B2 /* html-book-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "html-book-big5.html"; path = "FTChinese/html-book-big5.html"; sourceTree = "<group>"; };
+		601C41791F99BAC3002D26B2 /* account-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "account-big5.html"; path = "FTChinese/account-big5.html"; sourceTree = "<group>"; };
+		601C417A1F99BAE2002D26B2 /* html-book-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "html-book-big5.html"; path = "Page/FTCC/html-book-big5.html"; sourceTree = SOURCE_ROOT; };
+		601C417B1F99BAE2002D26B2 /* list-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "list-big5.html"; path = "Page/FTCC/list-big5.html"; sourceTree = SOURCE_ROOT; };
+		601C417C1F99BAE3002D26B2 /* ebook-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "ebook-big5.html"; path = "Page/FTCC/ebook-big5.html"; sourceTree = SOURCE_ROOT; };
+		601C417D1F99BAE3002D26B2 /* account-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "account-big5.html"; path = "Page/FTCC/account-big5.html"; sourceTree = SOURCE_ROOT; };
+		601C417E1F99BAE3002D26B2 /* register-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "register-big5.html"; path = "Page/FTCC/register-big5.html"; sourceTree = SOURCE_ROOT; };
+		601C417F1F99BAE3002D26B2 /* search-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "search-big5.html"; path = "Page/FTCC/search-big5.html"; sourceTree = SOURCE_ROOT; };
+		601C41801F99BAE4002D26B2 /* story-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "story-big5.html"; path = "Page/FTCC/story-big5.html"; sourceTree = SOURCE_ROOT; };
 		602153841F397C660077A7AF /* FTCC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FTCC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		602153871F3985660077A7AF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Page/Main.storyboard; sourceTree = "<group>"; };
 		6021538A1F3990880077A7AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -744,6 +772,13 @@
 				600C0D011F5CE7B800226F84 /* ebook.html */,
 				601AC21A1F4870780004196A /* search.html */,
 				60335DE11F7F16010002173B /* html-book.html */,
+				601C41791F99BAC3002D26B2 /* account-big5.html */,
+				601C41751F99BAC2002D26B2 /* ebook-big5.html */,
+				601C41781F99BAC3002D26B2 /* html-book-big5.html */,
+				601C41771F99BAC3002D26B2 /* list-big5.html */,
+				601C41741F99BAC2002D26B2 /* register-big5.html */,
+				601C41761F99BAC2002D26B2 /* search-big5.html */,
+				601C41731F99BAC1002D26B2 /* story-big5.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -871,6 +906,13 @@
 				F27D9A781F976F4600A95188 /* register.html */,
 				F27D9A791F976F4600A95188 /* search.html */,
 				F27D9A7E1F976F4600A95188 /* story.html */,
+				601C417D1F99BAE3002D26B2 /* account-big5.html */,
+				601C417C1F99BAE3002D26B2 /* ebook-big5.html */,
+				601C417A1F99BAE2002D26B2 /* html-book-big5.html */,
+				601C417B1F99BAE2002D26B2 /* list-big5.html */,
+				601C417E1F99BAE3002D26B2 /* register-big5.html */,
+				601C417F1F99BAE3002D26B2 /* search-big5.html */,
+				601C41801F99BAE4002D26B2 /* story-big5.html */,
 			);
 			path = HTML;
 			sourceTree = "<group>";
@@ -1491,22 +1533,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				50C31B481F7006D500F4CF61 /* OptionCell.xib in Resources */,
+				601C418B1F99BC82002D26B2 /* list-big5.html in Resources */,
 				F27D9A841F976FB800A95188 /* register.html in Resources */,
 				602153641F397C650077A7AF /* ChannelScrollerCell.xib in Resources */,
 				602153651F397C650077A7AF /* CoverCell.xib in Resources */,
 				602153941F399AC80077A7AF /* Assets.xcassets in Resources */,
 				602153881F3985660077A7AF /* Main.storyboard in Resources */,
+				601C41891F99BC7A002D26B2 /* ebook-big5.html in Resources */,
 				602153661F397C650077A7AF /* CoverCellRegular.xib in Resources */,
 				F2E0906B1F5A6A3900F4409F /* ColumnAllListCell.xib in Resources */,
 				F29E19B31F39A2BC00FAA8C0 /* sound.png in Resources */,
 				602153671F397C650077A7AF /* Ad.xib in Resources */,
 				F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */,
+				601C418E1F99BC8B002D26B2 /* story-big5.html in Resources */,
 				60814F631F580FB200041801 /* BookCell.xib in Resources */,
 				6021538F1F39990E0077A7AF /* LaunchScreen.storyboard in Resources */,
 				F27D9A831F976FB500A95188 /* list.html in Resources */,
 				60B8554B1F6A118600FE190E /* VideoCoverCell.xib in Resources */,
 				60F3D14E1F7A5B9900D115FC /* IconCell.xib in Resources */,
 				6055EF9A1F5021C1006F8A83 /* PaidPostCell.xib in Resources */,
+				601C418C1F99BC85002D26B2 /* register-big5.html in Resources */,
 				60316BA31F8063EF00C4FEE2 /* ClassicCoverCell.xib in Resources */,
 				602153691F397C650077A7AF /* ad.html in Resources */,
 				6021536D1F397C650077A7AF /* ChannelCell.xib in Resources */,
@@ -1516,6 +1562,7 @@
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
 				50C31B3C1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
 				6021536F1F397C650077A7AF /* ChannelCellRegular.xib in Resources */,
+				601C418D1F99BC88002D26B2 /* search-big5.html in Resources */,
 				602153721F397C650077A7AF /* AdCellRegular.xib in Resources */,
 				602153731F397C650077A7AF /* HeaderView.xib in Resources */,
 				6017AAEA1F879D63008D3FBF /* SmoothCoverCell.xib in Resources */,
@@ -1524,6 +1571,7 @@
 				F2E0906F1F5A6A3900F4409F /* ColumnMyListCell.xib in Resources */,
 				F27D9A871F976FBE00A95188 /* story.html in Resources */,
 				F27D9A7F1F976FA800A95188 /* account.html in Resources */,
+				601C418A1F99BC7F002D26B2 /* html-book-big5.html in Resources */,
 				F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */,
 				602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */,
 				F27D9A801F976FAB00A95188 /* ebook.html in Resources */,
@@ -1533,6 +1581,7 @@
 				50C31B421F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,
 				F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */,
 				6019A9D41F4C457D00B8FB69 /* FollowCell.xib in Resources */,
+				601C41881F99BC78002D26B2 /* account-big5.html in Resources */,
 				6021537C1F397C650077A7AF /* HeadlineCell.xib in Resources */,
 				6054B2891F6628B300E34990 /* ThemeCoverCell.xib in Resources */,
 				F29E19B21F39A2BC00FAA8C0 /* ShareIcon.jpg in Resources */,
@@ -1550,20 +1599,25 @@
 				60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */,
 				601AC21B1F4870780004196A /* search.html in Resources */,
 				60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */,
+				601C41861F99BC39002D26B2 /* search-big5.html in Resources */,
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
+				601C41841F99BC33002D26B2 /* list-big5.html in Resources */,
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
 				6017AAE91F879D63008D3FBF /* SmoothCoverCell.xib in Resources */,
 				600C0D021F5CE7B800226F84 /* ebook.html in Resources */,
 				60F3D14D1F7A5B9900D115FC /* IconCell.xib in Resources */,
 				6021538B1F3990880077A7AF /* Main.storyboard in Resources */,
+				601C41821F99BC2B002D26B2 /* ebook-big5.html in Resources */,
 				50DA6E811F4037C8006B4CDE /* story.html in Resources */,
 				50C31B351F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
 				60C466521F7F25EF004E6D02 /* html-book.html in Resources */,
 				6084C7CC1F452A210035F60C /* register.html in Resources */,
 				604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */,
+				601C41871F99BC3B002D26B2 /* story-big5.html in Resources */,
 				AF64F57B1F582A1700AFAFFC /* Assets.xcassets in Resources */,
 				60C558721F29B786004C4E0E /* schedule.json in Resources */,
 				60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */,
+				601C41811F99BC28002D26B2 /* account-big5.html in Resources */,
 				AF657A5E1F3AE97E00E2EABA /* landscape.jpeg in Resources */,
 				608502581F8B61C300C333A2 /* list.html in Resources */,
 				F2F92B181F0B6C0C00C4E043 /* AdCellRegular.xib in Resources */,
@@ -1578,6 +1632,7 @@
 				50C31B411F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,
 				602153C21F39A4390077A7AF /* cover.jpg in Resources */,
 				50C31B3B1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
+				601C41831F99BC30002D26B2 /* html-book-big5.html in Resources */,
 				500139E11F1A7188009EC29D /* GoogleService-Info.plist in Resources */,
 				60F3D1471F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
@@ -1589,6 +1644,7 @@
 				6019A9D31F4C457D00B8FB69 /* FollowCell.xib in Resources */,
 				60B8554A1F6A118600FE190E /* VideoCoverCell.xib in Resources */,
 				6054B2881F6628B300E34990 /* ThemeCoverCell.xib in Resources */,
+				601C41851F99BC36002D26B2 /* register-big5.html in Resources */,
 				60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1625,7 +1681,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		886899C82F14A377FBC6FF9E /* [CP] Check Pods Manifest.lock */ = {
@@ -1643,7 +1699,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9EEBA5BD08C755F531ACE82B /* [CP] Copy Pods Resources */ = {

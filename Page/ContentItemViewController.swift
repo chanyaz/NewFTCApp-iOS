@@ -611,7 +611,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     default:
                         resourceFileName = "story"
                     }
-                    if let adHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"){
+                    let finalFileName = GB2Big5.convertHTMLFileName(resourceFileName)
+                    if let adHTMLPath = Bundle.main.path(forResource: finalFileName, ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                             let storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body}", with: finalBody)
@@ -646,7 +647,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 }
             }
         } else if dataObject?.type == "register"{
-            if let adHTMLPath = Bundle.main.path(forResource: "register", ofType: "html"){
+            let fileName = GB2Big5.convertHTMLFileName("register")
+            if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html"){
                 let url = URL(string: APIs.getUrl("register", type: "register"))
                 do {
                     let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
@@ -671,7 +673,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else if dataObject?.type == "htmlbook"{
             // MARK: - Open HTML Body Content from the html-book.html local file
             let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
-            let resourceFileName = "html-book"
+            let resourceFileName = GB2Big5.convertHTMLFileName("html-book")
             if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"),
                 let contentHTMLPath = dataObject?.id,
             let url = url {

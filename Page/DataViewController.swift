@@ -1467,9 +1467,9 @@ extension DataViewController: UISearchBarDelegate {
             searchHistoryHTML += "<div onclick=\"search('\(keyword)')\" class=\"oneStory story\(firstChildClass)\"><div class=\"headline\">\(keyword)</div></div>"
         }
         if searchHistoryHTML != "" {
-            searchHistoryHTML = "<a class=\"section\"><span>搜索历史</span></a>" + searchHistoryHTML
+            searchHistoryHTML = "<a class=\"section\"><span>\(GB2Big5.convert("搜索历史"))</span></a>" + searchHistoryHTML
         } else {
-            searchHistoryHTML = "<div class=\"oneStory story first-child\"><div class=\"headline\">输入关键字开始搜索</div></div>"
+            searchHistoryHTML = "<div class=\"oneStory story first-child\"><div class=\"headline\">\(GB2Big5.convert("输入关键字开始搜索"))</div></div>"
         }
         return searchHistoryHTML
     }

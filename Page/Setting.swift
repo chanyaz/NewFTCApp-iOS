@@ -9,9 +9,9 @@
 import Foundation
 struct Setting {
     private static let keyPrefix = "Setting For "
-    private static let options = [
+    public static let options = [
         "font-setting": ["最小","较小","默认","较大","最大"],
-        "language-preference": ["简体中文", "繁体中文"]
+        "language-preference": ["简体字", "繁體字"]
     ]
     static let fontSizes: [CGFloat] = [0.8, 0.9, 1, 1.2, 1.6]
     static let fontClasses = ["smallest first-child", "smaller", "normal", "bigger", "biggest"]

@@ -77,7 +77,7 @@ class SettingCell: CustomCell {
                     optionSwitch.isOn = Setting.isSwitchOn(id)
                     case "option":
                     options.isHidden = false
-                    options.text = "\(Setting.getCurrentOption(id).value) >"
+                    options.text = "\(GB2Big5.convert(Setting.getCurrentOption(id).value)) >"
                 default:
                     options.isHidden = false
                     options.text = ">"

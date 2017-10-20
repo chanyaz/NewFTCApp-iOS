@@ -1269,7 +1269,7 @@ extension DataViewController {
     
     // MARK: - load settings and update UI
     fileprivate func loadSettings() {
-        let contentSections = Settings.page
+        let contentSections = GB2Big5.convert(Settings.page)
         let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
         let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
@@ -1279,7 +1279,7 @@ extension DataViewController {
     // MARK: load options and update UI
     fileprivate func loadOptions() {
         if let id = dataObject["id"] {
-            let contentSections = Setting.getContentSections(id)
+            let contentSections = GB2Big5.convert(Setting.getContentSections(id))
             let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
             let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             let verticalCass = UIScreen.main.traitCollection.verticalSizeClass

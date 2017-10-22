@@ -543,12 +543,13 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     let finalBody: String
                     // MARK: Story Time
                     let timeStamp: String
-                    let userCommentsOrder: String
+                    var userCommentsOrder: String = ""
                     let styleContainerStyle: String
                     var adBanner = ""
                     var adMPU = ""
                     var storyTheme = ""
                     let fontClass = Setting.getFontClass()
+                    var commentsId = id
                     
                     if subType == .UserComments {
                         finalBody = ""
@@ -560,8 +561,21 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         timeStamp = ""
                         lead = ""
                         navigationItem.title = headline
-                        userCommentsOrder = "storyall1"
+                        
                         styleContainerStyle = " style=\"display:none;\""
+                        switch type {
+                        case "interactive":
+                            commentsId = "r_interactive_\(id)"
+                        case "video":
+                            commentsId = "r_video_\(id)"
+                        case "story":
+                            commentsId = id
+                            userCommentsOrder = "storyall1"
+                        case "photo", "photonews":
+                            commentsId = "r_photo_\(id)"
+                        default:
+                            commentsId = "r_\(type)_\(id)"
+                        }
                     } else if type == "ebook" {
                         finalBody = "<p>\(headlineBody.finalBody.replacingOccurrences(of: "\n", with: "</p><p>", options: .regularExpression))</p>"
                         byline = ""
@@ -571,7 +585,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         imageHTML = ""
                         timeStamp = ""
                         lead = ""
-                        userCommentsOrder = "story"
                         styleContainerStyle = ""
                         storyTheme = "电子书"
                         if let image = dataObject?.image {
@@ -591,7 +604,6 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         }
                         timeStamp = dataObject?.publishTime ?? ""
                         lead = dataObject?.lead ?? ""
-                        userCommentsOrder = "story"
                         styleContainerStyle = ""
                         adBanner = "<div class=\"bn-ph\"><div class=\"banner-container\"><div class=\"banner-inner\"><div class=\"banner-content\"><script type=\"text/javascript\">document.write (writeAd('banner'));</script></div></div></div></div>"
                         adMPU = "<div class=\"mpu-container\"><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div>"
@@ -638,6 +650,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "{ad-banner}", with: adBanner)
                                 .replacingOccurrences(of: "{ad-mpu}", with: adMPU)
                                 .replacingOccurrences(of: "{font-class}", with: fontClass)
+                                .replacingOccurrences(of: "{comments-id}", with: commentsId)
+                            
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             self.webView?.load(request)

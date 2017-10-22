@@ -34,7 +34,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
     var item: ContentItem?
     var themeColor: String?
     
-    var tabView = CustomTab()
+    var tabView = CustomSmallPlayView()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)

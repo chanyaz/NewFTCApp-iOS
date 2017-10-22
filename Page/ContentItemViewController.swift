@@ -502,7 +502,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     //    }
     
     private func renderWebView() {
-        if let type = dataObject?.type, ["story", "ebook"].contains(type) {
+        if let type = dataObject?.type,
+            ["story", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
             if let id = dataObject?.id {
                 let urlString = APIs.getUrl(id, type: type)

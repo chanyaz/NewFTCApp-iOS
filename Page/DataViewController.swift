@@ -22,6 +22,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     var coverTheme: String?
     var layoutStrategy: String?
     var isVisible = false
+    let maxWidth: CGFloat = 768
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
     
@@ -56,8 +57,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
         if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting", "options"].contains(dataObjectType){
-            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             
             // MARK: - Get Layout Strategy
             let layoutKey = layoutType()
@@ -86,18 +87,29 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(collectionViewInsets.top, 0, collectionViewInsets.bottom, 0);
                 
                 
-                let paddingSpace = sectionInsets.left * (getSizeInfo().itemsPerRow + 1)
-                let availableWidth = view.frame.width - paddingSpace
-                //print("availableWidth : \(availableWidth)")
+                //                let paddingSpace = sectionInsets.left * (getSizeInfo().itemsPerRow + 1)
+                //                let availableWidth = view.frame.width - paddingSpace
+                //                //print("availableWidth : \(availableWidth)")
+                //
+                //                if (horizontalClass != .regular || verticalCass != .regular) && layoutStrategy != "Icons" {
+                //                    if #available(iOS 10.0, *) {
+                //                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                //                    } else {
+                //                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 250)
+                //                    }
+                //                    cellWidth = availableWidth
+                //                }
                 
-                if (horizontalClass != .regular || verticalCass != .regular) && layoutStrategy != "Icons" {
-                    if #available(iOS 10.0, *) {
-                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-                    } else {
-                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 250)
-                    }
-                    cellWidth = availableWidth
+                //let paddingSpace = sectionInsets.left * (getSizeInfo().itemsPerRow + 1)
+                let availableWidth = min(view.frame.width, maxWidth)
+                //print("availableWidth : \(availableWidth)")
+                if #available(iOS 10.0, *) {
+                    flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                } else {
+                    flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 250)
                 }
+                cellWidth = availableWidth
+                
             }
             
             
@@ -122,10 +134,11 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             collectionView?.register(UINib.init(nibName: "SimpleHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "SimpleHeaderView")
             
             // MARK: Cell for Regular Size
-            collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
-            collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
-            collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
-            collectionView?.register(UINib.init(nibName: "HotArticleCellRegular", bundle: nil), forCellWithReuseIdentifier: "HotArticleCellRegular")
+//            collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
+//            collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
+//            collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
+//            collectionView?.register(UINib.init(nibName: "HotArticleCellRegular", bundle: nil), forCellWithReuseIdentifier: "HotArticleCellRegular")
+            
             // MARK: - Update Styles
             view.backgroundColor = UIColor(hex: Color.Content.background)
             collectionView?.backgroundColor = UIColor(hex: Color.Content.background)
@@ -310,7 +323,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         }
     }
     
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -348,6 +361,12 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         self?.webViewScrollPoint = self?.webView?.scrollView.contentOffset
                         self?.renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
                         print ("the view is not visible, render web view called")
+                        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] timer in
+                            if let webViewScrollPoint = self?.webViewScrollPoint,
+                                self?.isVisible == false {
+                                self?.webView?.scrollView.setContentOffset(webViewScrollPoint, animated: false)
+                            }
+                        }
                     }
                 } else {
                     print ("the view is visible, nothing called")
@@ -357,34 +376,34 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     
-//    private func updateWebviewTraffic() {
-//        if isWebViewFirstLoading == true {
-//            isWebViewFirstLoading = false
-//            return
-//        }
-//
-//
-//        //        if let listAPI = dataObject["listapi"],
-//        //        let urlStringOriginal = dataObject["url"] {
-//        //            let fileExtension = "html"
-//        //            let urlString = APIs.convert(urlStringOriginal)
-//        //            webViewScrollPoint = webView?.scrollView.contentOffset
-//        //            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
-//        //        }
-//
-//        //let jsCode = "refreshAllAds();ga('send', 'pageview');"
-//        let jsCode = "ga('send', 'pageview');"
-//        webView?.evaluateJavaScript(jsCode) { (result, error) in
-//            if error == nil {
-//                print ("pv recorded and ad refreshed")
-//            } else {
-//                print (error ?? "pv record error")
-//                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
-//                self.refreshWebView(self.refreshControl)
-//            }
-//        }
-//
-//    }
+    //    private func updateWebviewTraffic() {
+    //        if isWebViewFirstLoading == true {
+    //            isWebViewFirstLoading = false
+    //            return
+    //        }
+    //
+    //
+    //        //        if let listAPI = dataObject["listapi"],
+    //        //        let urlStringOriginal = dataObject["url"] {
+    //        //            let fileExtension = "html"
+    //        //            let urlString = APIs.convert(urlStringOriginal)
+    //        //            webViewScrollPoint = webView?.scrollView.contentOffset
+    //        //            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+    //        //        }
+    //
+    //        //let jsCode = "refreshAllAds();ga('send', 'pageview');"
+    //        let jsCode = "ga('send', 'pageview');"
+    //        webView?.evaluateJavaScript(jsCode) { (result, error) in
+    //            if error == nil {
+    //                print ("pv recorded and ad refreshed")
+    //            } else {
+    //                print (error ?? "pv record error")
+    //                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
+    //                self.refreshWebView(self.refreshControl)
+    //            }
+    //        }
+    //
+    //    }
     
     
     //    override func viewDidAppear(_ animated: Bool) {
@@ -436,8 +455,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     private func getAPI(_ urlString: String) {
-        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+//        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+//        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         view.addSubview(activityIndicator)
         // activityIndicator.frame = view.bounds
         activityIndicator.center = self.view.center
@@ -450,7 +469,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 let contentSections = contentAPI.formatJSON(resultsDictionary)
                 let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
                 print ("update UI from local")
-                updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+                updateUI(with: results)
                 //print ("update UI from local file with \(urlString)")
             }
         }
@@ -469,7 +488,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 if let results = results {
                     // MARK: When updating UI from the internet, the viewable ad will be updated too, which makes sense
                     print ("update UI from the internet with \(acturalUrlString)")
-                    self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+                    self?.updateUI(with: results)
                     // FIXME: It is important to reload Data here, not inside the updateUI. But Why? What's the difference?
                     self?.collectionView?.reloadData()
                     self?.prefetch()
@@ -523,14 +542,15 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     }
     
     
-    fileprivate func updateUI(with results: ContentFetchResults, horizontalClass: UIUserInterfaceSizeClass, verticalCass: UIUserInterfaceSizeClass) {
+    fileprivate func updateUI(with results: ContentFetchResults) {
         // MARK: - Insert Ads into the fetch results
         let layoutWay:String
-        if horizontalClass == .regular && verticalCass == .regular {
-            layoutWay = dataObject["regularLayout"] ?? "ipadhome"
-        } else {
-            layoutWay = dataObject["compactLayout"] ?? "home"
-        }
+//        if horizontalClass == .regular && verticalCass == .regular {
+//            layoutWay = dataObject["regularLayout"] ?? "ipadhome"
+//        } else {
+//            layoutWay = dataObject["compactLayout"] ?? "home"
+//        }
+        layoutWay = dataObject["compactLayout"] ?? "home"
         // MARK: Insert Content
         let fetchResultsWithContent: [ContentSection]
         if let insertContentLayoutWay = dataObject["Insert Content"] {
@@ -558,8 +578,8 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     
     private func requestNewContent() {
-        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+//        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+//        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         if let api = dataObject["api"] {
             getAPI(api)
         } else if let type = dataObject["type"] {
@@ -571,7 +591,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     adid: ""
                 )
                 let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
-                updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+                updateUI(with: results)
             } else if type == "iap" {
                 loadProducts()
             } else if type == "setting" {
@@ -619,42 +639,42 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
     
     private var webViewScrollPoint: CGPoint?
     
-//    private func updateWebviewTraffic() {
-//        if isWebViewFirstLoading == true {
-//            isWebViewFirstLoading = false
-//            return
-//        }
-//
-//
-////        if let listAPI = dataObject["listapi"],
-////        let urlStringOriginal = dataObject["url"] {
-////            let fileExtension = "html"
-////            let urlString = APIs.convert(urlStringOriginal)
-////            webViewScrollPoint = webView?.scrollView.contentOffset
-////            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
-////        }
-//
-//        //let jsCode = "refreshAllAds();ga('send', 'pageview');"
-//        let jsCode = "ga('send', 'pageview');"
-//        webView?.evaluateJavaScript(jsCode) { (result, error) in
-//            if error == nil {
-//                print ("pv recorded and ad refreshed")
-//            } else {
-//                print (error ?? "pv record error")
-//                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
-//                self.refreshWebView(self.refreshControl)
-//            }
-//        }
-//
-//    }
+    //    private func updateWebviewTraffic() {
+    //        if isWebViewFirstLoading == true {
+    //            isWebViewFirstLoading = false
+    //            return
+    //        }
+    //
+    //
+    ////        if let listAPI = dataObject["listapi"],
+    ////        let urlStringOriginal = dataObject["url"] {
+    ////            let fileExtension = "html"
+    ////            let urlString = APIs.convert(urlStringOriginal)
+    ////            webViewScrollPoint = webView?.scrollView.contentOffset
+    ////            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+    ////        }
+    //
+    //        //let jsCode = "refreshAllAds();ga('send', 'pageview');"
+    //        let jsCode = "ga('send', 'pageview');"
+    //        webView?.evaluateJavaScript(jsCode) { (result, error) in
+    //            if error == nil {
+    //                print ("pv recorded and ad refreshed")
+    //            } else {
+    //                print (error ?? "pv record error")
+    //                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
+    //                self.refreshWebView(self.refreshControl)
+    //            }
+    //        }
+    //
+    //    }
     
     // MARK: if you are back from a pushed view controller, scroll to the original position
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        //print ("web view did finish navigation called! Should Scroll to the previous position if you are back from a pushed view controller! ")
-        if let webViewScrollPoint = webViewScrollPoint {
-            webView.scrollView.setContentOffset(webViewScrollPoint, animated: false)
-        }
-    }
+    //    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    //        //print ("web view did finish navigation called! Should Scroll to the previous position if you are back from a pushed view controller! ")
+    //        if let webViewScrollPoint = webViewScrollPoint {
+    //            webView.scrollView.setContentOffset(webViewScrollPoint, animated: false)
+    //        }
+    //    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -864,11 +884,13 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 return ad
             case "HeaderView":
                 let headerView = headerView as! HeaderView
+                headerView.headerWidth = cellWidth
                 headerView.themeColor = themeColor
                 headerView.contentSection = fetches.fetchResults[indexPath.section]
                 return headerView
             case "SimpleHeaderView":
                 let headerView = headerView as! SimpleHeaderView
+                headerView.headerWidth = cellWidth
                 headerView.themeColor = themeColor
                 headerView.contentSection = fetches.fetchResults[indexPath.section]
                 return headerView
@@ -942,8 +964,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
         } else if layoutStrategy == "Icons" {
             reuseIdentifier = "IconCell"
         } else {
-            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+//            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+//            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            /*
             if horizontalClass == .regular && verticalCass == .regular {
                 
                 var isAd = false
@@ -980,6 +1003,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     reuseIdentifier = "ChannelCellRegular"
                 }
             } else {
+ */
                 if item.type == "ebook" {
                     reuseIdentifier = "BookCell"
                 } else if item.type == "follow" {
@@ -997,7 +1021,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                 } else {
                     reuseIdentifier = "ChannelCell"
                 }
-            }
+            
         }
         //        print ("reuseIdentifier---- \(reuseIdentifier) ----reuseIdentifier")
         return reuseIdentifier
@@ -1254,9 +1278,9 @@ extension DataViewController {
                 adid: ""
             )
             let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
-            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-            self?.updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+//            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+//            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            self?.updateUI(with: results)
             
             
             //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
@@ -1274,9 +1298,9 @@ extension DataViewController {
     fileprivate func loadSettings() {
         let contentSections = GB2Big5.convert(Settings.page)
         let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
-        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-        updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+//        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+//        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+        updateUI(with: results)
     }
     
     // MARK: load options and update UI
@@ -1284,9 +1308,9 @@ extension DataViewController {
         if let id = dataObject["id"] {
             let contentSections = GB2Big5.convert(Setting.getContentSections(id))
             let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
-            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-            updateUI(with: results, horizontalClass: horizontalClass, verticalCass: verticalCass)
+//            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+//            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            updateUI(with: results)
             
         }
     }

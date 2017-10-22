@@ -338,18 +338,21 @@ struct AppNavigation {
             "Channels": [
                 ["title": "已读",
                  "type": "read",
-                 "screenName":"myft"
+                 "screenName":"myft",
+                 "compactLayout": ""
                 ],
                 [
                     "title": "收藏",
                     "type": "clip",
-                    "screenName":"myft"
+                    "screenName":"myft",
+                    "compactLayout": ""
                 ],
                 [
                     "title": "关注",
                     "type": "follow",
                     "screenName":"myft",
-                    "Insert Content": "follows"
+                    "Insert Content": "follows",
+                    "compactLayout": ""
                 ],
                 [
                     "title": "设置",

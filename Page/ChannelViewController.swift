@@ -195,6 +195,10 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
                 let image = UIImage(named: "Chat")
                 let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showChat))
                 insertButton(button, to: navItemString)
+            case "Person":
+                let image = UIImage(named: "Person")
+                let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showPerson))
+                insertButton(button, to: navItemString)
             default:
                 break
             }
@@ -207,6 +211,12 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
             navigationController?.pushViewController(chatViewController, animated: true)
         }
+    }
+    @objc public func showPerson() {
+        print("should to add person interface")
+        let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PersonInfoViewController")
+        navigationController?.pushViewController(chatViewController, animated: true)
+        
     }
     
     private func updateBackBarButton(for index: Int) {

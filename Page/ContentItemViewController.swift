@@ -903,6 +903,7 @@ extension ContentItemViewController: WKNavigationDelegate {
     }
 }
 
+var playerAPI = PlayerAPI()
 // MARK: Handle Message from Web View
 extension ContentItemViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -926,6 +927,15 @@ extension ContentItemViewController: WKScriptMessageHandler {
             case "listen":
                 if let audioUrlString = body["audio"] {
                     print ("should do something to call out the audio view for this url: \(audioUrlString)")
+                    if let itemCell = dataObject,let audioFileUrl = itemCell.caudio {
+                        TabBarAudioContent.sharedInstance.body["title"] = itemCell.headline
+                        TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                        TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
+                        TabBarAudioContent.sharedInstance.item = itemCell
+                        print ("call out the audio view for this url: \(audioFileUrl)")
+                    }
+                    playerAPI.openPlay()
+                    
                 }
             case "clip":
                 print ("clip this: \(body)")

@@ -39,7 +39,7 @@ struct APIs {
     
     // MARK: Search is mostly rendered using web
     //static let searchUrl = "http://app003.ftmailbox.com/search/"
-    static let searchUrl = "http://www.ftchinese.com/search/"
+    static let searchUrl = "http://www.ftchinese.com/search/?newad=yes"
     static func jsForSearch(_ keywords: String) -> String {
         return "search('\(keywords)');"
     }

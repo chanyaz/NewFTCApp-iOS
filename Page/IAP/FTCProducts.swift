@@ -87,8 +87,8 @@ public struct FTCProducts {
             //"download": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese.epub",
             //"downloadfortry": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese_Short.epub"
             //"downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
-            "download": "https://danla2f5eudt1.cloudfront.net/interactive/10430",
-            "downloadfortry": "https://danla2f5eudt1.cloudfront.net/interactive/10430?isPreview=yes#"
+            "download": "https://danla2f5eudt1.cloudfront.net/interactive/10430?bodyonly=yes",
+            "downloadfortry": "https://danla2f5eudt1.cloudfront.net/interactive/10430?bodyonly=yes&isPreview=yes"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.lunch1",

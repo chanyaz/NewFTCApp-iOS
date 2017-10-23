@@ -304,6 +304,7 @@ struct IAP {
                 let backgroundSessionConfiguration = URLSessionConfiguration.background(withIdentifier: productIdForTrying)
                 let backgroundSession = URLSession(configuration: backgroundSessionConfiguration, delegate: IAPs.shared.downloadDelegate, delegateQueue: IAPs.shared.downloadQueue)
                 if let url = URL(string: fileDownloadUrl) {
+                    print ("download try product at \(url)")
                     let request = URLRequest(url: url)
                     IAPs.shared.downloadTasks[productIdForTrying] = backgroundSession.downloadTask(with: request)
                     IAPs.shared.downloadTasks[productIdForTrying]?.resume()

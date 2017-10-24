@@ -28,12 +28,22 @@ struct AppNavigation {
                     //"api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
                     //"api": "https://danla2f5eudt1.cloudfront.net/channel/json.html?pageid=home&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/?webview=ftcapp&newad=yes",
-                    "listapi":"https://danla2f5eudt1.cloudfront.net/?webview=ftcapp&bodyonly=yes&newad=yes&001",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/?webview=ftcapp&bodyonly=yes&newad=yes&005",
                     "compactLayout": "home",
                     "coverTheme": "Classic",
                     "screenName":"homepage",
                     "Insert Content": "home"
                 ],
+                [
+                    "title": "中国",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/china.html?webview=ftcapp&bodyonly=yes&newad=yes",
+                    "url":"http://www.ftchinese.com/channel/china.html?newad=yes",
+                    "regularLayout": "",
+                    "screenName":"homepage/china",
+                    "coverTheme":"Wheat"
+                ],
+
 //                [
 //                    "title": "新测试",
 //                    "api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/test",
@@ -52,15 +62,7 @@ struct AppNavigation {
 //                    "url":"http://www.ftchinese.com/channel/datanews.html",
 //                    "screenName":"homepage/ftcc"
 //                ],
-                [
-                    "title": "中国",
-                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",
-                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/china.html?webview=ftcapp&bodyonly=yes&newad=yes",
-                    "url":"http://www.ftchinese.com/channel/china.html?newad=yes",
-                    "regularLayout": "",
-                    "screenName":"homepage/china",
-                    "coverTheme":"Wheat"
-                ],
+
                 [
                     "title": "全球",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/world.html?type=json",

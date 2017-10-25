@@ -149,7 +149,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             
             let typeString = dataObject?.type ?? ""
             // MARK: If the sub type is a user comment, render web view directly
-            if subType == .UserComments || ["webpage", "ebook", "htmlbook"].contains(typeString)  {
+            if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html"].contains(typeString)  {
                 renderWebView()
             } else {
                 getDetailInfo()
@@ -354,7 +354,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         // MARK: Convert HTML to NSMutableAttributedString https://stackoverflow.com/questions/36427442/nsfontattributename-not-applied-to-nsattributedstring
         if let type = dataObject?.type {
             switch type {
-            case "video", "interactive", "photonews", "photo", "gym", "special":
+            case "video", "interactive", "photonews", "photo", "gym", "special", "html":
                 renderWebView()
             case "story":
                 if (dataObject?.cbody) != nil {
@@ -685,6 +685,21 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 print ("html file is not loaded correctly")
                             }
                         }
+        }  else if dataObject?.type == "html"{
+            // MARK: - If there's a need to open just the HTML file
+            if let htmlFileName = dataObject?.id {
+                let url = URL(string: APIs.getUrl(htmlFileName, type: "html"))
+                let resourceFileName = GB2Big5.convertHTMLFileName(htmlFileName)
+                if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html") {
+                do {
+                    let htmlNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let htmlString = htmlNSString as String
+                    self.webView?.loadHTMLString(htmlString, baseURL:url)
+                } catch {
+                    print ("html file is not loaded correctly")
+                }
+                }
+            }
         } else if dataObject?.type == "htmlbook"{
             // MARK: - Open HTML Body Content from the html-book.html local file
             let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))

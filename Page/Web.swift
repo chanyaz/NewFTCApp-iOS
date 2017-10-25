@@ -100,6 +100,16 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 let action = url.host
                 let id = url.lastPathComponent
                 NotificationHelper.open(action, id: id, title: "title")
+            case "fileinbundle":
+                if let fileName = url.host {
+                let title = url.lastPathComponent
+                openHTMLInBundle(
+                    fileName,
+                    title: title,
+                    isFullScreen: true,
+                    hidesBottomBar: true
+                )
+                }
             case "itms-apps":
                 // MARK: Link to App Store
                 if #available(iOS 10.3, *) {
@@ -153,6 +163,30 @@ extension UIViewController: SFSafariViewControllerDelegate{
             navigationController?.pushViewController(contentItemViewController, animated: true)
         }
     }
+    
+    
+    func openHTMLInBundle(_ fileName: String, title: String, isFullScreen: Bool, hidesBottomBar: Bool) {
+        if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+            //print(dataViewController.view.frame)
+            contentItemViewController.dataObject = ContentItem(
+                id: fileName,
+                image: "",
+                headline: "",
+                lead: "",
+                type: "html",
+                preferSponsorImage: "",
+                tag: "",
+                customLink: "",
+                timeStamp: 0,
+                section: 0,
+                row: 0)
+            contentItemViewController.pageTitle = title
+            contentItemViewController.isFullScreen = isFullScreen
+            contentItemViewController.hidesBottomBarWhenPushed = hidesBottomBar
+            navigationController?.pushViewController(contentItemViewController, animated: true)
+        }
+    }
+    
     
     func openDataView(_ id: String?, of type: String) {
         if let id = id,

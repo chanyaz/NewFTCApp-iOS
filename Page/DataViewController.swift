@@ -258,6 +258,9 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             selector:#selector(paidPostUpdate(_:)),
             name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
             object: nil)
+        
+        
+        //openHTMLInBundle("register", title: "注册", isFullScreen: true, hidesBottomBar: true)
     }
     
     @objc public func refreshWebView(_ sender: Any) {

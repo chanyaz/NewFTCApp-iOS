@@ -146,6 +146,8 @@ struct APIs {
             urlString = "\(webPageDomain)htmlbook"
         case "htmlfile":
             urlString = "\(webPageDomain)htmlfile"
+        case "html":
+            urlString = "\(webPageDomain)\(id).html"
         default:
             urlString = "\(webPageDomain)"
         }

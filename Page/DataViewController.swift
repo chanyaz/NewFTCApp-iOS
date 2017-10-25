@@ -259,7 +259,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
             object: nil)
         
-        
         //openHTMLInBundle("register", title: "注册", isFullScreen: true, hidesBottomBar: true)
     }
     

@@ -259,7 +259,6 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
             name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
             object: nil)
         
-        
         //openHTMLInBundle("register", title: "注册", isFullScreen: true, hidesBottomBar: true)
     }
     
@@ -365,8 +364,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                         self?.renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
                         print ("the view is not visible, render web view called")
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] timer in
-                            if let webViewScrollPoint = self?.webViewScrollPoint,
-                                self?.isVisible == false {
+                            if let webViewScrollPoint = self?.webViewScrollPoint {
                                 self?.webView?.scrollView.setContentOffset(webViewScrollPoint, animated: false)
                             }
                         }

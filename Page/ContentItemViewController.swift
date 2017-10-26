@@ -592,6 +592,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         } else {
                             imageHTML = ""
                         }
+                        let restoreButton = UIBarButtonItem(title: "恢复购买", style: .plain, target: self, action: #selector(restore))
+                            //UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showSearch))
+                        navigationItem.rightBarButtonItem = restoreButton
+                        
                     } else {
                         finalBody = headlineBody.finalBody
                         byline = dataObject?.chineseByline ?? ""
@@ -749,6 +753,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 }
             }
         }
+    }
+    
+    @objc open func restore() {
+        print ("restore button")
     }
     
     private func getFollow(_ type: String) -> String {

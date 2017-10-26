@@ -464,7 +464,8 @@ extension IAPView: URLSessionDownloadDelegate {
             let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
             let documentDirectoryPath:String = path[0]
             let fileManager = FileManager()
-            let destinationURLForFile = URL(fileURLWithPath: documentDirectoryPath.appendingFormat("/\(productId)"))
+            let fileName = IAP.getFileName(productId)
+            let destinationURLForFile = URL(fileURLWithPath: documentDirectoryPath.appendingFormat("/\(fileName)"))
             var newStatus = "new"
             
             print ("\(productId) file downloaded to: \(location.absoluteURL)")
@@ -496,7 +497,8 @@ extension IAPView: URLSessionDownloadDelegate {
                     if productId.hasPrefix("try") {
                         // TODO: - This is a trial file, open it immediately
                         print ("open the try book")
-                        if let fileLocation = Download.checkFilePath(fileUrl: productId, for: .documentDirectory) {
+                        let fileName = IAP.getFileName(productId)
+                        if let fileLocation = Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) {
                             DispatchQueue.main.async {
                                 if let topController = UIApplication.topViewController() {
                                     topController.openHTMLBook(fileLocation)

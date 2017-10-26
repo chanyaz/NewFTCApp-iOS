@@ -35,7 +35,8 @@ struct IAP {
                 
                 let productGroupTitle = oneProduct["groupTitle"] as? String ?? ""
                 let isDownloaded = { () -> Bool in
-                    if Download.checkFilePath(fileUrl: id, for: .documentDirectory) == nil {
+                    let fileName = getFileName(id)
+                    if Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) == nil {
                         return false
                     } else {
                         return true
@@ -270,7 +271,7 @@ struct IAP {
     
     // MARK: - Read the excerpt of eBook
     public static func tryBook(_ productIdentifier: String) {
-        let tryBookFileName = "try." + productIdentifier
+        let tryBookFileName = "try.\(productIdentifier).html"
         // MARK: - check if the file exists locally
         if let fileLocation = Download.checkFilePath(fileUrl: tryBookFileName, for: .documentDirectory) {
             if let topController = UIApplication.topViewController() {
@@ -291,6 +292,13 @@ struct IAP {
         trackIAPActions("try", productId: productIdentifier)
     }
     
+    public static func getFileName(_ productId: String) -> String {
+        if productId.hasSuffix(".html") == false {
+            return "\(productId).html"
+        } else {
+            return productId
+        }
+    }
     
     public static func downloadProductForTrying(_ productID: String) {
         print ("Download this product for trying by id: \(productID), you can continue to download and/or display the information to user")
@@ -298,7 +306,8 @@ struct IAP {
             print ("download this file: \(fileDownloadUrl)")
             var newStatus = ""
             let productIdForTrying = "try." + productID
-            if Download.checkFilePath(fileUrl: productIdForTrying, for: .documentDirectory) == nil {
+            let fileNameForTrying = getFileName(productIdForTrying)
+            if Download.checkFilePath(fileUrl: fileNameForTrying, for: .documentDirectory) == nil {
                 // MARK: - Download the file through the internet
                 print ("The file does not exist. Download from \(fileDownloadUrl)")
                 let backgroundSessionConfiguration = URLSessionConfiguration.background(withIdentifier: productIdForTrying)
@@ -327,7 +336,8 @@ struct IAP {
         if let fileDownloadUrl = findProductInfoById(productID)?["download"] as? String {
             print ("download this file: \(fileDownloadUrl)")
             var newStatus = ""
-            if Download.checkFilePath(fileUrl: productID, for: .documentDirectory) == nil {
+            let fileName = getFileName(productID)
+            if Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) == nil {
                 // MARK: - Download the file through the internet
                 print ("The file does not exist. Download from \(fileDownloadUrl)")
                 let backgroundSessionConfiguration = URLSessionConfiguration.background(withIdentifier: productID)
@@ -358,7 +368,8 @@ struct IAP {
     // MARK: - use Folio reader to read eBook
     public static func readBook(_ productIdentifier: String) {
         // MARK: - check if the file exists locally
-        if let fileLocation = Download.checkFilePath(fileUrl: productIdentifier, for: .documentDirectory) {
+        let fileName = getFileName(productIdentifier)
+        if let fileLocation = Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) {
             /*
              let config = FolioReaderConfig()
              config.scrollDirection = .horizontal
@@ -391,7 +402,8 @@ struct IAP {
     }
     
     public static func checkStatus(_ id: String) -> String {
-        if Download.checkFilePath(fileUrl: id, for: .documentDirectory) != nil {
+        let fileName = getFileName(id)
+        if Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) != nil {
             return "success"
         } else if FTCProducts.store.isProductPurchased(id) == true {
             return "pendingdownload"
@@ -407,7 +419,8 @@ struct IAP {
         guard let dirPath = paths.first else {
             return "pendingdownload"
         }
-        let filePath = "\(dirPath)/\(productId)"
+        let fileName = getFileName(productId)
+        let filePath = "\(dirPath)/\(fileName)"
         IAP.trackIAPActions("remove download", productId: productId)
         do {
             try fileManager.removeItem(atPath: filePath)

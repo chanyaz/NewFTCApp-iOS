@@ -182,6 +182,7 @@ class AdSchedule {
                             }
                         }
                     }
+                    Ads.shared.hasFullScreenAd = true
                 } else {
                     print ("there is no creative to play this time! ")
                 }
@@ -253,6 +254,10 @@ class AdSchedule {
                         for dateStamp in dates {
                             if dateStamp >= dateInInt {
                                 creativeIsNeededForFuture = true
+                            }
+                            // MARK: If a full screen ad is scheduled for today
+                            if dateStamp == dateInInt {
+                                Ads.shared.hasFullScreenAd = true
                             }
                         }
                         if creativeIsNeededForFuture == true {

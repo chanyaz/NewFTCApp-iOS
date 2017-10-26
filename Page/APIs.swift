@@ -134,6 +134,8 @@ struct APIs {
         switch type {
         case "video":
             urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&002"
+        case "radio":
+            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&001"
         case "interactive", "gym", "special":
             urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
         case "story":

@@ -722,9 +722,12 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         } else {
             // MARK: - If it is other types of content such video and interacrtive features
             if let id = dataObject?.id, let type = dataObject?.type {
-                print("type-- video")
                 let urlStringOriginal: String
-                if let customLink = dataObject?.customLink, customLink != "" {
+                if  dataObject?.audioFileUrl != nil && type == "interactive" {
+                    // MARK: - Radio should use a different combination or url than other types of interactives
+                    urlStringOriginal = APIs.getUrl(id, type: "radio")
+                } else if let customLink = dataObject?.customLink,
+                    customLink != "" {
                     urlStringOriginal = customLink
                 } else {
                     urlStringOriginal = APIs.getUrl(id, type: type)

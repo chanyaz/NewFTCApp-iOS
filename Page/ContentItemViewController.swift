@@ -757,7 +757,8 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     }
     
     @objc open func restore() {
-        print ("restore button")
+        FTCProducts.store.restorePurchases()
+        Track.event(category: "IAP", action: "restore", label: "All")
     }
     
     private func getFollow(_ type: String) -> String {

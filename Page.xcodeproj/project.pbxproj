@@ -321,6 +321,8 @@
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */; };
 		F2218ABA1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
 		F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
+		F234B9521FA1C4CB00AACDAB /* my-love-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = F234B9501FA1C4C500AACDAB /* my-love-big5.html */; };
+		F234B9531FA1C4CE00AACDAB /* my-love.html in Resources */ = {isa = PBXBuildFile; fileRef = F234B9511FA1C4C500AACDAB /* my-love.html */; };
 		F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */; };
 		F234EC741F15D1DB003F6DD0 /* HotArticleCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */; };
 		F23BF9F01F170E090052FDB4 /* PageCollectionViewLayoutH.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */; };
@@ -613,6 +615,8 @@
 		F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallPlayView.swift; sourceTree = "<group>"; };
 		F23455511FA09F5F001C1AE8 /* person-information.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information.html"; path = "Page/FTCC/person-information.html"; sourceTree = SOURCE_ROOT; };
 		F23455521FA09F5F001C1AE8 /* person-information-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information-big5.html"; path = "Page/FTCC/person-information-big5.html"; sourceTree = SOURCE_ROOT; };
+		F234B9501FA1C4C500AACDAB /* my-love-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "my-love-big5.html"; path = "Page/FTCC/my-love-big5.html"; sourceTree = SOURCE_ROOT; };
+		F234B9511FA1C4C500AACDAB /* my-love.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "my-love.html"; path = "Page/FTCC/my-love.html"; sourceTree = SOURCE_ROOT; };
 		F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotArticleCellRegular.swift; sourceTree = "<group>"; };
 		F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotArticleCellRegular.xib; sourceTree = "<group>"; };
 		F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutH.swift; sourceTree = "<group>"; };
@@ -906,6 +910,8 @@
 		6023B9251F96FF1F00945896 /* HTML */ = {
 			isa = PBXGroup;
 			children = (
+				F234B9501FA1C4C500AACDAB /* my-love-big5.html */,
+				F234B9511FA1C4C500AACDAB /* my-love.html */,
 				F23455521FA09F5F001C1AE8 /* person-information-big5.html */,
 				F23455511FA09F5F001C1AE8 /* person-information.html */,
 				F27D9A7A1F976F4600A95188 /* account.html */,
@@ -1575,11 +1581,13 @@
 				60316BA31F8063EF00C4FEE2 /* ClassicCoverCell.xib in Resources */,
 				602153691F397C650077A7AF /* ad.html in Resources */,
 				6021536D1F397C650077A7AF /* ChannelCell.xib in Resources */,
+				F234B9521FA1C4CB00AACDAB /* my-love-big5.html in Resources */,
 				F27D9A821F976FB200A95188 /* html-book.html in Resources */,
 				50C31B361F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
 				60F3D1481F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */,
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
 				50C31B3C1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
+				F234B9531FA1C4CE00AACDAB /* my-love.html in Resources */,
 				6021536F1F397C650077A7AF /* ChannelCellRegular.xib in Resources */,
 				601C418D1F99BC88002D26B2 /* search-big5.html in Resources */,
 				602153721F397C650077A7AF /* AdCellRegular.xib in Resources */,

@@ -339,6 +339,8 @@
 		F27D9A841F976FB800A95188 /* register.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A781F976F4600A95188 /* register.html */; };
 		F27D9A851F976FBA00A95188 /* search.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A791F976F4600A95188 /* search.html */; };
 		F27D9A871F976FBE00A95188 /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7E1F976F4600A95188 /* story.html */; };
+		F289C79B1FA0CF450081A675 /* person-information.html in Resources */ = {isa = PBXBuildFile; fileRef = F23455511FA09F5F001C1AE8 /* person-information.html */; };
+		F289C79C1FA0CF480081A675 /* person-information-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = F23455521FA09F5F001C1AE8 /* person-information-big5.html */; };
 		F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AA1F39A2BC00FAA8C0 /* close.png */; };
 		F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AB1F39A2BC00FAA8C0 /* cover.jpg */; };
 		F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AC1F39A2BC00FAA8C0 /* mute.png */; };
@@ -609,6 +611,8 @@
 		F21309201F78A9BA0078A510 /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "../NewFTCApp-iOS9.15自主开发，在tab中加入audiocontroller，audiocontroller上面添加tabView/Page copy-Info.plist"; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutV.swift; sourceTree = "<group>"; };
 		F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallPlayView.swift; sourceTree = "<group>"; };
+		F23455511FA09F5F001C1AE8 /* person-information.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information.html"; path = "Page/FTCC/person-information.html"; sourceTree = SOURCE_ROOT; };
+		F23455521FA09F5F001C1AE8 /* person-information-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information-big5.html"; path = "Page/FTCC/person-information-big5.html"; sourceTree = SOURCE_ROOT; };
 		F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotArticleCellRegular.swift; sourceTree = "<group>"; };
 		F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotArticleCellRegular.xib; sourceTree = "<group>"; };
 		F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutH.swift; sourceTree = "<group>"; };
@@ -902,6 +906,8 @@
 		6023B9251F96FF1F00945896 /* HTML */ = {
 			isa = PBXGroup;
 			children = (
+				F23455521FA09F5F001C1AE8 /* person-information-big5.html */,
+				F23455511FA09F5F001C1AE8 /* person-information.html */,
 				F27D9A7A1F976F4600A95188 /* account.html */,
 				F27D9A7C1F976F4600A95188 /* ebook.html */,
 				F27D9A7B1F976F4600A95188 /* html-book.html */,
@@ -1557,6 +1563,7 @@
 				F29E19B31F39A2BC00FAA8C0 /* sound.png in Resources */,
 				602153671F397C650077A7AF /* Ad.xib in Resources */,
 				F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */,
+				F289C79C1FA0CF480081A675 /* person-information-big5.html in Resources */,
 				601C418E1F99BC8B002D26B2 /* story-big5.html in Resources */,
 				60814F631F580FB200041801 /* BookCell.xib in Resources */,
 				6021538F1F39990E0077A7AF /* LaunchScreen.storyboard in Resources */,
@@ -1586,6 +1593,7 @@
 				601C418A1F99BC7F002D26B2 /* html-book-big5.html in Resources */,
 				F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */,
 				602153761F397C650077A7AF /* GoogleService-Info.plist in Resources */,
+				F289C79B1FA0CF450081A675 /* person-information.html in Resources */,
 				F27D9A801F976FAB00A95188 /* ebook.html in Resources */,
 				602153771F397C650077A7AF /* ga.js in Resources */,
 				60F1A5261F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
@@ -1693,7 +1701,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		886899C82F14A377FBC6FF9E /* [CP] Check Pods Manifest.lock */ = {
@@ -1711,7 +1719,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9EEBA5BD08C755F531ACE82B /* [CP] Copy Pods Resources */ = {

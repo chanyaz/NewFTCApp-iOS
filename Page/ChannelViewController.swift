@@ -214,9 +214,9 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     @objc public func showPerson() {
         print("should to add person interface")
-        let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PersonInfoViewController")
-        navigationController?.pushViewController(chatViewController, animated: true)
-        
+//        let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PersonInfoViewController")
+//        navigationController?.pushViewController(chatViewController, animated: true)
+        openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
     }
     
     private func updateBackBarButton(for index: Int) {

@@ -857,7 +857,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Oc-HK-ovk">
                                             <rect key="frame" x="8" y="8" width="60" height="16"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="gs9-yj-2Ea"/>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="MoS-Yj-j24"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="1" green="0.94509803920000002" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -881,12 +881,12 @@
                                     </subviews>
                                     <color key="backgroundColor" red="0.14901960780000001" green="0.4549019608" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <constraints>
-                                        <constraint firstItem="5Oc-HK-ovk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YeH-ia-5vW" secondAttribute="leading" id="56c-EH-M0w"/>
                                         <constraint firstAttribute="top" secondItem="XHu-UA-NBY" secondAttribute="top" constant="-8" id="7or-SM-c6j"/>
                                         <constraint firstItem="XHu-UA-NBY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YeH-ia-5vW" secondAttribute="leading" constant="20" symbolic="YES" id="C0m-k2-XIa"/>
+                                        <constraint firstItem="5Oc-HK-ovk" firstAttribute="top" secondItem="YeH-ia-5vW" secondAttribute="top" constant="8" id="MGt-QP-mF4"/>
                                         <constraint firstAttribute="trailing" secondItem="XHu-UA-NBY" secondAttribute="trailing" constant="8" id="OzF-HQ-vJ1"/>
-                                        <constraint firstAttribute="top" secondItem="5Oc-HK-ovk" secondAttribute="top" constant="-8" id="Zux-bb-U5m"/>
-                                        <constraint firstAttribute="trailing" secondItem="5Oc-HK-ovk" secondAttribute="trailing" constant="307" id="fvu-14-SyM"/>
+                                        <constraint firstItem="5Oc-HK-ovk" firstAttribute="leading" secondItem="YeH-ia-5vW" secondAttribute="leading" constant="8" id="fLD-93-7eG"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5Oc-HK-ovk" secondAttribute="trailing" constant="20" symbolic="YES" id="k4z-cN-XGN"/>
                                         <constraint firstAttribute="top" secondItem="blY-Ma-aQj" secondAttribute="top" constant="-8" id="x9G-AS-86v"/>
                                     </constraints>
                                 </view>

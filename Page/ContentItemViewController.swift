@@ -92,6 +92,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             contentController.add(LeakAvoider(delegate:self), name: "follow")
             contentController.add(LeakAvoider(delegate:self), name: "clip")
             contentController.add(LeakAvoider(delegate:self), name: "listen")
+            contentController.add(LeakAvoider(delegate:self), name: "mySetting")
             
             config.userContentController = contentController
             config.allowsInlineMediaPlayback = true
@@ -980,6 +981,23 @@ extension ContentItemViewController: WKScriptMessageHandler {
                 }
             case "clip":
                 print ("clip this: \(body)")
+            case "mySetting":
+                if let settingsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
+                    let topController = UIApplication.topViewController() {
+                    //                contentItemViewController.dataObject = itemCell
+                    //                contentItemViewController.hidesBottomBarWhenPushed = true
+                    //                contentItemViewController.themeColor = themeColor
+                    //                contentItemViewController.action = "buy"
+                    settingsController.dataObject = [
+                        "type": "setting",
+                        "id": "setting",
+                        "compactLayout": "",
+                        "title": "设置"
+                    ]
+                    settingsController.pageTitle = "设置"
+                    topController.navigationController?.pushViewController(settingsController, animated: true)
+                }
+                print ("mySetting this: \(body)")
             default:
                 break
             }

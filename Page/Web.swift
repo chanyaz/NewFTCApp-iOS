@@ -106,7 +106,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 openHTMLInBundle(
                     fileName,
                     title: title,
-                    isFullScreen: true,
+                    isFullScreen: false,
                     hidesBottomBar: true
                 )
                 }

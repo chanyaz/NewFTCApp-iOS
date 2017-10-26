@@ -1224,6 +1224,7 @@ class DataViewController: UICollectionViewController, UINavigationControllerDele
                     
                     let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
                     let pageData = withAd.contentItems
+                    print (pageData)
                     currentPageIndex = withAd.pageIndex
                     pageData[currentPageIndex].isLandingPage = true
                     detailViewController.themeColor = themeColor

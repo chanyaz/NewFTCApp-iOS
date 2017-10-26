@@ -976,10 +976,7 @@ extension ContentItemViewController: WKScriptMessageHandler {
             case "mySetting":
                 if let settingsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
                     let topController = UIApplication.topViewController() {
-                    //                contentItemViewController.dataObject = itemCell
-                    //                contentItemViewController.hidesBottomBarWhenPushed = true
-                    //                contentItemViewController.themeColor = themeColor
-                    //                contentItemViewController.action = "buy"
+
                     settingsController.dataObject = [
                         "type": "setting",
                         "id": "setting",

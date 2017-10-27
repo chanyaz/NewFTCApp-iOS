@@ -458,16 +458,19 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let appIdField = "x-msxiaoice-request-app-id"
     
         //小冰正式服务器
-        /*
+    
         let urlString = "https://service.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15"
         let appId = "XIeQemRXxREgGsyPki"
         let secret = "4b3f82a71fb54cbe9e4c8f125998c787"
-        */
+        let paramList = "api-version=2017-06-15"
+ 
         //小冰测试服务器
+        /*
         let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
         let appId = "XI36GDstzRkCzD18Fh"
         let secret = "5c3c48acd5434663897109d18a2f62c5"
- 
+        let paramList = "api-version=2017-06-15-Int"
+         */
     
         let timestampField = "x-msxiaoice-request-timestamp"
         let timestamp = Int(Date().timeIntervalSince1970)//生成时间戳
@@ -477,7 +480,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         let signatureField = "x-msxiaoice-request-signature"
 
-        let signature = ChatViewModel.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: ["api-version=2017-06-15-Int"], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
+        let signature = ChatViewModel.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: [paramList], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
         print("signature:\(signature)")
         
         if let url = URL(string: urlString),

@@ -476,14 +476,14 @@ extension IAPView: URLSessionDownloadDelegate {
             } else {
                 do {
                     try fileManager.moveItem(at: location, to: destinationURLForFile)
-                    print ("file moved. you can open it")
+                    print ("file moved to \(destinationURLForFile)")
                     
                     // MARK: - Remove excerpt file when user downloaded the full file
                     if !productId.hasPrefix("try") {
                         let exerptPath = "try." + destinationURLForFile.path
                         if fileManager.fileExists(atPath: exerptPath){
                             try FileManager.default.removeItem(atPath: exerptPath)
-                            print ("removed the excerpt file")
+                            print ("removed the excerpt file at \(exerptPath)")
                         }
                     }
                     

@@ -115,7 +115,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                 view.clipsToBounds = false
             }
             webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
+            
             // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
             //            webView = WKWebView(frame: self.view.bounds, configuration: config)
             //            self.view = self.webView
@@ -180,7 +180,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     }
                 }
             }
-
+            
         }
         
     }
@@ -594,7 +594,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                             imageHTML = ""
                         }
                         let restoreButton = UIBarButtonItem(title: "恢复购买", style: .plain, target: self, action: #selector(restore))
-                            //UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showSearch))
+                        //UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showSearch))
                         navigationItem.rightBarButtonItem = restoreButton
                         
                     } else {
@@ -610,8 +610,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         timeStamp = dataObject?.publishTime ?? ""
                         lead = dataObject?.lead ?? ""
                         styleContainerStyle = ""
-                        adBanner = "<div class=\"bn-ph\"><div class=\"banner-container\"><div class=\"banner-inner\"><div class=\"banner-content\"><script type=\"text/javascript\">document.write (writeAd('banner'));</script></div></div></div></div>"
-                        adMPU = "<div class=\"mpu-container\"><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div>"
+//                        adBanner = "<div class=\"bn-ph\"><div class=\"banner-container\"><div class=\"banner-inner\"><div class=\"banner-content\"><script type=\"text/javascript\">document.write (writeAd('banner'));</script></div></div></div></div>"
+//                        adMPU = "<div class=\"mpu-container\"><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div>"
+                        adBanner = "<script type=\"text/javascript\">document.write(writeAdNew({devices: ['iPhoneApp'],pattern:'Banner',position:'Num1'}));</script>"
+                        adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
                     }
                     
                     let followTags = getFollow("tag")
@@ -680,29 +682,29 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             }
         } else if dataObject?.type == "htmlfile"{
             // MARK: - If there's a need to open just the HTML file
-                        if let adHTMLPath = dataObject?.id {
-                            let url = URL(string: APIs.getUrl("htmlfile", type: "htmlfile"))
-                            do {
-                                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                                let storyHTML = (storyTemplate as String)
-                                self.webView?.loadHTMLString(storyHTML, baseURL:url)
-                            } catch {
-                                print ("html file is not loaded correctly")
-                            }
-                        }
+            if let adHTMLPath = dataObject?.id {
+                let url = URL(string: APIs.getUrl("htmlfile", type: "htmlfile"))
+                do {
+                    let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let storyHTML = (storyTemplate as String)
+                    self.webView?.loadHTMLString(storyHTML, baseURL:url)
+                } catch {
+                    print ("html file is not loaded correctly")
+                }
+            }
         }  else if dataObject?.type == "html"{
             // MARK: - If there's a need to open just the HTML file
             if let htmlFileName = dataObject?.id {
                 let url = URL(string: APIs.getUrl(htmlFileName, type: "html"))
                 let resourceFileName = GB2Big5.convertHTMLFileName(htmlFileName)
                 if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html") {
-                do {
-                    let htmlNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                    let htmlString = htmlNSString as String
-                    self.webView?.loadHTMLString(htmlString, baseURL:url)
-                } catch {
-                    print ("html file is not loaded correctly")
-                }
+                    do {
+                        let htmlNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                        let htmlString = htmlNSString as String
+                        self.webView?.loadHTMLString(htmlString, baseURL:url)
+                    } catch {
+                        print ("html file is not loaded correctly")
+                    }
                 }
             }
         } else if dataObject?.type == "htmlbook"{
@@ -711,12 +713,14 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             let resourceFileName = GB2Big5.convertHTMLFileName("html-book")
             if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"),
                 let contentHTMLPath = dataObject?.id,
-            let url = url {
+                let url = url {
                 do {
                     let templateNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
                     let template = templateNSString as String
                     let contentNSString = try NSString(contentsOfFile:contentHTMLPath, encoding:String.Encoding.utf8.rawValue)
                     let content = contentNSString as String
+//                    print(template)
+//                    print (content)
                     let contentHTML = template.replacingOccurrences(of: "{html-book-content}", with: content)
                     self.webView?.loadHTMLString(contentHTML, baseURL:url)
                 } catch {
@@ -799,21 +803,28 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         }
         // postLanguageChoice(languageChoice)
         //print ("language choice posted as \(languageChoice)")
+        
+        
+        //let adBanner = "<script type=\"text/javascript\">document.write(writeAdNew({devices: ['iPhoneApp'],pattern:'Banner',position:'Num1'}));</script>"
+        let adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
+        let adMPU2 = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle2',container:'mpuInStroy'}));</script>"
+
+        
         let bodyWithMPU = body.replacingOccurrences(
             of: "[\r\t\n]",
             with: "",
             options: .regularExpression
             ).replacingOccurrences(
-                of: "^(<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
-                with: "$1<div id=story_main_mpu><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div><p>",
+                of: "^(<p>.*?<p>.*?<p>.*?)<p>",
+                with: "$1\(adMPU)<p>",
                 options: .regularExpression
         )
         
         // TODO: Premium user will not need to see the MPU ads
         let finalBody: String
         finalBody = bodyWithMPU.replacingOccurrences(
-            of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
-            with: "$1<div class=story_main_mpu_vw><script type=\"text/javascript\">document.write (writeAd('storympuVW'));</script></div><p>",
+            of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
+            with: "$1\(adMPU2)<p>",
             options: .regularExpression
         )
         return (headline, finalBody)
@@ -866,64 +877,64 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     
     
     /*
-    
-    fileprivate func htmlToAttributedString(_ htmltext: String) -> NSMutableAttributedString? {
-        // MARK: remove p tags in text
-        let text = htmltext.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
-            .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
-            .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
-        // text = "some text"
-        // MARK: Set the overall text style
-        let bodyColor = UIColor(hex: Color.Content.body)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.paragraphSpacing = 12.0
-        paragraphStyle.lineHeightMultiple = 1.2
-        
-        let defaultBodyDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-        let bodySize = defaultBodyDescriptor.pointSize + FontSize.bodyExtraSize
-        let bodyFont = UIFont(descriptor: defaultBodyDescriptor, size: bodySize)
-        
-        let bodyAttributes:[String:AnyObject] = [
-            NSAttributedStringKey.font.rawValue: bodyFont,
-            //NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
-            NSAttributedStringKey.foregroundColor.rawValue: bodyColor,
-            NSAttributedStringKey.paragraphStyle.rawValue: paragraphStyle
-        ]
-        let attrString = NSMutableAttributedString(string: text, attributes:nil)
-        // MARK: Handle bold tag
-        let pattern = "<[bi]>(.*)</[bi]>"
-        let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
-        let range = NSMakeRange(0, text.characters.count)
-        attrString.addAttributes(bodyAttributes, range: NSMakeRange(0, attrString.length))
-        let boldParagraphStyle = NSMutableParagraphStyle()
-        boldParagraphStyle.paragraphSpacing = 6.0
-        let boldAttributes:[String:AnyObject] = [
-            //NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body).bold(),
-            NSAttributedStringKey.font.rawValue: bodyFont.bold(),
-            NSAttributedStringKey.paragraphStyle.rawValue: boldParagraphStyle
-        ]
-        
-        if let matches = regex?.matches(in: text, options: [], range: range) {
-            print(matches.count)
-            //Iterate over regex matches
-            for match in matches.reversed() {
-                //Properly print match range
-                print(match.range)
-                let value = attrString.attributedSubstring(from: match.range(at: 1)).string
-                print (value)
-                //attrString.addAttribute(NSLinkAttributeName, value: "http://www.ft.com/", range: match.rangeAt(0))
-                attrString.addAttributes(boldAttributes, range: match.range(at: 0))
-                attrString.replaceCharacters(in: match.range(at: 0), with: "\(value)")
-            }
-        }
-        
-        // MARK: if there are unhandled tags, use WebView to open the content
-        if attrString.string.contains("<") && attrString.string.contains(">") {
-            return nil
-        }
-        return attrString
-    }
-    */
+     
+     fileprivate func htmlToAttributedString(_ htmltext: String) -> NSMutableAttributedString? {
+     // MARK: remove p tags in text
+     let text = htmltext.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
+     .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
+     .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
+     // text = "some text"
+     // MARK: Set the overall text style
+     let bodyColor = UIColor(hex: Color.Content.body)
+     let paragraphStyle = NSMutableParagraphStyle()
+     paragraphStyle.paragraphSpacing = 12.0
+     paragraphStyle.lineHeightMultiple = 1.2
+     
+     let defaultBodyDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+     let bodySize = defaultBodyDescriptor.pointSize + FontSize.bodyExtraSize
+     let bodyFont = UIFont(descriptor: defaultBodyDescriptor, size: bodySize)
+     
+     let bodyAttributes:[String:AnyObject] = [
+     NSAttributedStringKey.font.rawValue: bodyFont,
+     //NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
+     NSAttributedStringKey.foregroundColor.rawValue: bodyColor,
+     NSAttributedStringKey.paragraphStyle.rawValue: paragraphStyle
+     ]
+     let attrString = NSMutableAttributedString(string: text, attributes:nil)
+     // MARK: Handle bold tag
+     let pattern = "<[bi]>(.*)</[bi]>"
+     let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
+     let range = NSMakeRange(0, text.characters.count)
+     attrString.addAttributes(bodyAttributes, range: NSMakeRange(0, attrString.length))
+     let boldParagraphStyle = NSMutableParagraphStyle()
+     boldParagraphStyle.paragraphSpacing = 6.0
+     let boldAttributes:[String:AnyObject] = [
+     //NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body).bold(),
+     NSAttributedStringKey.font.rawValue: bodyFont.bold(),
+     NSAttributedStringKey.paragraphStyle.rawValue: boldParagraphStyle
+     ]
+     
+     if let matches = regex?.matches(in: text, options: [], range: range) {
+     print(matches.count)
+     //Iterate over regex matches
+     for match in matches.reversed() {
+     //Properly print match range
+     print(match.range)
+     let value = attrString.attributedSubstring(from: match.range(at: 1)).string
+     print (value)
+     //attrString.addAttribute(NSLinkAttributeName, value: "http://www.ft.com/", range: match.rangeAt(0))
+     attrString.addAttributes(boldAttributes, range: match.range(at: 0))
+     attrString.replaceCharacters(in: match.range(at: 0), with: "\(value)")
+     }
+     }
+     
+     // MARK: if there are unhandled tags, use WebView to open the content
+     if attrString.string.contains("<") && attrString.string.contains(">") {
+     return nil
+     }
+     return attrString
+     }
+     */
     
 }
 
@@ -985,7 +996,7 @@ extension ContentItemViewController: WKScriptMessageHandler {
             case "mySetting":
                 if let settingsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
                     let topController = UIApplication.topViewController() {
-
+                    
                     settingsController.dataObject = [
                         "type": "setting",
                         "id": "setting",

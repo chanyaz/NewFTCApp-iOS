@@ -79,28 +79,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var inputBlock: UITextField!
  
     @IBAction func touchInputBlock(_ sender: UITextField) {
-        //self.talkListBlock.isScrollEnabled = false;//MARK:这两就话可以瞬间停止UIScrollView的惯性滚动
-       
-     
         
-        /*if(self.isScrolling == false) {
-            sender.isUserInteractionEnabled = true;
-         */
-            ///let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
-            ///self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
-            //self.inputBlock.resignFirstResponder()
-        /*
-        } else {
-            print("Alert:It is still scrolling")
-        }
-         */
     }
  
     @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {//When tap
-        //self.talkListBlock.isScrollEnabled = false;
-        //self.talkListBlock.isScrollEnabled = true;
-        //let currentIndexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
-        //self.talkListBlock?.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
         self.inputBlock.resignFirstResponder()
 
     }
@@ -204,7 +186,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
 
         } else if sender.state == .changed {
-            print("Show the getHistorySign")
+            //print("Show the getHistorySign")
             if scrollOffset <= 0 && self.addedGetHistorySignToShowingCellData == false  {
                 print("Here h")
                 self.isGetMoreHistorySign = true
@@ -329,9 +311,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
   
     @objc func keyboardWillShow(_ notification: NSNotification) {
         //MARK:键盘显示时滚动到talk list view滚动到底部
-         let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
-         self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-        //DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(80)) {
+         //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
+         //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
+            self.tableViewScrollToBottom(animated: true)
             print("show:\(keyboardWillShowExecute)")
             keyboardWillShowExecute += 1
             if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
@@ -540,28 +522,26 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     //MARK:第一次加载时要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部
     func tableViewScrollToBottom(animated:Bool) {
+        self.talkListBlock.setContentOffset(CGPoint(), animated: animated)
+        //self.modifiyTheOffset(animated: animated)
 
-        self.modifiyTheOffset(animated: animated)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(80)) {
-            //let numberOfRows = self.talkListBlock.numberOfRows(inSection: 0)
-            
-            //if numberOfRows > 0 {
-                //let indexPath = IndexPath(row: numberOfRows-1, section: 0)
-
+        
+        //DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+                /*
                 let indexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
                 self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
             
                 print("scroll1")
-            //}
-        }
+                self.talkListBlock.layoutIfNeeded();
+                 */
+        //}
+     
         
     }
     
     func modifiyTheOffset(animated:Bool) {
         if(self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height) {
             print("scroll2")
-            print("here")
             print("talkListBlock.contentSize.height:\(self.talkListBlock.contentSize.height)")
             print("talkListBlock.frame.size.height:\(self.talkListBlock.frame.size.height)")
             let offset = CGPoint(x: 0, y: self.talkListBlock.contentSize.height-self.talkListBlock.frame.size.height)
@@ -675,6 +655,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 })
             }
         })
+     
         
         
     }
@@ -683,8 +664,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    override func viewWillAppear(_ animated: Bool) {
+        self.tableViewScrollToBottom(animated: false)
+    }
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(false)
+        print("View Did Appear");
+        //super.viewDidAppear(false)
         /*
         if(self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height) {
             print("here")
@@ -696,6 +681,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
          */
 
     }
+ 
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)

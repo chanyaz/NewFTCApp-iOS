@@ -87,8 +87,8 @@ public struct FTCProducts {
             //"download": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese.epub",
             //"downloadfortry": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese_Short.epub"
             //"downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
-            "download": "https://danla2f5eudt1.cloudfront.net/interactive/10430_bodyonly.html",
-            "downloadfortry": "https://danla2f5eudt1.cloudfront.net/interactive/10430_Preview.html"
+            "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
+            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.lunch1",
@@ -97,8 +97,8 @@ public struct FTCProducts {
             "image":"http://i.ftimg.net/picture/2/000068702_piclink.jpg",
             //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_I_FTChinese.epub",
             //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_I_FTChinese_Short.epub"
-            "download": "https://danla2f5eudt1.cloudfront.net/interactive/10446_bodyonly.html",
-            "downloadfortry": "https://danla2f5eudt1.cloudfront.net/interactive/10446_Preview.html"
+            "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch1_body.html",
+            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch1Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.lunch2",
@@ -107,8 +107,8 @@ public struct FTCProducts {
             "image":"http://i.ftimg.net/picture/3/000068703_piclink.jpg",
             //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
             //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
-            "download": "https://danla2f5eudt1.cloudfront.net/interactive/10447_bodyonly.html",
-            "downloadfortry": "https://danla2f5eudt1.cloudfront.net/interactive/10447_Preview.html"
+            "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch2_body.html",
+            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch2Preview.html"
         ]
     ]
     // MARK: - Add product group names and titles

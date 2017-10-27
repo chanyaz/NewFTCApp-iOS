@@ -294,7 +294,8 @@ class AdSchedule {
                         for creativeFile in creativeFiles {
                             // print(creativeFile.lastPathComponent)
                             let creativeFileString = creativeFile.lastPathComponent
-                            if !creativesNeededInFuture.contains(creativeFileString) {
+                            // MARK: You cannot remove all HTML files in documents foler. As eBooks are usually here. So check if it's not a eBook.
+                            if !creativesNeededInFuture.contains(creativeFileString) && creativeFileString.range(of:"com") == nil  {
                                 try FileManager.default.removeItem(at: creativeFile)
                                 print("remove file from documents folder: \(creativeFileString)")
                             }

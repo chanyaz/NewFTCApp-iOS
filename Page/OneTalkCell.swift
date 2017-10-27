@@ -61,10 +61,11 @@ class OneTalkCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+ 
     @objc func tapClick(_ sender:UIView){
         //NOTE:通过openLink方法对cardUrl进行判断，如果是站内文章，就打开app内文章；如果是站外文章，就在app内打开浏览器
         if let openUrl = URL(string:self.cardUrl) {
+            //print("myopenUrl:\(openUrl)")
             if let topController = UIApplication.topViewController() {
                 
                 if let theController = self.parentViewController {

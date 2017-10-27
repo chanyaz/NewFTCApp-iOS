@@ -36,6 +36,9 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     fileprivate let contentAPI = ContentFetch()
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
+    let adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
+    let adMPU2 = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle2',container:'mpuInStroy'}));</script>"
+    
     @IBOutlet weak var containerView: UIView!
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
@@ -205,7 +208,10 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
     @objc public func handleLanguagePreferenceChange() {
         let headlineBody = getHeadlineBody(dataObject)
         let headline = headlineBody.headline.cleanHTMLTags()
-        let finalBody = headlineBody.finalBody.cleanHTMLTags()
+        let finalBody = headlineBody.finalBody
+            .replacingOccurrences(of: adMPU, with: "")
+            .replacingOccurrences(of: adMPU2, with: "")
+            .cleanHTMLTags()
         let jsCodeHeadline = "updateHeadline('\(headline)');"
         let jsCodeBody = "updateBody('\(finalBody)');"
         let jsCode = jsCodeHeadline + jsCodeBody
@@ -607,6 +613,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                         } else {
                             imageHTML = ""
                         }
+                        userCommentsOrder = "story"
                         timeStamp = dataObject?.publishTime ?? ""
                         lead = dataObject?.lead ?? ""
                         styleContainerStyle = ""
@@ -806,8 +813,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
         
         
         //let adBanner = "<script type=\"text/javascript\">document.write(writeAdNew({devices: ['iPhoneApp'],pattern:'Banner',position:'Num1'}));</script>"
-        let adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
-        let adMPU2 = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle2',container:'mpuInStroy'}));</script>"
+        
 
         
         let bodyWithMPU = body.replacingOccurrences(

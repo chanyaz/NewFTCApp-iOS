@@ -520,21 +520,22 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     
     
-    //MARK:第一次加载时要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部
+    //FIXME:要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部。此外，还需要增加调用self.modifyTheOffset来调整，但是这样会使滚动不连贯.
     func tableViewScrollToBottom(animated:Bool) {
-        self.talkListBlock.setContentOffset(CGPoint(), animated: animated)
-        //self.modifiyTheOffset(animated: animated)
+        //self.talkListBlock.setContentOffset(CGPoint(x: 0, y: CGFloat.greatestFiniteMagnitude), animated: animated)
+        self.modifiyTheOffset(animated: animated)
 
         
-        //DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
-                /*
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                self.modifiyTheOffset(animated: animated)
+
                 let indexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
                 self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
             
                 print("scroll1")
                 self.talkListBlock.layoutIfNeeded();
-                 */
-        //}
+ 
+        }
      
         
     }
@@ -664,9 +665,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    /*
     override func viewWillAppear(_ animated: Bool) {
         self.tableViewScrollToBottom(animated: false)
     }
+     */
     override func viewDidAppear(_ animated: Bool) {
         print("View Did Appear");
         //super.viewDidAppear(false)

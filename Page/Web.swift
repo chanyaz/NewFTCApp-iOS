@@ -106,7 +106,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 openHTMLInBundle(
                     fileName,
                     title: title,
-                    isFullScreen: false,
+                    isFullScreen: true,
                     hidesBottomBar: true
                 )
                 }
@@ -183,7 +183,9 @@ extension UIViewController: SFSafariViewControllerDelegate{
             contentItemViewController.pageTitle = title
             contentItemViewController.isFullScreen = isFullScreen
             contentItemViewController.hidesBottomBarWhenPushed = hidesBottomBar
+            contentItemViewController.navigationItem.title = title
             navigationController?.pushViewController(contentItemViewController, animated: true)
+  
         }
     }
     

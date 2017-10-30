@@ -21,7 +21,11 @@ class OneTalkCell: UITableViewCell {
     
     
     var cardUrl = ""
-
+    
+    // MARK:存储已获取到的图片
+    var storedCoverImage:UIImage? = UIImage()
+    var savedImageFile:String? = ""
+    
     // MARK: 重写Frame:费了好长好长时间才找到解决办法。。。
     override var frame: CGRect {
         didSet {
@@ -121,6 +125,44 @@ class OneTalkCell: UITableViewCell {
                 }
             }).resume()
             
+        }
+    }
+    private func loadCoverImage() {
+        DispatchQueue.global().async { //NOTE: 耗时操作在后台完成
+            if let realStoredImage = self.storedCoverImage {
+                DispatchQueue.main.async { //NOTE：耗时操作执行完毕后在主线程更细UI界面！
+                    self.coverView.image = realStoredImage
+                }
+                print("Load image from RAM")
+            } else if let imageFileName = self.savedImageFile {
+                let savedImage = Download.readFile(imageFileName, for:.cachesDirectory, as: "jpg")
+                if let realSavedImage = savedImage {
+                    let coverImage = UIImage(data: realSavedImage)
+                    DispatchQueue.main.async {
+                        self.coverView.image = coverImage
+                        print("Load image from cache")
+                    }
+                }
+            } else {
+                self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
+                    if let realImage = downloadedImg {
+                        //cellData.downLoadImage = realImage
+                        //self.coverView.image = realImage
+                        
+                        DispatchQueue.main.async {
+                            UIView.transition(with: self.coverView,
+                                              duration: 0.3,
+                                              options: .transitionCrossDissolve,
+                                              animations: {
+                                                self.coverView.image = realImage
+                                              },
+                                              completion: nil
+                            )
+                        }
+                        
+                    }
+                })
+            }
         }
     }
     private func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL

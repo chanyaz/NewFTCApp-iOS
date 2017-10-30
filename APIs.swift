@@ -533,3 +533,6 @@ struct Settings {
 }
 
 
+struct BookRecommendation {
+    let id = "com.ft.ftchinese.mobile.book.lunch1"
+}

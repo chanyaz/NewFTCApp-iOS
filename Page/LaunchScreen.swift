@@ -14,6 +14,8 @@ import AVFoundation
 import StoreKit
 import MediaPlayer
 
+
+
 class LaunchScreen: UIViewController {
     // MARK: - Find out whether the user is happy and prompt rating if he/she is happy
     public let happyUser = HappyUser()
@@ -55,7 +57,6 @@ class LaunchScreen: UIViewController {
     override func loadView() {
         super.loadView()
         adOverlayView()
-        
     }
     
     override func viewDidLoad() {
@@ -164,51 +165,66 @@ class LaunchScreen: UIViewController {
         adOverlayView()
     }
     
+    var defaultTapAction: String?
     // MARK: if there's no ad to load, load the normal start screen
     func normalOverlayView() {
         if let overlayViewNormal = overlayView {
-            maxAdTimeAfterLaunch = 6.0
-            maxAdTimeAfterWebRequest = 4.0
-            overlayViewNormal.backgroundColor = UIColor(netHex:0x002F5F)
-            overlayViewNormal.frame = self.view.bounds
-            self.view.addSubview(overlayViewNormal)
-            overlayViewNormal.translatesAutoresizingMaskIntoConstraints = false
-            view.addConstraint(NSLayoutConstraint(item: overlayViewNormal, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
-            view.addConstraint(NSLayoutConstraint(item: overlayViewNormal, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-            view.addConstraint(NSLayoutConstraint(item: overlayViewNormal, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 0))
-            view.addConstraint(NSLayoutConstraint(item: overlayViewNormal, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0))
-            
-            // MARK: the icon image
-            if let image = UIImage(named: "FTC-start") {
-                let imageView =  UIImageView(image: image)
-                imageView.frame = CGRect(x: 0, y: 0, width: 266, height: 210)
-                imageView.contentMode = .scaleAspectFit
-                overlayViewNormal.addSubview(imageView)
-                imageView.translatesAutoresizingMaskIntoConstraints = false
-                view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-                view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1/3, constant: 1))
-                view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 266))
-                view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 210))
+            if isBetweenPages == true {
+                if let image = UIImage(named: "FullScreenFallBack") {
+                    let imageView =  UIImageView(image: image)
+                    imageView.frame = view.frame
+                    imageView.backgroundColor = UIColor(hex: FullScreenFallBack.backgroundColor)
+                    imageView.contentMode = .scaleAspectFit
+                    imageView.isUserInteractionEnabled = true
+                    defaultTapAction = "buyproduct://\(FullScreenFallBack.id)"
+                    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickAd))
+                    imageView.addGestureRecognizer(tapRecognizer)
+                    view.addSubview(imageView)
+                }
+            } else {
+                maxAdTimeAfterLaunch = 6.0
+                maxAdTimeAfterWebRequest = 4.0
+                overlayViewNormal.backgroundColor = UIColor(netHex:0x002F5F)
+                overlayViewNormal.frame = self.view.bounds
+                self.view.addSubview(overlayViewNormal)
+                overlayViewNormal.translatesAutoresizingMaskIntoConstraints = false
+                view.addConstraint(NSLayoutConstraint(item: overlayViewNormal, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
+                view.addConstraint(NSLayoutConstraint(item: overlayViewNormal, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+                view.addConstraint(NSLayoutConstraint(item: overlayViewNormal, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 0))
+                view.addConstraint(NSLayoutConstraint(item: overlayViewNormal, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0))
+                
+                // MARK: the icon image
+                if let image = UIImage(named: "FTC-start") {
+                    let imageView =  UIImageView(image: image)
+                    imageView.frame = CGRect(x: 0, y: 0, width: 266, height: 210)
+                    imageView.contentMode = .scaleAspectFit
+                    overlayViewNormal.addSubview(imageView)
+                    imageView.translatesAutoresizingMaskIntoConstraints = false
+                    view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+                    view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1/3, constant: 1))
+                    view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 266))
+                    view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 210))
+                }
+                
+                // MARK: the lable at the bottom
+                let label = UILabel(frame: CGRect(x: 0, y: 0, width: 441, height: 21))
+                label.center = CGPoint(x: 160, y: 284)
+                label.textAlignment = NSTextAlignment.center
+                label.text = "英国《金融时报》中文网"
+                label.textColor = UIColor.white
+                overlayViewNormal.addSubview(label)
+                label.translatesAutoresizingMaskIntoConstraints = false
+                view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+                view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -20))
+                view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 441))
+                view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 21))
+                
+                // MARK: Request user to review only if the app starts without the launch ad
+                if AppLaunch.sharedInstance.from == "notification" {
+                    happyUser.canTryRequestReview = false
+                }
+                happyUser.requestReview()
             }
-            
-            // MARK: the lable at the bottom
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 441, height: 21))
-            label.center = CGPoint(x: 160, y: 284)
-            label.textAlignment = NSTextAlignment.center
-            label.text = "英国《金融时报》中文网"
-            label.textColor = UIColor.white
-            overlayViewNormal.addSubview(label)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-            view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -20))
-            view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 441))
-            view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 21))
-            
-            // MARK: Request user to review only if the app starts without the launch ad
-            if AppLaunch.sharedInstance.from == "notification" {
-                happyUser.canTryRequestReview = false
-            }
-            happyUser.requestReview()
         }
     }
     
@@ -271,13 +287,13 @@ class LaunchScreen: UIViewController {
             button.layer.cornerRadius = buttonWidth/2
         }
         
-//        if adSchedule.adType == "video" {
-//            //self.view.viewWithTag(111)?.addSubview(button)
-//            // MARK: add the button directly on view so that it won't be blocked by video
-//            view.addSubview(button)
-//        } else {
-//            self.overlayView?.addSubview(button)
-//        }
+        //        if adSchedule.adType == "video" {
+        //            //self.view.viewWithTag(111)?.addSubview(button)
+        //            // MARK: add the button directly on view so that it won't be blocked by video
+        //            view.addSubview(button)
+        //        } else {
+        //            self.overlayView?.addSubview(button)
+        //        }
         // MARK: add the button directly on view so that it won't be blocked by video
         view.addSubview(button)
         
@@ -419,7 +435,8 @@ class LaunchScreen: UIViewController {
         if adSchedule.adLink != "" {
             let adPageLinkOverlay = UIView(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight - 44))
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickAd))
-            playerController.view.addSubview(adPageLinkOverlay)
+            //playerController.view.addSubview(adPageLinkOverlay)
+            view.addSubview(adPageLinkOverlay)
             adPageLinkOverlay.addGestureRecognizer(tapRecognizer)
         }
         
@@ -527,12 +544,12 @@ class LaunchScreen: UIViewController {
     
     // MARK: this should be public
     @objc func clickAd() {
-        let urlString = adSchedule.adLink
+        let urlString = defaultTapAction ?? adSchedule.adLink
         if let url = URL(string: urlString) {
             openLink(url)
         }
         let deviceType = DeviceInfo.checkDeviceType()
-        Track.event(category: "\(deviceType) Launch Ad", action: "Click", label: "\(adSchedule.adLink)")
+        Track.event(category: "\(deviceType) Launch Ad", action: "Click", label: "\(urlString)")
     }
     
     

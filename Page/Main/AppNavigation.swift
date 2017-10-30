@@ -66,7 +66,7 @@ struct AppNavigation {
                 [
                     "title": "全球",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/world.html?type=json",
-                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/world.html?webview=ftcapp&bodyonly=yes&newad=yes",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/world.html?webview=ftcapp&bodyonly=yes&newad=yes&002",
                     "url":"http://www.ftchinese.com/channel/world.html?newad=yes",
                     "screenName":"homepage/world",
                     "coverTheme":"Pink"

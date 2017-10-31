@@ -102,13 +102,13 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 NotificationHelper.open(action, id: id, title: "title")
             case "fileinbundle":
                 if let fileName = url.host {
-                let title = url.lastPathComponent
-                openHTMLInBundle(
-                    fileName,
-                    title: title,
-                    isFullScreen: false,
-                    hidesBottomBar: true
-                )
+                    let title = url.lastPathComponent
+                    openHTMLInBundle(
+                        fileName,
+                        title: title,
+                        isFullScreen: true,
+                        hidesBottomBar: true
+                    )
                 }
             case "itms-apps":
                 // MARK: Link to App Store
@@ -116,6 +116,21 @@ extension UIViewController: SFSafariViewControllerDelegate{
                     SKStoreReviewController.requestReview()
                 } else {
                     UIApplication.shared.openURL(url)
+                }
+            case "buyproduct":
+                // MARK: open the product page
+                let productId = url.host
+                let products = IAP.get(IAPs.shared.products, in: "ebook")
+                for product in products {
+                    if productId == product.id {
+                        if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+                            contentItemViewController.dataObject = product
+                            contentItemViewController.hidesBottomBarWhenPushed = true
+                            navigationController?.isNavigationBarHidden = false
+                            navigationController?.pushViewController(contentItemViewController, animated: true)
+                        }
+                        break
+                    }
                 }
             default:
                 break
@@ -183,7 +198,9 @@ extension UIViewController: SFSafariViewControllerDelegate{
             contentItemViewController.pageTitle = title
             contentItemViewController.isFullScreen = isFullScreen
             contentItemViewController.hidesBottomBarWhenPushed = hidesBottomBar
+            contentItemViewController.navigationItem.title = title
             navigationController?.pushViewController(contentItemViewController, animated: true)
+            
         }
     }
     

@@ -536,3 +536,8 @@ struct Settings {
     ]
 }
 
+struct FullScreenFallBack {
+    static let id = "com.ft.ftchinese.mobile.book.lunch1"
+    static let link = ""
+    static let backgroundColor = "#ffcb9e"
+}

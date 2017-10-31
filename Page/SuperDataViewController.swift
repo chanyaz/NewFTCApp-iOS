@@ -23,6 +23,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     var layoutStrategy: String?
     var isVisible = false
     let maxWidth: CGFloat = 768
+    var adchId = AdLayout.homeAdChId
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
     
@@ -1223,8 +1224,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     
                     
                     let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
-                    let pageData = withAd.contentItems
-                    print (pageData)
+                    let pageData = AdLayout.insertAdId(to: withAd.contentItems, with: adchId)
+                    //print (pageData)
                     currentPageIndex = withAd.pageIndex
                     pageData[currentPageIndex].isLandingPage = true
                     detailViewController.themeColor = themeColor
@@ -1424,7 +1425,7 @@ extension SuperDataViewController: WKScriptMessageHandler {
             if let body = message.body as? [String: Any],
             let meta = body["meta"] as? [String: String],
             let adId = meta["adid"] {
-                print ("adchId is now \(adId)")
+                adchId = adId
             }
         } else if message.name == "selectItem" {
             //print (message.body)

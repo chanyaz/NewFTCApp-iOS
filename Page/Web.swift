@@ -51,7 +51,9 @@ extension UIViewController: SFSafariViewControllerDelegate{
                         } else {
                             customLink = ""
                         }
-                        detailViewController.contentPageData = [ContentItem(
+                        let urlString = url.absoluteString.replacingOccurrences(of: "#", with: "?")
+                        let adchId = Download.getQueryStringParameter(url: urlString, param: "adchannelID")
+                        let contentItem = ContentItem(
                             id: id,
                             image: "",
                             headline: "",
@@ -62,7 +64,9 @@ extension UIViewController: SFSafariViewControllerDelegate{
                             customLink: customLink,
                             timeStamp: 0,
                             section: 0,
-                            row: 0)]
+                            row: 0)
+                        contentItem.adchId = adchId
+                        detailViewController.contentPageData = [contentItem]
                         self.navigationController?.pushViewController(detailViewController, animated: true)
                         return
                     }

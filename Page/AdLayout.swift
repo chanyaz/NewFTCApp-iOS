@@ -8,6 +8,7 @@
 import UIKit
 import Foundation
 struct AdLayout {
+    static let homeAdChId = "1000"
     static func insertAds(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
         var newContentSections = contentSections
         // MARK: It is possible that the JSON Format is broken. Check it here.
@@ -157,6 +158,14 @@ struct AdLayout {
         newPageIndex += 1
         
         return (newItems, newPageIndex)
+    }
+    
+    static func insertAdId(to items: [ContentItem], with adchId: String) -> [ContentItem] {
+        let newItems = items
+        for item in newItems {
+            item.adchId = adchId
+        }
+        return newItems
     }
     
 }

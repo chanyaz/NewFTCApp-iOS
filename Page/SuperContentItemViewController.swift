@@ -372,7 +372,10 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 return
             }
         }
-        if let dataObject = dataObject {
+        if let dataObject = dataObject,
+            dataObject.headline != "",
+            dataObject.lead != "",
+            dataObject.image != "" {
             Download.save(dataObject, to: "read", uplimit: 30, action: "save")
         }
     }
@@ -558,7 +561,12 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     var storyTheme = ""
                     let fontClass = Setting.getFontClass()
                     var commentsId = id
-                    let adchID = AdParser.getAdchID(dataObject)
+                    let adchID: String
+                    if dataObject?.adchId == AdLayout.homeAdChId {
+                        adchID = AdParser.getAdchID(dataObject)
+                    } else {
+                        adchID = dataObject?.adchId ?? AdLayout.homeAdChId
+                    }
                     
                     if subType == .UserComments {
                         finalBody = ""

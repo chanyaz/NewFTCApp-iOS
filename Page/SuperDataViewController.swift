@@ -1420,6 +1420,12 @@ extension SuperDataViewController: WKScriptMessageHandler {
                 fetchResults: contentAPI.formatJSON(message.body)
             )
             prefetch()
+            // MARK: Extract Adid
+            if let body = message.body as? [String: Any],
+            let meta = body["meta"] as? [String: String],
+            let adId = meta["adid"] {
+                print ("adchId is now \(adId)")
+            }
         } else if message.name == "selectItem" {
             //print (message.body)
             if let rowString = message.body as? String,

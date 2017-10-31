@@ -116,8 +116,9 @@ struct AppNavigation {
                 [
                     "title": "特别报导",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
-                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/special.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no&001",
-                    "url":"http://www.ftchinese.com/channel/special.html?newad=yes",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/special.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no",
+                    // MARK: Use the keeplinks parameter to tell web view that there's no need to replace the links in this page
+                    "url":"http://www.ftchinese.com/channel/special.html?newad=yes&ad=no&keeplinks=yes",
                     "screenName":"homepage/special",
                     "coverTheme": "Opinion"
                 ],

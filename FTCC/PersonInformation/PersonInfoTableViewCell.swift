@@ -9,7 +9,8 @@
 import UIKit
 
 class PersonInfoTableViewCell: UITableViewCell {
-
+    @IBOutlet weak var imageButton: UIButton!
+    @IBOutlet weak var tagLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

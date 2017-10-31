@@ -325,6 +325,10 @@
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */; };
 		F2218ABA1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
 		F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
+		F2251B511FA84F16001B6236 /* PersonInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */; };
+		F2251B521FA84F16001B6236 /* PersonInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */; };
+		F2251B551FA85CBC001B6236 /* PortraitTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2251B531FA85CBC001B6236 /* PortraitTableViewCell.swift */; };
+		F2251B561FA85CBC001B6236 /* PortraitTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2251B541FA85CBC001B6236 /* PortraitTableViewCell.xib */; };
 		F234B9521FA1C4CB00AACDAB /* my-love-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = F234B9501FA1C4C500AACDAB /* my-love-big5.html */; };
 		F234B9531FA1C4CE00AACDAB /* my-love.html in Resources */ = {isa = PBXBuildFile; fileRef = F234B9511FA1C4C500AACDAB /* my-love.html */; };
 		F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */; };
@@ -361,11 +365,7 @@
 		F2E0906E1F5A6A3900F4409F /* ColumnMyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090601F5A6A3900F4409F /* ColumnMyListCell.swift */; };
 		F2E0906F1F5A6A3900F4409F /* ColumnMyListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2E090611F5A6A3900F4409F /* ColumnMyListCell.xib */; };
 		F2E090701F5A6A3900F4409F /* ColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090621F5A6A3900F4409F /* ColumnViewController.swift */; };
-		F2E090711F5A6A3900F4409F /* MyDownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090641F5A6A3900F4409F /* MyDownloadViewController.swift */; };
-		F2E090721F5A6A3900F4409F /* MyFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090651F5A6A3900F4409F /* MyFavoritesViewController.swift */; };
-		F2E090731F5A6A3900F4409F /* MySettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090661F5A6A3900F4409F /* MySettingViewController.swift */; };
-		F2E090741F5A6A3900F4409F /* MySubscribeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090671F5A6A3900F4409F /* MySubscribeViewController.swift */; };
-		F2E090751F5A6A3900F4409F /* MyWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090681F5A6A3900F4409F /* MyWalletViewController.swift */; };
+		F2E090711F5A6A3900F4409F /* CollectInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090641F5A6A3900F4409F /* CollectInfoController.swift */; };
 		F2E090761F5A6A3900F4409F /* PersonInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */; };
 		F2E090791F5A721E00F4409F /* CustomTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090771F5A721E00F4409F /* CustomTab.swift */; };
 		F2E0907A1F5A721E00F4409F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090781F5A721E00F4409F /* CustomTabBarController.swift */; };
@@ -621,6 +621,10 @@
 		F21309201F78A9BA0078A510 /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "../NewFTCApp-iOS9.15自主开发，在tab中加入audiocontroller，audiocontroller上面添加tabView/Page copy-Info.plist"; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutV.swift; sourceTree = "<group>"; };
 		F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallPlayView.swift; sourceTree = "<group>"; };
+		F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonInfoTableViewCell.swift; sourceTree = "<group>"; };
+		F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonInfoTableViewCell.xib; sourceTree = "<group>"; };
+		F2251B531FA85CBC001B6236 /* PortraitTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitTableViewCell.swift; sourceTree = "<group>"; };
+		F2251B541FA85CBC001B6236 /* PortraitTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortraitTableViewCell.xib; sourceTree = "<group>"; };
 		F23455511FA09F5F001C1AE8 /* person-information.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information.html"; path = "Page/FTCC/person-information.html"; sourceTree = SOURCE_ROOT; };
 		F23455521FA09F5F001C1AE8 /* person-information-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information-big5.html"; path = "Page/FTCC/person-information-big5.html"; sourceTree = SOURCE_ROOT; };
 		F234B9501FA1C4C500AACDAB /* my-love-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "my-love-big5.html"; path = "Page/FTCC/my-love-big5.html"; sourceTree = SOURCE_ROOT; };
@@ -653,11 +657,7 @@
 		F2E090601F5A6A3900F4409F /* ColumnMyListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnMyListCell.swift; sourceTree = "<group>"; };
 		F2E090611F5A6A3900F4409F /* ColumnMyListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColumnMyListCell.xib; sourceTree = "<group>"; };
 		F2E090621F5A6A3900F4409F /* ColumnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnViewController.swift; sourceTree = "<group>"; };
-		F2E090641F5A6A3900F4409F /* MyDownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyDownloadViewController.swift; sourceTree = "<group>"; };
-		F2E090651F5A6A3900F4409F /* MyFavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFavoritesViewController.swift; sourceTree = "<group>"; };
-		F2E090661F5A6A3900F4409F /* MySettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySettingViewController.swift; sourceTree = "<group>"; };
-		F2E090671F5A6A3900F4409F /* MySubscribeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySubscribeViewController.swift; sourceTree = "<group>"; };
-		F2E090681F5A6A3900F4409F /* MyWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWalletViewController.swift; sourceTree = "<group>"; };
+		F2E090641F5A6A3900F4409F /* CollectInfoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectInfoController.swift; sourceTree = "<group>"; };
 		F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInfoViewController.swift; sourceTree = "<group>"; };
 		F2E090771F5A721E00F4409F /* CustomTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTab.swift; path = FTCC/CustomTab.swift; sourceTree = "<group>"; };
 		F2E090781F5A721E00F4409F /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTabBarController.swift; path = FTCC/CustomTabBarController.swift; sourceTree = "<group>"; };
@@ -1375,12 +1375,12 @@
 		F2E090631F5A6A3900F4409F /* PersonInformation */ = {
 			isa = PBXGroup;
 			children = (
-				F2E090641F5A6A3900F4409F /* MyDownloadViewController.swift */,
-				F2E090651F5A6A3900F4409F /* MyFavoritesViewController.swift */,
-				F2E090661F5A6A3900F4409F /* MySettingViewController.swift */,
-				F2E090671F5A6A3900F4409F /* MySubscribeViewController.swift */,
-				F2E090681F5A6A3900F4409F /* MyWalletViewController.swift */,
+				F2E090641F5A6A3900F4409F /* CollectInfoController.swift */,
 				F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */,
+				F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */,
+				F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */,
+				F2251B531FA85CBC001B6236 /* PortraitTableViewCell.swift */,
+				F2251B541FA85CBC001B6236 /* PortraitTableViewCell.xib */,
 			);
 			name = PersonInformation;
 			path = FTCC/PersonInformation;
@@ -1608,6 +1608,7 @@
 				601C418C1F99BC85002D26B2 /* register-big5.html in Resources */,
 				60316BA31F8063EF00C4FEE2 /* ClassicCoverCell.xib in Resources */,
 				602153691F397C650077A7AF /* ad.html in Resources */,
+				F2251B561FA85CBC001B6236 /* PortraitTableViewCell.xib in Resources */,
 				6021536D1F397C650077A7AF /* ChannelCell.xib in Resources */,
 				F234B9521FA1C4CB00AACDAB /* my-love-big5.html in Resources */,
 				F27D9A821F976FB200A95188 /* html-book.html in Resources */,
@@ -1632,6 +1633,7 @@
 				F289C79B1FA0CF450081A675 /* person-information.html in Resources */,
 				F27D9A801F976FAB00A95188 /* ebook.html in Resources */,
 				602153771F397C650077A7AF /* ga.js in Resources */,
+				F2251B521FA84F16001B6236 /* PersonInfoTableViewCell.xib in Resources */,
 				60F1A5261F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
 				6021537A1F397C650077A7AF /* LineCell.xib in Resources */,
 				50C31B421F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,
@@ -1869,12 +1871,10 @@
 				6094DD721FA1612300AAD736 /* Ads.swift in Sources */,
 				602153221F397C650077A7AF /* LineCell.swift in Sources */,
 				602153231F397C650077A7AF /* PaddingLabel.swift in Sources */,
-				F2E090721F5A6A3900F4409F /* MyFavoritesViewController.swift in Sources */,
 				602153241F397C650077A7AF /* ChannelModelDelegate.swift in Sources */,
 				602153251F397C650077A7AF /* ChannelViewController.swift in Sources */,
 				602153261F397C650077A7AF /* ModelController.swift in Sources */,
 				6072F9F41F57ED280035AD92 /* IAP.swift in Sources */,
-				F2E090741F5A6A3900F4409F /* MySubscribeViewController.swift in Sources */,
 				602153271F397C650077A7AF /* Track.swift in Sources */,
 				602153281F397C650077A7AF /* PostData.swift in Sources */,
 				F24B79951F5555FA001B62A2 /* CustomPresentationAnimation.swift in Sources */,
@@ -1890,6 +1890,7 @@
 				50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */,
 				602153301F397C650077A7AF /* WeChatShare.swift in Sources */,
+				F2251B551FA85CBC001B6236 /* PortraitTableViewCell.swift in Sources */,
 				50C31B3A1F6CD83900F4CF61 /* SimpleHeaderView.swift in Sources */,
 				602153311F397C650077A7AF /* CoverCellRegular.swift in Sources */,
 				602153321F397C650077A7AF /* Ad.swift in Sources */,
@@ -1914,7 +1915,7 @@
 				602153451F397C650077A7AF /* PagesViewController.swift in Sources */,
 				60F1A52C1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
 				602CD2971F565FD500FFC1EA /* IAPHelper.swift in Sources */,
-				F2E090711F5A6A3900F4409F /* MyDownloadViewController.swift in Sources */,
+				F2E090711F5A6A3900F4409F /* CollectInfoController.swift in Sources */,
 				602153461F397C650077A7AF /* AdModel.swift in Sources */,
 				602153471F397C650077A7AF /* AsyncTextAttachment.swift in Sources */,
 				602153491F397C650077A7AF /* NowPlayingCenter.swift in Sources */,
@@ -1928,7 +1929,6 @@
 				602153B41F399E9A0077A7AF /* Styles.swift in Sources */,
 				6013F6C01F6F99DB00F83462 /* Setting.swift in Sources */,
 				F24B79971F5555FA001B62A2 /* CustomPresentationController.swift in Sources */,
-				F2E090751F5A6A3900F4409F /* MyWalletViewController.swift in Sources */,
 				602E88411F43DD9600BBB4AF /* Alert.swift in Sources */,
 				602153501F397C650077A7AF /* HappyUser.swift in Sources */,
 				602153511F397C650077A7AF /* LeakAvoider.swift in Sources */,
@@ -1949,7 +1949,6 @@
 				604F2F851FA8467700A923E5 /* ContentItemViewController.swift in Sources */,
 				6019A9D21F4C457D00B8FB69 /* FollowCell.swift in Sources */,
 				602153571F397C650077A7AF /* LaunchScreen.swift in Sources */,
-				F2E090731F5A6A3900F4409F /* MySettingViewController.swift in Sources */,
 				F2E0906C1F5A6A3900F4409F /* ColumnAllListViewController.swift in Sources */,
 				602153581F397C650077A7AF /* AdSchedule.swift in Sources */,
 				600C0D051F5D582500226F84 /* AudioPlayerHelper.swift in Sources */,
@@ -1966,6 +1965,7 @@
 				F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */,
 				6021535E1F397C650077A7AF /* Download.swift in Sources */,
 				6021535F1F397C650077A7AF /* DetailViewController.swift in Sources */,
+				F2251B511FA84F16001B6236 /* PersonInfoTableViewCell.swift in Sources */,
 				F24B79931F5555FA001B62A2 /* AudioPlayerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

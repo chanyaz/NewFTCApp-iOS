@@ -214,11 +214,18 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     @objc public func showPerson() {
         print("should to add person interface")
-//        let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PersonInfoViewController")
-//        navigationController?.pushViewController(chatViewController, animated: true)
-        openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
+        ContentItemRenderContent.addPersonInfo = true
+        if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+            navigationController?.pushViewController(chatViewController, animated: true)
+
+        }
+        
+//        openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
     }
-    
+    func backButtonPressed() {
+        print("Back pressed")
+        TabBarAudioContent.sharedInstance.isPlaying = false
+    }
     private func updateBackBarButton(for index: Int) {
         // MARK: - Set the back bar button for the popped views
         // let title = pageData[index]["title"] ?? ""

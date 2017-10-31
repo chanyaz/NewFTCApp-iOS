@@ -585,10 +585,10 @@
             </objects>
             <point key="canvasLocation" x="-2138.4000000000001" y="2650.5247376311845"/>
         </scene>
-        <!--Custom Content Item View Controller-->
+        <!--Content Item View Controller-->
         <scene sceneID="0Z7-4z-qGB">
             <objects>
-                <viewController storyboardIdentifier="ContentItemViewController" extendedLayoutIncludesOpaqueBars="YES" id="mjx-Up-6rt" customClass="CustomContentItemViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContentItemViewController" extendedLayoutIncludesOpaqueBars="YES" id="mjx-Up-6rt" customClass="ContentItemViewController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9Oi-GV-W50"/>
                         <viewControllerLayoutGuide type="bottom" id="PRi-H5-eiu"/>

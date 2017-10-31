@@ -7,6 +7,6 @@
 //
 
 import Foundation
-class CustomContentItemViewController: ContentItemViewController {
+class ContentItemViewController: SuperContentItemViewController {
     
 }

@@ -619,8 +619,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                         timeStamp = dataObject?.publishTime ?? ""
                         lead = dataObject?.lead ?? ""
                         styleContainerStyle = ""
-//                        adBanner = "<div class=\"bn-ph\"><div class=\"banner-container\"><div class=\"banner-inner\"><div class=\"banner-content\"><script type=\"text/javascript\">document.write (writeAd('banner'));</script></div></div></div></div>"
-//                        adMPU = "<div class=\"mpu-container\"><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div>"
+                        //                        adBanner = "<div class=\"bn-ph\"><div class=\"banner-container\"><div class=\"banner-inner\"><div class=\"banner-content\"><script type=\"text/javascript\">document.write (writeAd('banner'));</script></div></div></div></div>"
+                        //                        adMPU = "<div class=\"mpu-container\"><script type=\"text/javascript\">document.write (writeAd('storympu'));</script></div>"
                         adBanner = "<script type=\"text/javascript\">document.write(writeAdNew({devices: ['iPhoneApp'],pattern:'Banner',position:'Num1'}));</script>"
                         adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
                     }
@@ -729,8 +729,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     let template = templateNSString as String
                     let contentNSString = try NSString(contentsOfFile:contentHTMLPath, encoding:String.Encoding.utf8.rawValue)
                     let content = contentNSString as String
-//                    print(template)
-//                    print (content)
+                    //                    print(template)
+                    //                    print (content)
                     let contentHTML = template.replacingOccurrences(of: "{html-book-content}", with: content)
                     self.webView?.loadHTMLString(contentHTML, baseURL:url)
                 } catch {
@@ -817,7 +817,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         
         //let adBanner = "<script type=\"text/javascript\">document.write(writeAdNew({devices: ['iPhoneApp'],pattern:'Banner',position:'Num1'}));</script>"
         
-
+        
         
         let bodyWithMPU = body.replacingOccurrences(
             of: "[\r\t\n]",
@@ -948,7 +948,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
 }
 
 // MARK: Handle links here
-extension ContentItemViewController: WKNavigationDelegate {
+extension SuperContentItemViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: (@escaping (WKNavigationActionPolicy) -> Void)) {
         if let url = navigationAction.request.url {
             let urlString = url.absoluteString
@@ -968,7 +968,7 @@ extension ContentItemViewController: WKNavigationDelegate {
 
 var playerAPI = PlayerAPI()
 // MARK: Handle Message from Web View
-extension ContentItemViewController: WKScriptMessageHandler {
+extension SuperContentItemViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if let body = message.body as? [String: String] {
             switch message.name {
@@ -1023,7 +1023,7 @@ extension ContentItemViewController: WKScriptMessageHandler {
     }
 }
 
-extension ContentItemViewController: UIScrollViewDelegate {
+extension SuperContentItemViewController: UIScrollViewDelegate {
     // MARK: - There's a bug on iOS 9 so that you can't set decelerationRate directly on webView
     // MARK: - http://stackoverflow.com/questions/31369538/cannot-change-wkwebviews-scroll-rate-on-ios-9-beta
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -1031,7 +1031,7 @@ extension ContentItemViewController: UIScrollViewDelegate {
     }
 }
 
-extension ContentItemViewController: UITextViewDelegate {
+extension SuperContentItemViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange) -> Bool
     {
         return true
@@ -1039,7 +1039,7 @@ extension ContentItemViewController: UITextViewDelegate {
 }
 
 // MARK: Buy and Download Buttons
-extension ContentItemViewController {
+extension SuperContentItemViewController {
     fileprivate func insertIAPView() {
         let verticalPadding: CGFloat = 10
         let buttonHeight: CGFloat = 34
@@ -1065,6 +1065,7 @@ extension ContentItemViewController {
         
     }
 }
+
 
 
 //extension String {

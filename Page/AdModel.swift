@@ -146,6 +146,38 @@ struct AdParser {
         return nil
     }
     
+    //MARK: - Even the same story might need to display different adchID when tapped from different list page. So this can only be done here.
+    public static func getAdchID(_ dataObject: ContentItem?) -> String {
+        if let dataObject = dataObject,
+            let keywords = dataObject.keywords {
+            if keywords.range(of:"lifestyle") != nil {
+                return "1800"
+            }
+            if keywords.range(of:"management") != nil {
+                return "1700"
+            }
+            if keywords.range(of:"opinion") != nil {
+                return "1600"
+            }
+            if keywords.range(of:"management") != nil {
+                return "1700"
+            }
+            if keywords.range(of:"创新经济") != nil {
+                return "2100"
+            }
+            if keywords.range(of:"markets") != nil {
+                return "1400"
+            }
+            if keywords.range(of:"economy") != nil {
+                return "1300"
+            }
+            if keywords.range(of:"china") != nil {
+                return "1100"
+            }
+        }
+        return "1200"
+    }
+    
 }
 
 

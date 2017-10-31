@@ -229,6 +229,7 @@ class ContentFetch {
         return contentSections
     }
     
+    // MARK: - Get the full story
     private func formatFTCStoryJSON(_ item: [String: Any]) -> [ContentSection] {
         var contentSections = [ContentSection]()
         var itemCollection = [ContentItem]()
@@ -287,6 +288,14 @@ class ContentFetch {
         oneItem.publishTime = publishTime.unixToTimeStamp()
         oneItem.relatedStories = item["relative_story"] as? [[String: Any]]
         oneItem.relatedVideos = item["relative_vstory"] as? [[String: Any]]
+        
+        // MARK: Get story keywords and metas
+        let area = item["area"] as? String ?? ""
+        let topic = item["topic"] as? String ?? ""
+        let genre = item["genre"] as? String ?? ""
+        oneItem.keywords = "\(oneItem.tag),\(area),\(topic),\(genre)".replacingOccurrences(of: ",+",with: ",",options: .regularExpression)
+            .replacingOccurrences(of: "^,",with: "",options: .regularExpression)
+            .replacingOccurrences(of: ",$",with: "",options: .regularExpression)
         
         
         // MARK: get story bylines

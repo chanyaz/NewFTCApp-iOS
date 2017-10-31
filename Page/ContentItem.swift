@@ -30,6 +30,7 @@ class ContentItem{
     var publishTime: String?
     
     var adModel: AdModel?
+    var keywords: String?
     
     
     

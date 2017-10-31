@@ -4,12 +4,12 @@ i&&i.stop&&i.stop.call(this,!0),t=o.length;t--;)o[t].elem===this&&o[t].queue===e
     var clientHeight = document.documentElement.clientHeight
     var loveContainerId = document.getElementById('love-container')
     loveContainerId.style.height =  clientHeight*0.92+'px';
-    // console.log(loveContainerId.style.height)
+    console.log(loveContainerId.style.height)
     // var allSelectId = document.getElementById("allSelect");
     // var deleteId = document.getElementById("delete");
     var isSelect=false
-    $("#allSelect").click(function(){
-        // this.style.backgroundColor = "#00f";
+    $('body').on('click', '#allSelect', function () { 
+        console.log("console.log(id.style.height)")
         if (isSelect===false) {
             console.log('llllove')
             $('.love-one-section').find('.isSelected-button').find('img').attr('src', 'http://static.ftchinese.com/images/png/myLoveSelected.png');
@@ -22,17 +22,15 @@ i&&i.stop&&i.stop.call(this,!0),t=o.length;t--;)o[t].elem===this&&o[t].queue===e
             $('.love-one-section').removeClass('selectedLove');
         }
     });
-    $("#delete").click(function(){
+    $('body').on('click', '#delete', function () {
         var selectedLoveEle = $('.love-one-section').find('.selectedLove')
         if (selectedLoveEle != null) {
-        //   if(confirm("確定要刪除數據嗎？")){
+          if(confirm("確定要刪除數據嗎？")){
             $('#love-body').find('.selectedLove').remove();
-        //    }
+           }
         }
     });
-    
-    $(".love-one-section").click(function(){
-    // $('body').on('click', '.love-one-section', function () {
+    $('body').on('click', '.love-one-section', function () {
         $(this).find('.isSelected-button').find('img').attr('src', 'http://static.ftchinese.com/images/png/myLoveSelected.png');
         $(this).addClass('selectedLove');
     });</script></html>

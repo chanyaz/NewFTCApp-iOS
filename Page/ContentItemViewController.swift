@@ -336,6 +336,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
             dataObject?.lead = item.lead
             dataObject?.tag = item.tag
             dataObject?.image = item.image
+            dataObject?.keywords = item.keywords
             
             if let caudio = item.caudio, caudio != "" {
                 dataObject?.caudio = caudio
@@ -557,6 +558,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                     var storyTheme = ""
                     let fontClass = Setting.getFontClass()
                     var commentsId = id
+                    let adchID = AdParser.getAdchID(dataObject)
                     
                     if subType == .UserComments {
                         finalBody = ""
@@ -661,6 +663,7 @@ class ContentItemViewController: UIViewController, UINavigationControllerDelegat
                                 .replacingOccurrences(of: "['{follow-areas}']", with: followAreas)
                                 .replacingOccurrences(of: "['{follow-authors}']", with: followAuthors)
                                 .replacingOccurrences(of: "['{follow-columns}']", with: followColumns)
+                                .replacingOccurrences(of: "{adchID}", with: adchID)
                                 .replacingOccurrences(of: "{ad-banner}", with: adBanner)
                                 .replacingOccurrences(of: "{ad-mpu}", with: adMPU)
                                 .replacingOccurrences(of: "{font-class}", with: fontClass)

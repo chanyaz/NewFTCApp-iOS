@@ -436,7 +436,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
    func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
     
-    
+        print("Ice Request bodyString: start- \(bodyString) -end")
         let appIdField = "x-msxiaoice-request-app-id"
     
         //小冰正式服务器
@@ -456,14 +456,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
         let timestampField = "x-msxiaoice-request-timestamp"
         let timestamp = Int(Date().timeIntervalSince1970)//生成时间戳
-        
+        print("Ice timestamp:\(timestamp)")
         let userIdField = "x-msxiaoice-request-user-id"
         let userId = "e10adc3949ba59abbe56e057f20f883e"
         
         let signatureField = "x-msxiaoice-request-signature"
 
         let signature = ChatViewModel.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: [paramList], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
-        print("signature:\(signature)")
+        print("Ice signature: start- \(signature) -end")
         
         if let url = URL(string: urlString),
             let body = bodyString.data(using: .utf8)// 将String转化为Data
@@ -479,9 +479,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
       
             (URLSession.shared.dataTask(with: talkRequest) {
                 (data,response,error) in
-
                 if error != nil {
-                    print("Error: \(String(describing: error))")
+                    print("Ice Error: start- \(String(describing: error)) -end")
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion(nil)
                     }
@@ -491,7 +490,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
                 if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                     //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
-                    print("statusCode:\(httpStatus)")
+                    print("Ice Response statusCode when not 200: start- \(httpStatus) -end")
+
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion(nil)
                     }
@@ -500,7 +500,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 }
                 
                 if let data = data, let dataString = String(data: data, encoding: .utf8){
-                    print("Overview Data:\(dataString)")
+                    print("Ice Responce Data: start- \(dataString) -end")
                     //explainRobotTalk = dataString
                     let talkData:[String:String]?
                     talkData = ChatViewModel.createResponseTalkData(data: data)

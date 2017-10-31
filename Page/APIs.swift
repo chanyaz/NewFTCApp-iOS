@@ -541,3 +541,6 @@ struct FullScreenFallBack {
     static let link = ""
     static let backgroundColor = "#ffcb9e"
 }
+struct ContentItemRenderContent {
+    static var addPersonInfo = false
+}

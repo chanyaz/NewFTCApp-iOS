@@ -325,6 +325,8 @@
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */; };
 		F2218ABA1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
 		F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
+		F2251B511FA84F16001B6236 /* PersonInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */; };
+		F2251B521FA84F16001B6236 /* PersonInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */; };
 		F234B9521FA1C4CB00AACDAB /* my-love-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = F234B9501FA1C4C500AACDAB /* my-love-big5.html */; };
 		F234B9531FA1C4CE00AACDAB /* my-love.html in Resources */ = {isa = PBXBuildFile; fileRef = F234B9511FA1C4C500AACDAB /* my-love.html */; };
 		F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */; };
@@ -621,6 +623,8 @@
 		F21309201F78A9BA0078A510 /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "../NewFTCApp-iOS9.15自主开发，在tab中加入audiocontroller，audiocontroller上面添加tabView/Page copy-Info.plist"; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutV.swift; sourceTree = "<group>"; };
 		F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallPlayView.swift; sourceTree = "<group>"; };
+		F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonInfoTableViewCell.swift; sourceTree = "<group>"; };
+		F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonInfoTableViewCell.xib; sourceTree = "<group>"; };
 		F23455511FA09F5F001C1AE8 /* person-information.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information.html"; path = "Page/FTCC/person-information.html"; sourceTree = SOURCE_ROOT; };
 		F23455521FA09F5F001C1AE8 /* person-information-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information-big5.html"; path = "Page/FTCC/person-information-big5.html"; sourceTree = SOURCE_ROOT; };
 		F234B9501FA1C4C500AACDAB /* my-love-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "my-love-big5.html"; path = "Page/FTCC/my-love-big5.html"; sourceTree = SOURCE_ROOT; };
@@ -1381,6 +1385,8 @@
 				F2E090671F5A6A3900F4409F /* MySubscribeViewController.swift */,
 				F2E090681F5A6A3900F4409F /* MyWalletViewController.swift */,
 				F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */,
+				F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */,
+				F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */,
 			);
 			name = PersonInformation;
 			path = FTCC/PersonInformation;
@@ -1632,6 +1638,7 @@
 				F289C79B1FA0CF450081A675 /* person-information.html in Resources */,
 				F27D9A801F976FAB00A95188 /* ebook.html in Resources */,
 				602153771F397C650077A7AF /* ga.js in Resources */,
+				F2251B521FA84F16001B6236 /* PersonInfoTableViewCell.xib in Resources */,
 				60F1A5261F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
 				6021537A1F397C650077A7AF /* LineCell.xib in Resources */,
 				50C31B421F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,
@@ -1966,6 +1973,7 @@
 				F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */,
 				6021535E1F397C650077A7AF /* Download.swift in Sources */,
 				6021535F1F397C650077A7AF /* DetailViewController.swift in Sources */,
+				F2251B511FA84F16001B6236 /* PersonInfoTableViewCell.swift in Sources */,
 				F24B79931F5555FA001B62A2 /* AudioPlayerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

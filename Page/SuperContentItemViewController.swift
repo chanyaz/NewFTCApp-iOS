@@ -43,7 +43,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()
-        
+        if ContentItemRenderContent.addPersonInfo == false{
         if dataObject?.type == "ad" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
@@ -159,6 +159,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 getDetailInfo()
             }
             navigationController?.delegate = self
+        }
         }
     }
     

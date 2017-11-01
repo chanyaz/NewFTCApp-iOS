@@ -142,7 +142,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
         }
     }
     
-    func openHTMLBook(_ fileLocation: String) {
+    func openHTMLBook(_ fileLocation: String, productId: String) {
         print ("open html file from location: \(fileLocation)")
         //        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
         //            detailViewController.contentPageData = [ContentItem(
@@ -166,7 +166,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
             contentItemViewController.dataObject = ContentItem(
                 id: fileLocation,
                 image: "",
-                headline: "",
+                headline: productId,
                 lead: "",
                 type: "htmlbook",
                 preferSponsorImage: "",

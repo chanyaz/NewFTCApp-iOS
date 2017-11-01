@@ -275,7 +275,7 @@ struct IAP {
         // MARK: - check if the file exists locally
         if let fileLocation = Download.checkFilePath(fileUrl: tryBookFileName, for: .documentDirectory) {
             if let topController = UIApplication.topViewController() {
-                topController.openHTMLBook(fileLocation)
+                topController.openHTMLBook(fileLocation, productId: productIdentifier)
             }
         } else {
             print ("file not found: download it")
@@ -384,7 +384,7 @@ struct IAP {
              */
             
             if let topController = UIApplication.topViewController() {
-                topController.openHTMLBook(fileLocation)
+                topController.openHTMLBook(fileLocation, productId: productIdentifier)
             }
         } else {
             print ("file not found: download it")

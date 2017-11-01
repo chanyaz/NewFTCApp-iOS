@@ -194,13 +194,14 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         //        self.webView?.removeObserver(self, forKeyPath: "canGoForward")
         
         // MARK: - Stop loading and remove message handlers to avoid leak
-        self.webView?.stopLoading()
-        self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
-        self.webView?.configuration.userContentController.removeAllUserScripts()
+        webView?.stopLoading()
+        webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
+        webView?.configuration.userContentController.removeAllUserScripts()
         
-        // MARK: - Remove delegate to deal with crashes on iOS 8
-        self.webView?.navigationDelegate = nil
-        self.webView?.scrollView.delegate = nil
+        // MARK: - Remove delegate to deal with crashes on iOS 9
+        webView?.navigationDelegate = nil
+        webView?.scrollView.delegate = nil
+        
         print ("deinit content item view controller of \(pageTitle) successfully! ")
     }
     

@@ -54,7 +54,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
         if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting", "options"].contains(dataObjectType){
@@ -191,6 +190,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             webView?.scrollView.backgroundColor = webViewBG
             
             // MARK: This makes the web view scroll like native
+            // MARK: Under iOS 9, this will eventually cause the follow error:
+            /*
+             objc[5112]: Cannot form weak reference to instance (0x13fa0fa00) of class Page.DataViewController. It is possible that this object was over-released, or is in the process of deallocation.
+            */
             webView?.scrollView.delegate = self
             webView?.navigationDelegate = self
             webView?.clipsToBounds = true
@@ -454,6 +457,12 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
 //            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
 //            object: nil
 //        )
+        // MARK: release all the delegate to avoid crash in iOS 9
+        webView?.scrollView.delegate = nil
+        webView?.navigationDelegate = nil
+        searchBar?.delegate = nil
+        collectionView?.dataSource = nil
+        collectionView?.delegate = nil
         print ("Data View Controller of \(pageTitle) removed successfully")
     }
     

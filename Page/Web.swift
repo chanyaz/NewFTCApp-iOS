@@ -51,7 +51,9 @@ extension UIViewController: SFSafariViewControllerDelegate{
                         } else {
                             customLink = ""
                         }
-                        detailViewController.contentPageData = [ContentItem(
+                        let urlString = url.absoluteString.replacingOccurrences(of: "#", with: "?")
+                        let adchId = Download.getQueryStringParameter(url: urlString, param: "adchannelID")
+                        let contentItem = ContentItem(
                             id: id,
                             image: "",
                             headline: "",
@@ -62,7 +64,9 @@ extension UIViewController: SFSafariViewControllerDelegate{
                             customLink: customLink,
                             timeStamp: 0,
                             section: 0,
-                            row: 0)]
+                            row: 0)
+                        contentItem.adchId = adchId
+                        detailViewController.contentPageData = [contentItem]
                         self.navigationController?.pushViewController(detailViewController, animated: true)
                         return
                     }
@@ -138,7 +142,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
         }
     }
     
-    func openHTMLBook(_ fileLocation: String) {
+    func openHTMLBook(_ fileLocation: String, productId: String) {
         print ("open html file from location: \(fileLocation)")
         //        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
         //            detailViewController.contentPageData = [ContentItem(
@@ -162,7 +166,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
             contentItemViewController.dataObject = ContentItem(
                 id: fileLocation,
                 image: "",
-                headline: "",
+                headline: productId,
                 lead: "",
                 type: "htmlbook",
                 preferSponsorImage: "",

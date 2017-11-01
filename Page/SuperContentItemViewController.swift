@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import UIKit.NSTextAttachment
+//import UIKit.NSTextAttachment
 import WebKit
 
 enum ContentSubType {
@@ -43,122 +43,121 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()
-        
-        if dataObject?.type == "ad" {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
-                //additionalSafeAreaInsets = UIEdgeInsetsMake(44, 0, 44, 0)
-                //                edgesForExtendedLayout = UIRectEdge.all
-                //                extendedLayoutIncludesOpaqueBars = true
-                // MARK: add as a childviewcontroller
-                controller.showCloseButton = false
-                controller.isBetweenPages = true
-                addChildViewController(controller)
-                // MARK: Add the child's View as a subview
-                self.view.addSubview(controller.view)
-                controller.view.frame = view.bounds
-                controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        if ContentItemRenderContent.addPersonInfo == false{
+            if dataObject?.type == "ad" {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
+                    // MARK: add as a childviewcontroller
+                    controller.showCloseButton = false
+                    controller.isBetweenPages = true
+                    addChildViewController(controller)
+                    // MARK: Add the child's View as a subview
+                    self.view.addSubview(controller.view)
+                    controller.view.frame = view.bounds
+                    //controller.view.frame = UIApplication.shared.keyWindow?.bounds ?? view.bounds
+                    controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                    
+                    // MARK: tell the childviewcontroller it's contained in it's parent
+                    controller.didMove(toParentViewController: self)
+                }
+            } else {
+                //            self.navigationController?.isNavigationBarHidden = false
+                //            self.tabBarController?.tabBar.isHidden = false
+                let webViewBG = UIColor(hex: Color.Content.background)
+                view.backgroundColor = webViewBG
+                //            self.edgesForExtendedLayout = []
+                //            self.extendedLayoutIncludesOpaqueBars = false
                 
-                // MARK: tell the childviewcontroller it's contained in it's parent
-                controller.didMove(toParentViewController: self)
-            }
-        } else {
-            //            self.navigationController?.isNavigationBarHidden = false
-            //            self.tabBarController?.tabBar.isHidden = false
-            let webViewBG = UIColor(hex: Color.Content.background)
-            view.backgroundColor = webViewBG
-            //            self.edgesForExtendedLayout = []
-            //            self.extendedLayoutIncludesOpaqueBars = false
-            
-            
-            let config = WKWebViewConfiguration()
-            
-            // MARK: Tell the web view what kind of connection the user is currently on
-            let contentController = WKUserContentController();
-            if let type = dataObject?.type {
-                let jsCode: String
-                if type == "video" && dataObject?.isLandingPage == true {
-                    jsCode = JSCodes.get(JSCodes.autoPlayVideoType)
-                } else {
-                    jsCode = JSCodes.get(type)
+                
+                let config = WKWebViewConfiguration()
+                
+                // MARK: Tell the web view what kind of connection the user is currently on
+                let contentController = WKUserContentController();
+                if let type = dataObject?.type {
+                    let jsCode: String
+                    if type == "video" && dataObject?.isLandingPage == true {
+                        jsCode = JSCodes.get(JSCodes.autoPlayVideoType)
+                    } else {
+                        jsCode = JSCodes.get(type)
+                    }
+                    let userScript = WKUserScript(
+                        source: jsCode,
+                        injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                        forMainFrameOnly: true
+                    )
+                    contentController.addUserScript(userScript)
                 }
-                let userScript = WKUserScript(
-                    source: jsCode,
-                    injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
-                    forMainFrameOnly: true
+                
+                // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
+                contentController.add(LeakAvoider(delegate:self), name: "alert")
+                contentController.add(LeakAvoider(delegate:self), name: "follow")
+                contentController.add(LeakAvoider(delegate:self), name: "clip")
+                contentController.add(LeakAvoider(delegate:self), name: "listen")
+                contentController.add(LeakAvoider(delegate:self), name: "mySetting")
+                
+                config.userContentController = contentController
+                config.allowsInlineMediaPlayback = true
+                if dataObject?.type == "video" {
+                    if #available(iOS 10.0, *) {
+                        config.mediaTypesRequiringUserActionForPlayback = .init(rawValue: 0)
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                }
+                
+                // MARK: Add the webview as a subview of containerView
+                if isFullScreen == false {
+                    webView = WKWebView(frame: containerView.bounds, configuration: config)
+                    containerView.addSubview(webView!)
+                    containerView.clipsToBounds = true
+                } else {
+                    webView = WKWebView(frame: self.view.bounds, configuration: config)
+                    view = webView
+                    view.clipsToBounds = false
+                }
+                webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                
+                // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
+                //            webView = WKWebView(frame: self.view.bounds, configuration: config)
+                //            self.view = self.webView
+                
+                // MARK: set the web view opaque to avoid white screen during loading
+                webView?.isOpaque = false
+                webView?.backgroundColor = webViewBG
+                webView?.scrollView.backgroundColor = webViewBG
+                
+                // MARK: This makes the web view scroll like native
+                webView?.scrollView.delegate = self
+                webView?.navigationDelegate = self
+                webView?.clipsToBounds = true
+                webView?.scrollView.bounces = false
+                
+                // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
+                NotificationCenter.default.addObserver(
+                    self,
+                    selector: #selector(handleLanguagePreferenceChange),
+                    name: Notification.Name(rawValue: Event.languagePreferenceChanged),
+                    object: nil
                 )
-                contentController.addUserScript(userScript)
-            }
-            
-            // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
-            contentController.add(LeakAvoider(delegate:self), name: "alert")
-            contentController.add(LeakAvoider(delegate:self), name: "follow")
-            contentController.add(LeakAvoider(delegate:self), name: "clip")
-            contentController.add(LeakAvoider(delegate:self), name: "listen")
-            contentController.add(LeakAvoider(delegate:self), name: "mySetting")
-            
-            config.userContentController = contentController
-            config.allowsInlineMediaPlayback = true
-            if dataObject?.type == "video" {
-                if #available(iOS 10.0, *) {
-                    config.mediaTypesRequiringUserActionForPlayback = .init(rawValue: 0)
+                
+                // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
+                NotificationCenter.default.addObserver(
+                    self,
+                    selector: #selector(changeFont(_:)),
+                    name: Notification.Name(rawValue: Event.changeFont),
+                    object: nil
+                )
+                
+                
+                let typeString = dataObject?.type ?? ""
+                // MARK: If the sub type is a user comment, render web view directly
+                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html"].contains(typeString)  {
+                    renderWebView()
                 } else {
-                    // Fallback on earlier versions
+                    getDetailInfo()
                 }
+                navigationController?.delegate = self
             }
-            
-            // MARK: Add the webview as a subview of containerView
-            if isFullScreen == false {
-                webView = WKWebView(frame: containerView.bounds, configuration: config)
-                containerView.addSubview(webView!)
-                containerView.clipsToBounds = true
-            } else {
-                webView = WKWebView(frame: self.view.bounds, configuration: config)
-                view = webView
-                view.clipsToBounds = false
-            }
-            webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            
-            // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
-            //            webView = WKWebView(frame: self.view.bounds, configuration: config)
-            //            self.view = self.webView
-            
-            // MARK: set the web view opaque to avoid white screen during loading
-            webView?.isOpaque = false
-            webView?.backgroundColor = webViewBG
-            webView?.scrollView.backgroundColor = webViewBG
-            
-            // MARK: This makes the web view scroll like native
-            webView?.scrollView.delegate = self
-            webView?.navigationDelegate = self
-            webView?.clipsToBounds = true
-            webView?.scrollView.bounces = false
-            
-            // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(handleLanguagePreferenceChange),
-                name: Notification.Name(rawValue: Event.languagePreferenceChanged),
-                object: nil
-            )
-            
-            // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(changeFont(_:)),
-                name: Notification.Name(rawValue: Event.changeFont),
-                object: nil
-            )
-            
-            
-            let typeString = dataObject?.type ?? ""
-            // MARK: If the sub type is a user comment, render web view directly
-            if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html"].contains(typeString)  {
-                renderWebView()
-            } else {
-                getDetailInfo()
-            }
-            navigationController?.delegate = self
         }
     }
     
@@ -195,13 +194,14 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         //        self.webView?.removeObserver(self, forKeyPath: "canGoForward")
         
         // MARK: - Stop loading and remove message handlers to avoid leak
-        self.webView?.stopLoading()
-        self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
-        self.webView?.configuration.userContentController.removeAllUserScripts()
+        webView?.stopLoading()
+        webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
+        webView?.configuration.userContentController.removeAllUserScripts()
         
-        // MARK: - Remove delegate to deal with crashes on iOS 8
-        self.webView?.navigationDelegate = nil
-        self.webView?.scrollView.delegate = nil
+        // MARK: - Remove delegate to deal with crashes on iOS 9
+        webView?.navigationDelegate = nil
+        webView?.scrollView.delegate = nil
+        
         print ("deinit content item view controller of \(pageTitle) successfully! ")
     }
     
@@ -372,7 +372,10 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 return
             }
         }
-        if let dataObject = dataObject {
+        if let dataObject = dataObject,
+            dataObject.headline != "",
+            dataObject.lead != "",
+            dataObject.image != "" {
             Download.save(dataObject, to: "read", uplimit: 30, action: "save")
         }
     }
@@ -558,7 +561,12 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     var storyTheme = ""
                     let fontClass = Setting.getFontClass()
                     var commentsId = id
-                    let adchID = AdParser.getAdchID(dataObject)
+                    let adchID: String
+                    if dataObject?.adchId == AdLayout.homeAdChId {
+                        adchID = AdParser.getAdchID(dataObject)
+                    } else {
+                        adchID = dataObject?.adchId ?? AdLayout.homeAdChId
+                    }
                     
                     if subType == .UserComments {
                         finalBody = ""
@@ -731,7 +739,11 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     let content = contentNSString as String
                     //                    print(template)
                     //                    print (content)
-                    let contentHTML = template.replacingOccurrences(of: "{html-book-content}", with: content)
+                    var contentHTML = template.replacingOccurrences(of: "{html-book-content}", with: content)
+                    if let productId = dataObject?.headline.replacingOccurrences(of: "^try.", with: "", options: .regularExpression),
+                        contentHTMLPath.range(of: "try.") != nil {
+                        contentHTML = contentHTML.replacingOccurrences(of: "试读结束，如您对本书感兴趣，请返回之后购买。", with: "试读结束，如您对本书感兴趣，请<a href=\"buyproduct://\(productId)\">点击此处购买。</a>")
+                    }
                     self.webView?.loadHTMLString(contentHTML, baseURL:url)
                 } catch {
                     print ("cannot open the html book file")

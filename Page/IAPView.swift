@@ -501,7 +501,7 @@ extension IAPView: URLSessionDownloadDelegate {
                         if let fileLocation = Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) {
                             DispatchQueue.main.async {
                                 if let topController = UIApplication.topViewController() {
-                                    topController.openHTMLBook(fileLocation)
+                                    topController.openHTMLBook(fileLocation, productId: productId)
                                 }
                                 print ("should open the file at \(fileLocation)")
                                 IAP.trackIAPActions("download excerpt success", productId: productId)

@@ -23,6 +23,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     var layoutStrategy: String?
     var isVisible = false
     let maxWidth: CGFloat = 768
+    var adchId = AdLayout.homeAdChId
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
     
@@ -53,7 +54,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
         if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting", "options"].contains(dataObjectType){
@@ -122,8 +122,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             collectionView?.register(UINib.init(nibName: "OutOfBoxCoverCell", bundle: nil), forCellWithReuseIdentifier: "OutOfBoxCoverCell")
             collectionView?.register(UINib.init(nibName: "IconCell", bundle: nil), forCellWithReuseIdentifier: "IconCell")
             collectionView?.register(UINib.init(nibName: "BigImageCell", bundle: nil), forCellWithReuseIdentifier: "BigImageCell")
-            collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
-            collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
+            //collectionView?.register(UINib.init(nibName: "LineCell", bundle: nil), forCellWithReuseIdentifier: "LineCell")
+            //collectionView?.register(UINib.init(nibName: "PaidPostCell", bundle: nil), forCellWithReuseIdentifier: "PaidPostCell")
             collectionView?.register(UINib.init(nibName: "FollowCell", bundle: nil), forCellWithReuseIdentifier: "FollowCell")
             collectionView?.register(UINib.init(nibName: "SettingCell", bundle: nil), forCellWithReuseIdentifier: "SettingCell")
             collectionView?.register(UINib.init(nibName: "OptionCell", bundle: nil), forCellWithReuseIdentifier: "OptionCell")
@@ -190,6 +190,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             webView?.scrollView.backgroundColor = webViewBG
             
             // MARK: This makes the web view scroll like native
+            // MARK: Under iOS 9, this will eventually cause the follow error:
+            /*
+             objc[5112]: Cannot form weak reference to instance (0x13fa0fa00) of class Page.DataViewController. It is possible that this object was over-released, or is in the process of deallocation.
+            */
             webView?.scrollView.delegate = self
             webView?.navigationDelegate = self
             webView?.clipsToBounds = true
@@ -253,11 +257,12 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         
         // MARK: Only update the navigation title when it is pushed
         navigationItem.title = pageTitle.removingPercentEncoding
-        NotificationCenter.default.addObserver(
-            self,
-            selector:#selector(paidPostUpdate(_:)),
-            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
-            object: nil)
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector:#selector(paidPostUpdate(_:)),
+//            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
+//            object: nil
+//        )
         
         //openHTMLInBundle("register", title: "注册", isFullScreen: true, hidesBottomBar: true)
     }
@@ -447,11 +452,17 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     deinit {
         //MARK: Remove Paid Post Observer
-        NotificationCenter.default.removeObserver(
-            self,
-            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
-            object: nil
-        )
+//        NotificationCenter.default.removeObserver(
+//            self,
+//            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
+//            object: nil
+//        )
+        // MARK: release all the delegate to avoid crash in iOS 9
+        webView?.scrollView.delegate = nil
+        webView?.navigationDelegate = nil
+        searchBar?.delegate = nil
+        collectionView?.dataSource = nil
+        collectionView?.delegate = nil
         print ("Data View Controller of \(pageTitle) removed successfully")
     }
     
@@ -613,23 +624,23 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     
-    @objc func paidPostUpdate(_ notification: Notification) {
-        if let itemCell = notification.object as? ContentItem {
-            let section = itemCell.section
-            let row = itemCell.row
-            if fetches.fetchResults.count > section {
-                if fetches.fetchResults[section].items.count > row {
-                    if itemCell.adModel?.headline != nil{
-                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
-                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
-                        collectionView?.reloadData()
-                    } else {
-                        print ("Paid Post: The adModel has no headline")
-                    }
-                }
-            }
-        }
-    }
+//    @objc func paidPostUpdate(_ notification: Notification) {
+//        if let itemCell = notification.object as? ContentItem {
+//            let section = itemCell.section
+//            let row = itemCell.row
+//            if fetches.fetchResults.count > section {
+//                if fetches.fetchResults[section].items.count > row {
+//                    if itemCell.adModel?.headline != nil{
+//                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
+//                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
+//                        collectionView?.reloadData()
+//                    } else {
+//                        print ("Paid Post: The adModel has no headline")
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     
     @objc func refreshControlDidFire(sender:AnyObject) {
@@ -795,22 +806,22 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
-        case "LineCell":
-            if let cell = cellItem as? LineCell {
-                cell.pageTitle = pageTitle
-                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.cellWidth = cellWidth
-                cell.updateUI()
-                return cell
-            }
-        case "PaidPostCell":
-            if let cell = cellItem as? PaidPostCell {
-                cell.cellWidth = cellWidth
-                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-                cell.pageTitle = pageTitle
-                cell.updateUI()
-                return cell
-            }
+//        case "LineCell":
+//            if let cell = cellItem as? LineCell {
+//                cell.pageTitle = pageTitle
+//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+//                cell.cellWidth = cellWidth
+//                cell.updateUI()
+//                return cell
+//            }
+//        case "PaidPostCell":
+//            if let cell = cellItem as? PaidPostCell {
+//                cell.cellWidth = cellWidth
+//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+//                cell.pageTitle = pageTitle
+//                cell.updateUI()
+//                return cell
+//            }
         case "BookCell":
             if let cell = cellItem as? BookCell {
                 cell.cellWidth = cellWidth
@@ -942,13 +953,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         
         let reuseIdentifier: String
         
-        if item.type == "ad"{
-            if item.adModel == nil || item.adModel?.headline == nil {
-                reuseIdentifier = "LineCell"
-            } else {
-                reuseIdentifier = "PaidPostCell"
-            }
-        } else if layoutStrategy == "Simple Headline" {
+        if layoutStrategy == "Simple Headline" {
             if isCover {
                 reuseIdentifier = "CoverCell"
             } else {
@@ -1223,8 +1228,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     
                     
                     let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
-                    let pageData = withAd.contentItems
-                    print (pageData)
+                    let pageData = AdLayout.insertAdId(to: withAd.contentItems, with: adchId)
+                    //print (pageData)
                     currentPageIndex = withAd.pageIndex
                     pageData[currentPageIndex].isLandingPage = true
                     detailViewController.themeColor = themeColor
@@ -1420,6 +1425,12 @@ extension SuperDataViewController: WKScriptMessageHandler {
                 fetchResults: contentAPI.formatJSON(message.body)
             )
             prefetch()
+            // MARK: Extract Adid
+            if let body = message.body as? [String: Any],
+            let meta = body["meta"] as? [String: String],
+            let adId = meta["adid"] {
+                adchId = adId
+            }
         } else if message.name == "selectItem" {
             //print (message.body)
             if let rowString = message.body as? String,

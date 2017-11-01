@@ -179,10 +179,10 @@ struct Event {
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
     static let changeFont = "switch font"
     static let newAdCreativeDownloaded = "New Ad Creative Downloaded"
-    static func paidPostUpdate(for page: String) -> String {
-        let paidPostUpdated = "Paid Post Update"
-        return "\(paidPostUpdated) for \(page)"
-    }
+//    static func paidPostUpdate(for page: String) -> String {
+//        let paidPostUpdated = "Paid Post Update"
+//        return "\(paidPostUpdated) for \(page)"
+//    }
 }
 
 
@@ -396,7 +396,28 @@ struct JSCodes {
         }
     }
 }
-
+// MARK: - person info page
+struct personInfo {
+    static let infoMap:[[String: String]] = [
+        [
+            "imageName":"MySubscribe",
+            "tagName":"我要订阅"
+        ],
+        [
+            "imageName":"MyDownload",
+            "tagName":"我的下载"
+        ],
+        [
+            "imageName":"MyLove",
+            "tagName":"我的收藏"
+        ],
+        [
+            "imageName":"MySetting",
+            "tagName":"我的设置"
+        ]
+    ]
+    
+}
 // MARK: - Setting page
 struct Settings {
     static let page = [
@@ -537,4 +558,8 @@ struct FullScreenFallBack {
     static let id = "com.ft.ftchinese.mobile.book.lunch1"
     static let link = ""
     static let backgroundColor = "#ffcb9e"
+}
+
+struct ContentItemRenderContent {
+    static var addPersonInfo = false
 }

@@ -72,11 +72,43 @@ struct AppNavigation {
                     "coverTheme":"Pink"
                 ],
                 [
+                    "title": "观点",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/opinion.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no",
+                    "url":"http://www.ftchinese.com/channel/opinion.html?newad=yes",
+                    "screenName":"homepage/opinion",
+                    "coverTheme": "Opinion"
+                ],
+                [
+                    "title": "专栏",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/column.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no",
+                    "url":"http://www.ftchinese.com/channel/column.html?newad=yes",
+                    "screenName":"homepage/column",
+                    "coverTheme": "Opinion"
+                ],
+                [
                     "title": "金融市场",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
                     "listapi":"https://danla2f5eudt1.cloudfront.net/channel/markets.html?webview=ftcapp&bodyonly=yes&newad=yes",
                     "url":"http://www.ftchinese.com/channel/markets.html?newad=yes",
                     "screenName":"homepage/markets",
+                    "coverTheme": "OutOfBox"
+                ],
+                [
+                    "title": "商业",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/markets.html?webview=ftcapp&bodyonly=yes&newad=yes",
+                    "url":"http://www.ftchinese.com/channel/markets.html?newad=yes",
+                    "screenName":"homepage/business",
+                    "coverTheme": "OutOfBox"
+                ],
+                [
+                    "title": "科技",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/technology.html?webview=ftcapp&bodyonly=yes&newad=yes",
+                    "url":"http://www.ftchinese.com/channel/technology.html?newad=yes",
+                    "screenName":"homepage/technology",
                     "coverTheme": "OutOfBox"
                 ],
                 [
@@ -105,19 +137,13 @@ struct AppNavigation {
                     "compactLayout": "OutOfBox",
                     "coverTheme": "OutOfBox-LifeStyle"
                 ],
-                [
-                    "title": "专栏",
-                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
-                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/column.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no",
-                    "url":"http://www.ftchinese.com/channel/column.html?newad=yes",
-                    "screenName":"homepage/column",
-                    "coverTheme": "Opinion"
-                ],
+
                 [
                     "title": "特别报导",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
-                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/special.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no&001",
-                    "url":"http://www.ftchinese.com/channel/special.html?newad=yes",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/special.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no",
+                    // MARK: Use the keeplinks parameter to tell web view that there's no need to replace the links in this page
+                    "url":"http://www.ftchinese.com/channel/special.html?newad=yes&ad=no&keeplinks=yes",
                     "screenName":"homepage/special",
                     "coverTheme": "Opinion"
                 ],

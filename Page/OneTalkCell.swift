@@ -21,7 +21,11 @@ class OneTalkCell: UITableViewCell {
     
     
     var cardUrl = ""
-
+    
+    // MARK:存储已获取到的图片
+    var storedCoverImage:UIImage? = nil
+    var savedImageFile:String? = ""
+    
     // MARK: 重写Frame:费了好长好长时间才找到解决办法。。。
     override var frame: CGRect {
         didSet {
@@ -29,20 +33,6 @@ class OneTalkCell: UITableViewCell {
             newFrame.size.width = UIScreen.main.bounds.width
             super.frame = newFrame
         }
-        
-        
-        /*
-        didSet {
-            if(screenWidth == CGFloat(0)) {
-                var newFrame = frame
-                newFrame.size.width = UIScreen.main.bounds.width
-                super.frame = newFrame
-                screenWidth = self.frame.width
-            } else {
-                super.frame.size.width = screenWidth
-            }
-        }
-         */
     }
     
     init(_ data:CellData, reuseId cellId:String) {//NOTE: View通过ChatViewController得到Model的数据
@@ -78,7 +68,24 @@ class OneTalkCell: UITableViewCell {
                 topController.openLink(openUrl)
             }
         }
-        //print("Click card")
+    }
+    private func getImgSavedNameFromUrl(_ url: String) -> String? {
+        let IceCoverImagePattern = ["^http//i.ftimg.net/picture/5/([0-9]+)_piclink.jpg"] // h ttp://i.ftimg.net/picture/5/000071895_piclink.jpg
+        let imgName = url.matchingStrings(regexes: IceCoverImagePattern)
+        return imgName
+    }
+    
+    private func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
+        let urlString: String
+        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+            urlString = ImageService.resize(u, width: width, height: height)
+        } else {
+            urlString = imageUrl
+        }
+        if let url =  URL(string: urlString) {
+            return url
+        }
+        return nil
     }
     
     //MARK:异步加载image：
@@ -109,6 +116,15 @@ class OneTalkCell: UITableViewCell {
                 
                 if let realUIImage = myUIImage { //如果成功获取了图片
                     //cellData.downLoadImage = realUIImage
+                    self.storedCoverImage = realUIImage
+                    
+                    let savedImageName = self.getImgSavedNameFromUrl(imageUrl)
+                    if let realSavedImageName = savedImageName {
+                        self.savedImageFile = realSavedImageName
+                        print("Ice SavedImageFileName")
+                        Download.saveFile(data, filename: realSavedImageName, to: .cachesDirectory, as: "iceImg")
+                    }
+                    
                     DispatchQueue.main.async {
                         completion(realUIImage)
                     }
@@ -123,18 +139,48 @@ class OneTalkCell: UITableViewCell {
             
         }
     }
-    private func optimizedImageURL(_ imageUrl: String, width: Int, height: Int) -> URL? { //MARK:该方法copy自Content/ContentItem.swift: getImageURL
-        let urlString: String
-        if let u = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
-            urlString = ImageService.resize(u, width: width, height: height)
-        } else {
-            urlString = imageUrl
+    private func loadCoverImage() {
+        DispatchQueue.global().async { //NOTE: 耗时操作在后台完成
+            if let realStoredImage = self.storedCoverImage {
+                DispatchQueue.main.async { //NOTE：耗时操作执行完毕后在主线程更细UI界面！
+                    self.coverView.image = realStoredImage
+                }
+                print("Ice Load image from RAM")
+            } else if let imageFileName = self.savedImageFile {
+                let savedImage = Download.readFile(imageFileName, for:.cachesDirectory, as: "iceImg")
+                if let realSavedImage = savedImage {
+                    let coverImage = UIImage(data: realSavedImage)
+                    if let realCoverImage = coverImage {
+                        self.storedCoverImage = realCoverImage
+                        DispatchQueue.main.async {
+                            self.coverView.image = realCoverImage
+                            print("Ice Load image from cache")
+                        }
+                    }
+                }
+            } else {
+                self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
+                    if let realImage = downloadedImg {
+                        //cellData.downLoadImage = realImage
+                        //self.coverView.image = realImage
+                        DispatchQueue.main.async {
+                            UIView.transition(with: self.coverView,
+                                              duration: 0.3,
+                                              options: .transitionCrossDissolve,
+                                              animations: {
+                                                self.coverView.image = realImage
+                                              },
+                                              completion: nil
+                            )
+                            print("Ice Load image from request")
+                        }
+                        
+                    }
+                })
+            }
         }
-        if let url =  URL(string: urlString) {
-            return url
-        }
-        return nil
     }
+    
     private func buildCutlineCell(){
         self.selectionStyle = UITableViewCellSelectionStyle.none
         self.backgroundColor = UIColor(hex: "#fff1e0")
@@ -297,7 +343,7 @@ class OneTalkCell: UITableViewCell {
                     DispatchQueue.main.async {
                         UIView.transition(with: self.saysImageView,
                                           duration: 0.3,
-                                          options: .transitionCrossDissolve,
+                                      options: .transitionCrossDissolve,
                                           animations: {
                                             self.saysImageView.image = realImage
                         },
@@ -371,6 +417,7 @@ class OneTalkCell: UITableViewCell {
 
             coverView.contentMode = .scaleToFill
             
+            
             self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
                 if let realImage = downloadedImg {
                     //cellData.downLoadImage = realImage
@@ -389,6 +436,8 @@ class OneTalkCell: UITableViewCell {
                     
                 }
             })
+            
+            //self.loadCoverImage()
             self.addSubview(coverView)
             
             /// descriptionView:
@@ -429,3 +478,6 @@ extension UIView {
         return nil
     }
 }
+
+
+

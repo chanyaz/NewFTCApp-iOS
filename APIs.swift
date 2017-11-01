@@ -563,3 +563,22 @@ struct FullScreenFallBack {
 struct ContentItemRenderContent {
     static var addPersonInfo = false
 }
+
+// MARK: - Validate if the HTML snippets are what we expect rather than error message from server.
+struct HTMLValidator {
+    static func validate(_ htmlData: Data, url: String) -> Bool {
+        if let htmlCode = String(data: htmlData, encoding: .utf8){
+            if htmlCode.range(of: "item-container") != nil {
+                print ("htmlCode validated! ")
+                return true
+            } else {
+                print ("htmlCode not validated! ")
+                Track.event(category: "CatchError", action: "HTML Validation Fail", label: url)
+                return false
+            }
+        }
+        print ("html Data cannot be converted to string ")
+        Track.event(category: "CatchError", action: "HTML Data Conversion Fail", label: url)
+        return false
+    }
+}

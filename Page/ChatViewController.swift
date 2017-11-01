@@ -21,6 +21,25 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
   
     var autoScrollWhenTalk = false
     var historyTalkData:[[String:String]]? = nil
+    var iceUserId:String {
+        get {
+            let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
+            var iceUserId: String? = nil
+            if let userIdFromUserDefaultReal = userIdFromUserDefault {
+                let userIdStr = userIdFromUserDefaultReal as? String
+                if let userIdStrReal = userIdStr, userIdStrReal.characters.count == 32  {
+                    iceUserId = userIdStrReal
+                }
+            }
+            if let iceUserIdReal = iceUserId {
+                return iceUserIdReal
+            } else {
+                let newIceUserId = ChatViewModel.randomString(length: 32)
+                UserDefaults.standard.set(newIceUserId, forKey: "iceUserId")
+                return newIceUserId
+            }
+        }
+    }
     
     //MAKR: showingData用于存储展示数据中必要的数据，该数据会存储进Caches
     //MARK: showingCellData用于存储展示数据中所有Cell有关数据，该数据依赖shoingData生成
@@ -430,13 +449,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
     
-    
+   
    
         
    func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
     
-    
+        print("Ice Request bodyString: start- \(bodyString) -end")
         let appIdField = "x-msxiaoice-request-app-id"
     
         //小冰正式服务器
@@ -456,14 +475,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
         let timestampField = "x-msxiaoice-request-timestamp"
         let timestamp = Int(Date().timeIntervalSince1970)//生成时间戳
-        
+        print("Ice timestamp:\(timestamp)")
         let userIdField = "x-msxiaoice-request-user-id"
-        let userId = "e10adc3949ba59abbe56e057f20f883e"
-        
+        //let userId = "e10adc3949ba59abbe56e057f20f883e"
+        //let userId:String = ChatViewModel.randomString(length: 32)
+        let userId = self.iceUserId
+    
         let signatureField = "x-msxiaoice-request-signature"
 
         let signature = ChatViewModel.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: [paramList], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
-        print("signature:\(signature)")
+        print("Ice signature: start- \(signature) -end")
         
         if let url = URL(string: urlString),
             let body = bodyString.data(using: .utf8)// 将String转化为Data
@@ -479,9 +500,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
       
             (URLSession.shared.dataTask(with: talkRequest) {
                 (data,response,error) in
-
                 if error != nil {
-                    print("Error: \(String(describing: error))")
+                    print("Ice Error: start- \(String(describing: error)) -end")
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion(nil)
                     }
@@ -491,7 +511,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
                 if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                     //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
-                    print("statusCode:\(httpStatus)")
+                    print("Ice Response statusCode when not 200: start- \(httpStatus) -end")
+
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion(nil)
                     }
@@ -500,7 +521,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 }
                 
                 if let data = data, let dataString = String(data: data, encoding: .utf8){
-                    print("Overview Data:\(dataString)")
+                    print("Ice Responce Data: start- \(dataString) -end")
                     //explainRobotTalk = dataString
                     let talkData:[String:String]?
                     talkData = ChatViewModel.createResponseTalkData(data: data)
@@ -586,6 +607,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardType = .default//指定键盘类型，也可以是.numberPad（数字键盘）
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
+        
+        print("iceUserId:\(self.iceUserId)")
         
         do {
             if let savedTalkData = Download.readFile("chatHistoryTalk", for: .cachesDirectory, as: "json") {

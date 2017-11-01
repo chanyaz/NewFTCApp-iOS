@@ -106,7 +106,7 @@ struct AppNavigation {
                 [
                     "title": "科技",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
-                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/technology.html?webview=ftcapp&bodyonly=yes&newad=yes",
+                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/technology.html?webview=ftcapp&bodyonly=yes&newad=yes&001",
                     "url":"http://www.ftchinese.com/channel/technology.html?newad=yes",
                     "screenName":"homepage/technology",
                     "coverTheme": "OutOfBox"

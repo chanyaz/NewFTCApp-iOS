@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import UIKit.NSTextAttachment
+//import UIKit.NSTextAttachment
 import WebKit
 
 enum ContentSubType {

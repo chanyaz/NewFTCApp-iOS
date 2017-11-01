@@ -179,10 +179,10 @@ struct Event {
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
     static let changeFont = "switch font"
     static let newAdCreativeDownloaded = "New Ad Creative Downloaded"
-    static func paidPostUpdate(for page: String) -> String {
-        let paidPostUpdated = "Paid Post Update"
-        return "\(paidPostUpdated) for \(page)"
-    }
+//    static func paidPostUpdate(for page: String) -> String {
+//        let paidPostUpdated = "Paid Post Update"
+//        return "\(paidPostUpdated) for \(page)"
+//    }
 }
 
 

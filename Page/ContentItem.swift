@@ -31,6 +31,7 @@ class ContentItem{
     
     var adModel: AdModel?
     var keywords: String?
+    var adchId: String?
     
     
     

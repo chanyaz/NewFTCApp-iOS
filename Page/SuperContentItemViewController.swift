@@ -47,9 +47,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             if dataObject?.type == "ad" {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {
-                    //additionalSafeAreaInsets = UIEdgeInsetsMake(44, 0, 44, 0)
-                    //                edgesForExtendedLayout = UIRectEdge.all
-                    //                extendedLayoutIncludesOpaqueBars = true
                     // MARK: add as a childviewcontroller
                     controller.showCloseButton = false
                     controller.isBetweenPages = true
@@ -57,6 +54,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     // MARK: Add the child's View as a subview
                     self.view.addSubview(controller.view)
                     controller.view.frame = view.bounds
+                    //controller.view.frame = UIApplication.shared.keyWindow?.bounds ?? view.bounds
                     controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                     
                     // MARK: tell the childviewcontroller it's contained in it's parent

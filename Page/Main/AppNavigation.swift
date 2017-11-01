@@ -112,14 +112,6 @@ struct AppNavigation {
                     "coverTheme": "OutOfBox"
                 ],
                 [
-                    "title": "创新经济",
-                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
-                    "listapi":"https://danla2f5eudt1.cloudfront.net/channel/innovation.html?webview=ftcapp&bodyonly=yes&newad=yes",
-                    "url":"http://www.ftchinese.com/channel/innovation.html?newad=yes",
-                    "screenName":"homepage/innovation",
-                    "coverTheme": "OutOfBox"
-                ],
-                [
                     "title": "管理",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/management.html?type=json",
                     "listapi":"https://danla2f5eudt1.cloudfront.net/channel/management.html?webview=ftcapp&bodyonly=yes&newad=yes",

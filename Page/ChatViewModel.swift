@@ -322,7 +322,6 @@ class CellData {
 
 /******* Model: 提供一些方法，和数据联系紧密，Controller中会用到这些方法 ****/
 class ChatViewModel {
-    
     static func buildTalkData() -> [String: String] {
         return [
             "member":"",
@@ -491,38 +490,51 @@ class ChatViewModel {
     }
 
     static func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
-        print("Execute computeSignature")
+        print("Ice Execute computeSignature")
         
         let verbStr = verb.lowercased()
-        print("verbStr:\(verbStr)")
+        print("Ice verbStr:\(verbStr)")
         
         let pathStr = path.lowercased()
-        print("pathStr:\(pathStr)")
+        print("Ice pathStr:\(pathStr)")
         
         let paramListStr = paramList.sorted().joined(separator: "&")
-        print("paramListStr:\(paramListStr)")
+        print("Ice paramListStr:\(paramListStr)")
         
         var headerListNew = Array(repeating: "", count: headerList.count)
         for (index,value) in headerList.enumerated() {
             headerListNew[index] = value.lowercased()
         }
-        print("headerListNew:\(headerListNew)")
+        print("Ice headerListNew: start- \(headerListNew) -end")
         
         let headerListStr = headerListNew.sorted().joined(separator: ",")
         //base64EncodedString()
         let bodyStr = body
         
         let secretKeyStr = secretKey
-        print("secretKeyStr:\(secretKeyStr)")
+        print("Ice secretKeyStr: start- \(secretKeyStr) -end")
         
         let messageStr = "\(verbStr);\(pathStr);\(paramListStr);\(headerListStr);\(bodyStr);\(timestamp);\(secretKeyStr)"
         
-        print("messageStr:\(messageStr)")
+        print("Ice messageStr: start- \(messageStr) -end")
         
         let signature = messageStr.HmacSHA1(key: secretKeyStr)
         return signature
     }
-
+    
+    static func randomString(length: Int) -> String {
+        let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        return randomString
+    }
 }
 
 extension String {

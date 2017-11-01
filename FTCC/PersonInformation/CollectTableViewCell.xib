@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina3_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="CollectTableViewCell" selectionStyle="default" indentationWidth="10" rowHeight="112" id="KGk-i7-Jjw" customClass="CollectTableViewCell" customModule="FTCC" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="322" height="112"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="322" height="111.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z4d-hq-1em">
+                        <rect key="frame" x="-30" y="45" width="20" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="F4V-ko-WU1"/>
+                            <constraint firstAttribute="width" constant="20" id="gBJ-Qj-wKf"/>
+                        </constraints>
+                        <state key="normal" image="LoveList"/>
+                        <connections>
+                            <action selector="clickSelectedButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="p2X-B1-rZ0"/>
+                        </connections>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OLn-nB-esc">
+                        <rect key="frame" x="0.0" y="26" width="100" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="OLn-nB-esc" secondAttribute="height" multiplier="5:3" id="DHM-KC-wCI"/>
+                            <constraint firstAttribute="height" constant="60" id="TXX-X9-pgX"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="巴菲特vs科幻小说家，谁能预测未来样子" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvT-DW-KPv">
+                        <rect key="frame" x="110" y="39.5" width="207" height="33.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="hvT-DW-KPv" firstAttribute="leading" secondItem="OLn-nB-esc" secondAttribute="trailing" constant="10" id="P8f-ol-gXu"/>
+                    <constraint firstItem="hvT-DW-KPv" firstAttribute="centerY" secondItem="OLn-nB-esc" secondAttribute="centerY" id="Tf5-ce-efO"/>
+                    <constraint firstAttribute="trailing" secondItem="hvT-DW-KPv" secondAttribute="trailing" constant="5" id="UTV-Po-Uw1"/>
+                    <constraint firstItem="Z4d-hq-1em" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-38" id="WtH-2t-flF"/>
+                    <constraint firstItem="OLn-nB-esc" firstAttribute="centerY" secondItem="Z4d-hq-1em" secondAttribute="centerY" id="wPY-TE-LCP"/>
+                    <constraint firstItem="OLn-nB-esc" firstAttribute="leading" secondItem="Z4d-hq-1em" secondAttribute="trailing" constant="10" id="yO8-Rv-B80"/>
+                    <constraint firstItem="Z4d-hq-1em" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="zRh-fA-sb1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="selectedButton" destination="Z4d-hq-1em" id="cvc-nR-P96"/>
+                <outlet property="selectedImageView" destination="OLn-nB-esc" id="fjE-Ij-HdL"/>
+                <outlet property="selectedLabel" destination="hvT-DW-KPv" id="HIS-x3-44T"/>
+            </connections>
+            <point key="canvasLocation" x="29" y="114"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="LoveList" width="20" height="20"/>
+    </resources>
+</document>

@@ -315,6 +315,8 @@
 		AFD8AF5E1F380A2400508A91 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5D1F380A2400508A91 /* ChatViewModel.swift */; };
 		AFD8AF601F380A6200508A91 /* OneTalkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */; };
 		F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */ = {isa = PBXBuildFile; fileRef = F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */; };
+		F2201C431FA87281006EA0DE /* CollectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2201C411FA87281006EA0DE /* CollectTableViewCell.swift */; };
+		F2201C441FA87281006EA0DE /* CollectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2201C421FA87281006EA0DE /* CollectTableViewCell.xib */; };
 		F2218ABA1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
 		F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */; };
 		F2251B511FA84F16001B6236 /* PersonInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */; };
@@ -608,6 +610,8 @@
 		AFD8AF5F1F380A6200508A91 /* OneTalkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneTalkCell.swift; sourceTree = "<group>"; };
 		F21309201F78A9BA0078A510 /* Page copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy-Info.plist"; path = "../NewFTCApp-iOS9.15自主开发，在tab中加入audiocontroller，audiocontroller上面添加tabView/Page copy-Info.plist"; sourceTree = "<group>"; };
 		F215331B1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutV.swift; sourceTree = "<group>"; };
+		F2201C411FA87281006EA0DE /* CollectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectTableViewCell.swift; sourceTree = "<group>"; };
+		F2201C421FA87281006EA0DE /* CollectTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectTableViewCell.xib; sourceTree = "<group>"; };
 		F2218AB91F7BB809001A7342 /* CustomSmallPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallPlayView.swift; sourceTree = "<group>"; };
 		F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonInfoTableViewCell.swift; sourceTree = "<group>"; };
 		F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonInfoTableViewCell.xib; sourceTree = "<group>"; };
@@ -1365,6 +1369,8 @@
 				F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */,
 				F2251B531FA85CBC001B6236 /* PortraitTableViewCell.swift */,
 				F2251B541FA85CBC001B6236 /* PortraitTableViewCell.xib */,
+				F2201C411FA87281006EA0DE /* CollectTableViewCell.swift */,
+				F2201C421FA87281006EA0DE /* CollectTableViewCell.xib */,
 			);
 			name = PersonInformation;
 			path = FTCC/PersonInformation;
@@ -1582,6 +1588,7 @@
 				602153671F397C650077A7AF /* Ad.xib in Resources */,
 				F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */,
 				F289C79C1FA0CF480081A675 /* person-information-big5.html in Resources */,
+				F2201C441FA87281006EA0DE /* CollectTableViewCell.xib in Resources */,
 				601C418E1F99BC8B002D26B2 /* story-big5.html in Resources */,
 				60814F631F580FB200041801 /* BookCell.xib in Resources */,
 				6021538F1F39990E0077A7AF /* LaunchScreen.storyboard in Resources */,
@@ -1899,6 +1906,7 @@
 				602153471F397C650077A7AF /* AsyncTextAttachment.swift in Sources */,
 				602153491F397C650077A7AF /* NowPlayingCenter.swift in Sources */,
 				F2E090821F5A736E00F4409F /* CustomPresentController.swift in Sources */,
+				F2201C431FA87281006EA0DE /* CollectTableViewCell.swift in Sources */,
 				6021534B1F397C650077A7AF /* AudioHelper.swift in Sources */,
 				6021534C1F397C650077A7AF /* Model.xcdatamodeld in Sources */,
 				F2E090701F5A6A3900F4409F /* ColumnViewController.swift in Sources */,

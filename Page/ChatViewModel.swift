@@ -322,7 +322,6 @@ class CellData {
 
 /******* Model: 提供一些方法，和数据联系紧密，Controller中会用到这些方法 ****/
 class ChatViewModel {
-    
     static func buildTalkData() -> [String: String] {
         return [
             "member":"",
@@ -522,7 +521,20 @@ class ChatViewModel {
         let signature = messageStr.HmacSHA1(key: secretKeyStr)
         return signature
     }
-
+    
+    static func randomString(length: Int) -> String {
+        let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        return randomString
+    }
 }
 
 extension String {

@@ -45,7 +45,10 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
             if indexPath.row == 0{
                 openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
             }else if indexPath.row == 1{
-                openHTMLInBundle("register", title: "注册", isFullScreen: false, hidesBottomBar: true)
+                if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
+                    navigationController?.pushViewController(chatViewController, animated: true)
+                    
+                }
             }else if indexPath.row == 2{
                 openHTMLInBundle("register", title: "注册", isFullScreen: false, hidesBottomBar: true)
             }else if indexPath.row == 3{

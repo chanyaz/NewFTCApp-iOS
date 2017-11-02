@@ -21,34 +21,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
   
     var autoScrollWhenTalk = false
     var historyTalkData:[[String:String]]? = nil
-    /*
-    var iceUserId:String {
-        get {
-            let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
-            var iceUserId: String? = nil
-            if let userIdFromUserDefaultReal = userIdFromUserDefault {
-                let userIdStr = userIdFromUserDefaultReal as? String
-                if let userIdStrReal = userIdStr, userIdStrReal.characters.count == 32  {
-                    iceUserId = userIdStrReal
-                }
-            }
-            if let iceUserIdReal = iceUserId {
-                return iceUserIdReal
-            } else {
-                let newIceUserId = ChatViewModel.randomString(length: 32)
-                UserDefaults.standard.set(newIceUserId, forKey: "iceUserId")
-                return newIceUserId
-            }
-        }
-    }
-     */
+  
     var iceUserInfo:(iceUserId:String, triggerGreetContent:String) {
         return self.determineUser()
     }
     
     //MAKR: showingData用于存储展示数据中必要的数据，该数据会存储进Caches
     //MARK: showingCellData用于存储展示数据中所有Cell有关数据，该数据依赖shoingData生成
-    var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4)
+    //var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4)
+    var showingData = [[String:String]]()
     var showingCellData = [CellData]() {
         didSet {
             if(self.isTalkListFirstReloadData == false && self.isLoadHistoryDataAtTop == false && self.isGetMoreHistorySign == false) {
@@ -578,12 +559,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
                 self.modifiyTheOffset(animated: animated)
-
-                let indexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
-                self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
-            
-                print("scroll1")
-                self.talkListBlock.layoutIfNeeded();
+                let showingCellDataCount = self.showingCellData.count
+                if showingCellDataCount > 0 {
+                    let indexPath = IndexPath(row: showingCellDataCount-1, section: 0)
+                    self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
+                    
+                    print("scroll1")
+                    self.talkListBlock.layoutIfNeeded();
+                }
  
         }
      
@@ -653,7 +636,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         if let realHistoryTalkData = self.historyTalkData {
             let historyNum = realHistoryTalkData.count
             print("Chat historyNum:\(historyNum)")
-            //MARK:只显示历史会话中最近的10条记录
+            //MARK:初始时只显示历史会话中最近的10条记录， self.showingData为展示的数据（包含历史记录和新增数据），self.historyTalkData为去掉已经展示部分的历史数据
             if historyNum > 0 {
                 initShowingContainHistory = true
                 if historyNum <= 10  {

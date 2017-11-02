@@ -392,10 +392,10 @@
             </objects>
             <point key="canvasLocation" x="-2138" y="484"/>
         </scene>
-        <!--Play Speech-->
+        <!--View Controller-->
         <scene sceneID="b06-1O-kvA">
             <objects>
-                <viewController storyboardIdentifier="PlaySpeech" id="7xM-hb-7d9" customClass="PlaySpeech" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PlaySpeech" id="7xM-hb-7d9" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="a9E-yi-mwB"/>
                         <viewControllerLayoutGuide type="bottom" id="ESg-DH-Oky"/>

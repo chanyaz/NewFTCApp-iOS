@@ -283,7 +283,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         let listAPIString = APIs.convert(Download.addVersion(listAPI))
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
-                if let data = data, error == nil {
+                if let data = data,
+                    error == nil,
+                    HTMLValidator.validate(data, url: listAPIString) {
                     Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
                 }
                 DispatchQueue.main.async {

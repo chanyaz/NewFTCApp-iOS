@@ -27,12 +27,12 @@ struct APIs {
         "http://www.ftchinese.com/",
         "http://big5.ftchinese.com/"
     ]
-
+    
     private static let publicDomains = [
         "http://app003.ftmailbox.com/",
         "http://big5.ftmailbox.com/"
     ]
-
+    
     
     // MARK: Number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7
@@ -183,10 +183,10 @@ struct Event {
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
     static let changeFont = "switch font"
     static let newAdCreativeDownloaded = "New Ad Creative Downloaded"
-//    static func paidPostUpdate(for page: String) -> String {
-//        let paidPostUpdated = "Paid Post Update"
-//        return "\(paidPostUpdated) for \(page)"
-//    }
+    //    static func paidPostUpdate(for page: String) -> String {
+    //        let paidPostUpdated = "Paid Post Update"
+    //        return "\(paidPostUpdated) for \(page)"
+    //    }
 }
 
 
@@ -543,4 +543,23 @@ struct FullScreenFallBack {
 }
 struct ContentItemRenderContent {
     static var addPersonInfo = false
+}
+
+// MARK: - Validate if the HTML snippets are what we expect rather than error message from server.
+struct HTMLValidator {
+    static func validate(_ htmlData: Data, url: String) -> Bool {
+        if let htmlCode = String(data: htmlData, encoding: .utf8){
+            if htmlCode.range(of: "item-container") != nil {
+                print ("htmlCode validated! ")
+                return true
+            } else {
+                print ("htmlCode not validated! ")
+                Track.event(category: "CatchError", action: "HTML Validation Fail", label: url)
+                return false
+            }
+        }
+        print ("html Data cannot be converted to string ")
+        Track.event(category: "CatchError", action: "HTML Data Conversion Fail", label: url)
+        return false
+    }
 }

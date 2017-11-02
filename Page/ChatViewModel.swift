@@ -167,11 +167,21 @@ class CellData {
    */
     //MARK:一些需要在View（即OneTalkCell.swift） 里面计算得到的
     var cellHeightByBubble = CGFloat(0)//--TODO:要在Cell里面更新
-    var storedCoverImage: UIImage? = nil//用于内存存储请求到的UIImage对象
+    var storedImage: UIImage? = nil//用于内存存储请求到的UIImage对象
     var savedImageFileName: String? = nil//用于存储向缓存请求的image文件名
+    var headImageViewX:CGFloat? = nil//用于存储View中计算得到的和frame有关的头像位置X
+    var headImageViewY:CGFloat? = nil
+    var headUIImage: UIImage? = nil
+    var maxBubbleImageWidth:CGFloat? = nil
+    var bubbleImageY:CGFloat? = nil
+    var cellFrameWidth: CGFloat? = nil
+    var cellFrameMinY: CGFloat? = nil
+    
     // 一些必须在数据里生成的和view相关的对象
     var strechedBubbleImage = UIImage()
-
+    
+    
+    
     
     var normalFont = UIFont.systemFont(ofSize:18)
     var titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
@@ -341,8 +351,8 @@ class ChatViewModel {
         "type":"text",
         "content":"你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"
     ]
-    static let triggerGreetContent = "【端用户新对话打开信号，内容无法显示】"
-    
+    static let triggerGreetForOldUser = "【端用户新对话打开信号，内容无法显示】"
+    static let triggerGreetForNewUser = "【端用户首次打开信号，内容无法显示】"
     static let triggerNewsContent = "【端用户首次打开信号，推荐新闻】"
     
 

@@ -15,15 +15,15 @@ class CollectTableViewCell: UITableViewCell {
     @IBOutlet weak var selectedLabel: UILabel!
     
     var isEditting :Bool=false
-//    var isSelect:Bool = false
+    var isSelect:Bool = false
     @IBAction func clickSelectedButton(_ sender: UIButton) {
-//        if !isSelect{
-//            selectedButton.setImage(UIImage(named:"LoveListActive"), for: UIControlState.normal)
-//            isSelect = true
-//        }else{
-//            selectedButton.setImage(UIImage(named:"LoveList"), for: UIControlState.normal)
-//            isSelect = false
-//        }
+        if !isSelect{
+            selectedButton.setImage(UIImage(named:"LoveListActive"), for: UIControlState.normal)
+            isSelect = true
+        }else{
+            selectedButton.setImage(UIImage(named:"LoveList"), for: UIControlState.normal)
+            isSelect = false
+        }
 //        sender.isSelected = !sender.isSelected
     }
     
@@ -34,8 +34,6 @@ class CollectTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -43,6 +41,7 @@ class CollectTableViewCell: UITableViewCell {
         if (self.isEditting) {
             self.contentView.backgroundColor = UIColor.white
             self.frame.origin.x = 0
+  
         }else{
             
             self.contentView.backgroundColor = UIColor.white

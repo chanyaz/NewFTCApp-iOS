@@ -401,7 +401,7 @@ struct personInfo {
     static let infoMap:[[String: String]] = [
         [
             "imageName":"MySubscribe",
-            "tagName":"我要订阅"
+            "tagName":"我的订阅"
         ],
         [
             "imageName":"MyDownload",

@@ -7,12 +7,14 @@
 //
 
 import Foundation
-class ContentItemViewController: SuperContentItemViewController, UITableViewDataSource, UITableViewDelegate {
-    
+class ContentItemViewController: SuperContentItemViewController, UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate {
+    let picker = UIImagePickerController()
     let infoLabel = UILabel()
     let infoTableView = UITableView()
+    var  chosenImage = UIImage()
     override func viewDidLoad() {
         super.viewDidLoad()
+        picker.delegate = self
         if (ContentItemRenderContent.addPersonInfo == true){
             if let navigationHeight = self.navigationController?.navigationBar.frame.size.height{
                 infoTableView.frame = CGRect(x: 0, y: navigationHeight, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -27,6 +29,9 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
             ContentItemRenderContent.addPersonInfo = false
         }
 
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        print("view viewDidAppear")
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -74,6 +79,8 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
         if indexPath.section == 0{
             let cellItem = tableView.dequeueReusableCell(withIdentifier: "PortraitTableViewCell") as! PortraitTableViewCell
             cellItem.loginButton.addTarget(self, action: #selector(openAccount), for: .touchUpInside)
+            cellItem.portraitImageView.addTarget(self, action: #selector(openPhotoAction), for: .touchUpInside)
+            
             return cellItem
 
         }else{
@@ -97,7 +104,31 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
         }
     }
     @objc func openAccount(){
-        openHTMLInBundle("account", title: "注册", isFullScreen: false, hidesBottomBar: true)
+        openHTMLInBundle("account", title: "登录", isFullScreen: false, hidesBottomBar: true)
+    }
+    @objc func openPhotoAction(_ sender: Any) {
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        present(picker, animated: true, completion: nil)
     }
 
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        print("didFinishPickingMediaWithInfo")
+        if let  chosenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            self.chosenImage = chosenImage
+            let visibleCells = self.infoTableView.visibleCells
+            
+            if let cell = visibleCells[0] as? PortraitTableViewCell{
+                cell.portraitImageView.setImage(chosenImage, for: .normal)
+            }
+        }
+        dismiss(animated:true, completion: nil) //5  （不加词句，当选择完图片后，不会关闭相册）
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    deinit {
+        print("view cancel")
+    }
 }

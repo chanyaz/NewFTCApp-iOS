@@ -21,29 +21,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
   
     var autoScrollWhenTalk = false
     var historyTalkData:[[String:String]]? = nil
-    var iceUserId:String {
-        get {
-            let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
-            var iceUserId: String? = nil
-            if let userIdFromUserDefaultReal = userIdFromUserDefault {
-                let userIdStr = userIdFromUserDefaultReal as? String
-                if let userIdStrReal = userIdStr, userIdStrReal.characters.count == 32  {
-                    iceUserId = userIdStrReal
-                }
-            }
-            if let iceUserIdReal = iceUserId {
-                return iceUserIdReal
-            } else {
-                let newIceUserId = ChatViewModel.randomString(length: 32)
-                UserDefaults.standard.set(newIceUserId, forKey: "iceUserId")
-                return newIceUserId
-            }
-        }
+  
+    var iceUserInfo:(iceUserId:String, triggerGreetContent:String) {
+        return self.determineUser()
     }
     
     //MAKR: showingData用于存储展示数据中必要的数据，该数据会存储进Caches
     //MARK: showingCellData用于存储展示数据中所有Cell有关数据，该数据依赖shoingData生成
-    var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4)
+    //var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4)
+    var showingData = [[String:String]]()
     var showingCellData = [CellData]() {
         didSet {
             if(self.isTalkListFirstReloadData == false && self.isLoadHistoryDataAtTop == false && self.isGetMoreHistorySign == false) {
@@ -450,7 +436,31 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     
    
-   
+    func determineUser() -> (iceUserId: String, triggerGreetContent: String){
+        let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
+        var iceUserId: String? = nil
+        var triggerGreet: String? = nil
+        if let userIdFromUserDefaultReal = userIdFromUserDefault {
+            let userIdStr = userIdFromUserDefaultReal as? String
+            if let userIdStrReal = userIdStr, userIdStrReal.characters.count == 32  {
+                iceUserId = userIdStrReal
+                triggerGreet = ChatViewModel.triggerGreetForOldUser
+            }
+        }
+        if let iceUserIdReal = iceUserId, let triggerGreetReal = triggerGreet {
+            return (
+                iceUserIdReal,
+                triggerGreetReal
+            )
+        } else {
+            let newIceUserId = ChatViewModel.randomString(length: 32)
+            UserDefaults.standard.set(newIceUserId, forKey: "iceUserId")
+            return (
+                newIceUserId,
+                ChatViewModel.triggerGreetForNewUser
+            )
+        }
+    }
         
    func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
@@ -479,7 +489,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let userIdField = "x-msxiaoice-request-user-id"
         //let userId = "e10adc3949ba59abbe56e057f20f883e"
         //let userId:String = ChatViewModel.randomString(length: 32)
-        let userId = self.iceUserId
+        let userId = self.iceUserInfo.iceUserId
     
         let signatureField = "x-msxiaoice-request-signature"
 
@@ -549,12 +559,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
                 self.modifiyTheOffset(animated: animated)
-
-                let indexPath = IndexPath(row: self.showingCellData.count-1, section: 0)
-                self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
-            
-                print("scroll1")
-                self.talkListBlock.layoutIfNeeded();
+                let showingCellDataCount = self.showingCellData.count
+                if showingCellDataCount > 0 {
+                    let indexPath = IndexPath(row: showingCellDataCount-1, section: 0)
+                    self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
+                    
+                    print("scroll1")
+                    self.talkListBlock.layoutIfNeeded();
+                }
  
         }
      
@@ -608,7 +620,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
         
-        print("iceUserId:\(self.iceUserId)")
         
         do {
             if let savedTalkData = Download.readFile("chatHistoryTalk", for: .cachesDirectory, as: "json") {
@@ -625,7 +636,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         if let realHistoryTalkData = self.historyTalkData {
             let historyNum = realHistoryTalkData.count
             print("Chat historyNum:\(historyNum)")
-            //MARK:只显示历史会话中最近的10条记录
+            //MARK:初始时只显示历史会话中最近的10条记录， self.showingData为展示的数据（包含历史记录和新增数据），self.historyTalkData为去掉已经展示部分的历史数据
             if historyNum > 0 {
                 initShowingContainHistory = true
                 if historyNum <= 10  {
@@ -653,28 +664,24 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.isTalkListFirstReloadData = false
         self.tableViewScrollToBottom(animated: false)
         
-        
-        self.createTalkRequest(myInputText:ChatViewModel.triggerGreetContent, completion: { talkData in
+        let iceUserInfo = self.iceUserInfo
+        let triggerGreetContent = iceUserInfo.triggerGreetContent
+        let iceUserId = iceUserInfo.iceUserId
+        print("ice userinfo iceUserId:\(iceUserId)")
+        print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
+        self.createTalkRequest(myInputText: triggerGreetContent, completion: { talkData in
             if let oneTalkData = talkData {
-                //print(robotRes)
                 self.showingData.append(oneTalkData)
                 
                 let oneCellData = ChatViewModel.buildCellData(oneTalkData)
-                //self.needAutoReloadData = true
                 self.showingCellData.append(oneCellData)
-                //self.needAutoReloadData = false
-                //self.scrollTobottomWhenReloadData()
                 
                 
                 self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: { contentTalkData in
                     if let realContentTalkData = contentTalkData {
-                        //print(robotRes)
                         self.showingData.append(realContentTalkData)
                         let oneContentCellData = ChatViewModel.buildCellData(realContentTalkData)
-                        //self.needAutoReloadData = true
                         self.showingCellData.append(oneContentCellData)
-                        //self.needAutoReloadData = false
-                        //self.scrollTobottomWhenReloadData()
                     }
                 })
             }
@@ -695,16 +702,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
      */
     override func viewDidAppear(_ animated: Bool) {
         print("View Did Appear");
-        //super.viewDidAppear(false)
-        /*
-        if(self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height) {
-            print("here")
-            print("talkListBlock.contentSize.height:\(self.talkListBlock.contentSize.height)")
-            print("talkListBlock.frame.size.height:\(self.talkListBlock.frame.size.height)")
-            let offset = CGPoint(x: 0, y: self.talkListBlock.contentSize.height-self.talkListBlock.frame.size.height)
-            self.talkListBlock.setContentOffset(offset, animated: false)
-        }
-         */
 
     }
  

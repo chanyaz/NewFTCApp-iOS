@@ -23,8 +23,8 @@ class OneTalkCell: UITableViewCell {
     var cardUrl = ""
     
     // MARK:存储已获取到的图片
-    var storedCoverImage:UIImage? = nil
-    var savedImageFile:String? = ""
+    //var storedCoverImage:UIImage? = nil
+    //var savedImageFile:String? = nil
     
     // MARK: 重写Frame:费了好长好长时间才找到解决办法。。。
     override var frame: CGRect {
@@ -70,7 +70,7 @@ class OneTalkCell: UITableViewCell {
         }
     }
     private func getImgSavedNameFromUrl(_ url: String) -> String? {
-        let IceCoverImagePattern = ["^http//i.ftimg.net/picture/5/([0-9]+)_piclink.jpg"] // h ttp://i.ftimg.net/picture/5/000071895_piclink.jpg
+        let IceCoverImagePattern = ["^http://i.ftimg.net/picture/[0-9]/([0-9]+)_piclink.jpg$"] // h ttp://i.ftimg.net/picture/5/000071895_piclink.jpg
         let imgName = url.matchingStrings(regexes: IceCoverImagePattern)
         return imgName
     }
@@ -99,41 +99,44 @@ class OneTalkCell: UITableViewCell {
             URLSession.shared.dataTask(with: imgRequest, completionHandler: {
                 (data, response, error) in
                 if error != nil{
-                    DispatchQueue.main.async {//返回主线程更新UI
+                    //DispatchQueue.main.async {//返回主线程更新UI
                         completion(nil)
-                    }
+                    //}
                     return
                 }
                 
                 guard let data = data else {
-                    DispatchQueue.main.async {
+                    //DispatchQueue.main.async {
                         completion(nil)
-                    }
+                    //}
                     return
                 }
                 
                 let myUIImage = UIImage(data: data) //NOTE: 由于闭包可以在func范围之外生存，闭包中如果有参数类型是struct/enum，那么它将被复制一个新值作为参数。如果这个闭包会允许这个参数发生改变（即以闭包为其中一个参数的func是mutate的），那么闭包会产生一个副本,造成不必要的后果。所以struct中的mutate func中的escape closure的参数不能是self，也不能在closure内部改变self的属性。改为class，则可以。
                 
                 if let realUIImage = myUIImage { //如果成功获取了图片
-                    //cellData.downLoadImage = realUIImage
-                    self.storedCoverImage = realUIImage
+                    self.cellData.storedCoverImage = realUIImage
+                    //self.storedCoverImage = realUIImage
+                    print("Ice Load from request then store it to RAM:\(String(describing: self.cellData.storedCoverImage))")
                     
                     let savedImageName = self.getImgSavedNameFromUrl(imageUrl)
+                    print("Ice Load from request then save it to File by URL:\(imageUrl)")
+                    print("Ice Load from request then save it to File:\(String(describing: savedImageName))")
                     if let realSavedImageName = savedImageName {
-                        self.savedImageFile = realSavedImageName
+                        self.cellData.savedImageFileName = realSavedImageName
                         print("Ice SavedImageFileName")
                         Download.saveFile(data, filename: realSavedImageName, to: .cachesDirectory, as: "iceImg")
                     }
                     
-                    DispatchQueue.main.async {
-                        completion(realUIImage)
-                    }
+                    //DispatchQueue.main.async {
+                        completion(realUIImage)//realUIImage就是逃逸闭包函数形参loadedImage的实参
+                    //}
                     
                     
                 } else {
-                    DispatchQueue.main.async {
+                    //DispatchQueue.main.async {
                         completion(nil)
-                    }
+                    //}
                 }
             }).resume()
             
@@ -141,24 +144,27 @@ class OneTalkCell: UITableViewCell {
     }
     private func loadCoverImage() {
         DispatchQueue.global().async { //NOTE: 耗时操作在后台完成
-            if let realStoredImage = self.storedCoverImage {
+            if let realStoredImage = self.cellData.storedCoverImage {
+                print("Ice Load image may from RAM")
                 DispatchQueue.main.async { //NOTE：耗时操作执行完毕后在主线程更细UI界面！
                     self.coverView.image = realStoredImage
                 }
-                print("Ice Load image from RAM")
-            } else if let imageFileName = self.savedImageFile {
+            } else if let imageFileName = self.cellData.savedImageFileName {
+                print("Ice Load image may from cache")
+                print("Ice Load Cache's imageFileName:\(imageFileName)")
                 let savedImage = Download.readFile(imageFileName, for:.cachesDirectory, as: "iceImg")
                 if let realSavedImage = savedImage {
                     let coverImage = UIImage(data: realSavedImage)
                     if let realCoverImage = coverImage {
-                        self.storedCoverImage = realCoverImage
+                        self.cellData.storedCoverImage = realCoverImage
                         DispatchQueue.main.async {
                             self.coverView.image = realCoverImage
-                            print("Ice Load image from cache")
+                           
                         }
                     }
                 }
             } else {
+                print("Ice Load image from request")
                 self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
                     if let realImage = downloadedImg {
                         //cellData.downLoadImage = realImage
@@ -172,7 +178,7 @@ class OneTalkCell: UITableViewCell {
                                               },
                                               completion: nil
                             )
-                            print("Ice Load image from request")
+                            
                         }
                         
                     }
@@ -354,6 +360,7 @@ class OneTalkCell: UITableViewCell {
  
                 
             })
+            
             self.addSubview(self.saysImageView)
             
             
@@ -417,7 +424,7 @@ class OneTalkCell: UITableViewCell {
 
             coverView.contentMode = .scaleToFill
             
-            
+            /*
             self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
                 if let realImage = downloadedImg {
                     //cellData.downLoadImage = realImage
@@ -436,8 +443,8 @@ class OneTalkCell: UITableViewCell {
                     
                 }
             })
-            
-            //self.loadCoverImage()
+            */
+            self.loadCoverImage()
             self.addSubview(coverView)
             
             /// descriptionView:

@@ -9,8 +9,6 @@ import UIKit
 import Foundation
 
 class OneTalkCell: UITableViewCell {
-    // 头像View
-    var headImageView = UIImageView(image: UIImage(named: "you.jpeg"))
     
     // 文本背景气泡
     var bubbleImageView = UIImageView()
@@ -22,11 +20,7 @@ class OneTalkCell: UITableViewCell {
     
     var cardUrl = ""
     
-    // MARK:存储已获取到的图片
-    //var storedCoverImage:UIImage? = nil
-    //var savedImageFile:String? = nil
-    
-    // MARK: 重写Frame:费了好长好长时间才找到解决办法。。。
+    // MARK: 重写Frame
     override var frame: CGRect {
         didSet {
             var newFrame = frame
@@ -99,82 +93,75 @@ class OneTalkCell: UITableViewCell {
             URLSession.shared.dataTask(with: imgRequest, completionHandler: {
                 (data, response, error) in
                 if error != nil{
-                    //DispatchQueue.main.async {//返回主线程更新UI
-                        completion(nil)
-                    //}
+                      completion(nil)
                     return
                 }
                 
                 guard let data = data else {
-                    //DispatchQueue.main.async {
-                        completion(nil)
-                    //}
+                      completion(nil)
                     return
                 }
                 
                 let myUIImage = UIImage(data: data) //NOTE: 由于闭包可以在func范围之外生存，闭包中如果有参数类型是struct/enum，那么它将被复制一个新值作为参数。如果这个闭包会允许这个参数发生改变（即以闭包为其中一个参数的func是mutate的），那么闭包会产生一个副本,造成不必要的后果。所以struct中的mutate func中的escape closure的参数不能是self，也不能在closure内部改变self的属性。改为class，则可以。
                 
                 if let realUIImage = myUIImage { //如果成功获取了图片
-                    self.cellData.storedCoverImage = realUIImage
-                    //self.storedCoverImage = realUIImage
-                    print("Ice Load from request then store it to RAM:\(String(describing: self.cellData.storedCoverImage))")
+                    self.cellData.storedImage = realUIImage
+                    //print("Ice Load from request then store it to RAM:\(String(describing: self.cellData.storedImage))")
                     
                     let savedImageName = self.getImgSavedNameFromUrl(imageUrl)
-                    print("Ice Load from request then save it to File by URL:\(imageUrl)")
-                    print("Ice Load from request then save it to File:\(String(describing: savedImageName))")
+                    //print("Ice Load from request then save it to File by URL:\(imageUrl)")
+                    //print("Ice Load from request then save it to File:\(String(describing: savedImageName))")
                     if let realSavedImageName = savedImageName {
                         self.cellData.savedImageFileName = realSavedImageName
-                        print("Ice SavedImageFileName")
                         Download.saveFile(data, filename: realSavedImageName, to: .cachesDirectory, as: "iceImg")
                     }
                     
                     //DispatchQueue.main.async {
-                        completion(realUIImage)//realUIImage就是逃逸闭包函数形参loadedImage的实参
+                    completion(realUIImage)
+                        //NOTE:realUIImage就是逃逸闭包函数形参loadedImage的实参,此处不用在DispatchQueue.main.async，因为在completion中还需要处理其他事务，处理好了再在completion中回到DispatchQueue.main.async更新UI
                     //}
                     
                     
                 } else {
-                    //DispatchQueue.main.async {
-                        completion(nil)
-                    //}
+                    completion(nil)
                 }
             }).resume()
             
         }
     }
-    private func loadCoverImage() {
+    
+    //MARK:加载图片，通过三种可能性加载以达到最优性能
+    private func loadRelatedImage(theImageUrl imageUrl: String, theImageView imageView: UIImageView) {
         DispatchQueue.global().async { //NOTE: 耗时操作在后台完成
-            if let realStoredImage = self.cellData.storedCoverImage {
-                print("Ice Load image may from RAM")
+            if let realStoredImage = self.cellData.storedImage {//MARK:可能性1：从RAM加载
+                //print("Ice Load image may from RAM")
                 DispatchQueue.main.async { //NOTE：耗时操作执行完毕后在主线程更细UI界面！
-                    self.coverView.image = realStoredImage
+                    imageView.image = realStoredImage
                 }
-            } else if let imageFileName = self.cellData.savedImageFileName {
-                print("Ice Load image may from cache")
-                print("Ice Load Cache's imageFileName:\(imageFileName)")
+            } else if let imageFileName = self.cellData.savedImageFileName {//MARK:可能性2：从caches加载
+                //print("Ice Load image may from cache")
+                //print("Ice Load Cache's imageFileName:\(imageFileName)")
                 let savedImage = Download.readFile(imageFileName, for:.cachesDirectory, as: "iceImg")
                 if let realSavedImage = savedImage {
                     let coverImage = UIImage(data: realSavedImage)
                     if let realCoverImage = coverImage {
-                        self.cellData.storedCoverImage = realCoverImage
+                        self.cellData.storedImage = realCoverImage
                         DispatchQueue.main.async {
-                            self.coverView.image = realCoverImage
+                            imageView.image = realCoverImage
                            
                         }
                     }
                 }
-            } else {
-                print("Ice Load image from request")
-                self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
+            } else { //MARK:可能性3：从URL请求加载
+                //print("Ice Load image from request")
+                self.asyncBuildImage(url: imageUrl, completion: { downloadedImg in
                     if let realImage = downloadedImg {
-                        //cellData.downLoadImage = realImage
-                        //self.coverView.image = realImage
                         DispatchQueue.main.async {
                             UIView.transition(with: self.coverView,
                                               duration: 0.3,
                                               options: .transitionCrossDissolve,
                                               animations: {
-                                                self.coverView.image = realImage
+                                                imageView.image = realImage
                                               },
                                               completion: nil
                             )
@@ -239,19 +226,32 @@ class OneTalkCell: UITableViewCell {
         
         // 显示头像
         if(self.cellData.headImage != "") {
-            let headImageName = self.cellData.headImage //The name of the image in tha app's maini bundler, which including the extension except for PNG
-            let headImage = UIImage(named: headImageName)
-            self.headImageView = UIImageView(image: headImage)
-            
+            var headImageViewX:CGFloat
+            var headImageViewY:CGFloat
             // 头像高、宽都为50CGFloat
             // 头像的位置x: robot头像在左，you头像在右
-            let headImageViewX = (whoSays == .robot) ? self.cellData.cellInsets.left : self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.right
-            // 头像的位置y:
-            let headImageViewY = self.frame.minY + self.cellData.cellInsets.top
+            if let headImageViewXStored = self.cellData.headImageViewX {
+                headImageViewX = headImageViewXStored
+            } else {
+                headImageViewX = (whoSays == .robot) ? self.cellData.cellInsets.left : self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.right
+                self.cellData.headImageViewX = headImageViewX
+            }
             
-            // 绘制头像view
-            self.headImageView.frame = CGRect(x:headImageViewX,y:headImageViewY,width:self.cellData.headImageLength,height:self.cellData.headImageLength)
-            self.addSubview(self.headImageView)
+            if let headImageViewYStored = self.cellData.headImageViewY {
+                headImageViewY = headImageViewYStored
+            } else {
+                headImageViewY = self.frame.minY + self.cellData.cellInsets.top
+                self.cellData.headImageViewY = headImageViewY
+            }
+            let headImageView = UIImageView(frame: CGRect(x:headImageViewX,y:headImageViewY,width:self.cellData.headImageLength,height:self.cellData.headImageLength))
+            if let headUIImageStored = self.cellData.headUIImage {
+                headImageView.image = headUIImageStored
+            } else {
+                let headUIImage = UIImage(named: self.cellData.headImage)
+                headImageView.image = headUIImage
+                self.cellData.headUIImage = headUIImage
+            }
+            self.addSubview(headImageView)
       }
         
         
@@ -339,35 +339,12 @@ class OneTalkCell: UITableViewCell {
             self.saysImageView.frame = CGRect(x: saysWhatX, y: saysWhatY, width: imageWidth, height: imageHeight)
             self.saysImageView.backgroundColor = UIColor(hex: "#f7e9d8")
             self.saysImageView.contentMode = .scaleToFill
-            
-            self.asyncBuildImage(url: self.cellData.saysWhat.url, completion: {
-                downloadedImg in
-                
-                
-                if let realImage = downloadedImg { //如果成功获取了图片
-                    //self.saysImageView.image = realImage
-                    DispatchQueue.main.async {
-                        UIView.transition(with: self.saysImageView,
-                                          duration: 0.3,
-                                      options: .transitionCrossDissolve,
-                                          animations: {
-                                            self.saysImageView.image = realImage
-                        },
-                                          completion: nil
-                        )
-                    }
-                }
- 
-                
-            })
-            
+            self.loadRelatedImage(theImageUrl: self.cellData.saysWhat.url, theImageView: self.saysImageView)
             self.addSubview(self.saysImageView)
             
             
         } else if self.cellData.saysType == .card {
-            
-            
-           
+
             
             // Step1:计算几个View的相关尺寸
             var descriptionWidth = CGFloat(0)
@@ -424,27 +401,8 @@ class OneTalkCell: UITableViewCell {
 
             coverView.contentMode = .scaleToFill
             
-            /*
-            self.asyncBuildImage(url: self.cellData.saysWhat.coverUrl, completion: { downloadedImg in
-                if let realImage = downloadedImg {
-                    //cellData.downLoadImage = realImage
-                    //self.coverView.image = realImage
-                    
-                    DispatchQueue.main.async {
-                        UIView.transition(with: self.coverView,
-                                          duration: 0.3,
-                                          options: .transitionCrossDissolve,
-                                          animations: {
-                                            self.coverView.image = realImage
-                        },
-                                          completion: nil
-                        )
-                    }
-                    
-                }
-            })
-            */
-            self.loadCoverImage()
+      
+            self.loadRelatedImage(theImageUrl: self.cellData.saysWhat.coverUrl, theImageView: self.coverView)
             self.addSubview(coverView)
             
             /// descriptionView:

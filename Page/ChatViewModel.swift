@@ -167,8 +167,11 @@ class CellData {
    */
     //MARK:一些需要在View（即OneTalkCell.swift） 里面计算得到的
     var cellHeightByBubble = CGFloat(0)//--TODO:要在Cell里面更新
-    var storedCoverImage: UIImage? = nil//用于内存存储请求到的UIImage对象
+    var storedImage: UIImage? = nil//用于内存存储请求到的UIImage对象
     var savedImageFileName: String? = nil//用于存储向缓存请求的image文件名
+    var headImageViewX:CGFloat? = nil//用于存储View中计算得到的和frame有关的头像位置X
+    var headImageViewY:CGFloat? = nil
+    var headUIImage: UIImage? = nil
     // 一些必须在数据里生成的和view相关的对象
     var strechedBubbleImage = UIImage()
 

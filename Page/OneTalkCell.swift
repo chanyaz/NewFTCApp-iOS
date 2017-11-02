@@ -223,24 +223,37 @@ class OneTalkCell: UITableViewCell {
         let whoSays = self.cellData.whoSays
         self.backgroundColor = UIColor(hex: "#fff1e0")
 
-        
+        let cellFrameWidth: CGFloat
+        let cellFrameMinY: CGFloat
+        if let cellFrameWidthStored = self.cellData.cellFrameWidth {
+            cellFrameWidth = cellFrameWidthStored
+        } else {
+            cellFrameWidth = self.frame.width
+            self.cellData.cellFrameWidth = cellFrameWidth
+        }
+        if let cellFrameMinYStored = self.cellData.cellFrameMinY {
+            cellFrameMinY = cellFrameMinYStored
+        } else {
+            cellFrameMinY = self.frame.minY
+            self.cellData.cellFrameMinY = cellFrameMinY
+        }
         // 显示头像
         if(self.cellData.headImage != "") {
-            var headImageViewX:CGFloat
-            var headImageViewY:CGFloat
+            let headImageViewX:CGFloat
+            let headImageViewY:CGFloat
             // 头像高、宽都为50CGFloat
             // 头像的位置x: robot头像在左，you头像在右
             if let headImageViewXStored = self.cellData.headImageViewX {
                 headImageViewX = headImageViewXStored
             } else {
-                headImageViewX = (whoSays == .robot) ? self.cellData.cellInsets.left : self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.right
+                headImageViewX = (whoSays == .robot) ? self.cellData.cellInsets.left : cellFrameWidth - self.cellData.headImageLength - self.cellData.cellInsets.right
                 self.cellData.headImageViewX = headImageViewX
             }
             
             if let headImageViewYStored = self.cellData.headImageViewY {
                 headImageViewY = headImageViewYStored
             } else {
-                headImageViewY = self.frame.minY + self.cellData.cellInsets.top
+                headImageViewY = cellFrameMinY + self.cellData.cellInsets.top
                 self.cellData.headImageViewY = headImageViewY
             }
             let headImageView = UIImageView(frame: CGRect(x:headImageViewX,y:headImageViewY,width:self.cellData.headImageLength,height:self.cellData.headImageLength))
@@ -256,18 +269,30 @@ class OneTalkCell: UITableViewCell {
         
         
         // 根据self.frame尺寸得到相关尺寸
-        let maxBubbleImageWidth = self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
+        let maxBubbleImageWidth:CGFloat
+        if let maxBubbleImageStored = self.cellData.maxBubbleImageWidth {
+            maxBubbleImageWidth = maxBubbleImageStored
+        } else {
+            maxBubbleImageWidth = cellFrameWidth - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
+            self.cellData.maxBubbleImageWidth = maxBubbleImageWidth
+        }
+        //let maxBubbleImageWidth = self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
         let maxTextWidth = maxBubbleImageWidth - self.cellData.bubbleImageInsets.left - self.cellData.bubbleImageInsets.right
         let imageWidth = maxTextWidth
         let imageHeight = maxTextWidth / 16 * 9
         let coverWidth = maxTextWidth
         let coverHeight = maxTextWidth / 16 * 9
         
-        //let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : self.frame.width - self.cellData.headImageWithInsets - self.cellData.bubbleImageWidth
-        //let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : self.frame.width - self.cellData.headImageWithInsets - maxBubbleImageWidth //默认是按照maxBubbleImage来，text类型需要重新计算bubbleImageWidth
-        let bubbleImageY = self.frame.minY + self.cellData.bubbleInsets.top
+        //默认是按照maxBubbleImage来，text类型需要重新计算bubbleImageWidth
+        let bubbleImageY:CGFloat
+        if let bubbleImageYStored = self.cellData.bubbleImageY {
+            bubbleImageY = bubbleImageYStored
+        } else {
+            bubbleImageY = cellFrameMinY + self.cellData.bubbleInsets.top
+            self.cellData.bubbleImageY = bubbleImageY
+        }
+        //let bubbleImageY = self.frame.minY + self.cellData.bubbleInsets.top
         
-        //let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
         let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
         
         
@@ -310,7 +335,7 @@ class OneTalkCell: UITableViewCell {
             //Step2：根据文字宽、高得到气泡图片的宽、高、X,添加气泡View
             let bubbleImageWidth = computeWidth + self.cellData.bubbleImageInsets.left + self.cellData.bubbleImageInsets.right
             let bubbleImageHeight = computeHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
-            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : self.frame.width - self.cellData.headImageWithInsets - bubbleImageWidth
+            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : cellFrameWidth - self.cellData.headImageWithInsets - bubbleImageWidth
             self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
             self.addBubbleView(x: bubbleImageX, y: bubbleImageY, width: bubbleImageWidth, height: bubbleImageHeight)
             
@@ -331,7 +356,7 @@ class OneTalkCell: UITableViewCell {
             let bubbleImageWidth = maxBubbleImageWidth
             let bubbleImageHeight = imageHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
              self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
-            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : self.frame.width - self.cellData.headImageWithInsets - bubbleImageWidth
+            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : cellFrameWidth - self.cellData.headImageWithInsets - bubbleImageWidth
             self.addBubbleView(x: bubbleImageX, y: bubbleImageY, width: bubbleImageWidth, height: bubbleImageHeight)
             
             //Step2：添加图片内容View
@@ -379,7 +404,7 @@ class OneTalkCell: UITableViewCell {
             let bubbleImageWidth = maxBubbleImageWidth
             let bubbleImageHeight = titleHeight + coverHeight + descriptionHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
              self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
-            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : self.frame.width - self.cellData.headImageWithInsets - bubbleImageWidth
+            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : cellFrameWidth - self.cellData.headImageWithInsets - bubbleImageWidth
             
             // Step2:依次添加这几个View
             /// bubbleView:

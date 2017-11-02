@@ -172,9 +172,16 @@ class CellData {
     var headImageViewX:CGFloat? = nil//用于存储View中计算得到的和frame有关的头像位置X
     var headImageViewY:CGFloat? = nil
     var headUIImage: UIImage? = nil
+    var maxBubbleImageWidth:CGFloat? = nil
+    var bubbleImageY:CGFloat? = nil
+    var cellFrameWidth: CGFloat? = nil
+    var cellFrameMinY: CGFloat? = nil
+    
     // 一些必须在数据里生成的和view相关的对象
     var strechedBubbleImage = UIImage()
-
+    
+    
+    
     
     var normalFont = UIFont.systemFont(ofSize:18)
     var titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)

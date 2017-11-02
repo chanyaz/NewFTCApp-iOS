@@ -165,11 +165,14 @@ class CellData {
         }
     }
    */
+    //MARK:一些需要在View（即OneTalkCell.swift） 里面计算得到的
     var cellHeightByBubble = CGFloat(0)//--TODO:要在Cell里面更新
+    var storedCoverImage: UIImage? = nil//用于内存存储请求到的UIImage对象
+    var savedImageFileName: String? = nil//用于存储向缓存请求的image文件名
     // 一些必须在数据里生成的和view相关的对象
     var strechedBubbleImage = UIImage()
 
-    //var downLoadImage: UIImage? = nil//用于存储异步加载的UIImage对象
+    
     var normalFont = UIFont.systemFont(ofSize:18)
     var titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
     var cutlineFont = UIFont.systemFont(ofSize:10)

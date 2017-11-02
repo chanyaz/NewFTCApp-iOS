@@ -15,10 +15,26 @@ struct DeviceInfo {
         if UIDevice.current.userInterfaceIdiom == .pad {
             deviceType = "iPad"
         } else {
-            deviceType  = "iPhone"
+            deviceType = "iPhone"
         }
         return deviceType
     }
+    
+//    public static func checkSafeAreaTop() {
+//        // MARK: Get the safe area top so that full screen launch ad can display close button in the right place
+//        if #available(iOS 11.0, *) {
+//
+//            if let safeAreaTop = window?.safeAreaInsets.top{
+//                DeviceStyle.shared.safeAreaTop = safeAreaTop
+//                print ("Safe Area Top is Now \(safeAreaTop)")
+//            }
+//        }
+//    }
+}
+
+struct DeviceStyle {
+    static var shared = DeviceStyle()
+    var safeAreaTop: CGFloat = 0
 }
 
 extension UIApplication {

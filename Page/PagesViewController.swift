@@ -26,13 +26,7 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
     }
     
-    override var prefersStatusBarHidden : Bool {
-        if AppLaunch.sharedInstance.fullScreenDismissed == false {
-            return true
-        } else {
-            return false
-        }
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

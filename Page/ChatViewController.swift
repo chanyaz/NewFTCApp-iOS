@@ -602,7 +602,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.mySwipeGesture.delegate = self
         self.myPanGesture.delegate = self
         //elf.myPanGesture.require(toFail: self.talkListBlock.panGestureRecognizer)
-
+        
+        if #available(iOS 11.0, *) {
+            self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 1, 0)
+        } else {
+            self.edgesForExtendedLayout = .bottom
+            // Fallback on earlier versions
+        }
+        
         self.view.backgroundColor = .white
         self.talkListBlock.backgroundColor = UIColor(hex: "#fff1e0")
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线

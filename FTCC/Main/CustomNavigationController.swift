@@ -84,17 +84,19 @@ class CustomNavigationController: UINavigationController, UINavigationController
             object: nil
         )
     }
+    
     @objc func updateBarStyle(){
         self.navigationBar.barStyle = .default
     }
+    
     @objc func changeSlider(_ sender: UISlider) {
         let currentValue = sender.value
         let currentTime = CMTimeMake(Int64(currentValue), 1)
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
         print("sliderValueChanged button\(currentTime)")
     }
+    
     @objc func openAudio(){
-        
         if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
             let tabItem = TabBarAudioContent.sharedInstance.item
             if let tabItem = tabItem ,let audioFileUrl = tabItem.caudio {

@@ -26,7 +26,9 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         }
     }
     
-    override var prefersStatusBarHidden : Bool {
+    // MARK: - This has to be in UInavigation too, otherwise it won't work on iPhone X
+    // Link: - https://forums.developer.apple.com/thread/88962
+    override var prefersStatusBarHidden: Bool {
         if AppLaunch.sharedInstance.fullScreenDismissed == false {
             return true
         } else {

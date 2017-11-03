@@ -19,6 +19,16 @@ class CustomNavigationController: UINavigationController, UINavigationController
         tabBarController?.tabBar.tintColor = AppNavigation.getThemeColor(for: tabName)
     }
     
+    // MARK: - This has to be here, otherwise it won't work on iPhone X
+    // Link: - https://forums.developer.apple.com/thread/88962
+    override var prefersStatusBarHidden: Bool {
+        if AppLaunch.sharedInstance.fullScreenDismissed == false {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     override var preferredStatusBarStyle : UIStatusBarStyle {
         if let currentTabName = tabName {
             isLightContent = AppNavigation.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")

@@ -72,7 +72,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
 //        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         dataArray = cellContent.mutableCopy() as! NSMutableArray
-        print("dataArray00000---\(dataArray)")
     }
     deinit {
         self.navigationController?.toolbar.isHidden = true
@@ -122,9 +121,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                     self.dataArray.remove(obj)
                 }
             }
-//            for indexPath in self.selectArray{
-//                self.infoTableView.deselectRow(at: indexPath as! IndexPath, animated: false)
-//            }
 
             self.infoTableView.deleteRows(at: indexPathToDelete, with: UITableViewRowAnimation.none)
             self.selectArray.removeAllObjects()  //需要清空对象，不然没删除完全。

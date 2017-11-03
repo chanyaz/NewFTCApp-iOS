@@ -562,6 +562,7 @@ struct FullScreenFallBack {
 
 struct ContentItemRenderContent {
     static var addPersonInfo = false
+    static var isMySubscribe = false
 }
 
 // MARK: - Validate if the HTML snippets are what we expect rather than error message from server.

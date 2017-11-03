@@ -222,10 +222,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         
 //        openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
     }
-    func backButtonPressed() {
-        print("Back pressed")
-        TabBarAudioContent.sharedInstance.isPlaying = false
-    }
+ 
     private func updateBackBarButton(for index: Int) {
         // MARK: - Set the back bar button for the popped views
         // let title = pageData[index]["title"] ?? ""

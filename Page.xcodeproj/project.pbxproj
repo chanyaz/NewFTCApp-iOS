@@ -336,6 +336,8 @@
 		F24B79971F5555FA001B62A2 /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */; };
 		F258A5B81F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
 		F258A5B91F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
+		F2592E821FAC2208000850B6 /* SubscribeTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2592E801FAC2208000850B6 /* SubscribeTimeTableViewCell.swift */; };
+		F2592E831FAC2208000850B6 /* SubscribeTimeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2592E811FAC2208000850B6 /* SubscribeTimeTableViewCell.xib */; };
 		F27D9A7F1F976FA800A95188 /* account.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7A1F976F4600A95188 /* account.html */; };
 		F27D9A801F976FAB00A95188 /* ebook.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7C1F976F4600A95188 /* ebook.html */; };
 		F27D9A821F976FB200A95188 /* html-book.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7B1F976F4600A95188 /* html-book.html */; };
@@ -628,6 +630,8 @@
 		F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPresentationAnimation.swift; path = Audio/CustomPresentationAnimation.swift; sourceTree = "<group>"; };
 		F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPresentationController.swift; path = Audio/CustomPresentationController.swift; sourceTree = "<group>"; };
 		F258A5B71F613E9A0095253A /* AudioPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayerView.swift; path = Audio/AudioPlayerView.swift; sourceTree = "<group>"; };
+		F2592E801FAC2208000850B6 /* SubscribeTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeTimeTableViewCell.swift; sourceTree = "<group>"; };
+		F2592E811FAC2208000850B6 /* SubscribeTimeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubscribeTimeTableViewCell.xib; sourceTree = "<group>"; };
 		F27D9A781F976F4600A95188 /* register.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = register.html; path = Page/FTCC/register.html; sourceTree = SOURCE_ROOT; };
 		F27D9A791F976F4600A95188 /* search.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = search.html; path = Page/FTCC/search.html; sourceTree = SOURCE_ROOT; };
 		F27D9A7A1F976F4600A95188 /* account.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = account.html; path = Page/FTCC/account.html; sourceTree = SOURCE_ROOT; };
@@ -1371,6 +1375,8 @@
 				F2251B541FA85CBC001B6236 /* PortraitTableViewCell.xib */,
 				F2201C411FA87281006EA0DE /* CollectTableViewCell.swift */,
 				F2201C421FA87281006EA0DE /* CollectTableViewCell.xib */,
+				F2592E801FAC2208000850B6 /* SubscribeTimeTableViewCell.swift */,
+				F2592E811FAC2208000850B6 /* SubscribeTimeTableViewCell.xib */,
 			);
 			name = PersonInformation;
 			path = FTCC/PersonInformation;
@@ -1607,6 +1613,7 @@
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
 				50C31B3C1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
 				F234B9531FA1C4CE00AACDAB /* my-love.html in Resources */,
+				F2592E831FAC2208000850B6 /* SubscribeTimeTableViewCell.xib in Resources */,
 				6021536F1F397C650077A7AF /* ChannelCellRegular.xib in Resources */,
 				601C418D1F99BC88002D26B2 /* search-big5.html in Resources */,
 				602153721F397C650077A7AF /* AdCellRegular.xib in Resources */,
@@ -1904,6 +1911,7 @@
 				F2E090711F5A6A3900F4409F /* CollectInfoController.swift in Sources */,
 				602153461F397C650077A7AF /* AdModel.swift in Sources */,
 				602153471F397C650077A7AF /* AsyncTextAttachment.swift in Sources */,
+				F2592E821FAC2208000850B6 /* SubscribeTimeTableViewCell.swift in Sources */,
 				602153491F397C650077A7AF /* NowPlayingCenter.swift in Sources */,
 				F2E090821F5A736E00F4409F /* CustomPresentController.swift in Sources */,
 				F2201C431FA87281006EA0DE /* CollectTableViewCell.swift in Sources */,

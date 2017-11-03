@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的收藏" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fdu-mL-FVo">
-                        <rect key="frame" x="118" y="11" width="69.5" height="21"/>
+                        <rect key="frame" x="120" y="11" width="69.5" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -32,7 +32,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="Fdu-mL-FVo" firstAttribute="centerY" secondItem="A1v-ci-xn6" secondAttribute="centerY" id="H9I-vP-HxI"/>
-                    <constraint firstItem="Fdu-mL-FVo" firstAttribute="leading" secondItem="A1v-ci-xn6" secondAttribute="trailing" constant="38" id="Pe6-B3-gtZ"/>
+                    <constraint firstItem="Fdu-mL-FVo" firstAttribute="leading" secondItem="A1v-ci-xn6" secondAttribute="trailing" constant="40" id="Pe6-B3-gtZ"/>
                     <constraint firstItem="A1v-ci-xn6" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rn1-ok-rdQ"/>
                     <constraint firstItem="A1v-ci-xn6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="60" id="vpS-vr-2Qs"/>
                 </constraints>

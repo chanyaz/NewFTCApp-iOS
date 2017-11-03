@@ -101,15 +101,24 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section==1{
             if indexPath.row == 0{
-                openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
                 ContentItemRenderContent.isMySubscribe = true
+                if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
+                    navigationController?.pushViewController(chatViewController, animated: true)
+                    
+                }
+                
             }else if indexPath.row == 1{
+                ContentItemRenderContent.isMySubscribe = false
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
                     navigationController?.pushViewController(chatViewController, animated: true)
                     
                 }
             }else if indexPath.row == 2{
-                openHTMLInBundle("register", title: "注册", isFullScreen: false, hidesBottomBar: true)
+                ContentItemRenderContent.isMySubscribe = false
+                if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
+                    navigationController?.pushViewController(chatViewController, animated: true)
+                    
+                }
             }else if indexPath.row == 3{
                 if let settingsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
                     let topController = UIApplication.topViewController() {

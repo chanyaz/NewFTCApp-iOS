@@ -25,6 +25,10 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     let cellContent: NSArray = ["谁能预测未来样子1", "谁能预测未来样子2", "谁能预测未来样子3","随谁能预测未来样子4","谁能预测未来样子5"]
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.infoTableView.frame = CGRect(x:0, y: 0, width: screenWidth, height: screenHeight)
+        self.infoTableView.delegate = self
+        self.infoTableView.dataSource = self
+        
         if ContentItemRenderContent.isMySubscribe == false{
             self.allSelect.frame = CGRect(x: 0, y: -buttonHeight, width: screenWidth/2, height:90)
             self.allSelect.setTitle("全选", for: .normal)
@@ -38,9 +42,8 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
             self.delete.setTitleColor(UIColor.black, for: .normal)
             self.view.addSubview(delete)
             delete.addTarget(self, action: #selector(deleteAction), for: .touchUpInside)
-            self.infoTableView.frame = CGRect(x:0, y: 0, width: screenWidth, height: screenHeight)
-            self.infoTableView.delegate = self
-            self.infoTableView.dataSource = self
+            
+
             self.infoTableView.register(UINib.init(nibName: "CollectTableViewCell", bundle: nil), forCellReuseIdentifier: "CollectTableViewCell")
             self.view.addSubview(infoTableView)
             let editButton = UIButton()
@@ -73,10 +76,11 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
             
             dataArray = cellContent.mutableCopy() as! NSMutableArray
         }else{
-            ContentItemRenderContent.isMySubscribe = false
+            
             self.infoTableView.register(UINib.init(nibName: "SubscribeTimeTableViewCell", bundle: nil), forCellReuseIdentifier: "SubscribeTimeTableViewCell")
             self.infoTableView.register(UINib.init(nibName: "PersonInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "PersonInfoTableViewCell")
             self.view.addSubview(infoTableView)
+//            ContentItemRenderContent.isMySubscribe = false
         }
 
     }
@@ -171,7 +175,11 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dataArray.count
+        if ContentItemRenderContent.isMySubscribe == false{
+            return self.dataArray.count
+        }else{
+            return 3
+        }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if ContentItemRenderContent.isMySubscribe == false{
@@ -192,7 +200,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         }else{
             if indexPath.row == 0{
                 openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
-                ContentItemRenderContent.isMySubscribe = true
+//                ContentItemRenderContent.isMySubscribe = true
             }else if indexPath.row == 1{
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
                     navigationController?.pushViewController(chatViewController, animated: true)
@@ -219,7 +227,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
             return cell
         }else{
             if indexPath.row == 1{
-                let cellItem = tableView.dequeueReusableCell(withIdentifier: "PortraitTableViewCell") as! PortraitTableViewCell
+                let cellItem = tableView.dequeueReusableCell(withIdentifier: "SubscribeTimeTableViewCell") as! SubscribeTimeTableViewCell
                 
                 return cellItem
                 

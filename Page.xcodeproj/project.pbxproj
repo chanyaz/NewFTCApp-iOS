@@ -346,6 +346,7 @@
 		F27D9A871F976FBE00A95188 /* story.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7E1F976F4600A95188 /* story.html */; };
 		F289C79B1FA0CF450081A675 /* person-information.html in Resources */ = {isa = PBXBuildFile; fileRef = F23455511FA09F5F001C1AE8 /* person-information.html */; };
 		F289C79C1FA0CF480081A675 /* person-information-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = F23455521FA09F5F001C1AE8 /* person-information-big5.html */; };
+		F2960B151FAC74860055DF23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB831C61FAC353B001531E0 /* AppDelegate.swift */; };
 		F29E19AF1F39A2BC00FAA8C0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AA1F39A2BC00FAA8C0 /* close.png */; };
 		F29E19B01F39A2BC00FAA8C0 /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AB1F39A2BC00FAA8C0 /* cover.jpg */; };
 		F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AC1F39A2BC00FAA8C0 /* mute.png */; };
@@ -1873,6 +1874,7 @@
 				602153291F397C650077A7AF /* ArticleStyle.swift in Sources */,
 				6021532B1F397C650077A7AF /* ChatViewController.swift in Sources */,
 				602153B51F399E9A0077A7AF /* CustomNavigationController.swift in Sources */,
+				F2960B151FAC74860055DF23 /* AppDelegate.swift in Sources */,
 				60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */,
 				6021532C1F397C650077A7AF /* AudioPlayer.swift in Sources */,
 				F2E090761F5A6A3900F4409F /* PersonInfoViewController.swift in Sources */,

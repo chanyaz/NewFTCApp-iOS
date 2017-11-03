@@ -102,6 +102,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
         if indexPath.section==1{
             if indexPath.row == 0{
                 openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
+                ContentItemRenderContent.isMySubscribe = true
             }else if indexPath.row == 1{
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
                     navigationController?.pushViewController(chatViewController, animated: true)

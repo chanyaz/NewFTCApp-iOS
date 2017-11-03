@@ -285,7 +285,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         return true
     }
     
-    
+    /*
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
        
     }
@@ -313,12 +313,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func scrollViewDidEndScrolling(_ scrollView: UIScrollView) {
         self.isScrolling = false
     }
+     */
   
     @objc func keyboardWillShow(_ notification: NSNotification) {
         //MARK:键盘显示时滚动到talk list view滚动到底部
-         //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
-         //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-            self.tableViewScrollToBottom(animated: true)
+            self.tableViewScrollToBottom(animated: false)
             print("show:\(keyboardWillShowExecute)")
             keyboardWillShowExecute += 1
             if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
@@ -553,10 +552,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     //FIXME:要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部。此外，还需要增加调用self.modifyTheOffset来调整，但是这样会使滚动不连贯.
     func tableViewScrollToBottom(animated:Bool) {
-        //self.talkListBlock.setContentOffset(CGPoint(x: 0, y: CGFloat.greatestFiniteMagnitude), animated: animated)
         self.modifiyTheOffset(animated: animated)
 
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
                 self.modifiyTheOffset(animated: animated)
                 let showingCellDataCount = self.showingCellData.count
@@ -602,7 +599,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.mySwipeGesture.delegate = self
         self.myPanGesture.delegate = self
         //elf.myPanGesture.require(toFail: self.talkListBlock.panGestureRecognizer)
-
+        
+        /*
+        if #available(iOS 11.0, *) {
+            self.additionalSafeAreaInsets = UIEdgeInsetsMake(1, 0, 1, 0)
+        } else {
+            self.edgesForExtendedLayout = .bottom
+            self.edgesForExtendedLayout = .top
+            // Fallback on earlier versions
+        }
+         */
+        //self.automaticallyAdjustsScrollViewInsets = false
+        
         self.view.backgroundColor = .white
         self.talkListBlock.backgroundColor = UIColor(hex: "#fff1e0")
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线

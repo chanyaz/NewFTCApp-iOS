@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         UIApplication.shared.applicationIconBadgeNumber = 0
-        
+        Track.event(category: "\(DeviceInfo.checkDeviceType()) App", action: "Launch", label: Bundle.main.bundleIdentifier ?? "")
 
         
         // MARK: - Get current language preference

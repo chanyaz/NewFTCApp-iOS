@@ -7,11 +7,12 @@
 //
 
 import Foundation
-class ContentItemViewController: SuperContentItemViewController, UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate {
+class ContentItemViewController: SuperContentItemViewController, UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate ,UIGestureRecognizerDelegate {
     let picker = UIImagePickerController()
     let infoLabel = UILabel()
     let infoTableView = UITableView()
     var  chosenImage = UIImage()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
@@ -27,12 +28,64 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
             self.infoTableView.register(UINib.init(nibName: "PortraitTableViewCell", bundle: nil), forCellReuseIdentifier: "PortraitTableViewCell")
             self.view.addSubview(infoTableView)
             ContentItemRenderContent.addPersonInfo = false
+            let customNavigation = self.navigationController as? CustomNavigationController
+            if  let tabAudioView = customNavigation?.tabView{
+                let deltaY = tabAudioView.bounds.height
+                UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    tabAudioView.transform = CGAffineTransform(translationX: 0,y: deltaY)
+                    tabAudioView.setNeedsUpdateConstraints()
+                }, completion: { (true) in
+                    
+                })
+            }
         }
+   
+        let swipeGestureRecognizerDown = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
+        swipeGestureRecognizerDown.direction = .down
+        swipeGestureRecognizerDown.delegate = self
+        webView?.addGestureRecognizer(swipeGestureRecognizerDown)
+        
+        let swipeGestureRecognizerUp = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
+        swipeGestureRecognizerUp.direction = .up
+        swipeGestureRecognizerUp.delegate = self
+        webView?.addGestureRecognizer(swipeGestureRecognizerUp)
 
     }
     override func viewDidAppear(_ animated: Bool) {
         print("view viewDidAppear")
     }
+    @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    @objc func isHideAudio(sender: UISwipeGestureRecognizer){
+        if sender.direction == .up{
+            print("up hide audio")
+            let customNavigation = self.navigationController as? CustomNavigationController
+//            customNavigation?.tabView.isHidden = true
+            if  let tabAudioView = customNavigation?.tabView{
+                let deltaY = tabAudioView.bounds.height
+                UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    tabAudioView.transform = CGAffineTransform(translationX: 0,y: deltaY)
+                    tabAudioView.setNeedsUpdateConstraints()
+                }, completion: { (true) in
+                    
+                })
+            }
+
+        }else if sender.direction == .down{
+            print("down show audio")
+            let customNavigation = self.navigationController as? CustomNavigationController
+            if  let tabAudioView = customNavigation?.tabView{
+                UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    tabAudioView.transform = CGAffineTransform.identity
+                    tabAudioView.setNeedsUpdateConstraints()
+                }, completion: { (true) in
+                    
+                })
+            }
+        }
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -123,7 +176,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
                 cell.portraitImageView.setImage(chosenImage, for: .normal)
             }
         }
-        dismiss(animated:true, completion: nil) //5  （不加词句，当选择完图片后，不会关闭相册）
+        dismiss(animated:true, completion: nil) //  （不加词句，当选择完图片后，不会关闭相册）
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)

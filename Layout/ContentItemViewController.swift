@@ -94,7 +94,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
         if section == 0{
             return 1
         }else{
-            return 4
+            return 3
         }
         
     }
@@ -102,24 +102,17 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
         if indexPath.section==1{
             if indexPath.row == 0{
                 ContentItemRenderContent.isMySubscribe = true
-                if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
-                    navigationController?.pushViewController(chatViewController, animated: true)
+                if let mySubscribeViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MySubscribeViewController") as? MySubscribeViewController {
+                    navigationController?.pushViewController(mySubscribeViewController, animated: true)
                     
                 }
                 
             }else if indexPath.row == 1{
-                ContentItemRenderContent.isMySubscribe = false
-                if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
-                    navigationController?.pushViewController(chatViewController, animated: true)
+                if let collectInfoController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
+                    navigationController?.pushViewController(collectInfoController, animated: true)
                     
                 }
             }else if indexPath.row == 2{
-                ContentItemRenderContent.isMySubscribe = false
-                if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
-                    navigationController?.pushViewController(chatViewController, animated: true)
-                    
-                }
-            }else if indexPath.row == 3{
                 if let settingsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
                     let topController = UIApplication.topViewController() {
                     

@@ -324,7 +324,7 @@ class ContentFetch {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.4
         let setStr = NSMutableAttributedString.init(string: lead)
-        setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (lead.characters.count)))
+        setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (lead.count)))
         return setStr
     }
     

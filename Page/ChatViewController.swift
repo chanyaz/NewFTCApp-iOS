@@ -488,7 +488,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         var triggerGreet: String? = nil
         if let userIdFromUserDefaultReal = userIdFromUserDefault {
             let userIdStr = userIdFromUserDefaultReal as? String
-            if let userIdStrReal = userIdStr, userIdStrReal.characters.count == 32  {
+            if let userIdStrReal = userIdStr, userIdStrReal.count == 32  {
                 iceUserId = userIdStrReal
                 triggerGreet = ChatViewModel.triggerGreetForOldUser
             }

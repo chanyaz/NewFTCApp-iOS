@@ -229,6 +229,8 @@
 		605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */; };
 		605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F81F1499F000552DAC /* UIImage+Attachments.swift */; };
 		605750FB1F15B06700552DAC /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750FA1F15B06700552DAC /* AdView.swift */; };
+		606FD1491FB003540087AE75 /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD1471FB003530087AE75 /* help.html */; };
+		606FD14A1FB003540087AE75 /* help-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD1481FB003540087AE75 /* help-big5.html */; };
 		607094AD1EE9436900760A60 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AC1EE9436900760A60 /* Tabs.swift */; };
 		607094AF1EE943A900760A60 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AE1EE943A900760A60 /* Channels.swift */; };
 		6072F9F31F57ED280035AD92 /* IAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6072F9F21F57ED280035AD92 /* IAP.swift */; };
@@ -534,6 +536,8 @@
 		605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutManager+Attachments.swift"; sourceTree = "<group>"; };
 		605750F81F1499F000552DAC /* UIImage+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Attachments.swift"; sourceTree = "<group>"; };
 		605750FA1F15B06700552DAC /* AdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
+		606FD1471FB003530087AE75 /* help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = help.html; path = FTChinese/help.html; sourceTree = "<group>"; };
+		606FD1481FB003540087AE75 /* help-big5.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "help-big5.html"; path = "FTChinese/help-big5.html"; sourceTree = "<group>"; };
 		607094AC1EE9436900760A60 /* Tabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		607094AE1EE943A900760A60 /* Channels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
 		6072F9F21F57ED280035AD92 /* IAP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAP.swift; sourceTree = "<group>"; };
@@ -793,6 +797,7 @@
 				600C0D011F5CE7B800226F84 /* ebook.html */,
 				601AC21A1F4870780004196A /* search.html */,
 				60335DE11F7F16010002173B /* html-book.html */,
+				606FD1471FB003530087AE75 /* help.html */,
 				601C41791F99BAC3002D26B2 /* account-big5.html */,
 				601C41751F99BAC2002D26B2 /* ebook-big5.html */,
 				601C41781F99BAC3002D26B2 /* html-book-big5.html */,
@@ -800,6 +805,7 @@
 				601C41741F99BAC2002D26B2 /* register-big5.html */,
 				601C41761F99BAC2002D26B2 /* search-big5.html */,
 				601C41731F99BAC1002D26B2 /* story-big5.html */,
+				606FD1481FB003540087AE75 /* help-big5.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -1667,6 +1673,7 @@
 				6087E3D71EF212960034A92F /* ad.html in Resources */,
 				6017AAE91F879D63008D3FBF /* SmoothCoverCell.xib in Resources */,
 				600C0D021F5CE7B800226F84 /* ebook.html in Resources */,
+				606FD14A1FB003540087AE75 /* help-big5.html in Resources */,
 				60F3D14D1F7A5B9900D115FC /* IconCell.xib in Resources */,
 				6021538B1F3990880077A7AF /* Main.storyboard in Resources */,
 				601C41821F99BC2B002D26B2 /* ebook-big5.html in Resources */,
@@ -1679,6 +1686,7 @@
 				AF64F57B1F582A1700AFAFFC /* Assets.xcassets in Resources */,
 				60C558721F29B786004C4E0E /* schedule.json in Resources */,
 				60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */,
+				606FD1491FB003540087AE75 /* help.html in Resources */,
 				601C41811F99BC28002D26B2 /* account-big5.html in Resources */,
 				AF657A5E1F3AE97E00E2EABA /* landscape.jpeg in Resources */,
 				608502581F8B61C300C333A2 /* list.html in Resources */,

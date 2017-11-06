@@ -403,10 +403,10 @@ struct personInfo {
             "imageName":"MySubscribe",
             "tagName":"我的订阅"
         ],
-        [
-            "imageName":"MyDownload",
-            "tagName":"我的下载"
-        ],
+//        [
+//            "imageName":"MyDownload",
+//            "tagName":"我的下载"
+//        ],
         [
             "imageName":"MyLove",
             "tagName":"我的收藏"

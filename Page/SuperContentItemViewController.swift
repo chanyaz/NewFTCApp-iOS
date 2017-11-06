@@ -676,7 +676,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                                 .replacingOccurrences(of: "{ad-mpu}", with: adMPU)
                                 .replacingOccurrences(of: "{font-class}", with: fontClass)
                                 .replacingOccurrences(of: "{comments-id}", with: commentsId)
-                            
+                            print(storyHTML)
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             self.webView?.load(request)

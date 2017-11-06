@@ -285,7 +285,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         return true
     }
     
-    /*
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
        
     }
@@ -313,11 +313,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func scrollViewDidEndScrolling(_ scrollView: UIScrollView) {
         self.isScrolling = false
     }
-     */
+     
   
     @objc func keyboardWillShow(_ notification: NSNotification) {
         //MARK:键盘显示时滚动到talk list view滚动到底部
             self.tableViewScrollToBottom(animated: false)
+            //self.modifiyTheOffset(animated: false)
             print("show:\(keyboardWillShowExecute)")
             keyboardWillShowExecute += 1
             if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{

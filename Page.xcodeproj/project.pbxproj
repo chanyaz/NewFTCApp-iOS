@@ -257,6 +257,7 @@
 		60986A481F1CAC5300583157 /* ShareHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A431F1CAC5300583157 /* ShareHelper.swift */; };
 		60986A491F1CAC5300583157 /* ShareImageActivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A441F1CAC5300583157 /* ShareImageActivityProvider.swift */; };
 		60986A4A1F1CAC5300583157 /* WeChatShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60986A451F1CAC5300583157 /* WeChatShare.swift */; };
+		60AAE0AD1FAFEBEB00E5AD20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB831C61FAC353B001531E0 /* AppDelegate.swift */; };
 		60B855481F6A118600FE190E /* VideoCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B855461F6A118600FE190E /* VideoCoverCell.swift */; };
 		60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B855461F6A118600FE190E /* VideoCoverCell.swift */; };
 		60B8554A1F6A118600FE190E /* VideoCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B855471F6A118600FE190E /* VideoCoverCell.xib */; };
@@ -287,7 +288,6 @@
 		60F1A52C1F5E98DE0007F9F3 /* IAPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */; };
 		60F1A52E1F5EAD0D0007F9F3 /* IAPs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */; };
 		60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1A52D1F5EAD0D0007F9F3 /* IAPs.swift */; };
-		60F2696A1FAC739F0072EFA8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB831C61FAC353B001531E0 /* AppDelegate.swift */; };
 		60F3D1471F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */; };
 		60F3D1481F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F3D1441F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib */; };
 		60F3D14B1F7A5B9900D115FC /* IconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F3D1491F7A5B9900D115FC /* IconCell.swift */; };
@@ -328,6 +328,10 @@
 		F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */; };
 		F234EC741F15D1DB003F6DD0 /* HotArticleCellRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */; };
 		F23BF9F01F170E090052FDB4 /* PageCollectionViewLayoutH.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */; };
+		F241183B1FAEA90500EE50EB /* SubscribeInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F241183A1FAEA90500EE50EB /* SubscribeInstructionViewController.swift */; };
+		F241183D1FAEA99600EE50EB /* SubscribeManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F241183C1FAEA99600EE50EB /* SubscribeManageViewController.swift */; };
+		F241183F1FAEAA4C00EE50EB /* SubscribeSchemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F241183E1FAEAA4C00EE50EB /* SubscribeSchemeViewController.swift */; };
+		F24118411FAEF23900EE50EB /* MySubscribeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24118401FAEF23900EE50EB /* MySubscribeViewController.swift */; };
 		F24B79921F5555FA001B62A2 /* AudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B798F1F5555FA001B62A2 /* AudioPlayerController.swift */; };
 		F24B79931F5555FA001B62A2 /* AudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B798F1F5555FA001B62A2 /* AudioPlayerController.swift */; };
 		F24B79941F5555FA001B62A2 /* CustomPresentationAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */; };
@@ -362,7 +366,6 @@
 		F2E0906F1F5A6A3900F4409F /* ColumnMyListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2E090611F5A6A3900F4409F /* ColumnMyListCell.xib */; };
 		F2E090701F5A6A3900F4409F /* ColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090621F5A6A3900F4409F /* ColumnViewController.swift */; };
 		F2E090711F5A6A3900F4409F /* CollectInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090641F5A6A3900F4409F /* CollectInfoController.swift */; };
-		F2E090761F5A6A3900F4409F /* PersonInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */; };
 		F2E090791F5A721E00F4409F /* CustomTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090771F5A721E00F4409F /* CustomTab.swift */; };
 		F2E0907A1F5A721E00F4409F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E090781F5A721E00F4409F /* CustomTabBarController.swift */; };
 		F2E090811F5A736E00F4409F /* CustomAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E0907D1F5A736E00F4409F /* CustomAnimation.swift */; };
@@ -626,6 +629,10 @@
 		F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotArticleCellRegular.swift; sourceTree = "<group>"; };
 		F234EC721F15D1DB003F6DD0 /* HotArticleCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotArticleCellRegular.xib; sourceTree = "<group>"; };
 		F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCollectionViewLayoutH.swift; sourceTree = "<group>"; };
+		F241183A1FAEA90500EE50EB /* SubscribeInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeInstructionViewController.swift; sourceTree = "<group>"; };
+		F241183C1FAEA99600EE50EB /* SubscribeManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeManageViewController.swift; sourceTree = "<group>"; };
+		F241183E1FAEAA4C00EE50EB /* SubscribeSchemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeSchemeViewController.swift; sourceTree = "<group>"; };
+		F24118401FAEF23900EE50EB /* MySubscribeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySubscribeViewController.swift; sourceTree = "<group>"; };
 		F24B798F1F5555FA001B62A2 /* AudioPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayerController.swift; path = Audio/AudioPlayerController.swift; sourceTree = "<group>"; };
 		F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPresentationAnimation.swift; path = Audio/CustomPresentationAnimation.swift; sourceTree = "<group>"; };
 		F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPresentationController.swift; path = Audio/CustomPresentationController.swift; sourceTree = "<group>"; };
@@ -654,7 +661,6 @@
 		F2E090611F5A6A3900F4409F /* ColumnMyListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColumnMyListCell.xib; sourceTree = "<group>"; };
 		F2E090621F5A6A3900F4409F /* ColumnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnViewController.swift; sourceTree = "<group>"; };
 		F2E090641F5A6A3900F4409F /* CollectInfoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectInfoController.swift; sourceTree = "<group>"; };
-		F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInfoViewController.swift; sourceTree = "<group>"; };
 		F2E090771F5A721E00F4409F /* CustomTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTab.swift; path = FTCC/CustomTab.swift; sourceTree = "<group>"; };
 		F2E090781F5A721E00F4409F /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTabBarController.swift; path = FTCC/CustomTabBarController.swift; sourceTree = "<group>"; };
 		F2E0907D1F5A736E00F4409F /* CustomAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimation.swift; sourceTree = "<group>"; };
@@ -1368,7 +1374,10 @@
 			isa = PBXGroup;
 			children = (
 				F2E090641F5A6A3900F4409F /* CollectInfoController.swift */,
-				F2E090691F5A6A3900F4409F /* PersonInfoViewController.swift */,
+				F24118401FAEF23900EE50EB /* MySubscribeViewController.swift */,
+				F241183C1FAEA99600EE50EB /* SubscribeManageViewController.swift */,
+				F241183A1FAEA90500EE50EB /* SubscribeInstructionViewController.swift */,
+				F241183E1FAEAA4C00EE50EB /* SubscribeSchemeViewController.swift */,
 				F2251B4F1FA84F16001B6236 /* PersonInfoTableViewCell.swift */,
 				F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */,
 				F2251B531FA85CBC001B6236 /* PortraitTableViewCell.swift */,
@@ -1861,6 +1870,7 @@
 				60814F611F580FB200041801 /* BookCell.swift in Sources */,
 				6021531E1F397C650077A7AF /* PageCollectionViewLayoutV.swift in Sources */,
 				6021531F1F397C650077A7AF /* Tabs.swift in Sources */,
+				F241183D1FAEA99600EE50EB /* SubscribeManageViewController.swift in Sources */,
 				602153201F397C650077A7AF /* ShareHelper.swift in Sources */,
 				6094DD721FA1612300AAD736 /* Ads.swift in Sources */,
 				602153231F397C650077A7AF /* PaddingLabel.swift in Sources */,
@@ -1874,10 +1884,9 @@
 				602153291F397C650077A7AF /* ArticleStyle.swift in Sources */,
 				6021532B1F397C650077A7AF /* ChatViewController.swift in Sources */,
 				602153B51F399E9A0077A7AF /* CustomNavigationController.swift in Sources */,
-				60F2696A1FAC739F0072EFA8 /* AppDelegate.swift in Sources */,
 				60F1A52F1F5EAD0D0007F9F3 /* IAPs.swift in Sources */,
+				60AAE0AD1FAFEBEB00E5AD20 /* AppDelegate.swift in Sources */,
 				6021532C1F397C650077A7AF /* AudioPlayer.swift in Sources */,
-				F2E090761F5A6A3900F4409F /* PersonInfoViewController.swift in Sources */,
 				6021532D1F397C650077A7AF /* OpenInSafari.swift in Sources */,
 				6021532E1F397C650077A7AF /* ChatViewModel.swift in Sources */,
 				6021532F1F397C650077A7AF /* SpeechDefaultVoice.swift in Sources */,
@@ -1919,6 +1928,7 @@
 				6021534B1F397C650077A7AF /* AudioHelper.swift in Sources */,
 				6021534C1F397C650077A7AF /* Model.xcdatamodeld in Sources */,
 				F2E090701F5A6A3900F4409F /* ColumnViewController.swift in Sources */,
+				F241183F1FAEAA4C00EE50EB /* SubscribeSchemeViewController.swift in Sources */,
 				6021534E1F397C650077A7AF /* ShareImageActivityProvider.swift in Sources */,
 				F2E0906D1F5A6A3900F4409F /* ColumnCollectionViewCell.swift in Sources */,
 				6021534F1F397C650077A7AF /* DownloadHelper.swift in Sources */,
@@ -1948,6 +1958,7 @@
 				F2E0906C1F5A6A3900F4409F /* ColumnAllListViewController.swift in Sources */,
 				602153581F397C650077A7AF /* AdSchedule.swift in Sources */,
 				600C0D051F5D582500226F84 /* AudioPlayerHelper.swift in Sources */,
+				F241183B1FAEA90500EE50EB /* SubscribeInstructionViewController.swift in Sources */,
 				602153591F397C650077A7AF /* Impressions.swift in Sources */,
 				6021535A1F397C650077A7AF /* HeadlineCell.swift in Sources */,
 				6021535B1F397C650077A7AF /* UITextViewFixed.swift in Sources */,
@@ -1959,6 +1970,7 @@
 				F2218ABB1F7BB809001A7342 /* CustomSmallPlayView.swift in Sources */,
 				6021535E1F397C650077A7AF /* Download.swift in Sources */,
 				6021535F1F397C650077A7AF /* DetailViewController.swift in Sources */,
+				F24118411FAEF23900EE50EB /* MySubscribeViewController.swift in Sources */,
 				F2251B511FA84F16001B6236 /* PersonInfoTableViewCell.swift in Sources */,
 				F24B79931F5555FA001B62A2 /* AudioPlayerController.swift in Sources */,
 			);

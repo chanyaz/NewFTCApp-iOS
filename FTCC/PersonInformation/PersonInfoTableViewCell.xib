@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,21 +21,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的收藏" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fdu-mL-FVo">
-                        <rect key="frame" x="120" y="11" width="69.5" height="21"/>
+                        <rect key="frame" x="128" y="11" width="69.5" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A1v-ci-xn6">
-                        <rect key="frame" x="60" y="10" width="20" height="22"/>
+                        <rect key="frame" x="68" y="10" width="20" height="22"/>
                         <state key="normal" image="MyLove"/>
                     </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="A1v-ci-xn6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="60" id="1Op-ex-ICT"/>
                     <constraint firstItem="Fdu-mL-FVo" firstAttribute="centerY" secondItem="A1v-ci-xn6" secondAttribute="centerY" id="H9I-vP-HxI"/>
                     <constraint firstItem="Fdu-mL-FVo" firstAttribute="leading" secondItem="A1v-ci-xn6" secondAttribute="trailing" constant="40" id="Pe6-B3-gtZ"/>
                     <constraint firstItem="A1v-ci-xn6" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rn1-ok-rdQ"/>
-                    <constraint firstItem="A1v-ci-xn6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="60" id="vpS-vr-2Qs"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

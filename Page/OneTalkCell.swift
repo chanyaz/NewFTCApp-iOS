@@ -17,7 +17,8 @@ class OneTalkCell: UITableViewCell {
     var coverView = UIImageView()
     var cellData = CellData()
     
-    
+    var coverWidth:CGFloat = 0.0
+    var coverHeight:CGFloat = 0.0
     var cardUrl = ""
     
     // MARK: 重写Frame
@@ -83,8 +84,8 @@ class OneTalkCell: UITableViewCell {
     }
     
     //MARK:异步加载image：
-    private func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
-        let optimizedUrl = self.optimizedImageURL(imageUrl, width: 240, height: 135)
+    private func asyncBuildImage(url imageUrl: String, width imageWidth:CGFloat,  height imageHeight:CGFloat, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
+        let optimizedUrl = self.optimizedImageURL(imageUrl, width: Int(imageWidth) , height: Int(imageHeight))
         //print("ImageUrl:\(imageUrl)")
         //print("OptimizedUrl:\(String(describing: optimizedUrl))")
         if let imgUrl = optimizedUrl {
@@ -154,7 +155,7 @@ class OneTalkCell: UITableViewCell {
                 }
             } else { //MARK:可能性3：从URL请求加载
                 //print("Ice Load image from request")
-                self.asyncBuildImage(url: imageUrl, completion: { downloadedImg in
+                self.asyncBuildImage(url: imageUrl, width: self.coverWidth, height: self.coverHeight, completion: { downloadedImg in
                     if let realImage = downloadedImg {
                         DispatchQueue.main.async {
                             UIView.transition(with: self.coverView,
@@ -282,6 +283,8 @@ class OneTalkCell: UITableViewCell {
         let imageHeight = maxTextWidth / 16 * 9
         let coverWidth = maxTextWidth
         let coverHeight = maxTextWidth / 16 * 9
+        self.coverWidth = coverWidth
+        self.coverHeight = coverHeight
         
         //默认是按照maxBubbleImage来，text类型需要重新计算bubbleImageWidth
         let bubbleImageY:CGFloat
@@ -421,9 +424,9 @@ class OneTalkCell: UITableViewCell {
             self.addSubview(titleView)
             
             /// coverView:
-            self.coverView = UIImageView(frame: CGRect(x:saysWhatX, y:coverY,width:coverWidth,height:coverHeight))
+            coverView = UIImageView(frame: CGRect(x:saysWhatX, y:coverY,width:coverWidth,height:coverHeight))
             coverView.backgroundColor = UIColor(hex: "#f7e9d8")
-
+            coverView.image = UIImage(named: "imageDefault.jpeg")
             coverView.contentMode = .scaleToFill
             
       

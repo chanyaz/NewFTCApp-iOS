@@ -221,7 +221,7 @@ class OneTalkCell: UITableViewCell {
     private func buildTheCell() {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         
-        let whoSays = self.cellData.whoSays
+        
         self.backgroundColor = UIColor(hex: "#fff1e0")
 
         let cellFrameWidth: CGFloat
@@ -239,6 +239,7 @@ class OneTalkCell: UITableViewCell {
             self.cellData.cellFrameMinY = cellFrameMinY
         }
         // 显示头像
+        let whoSays = self.cellData.whoSays
         if(self.cellData.headImage != "") {
             let headImageViewX:CGFloat
             let headImageViewY:CGFloat
@@ -277,7 +278,7 @@ class OneTalkCell: UITableViewCell {
             maxBubbleImageWidth = cellFrameWidth - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
             self.cellData.maxBubbleImageWidth = maxBubbleImageWidth
         }
-        //let maxBubbleImageWidth = self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
+
         let maxTextWidth = maxBubbleImageWidth - self.cellData.bubbleImageInsets.left - self.cellData.bubbleImageInsets.right
         let imageWidth = maxTextWidth
         let imageHeight = maxTextWidth / 16 * 9
@@ -298,30 +299,9 @@ class OneTalkCell: UITableViewCell {
         
         let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
         
+    
         
-        
-        // 显示对话气泡背景
-        /*
-        if self.cellData.bubbleImage != "" {
-            let bubbleImageName = self.cellData.bubbleImage
-            let bubbleImage = UIImage(named: bubbleImageName)
-
-            
-            if let realBubbleImage = bubbleImage {
-                let bubbleImageStreched = realBubbleImage.resizableImage(withCapInsets: self.cellData.bubbleStrechInsets, resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
-                
-                self.bubbleImageView = UIImageView(image: bubbleImageStreched)
-                //self.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight) // NOTE:任何一个View都要先初始化再设置属性
-                self.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: maxBubbleImageWidth, height: self.cellData.bubbleImageHeight) // NOTE:任何一个View都要先初始化再设置属性
-                self.addSubview(self.bubbleImageView)
-  
-
-            }
-            
-        }
-        */
-        
-        // 显示对话内容 // NOTE:内容在bubble上方才能不被bubble遮挡
+        // 显示对话内容
         if self.cellData.saysType == .text {
             //Step1:动态计算文字宽、高
             let atts = [NSAttributedStringKey.font: self.cellData.normalFont]
@@ -406,7 +386,9 @@ class OneTalkCell: UITableViewCell {
             /// bubbleView:
             let bubbleImageWidth = maxBubbleImageWidth
             let bubbleImageHeight = titleHeight + coverHeight + descriptionHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
-             self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
+       
+            
+            self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
             let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : cellFrameWidth - self.cellData.headImageWithInsets - bubbleImageWidth
             
             // Step2:依次添加这几个View

@@ -474,11 +474,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let currentRow = indexPath.row
         //let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
         let cellData = self.showingCellData[currentRow]
+        
         if cellData.isHistoryCutline {
             return cellData.cutlineCellHeight
-        }else {
-            return max(cellData.cellHeightByHeadImage, cellData.cellHeightByBubble)
+        } else {
+            return cellData.talkCellHeight
         }
+        
     }
     
    
@@ -600,20 +602,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     //FIXME:要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部。此外，还需要增加调用self.modifyTheOffset来调整，但是这样会使滚动不连贯.
     func tableViewScrollToBottom(animated:Bool) {
         self.modifiyTheOffset(animated: animated)
-
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
                 self.modifiyTheOffset(animated: animated)
                 let showingCellDataCount = self.showingCellData.count
                 if showingCellDataCount > 0 {
                     let indexPath = IndexPath(row: showingCellDataCount-1, section: 0)
-                    self.talkListBlock.scrollToRow(at: indexPath, at: .bottom, animated: animated)
+                    self.talkListBlock.scrollToRow(at: indexPath, at: .top, animated: animated)
                     
                     print("scroll1")
                     self.talkListBlock.layoutIfNeeded();
                 }
  
         }
-     
+        
         
     }
     
@@ -724,6 +726,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let iceUserId = iceUserInfo.iceUserId
         print("ice userinfo iceUserId:\(iceUserId)")
         print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
+        
         self.createTalkRequest(myInputText: triggerGreetContent, completion: { talkData in
             if let oneTalkData = talkData {
                 self.showingData.append(oneTalkData)
@@ -741,7 +744,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 })
             }
         })
-     
+        
         
         
     }

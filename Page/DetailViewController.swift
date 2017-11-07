@@ -42,15 +42,47 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBAction func save(_ sender: Any) {
         let item = contentPageData[currentPageIndex]
+        let action: String
         if isSaved == false {
-            Download.save(item, to: "clip", uplimit: 50, action: "save")
             isSaved = true
             saveButton.image = UIImage(named: "Delete")
+            action = "save"
         } else {
-            Download.save(item, to: "clip", uplimit: 50, action: "delete")
             isSaved = false
             saveButton.image = UIImage(named: "Clip")
+            action = "delete"
         }
+        Download.save(item, to: "clip", uplimit: 50, action: action)
+        // MARK: Sync to the server
+        if let viewControllers = pageViewController?.viewControllers {
+            for viewController in viewControllers {
+                if let currentContentItemView = viewController as? ContentItemViewController,
+                    currentContentItemView.dataObject?.id == item.id,
+                    let jsCode = APIs.clip(item.id, type: item.type, action: action),
+                    let webView = currentContentItemView.webView {
+                    webView.evaluateJavaScript(jsCode) { (result, error) in
+                        if result != nil {
+                            print (result ?? "unprintable JS result")
+                        }
+                    }
+                    break
+                }
+            }
+        }
+        
+        
+        //            getDataFromUrl(url) {(data, response, error)  in
+        //                if error == nil,
+        //                    let data = data,
+        //                    let returnedString = String(data: data, encoding: .utf8){
+        //                    print ("return string: \(returnedString)")
+        //                    print ("\(type)/\(id): \(action) done! ")
+        //                    Track.event(category: "\(action) \(type)", action: "Success", label: id)
+        //                    return
+        //                }
+        //                print ("\(type)/\(id): \(action) failed! ")
+        //                Track.event(category: "\(action) \(type)", action: "Fail", label: id)
+        //            }
     }
     
     @IBOutlet weak var fontButton: UIBarButtonItem!
@@ -283,7 +315,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         
         // MARK: Update right nav button
         checkRightNavButton(type)
-
+        
     }
     
     override func didReceiveMemoryWarning() {

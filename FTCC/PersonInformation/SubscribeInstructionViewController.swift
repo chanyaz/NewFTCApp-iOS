@@ -13,8 +13,10 @@ class SubscribeInstructionViewController: UIViewController {
     @IBOutlet weak var toSubscribeButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        toSubscribeButton.layer.borderWidth = 1
+        toSubscribeButton.layer.borderColor = UIColor(hex: Color.PersonInfo.border).cgColor
+        toSubscribeButton.setTitleColor(UIColor(hex: Color.PersonInfo.border), for: .normal)
+        toSubscribeButton.contentEdgeInsets = UIEdgeInsetsMake(5,45,5,45)
     }
 
     override func didReceiveMemoryWarning() {

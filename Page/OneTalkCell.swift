@@ -17,7 +17,8 @@ class OneTalkCell: UITableViewCell {
     var coverView = UIImageView()
     var cellData = CellData()
     
-    
+    var coverWidth:CGFloat = 0.0
+    var coverHeight:CGFloat = 0.0
     var cardUrl = ""
     
     // MARK: 重写Frame
@@ -83,8 +84,8 @@ class OneTalkCell: UITableViewCell {
     }
     
     //MARK:异步加载image：
-    private func asyncBuildImage(url imageUrl: String, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
-        let optimizedUrl = self.optimizedImageURL(imageUrl, width: 240, height: 135)
+    private func asyncBuildImage(url imageUrl: String, width imageWidth:CGFloat,  height imageHeight:CGFloat, completion: @escaping (_ loadedImage: UIImage?) -> Void) {
+        let optimizedUrl = self.optimizedImageURL(imageUrl, width: Int(imageWidth) , height: Int(imageHeight))
         //print("ImageUrl:\(imageUrl)")
         //print("OptimizedUrl:\(String(describing: optimizedUrl))")
         if let imgUrl = optimizedUrl {
@@ -154,7 +155,7 @@ class OneTalkCell: UITableViewCell {
                 }
             } else { //MARK:可能性3：从URL请求加载
                 //print("Ice Load image from request")
-                self.asyncBuildImage(url: imageUrl, completion: { downloadedImg in
+                self.asyncBuildImage(url: imageUrl, width: self.coverWidth, height: self.coverHeight, completion: { downloadedImg in
                     if let realImage = downloadedImg {
                         DispatchQueue.main.async {
                             UIView.transition(with: self.coverView,
@@ -220,7 +221,7 @@ class OneTalkCell: UITableViewCell {
     private func buildTheCell() {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         
-        let whoSays = self.cellData.whoSays
+        
         self.backgroundColor = UIColor(hex: "#fff1e0")
 
         let cellFrameWidth: CGFloat
@@ -238,6 +239,7 @@ class OneTalkCell: UITableViewCell {
             self.cellData.cellFrameMinY = cellFrameMinY
         }
         // 显示头像
+        let whoSays = self.cellData.whoSays
         if(self.cellData.headImage != "") {
             let headImageViewX:CGFloat
             let headImageViewY:CGFloat
@@ -276,12 +278,14 @@ class OneTalkCell: UITableViewCell {
             maxBubbleImageWidth = cellFrameWidth - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
             self.cellData.maxBubbleImageWidth = maxBubbleImageWidth
         }
-        //let maxBubbleImageWidth = self.frame.width - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
+
         let maxTextWidth = maxBubbleImageWidth - self.cellData.bubbleImageInsets.left - self.cellData.bubbleImageInsets.right
         let imageWidth = maxTextWidth
         let imageHeight = maxTextWidth / 16 * 9
         let coverWidth = maxTextWidth
         let coverHeight = maxTextWidth / 16 * 9
+        self.coverWidth = coverWidth
+        self.coverHeight = coverHeight
         
         //默认是按照maxBubbleImage来，text类型需要重新计算bubbleImageWidth
         let bubbleImageY:CGFloat
@@ -295,30 +299,9 @@ class OneTalkCell: UITableViewCell {
         
         let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
         
+    
         
-        
-        // 显示对话气泡背景
-        /*
-        if self.cellData.bubbleImage != "" {
-            let bubbleImageName = self.cellData.bubbleImage
-            let bubbleImage = UIImage(named: bubbleImageName)
-
-            
-            if let realBubbleImage = bubbleImage {
-                let bubbleImageStreched = realBubbleImage.resizableImage(withCapInsets: self.cellData.bubbleStrechInsets, resizingMode: UIImageResizingMode.stretch)//该方式可实现部分拉伸
-                
-                self.bubbleImageView = UIImageView(image: bubbleImageStreched)
-                //self.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight) // NOTE:任何一个View都要先初始化再设置属性
-                self.bubbleImageView.frame = CGRect(x: bubbleImageX, y: bubbleImageY, width: maxBubbleImageWidth, height: self.cellData.bubbleImageHeight) // NOTE:任何一个View都要先初始化再设置属性
-                self.addSubview(self.bubbleImageView)
-  
-
-            }
-            
-        }
-        */
-        
-        // 显示对话内容 // NOTE:内容在bubble上方才能不被bubble遮挡
+        // 显示对话内容
         if self.cellData.saysType == .text {
             //Step1:动态计算文字宽、高
             let atts = [NSAttributedStringKey.font: self.cellData.normalFont]
@@ -403,7 +386,9 @@ class OneTalkCell: UITableViewCell {
             /// bubbleView:
             let bubbleImageWidth = maxBubbleImageWidth
             let bubbleImageHeight = titleHeight + coverHeight + descriptionHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
-             self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
+       
+            
+            self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
             let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : cellFrameWidth - self.cellData.headImageWithInsets - bubbleImageWidth
             
             // Step2:依次添加这几个View
@@ -421,9 +406,9 @@ class OneTalkCell: UITableViewCell {
             self.addSubview(titleView)
             
             /// coverView:
-            self.coverView = UIImageView(frame: CGRect(x:saysWhatX, y:coverY,width:coverWidth,height:coverHeight))
+            coverView = UIImageView(frame: CGRect(x:saysWhatX, y:coverY,width:coverWidth,height:coverHeight))
             coverView.backgroundColor = UIColor(hex: "#f7e9d8")
-
+            coverView.image = UIImage(named: "imageDefault.jpeg")
             coverView.contentMode = .scaleToFill
             
       

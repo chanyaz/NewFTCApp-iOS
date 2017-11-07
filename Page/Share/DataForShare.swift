@@ -28,9 +28,9 @@ class DataForShare: NSObject, UIActivityItemSource {
             textForShare = "【" + ShareHelper.sharedInstance.webPageTitle + "】" + ShareHelper.sharedInstance.webPageDescription
             let textForShareCredit = "（分享自 @FT中文网）"
             let textForShareLimit = 140
-            let textForShareTailCount = textForShareCredit.characters.count + url.characters.count
-            if textForShare.characters.count + textForShareTailCount > textForShareLimit {
-                let index = textForShare.characters.index(textForShare.startIndex, offsetBy: textForShareLimit - textForShareTailCount - 3)
+            let textForShareTailCount = textForShareCredit.count + url.count
+            if textForShare.count + textForShareTailCount > textForShareLimit {
+                let index = textForShare.index(textForShare.startIndex, offsetBy: textForShareLimit - textForShareTailCount - 3)
                 //textForShare = textForShare.substring(to: index) + "..."
                 textForShare = String(textForShare[..<index]) + "..."
             }

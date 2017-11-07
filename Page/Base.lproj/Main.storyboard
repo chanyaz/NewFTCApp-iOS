@@ -627,11 +627,11 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="oOr-Rp-EpX" firstAttribute="leading" secondItem="ais-G2-Doc" secondAttribute="leading" id="GmZ-XU-5Gk"/>
-                            <constraint firstItem="yTZ-tP-kId" firstAttribute="top" secondItem="oOr-Rp-EpX" secondAttribute="bottom" id="JNp-na-hU1"/>
                             <constraint firstItem="UHe-gl-owQ" firstAttribute="top" secondItem="yTZ-tP-kId" secondAttribute="bottom" id="KQh-ai-zTE"/>
                             <constraint firstItem="yTZ-tP-kId" firstAttribute="leading" secondItem="ais-G2-Doc" secondAttribute="leading" id="WPG-Ip-wAS"/>
                             <constraint firstAttribute="trailing" secondItem="oOr-Rp-EpX" secondAttribute="trailing" id="ZjE-aU-n8g"/>
                             <constraint firstAttribute="trailing" secondItem="yTZ-tP-kId" secondAttribute="trailing" id="gqh-jP-JkE"/>
+                            <constraint firstItem="yTZ-tP-kId" firstAttribute="top" secondItem="oOr-Rp-EpX" secondAttribute="bottom" id="hbX-BK-5dw"/>
                             <constraint firstItem="oOr-Rp-EpX" firstAttribute="top" secondItem="ais-G2-Doc" secondAttribute="top" id="zqw-E5-JDJ"/>
                         </constraints>
                         <connections>
@@ -644,9 +644,12 @@
                     <connections>
                         <outlet property="bottomBar" destination="yTZ-tP-kId" id="Him-Ty-0SN"/>
                         <outlet property="inputBlock" destination="gKa-V0-ONp" id="NiT-ra-Kp3"/>
+                        <outlet property="keyboardHeightLayoutConstraint" destination="KQh-ai-zTE" id="SRL-bS-cYm"/>
                         <outlet property="myPanGesture" destination="tYS-Kh-gya" id="6qO-m3-8PR"/>
                         <outlet property="mySwipeGesture" destination="ywL-mu-LSF" id="HJO-gp-8Xa"/>
                         <outlet property="talkListBlock" destination="oOr-Rp-EpX" id="8Qz-HX-dou"/>
+                        <outlet property="talkListBlockBottomLayoutConstraint" destination="hbX-BK-5dw" id="nYp-Z7-d60"/>
+                        <outlet property="talkListBlockTopLayoutConstraint" destination="zqw-E5-JDJ" id="rOb-Rw-Zzx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZYl-9O-NtM" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -33,7 +33,7 @@
         <!--Collect Info Controller-->
         <scene sceneID="dhZ-hv-Ss8">
             <objects>
-                <viewController storyboardIdentifier="CollectInfoController" id="Kc4-Jp-mk4" customClass="CollectInfoController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CollectInfoController" hidesBottomBarWhenPushed="YES" id="Kc4-Jp-mk4" customClass="CollectInfoController" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sgy-vY-q2I"/>
                         <viewControllerLayoutGuide type="bottom" id="0bc-ro-xls"/>
@@ -431,13 +431,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6uF-ly-ex0">
-                                <rect key="frame" x="169" y="386" width="37" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <rect key="frame" x="167" y="386" width="41" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="确定">
                                     <color key="titleColor" red="0.070588235289999995" green="0.64705882349999999" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="clickContinueSubscribe:" destination="7xM-hb-7d9" eventType="touchUpInside" id="VRX-eh-RRZ"/>
+                                    <action selector="clickContinueSubscribe:" destination="7xM-hb-7d9" eventType="touchUpInside" id="avB-GT-Iuk"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -457,6 +457,9 @@
                             <constraint firstItem="EeX-bd-tWP" firstAttribute="leading" secondItem="iF2-AX-CXX" secondAttribute="trailing" constant="35" id="ybc-Wk-goi"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="isContinueSubscribe" destination="6uF-ly-ex0" id="vRN-9N-tuL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="97w-hL-HRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -500,8 +503,8 @@
                                 <rect key="frame" x="76" y="206.5" width="4" height="22"/>
                                 <state key="normal" image="SubInstructionList"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阅读FT iDeas中文文章" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ck-c5-gzK">
-                                <rect key="frame" x="90" y="206.5" width="171" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阅读金融时报报道英文原名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ck-c5-gzK">
+                                <rect key="frame" x="90" y="206.5" width="208" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -510,8 +513,8 @@
                                 <rect key="frame" x="76" y="247" width="4" height="22"/>
                                 <state key="normal" image="SubInstructionList"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阅读FT iDeas中文文章" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rIm-XC-8hH">
-                                <rect key="frame" x="90" y="247" width="171" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="聆听和下载真人朗诵中文音频" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rIm-XC-8hH">
+                                <rect key="frame" x="90" y="247" width="225.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -520,14 +523,15 @@
                                 <rect key="frame" x="76" y="287.5" width="4" height="22"/>
                                 <state key="normal" image="SubInstructionList"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阅读FT iDeas中文文章" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tcD-ka-fU7">
-                                <rect key="frame" x="90" y="287.5" width="171" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="聆听和下载真人朗诵英文音频" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tcD-ka-fU7">
+                                <rect key="frame" x="90" y="287.5" width="225.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BuJ-0z-QTf">
-                                <rect key="frame" x="156.5" y="459" width="62" height="30"/>
+                                <rect key="frame" x="146.5" y="459" width="82" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="我要订阅"/>
                                 <connections>
                                     <action selector="clickToSubscribe:" destination="Oo6-df-2YO" eventType="touchUpInside" id="NiY-mu-cJW"/>
@@ -560,6 +564,9 @@
                             <constraint firstItem="8ck-c5-gzK" firstAttribute="leading" secondItem="KXx-RA-8e0" secondAttribute="trailing" constant="10" id="yqW-Yp-QEQ"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="toSubscribeButton" destination="BuJ-0z-QTf" id="iBB-vE-dkp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JOo-Gk-erO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -583,8 +590,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="订阅到期后会自动续订" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l8G-dt-ys6">
-                                <rect key="frame" x="76" y="113" width="173.5" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="订阅到期后会自动续订，" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l8G-dt-ys6">
+                                <rect key="frame" x="76" y="113" width="191" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -614,13 +621,13 @@
                                     <action selector="clickToBuy:" destination="7my-Ac-6iG" eventType="touchUpInside" id="nT4-2W-Bvt"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="方案1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWG-1W-TIN">
-                                <rect key="frame" x="76" y="390" width="50" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="方案2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWG-1W-TIN">
+                                <rect key="frame" x="76" y="390" width="52.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每月人民币xx元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VLK-1s-02o">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每半人民币xx元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VLK-1s-02o">
                                 <rect key="frame" x="76" y="444" width="121.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -661,7 +668,6 @@
         <!--Speech Settings-->
         <scene sceneID="7Ve-2f-74J">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="g3P-HD-xAv" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="SpeechSettings" id="AOk-ko-2Qj" customClass="SpeechSettings" customModule="FTCC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wwv-J0-hZR"/>
@@ -673,6 +679,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g3P-HD-xAv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2140" y="1925.4872563718143"/>
         </scene>

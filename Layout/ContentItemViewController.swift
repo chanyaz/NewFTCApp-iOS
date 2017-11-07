@@ -99,6 +99,13 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let  cell = tableView.cellForRow(at: indexPath)
+//        if let cell = cell as? PortraitTableViewCell{
+//            cell.backgroundColor = UIColor.white
+//        }else if let cell =  cell as? PersonInfoTableViewCell{
+//            cell.backgroundColor = UIColor.white
+//        }
+
         if indexPath.section==1{
             if indexPath.row == 0{
                 ContentItemRenderContent.isMySubscribe = true
@@ -109,6 +116,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
                 
             }else if indexPath.row == 1{
                 if let collectInfoController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
+                    collectInfoController.navigationItem.backBarButtonItem?.title = ""
                     navigationController?.pushViewController(collectInfoController, animated: true)
                     
                 }
@@ -136,7 +144,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
             let cellItem = tableView.dequeueReusableCell(withIdentifier: "PortraitTableViewCell") as! PortraitTableViewCell
             cellItem.loginButton.addTarget(self, action: #selector(openAccount), for: .touchUpInside)
             cellItem.portraitImageView.addTarget(self, action: #selector(openPhotoAction), for: .touchUpInside)
-            
+            cellItem.selectionStyle = .none
             return cellItem
 
         }else{
@@ -146,7 +154,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
 
                 cellItem.imageButton.setImage(UIImage(named:name ), for: UIControlState.normal)
                 cellItem.tagLabel.text = textValue
-            
+                cellItem.selectionStyle = .none
             }
             return cellItem
         }
@@ -158,6 +166,10 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
         }else{
             return 80.0
         }
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+
+         cell.backgroundColor = UIColor.white
     }
     @objc func openAccount(){
         openHTMLInBundle("account", title: "登录", isFullScreen: false, hidesBottomBar: true)
@@ -186,5 +198,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
     }
     deinit {
         print("view cancel")
+        self.infoTableView.delegate = nil
+        self.infoTableView.dataSource = nil
     }
 }

@@ -39,7 +39,7 @@ struct Color {
         static let standard = "#26747a"
         static let standardFont = "#777777"
         static let standardBorder = "#FAAE76"
-        static let switchBackground = "#9E2F50"
+        static let switchBackground = "#12a5b3"
     }
 
     struct Header {
@@ -61,6 +61,12 @@ struct Color {
         static let signBackground = "#ecd4b4"
         static let showFullScreenAdBetweenPages = false
         static let showFullScreenAdWhenLaunch = false
+    }
+    struct PersonInfo {
+        static let text = "#000000"
+        static let border = "#12a5b3"
+        static let buttonText = "#12a5b3"
+
     }
     
     struct Theme {

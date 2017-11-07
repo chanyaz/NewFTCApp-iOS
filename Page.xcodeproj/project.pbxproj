@@ -356,6 +356,8 @@
 		F29E19B11F39A2BC00FAA8C0 /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AC1F39A2BC00FAA8C0 /* mute.png */; };
 		F29E19B21F39A2BC00FAA8C0 /* ShareIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AD1F39A2BC00FAA8C0 /* ShareIcon.jpg */; };
 		F29E19B31F39A2BC00FAA8C0 /* sound.png in Resources */ = {isa = PBXBuildFile; fileRef = F29E19AE1F39A2BC00FAA8C0 /* sound.png */; };
+		F2C216E01FB030F500927980 /* SubscribeSchemeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C216DE1FB030F500927980 /* SubscribeSchemeTableViewCell.swift */; };
+		F2C216E11FB030F500927980 /* SubscribeSchemeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2C216DF1FB030F500927980 /* SubscribeSchemeTableViewCell.xib */; };
 		F2D792691F5CEBA2005A7588 /* ListPerColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */; };
 		F2D7926B1F5CEBF4005A7588 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */; };
 		F2E0906A1F5A6A3900F4409F /* ColumnAllListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E0905C1F5A6A3900F4409F /* ColumnAllListCell.swift */; };
@@ -651,6 +653,8 @@
 		F29E19AC1F39A2BC00FAA8C0 /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mute.png; path = FTCC/Images/mute.png; sourceTree = "<group>"; };
 		F29E19AD1F39A2BC00FAA8C0 /* ShareIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ShareIcon.jpg; path = FTCC/Images/ShareIcon.jpg; sourceTree = "<group>"; };
 		F29E19AE1F39A2BC00FAA8C0 /* sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sound.png; path = FTCC/Images/sound.png; sourceTree = "<group>"; };
+		F2C216DE1FB030F500927980 /* SubscribeSchemeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeSchemeTableViewCell.swift; sourceTree = "<group>"; };
+		F2C216DF1FB030F500927980 /* SubscribeSchemeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubscribeSchemeTableViewCell.xib; sourceTree = "<group>"; };
 		F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListPerColumnViewController.swift; path = Audio/ListPerColumnViewController.swift; sourceTree = "<group>"; };
 		F2D7926A1F5CEBF4005A7588 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListTableViewCell.swift; path = Audio/ListTableViewCell.swift; sourceTree = "<group>"; };
 		F2E0905C1F5A6A3900F4409F /* ColumnAllListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnAllListCell.swift; sourceTree = "<group>"; };
@@ -1386,6 +1390,8 @@
 				F2201C421FA87281006EA0DE /* CollectTableViewCell.xib */,
 				F2592E801FAC2208000850B6 /* SubscribeTimeTableViewCell.swift */,
 				F2592E811FAC2208000850B6 /* SubscribeTimeTableViewCell.xib */,
+				F2C216DE1FB030F500927980 /* SubscribeSchemeTableViewCell.swift */,
+				F2C216DF1FB030F500927980 /* SubscribeSchemeTableViewCell.xib */,
 			);
 			name = PersonInformation;
 			path = FTCC/PersonInformation;
@@ -1619,6 +1625,7 @@
 				F27D9A821F976FB200A95188 /* html-book.html in Resources */,
 				50C31B361F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
 				60F3D1481F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */,
+				F2C216E11FB030F500927980 /* SubscribeSchemeTableViewCell.xib in Resources */,
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
 				50C31B3C1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
 				F234B9531FA1C4CE00AACDAB /* my-love.html in Resources */,
@@ -1915,6 +1922,7 @@
 				602153421F397C650077A7AF /* SpeechSettings.swift in Sources */,
 				602153431F397C650077A7AF /* Web.swift in Sources */,
 				50C31B401F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */,
+				F2C216E01FB030F500927980 /* SubscribeSchemeTableViewCell.swift in Sources */,
 				602153451F397C650077A7AF /* PagesViewController.swift in Sources */,
 				60F1A52C1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
 				602CD2971F565FD500FFC1EA /* IAPHelper.swift in Sources */,

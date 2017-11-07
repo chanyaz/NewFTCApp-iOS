@@ -20,7 +20,8 @@ class PortraitTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+//        self.backgroundColor = UIColor.white
+//        self.contentView.backgroundColor = UIColor.white
     }
     
     @IBAction func clickLoginButton(_ sender: UIButton) {
@@ -31,9 +32,6 @@ class PortraitTableViewCell: UITableViewCell {
         print("tap portrait")
         
     }
-//    @objc open func tapPortraitGesture(_ recognizer: UIButton) {
-//        print("tap portrait")
-//
-//    }
+
     
 }

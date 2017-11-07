@@ -33,16 +33,15 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         self.allSelect.frame = CGRect(x: 0, y: -buttonHeight, width: screenWidth/2, height:90)
         self.allSelect.setTitle("全选", for: .normal)
         self.allSelect.setTitleColor(UIColor.black, for: .normal)
-        self.view.addSubview(allSelect)
+//        self.view.addSubview(allSelect)
         allSelect.addTarget(self, action: #selector(allSelectAction), for: .touchUpInside)
         allSelect.layer.addBorder(edge: .right, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
         self.delete.frame = CGRect(x: screenWidth/2, y: -buttonHeight, width: screenWidth/2, height:90)
         self.delete.setTitle("删除", for: .normal)
-        //        self.delete.backgroundColor = UIColor.blue
         self.delete.setTitleColor(UIColor.black, for: .normal)
-        self.view.addSubview(delete)
+//        self.view.addSubview(delete)
         delete.addTarget(self, action: #selector(deleteAction), for: .touchUpInside)
-        
+
         
         self.infoTableView.register(UINib.init(nibName: "CollectTableViewCell", bundle: nil), forCellReuseIdentifier: "CollectTableViewCell")
         self.view.addSubview(infoTableView)
@@ -55,32 +54,48 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         editButton.setTitleColor(UIColor.black, for: .normal)
         editButton.titleLabel?.textColor = UIColor.black
         let audioButton = UIBarButtonItem(customView: editButton)
-        
-        //        let audioButton = UIBarButtonItem(title: "编辑", style: .plain, target: self, action: #selector(edit))
         self.navigationItem.rightBarButtonItem = audioButton
         editButton.addTarget(self, action: #selector(edit), for: .touchUpInside)
         self.infoTableView.allowsMultipleSelection = true
         self.infoTableView.allowsSelectionDuringEditing = true
         print("dateArray--\(self.selectCellArray)")
-        self.navigationController?.toolbar.isHidden = true
+        
+//        self.navigationController?.toolbar.isHidden = true
         self.navigationController?.toolbar.barStyle = .black
         self.navigationController?.toolbar.barTintColor = UIColor.white
         self.navigationController?.toolbar.frame = CGRect(x: 0, y: screenHeight-toolbarHeight, width: screenWidth, height: toolbarHeight)
-        self.navigationController?.toolbar.layer.addBorder(edge: .top, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
+        self.navigationController?.toolbar.layer.addBorder(edge: .top, color: UIColor(hex: Color.AudioList.border, alpha: 1), thickness: 1)
         let allSelectButton = UIBarButtonItem(customView: allSelect)
         let deleteButton = UIBarButtonItem(customView: delete)
         let toolArray = [allSelectButton,deleteButton]
         self.toolbarItems = toolArray
         self.view.backgroundColor = UIColor.white
-        //        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
-        
         dataArray = cellContent.mutableCopy() as! NSMutableArray
-        
+        let image = UIImage(named: "NavBack")
+        let backImage = image?.imageWithImage(image: image!, scaledToSize: CGSize(width: 12, height: 22))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backNavigation))
+//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(backNavigation))
+//        self.navigationItem.leftBarButtonItem?.title = ""
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.toolbar.isHidden = true
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+//        print("collectInfoController viewDidDisappear")
+//        self.navigationController?.toolbarItems?.removeAll()
+//        self.navigationController?.toolbar.isHidden = true
+    }
+    @objc func backNavigation(){
+        print("collectInfoController dismiss")
+        self.navigationController?.toolbar.isHidden = true
+        self.navigationController?.popViewController(animated: true)
+    }
     deinit {
+        print("collectInfoController deinit")
         self.infoTableView.delegate = nil
         self.infoTableView.dataSource = nil
+        self.navigationController?.toolbar.isHidden = true
     }
     @objc func allSelectAction(_ sender: UIButton){
         self.selectArray.removeAllObjects()
@@ -140,7 +155,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         self.selectArray.removeAllObjects()
         if !sender.isSelected{
             self.isEditting = true
-            //            self.infoTableView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
             self.infoTableView.setEditing(true, animated: true)
             self.navigationController?.toolbar.isHidden = false
         }else{

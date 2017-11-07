@@ -160,6 +160,22 @@ struct APIs {
     static func newQueryForWebPage() -> URLQueryItem {
         return URLQueryItem(name: "webview", value: "ftcapp")
     }
+    
+    static func clip(_ id: String, type: String, action: String) -> String? {
+        if type == "story" {
+            let urlStringBase = "/index.php/users/"
+            let urlStringAction: String
+            if action == "save" {
+                urlStringAction = "addfavstory"
+            } else {
+                urlStringAction = "removefavstory"
+            }
+            let urlString = "\(urlStringBase)\(urlStringAction)/\(id)"
+            let jsCode = "updateFav('\(urlString)', '\(id)')"
+            return jsCode
+        }
+        return nil
+    }
 }
 
 // MARK: - Error message in diffent languages

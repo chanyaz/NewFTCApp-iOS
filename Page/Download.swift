@@ -174,7 +174,7 @@ struct Download {
             .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
             .replacingOccurrences(of: "-type-json", with: ".json")
             .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
-        .replacingOccurrences(of: "%", with: "")
+            .replacingOccurrences(of: "%", with: "")
         if fileName == "" {
             fileName = "home"
         }

@@ -213,6 +213,7 @@ struct LinkPattern {
     static let video = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/video/([0-9]+)"]
     static let photonews = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
     static let tag = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
+    static let archiver = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/archiver/([0-9-]+)"]
     static let other = ["(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
     //other:"http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=[0-9]+&impressionId=[a-z0-9A-Z]+$"
 }

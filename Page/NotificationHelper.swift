@@ -59,6 +59,8 @@ struct NotificationHelper {
         if let action = action,
             let id = id,
             let topController = UIApplication.topViewController() {
+            // MARK: Tracking Code Should be Here, otherwise it won't be executed
+            Track.event(category: "Tap Notification", action: action, label: "\(id): \(title ?? "")")
             switch(action) {
             case "tag":
                 if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
@@ -100,7 +102,7 @@ struct NotificationHelper {
             default:
                 break
             }
-            Track.event(category: "Tap Notification", action: action, label: "\(id): \(title ?? "")")
+            
         }
     }
 }

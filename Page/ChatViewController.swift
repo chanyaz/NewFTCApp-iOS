@@ -633,7 +633,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.viewDidLoad()
         print("Chat Execute viewDidLoad")
         // Do any additional setup after loading the view.
-        
+        ChatViewModel.screenWidth = UIScreen.main.bounds.width
+        print("Chat Size UIScreen width Controller:\(UIScreen.main.bounds.width)")
         //MARK:监听键盘弹出、收起事件
         //NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         //NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow(_:)), name:NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -727,6 +728,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("ice userinfo iceUserId:\(iceUserId)")
         print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
         
+        
         self.createTalkRequest(myInputText: triggerGreetContent, completion: { talkData in
             if let oneTalkData = talkData {
                 self.showingData.append(oneTalkData)
@@ -742,9 +744,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                         self.showingCellData.append(oneContentCellData)
                     }
                 })
+ 
             }
         })
-        
+ 
         
         
     }

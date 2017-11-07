@@ -97,79 +97,111 @@ struct SaysWhat {
 
 
 class CellData {
-    //是否为历史记录分割线
-    var isHistoryCutline = false
+   
     
-    //是否为获取更多历史数据的提示语单元
-    var isGetMoreHistory = false
-    //获取更多历史数据的提示语内容
-    var getMoreHistorySignContent = ""
-    //基本字段
-    var headImage: String = ""
+    //MARK:属性类型1：用以区分不同类型的Cell（包括3种Cell:历史记录分割线Cell、获取更多历史数据提示Cell、正常Cell）
+    var isHistoryCutline = false  //是否为历史记录分割线
+    var isGetMoreHistory = false //是否为获取更多历史数据的提示语单元
+    
+    //MARK:属性类型2：历史记录分隔线Cell相关特性
+    let cutlineCellHeight = CGFloat(50)//历史记录分割线Cell的高度
+    let cutlineCellContent = "———— 以上为历史聊天内容 ————"//历史记录分割线Cell的text
+    let cutlineFont = UIFont.systemFont(ofSize:10)//历史记录分割线Cell的font
+    let cutlineColor = UIColor(hex: "#999999")//历史记录分割线Cell的textColor
+    
+    
+    //MARK:属性类型3：获取更多历史数据Cell相关特性
+    let getMoreHistoryHeight = CGFloat(50)//获取更多历史数据Cell的高度
+    var getMoreHistorySignContent = ""//获取更多历史数据Cell的text
+    let getMoreHistoryFont = UIFont.systemFont(ofSize:14)//获取更多历史数据Cell的font
+    let getMoreHistoryColor = UIColor(hex: "#999999")//获取更多历史数据Cell的textColor
+
+    //MARK:属性类型4.1：正常Cell相关特性：数据基本字段初始化，需要在构造器中根据参数赋值
     var whoSays: Member = .no
-    var bubbleImage: String = ""
-    
+
     var saysType: Infotype = .text
     var saysWhat = SaysWhat()
-    var textColor = UIColor.black
-    var cutlineColor = UIColor(hex: "#999999")
-    let getMoreHistoryColor = UIColor(hex: "#999999")
-    //基本尺寸
+    
+    
+    //MARK:属性类型4.2：正常Cell相关特性：基本尺寸,包括一些固定边距、固定长度
     let bubbleShorterLen = CGFloat(0)
-    var bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12)//文字嵌入气泡的边距
-    var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)//气泡点九拉伸时的边距
+    var bubbleImageInsets = UIEdgeInsetsMake(8, 20, 10, 12)//文字嵌入气泡的边距//需要在构造器中根据条件得到
+    var bubbleStrechInsets = UIEdgeInsetsMake(18.5, 24, 18.5, 18.5)//气泡点九拉伸时的边距 //需要在构造器中根据条件得到
     var cellInsets = UIEdgeInsetsMake(10, 5, 15, 5)//头像嵌入Cell的最小边距
     var bubbleInsets = UIEdgeInsetsMake(15, 5, 15, 5)//气泡嵌入Cell的最小边距，其中左右边距和cellInsets的左右边距值相等
     var headImageLength = CGFloat(50) //正方形头像边长
     var betweenHeadAndBubble = CGFloat(5) //头像和气泡的左右距离
-    
-    var maxTextWidth = CGFloat(240)//文字最大宽度---TODO:修改为根据设备宽度计算
-    var maxTextHeight = CGFloat(10000.0) //文字最大高度
-    var defaultImageWidth = CGFloat(240)//图片消息还未获取到图片数据时默认图片宽度--TODO:修改为根据设备宽度计算
-    var defaultImageHeight = CGFloat(135)//图片消息还未获取到图片数据时默认图片高度--TODO:修改为根据设备宽度计算
-   
-    var coverWidth = CGFloat(240)//TODO:修改为根据设备宽度计算
-    var coverHeight = CGFloat(135)//Cover图像统一是16*19的，这里统一为240*135--TODO:修改为根据设备宽度计算
-    let cutlineCellHeight = CGFloat(50)
-    let getMoreHistoryHeight = CGFloat(50)
-    
-    
-    //根据（文字长短）动态计算得到的图形实际尺寸，后文会计算
-    var bubbleImageWidth = CGFloat(0) //气泡宽度
-    var bubbleImageHeight = CGFloat(0) //气泡高度
-    var saysWhatWidth = CGFloat(0) // 宽度
-    var saysWhatHeight = CGFloat(0) //文字高度
-    var titleWidth = CGFloat(0)
-    var titleHeight = CGFloat(0)
-    var descriptionWidth = CGFloat(0)
-    var descriptionHeight = CGFloat(0)
-    
-    
-    //计算属性：依赖于上述两种尺寸或者依赖于
-    var headImageWithInsets: CGFloat {
+    var headImageWithInsets: CGFloat { //依赖于上述尺寸
         get {
             return cellInsets.left + headImageLength + betweenHeadAndBubble
         }
     }
-
-    //计算得到的cell的几种高度
-    var cellHeightByHeadImage:CGFloat {
+    
+    //MARK:属性类型4.3：正常Cell相关特性：基本样式，包括文字size、color等
+    var normalFont = UIFont.systemFont(ofSize:18)
+    var titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
+    var descriptionFont = UIFont.systemFont(ofSize:18)
+    var textColor = UIColor.black//需要在构造器中根据条件得到
+    
+    //MARK：属性类型5：基于当前屏幕宽度（即当前Cell宽度）得到的基本尺寸
+    let screenWidth = ChatViewModel.screenWidth ?? CGFloat(375)
+    var maxBubbleImageWidth:CGFloat {//气泡最大宽度
+        return screenWidth - headImageLength - cellInsets.left - cellInsets.right - bubbleInsets.right - bubbleShorterLen - headImageLength
+    }
+    var maxTextWidth:CGFloat {//文字最大宽度
+        return maxBubbleImageWidth - bubbleImageInsets.left - bubbleImageInsets.right
+    }
+    var maxTextHeight = CGFloat(10000.0) //文字最大高度
+    var imageWidth:CGFloat {
+        return maxTextWidth
+    }
+    var imageHeight:CGFloat{
+        return maxTextWidth / 16 * 9
+    }
+    
+    //MARK: 属性类型6：头像相关
+    var headImageViewX:CGFloat? = nil//存储cell中计算结果
+    var headImageViewY:CGFloat? = nil//存储cell中计算结果
+    var headUIImage: UIImage? = nil//存储cell中计算结果
+    var headImage = ""//需要在构造器中根据条件得到
+   
+    
+    //MARK: 属性类型7：气泡及内容相关：根据（文字长短）动态计算得到的图形实际尺寸，后文会计算 ——会暴露给cell view!
+    var bubbleImageWidth = CGFloat(0) //气泡宽度
+    var bubbleImageHeight = CGFloat(0) //气泡高度
+    var bubbleImageX = CGFloat(0)//气泡x坐标值
+    var bubbleImageY:CGFloat? = nil //气泡的y坐标值，在cell view中计算得到，该值只能在cell view中计算
+    
+    var saysWhatWidth = CGFloat(0) // 对话内容文字宽度
+    var saysWhatHeight = CGFloat(0) //对话内容文字高度
+    var saysWhatX = CGFloat(0)//对话内容文字x坐标值
+    var saysWhatY:CGFloat? = nil//对话内容内文字y坐标值，在cell view中计算得到，该只能在cell view中计算
+    
+    var titleWidth = CGFloat(0)
+    var titleHeight = CGFloat(0)
+        // titleX、titleY就是saysWhatX、saysWhatY,故不再重复设置属性
+    
+    var coverY:CGFloat? = nil//对话内容card类型其中的card的y坐标值，在cell view中计算得到，该只能在cell view中计算
+        // coverWidth,coverHeight就是imageWidth、imageHeight，故不再重复设置属性
+        // coverX就是saysWhatX，故不再重复设置属性
+    
+    var descriptionWidth = CGFloat(0)
+    var descriptionHeight = CGFloat(0)
+        // descriptionX就是saysWhatX，故不再重复设置属性
+    var descriptionY:CGFloat? = nil
+    
+    var bubbleImage: String = ""//需要在构造器中根据条件得到
+    
+    
+   
+    //MARK:关于Cell高度
+    var cellHeightByHeadImage:CGFloat {//由头像得到的Cell高度
         get {
             return self.headImageLength + cellInsets.top + cellInsets.bottom //60
         }
     }
-    /*
-    var cellHeightByBubble:CGFloat {
-        get {
-            return self.bubbleImageHeight + bubbleInsets.top + bubbleInsets.bottom
-        }
-    }
-   */
-    //MARK:一些需要在View（即OneTalkCell.swift） 里面计算得到的
-    var cellHeightByBubble = CGFloat(0)//--TODO:要在Cell里面更新
-   
-    
-    var talkCellHeight:CGFloat {
+    var cellHeightByBubble = CGFloat(0)////需要在构造器中经过计算得到
+    var talkCellHeight:CGFloat {//暴露给cell view的
         if(isHistoryCutline) {
             return cutlineCellHeight
         } else {
@@ -178,42 +210,30 @@ class CellData {
         
     }
  
-    
+    //MARK:image下载存储相关
     var storedImage: UIImage? = nil//用于内存存储请求到的UIImage对象
     var savedImageFileName: String? = nil//用于存储向缓存请求的image文件名
-    var headImageViewX:CGFloat? = nil//用于存储View中计算得到的和frame有关的头像位置X
-    var headImageViewY:CGFloat? = nil
-    var headUIImage: UIImage? = nil
-    var maxBubbleImageWidth:CGFloat? = nil
-    var bubbleImageY:CGFloat? = nil
+    
     var cellFrameWidth: CGFloat? = nil
     var cellFrameMinY: CGFloat? = nil
     
     // 一些必须在数据里生成的和view相关的对象
     var strechedBubbleImage = UIImage()
     
-    
-    
-    
-    var normalFont = UIFont.systemFont(ofSize:18)
-    var titleFont = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
-    var cutlineFont = UIFont.systemFont(ofSize:10)
-    var descriptionFont = UIFont.systemFont(ofSize:18)
-    let getMoreHistoryFont = UIFont.systemFont(ofSize:14)
-    
-    //下拉加载更多历史记录时提示语CellData数据构造器：
+
+    //MARK:构造器1：下拉加载更多历史记录时提示语CellData数据构造器：
     init(getMoreHistory getMoreHistoryData:Bool, signContent content: String) {
         self.isGetMoreHistory = getMoreHistoryData
         self.getMoreHistorySignContent = content
     }
     
-    //分割线CellData数据构造器：
+    //MARK:构造器2：分割线CellData数据构造器：
     init(cutline isHistoryCutline:Bool) {
         self.isHistoryCutline = isHistoryCutline
 
     }
     
-    //对话CellData数据构造器：
+    //MARK:构造器3：对话CellData数据构造器：
     init(whoSays who: Member, saysWhat say: SaysWhat) {
         
         if who == .robot {
@@ -240,12 +260,12 @@ class CellData {
         
         self.saysType = say.type
         
-        if say.type == .text { // 根据对话文字长短得到图形实际尺寸
+        if say.type == .text {
             
             self.buildTextCellData(textContent: say.content)
             
-        } else if say.type == .image { //缩放图片大小得到实际图形尺寸,并得到UIImage对象self.saysImage
-            //直接全部交给另一个线程处理
+        } else if say.type == .image {
+            
             self.buildImageCellData()
             
         } else if say.type == .card {
@@ -265,46 +285,64 @@ class CellData {
     
     //创建Text类型数据:
      func buildTextCellData(textContent text: String) {//wycNOTE: mutating func:可以在mutating方法中修改结构体属性
-        /*
-            let atts = [NSAttributedStringKey.font: self.normalFont]
-            let saysWhatNSString = text as NSString
-         
-            let size = saysWhatNSString.boundingRect(
-                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
-                options: .usesLineFragmentOrigin,
-                attributes: atts,
-                context: nil)
-            let computeWidth = max(size.size.width,20) //修正计算错误
-            /* QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
-             * 已解决：因为此处的font大小和实际font大小不同，只有为UILabelView设置属性font为一样的UIFont对象，才能保证大小合适
-             * 另说明：此处当文字多余一行时，自动就是宽度固定为最大宽度，高度自适应
-             */
-            let computeHeight = size.size.height
-         
-         
-            self.bubbleImageWidth = computeWidth + bubbleImageInsets.left + bubbleImageInsets.right
-            self.bubbleImageHeight = computeHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
-         
-            self.saysWhatWidth = computeWidth
-            self.saysWhatHeight = computeHeight
+        //Step1:动态计算文字宽、高
+        let atts = [NSAttributedStringKey.font: self.normalFont]
+        let saysWhatNSString = text as NSString
+     
+        let size = saysWhatNSString.boundingRect(
+            with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
+            options: .usesLineFragmentOrigin,
+            attributes: atts,
+            context: nil)
+        let computeWidth = max(size.size.width,20)
+        /* QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
+         * 已解决：因为此处的font大小和实际font大小不同，只用在cell view中为UILabelView设置属性font为一样的UIFont对象，才能保证大小合适
+         * 另说明：此处当文字多余一行时，自动就是宽度固定为最大宽度，高度自适应
          */
+        let computeHeight = size.size.height
+     
+        //Step2：根据文字宽、高得到气泡图片的宽、高、X,预备暴露给cell view
+        self.bubbleImageWidth = computeWidth + bubbleImageInsets.left + bubbleImageInsets.right
+        self.bubbleImageHeight = computeHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
+        self.bubbleImageX = (whoSays == .robot) ? headImageWithInsets : screenWidth - headImageWithInsets - bubbleImageWidth
+         // self.bubbleImageY在cell view里面更新
+        self.saysWhatWidth = computeWidth
+        self.saysWhatHeight = computeHeight
+        self.saysWhatX = bubbleImageX + bubbleImageInsets.left
+         // self.saysWhatY在cell view里面更新
+        
+        self.cellHeightByBubble = bubbleImageHeight + bubbleInsets.top + bubbleImageInsets.bottom
     }
     
 
     //创建Image类型数据:
     
      func buildImageCellData() {
-        /*
-            self.bubbleImageWidth = self.defaultImageWidth + bubbleImageInsets.left + bubbleImageInsets.right
-            self.bubbleImageHeight = self.defaultImageHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
-         */
+        
+     self.bubbleImageWidth = self.imageWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
+        self.bubbleImageHeight = imageHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
+        self.bubbleImageX = (whoSays == .robot) ? headImageWithInsets : screenWidth - headImageWithInsets - bubbleImageWidth
+         // self.bubbleImageY在cell view里面更新
+        self.saysWhatWidth = imageWidth
+        self.saysWhatHeight = imageHeight
+        self.saysWhatX = bubbleImageX + bubbleImageInsets.left
+         // self.saysWhatY在cell view里面更新
+        self.cellHeightByBubble = bubbleImageHeight + bubbleInsets.top + bubbleImageInsets.bottom
     }
     
     
     //创建Card类型数据:
      func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String) {
-        //处理title
-        /*
+
+        self.bubbleImageWidth = self.imageWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
+            // self.bubbleImageHeight在此方法后文计算
+        self.bubbleImageX = (whoSays == .robot) ? headImageWithInsets : screenWidth - headImageWithInsets - bubbleImageWidth
+             // self.bubbleImageY在cell view里面更新
+        self.saysWhatWidth = imageWidth
+        self.saysWhatX = bubbleImageX + bubbleImageInsets.left
+        
+
+        // MAKR:处理title
         let atts = [NSAttributedStringKey.font: self.titleFont]
         let titleNSString = titleStr as NSString
         let size = titleNSString.boundingRect(
@@ -312,35 +350,35 @@ class CellData {
             options: .usesLineFragmentOrigin,
             attributes: atts,
             context: nil)
-        self.titleWidth = 240
+        self.titleWidth = size.size.width
         self.titleHeight = size.size.height
-         */
-        //处理cover:交给另一个线程asyncBuildImage处理
+         //x即为self.saysWhatX,Y在cell view里面更新
         
-        //处理description
-        /*
+        // MARK:处理cover
+         // width和height就为self.imageWidth和self.imageHeight
+         // y在cell view里更新
+        
+        // MARK:处理description
         if (descriptionStr != "") {
-            
             let descriptionAtts = [NSAttributedStringKey.font: self.descriptionFont]
             let descriptionNSString = descriptionStr as NSString
-            
             let descriptionSize = descriptionNSString.boundingRect(
-                with: CGSize(width:self.maxTextWidth, height:self.maxTextHeight),
+                with: CGSize(width: maxTextWidth, height: maxTextHeight),
                 options: .usesLineFragmentOrigin,
                 attributes: descriptionAtts,
                 context: nil)
-            self.descriptionWidth = 240
+            self.descriptionWidth = descriptionSize.size.width
             self.descriptionHeight = descriptionSize.size.height
+             //self.descriptionY在cell view里更新
         }
-        */
         
-        //处理总bubble
-        /*
-        self.saysWhatWidth = self.coverWidth
-        self.saysWhatHeight = self.titleHeight + self.coverHeight + self.descriptionHeight
-        self.bubbleImageWidth = self.saysWhatWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
-        self.bubbleImageHeight = self.saysWhatHeight + self.bubbleImageInsets.top + self.bubbleImageInsets.bottom
-         */
+        
+
+        self.saysWhatHeight = self.titleHeight + imageHeight + descriptionHeight
+        self.bubbleImageHeight = self.saysWhatHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
+        
+        self.cellHeightByBubble = bubbleImageHeight + bubbleInsets.top + bubbleImageInsets.bottom
+        
     }
 
 }
@@ -367,7 +405,7 @@ class ChatViewModel {
     static let triggerGreetForNewUser = "【端用户首次打开信号，内容无法显示】"
     static let triggerNewsContent = "【端用户首次打开信号，推荐新闻】"
     
-
+    static var screenWidth:CGFloat? = nil
     static func buildCellData(_ oneTalkData:[String:String]) -> CellData {//根据historyTalkData数据得到CellData数据
         //let oneTalkData = self.historyTalkData[row]
         var saysWhat: SaysWhat

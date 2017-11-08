@@ -753,7 +753,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
      */
     override func viewDidAppear(_ animated: Bool) {
         print("View Did Appear");
-
+        Track.screenView("Chat/Xiaobing")
     }
  
 

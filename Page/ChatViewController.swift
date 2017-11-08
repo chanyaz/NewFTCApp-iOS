@@ -40,7 +40,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 print("showingCellDataNum:\(showingCellData.count)")
                 //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
                 //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-                self.tableViewScrollToBottom(animated: true)
+                self.tableViewScrollToBottom(animated: true,delay: 100)
                 //
                 print("scroll3")
              
@@ -78,7 +78,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
     }
     @IBOutlet weak var talkListBlock: UITableView!
-
+    var talkListTableHeight:CGFloat = 0.0
+    
     @IBOutlet weak var bottomBar: UIView!
     
     @IBOutlet weak var inputBlock: UITextField!
@@ -407,7 +408,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet var keyboardHeightLayoutConstraint: NSLayoutConstraint!
     
     @objc func keyboardNotification(notification:NSNotification) {
-        self.tableViewScrollToBottom(animated: false)
+        self.tableViewScrollToBottom(animated: true, delay: 0)
         if let userInfo = notification.userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
@@ -417,19 +418,21 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if (endFrame?.origin.y)! >= UIScreen.main.bounds.size.height {
                 self.keyboardHeightLayoutConstraint.constant = 0.0
                 self.talkListBlockTopLayoutConstraint.constant = 0.0
-                //self.talkListBlockBottomLayoutConstraint.constant = 0.0
+                self.talkListBlockBottomLayoutConstraint.constant = 0.0
             } else {
                 self.keyboardHeightLayoutConstraint.constant = endFrame?.size.height ?? 0.0
                 let keyboardHeight = self.keyboardHeightLayoutConstraint.constant
-                let tableBlankHeight = self.talkListBlock.frame.height - (self.talkListBlock.contentSize.height + keyboardHeight)
+                let tableBlankHeight = self.talkListTableHeight - (self.talkListBlock.contentSize.height + keyboardHeight)
+           
                 if tableBlankHeight >= 0 {
                     self.talkListBlockTopLayoutConstraint.constant = 0.0
                 } else if (tableBlankHeight < 0 && tableBlankHeight > -keyboardHeight) {
                     self.talkListBlockTopLayoutConstraint.constant = tableBlankHeight
                 } else {
                     self.talkListBlockTopLayoutConstraint.constant = 0.0 - keyboardHeight
-                    self.talkListBlockBottomLayoutConstraint.constant = 0.0
                 }
+                self.talkListBlockBottomLayoutConstraint.constant = 0.0
+            
             }
             UIView.animate(withDuration: duration,
                            delay: TimeInterval(0),
@@ -588,10 +591,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     
     //FIXME:要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部。此外，还需要增加调用self.modifyTheOffset来调整，但是这样会使滚动不连贯.
-    func tableViewScrollToBottom(animated:Bool) {
+    func tableViewScrollToBottom(animated:Bool, delay dedayMs:Int) {
         //self.modifiyTheOffset(animated: animated)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(dedayMs)) {
                 //self.modifiyTheOffset(animated: animated)
                 let showingCellDataCount = self.showingCellData.count
                 if showingCellDataCount > 0 {
@@ -664,6 +667,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
         
+        self.talkListTableHeight = self.talkListBlock.frame.height
         
         do {
             if let savedTalkData = Download.readFile("chatHistoryTalk", for: .cachesDirectory, as: "json") {
@@ -706,7 +710,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("Chat showingCellData Num:\(self.showingCellData.count)")
         self.talkListBlock.reloadData()
         self.isTalkListFirstReloadData = false
-        self.tableViewScrollToBottom(animated: false)
+        self.tableViewScrollToBottom(animated: false, delay: 100)
         
         let iceUserInfo = self.iceUserInfo
         let triggerGreetContent = iceUserInfo.triggerGreetContent

@@ -56,7 +56,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         // self.clearsSelectionOnViewWillAppear = false
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
-        if dataObject["api"] != nil || ["follow", "read", "clip", "iap", "setting", "options"].contains(dataObjectType){
+        if dataObject["api"] != nil || ["follow", "read", "iap", "setting", "options"].contains(dataObjectType){
             //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             
@@ -243,7 +243,25 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         self.webView?.load(request)
                     }
                 }
-            }  else if let listAPI = dataObject["listapi"] {
+            } else if dataObjectType == "clip" {
+                if let url = URL(string: urlString) {
+                    let request = URLRequest(url: url)
+                    let fileName = GB2Big5.convertHTMLFileName("myft")
+                    if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html"){
+                        do {
+                            let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                            let storyHTML = GB2Big5.convert(storyTemplate as String)
+                            let listContentString = Download.getHTMLCode("clip")
+                            let clipHTML = storyHTML.replacingOccurrences(of: "{list-content}", with: listContentString)
+                            self.webView?.loadHTMLString(clipHTML, baseURL:url)
+                        } catch {
+                            self.webView?.load(request)
+                        }
+                    } else {
+                        self.webView?.load(request)
+                    }
+                }
+            } else if let listAPI = dataObject["listapi"] {
                 let fileExtension = "html"
                 requestNewContentForWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
                 renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
@@ -597,7 +615,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         if let api = dataObject["api"] {
             getAPI(api)
         } else if let type = dataObject["type"] {
-            if ["clip", "read"].contains(type) {
+            if ["read"].contains(type) {
                 let contentSections = ContentSection(
                     title: "",
                     items: Download.get(type),

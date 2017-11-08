@@ -372,6 +372,7 @@ struct AppNavigation {
                 [
                     "title": "收藏",
                     "type": "clip",
+                    "url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
                     "screenName":"myft",
                     "compactLayout": ""
                 ],

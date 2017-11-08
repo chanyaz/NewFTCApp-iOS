@@ -751,7 +751,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 }
             }
         } else {
-            // MARK: - If it is other types of content such video and interacrtive features
+            // MARK: - If it is other types of content such video and interactive features
             if let id = dataObject?.id, let type = dataObject?.type {
                 let urlStringOriginal: String
                 if  dataObject?.audioFileUrl != nil && type == "interactive" {

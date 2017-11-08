@@ -65,7 +65,8 @@ struct APIs {
         let domain = getUrlStringInLanguage(domains)
         
         switch type {
-        case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
+        case "story":
+            urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         case "tag":
             if let encodedTag = id.removingPercentEncoding?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
                 urlString = "\(domain)\(type)/\(encodedTag)?type=json"

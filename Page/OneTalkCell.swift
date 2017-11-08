@@ -13,12 +13,9 @@ class OneTalkCell: UITableViewCell {
     // 文本背景气泡
     var bubbleImageView = UIImageView()
     
-    var saysImageView = UIImageView()
-    var coverView = UIImageView()
+  
     var cellData = CellData()
     
-    var coverWidth:CGFloat = 0.0
-    var coverHeight:CGFloat = 0.0
     var cardUrl = ""
     
     // MARK: 重写Frame
@@ -29,7 +26,6 @@ class OneTalkCell: UITableViewCell {
             super.frame = newFrame
         }
     }
-    
     init(_ data:CellData, reuseId cellId:String) {//NOTE: View通过ChatViewController得到Model的数据
         self.cellData = data
         super.init(style: UITableViewCellStyle.default, reuseIdentifier:cellId)
@@ -155,10 +151,10 @@ class OneTalkCell: UITableViewCell {
                 }
             } else { //MARK:可能性3：从URL请求加载
                 //print("Ice Load image from request")
-                self.asyncBuildImage(url: imageUrl, width: self.coverWidth, height: self.coverHeight, completion: { downloadedImg in
+                self.asyncBuildImage(url: imageUrl, width: self.cellData.imageWidth, height: self.cellData.imageHeight, completion: { downloadedImg in
                     if let realImage = downloadedImg {
                         DispatchQueue.main.async {
-                            UIView.transition(with: self.coverView,
+                            UIView.transition(with: imageView,
                                               duration: 0.3,
                                               options: .transitionCrossDissolve,
                                               animations: {
@@ -180,7 +176,7 @@ class OneTalkCell: UITableViewCell {
         self.backgroundColor = UIColor(hex: "#fff1e0")
 
         let cutlineContentView = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.cellData.cutlineCellHeight))
-        cutlineContentView.text = "———— 以上为历史聊天内容 ————"
+        cutlineContentView.text = self.cellData.cutlineCellContent
         cutlineContentView.font = self.cellData.cutlineFont
         cutlineContentView.textColor = self.cellData.cutlineColor
         cutlineContentView.textAlignment = .center
@@ -220,8 +216,8 @@ class OneTalkCell: UITableViewCell {
     }
     private func buildTheCell() {
         self.selectionStyle = UITableViewCellSelectionStyle.none
-        
-        
+   
+
         self.backgroundColor = UIColor(hex: "#fff1e0")
 
         let cellFrameWidth: CGFloat
@@ -238,166 +234,113 @@ class OneTalkCell: UITableViewCell {
             cellFrameMinY = self.frame.minY
             self.cellData.cellFrameMinY = cellFrameMinY
         }
-        // 显示头像
+        
+        ///MARK:头像
         let whoSays = self.cellData.whoSays
-        if(self.cellData.headImage != "") {
-            let headImageViewX:CGFloat
-            let headImageViewY:CGFloat
-            // 头像高、宽都为50CGFloat
-            // 头像的位置x: robot头像在左，you头像在右
-            if let headImageViewXStored = self.cellData.headImageViewX {
-                headImageViewX = headImageViewXStored
-            } else {
-                headImageViewX = (whoSays == .robot) ? self.cellData.cellInsets.left : cellFrameWidth - self.cellData.headImageLength - self.cellData.cellInsets.right
-                self.cellData.headImageViewX = headImageViewX
-            }
-            
-            if let headImageViewYStored = self.cellData.headImageViewY {
-                headImageViewY = headImageViewYStored
-            } else {
-                headImageViewY = cellFrameMinY + self.cellData.cellInsets.top
-                self.cellData.headImageViewY = headImageViewY
-            }
-            let headImageView = UIImageView(frame: CGRect(x:headImageViewX,y:headImageViewY,width:self.cellData.headImageLength,height:self.cellData.headImageLength))
-            if let headUIImageStored = self.cellData.headUIImage {
-                headImageView.image = headUIImageStored
-            } else {
-                let headUIImage = UIImage(named: self.cellData.headImage)
-                headImageView.image = headUIImage
-                self.cellData.headUIImage = headUIImage
-            }
-            self.addSubview(headImageView)
-      }
+        let headImage = self.cellData.headImage
+        let headImageViewX:CGFloat
+        let headImageViewY:CGFloat
+        // 头像高、宽都为50CGFloat
+        // 头像的位置x: robot头像在左，you头像在右
         
-        
-        // 根据self.frame尺寸得到相关尺寸
-        let maxBubbleImageWidth:CGFloat
-        if let maxBubbleImageStored = self.cellData.maxBubbleImageWidth {
-            maxBubbleImageWidth = maxBubbleImageStored
+        if let headImageViewXStored = self.cellData.headImageViewX {
+            headImageViewX = headImageViewXStored
         } else {
-            maxBubbleImageWidth = cellFrameWidth - self.cellData.headImageLength - self.cellData.cellInsets.left - self.cellData.cellInsets.right - self.cellData.bubbleInsets.right - self.cellData.bubbleShorterLen - self.cellData.headImageLength
-            self.cellData.maxBubbleImageWidth = maxBubbleImageWidth
+            headImageViewX = (whoSays == .robot) ? self.cellData.cellInsets.left : cellFrameWidth - self.cellData.headImageLength - self.cellData.cellInsets.right
+            self.cellData.headImageViewX = headImageViewX
+        }
+        if let headImageViewYStored = self.cellData.headImageViewY {
+            headImageViewY = headImageViewYStored
+        } else {
+            headImageViewY = cellFrameMinY + self.cellData.cellInsets.top
+            self.cellData.headImageViewY = headImageViewY
         }
 
-        let maxTextWidth = maxBubbleImageWidth - self.cellData.bubbleImageInsets.left - self.cellData.bubbleImageInsets.right
-        let imageWidth = maxTextWidth
-        let imageHeight = maxTextWidth / 16 * 9
-        let coverWidth = maxTextWidth
-        let coverHeight = maxTextWidth / 16 * 9
-        self.coverWidth = coverWidth
-        self.coverHeight = coverHeight
+        let headImageView = UIImageView(frame: CGRect(x:headImageViewX, y:headImageViewY,width:self.cellData.headImageLength,height:self.cellData.headImageLength))
+        if let headUIImageStored = self.cellData.headUIImage {
+            headImageView.image = headUIImageStored
+        } else {
+            let headUIImage = UIImage(named: headImage)
+            headImageView.image = headUIImage
+            self.cellData.headUIImage = headUIImage
+        }
+        self.addSubview(headImageView)
+       
         
-        //默认是按照maxBubbleImage来，text类型需要重新计算bubbleImageWidth
-        let bubbleImageY:CGFloat
+        ///MARK:Bubble基本尺寸
+         //默认是按照maxBubbleImage来，text类型需要重新计算bubbleImageWidth
+        let bubbleImageY:CGFloat//只能在此处cell view中计算得到，算好了存储到cellData中下次使用
+        let saysWhatY:CGFloat//只能在此处cell view中计算得到，算好了存储到cellData中下次使用
         if let bubbleImageYStored = self.cellData.bubbleImageY {
             bubbleImageY = bubbleImageYStored
         } else {
             bubbleImageY = cellFrameMinY + self.cellData.bubbleInsets.top
             self.cellData.bubbleImageY = bubbleImageY
         }
-        //let bubbleImageY = self.frame.minY + self.cellData.bubbleInsets.top
-        
-        let saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
+        if let saysWhatYStored = self.cellData.saysWhatY {
+            saysWhatY = saysWhatYStored
+        } else {
+            saysWhatY = bubbleImageY + self.cellData.bubbleImageInsets.top
+            self.cellData.saysWhatY = saysWhatY
+        }
         
     
         
-        // 显示对话内容
+        // MARK ：对话内容
         if self.cellData.saysType == .text {
-            //Step1:动态计算文字宽、高
-            let atts = [NSAttributedStringKey.font: self.cellData.normalFont]
-            let saysWhatNSString = self.cellData.saysWhat.content as NSString
-            
-            let size = saysWhatNSString.boundingRect(
-                with: CGSize(width: maxTextWidth, height:self.cellData.maxTextHeight),
-                options: .usesLineFragmentOrigin,
-                attributes: atts,
-                context: nil)
-            let computeWidth = max(size.size.width,20)
-            let computeHeight = size.size.height
-            
-            //Step2：根据文字宽、高得到气泡图片的宽、高、X,添加气泡View
-            let bubbleImageWidth = computeWidth + self.cellData.bubbleImageInsets.left + self.cellData.bubbleImageInsets.right
-            let bubbleImageHeight = computeHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
-            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : cellFrameWidth - self.cellData.headImageWithInsets - bubbleImageWidth
-            self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
-            self.addBubbleView(x: bubbleImageX, y: bubbleImageY, width: bubbleImageWidth, height: bubbleImageHeight)
-            
-            //Step3：添加文字内容View
-            let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
-            let saysContentView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: computeWidth, height: computeHeight))
+         
+            self.addBubbleView(x: self.cellData.bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight)
+            let saysContentView = UILabel(frame: CGRect(x: self.cellData.saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
             saysContentView.numberOfLines = 0
             saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
             saysContentView.text = self.cellData.saysWhat.content
             saysContentView.font = self.cellData.normalFont
             saysContentView.textColor = self.cellData.textColor
-             //saysContentView.backgroundColor = UIColor.green
             self.addSubview(saysContentView)
             
             
         } else if self.cellData.saysType == .image {
-            //Step1：根据最大宽、高得到气泡图片的宽、高、X,添加气泡View
-            let bubbleImageWidth = maxBubbleImageWidth
-            let bubbleImageHeight = imageHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
-             self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
-            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : cellFrameWidth - self.cellData.headImageWithInsets - bubbleImageWidth
-            self.addBubbleView(x: bubbleImageX, y: bubbleImageY, width: bubbleImageWidth, height: bubbleImageHeight)
-            
-            //Step2：添加图片内容View
-            let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
-            self.saysImageView.frame = CGRect(x: saysWhatX, y: saysWhatY, width: imageWidth, height: imageHeight)
-            self.saysImageView.backgroundColor = UIColor(hex: "#f7e9d8")
-            self.saysImageView.contentMode = .scaleToFill
-            self.loadRelatedImage(theImageUrl: self.cellData.saysWhat.url, theImageView: self.saysImageView)
-            self.addSubview(self.saysImageView)
+            self.addBubbleView(x: self.cellData.bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight)
+            let saysImageView = UIImageView(frame: CGRect(x: self.cellData.saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
+            //self.saysImageView.backgroundColor = UIColor(hex: "#f7e9d8")
+            saysImageView.image = UIImage(named: "imageDefault.jpeg")
+            saysImageView.contentMode = .scaleToFill
+            self.loadRelatedImage(theImageUrl: self.cellData.saysWhat.url, theImageView: saysImageView)
+            self.addSubview(saysImageView)
             
             
         } else if self.cellData.saysType == .card {
 
-            
-            // Step1:计算几个View的相关尺寸
-            var descriptionWidth = CGFloat(0)
-            var descriptionHeight = CGFloat(0)
-            var descriptionY = CGFloat(0)
-            /// titleView:
-            let atts = [NSAttributedStringKey.font: self.cellData.titleFont]
-            let titleNSString = self.cellData.saysWhat.title as NSString
-            let size = titleNSString.boundingRect(
-                with: CGSize(width: maxTextWidth, height:self.cellData.maxTextHeight),
-                options: .usesLineFragmentOrigin,
-                attributes: atts,
-                context: nil)
-            let titleWidth = size.size.width
-            let titleHeight = size.size.height
+            //MARK：Step1: 计算几个只能在这里计算的y尺寸
             /// coverView:
-            let coverY = saysWhatY + titleHeight
-            /// descriptionView:
-            if(self.cellData.saysWhat.description != "") {
-                let descriptionAtts = [NSAttributedStringKey.font: self.cellData.descriptionFont]
-                let descriptionNSString = self.cellData.saysWhat.description as NSString
-                let descriptionSize = descriptionNSString.boundingRect(
-                    with: CGSize(width:maxTextWidth, height:self.cellData.maxTextHeight),
-                    options: .usesLineFragmentOrigin,
-                    attributes: descriptionAtts,
-                    context: nil)
-                descriptionWidth = descriptionSize.size.width
-                descriptionHeight = descriptionSize.size.height
-                descriptionY = coverY + coverHeight
+            let coverY:CGFloat
+            if let coverYStored = self.cellData.coverY {
+                coverY = coverYStored
+            } else {
+                coverY = saysWhatY + self.cellData.titleHeight
+                self.cellData.coverY = coverY
             }
-            /// bubbleView:
-            let bubbleImageWidth = maxBubbleImageWidth
-            let bubbleImageHeight = titleHeight + coverHeight + descriptionHeight + self.cellData.bubbleImageInsets.top + self.cellData.bubbleImageInsets.bottom
-       
             
-            self.cellData.cellHeightByBubble = bubbleImageHeight + self.cellData.bubbleInsets.top + self.cellData.bubbleImageInsets.bottom
-            let bubbleImageX = (whoSays == .robot) ? self.cellData.headImageWithInsets : cellFrameWidth - self.cellData.headImageWithInsets - bubbleImageWidth
+            /// descriptionView:
+            let descriptionY:CGFloat
+            if(self.cellData.saysWhat.description != "") {
+                if let descriptionYStored = self.cellData.descriptionY {
+                    descriptionY = descriptionYStored
+                } else {
+                    descriptionY = coverY + self.cellData.imageHeight
+                    self.cellData.descriptionY = descriptionY
+                }
+               
+            } else {
+                descriptionY = 0
+            }
             
-            // Step2:依次添加这几个View
+            //MARK: Step2: 依次添加View
             /// bubbleView:
-            self.addBubbleView(x: bubbleImageX, y: bubbleImageY, width: bubbleImageWidth, height: bubbleImageHeight)
+            self.addBubbleView(x: self.cellData.bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height:self.cellData.bubbleImageHeight )
             
             /// titleView:
-            let saysWhatX = bubbleImageX + self.cellData.bubbleImageInsets.left
-            let titleView = UILabel(frame: CGRect(x: saysWhatX, y: saysWhatY, width: titleWidth, height: titleHeight))
+            let titleView = UILabel(frame: CGRect(x: self.cellData.saysWhatX, y: saysWhatY, width: self.cellData.titleWidth, height: self.cellData.titleHeight))
             titleView.numberOfLines = 0
             titleView.lineBreakMode = NSLineBreakMode.byWordWrapping
             titleView.text = self.cellData.saysWhat.title
@@ -406,23 +349,19 @@ class OneTalkCell: UITableViewCell {
             self.addSubview(titleView)
             
             /// coverView:
-            coverView = UIImageView(frame: CGRect(x:saysWhatX, y:coverY,width:coverWidth,height:coverHeight))
-            coverView.backgroundColor = UIColor(hex: "#f7e9d8")
+            let coverView = UIImageView(frame: CGRect(x:self.cellData.saysWhatX, y:coverY,width:self.cellData.imageWidth,height:self.cellData.imageHeight))
             coverView.image = UIImage(named: "imageDefault.jpeg")
             coverView.contentMode = .scaleToFill
-            
-      
-            self.loadRelatedImage(theImageUrl: self.cellData.saysWhat.coverUrl, theImageView: self.coverView)
+            self.loadRelatedImage(theImageUrl: self.cellData.saysWhat.coverUrl, theImageView: coverView)
             self.addSubview(coverView)
             
             /// descriptionView:
             if(self.cellData.saysWhat.description != "") {
-                let descriptionView = UILabel(frame: CGRect(x: saysWhatX, y: descriptionY, width: descriptionWidth, height: descriptionHeight))
+                let descriptionView = UILabel(frame: CGRect(x: self.cellData.saysWhatX, y: descriptionY, width: self.cellData.descriptionWidth, height: self.cellData.descriptionHeight))
                 descriptionView.numberOfLines = 0
                 descriptionView.lineBreakMode = NSLineBreakMode.byWordWrapping
                 descriptionView.text = self.cellData.saysWhat.description
                 descriptionView.font = self.cellData.descriptionFont
-                //descriptionView.backgroundColor = UIColor.green
                 descriptionView.textColor = self.cellData.textColor
                 self.addSubview(descriptionView)
             }
@@ -430,7 +369,6 @@ class OneTalkCell: UITableViewCell {
             // Step3:添加点击跳转方法
             self.bubbleImageView.isUserInteractionEnabled = true//打开用户交互属性
             self.cardUrl = self.cellData.saysWhat.url
-            
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapClick))
             self.bubbleImageView.addGestureRecognizer(tap)
             

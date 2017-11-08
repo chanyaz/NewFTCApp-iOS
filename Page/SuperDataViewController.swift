@@ -291,6 +291,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             let urlString = APIs.convert(urlStringOriginal)
             let fileExtension = "html"
             requestNewContentForWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+        } else {
+            activityIndicator.removeFromSuperview()
+            refreshControl.endRefreshing()
         }
     }
     

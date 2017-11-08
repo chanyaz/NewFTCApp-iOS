@@ -177,6 +177,13 @@ struct AppNavigation {
                     "screenName":"homepage/ftintelligence"
                 ],
                 [
+                    "title": "文章收藏",
+                    "type": "clip",
+                    "url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
+                    "screenName":"myft",
+                    "compactLayout": ""
+                ],
+                [
                     "title": "FT电子书",
                     "type": "iap",
                     "subtype":"ebook",

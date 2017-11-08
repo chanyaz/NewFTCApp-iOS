@@ -251,7 +251,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                             let storyHTML = GB2Big5.convert(storyTemplate as String)
-                            let listContentString = Download.getHTMLCode("clip")
+                            let listContentString = APIs.getHTMLCode("clip")
                             let clipHTML = storyHTML.replacingOccurrences(of: "{list-content}", with: listContentString)
                             self.webView?.loadHTMLString(clipHTML, baseURL:url)
                         } catch {

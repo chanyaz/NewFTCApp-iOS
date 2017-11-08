@@ -423,10 +423,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 self.keyboardHeightLayoutConstraint.constant = endFrame?.size.height ?? 0.0
                 let keyboardHeight = self.keyboardHeightLayoutConstraint.constant
                 let tableBlankHeight = self.talkListTableHeight - (self.talkListBlock.contentSize.height + keyboardHeight)
-                print("Keyboard height:\(keyboardHeight)")
-                print("Keyboard tableContentHeight:\(self.talkListBlock.contentSize.height)")
-                print("Keyboard tableFrameHeight:\(self.talkListBlock.frame.height)")
-                print("Keyboard tableBlankHeight:\(tableBlankHeight)")
+           
                 if tableBlankHeight >= 0 {
                     self.talkListBlockTopLayoutConstraint.constant = 0.0
                 } else if (tableBlankHeight < 0 && tableBlankHeight > -keyboardHeight) {
@@ -435,9 +432,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     self.talkListBlockTopLayoutConstraint.constant = 0.0 - keyboardHeight
                 }
                 self.talkListBlockBottomLayoutConstraint.constant = 0.0
-                print("Keyboard keyboardHeightLayoutConstraint:\(self.keyboardHeightLayoutConstraint.constant) ")
-                print("Keyboard talkListBlockTopLayoutConstraint:\(self.talkListBlockTopLayoutConstraint.constant)")
-                print("Keyboard talkListBlockBottomLayoutConstraint:\(self.talkListBlockBottomLayoutConstraint.constant)")
+            
             }
             UIView.animate(withDuration: duration,
                            delay: TimeInterval(0),

@@ -597,7 +597,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         if let api = dataObject["api"] {
             getAPI(api)
         } else if let type = dataObject["type"] {
-            if type == "clip" || type == "read" {
+            if ["clip", "read"].contains(type) {
                 let contentSections = ContentSection(
                     title: "",
                     items: Download.get(type),

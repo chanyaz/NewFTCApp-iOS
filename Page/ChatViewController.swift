@@ -78,7 +78,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
     }
     @IBOutlet weak var talkListBlock: UITableView!
-
+    var talkListTableHeight:CGFloat = 0.0
+    
     @IBOutlet weak var bottomBar: UIView!
     
     @IBOutlet weak var inputBlock: UITextField!
@@ -417,19 +418,26 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if (endFrame?.origin.y)! >= UIScreen.main.bounds.size.height {
                 self.keyboardHeightLayoutConstraint.constant = 0.0
                 self.talkListBlockTopLayoutConstraint.constant = 0.0
-                //self.talkListBlockBottomLayoutConstraint.constant = 0.0
+                self.talkListBlockBottomLayoutConstraint.constant = 0.0
             } else {
                 self.keyboardHeightLayoutConstraint.constant = endFrame?.size.height ?? 0.0
                 let keyboardHeight = self.keyboardHeightLayoutConstraint.constant
-                let tableBlankHeight = self.talkListBlock.frame.height - (self.talkListBlock.contentSize.height + keyboardHeight)
+                let tableBlankHeight = self.talkListTableHeight - (self.talkListBlock.contentSize.height + keyboardHeight)
+                print("Keyboard height:\(keyboardHeight)")
+                print("Keyboard tableContentHeight:\(self.talkListBlock.contentSize.height)")
+                print("Keyboard tableFrameHeight:\(self.talkListBlock.frame.height)")
+                print("Keyboard tableBlankHeight:\(tableBlankHeight)")
                 if tableBlankHeight >= 0 {
                     self.talkListBlockTopLayoutConstraint.constant = 0.0
                 } else if (tableBlankHeight < 0 && tableBlankHeight > -keyboardHeight) {
                     self.talkListBlockTopLayoutConstraint.constant = tableBlankHeight
                 } else {
                     self.talkListBlockTopLayoutConstraint.constant = 0.0 - keyboardHeight
-                    self.talkListBlockBottomLayoutConstraint.constant = 0.0
                 }
+                self.talkListBlockBottomLayoutConstraint.constant = 0.0
+                print("Keyboard keyboardHeightLayoutConstraint:\(self.keyboardHeightLayoutConstraint.constant) ")
+                print("Keyboard talkListBlockTopLayoutConstraint:\(self.talkListBlockTopLayoutConstraint.constant)")
+                print("Keyboard talkListBlockBottomLayoutConstraint:\(self.talkListBlockBottomLayoutConstraint.constant)")
             }
             UIView.animate(withDuration: duration,
                            delay: TimeInterval(0),
@@ -664,6 +672,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.keyboardAppearance = .light//指定键盘外观.dark/.default/.light/.alert
         self.inputBlock.returnKeyType = .send//指定Return键上显示
         
+        self.talkListTableHeight = self.talkListBlock.frame.height
         
         do {
             if let savedTalkData = Download.readFile("chatHistoryTalk", for: .cachesDirectory, as: "json") {

@@ -417,11 +417,19 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if (endFrame?.origin.y)! >= UIScreen.main.bounds.size.height {
                 self.keyboardHeightLayoutConstraint.constant = 0.0
                 self.talkListBlockTopLayoutConstraint.constant = 0.0
-                self.talkListBlockBottomLayoutConstraint.constant = 0.0
+                //self.talkListBlockBottomLayoutConstraint.constant = 0.0
             } else {
                 self.keyboardHeightLayoutConstraint.constant = endFrame?.size.height ?? 0.0
-                self.talkListBlockTopLayoutConstraint.constant = 0.0 - self.keyboardHeightLayoutConstraint.constant
-                self.talkListBlockBottomLayoutConstraint.constant = 0.0
+                let keyboardHeight = self.keyboardHeightLayoutConstraint.constant
+                let tableBlankHeight = self.talkListBlock.frame.height - (self.talkListBlock.contentSize.height + keyboardHeight)
+                if tableBlankHeight >= 0 {
+                    self.talkListBlockTopLayoutConstraint.constant = 0.0
+                } else if (tableBlankHeight < 0 && tableBlankHeight > -keyboardHeight) {
+                    self.talkListBlockTopLayoutConstraint.constant = tableBlankHeight
+                } else {
+                    self.talkListBlockTopLayoutConstraint.constant = 0.0 - keyboardHeight
+                    self.talkListBlockBottomLayoutConstraint.constant = 0.0
+                }
             }
             UIView.animate(withDuration: duration,
                            delay: TimeInterval(0),
@@ -444,29 +452,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let currentRow = indexPath.row
-        //let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
         let cellData = self.showingCellData[currentRow]
         let cell = OneTalkCell(cellData, reuseId:"Talk")
-        /*
-        if (cellData.saysWhat.type == .card) {
-            self.asyncBuildImage(url: cellData.saysWhat.coverUrl, completion: { downloadedImg in
-                if let realImage = downloadedImg {
-                    //cellData.downLoadImage = realImage
-                    cell.coverView.image = realImage
-                  
-                }
-            })
-        } else if (cellData.saysWhat.type == .image) {
-            self.asyncBuildImage(url: cellData.saysWhat.url, completion: {
-                downloadedImg in
-                
-                if let realImage = downloadedImg { //如果成功获取了图片
-                    cell.saysImageView.image = realImage
-                    
-                }
-            })
-        }
-         */
+       
         return cell
         
     }
@@ -601,16 +589,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     //FIXME:要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部。此外，还需要增加调用self.modifyTheOffset来调整，但是这样会使滚动不连贯.
     func tableViewScrollToBottom(animated:Bool) {
-        self.modifiyTheOffset(animated: animated)
+        //self.modifiyTheOffset(animated: animated)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-                self.modifiyTheOffset(animated: animated)
+                //self.modifiyTheOffset(animated: animated)
                 let showingCellDataCount = self.showingCellData.count
                 if showingCellDataCount > 0 {
                     let indexPath = IndexPath(row: showingCellDataCount-1, section: 0)
                     self.talkListBlock.scrollToRow(at: indexPath, at: .top, animated: animated)
-                    
-                    print("scroll1")
                     self.talkListBlock.layoutIfNeeded();
                 }
  

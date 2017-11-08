@@ -231,6 +231,8 @@
 		605750FB1F15B06700552DAC /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750FA1F15B06700552DAC /* AdView.swift */; };
 		606FD1491FB003540087AE75 /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD1471FB003530087AE75 /* help.html */; };
 		606FD14A1FB003540087AE75 /* help-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD1481FB003540087AE75 /* help-big5.html */; };
+		606FD14D1FB2B2550087AE75 /* myft-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD14B1FB2B2540087AE75 /* myft-big5.html */; };
+		606FD14E1FB2B2550087AE75 /* myft.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD14C1FB2B2550087AE75 /* myft.html */; };
 		607094AD1EE9436900760A60 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AC1EE9436900760A60 /* Tabs.swift */; };
 		607094AF1EE943A900760A60 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AE1EE943A900760A60 /* Channels.swift */; };
 		6072F9F31F57ED280035AD92 /* IAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6072F9F21F57ED280035AD92 /* IAP.swift */; };
@@ -540,6 +542,8 @@
 		605750FA1F15B06700552DAC /* AdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
 		606FD1471FB003530087AE75 /* help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = help.html; path = FTChinese/help.html; sourceTree = "<group>"; };
 		606FD1481FB003540087AE75 /* help-big5.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "help-big5.html"; path = "FTChinese/help-big5.html"; sourceTree = "<group>"; };
+		606FD14B1FB2B2540087AE75 /* myft-big5.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "myft-big5.html"; path = "FTChinese/myft-big5.html"; sourceTree = "<group>"; };
+		606FD14C1FB2B2550087AE75 /* myft.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = myft.html; path = FTChinese/myft.html; sourceTree = "<group>"; };
 		607094AC1EE9436900760A60 /* Tabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		607094AE1EE943A900760A60 /* Channels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
 		6072F9F21F57ED280035AD92 /* IAP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAP.swift; sourceTree = "<group>"; };
@@ -794,6 +798,7 @@
 		50DA6E831F4037D0006B4CDE /* HTML */ = {
 			isa = PBXGroup;
 			children = (
+				606FD14C1FB2B2550087AE75 /* myft.html */,
 				60D8F1FE1F71086A00A6FB72 /* account.html */,
 				608502571F8B61BC00C333A2 /* list.html */,
 				50DA6E801F4037C8006B4CDE /* story.html */,
@@ -804,6 +809,7 @@
 				606FD1471FB003530087AE75 /* help.html */,
 				601C41791F99BAC3002D26B2 /* account-big5.html */,
 				601C41751F99BAC2002D26B2 /* ebook-big5.html */,
+				606FD14B1FB2B2540087AE75 /* myft-big5.html */,
 				601C41781F99BAC3002D26B2 /* html-book-big5.html */,
 				601C41771F99BAC3002D26B2 /* list-big5.html */,
 				601C41741F99BAC2002D26B2 /* register-big5.html */,
@@ -1705,6 +1711,7 @@
 				AF64F5791F58245300AFAFFC /* youPortrait.png in Resources */,
 				60814F621F580FB200041801 /* BookCell.xib in Resources */,
 				60F1A5251F5E329E0007F9F3 /* BigImageCell.xib in Resources */,
+				606FD14D1FB2B2550087AE75 /* myft-big5.html in Resources */,
 				50C31B411F6DF2EF00F4CF61 /* OutOfBoxCoverCell.xib in Resources */,
 				602153C21F39A4390077A7AF /* cover.jpg in Resources */,
 				50C31B3B1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
@@ -1719,6 +1726,7 @@
 				602153C31F39A4390077A7AF /* mute.png in Resources */,
 				6019A9D31F4C457D00B8FB69 /* FollowCell.xib in Resources */,
 				60B8554A1F6A118600FE190E /* VideoCoverCell.xib in Resources */,
+				606FD14E1FB2B2550087AE75 /* myft.html in Resources */,
 				6054B2881F6628B300E34990 /* ThemeCoverCell.xib in Resources */,
 				601C41851F99BC36002D26B2 /* register-big5.html in Resources */,
 				60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */,

@@ -40,7 +40,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 print("showingCellDataNum:\(showingCellData.count)")
                 //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
                 //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-                self.tableViewScrollToBottom(animated: true)
+                self.tableViewScrollToBottom(animated: true,delay: 100)
                 //
                 print("scroll3")
              
@@ -407,7 +407,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet var keyboardHeightLayoutConstraint: NSLayoutConstraint!
     
     @objc func keyboardNotification(notification:NSNotification) {
-        self.tableViewScrollToBottom(animated: false)
+        self.tableViewScrollToBottom(animated: true, delay: 0)
         if let userInfo = notification.userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
@@ -588,10 +588,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     
     //FIXME:要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部。此外，还需要增加调用self.modifyTheOffset来调整，但是这样会使滚动不连贯.
-    func tableViewScrollToBottom(animated:Bool) {
+    func tableViewScrollToBottom(animated:Bool, delay dedayMs:Int) {
         //self.modifiyTheOffset(animated: animated)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(dedayMs)) {
                 //self.modifiyTheOffset(animated: animated)
                 let showingCellDataCount = self.showingCellData.count
                 if showingCellDataCount > 0 {
@@ -706,7 +706,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("Chat showingCellData Num:\(self.showingCellData.count)")
         self.talkListBlock.reloadData()
         self.isTalkListFirstReloadData = false
-        self.tableViewScrollToBottom(animated: false)
+        self.tableViewScrollToBottom(animated: false, delay: 100)
         
         let iceUserInfo = self.iceUserInfo
         let triggerGreetContent = iceUserInfo.triggerGreetContent

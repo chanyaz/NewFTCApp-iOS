@@ -57,6 +57,7 @@ class OneTalkCell: UITableViewCell {
                     }
                 }
                 topController.openLink(openUrl)
+                Track.event(category: "Chat/xiaobing", action: "Open story", label: "\(self.cardUrl)")
             }
         }
     }

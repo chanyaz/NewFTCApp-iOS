@@ -39,7 +39,7 @@ struct ShareHelper {
 
 
 extension UIViewController {
-    func launchActionSheet(for item: ContentItem) {
+    func launchActionSheet(for item: ContentItem, from sender: Any) {
         print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
         // MARK: - update some global variables
         ShareHelper.sharedInstance.webPageUrl = "\(Share.base)\(item.type)/\(item.id)?full=y#ccode=\(Share.CampaignCode.actionsheet)"
@@ -62,18 +62,18 @@ extension UIViewController {
             }
             activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
             
-            //TODO: - This might fail in iPad
-            self.present(activityVC, animated: true, completion: nil)
+            // MARK: Use this to support both iPhone and iPad
+            activityVC.modalPresentationStyle = UIModalPresentationStyle.popover
+            present(activityVC, animated: true, completion: nil)
             
-            
-            
-            
-            //            if UIDevice.current.userInterfaceIdiom == .pad {
-            //                //self.presentViewController(controller, animated: true, completion: nil)
-            //                let popup: UIPopoverController = UIPopoverController(contentViewController: activityVC)
-            //                popup.present(from: CGRect(x: fromViewController.view.frame.size.width / 2, y: fromViewController.view.frame.size.height / 4, width: 0, height: 0), in: fromViewController.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
-            //            } else {
-            //            }
+            let popoverPresentationController = activityVC.popoverPresentationController
+            if let sender = sender as? UIView {
+                popoverPresentationController?.sourceView = sender
+            } else if let sender = sender as? UIBarButtonItem {
+                popoverPresentationController?.barButtonItem = sender
+            } else {
+                popoverPresentationController?.sourceView = view
+            }
             
             // MARK: - Use the time between action sheet popped and share action clicked to grab the image icon
             if ShareHelper.sharedInstance.webPageImageIcon.range(of: "https://image.webservices.ft.com") == nil{

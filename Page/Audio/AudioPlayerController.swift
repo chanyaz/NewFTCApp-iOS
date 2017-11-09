@@ -211,7 +211,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     @objc func share(_ sender: UIButton) {
         if let item = item {
-            self.launchActionSheet(for: item)
+            launchActionSheet(for: item, from: sender)
         }
     }
     @objc func download(_ sender: Any) {

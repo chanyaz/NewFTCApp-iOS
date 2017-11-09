@@ -142,7 +142,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
          share.popupActionSheet(self as UIViewController, url: url)
          */
         if let item = item {
-            self.launchActionSheet(for: item)
+            launchActionSheet(for: item, from: sender)
         }
     }
     

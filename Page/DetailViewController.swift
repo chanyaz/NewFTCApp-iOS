@@ -23,7 +23,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     @IBOutlet weak var actionButton: UIBarButtonItem!
     @IBAction func actionSheet(_ sender: Any) {
         let item = contentPageData[currentPageIndex]
-        self.launchActionSheet(for: item)
+        launchActionSheet(for: item, from: sender)
     }
     
     @IBAction func launchComment(_ sender: Any) {

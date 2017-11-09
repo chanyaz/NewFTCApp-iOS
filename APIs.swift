@@ -157,7 +157,21 @@ struct APIs {
         return URLQueryItem(name: "webview", value: "ftcapp")
     }
     
-    
+    static func clip(_ id: String, type: String, action: String) -> String? {
+        if type == "story" {
+            let urlStringBase = "/index.php/users/"
+            let urlStringAction: String
+            if action == "save" {
+                urlStringAction = "addfavstory"
+            } else {
+                urlStringAction = "removefavstory"
+            }
+            let urlString = "\(urlStringBase)\(urlStringAction)/\(id)"
+            let jsCode = "updateFav('\(urlString)', '\(id)')"
+            return jsCode
+        }
+        return nil
+    }
     public static func getHTMLCode(_ from: String) -> String {
         let key = "Saved \(from)"
         let savedItems = UserDefaults.standard.array(forKey: key) as? [[String: String]] ?? [[String: String]]()

@@ -42,7 +42,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
                     } else {
                         direction = .reverse
                     }
-                    self.pageViewController!.setViewControllers(viewControllers, direction: direction, animated: true, completion: {done in })
+                    self.pageViewController?.setViewControllers(viewControllers, direction: direction, animated: true, completion: {done in })
                 } else {
                     print ("the user is panning, no need to update page view")
                 }

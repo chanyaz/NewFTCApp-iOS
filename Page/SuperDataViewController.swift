@@ -234,7 +234,13 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html"){
                         do {
                             let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                            let storyHTML = GB2Big5.convert(storyTemplate as String)
+                            var storyHTML = GB2Big5.convert(storyTemplate as String)
+                            var availableSocialLogins = [String]()
+                            if WXApi.isWXAppInstalled() {
+                                availableSocialLogins.append("wechat")
+                            }
+                            let availableSocialLoginsString = availableSocialLogins.joined(separator: ",")
+                            storyHTML = storyHTML.replacingOccurrences(of: "{showSocialLogins}", with: availableSocialLoginsString)
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             //self.webView?.load(request)
@@ -518,6 +524,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 self?.refreshControl.endRefreshing()
                 if let error = error {
                     print("Error searching : \(error)")
+                    Track.catchError("\(acturalUrlString) Request Error: \(error)", withFatal: 1)
                     return
                 }
                 if let results = results {

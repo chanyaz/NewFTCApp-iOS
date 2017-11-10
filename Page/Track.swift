@@ -35,4 +35,15 @@ struct Track {
         }
     }
     
+    public static func catchError(_ description: String, withFatal: NSNumber) {
+        for trackingId in GA.trackingIds {
+            let tracker = GAI.sharedInstance().tracker(withTrackingId: trackingId)
+            let builder = GAIDictionaryBuilder.createException(withDescription: description, withFatal: withFatal)
+            if let obj = builder?.build() as [NSObject : AnyObject]? {
+                tracker?.send(obj)
+                print ("send error: \(description) with fatal number of \(withFatal)")
+            }
+        }
+    }
+    
 }

@@ -524,6 +524,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 self?.refreshControl.endRefreshing()
                 if let error = error {
                     print("Error searching : \(error)")
+                    Track.catchError("\(acturalUrlString) Request Error: \(error)", withFatal: 1)
                     return
                 }
                 if let results = results {

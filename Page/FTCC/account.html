@@ -109,7 +109,7 @@ title:"首页"},BizSchool:{id:"01",title:"FT商学院"},Career:{id:"02",title:"�
         </div>
         <div class = "comment-input-section">
             <label><img src="http://static.ftchinese.com/images/png/accountPassword.png"/></label>
-            <input type="text" placeholder="请输入密码" autocorrect="off" name="password" id="password1" autocapitalize="off" class="user_id textinput password"/>
+            <input type="password" placeholder="请输入密码" autocorrect="off" name="password" id="password1" autocapitalize="off" class="user_id textinput password"/>
             <label class="password-eye" id = "accountEye"><img src="http://static.ftchinese.com/images/png/accountEye.png"/></label>
         </div>
         <!--<input type="submit" value="登录" class="ui-light-btn" onclick="login(1)"/> -->
@@ -136,10 +136,10 @@ title:"首页"},BizSchool:{id:"01",title:"FT商学院"},Career:{id:"02",title:"�
     var isShowPassword=false
     $('body').on('click', '#accountEye', function () {
         if (isShowPassword===false){
-            $('#password1').attr('type', 'password')
+            $('#password1').attr('type', 'text')
             isShowPassword=true
         }else{
-             $('#password1').attr('type', 'text')
+             $('#password1').attr('type', 'password')
              isShowPassword=false
         }
         

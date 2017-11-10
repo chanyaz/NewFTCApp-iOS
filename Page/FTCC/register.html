@@ -76,7 +76,7 @@ i&&i.stop&&i.stop.call(this,!0),t=o.length;t--;)o[t].elem===this&&o[t].queue===e
 
 
 <div  id="nologincomment" class="nologincomment">
-    <form method="post" action="/index.php/users/registeruser/ajax" id="signupForm"> 
+    <form method="post" action="" id="signupForm"> 
     <div class="container">
         <div class = "comment-logo-section">LOGO</div>
         <div class = "comment-input-section">
@@ -88,7 +88,7 @@ i&&i.stop&&i.stop.call(this,!0),t=o.length;t--;)o[t].elem===this&&o[t].queue===e
         <div class="register-instruction">用于登录ftcc，40字符以内</div>
         <div class = "comment-input-section">
             <label><img src="http://static.ftchinese.com/images/png/accountPassword.png"/></label>
-            <input type="text" placeholder="请输入密码" autocorrect="off" autocapitalize="off" autocapitalize="off" name="userPassword" id="userPassword" class=""/>
+            <input type="password" placeholder="请输入密码" autocorrect="off" autocapitalize="off" autocapitalize="off" name="userPassword" id="userPassword" class=""/>
             <label class="password-eye" id = "accountEye"><img src="http://static.ftchinese.com/images/png/accountEye.png"/></label>
         </div>
         <div class="register-hint" id = "password-hint">请输入正确密码</div>
@@ -109,10 +109,10 @@ i&&i.stop&&i.stop.call(this,!0),t=o.length;t--;)o[t].elem===this&&o[t].queue===e
     var isShowPassword=false
     $('body').on('click', '#accountEye', function () {
         if (isShowPassword===false){
-            $('#userPassword').attr('type', 'password')
+            $('#userPassword').attr('type', 'text')
             isShowPassword=true
         }else{
-             $('#userPassword').attr('type', 'text')
+             $('#userPassword').attr('type', 'password')
              isShowPassword=false
         }
         
@@ -165,6 +165,7 @@ i&&i.stop&&i.stop.call(this,!0),t=o.length;t--;)o[t].elem===this&&o[t].queue===e
             success: function(data) {
                 if (data === 'yes') {
                     $('#user-hint').css('display', 'block');
+                    $('#userPassword').css('background-color', 'green');
                     return;
                 }else{
                     $('#user-hint').css('display', 'none');
@@ -176,10 +177,30 @@ i&&i.stop&&i.stop.call(this,!0),t=o.length;t--;)o[t].elem===this&&o[t].queue===e
             }
         });
     }
+    
     function verifyEmailOrPassword(){
         var userName = $('#userName').val();
         var userPassword = $('#userPassword').val();
-        console.log("密码"+ userPassword);
+        $.ajax({
+            type: 'post',
+            url: '/index.php/users/registeruser/ajax',
+            dataType: 'json',
+            data: {
+                   email:userName,
+                   id:"signupForm",
+                   password:userPassword
+               },
+            success: function(data) {
+                 $('#userPassword').text(data);
+                 $('#userPassword').css('background-color', 'red')
+            },
+            error: function() {
+                presentAlert('注册失败', '请重新注册。');
+                return;
+            }
+        });
+
+        // console.log("密码"+ userPassword);
         if (userName === ''){
             $('#user-correct-check').css('display', 'block');
         }else{

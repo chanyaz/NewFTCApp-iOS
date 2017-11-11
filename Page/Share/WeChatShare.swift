@@ -67,6 +67,9 @@ class WeChatShare : UIActivity{
         message.description = ShareHelper.sharedInstance.webPageDescription
         var image = ShareHelper.sharedInstance.thumbnail
         image = image?.resizableImage(withCapInsets: UIEdgeInsets.zero)
+        if image == nil {
+            image = UIImage(named: "ShareIcon")
+        }
         message.setThumbImage(image)
         let webpageObj = WXWebpageObject()
         let shareUrl = ShareHelper.sharedInstance.webPageUrl.replacingOccurrences(

@@ -11,21 +11,27 @@ import UIKit
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
     
-    // MARK: Domain Name Mainly For List Pages
+    // MARK: Domain Name For APIs
     private static let htmlDomains = [
-        "https://danla2f5eudt1.cloudfront.net/",
-        "https://d2e90etfgpidmd.cloudfront.net/"
-    ]
-    
-    // MARK: Backup server for List Pages
-    private static let backupHTMLDomains = [
-        "https://d2noncecxepzyq.cloudfront.net/",
+        "https://d1budb999l6vta.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
     // MARK: Domain Name maily for stories
-    private static let domains = [
+    private static let backupHTMLDomains = [
         "https://d37m993yiqhccr.cloudfront.net/",
+        "https://d2e90etfgpidmd.cloudfront.net/"
+    ]
+    
+    // MARK: Backup server for List Pages
+    private static let backupHTMLDomains2 = [
+        "https://d2noncecxepzyq.cloudfront.net/",
+        "https://d2e90etfgpidmd.cloudfront.net/"
+    ]
+
+    // MARK: Backup server 3
+    private static let backupHTMLDomains3 = [
+        "https://danla2f5eudt1.cloudfront.net",
         "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
@@ -123,7 +129,7 @@ struct APIs {
         if currentPreference == 0 {
             return checkServer(from)
         }
-        let allDomainArrays = [htmlDomains, domains, webPageDomains, publicDomains, backupHTMLDomains]
+        let allDomainArrays = [htmlDomains, backupHTMLDomains, backupHTMLDomains2, backupHTMLDomains3, webPageDomains, publicDomains]
         var newString = from
         for domainArray in allDomainArrays {
             if currentPreference>0 && currentPreference < domainArray.count {
@@ -141,7 +147,12 @@ struct APIs {
         if let serverNotResponding = UserDefaults.standard.string(forKey: Download.serverNotRespondingKey) {
             let currentPreference = LanguageSetting.shared.currentPrefence
             let currentIndex = (currentPreference == 0) ? 0 : 1
-            let servers = [htmlDomains[currentIndex], domains[currentIndex], backupHTMLDomains[currentIndex]]
+            let servers = [
+                htmlDomains[currentIndex],
+                backupHTMLDomains[currentIndex],
+                backupHTMLDomains2[currentIndex],
+                backupHTMLDomains2[currentIndex]
+            ]
             if let errorServerIndex = servers.index(of: serverNotResponding) {
                 var nextServerIndex = errorServerIndex + 1
                 if nextServerIndex >= servers.count {

@@ -450,13 +450,15 @@ class ChatViewModel {
     }
 
 
-    static func createResponseTalkData(data:Data) ->[String: String]? {
+    static func createResponseTalkData(data:Data) ->[[String: String]] {
         //var robotSaysWhat = SaysWhat()
         //var robotCellData:CellData? = nil
+        var talkDataArr = [[String: String]]()
         var talkData = [
             "member":"robot",
             "type":"text"
         ]
+        
         do {
             let jsonAny = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
             if let jsonDictionary = jsonAny as? NSDictionary,let answer = jsonDictionary["Answer"],let answerArray = answer as? NSArray {
@@ -479,7 +481,7 @@ class ChatViewModel {
                             //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                             talkData["content"] = contentStr
                         }
-                        
+                        talkDataArr.append(talkData)
                     case "Image":
                         
                         if let url = oneAnswerDic["Url"] {
@@ -493,6 +495,7 @@ class ChatViewModel {
                             //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                             talkData["content"] = contentStr
                         }
+                        talkDataArr.append(talkData)
                         
                     case "Card":
                         print("This is a Card")
@@ -512,42 +515,56 @@ class ChatViewModel {
                             talkData["title"] = titleStr
                             talkData["url"] = cardUrlStr
                             talkData["description"] = descriptionStr
-                            
-                        } else {
-                            let contentStr = "This is a Card, the data miss some important fields."
-                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                            talkData["type"] = "text"
-                            talkData["content"] = contentStr
-                            
+                            talkDataArr.append(talkData)
+                       
+                            if answerArray.count > 1 {
+                                let theOtherAnswer = answerArray[1]
+                                if let theOtherAnswerDic = theOtherAnswer as? NSDictionary,
+                                    let theOtherAnswerType = theOtherAnswerDic["Type"], let theOtherAnswerTypeStr = theOtherAnswerType as? String {
+                                    if theOtherAnswerTypeStr == "Text" {
+                                        
+                                        if let content = theOtherAnswerDic["Content"]{
+                                            var theOtherTalkData = [
+                                                "member":"robot",
+                                                "type":"text"
+                                            ]
+                                            let contentStr = content as? String
+                                            theOtherTalkData["content"] = contentStr
+                                            talkDataArr.append(theOtherTalkData)
+                                        }
+                                    }
+                                }
+                            }
                         }
                         
                         
                     default:
+                        
                         print("An unknow type response data.")
-                        let contentStr = "An unknow type response data."
-                        //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                        /*let contentStr = "An unknow type response data."
                         talkData["type"] = "text"
                         talkData["content"] = contentStr
+                         */
+                        
                     }
                     
-                } else {
+                } /* else {
                     let contentStr = "There is some Error on parsing data Step2"
                     //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                     talkData["type"] = "text"
                     talkData["content"] = contentStr
-                }
+                }*/
                 
-            } else {
+            } /*else {
                 let contentStr = "There is some Error on parsing data Step1"
                 //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
                 talkData["type"] = "text"
                 talkData["content"] = contentStr
-            }
-            //robotCellData = CellData(whoSays: .robot, saysWhat: robotSaysWhat)
-            return talkData
+            }*/
+            return talkDataArr
             
         } catch {
-            return nil
+            return [[String: String]]()
         }
         
     }

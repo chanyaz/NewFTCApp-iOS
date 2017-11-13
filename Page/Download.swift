@@ -8,6 +8,16 @@
 
 import Foundation
 struct Download {
+    public static let serverNotRespondingKey = "Server Not Responding Key"
+    
+    public static func handleServerError(_ urlString: String, error: NSError?) {
+        // MARK: get the server part of the the url string
+        let serverNotResponding = urlString.replacingOccurrences(of: "^(http[s]*://[^/]+/).*$", with: "$1", options: .regularExpression)
+        // MARK: save the server that has returned error so that the APIs knows it should look for the backup server
+        UserDefaults.standard.set(serverNotResponding, forKey: Download.serverNotRespondingKey)
+        Track.catchError("\(urlString) Request Error: \(String(describing: error))", withFatal: 1)
+    }
+    
     public static func getDataFromUrl(_ url:URL, completion: @escaping ((_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> Void)) {
         let listTask = URLSession.shared.dataTask(with: url, completionHandler:{(data, response, error) in
             completion(data, response, error as NSError?)

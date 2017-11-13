@@ -310,6 +310,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         let listAPIString = APIs.convert(Download.addVersion(listAPI))
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
+                if error != nil {
+                    Download.handleServerError(listAPIString, error: error)
+                }
                 if let data = data,
                     error == nil,
                     HTMLValidator.validate(data, url: listAPIString) {
@@ -515,7 +518,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             }
         }
         
-        // MARK: Get the updated API from Internet
+        // MARK: Get the API with the correct language and server
         let acturalUrlString = APIs.convert(urlString)
         contentAPI.fetchContentForUrl(acturalUrlString, fetchUpdate: .Always) {
             [weak self] results, error in
@@ -524,7 +527,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 self?.refreshControl.endRefreshing()
                 if let error = error {
                     print("Error searching : \(error)")
-                    Track.catchError("\(acturalUrlString) Request Error: \(error)", withFatal: 1)
+                    Download.handleServerError(acturalUrlString, error: error)
                     return
                 }
                 if let results = results {

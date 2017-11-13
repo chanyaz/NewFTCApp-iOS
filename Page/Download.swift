@@ -16,6 +16,7 @@ struct Download {
         // MARK: save the server that has returned error so that the APIs knows it should look for the backup server
         UserDefaults.standard.set(serverNotResponding, forKey: Download.serverNotRespondingKey)
         Track.catchError("\(urlString) Request Error: \(String(describing: error))", withFatal: 1)
+        Track.event(category: "CatchError", action: "Fail to Connect", label: urlString)
     }
     
     public static func getDataFromUrl(_ url:URL, completion: @escaping ((_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> Void)) {

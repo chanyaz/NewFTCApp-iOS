@@ -244,51 +244,51 @@ class LaunchScreen: UIViewController {
         let verticalMargin:CGFloat
         let buttonWidth:CGFloat
         let defaultButtonWidth:CGFloat = 40
-        let customButtonWidth:CGFloat = 80
-        var isCustomButton = true
+        let customButtonWidth:CGFloat = defaultButtonWidth
+        //var isCustomButton = true
         switch adSchedule.closeButtonCustomization {
         case "LeftTop":
             horizontalLayout = .left
             verticalLayout = .top
             buttonWidth = customButtonWidth
-            horizontalMargin = 0
-            verticalMargin = 0
+            horizontalMargin = 16
+            verticalMargin = 16
         case "RightTop":
             horizontalLayout = .right
             verticalLayout = .top
             buttonWidth = customButtonWidth
-            horizontalMargin = 0
-            verticalMargin = 0
+            horizontalMargin = -16
+            verticalMargin = 16
         case "LeftBottom":
             horizontalLayout = .left
             verticalLayout = .bottom
             buttonWidth = customButtonWidth
-            horizontalMargin = 0
-            verticalMargin = 0
+            horizontalMargin = 16
+            verticalMargin = -16
         case "RightBottom":
             horizontalLayout = .right
             verticalLayout = .bottom
             buttonWidth = customButtonWidth
-            horizontalMargin = 0
-            verticalMargin = 0
+            horizontalMargin = -16
+            verticalMargin = -16
         default:
             horizontalLayout = .right
             verticalLayout = .top
             buttonWidth = defaultButtonWidth
-            isCustomButton = false
+            //isCustomButton = false
             horizontalMargin = -16
             verticalMargin = 16
         }
         
         
         let button: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonWidth, height: buttonWidth))
-        if isCustomButton == false {
+        //if isCustomButton == false {
             let image = getImageFromSupportingFile(imageFileName: "close.png")
             button.backgroundColor = UIColor(white: 0, alpha: 0.382)
             button.setImage(image, for: UIControlState())
             button.layer.masksToBounds = true
             button.layer.cornerRadius = buttonWidth/2
-        }
+        //}
         
         //        if adSchedule.adType == "video" {
         //            //self.view.viewWithTag(111)?.addSubview(button)

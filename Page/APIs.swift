@@ -58,7 +58,7 @@ struct APIs {
     private static func getUrlStringInLanguage(_ from: [String]) -> String {
         let currentPrefence = LanguageSetting.shared.currentPrefence
         let urlString: String
-        if currentPrefence > 0 && currentPrefence < domains.count{
+        if currentPrefence > 0 && currentPrefence < htmlDomains.count{
             urlString = from[currentPrefence]
         } else {
             urlString = from[0]
@@ -113,7 +113,7 @@ struct APIs {
     
     // MARK: Get url string for myFT
     static func get(_ key: String, value: String) -> String {
-        let domain = getUrlStringInLanguage(domains)
+        let domain = getUrlStringInLanguage(htmlDomains)
         return "\(domain)channel/china.html?type=json&\(key)=\(value)"
     }
     
@@ -141,7 +141,7 @@ struct APIs {
         if let serverNotResponding = UserDefaults.standard.string(forKey: Download.serverNotRespondingKey) {
             let currentPreference = LanguageSetting.shared.currentPrefence
             let currentIndex = (currentPreference == 0) ? 0 : 1
-            let servers = [htmlDomains[currentIndex], backupHTMLDomains[currentIndex]]
+            let servers = [htmlDomains[currentIndex], domains[currentIndex], backupHTMLDomains[currentIndex]]
             if let errorServerIndex = servers.index(of: serverNotResponding) {
                 var nextServerIndex = errorServerIndex + 1
                 if nextServerIndex >= servers.count {
@@ -205,7 +205,6 @@ struct APIs {
         }
         return nil
     }
-    
     
     public static func getHTMLCode(_ from: String) -> String {
         let key = "Saved \(from)"

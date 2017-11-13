@@ -11,12 +11,19 @@ import UIKit
 // MARK: Different organization might use different way to construct API and urls
 struct APIs {
     
-    // MARK: Domain Name Used for different types of purposes
+    // MARK: Domain Name Mainly For List Pages
     private static let htmlDomains = [
         "https://danla2f5eudt1.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
+    // MARK: Backup server for List Pages
+    private static let backupHTMLDomains = [
+        "https://d2noncecxepzyq.cloudfront.net/",
+        "https://d2e90etfgpidmd.cloudfront.net/"
+    ]
+    
+    // MARK: Domain Name maily for stories
     private static let domains = [
         "https://d37m993yiqhccr.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
@@ -62,7 +69,8 @@ struct APIs {
     // MARK: Construct url strings for different types of content
     static func get(_ id: String, type: String) -> String {
         let urlString: String
-        let domain = getUrlStringInLanguage(domains)
+        let originalDomain = getUrlStringInLanguage(htmlDomains)
+        let domain = checkServer(originalDomain)
         
         switch type {
         case "story": urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
@@ -111,9 +119,9 @@ struct APIs {
     static func convert(_ from: String) -> String {
         let currentPreference = LanguageSetting.shared.currentPrefence
         if currentPreference == 0 {
-            return from
+            return checkServer(from)
         }
-        let allDomainArrays = [htmlDomains, domains, webPageDomains, publicDomains]
+        let allDomainArrays = [htmlDomains, domains, webPageDomains, publicDomains, backupHTMLDomains]
         var newString = from
         for domainArray in allDomainArrays {
             if currentPreference>0 && currentPreference < domainArray.count {
@@ -123,7 +131,26 @@ struct APIs {
                 )
             }
         }
-        return newString
+        return checkServer(newString)
+    }
+    
+    // MARK: Check if the server is likely to respond correctly
+    private static func checkServer(_ from: String) -> String {
+        if let serverNotResponding = UserDefaults.standard.string(forKey: Download.serverNotRespondingKey) {
+            let currentPreference = LanguageSetting.shared.currentPrefence
+            let currentIndex = (currentPreference == 0) ? 0 : 1
+            let servers = [htmlDomains[currentIndex], domains[currentIndex], backupHTMLDomains[currentIndex]]
+            if let errorServerIndex = servers.index(of: serverNotResponding) {
+                var nextServerIndex = errorServerIndex + 1
+                if nextServerIndex >= servers.count {
+                    nextServerIndex = 0
+                }
+                if from.hasPrefix(serverNotResponding) {
+                    return from.replacingOccurrences(of: serverNotResponding, with: servers[nextServerIndex])
+                }
+            }
+        }
+        return from
     }
     
     // MARK: Use different domains for different types of content

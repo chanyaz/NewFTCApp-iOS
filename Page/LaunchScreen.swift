@@ -305,18 +305,7 @@ class LaunchScreen: UIViewController {
         //view.bringSubview(toFront: button)
         
         view.addConstraint(NSLayoutConstraint(item: button, attribute: horizontalLayout, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: horizontalLayout, multiplier: 1, constant: horizontalMargin))
-        
-//        let verticalTopMargin: CGFloat
-//        if #available(iOS 11.0, *) {
-//            print (view.safeAreaInsets.top)
-//        }
-//        print (DeviceStyle.shared.safeAreaTop)
-//        if DeviceStyle.shared.safeAreaTop > 0 {
-//            verticalTopMargin = DeviceStyle.shared.safeAreaTop
-//        } else {
-//            verticalTopMargin = verticalMargin
-//        }
-        
+
         view.addConstraint(NSLayoutConstraint(item: button, attribute: verticalLayout, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: verticalLayout, multiplier: 1, constant: verticalMargin))
 
         view.addConstraint(NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))

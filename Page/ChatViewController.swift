@@ -239,15 +239,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             //self.needAutoReloadData = false
             //self.scrollTobottomWhenReloadData()
             self.inputBlock.text = ""
-            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
-                if let oneTalkData = talkData {
-                    //print(robotRes)
-                    self.showingData.append(oneTalkData)
-                    let oneCellData = ChatViewModel.buildCellData(oneTalkData)
-                    //self.needAutoReloadData = true
-                    self.showingCellData.append(oneCellData)
-                    //self.needAutoReloadData = false
-                    //self.scrollTobottomWhenReloadData()
+            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkDataArr in
+                if let realTalkDataArr = talkDataArr {
+                    for oneTalkData in realTalkDataArr {
+                        self.showingData.append(oneTalkData)
+                        let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                        self.showingCellData.append(oneCellData)
+                    }
                 }
             })
         }
@@ -269,17 +267,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let oneCellData = ChatViewModel.buildCellData(oneTalkData)
             
             self.showingCellData.append(oneCellData)
-            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkData in
-                if let oneTalkData = talkData {
-                    //print(robotRes)
-                    self.showingData.append(oneTalkData)
-                    let oneCellData = ChatViewModel.buildCellData(oneTalkData)
-                    //self.needAutoReloadData = true
-                    self.showingCellData.append(oneCellData)
-                    //self.needAutoReloadData = false
-                    //self.scrollTobottomWhenReloadData()
+            self.createTalkRequest(myInputText:currentYourTalk, completion: {
+                talkDataArr in
+                if let realTalkDataArr = talkDataArr {
+                    for oneTalkData in realTalkDataArr {
+                        self.showingData.append(oneTalkData)
+                        let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                        self.showingCellData.append(oneCellData)
+                    }
                 }
-                
             })
 
         }
@@ -501,7 +497,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
         
-   func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkData:[String:String]?) -> Void) {
+   func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkDataArr:[[String:String]]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
     
         print("Ice Request bodyString: start- \(bodyString) -end")
@@ -572,12 +568,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 if let data = data, let dataString = String(data: data, encoding: .utf8){
                     print("Ice Responce Data: start- \(dataString) -end")
                     //explainRobotTalk = dataString
-                    let talkData:[String:String]?
-                    talkData = ChatViewModel.createResponseTalkData(data: data)
+                    let talkDataArr:[[String:String]]?
+                    talkDataArr = ChatViewModel.createResponseTalkData(data: data)
                    // createResponseCellData(data: Data)
                     
                     DispatchQueue.main.async {//返回主线程更新UI
-                        completion(talkData)
+                        completion(talkDataArr)
                     }
                     
                 }
@@ -719,22 +715,25 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
         
         
-        self.createTalkRequest(myInputText: triggerGreetContent, completion: { talkData in
-            if let oneTalkData = talkData {
-                self.showingData.append(oneTalkData)
-                
-                let oneCellData = ChatViewModel.buildCellData(oneTalkData)
-                self.showingCellData.append(oneCellData)
-                
-                
-                self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: { contentTalkData in
-                    if let realContentTalkData = contentTalkData {
-                        self.showingData.append(realContentTalkData)
-                        let oneContentCellData = ChatViewModel.buildCellData(realContentTalkData)
-                        self.showingCellData.append(oneContentCellData)
+        self.createTalkRequest(myInputText: triggerGreetContent, completion: {
+            talkDataArr in
+            if let realTalkDataArr = talkDataArr {
+                for oneTalkData in realTalkDataArr {
+                    self.showingData.append(oneTalkData)
+                    let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                    self.showingCellData.append(oneCellData)
+                }
+                self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: {
+                    talkDataArr in
+                    if let realTalkDataArr = talkDataArr {
+                        for oneTalkData in realTalkDataArr {
+                            self.showingData.append(oneTalkData)
+                            let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                            self.showingCellData.append(oneCellData)
+                            break //首次推荐新闻只显示card，不显示text
+                        }
                     }
                 })
- 
             }
         })
  

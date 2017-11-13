@@ -66,8 +66,13 @@ class CustomNavigationController: UINavigationController, UINavigationController
         super.viewDidLoad()
         let width = UIScreen.main.bounds.width
         let height = self.view.bounds.height
+        
+        var homeTabBarHeight: CGFloat = 0
+
+        homeTabBarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 124, OtherIphoneValue: 90)
+        
         tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.5)
-        tabView.frame = CGRect(x:0,y:height - 90,width:width,height:90)
+        tabView.frame = CGRect(x:0,y:height - homeTabBarHeight,width:width,height:homeTabBarHeight)
         view.addSubview(self.tabView)
         tabView.playAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
         let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))

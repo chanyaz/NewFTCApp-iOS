@@ -27,16 +27,20 @@ class CustomTab: UIView {
         let homePlayBtn = UIImage(named:"HomePlayBtn")
         let homePlayBtnHeight = (homePlayBtn?.size.height)!
         let homePlayBtnWidth = (homePlayBtn?.size.width)!
-        let homeTabBarHeight: CGFloat = 90
-        let playAndPauseBtnBottomMargin: CGFloat = 12
-        let spaceBetweenProgressAndSmallView: CGFloat = 65
+        var homeTabBarHeight: CGFloat = 90
+        var playAndPauseBtnBottomMargin: CGFloat = 12
+        var spaceBetweenProgressAndSmallView: CGFloat = 65
         let leftMarginPlayAndPauseButton: CGFloat = 20
         let spaceBetweenProgressAndLable: CGFloat = 15
+        
+        playAndPauseBtnBottomMargin = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 0, OtherIphoneValue: 1)
+        spaceBetweenProgressAndSmallView = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 55, OtherIphoneValue: 56)
+        homeTabBarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 124, OtherIphoneValue: 90)
         playAndPauseButton.attributedTitle(for: UIControlState.normal)
         playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
 
         self.playAndPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -playAndPauseBtnBottomMargin))
+        self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -playAndPauseBtnBottomMargin))
         self.addConstraint(NSLayoutConstraint(item:  self.playAndPauseButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: leftMarginPlayAndPauseButton))
         self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: homePlayBtnWidth))
         self.addConstraint(NSLayoutConstraint(item: self.playAndPauseButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: homePlayBtnHeight))
@@ -68,7 +72,7 @@ class CustomTab: UIView {
         
 
         self.progressSlider.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenProgressAndSmallView))
+        self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -spaceBetweenProgressAndSmallView))
         self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.smallView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playTime, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: spaceBetweenProgressAndLable))
         self.addConstraint(NSLayoutConstraint(item: progressSlider, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.playDuration, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -spaceBetweenProgressAndLable))

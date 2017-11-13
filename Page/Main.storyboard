@@ -788,8 +788,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="mP0-6c-0VA" firstAttribute="leading" secondItem="vI6-SU-Y0Z" secondAttribute="leading" id="RLR-um-kLg"/>
+                            <constraint firstAttribute="bottom" secondItem="mP0-6c-0VA" secondAttribute="bottom" id="YiP-GJ-eFc"/>
                             <constraint firstAttribute="trailing" secondItem="mP0-6c-0VA" secondAttribute="trailing" id="h61-zn-caB"/>
-                            <constraint firstItem="PRi-H5-eiu" firstAttribute="top" secondItem="mP0-6c-0VA" secondAttribute="bottom" id="wIH-pe-fuC"/>
                             <constraint firstItem="mP0-6c-0VA" firstAttribute="top" secondItem="vI6-SU-Y0Z" secondAttribute="top" id="xe7-BZ-e6c"/>
                         </constraints>
                     </view>

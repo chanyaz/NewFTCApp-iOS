@@ -149,5 +149,16 @@ public extension UIDevice{
         }
         return machineSwiftString
     }
+    func setDifferentDeviceLayoutValue(iphoneXValue:CGFloat,OtherIphoneValue:CGFloat)-> CGFloat{
+        var value: CGFloat = 0
+        let modelName = UIDevice.current.modelName
+        let platformType = UIDevice.current.getPlatformNSString()
+        if (modelName == "iPhone X")||(platformType == "iPhone10,3")||(platformType == "iPhone10,6") {
+            value = iphoneXValue
+        } else {
+            value = OtherIphoneValue
+        }
+        return value
+    }
     
 }

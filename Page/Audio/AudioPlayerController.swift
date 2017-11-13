@@ -245,15 +245,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
-        var spaceBetweenListAndView: CGFloat = 30
-        let modelName = UIDevice.current.modelName
-        print("device name\(modelName)")
-        let platformType = UIDevice.current.getPlatformNSString()
-        if (modelName == "iPhone X")||(platformType == "iPhone10,3")||(platformType == "iPhone10,6") {
-            spaceBetweenListAndView = 0
-        } else {
-            spaceBetweenListAndView = 25
-        }
+        var spaceBetweenListAndView: CGFloat = 0
+ 
+        spaceBetweenListAndView = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 0, OtherIphoneValue: 25)
         
         playlist.attributedTitle(for: UIControlState.normal)
         playlist.setImage(UIImage(named:"ListBtn"), for: UIControlState.normal)

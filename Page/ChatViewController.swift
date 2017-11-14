@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import CoreGraphics
+import CoreLocation
 //var globalTalkData = Array(repeating: CellData(), count: 1)
 var keyboardWillShowExecute = 0
 var showAnimateExecute = 0
@@ -470,7 +471,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
     }
     
-   
+  
+    
     func determineUser() -> (iceUserId: String, triggerGreetContent: String){
         let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
         var iceUserId: String? = nil
@@ -633,25 +635,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.inputBlock.delegate = self
         self.mySwipeGesture.delegate = self
         self.myPanGesture.delegate = self
-        //elf.myPanGesture.require(toFail: self.talkListBlock.panGestureRecognizer)
-        
-        /*
-        if #available(iOS 11.0, *) {
-            self.additionalSafeAreaInsets = UIEdgeInsetsMake(1, 0, 1, 0)
-        } else {
-            self.edgesForExtendedLayout = .bottom
-            self.edgesForExtendedLayout = .top
-            // Fallback on earlier versions
-        }
-         */
-        //self.automaticallyAdjustsScrollViewInsets = false
         
         self.view.backgroundColor = .white
         self.talkListBlock.backgroundColor = UIColor(hex: "#fff1e0")
         self.talkListBlock.separatorStyle = .none //MARK:删除cell之间的分割线
         
         self.bottomBar.backgroundColor = UIColor(hex: "#f7e9d8")
-        //self.inputBlock.isUserInteractionEnabled = false
         // MARK：为bottomToolbar添加上边框
         let border = CALayer()
         border.frame = CGRect(x:0, y:0, width:self.view.frame.width, height:1)
@@ -714,7 +703,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("ice userinfo iceUserId:\(iceUserId)")
         print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
         
-        
+        let deviceCode = ChatViewModel.deviceCode
+        print("DeviceCode:\(deviceCode ?? "")")
         self.createTalkRequest(myInputText: triggerGreetContent, completion: {
             talkDataArr in
             if let realTalkDataArr = talkDataArr {
@@ -751,8 +741,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
      */
     override func viewDidAppear(_ animated: Bool) {
-        print("View Did Appear");
+        print("View Did Appear")
         Track.screenView("Chat/Xiaobing")
+        //let theDate = ChatViewModel.getTimeStampOfDate()
+        //print("timeStampOfDate:\(theDate)")
     }
  
 

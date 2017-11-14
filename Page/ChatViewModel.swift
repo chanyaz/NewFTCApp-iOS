@@ -406,6 +406,25 @@ class ChatViewModel {
     static let triggerNewsContent = "【端用户首次打开信号，推荐新闻】"
     
     static var screenWidth:CGFloat? = nil
+    
+    //获取设备Id
+    static var deviceCode:String? {
+        if let realIdVender = UIDevice.current.identifierForVendor {
+            let uuidStr = realIdVender.uuidString
+            if let regex = try? NSRegularExpression(pattern: "-", options:[]) {//NOTE:try? 将错误转换成可选值
+                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.characters.count), withTemplate: "")
+                
+                return cleanedUuidStr
+            }
+        }
+        return nil
+    }
+    static func getTimeStampOfSeconds() -> Int{
+        return Int(Date().timeIntervalSince1970)
+    }
+    static func getTimeStampOfDate() -> Date{
+        return Date()
+    }
     static func buildCellData(_ oneTalkData:[String:String]) -> CellData {//根据historyTalkData数据得到CellData数据
         //let oneTalkData = self.historyTalkData[row]
         var saysWhat: SaysWhat

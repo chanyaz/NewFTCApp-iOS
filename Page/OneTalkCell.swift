@@ -294,7 +294,11 @@ class OneTalkCell: UITableViewCell {
             let saysContentView = UILabel(frame: CGRect(x: self.cellData.saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
             saysContentView.numberOfLines = 0
             saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
-            saysContentView.text = self.cellData.saysWhat.content
+            let content = self.cellData.saysWhat.content
+            //TODO:Deal with the html code
+            //let cleanedContent = content.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+            saysContentView.text = content
+            //let href = content.replacingOccurrences(of: "href=(.*) ", with: $0, options: .regularExpression, range: nil)
             saysContentView.font = self.cellData.normalFont
             saysContentView.textColor = self.cellData.textColor
             self.addSubview(saysContentView)

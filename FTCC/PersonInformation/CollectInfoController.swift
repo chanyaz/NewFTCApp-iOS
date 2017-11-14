@@ -23,16 +23,19 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     var toolbarHeight: CGFloat = 55
     let buttonHeight: CGFloat = 55
     let leftMoveDistance: CGFloat = 45
-    let cellContent: NSArray = ["谁能预测未来样子1", "谁能预测未来样子2", "谁能预测未来样子3","随谁能预测未来样子4","谁能预测未来样子5", "谁能预测未来样子2", "谁能预测未来样子3","随谁能预测未来样子4","谁能预测未来样子5", "谁能预测未来样子2", "谁能预测未来样子3","随谁能预测未来样子4","谁能预测未来样子5"]
+    let cellContent: NSArray = ["谁能预测未来样子1", "谁能预测未来样子2", "谁能预测未来样子3","随谁能预测未来样子4","谁能预测未来样子5"]
     @IBOutlet weak var infoTableView: UITableView!
     @IBOutlet weak var toolBar: UIView!
     @IBOutlet weak var allSelectBtn: UIButton!
     @IBOutlet weak var deleteBtn: UIButton!
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad() 
-        self.infoTableView.frame = CGRect(x:0, y: 0, width: screenWidth, height: screenHeight-172)
+//        self.infoTableView.frame = CGRect(x:0, y: 0, width: screenWidth, height: screenHeight-172)
         self.infoTableView.delegate = self
         self.infoTableView.dataSource = self
+        
+        print("\(view.layoutMargins.bottom)")
 //        toolbarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 89, OtherIphoneValue: 55)
         
 //       toolBar.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
@@ -42,6 +45,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         allSelectBtn.layer.addBorder(edge: .right, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
         toolBar.layer.addBorder(edge: .top, color: UIColor(hex: Color.AudioList.border, alpha: 1), thickness: 0.5)
         toolBar.layer.addBorder(edge: .bottom, color: UIColor(hex: Color.AudioList.border, alpha: 1), thickness: 0.5)
+        
         self.infoTableView.register(UINib.init(nibName: "CollectTableViewCell", bundle: nil), forCellReuseIdentifier: "CollectTableViewCell")
         self.view.addSubview(infoTableView)
         let editButton = UIButton()
@@ -93,14 +97,15 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         let backImage = image?.imageWithImage(image: image!, scaledToSize: CGSize(width: 12, height: 22))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backNavigation))
 
-        
-        toolBar.layer.zPosition = 1000
-        
+   
+        toolBar.layer.zPosition = 100000
+        toolBar.isUserInteractionEnabled = true
     }
     override func viewWillAppear(_ animated: Bool) {
 //        self.navigationController?.toolbar.isHidden = true
-
-        self.toolBar.isHidden = true
+        hideView()
+       
+//        self.toolBar.isHidden = true
     }
     override func viewDidDisappear(_ animated: Bool) {
 
@@ -177,13 +182,17 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         if !sender.isSelected{
             self.isEditting = true
             self.infoTableView.setEditing(true, animated: true)
-            self.toolBar.isHidden = false
+//            self.toolBar.isHidden = false
+            showView()
+            tableViewBottomConstraint.constant = 0
 //            self.navigationController?.toolbar.isHidden = false
         }else{
             self.isEditting = false
             self.infoTableView.setEditing(false, animated: true)
 //            self.navigationController?.toolbar.isHidden = true
-            self.toolBar.isHidden = true
+//            self.toolBar.isHidden = true
+            hideView()
+            tableViewBottomConstraint.constant = -50
         }
         self.infoTableView.beginUpdates()
         
@@ -197,6 +206,29 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         sender.isSelected = !sender.isSelected
         self.infoTableView.endUpdates()
         
+    }
+    func hideView(){
+            print("up hide audio")
+            if  let toolBar = toolBar{
+                let deltaY = toolBar.bounds.height + 50
+                UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    toolBar.transform = CGAffineTransform(translationX: 0,y: deltaY)
+                    toolBar.setNeedsUpdateConstraints()
+                }, completion: { (true) in
+                    
+                })
+            }
+    }
+    func showView(){
+        print("down show audio")
+        if  let toolBar = toolBar{
+            UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                toolBar.transform = CGAffineTransform.identity
+                toolBar.setNeedsUpdateConstraints()
+            }, completion: { (true) in
+                
+            })
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -243,6 +275,12 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         }else{
             cell.isSelected = false
         }
+        if let results = TabBarAudioContent.sharedInstance.fetchResults{
+//            print("test detailImage\(results[0].items[0].coverImage)")
+            cell.selectedImageView.image = results[0].items[0].coverImage
+            
+        }
+        
         return cell
         
     }
@@ -278,4 +316,30 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     
     //    }
     
+}
+extension CollectInfoController {
+    fileprivate func insertIAPView() {
+        let verticalPadding: CGFloat = 10
+        let buttonHeight: CGFloat = 34
+        let iapView = IAPView()
+        let containerViewFrame = view.frame
+        let width: CGFloat = view.frame.width
+        let height: CGFloat = buttonHeight + 2 * verticalPadding
+        iapView.frame = CGRect(x: 0, y: containerViewFrame.height - height, width: width, height: height)
+        iapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        // MARK: This is important for autolayout constraints to kick in properly
+        iapView.translatesAutoresizingMaskIntoConstraints = false
+//        iapView.themeColor = themeColor
+//        iapView.dataObject = dataObject
+//        iapView.verticalPadding = verticalPadding
+//        iapView.action = self.action
+//        iapView.initUI()
+        view.addSubview(iapView)
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.lessThanOrEqual, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.lessThanOrEqual, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
+        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: height))
+        
+    }
 }

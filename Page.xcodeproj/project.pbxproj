@@ -229,6 +229,8 @@
 		605750F71F1499D400552DAC /* NSLayoutManager+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */; };
 		605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750F81F1499F000552DAC /* UIImage+Attachments.swift */; };
 		605750FB1F15B06700552DAC /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605750FA1F15B06700552DAC /* AdView.swift */; };
+		60612BDA1FBA8738003793CF /* localbackup.html in Resources */ = {isa = PBXBuildFile; fileRef = 60612BD81FBA8737003793CF /* localbackup.html */; };
+		60612BDB1FBA8738003793CF /* localbackup-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 60612BD91FBA8738003793CF /* localbackup-big5.html */; };
 		606FD1491FB003540087AE75 /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD1471FB003530087AE75 /* help.html */; };
 		606FD14A1FB003540087AE75 /* help-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD1481FB003540087AE75 /* help-big5.html */; };
 		606FD14D1FB2B2550087AE75 /* myft-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 606FD14B1FB2B2540087AE75 /* myft-big5.html */; };
@@ -540,6 +542,8 @@
 		605750F61F1499D400552DAC /* NSLayoutManager+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutManager+Attachments.swift"; sourceTree = "<group>"; };
 		605750F81F1499F000552DAC /* UIImage+Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Attachments.swift"; sourceTree = "<group>"; };
 		605750FA1F15B06700552DAC /* AdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
+		60612BD81FBA8737003793CF /* localbackup.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = localbackup.html; path = FTChinese/localbackup.html; sourceTree = "<group>"; };
+		60612BD91FBA8738003793CF /* localbackup-big5.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "localbackup-big5.html"; path = "FTChinese/localbackup-big5.html"; sourceTree = "<group>"; };
 		606FD1471FB003530087AE75 /* help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = help.html; path = FTChinese/help.html; sourceTree = "<group>"; };
 		606FD1481FB003540087AE75 /* help-big5.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "help-big5.html"; path = "FTChinese/help-big5.html"; sourceTree = "<group>"; };
 		606FD14B1FB2B2540087AE75 /* myft-big5.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "myft-big5.html"; path = "FTChinese/myft-big5.html"; sourceTree = "<group>"; };
@@ -805,6 +809,7 @@
 				6084C7CB1F452A210035F60C /* register.html */,
 				600C0D011F5CE7B800226F84 /* ebook.html */,
 				601AC21A1F4870780004196A /* search.html */,
+				60612BD81FBA8737003793CF /* localbackup.html */,
 				60335DE11F7F16010002173B /* html-book.html */,
 				606FD1471FB003530087AE75 /* help.html */,
 				601C41791F99BAC3002D26B2 /* account-big5.html */,
@@ -816,6 +821,7 @@
 				601C41761F99BAC2002D26B2 /* search-big5.html */,
 				601C41731F99BAC1002D26B2 /* story-big5.html */,
 				606FD1481FB003540087AE75 /* help-big5.html */,
+				60612BD91FBA8738003793CF /* localbackup-big5.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -1719,7 +1725,9 @@
 				500139E11F1A7188009EC29D /* GoogleService-Info.plist in Resources */,
 				60F3D1471F7A29CC00D115FC /* FixedWidthChannelScrollerCell.xib in Resources */,
 				6087E3DA1EF2294C0034A92F /* ga.js in Resources */,
+				60612BDB1FBA8738003793CF /* localbackup-big5.html in Resources */,
 				AF0D53C41FB0571E001A550B /* imageDefault.jpeg in Resources */,
+				60612BDA1FBA8738003793CF /* localbackup.html in Resources */,
 				602153C51F39A4390077A7AF /* sound.png in Resources */,
 				50C31B471F7006D500F4CF61 /* OptionCell.xib in Resources */,
 				602153C41F39A4390077A7AF /* ShareIcon.jpg in Resources */,

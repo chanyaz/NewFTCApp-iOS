@@ -10,10 +10,11 @@ import UIKit
 
 class SubscribeSchemeViewController: UIViewController {
 
+    @IBOutlet weak var viewContainer: UIView!
     @IBOutlet weak var toBuyButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        viewContainer.preservesSuperviewLayoutMargins = true
         // Do any additional setup after loading the view.
     }
 

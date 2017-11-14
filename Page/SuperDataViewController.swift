@@ -333,7 +333,16 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 let fileName = GB2Big5.convertHTMLFileName("list")
                 if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html") {
                     do {
-                        let defaultString = "Loading..."
+                        // MARK: If there's backupfile parameter in the url string, try to render the local backup content file
+                        let defaultString: String
+                        if listAPI.range(of:"backupfile=") != nil,
+                            let backupHTMLPath = Bundle.main.path(forResource: listAPI.replacingOccurrences(of: "^.*backupfile=([a-zA-Z0-9]+).*$", with: "$1", options: .regularExpression), ofType: "html") {
+                            let localbackupNSString = try NSString(contentsOfFile:backupHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                            let localbackupString = localbackupNSString as String
+                            defaultString = localbackupString
+                        } else {
+                            defaultString  = "<div style=\"text-align: center;\">Loading...</div>"
+                        }
                         let listContentString: String
                         if let listContentData = Download.readFile(listAPI, for: .cachesDirectory, as: fileExtension) {
                             listContentString = String(data: listContentData, encoding: String.Encoding.utf8) ?? defaultString
@@ -361,9 +370,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             }
         }
     }
-    
-    
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print ("view will appear called")

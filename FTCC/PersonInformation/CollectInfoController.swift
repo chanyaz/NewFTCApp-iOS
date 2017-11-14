@@ -19,27 +19,31 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     let allSelect = UIButton()
     let delete = UIButton()
     let screenWidth = UIScreen.main.bounds.width
-    let screenHeight = UIScreen.main.bounds.height
-    let toolbarHeight: CGFloat = 55
+    let screenHeight = UIScreen.main.bounds.size.height
+    var toolbarHeight: CGFloat = 55
     let buttonHeight: CGFloat = 55
     let leftMoveDistance: CGFloat = 45
     let cellContent: NSArray = ["谁能预测未来样子1", "谁能预测未来样子2", "谁能预测未来样子3","随谁能预测未来样子4","谁能预测未来样子5"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.infoTableView.frame = CGRect(x:0, y: 0, width: screenWidth, height: screenHeight)
         self.infoTableView.delegate = self
         self.infoTableView.dataSource = self
+        toolbarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 89, OtherIphoneValue: 55)
         
-        self.allSelect.frame = CGRect(x: 0, y: -buttonHeight, width: screenWidth/2, height:90)
+        self.allSelect.frame = CGRect(x: 0, y: 0, width: screenWidth/2, height:buttonHeight)
         self.allSelect.setTitle("全选", for: .normal)
         self.allSelect.setTitleColor(UIColor.black, for: .normal)
-//        self.view.addSubview(allSelect)
+//        self.allSelect.backgroundColor = UIColor.red
+
         allSelect.addTarget(self, action: #selector(allSelectAction), for: .touchUpInside)
         allSelect.layer.addBorder(edge: .right, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
-        self.delete.frame = CGRect(x: screenWidth/2, y: -buttonHeight, width: screenWidth/2, height:90)
+        self.delete.frame = CGRect(x: screenWidth/2, y: 0, width: screenWidth/2, height:buttonHeight)
         self.delete.setTitle("删除", for: .normal)
         self.delete.setTitleColor(UIColor.black, for: .normal)
-//        self.view.addSubview(delete)
+//        self.delete.backgroundColor = UIColor.blue
+
         delete.addTarget(self, action: #selector(deleteAction), for: .touchUpInside)
 
         
@@ -60,11 +64,12 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         self.infoTableView.allowsSelectionDuringEditing = true
         print("dateArray--\(self.selectCellArray)")
         
-//        self.navigationController?.toolbar.isHidden = true
         self.navigationController?.toolbar.barStyle = .black
         self.navigationController?.toolbar.barTintColor = UIColor.white
         self.navigationController?.toolbar.frame = CGRect(x: 0, y: screenHeight-toolbarHeight, width: screenWidth, height: toolbarHeight)
         self.navigationController?.toolbar.layer.addBorder(edge: .top, color: UIColor(hex: Color.AudioList.border, alpha: 1), thickness: 1)
+
+
         let allSelectButton = UIBarButtonItem(customView: allSelect)
         let deleteButton = UIBarButtonItem(customView: delete)
         let toolArray = [allSelectButton,deleteButton]
@@ -74,17 +79,14 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         let image = UIImage(named: "NavBack")
         let backImage = image?.imageWithImage(image: image!, scaledToSize: CGSize(width: 12, height: 22))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backNavigation))
-//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(backNavigation))
-//        self.navigationItem.leftBarButtonItem?.title = ""
-        
+
+
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.toolbar.isHidden = true
     }
     override func viewDidDisappear(_ animated: Bool) {
-//        print("collectInfoController viewDidDisappear")
-//        self.navigationController?.toolbarItems?.removeAll()
-//        self.navigationController?.toolbar.isHidden = true
+
     }
     @objc func backNavigation(){
         print("collectInfoController dismiss")

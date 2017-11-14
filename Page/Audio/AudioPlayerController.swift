@@ -88,8 +88,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     @IBOutlet weak var playStatus: UILabel!
     @IBOutlet weak var forward: UIButton!
     @IBOutlet weak var back: UIButton!
-    
-    
+    @IBOutlet weak var exitTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var headLineBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageViewBottomConstraint: NSLayoutConstraint!
     @IBAction func hideAudioButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateBarStyle"), object: self)
@@ -106,6 +107,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
         if let player = player {
             print("ButtonPlayPause\(player)")
+            
             if player.rate != 0 && player.error == nil {
                 stopRotateAnimate()
                 player.pause()
@@ -245,8 +247,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let buttonHeight: CGFloat = 19
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
-        let spaceBetweenListAndView: CGFloat = 30
-        
+        var spaceBetweenListAndView: CGFloat = 0
+ 
+        spaceBetweenListAndView = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 0, OtherIphoneValue: 25)
+        exitTopConstraint.constant = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 60, OtherIphoneValue: 30)
+        headLineBottomConstraint.constant = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 80, OtherIphoneValue: 45)
+        imageViewBottomConstraint.constant = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 90, OtherIphoneValue: 75)
         playlist.attributedTitle(for: UIControlState.normal)
         playlist.setImage(UIImage(named:"ListBtn"), for: UIControlState.normal)
         playlist.addTarget(self, action: #selector(self.openPlayList(_:)), for: UIControlEvents.touchUpInside)
@@ -274,27 +280,27 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.playlist.translatesAutoresizingMaskIntoConstraints = false
         self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.back, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         
-        self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -spaceBetweenListAndView))
         self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.containerView.addConstraint(NSLayoutConstraint(item: playlist, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
         
         
         self.downloadButton.translatesAutoresizingMaskIntoConstraints = false
         self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.share, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -space))
-        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -spaceBetweenListAndView))
         self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
         
         self.love.translatesAutoresizingMaskIntoConstraints = false
         self.containerView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playlist, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
-        self.containerView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.containerView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -spaceBetweenListAndView))
         self.containerView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.containerView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
         
         
         self.share.translatesAutoresizingMaskIntoConstraints = false
         self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.forward, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-        self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -spaceBetweenListAndView))
+        self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -spaceBetweenListAndView))
         self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
         self.containerView.addConstraint(NSLayoutConstraint(item: share, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
         
@@ -1130,4 +1136,5 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         return UIStatusBarStyle.lightContent
     }
 }
+
 

@@ -77,6 +77,43 @@ public struct FTCProducts {
         ]
     ]
     
+//    private static let eBooksData = [
+//        [
+//            "id":"com.ft.ftchinese.mobile.book.OutlookoftheFutureof2017",
+//            "title":"精选2016，展望2017",
+//            "teaser":" 2017年，我们熟悉的那个世界是否正在远去？",
+//            "image":"http://i.ftimg.net/picture/9/000068669_piclink.jpg",
+//            //"download": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html",
+//            //"download": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese.epub",
+//            //"downloadfortry": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese_Short.epub"
+//            //"downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
+//            "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
+//            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
+//        ],
+//        [
+//            "id":"com.ft.ftchinese.mobile.book.lunch1",
+//            "title":"与FT共进午餐（一）",
+//            "teaser":"英国《金融时报》最受欢迎的栏目",
+//            "image":"http://i.ftimg.net/picture/2/000068702_piclink.jpg",
+//            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_I_FTChinese.epub",
+//            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_I_FTChinese_Short.epub"
+//            "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch1_body.html",
+//            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch1Preview.html"
+//        ],
+//        [
+//            "id":"com.ft.ftchinese.mobile.book.lunch2",
+//            "title":"与FT共进午餐（二）",
+//            "teaser":"英国《金融时报》最受欢迎的栏目",
+//            "image":"http://i.ftimg.net/picture/3/000068703_piclink.jpg",
+//            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+//            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+//            "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch2_body.html",
+//            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch2Preview.html"
+//        ]
+//    ]
+    
+    
+    
     private static let eBooksData = [
         [
             "id":"com.ft.ftchinese.mobile.book.OutlookoftheFutureof2017",
@@ -109,8 +146,59 @@ public struct FTCProducts {
             //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch2_body.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch2Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.magazine",
+            "title":"生活时尚·旅行特刊",
+            "teaser":"探寻世界的尽头",
+            "image":"http://i.ftimg.net/picture/4/000073894_piclink.jpg",
+            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10582_bodyonly.html",
+            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10582_Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.magazine2",
+            "title":"如何在“人工智能”时代生存？——创新经济特刊",
+            "teaser":"终身学习，是我们在人工智能时代的宿命",
+            "image":"http://i.ftimg.net/picture/7/000073887_piclink.jpg",
+            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10584_bodyonly.html",
+            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10584_Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.career",
+            "title":"管理·性别与职场",
+            "teaser":"职场女性生存指南",
+            "image":"http://i.ftimg.net/picture/7/000073927_piclink.jpg",
+            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10595_bodyonly.html",
+            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10595_Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.economy1",
+            "title":"10年，金融危机为我们留下了什么？",
+            "teaser":"世界经济·第1辑",
+            "image":"http://i.ftimg.net/picture/3/000073933_piclink.jpg",
+            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10598_bodyonly.html",
+            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10598_Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.economy2",
+            "title":"2018，掘金中国股市？",
+            "teaser":"中国经济·第1辑",
+            "image":"http://i.ftimg.net/picture/9/000073929_piclink.jpg",
+            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10599_bodyonly.html",
+            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10599_Preview.html"
         ]
     ]
+    
     // MARK: - Add product group names and titles
     public static let subscriptions = addProductGroup(subscriptionsData, group: "subscription", groupTitle: "订阅")
     public static let eBooks = addProductGroup(eBooksData, group: "ebook", groupTitle: "FT电子书")

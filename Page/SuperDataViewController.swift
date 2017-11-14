@@ -357,6 +357,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             self.webView?.loadHTMLString(listHTML, baseURL:url)
                             self.refreshControl.endRefreshing()
                         }
+
                     } catch {
                         DispatchQueue.main.async {
                             self.webView?.load(request)
@@ -367,6 +368,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         self.webView?.load(request)
                     }
                 }
+                // MARK: Display IAP Products on List Page
+                if listAPI.range(of: "showIAP=yes") != nil {
+                    self.loadProductsHTML(for: "ebook")
+                }
+                
             }
         }
     }
@@ -1330,6 +1336,59 @@ extension SuperDataViewController {
             //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             self?.updateUI(with: results)
+            
+            
+            //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
+            //            self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
+        }
+        
+    }
+    
+    
+    // MARK: - load IAP products and update UI
+    fileprivate func loadProductsHTML(for type: String) {
+        IAPs.shared.products = []
+        FTCProducts.store.requestProducts{[weak self] success, products in
+            if success {
+                if let products = products {
+                    //self?.products = products
+                    IAPs.shared.products = products
+                }
+            }
+            // MARK: - Get product regardless of the request result
+            // print ("product loaded: \(String(describing: IAPs.shared.products))")
+            
+            // MARK: - Get only the type of products needed
+            
+            //print(IAP.getJSON(IAPs.shared.products, in: type))
+            
+            
+            let ids = [
+                "com.ft.ftchinese.mobile.book.magazine",
+                "com.ft.ftchinese.mobile.book.magazine2",
+                "com.ft.ftchinese.mobile.book.career",
+                "com.ft.ftchinese.mobile.book.economy1",
+                "com.ft.ftchinese.mobile.book.economy2"
+                ]
+            let json = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: ids)
+            let jsCode = JSCodes.get(in: "iap-ebooks", with: json)
+            // print (jsCode)
+            //"document.getElementById('iap-ebooks').innerHTML = 'eBooks by FTC! ';"
+            self?.webView?.evaluateJavaScript(jsCode) { (result, error) in
+                if result != nil {
+                    print (result ?? "unprintable JS result")
+                }
+            }
+//            let contentSections = ContentSection(
+//                title: "",
+//                items: IAP.get(IAPs.shared.products, in: type),
+//                type: "List",
+//                adid: ""
+//            )
+//            let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
+//            //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+//            //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+//            self?.updateUI(with: results)
             
             
             //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")

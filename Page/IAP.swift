@@ -142,7 +142,38 @@ struct IAP {
     }
     
     
-    
+    public static func getJSON(_ products: [SKProduct], in group: String?, shuffle: Bool, filter: [String]?) -> String {
+        var contentItems = get(products, in: group)
+        if shuffle {
+            contentItems = contentItems.shuffled()
+        }
+        if let ids = filter {
+            contentItems = contentItems.filter{
+                ids.contains($0.id)
+            }
+        }
+        var json = ""
+        for (index, contentItem) in contentItems.enumerated() {
+            if index > 0 {
+                json += ","
+            }
+            json += "{"
+            json += "id:\"\(contentItem.id)\","
+            json += "image:\"\(contentItem.image)\","
+            json += "headline:\"\(contentItem.headline)\","
+            json += "lead:\"\(contentItem.lead)\","
+            json += "type:\"\(contentItem.type)\","
+            json += "tag:\"\(contentItem.tag)\","
+            json += "isDownloaded:\(contentItem.isDownloaded),"
+            json += "expireDateString:\"\(contentItem.expireDateString ?? "")\","
+            json += "periodString:\"\(contentItem.periodString ?? "")\","
+            json += "productPrice:\"\(contentItem.productPrice ?? "")\""
+            json += "}"
+        }
+        json = json.replacingOccurrences(of: "[\r\n]", with: "", options: .regularExpression)
+        json = "[\(json)]"
+        return json
+    }
     
     
     // MARK: - Get the expire date of non-renewing subscriptions from purchase history
@@ -480,4 +511,7 @@ struct IAP {
     
     
 }
+
+
+
 

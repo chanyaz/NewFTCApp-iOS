@@ -31,7 +31,7 @@ struct APIs {
 
     // MARK: Backup server 3
     private static let backupHTMLDomains3 = [
-        "https://danla2f5eudt1.cloudfront.net",
+        "https://danla2f5eudt1.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
@@ -151,7 +151,7 @@ struct APIs {
                 htmlDomains[currentIndex],
                 backupHTMLDomains[currentIndex],
                 backupHTMLDomains2[currentIndex],
-                backupHTMLDomains2[currentIndex]
+                backupHTMLDomains3[currentIndex]
             ]
             if let errorServerIndex = servers.index(of: serverNotResponding) {
                 var nextServerIndex = errorServerIndex + 1
@@ -159,7 +159,8 @@ struct APIs {
                     nextServerIndex = 0
                 }
                 if from.hasPrefix(serverNotResponding) {
-                    return from.replacingOccurrences(of: serverNotResponding, with: servers[nextServerIndex])
+                    let newUrlString = from.replacingOccurrences(of: serverNotResponding, with: servers[nextServerIndex])
+                    return newUrlString
                 }
             }
         }

@@ -33,14 +33,14 @@
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OLn-nB-esc">
-                        <rect key="frame" x="38" y="26" width="100" height="60"/>
+                        <rect key="frame" x="48" y="26" width="100" height="60"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="OLn-nB-esc" secondAttribute="height" multiplier="5:3" id="DHM-KC-wCI"/>
                             <constraint firstAttribute="height" constant="60" id="TXX-X9-pgX"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="巴菲特vs科幻小说家，谁能预测未来样子" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvT-DW-KPv">
-                        <rect key="frame" x="148" y="39.5" width="169" height="33.5"/>
+                        <rect key="frame" x="158" y="39.5" width="159" height="33.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -52,7 +52,7 @@
                     <constraint firstAttribute="trailing" secondItem="hvT-DW-KPv" secondAttribute="trailing" constant="5" id="UTV-Po-Uw1"/>
                     <constraint firstItem="Z4d-hq-1em" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="WtH-2t-flF"/>
                     <constraint firstItem="OLn-nB-esc" firstAttribute="centerY" secondItem="Z4d-hq-1em" secondAttribute="centerY" id="wPY-TE-LCP"/>
-                    <constraint firstItem="OLn-nB-esc" firstAttribute="leading" secondItem="Z4d-hq-1em" secondAttribute="trailing" constant="10" id="yO8-Rv-B80"/>
+                    <constraint firstItem="OLn-nB-esc" firstAttribute="leading" secondItem="Z4d-hq-1em" secondAttribute="trailing" constant="20" id="yO8-Rv-B80"/>
                     <constraint firstItem="Z4d-hq-1em" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="zRh-fA-sb1"/>
                 </constraints>
             </tableViewCellContentView>

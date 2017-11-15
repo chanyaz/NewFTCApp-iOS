@@ -12,6 +12,7 @@ import StoreKit
 struct IAPs {
     static var shared = IAPs()
     var products = [SKProduct]()
+    var jsCodes: String?
     
     // MARK: - The Download Operation Queue
     lazy var downloadQueue:OperationQueue = {

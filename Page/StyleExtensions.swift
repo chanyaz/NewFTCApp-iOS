@@ -265,6 +265,18 @@ extension UIView {
             self.alpha = 0.0
         }, completion: completion)
     }
+    func downHide(duration: TimeInterval = 1.0,delay: TimeInterval = 0,deltaY:CGFloat, completion: @escaping (Bool) -> Void = {(finished: Bool) -> Void in}){
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.transform = CGAffineTransform(translationX: 0,y: deltaY)
+            self.setNeedsUpdateConstraints()
+        },  completion: completion)
+    }
+    func upShow(duration: TimeInterval = 1.0,delay: TimeInterval = 0, completion: @escaping (Bool) -> Void = {(finished: Bool) -> Void in}){
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.transform = CGAffineTransform.identity
+            self.setNeedsUpdateConstraints()
+        },  completion: completion)
+    }
     
     //    func addOverlay(_ image: UIImage, to background: UIImageView, of size: CGFloat) {
     //        let overlayHeight = background.frame.height * size
@@ -380,4 +392,22 @@ extension String {
         return self.removingPercentEncoding?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? self
     }
 
+}
+
+
+// MARK: Shuffle and Array
+extension Array {
+    
+    func shuffled() -> [Element] {
+        var results = [Element]()
+        var indexes = (0 ..< count).map { $0 }
+        while indexes.count > 0 {
+            let indexOfIndexes = Int(arc4random_uniform(UInt32(indexes.count)))
+            let index = indexes[indexOfIndexes]
+            results.append(self[index])
+            indexes.remove(at: indexOfIndexes)
+        }
+        return results
+    }
+    
 }

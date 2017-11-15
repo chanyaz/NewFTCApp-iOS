@@ -465,6 +465,9 @@ struct JSCodes {
             return "window.gConnectionType = '\(Connection.current())';checkFontSize('\(fontClass)');"
         }
     }
+    public static func get(in id: String, with json: String) -> String {
+        return "updateProductsHTML('\(id)', \(json));"
+    }
 }
 // MARK: - person info page
 struct personInfo {

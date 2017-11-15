@@ -350,8 +350,17 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             listContentString = defaultString
                         }
                         let listTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                        let listHTML = (listTemplate as String)
+                        var listHTML = (listTemplate as String)
                             .replacingOccurrences(of: "{list-content}", with: listContentString)
+                        var iapCode = ""
+                        if let jsCode = IAPs.shared.jsCodes,
+                            listAPI.range(of: "showIAP=yes") != nil {
+                            iapCode = jsCode
+                        }
+                        listHTML = listHTML.replacingOccurrences(
+                            of: "{iap-js-code}",
+                            with: iapCode
+                        )
                         //print (listHTML)
                         DispatchQueue.main.async {
                             self.webView?.loadHTMLString(listHTML, baseURL:url)
@@ -368,8 +377,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         self.webView?.load(request)
                     }
                 }
-                // MARK: Display IAP Products on List Page
-                if listAPI.range(of: "showIAP=yes") != nil {
+                // MARK: Display IAP Products on List Page, only for the first time
+                if listAPI.range(of: "showIAP=yes") != nil && IAPs.shared.jsCodes == nil {
                     self.loadProductsHTML(for: "ebook")
                 }
                 
@@ -1372,6 +1381,7 @@ extension SuperDataViewController {
                 ]
             let json = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: ids)
             let jsCode = JSCodes.get(in: "iap-ebooks", with: json)
+            IAPs.shared.jsCodes = jsCode
             // print (jsCode)
             //"document.getElementById('iap-ebooks').innerHTML = 'eBooks by FTC! ';"
             self?.webView?.evaluateJavaScript(jsCode) { (result, error) in

@@ -29,20 +29,17 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     //MAKR: showingData用于存储展示数据中必要的数据，该数据会存储进Caches
     //MARK: showingCellData用于存储展示数据中所有Cell有关数据，该数据依赖shoingData生成
-    //var showingData:[[String:String]] = Array(repeating: ChatViewModel.buildTalkData(), count: 4)
     var showingData = [[String:String]]()
     var showingCellData = [CellData]() {
         didSet {
             if(self.isTalkListFirstReloadData == false && self.isLoadHistoryDataAtTop == false && self.isGetMoreHistorySign == false) {
-            //if(self.needAutoReloadData == true) {
+   
                 print("chat auto reload data")
                 
                 self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
                 print("showingCellDataNum:\(showingCellData.count)")
-                //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
-                //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
                 self.tableViewScrollToBottom(animated: true,delay: 100)
-                //
+                
                 print("scroll3")
              
             }
@@ -55,23 +52,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     var addedGetHistorySignToShowingCellData = false
     
-    var isScrolling = false /*{ // MARK:此处可判断到底是否在scrolling,如果牺牲体验，可以使用该方法：即滚动的时候不能弹出键盘
-        
-        didSet {
-            if(self.isScrolling == false) {
-                
-                //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
-                //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-                self.inputBlock.isUserInteractionEnabled = true
-            } else {
-                self.inputBlock.isUserInteractionEnabled = false
-            }
-        }
+    var isScrolling = false // MARK:此处可判断到底是否在scrolling,如果牺牲体验，可以使用该方法：即滚动的时候不能弹出键盘
  
-        
-    }*/  // 用于存储tableView是否处于滚动状态
-    //TODO:增加函数事件：当拉到tableView顶部时，再次从historyTalkData中加载10个数据
-    //TODO:解决刚打开时，显示历史记录时不能scroll到最底部
     func scrollTobottomWhenReloadData() {
         self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
         print("showingCellDataNum:\(showingCellData.count)")
@@ -311,94 +293,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func scrollViewDidEndScrolling(_ scrollView: UIScrollView) {
         self.isScrolling = false
     }
-     
-    /*
-    @objc func keyboardWillShow(_ notification: NSNotification) {
-        //MARK:键盘显示时滚动到talk list view滚动到底部
-            self.tableViewScrollToBottom(animated: false)
-            //self.modifiyTheOffset(animated: false)
-            print("show:\(keyboardWillShowExecute)")
-            keyboardWillShowExecute += 1
-        
-            if let userInfo = notification.userInfo, let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
-                let keyboardBounds = value.cgRectValue
-                let keyboardFrame = self.view.convert(keyboardBounds, to: nil)
-                
-                
-                //print(keyboardFrame.height)
-
-                let deltaY = keyboardFrame.size.height
-                
-                 //print("deltaY:\(deltaY)")
-                let animation:(() -> Void) = {
-                    self.view.transform = CGAffineTransform(translationX: 0,y: -deltaY)
-                    self.view.setNeedsUpdateConstraints()
-                    self.view.setNeedsLayout()
-                    //print("showAnimate:\(showAnimateExecute)")
-                    showAnimateExecute += 1
-                    //print("self.view.frame:\(self.view.frame)")
-                }
-                UIView.animate(
-                    withDuration: 0.1,
-                    delay: 0.0,
-                    options: UIViewAnimationOptions(rawValue: curve),
-                  
-                    animations:animation,
-                    completion:nil
     
-                )
-                
-                 self.view.setNeedsLayout()
-                
-                
-            }
-        
-            /*
-            let keyboardHeight = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.height
-            if let realKeyboardHeight = keyboardHeight {
-                UIView.animate(withDuration: 0.1, animations: {
-                    () -> Void in
-                    if self.inputBlock.isFirstResponder {
-                        self.view.frame.origin.y = -realKeyboardHeight
-                        self.view.layoutIfNeeded()
-                    }
-                    
-                })
-            }
-            */
-    }
- 
-    @objc func keyboardDidShow(_ notification:NSNotification){
-        //let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
-        //self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
-    }
-    @objc func keyboardWillHide(_ notification: NSNotification) {
-        print("hide")
-        
-        if let userInfo = notification.userInfo, let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double, let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt{
-            let animation:(() -> Void)={
-                self.view.transform = CGAffineTransform.identity
-                self.view.setNeedsUpdateConstraints()
-            }
-            UIView.animate(
-                withDuration: 0.1,
-                delay: 0.0,
-                options: UIViewAnimationOptions(rawValue: curve),
-                animations:animation,
-                completion: nil
-            )
-             self.view.setNeedsLayout()
-        }
-        
-        /*
-        UIView.animate(withDuration: 0.1, animations: {
-            () -> Void in
-            self.view.frame.origin.y = 0
-            self.view.layoutIfNeeded()
-        })
-        */
-    }
-    */
     @IBOutlet var talkListBlockTopLayoutConstraint: NSLayoutConstraint!
     
     @IBOutlet var talkListBlockBottomLayoutConstraint: NSLayoutConstraint!
@@ -524,8 +419,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let timestamp = Int(Date().timeIntervalSince1970)//生成时间戳
         print("Ice timestamp:\(timestamp)")
         let userIdField = "x-msxiaoice-request-user-id"
-        //let userId = "e10adc3949ba59abbe56e057f20f883e"
-        //let userId:String = ChatViewModel.randomString(length: 32)
         let userId = self.iceUserInfo.iceUserId
     
         let signatureField = "x-msxiaoice-request-signature"

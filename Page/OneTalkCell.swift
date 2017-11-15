@@ -61,6 +61,8 @@ class OneTalkCell: UITableViewCell {
             }
         }
     }
+    
+
     private func getImgSavedNameFromUrl(_ url: String) -> String? {
         let IceCoverImagePattern = ["^http://i.ftimg.net/picture/[0-9]/([0-9]+)_piclink.jpg$"] // h ttp://i.ftimg.net/picture/5/000071895_piclink.jpg
         let imgName = url.matchingStrings(regexes: IceCoverImagePattern)

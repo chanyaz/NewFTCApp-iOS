@@ -25,11 +25,13 @@ enum Infotype {
 
 struct SaysWhat {
     var type = Infotype.text
-    var content: String = ""
-    var url: String = ""
-    var title: String = ""
-    var description: String = ""
-    var coverUrl: String = ""
+    var content = ""
+    var url = ""
+    var title = ""
+    var description = ""
+    var coverUrl = ""
+    var impressionId = ""
+    var storyId = ""
     
     //文本类型构造器
     init(saysType type: Infotype, saysContent content: String?) {
@@ -57,8 +59,8 @@ struct SaysWhat {
         }
     }
     
-    //图文类型构造器
-    init(saysType type: Infotype, saysTitle title: String?, saysDescription description: String?, saysCover coverUrl: String?, saysUrl cardUrl:String?) {
+    //图文类型构造器 //TODO:待简化， 这里参数只需要一个——talkData即可
+    init(saysType type: Infotype, saysTitle title: String?, saysDescription description: String?, saysCover coverUrl: String?, saysUrl cardUrl:String?, saysImpressionId impressionId: String?, saysStoryId storyId: String?) {
         self.type = type
         if(type == .card) {
             if let titleStr = title {
@@ -85,6 +87,8 @@ struct SaysWhat {
                 self.url = "http://www.ftchinese.com/story/001074079"
             }
             
+            self.impressionId = impressionId ?? ""
+            self.storyId = storyId ?? ""
         }
     }
     
@@ -220,7 +224,7 @@ class CellData {
     // 一些必须在数据里生成的和view相关的对象
     var strechedBubbleImage = UIImage()
     
-
+    
     //MARK:构造器1：下拉加载更多历史记录时提示语CellData数据构造器：
     init(getMoreHistory getMoreHistoryData:Bool, signContent content: String) {
         self.isGetMoreHistory = getMoreHistoryData
@@ -273,7 +277,9 @@ class CellData {
             self.buildCardCellData(
                 title: say.title,
                 coverUrl: say.coverUrl,
-                description:say.description
+                description:say.description,
+                impressionId: say.impressionId,
+                storyId: say.storyId
             )
         }
         
@@ -332,7 +338,7 @@ class CellData {
     
     
     //创建Card类型数据:
-     func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String) {
+    func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String, impressionId impressionIdStr: String, storyId storyIdStr: String) {
 
         self.bubbleImageWidth = self.imageWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
             // self.bubbleImageHeight在此方法后文计算
@@ -384,6 +390,319 @@ class CellData {
 }
 
 /******* Model: 提供一些方法，和数据联系紧密，Controller中会用到这些方法 ****/
+class Chat {
+    let triggerGreetForOldUser = "【端用户新对话打开信号，内容无法显示】"
+    let triggerGreetForNewUser = "【端用户首次打开信号，内容无法显示】"
+    let triggerNewsContent = "【端用户首次打开信号，推荐新闻】"
+    var iceUserInfo:(iceUserId:String, triggerGreetContent:String) {
+        return self.determineUser()
+    }
+    var userId: String {
+        return self.iceUserInfo.iceUserId
+    }
+    
+    let appIdField = "x-msxiaoice-request-app-id"
+    let userIdField = "x-msxiaoice-request-user-id"
+    let timestampField = "x-msxiaoice-request-timestamp"
+    let signatureField = "x-msxiaoice-request-signature"
+    
+    //小冰正式服务器
+    let urlString = "https://service.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15"
+    let appId = "XIeQemRXxREgGsyPki"
+    let secret = "4b3f82a71fb54cbe9e4c8f125998c787"
+    let paramList = "api-version=2017-06-15"
+    
+    //小冰测试服务器
+    /*
+     let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
+     let appId = "XI36GDstzRkCzD18Fh"
+     let secret = "5c3c48acd5434663897109d18a2f62c5"
+     let paramList = "api-version=2017-06-15-Int"
+    */
+    var timeStampForTalk:Int { //用以对话请求的时间戳
+        return Int(Date().timeIntervalSince1970)
+    }
+    
+    var responseTalkDataArr = [[String: String]]()
+    
+    
+    ///About Tracking click
+    //小冰正式服务器
+    let trackUrlString = "https://sai-prod-recommstorage.azurewebsites.net/api/Recommender/UpdateUserBehavior"
+    //小冰测试服务器
+     //let trackUrlString = "https://sai-int-recommstorage.azurewebsites.net/api/Recommender/UpdateUserBehavior"
+    
+    var behaviorID = ""//唯一，标志某唯一行为
+    let deviceType = 0 //0表示iPhone, 1表示android
+    var deviceID:String {
+        if let realIdVender = UIDevice.current.identifierForVendor {
+            let uuidStr = realIdVender.uuidString
+            if let regex = try? NSRegularExpression(pattern: "-", options:[]) {//NOTE:try? 将错误转换成可选值
+                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.characters.count), withTemplate: "")
+                
+                return cleanedUuidStr
+            }
+        }
+        return ""
+    }
+    var timeStampForTrack:String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let convertedDate = dateFormatter.string(from:Date())
+        return convertedDate
+    }
+    let actionType = 81
+    let sessionID = ""
+    let pos = 1
+    
+    
+    func determineUser() -> (iceUserId: String, triggerGreetContent: String){
+        let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
+        var iceUserId: String? = nil
+        var triggerGreet: String? = nil
+        if let userIdFromUserDefaultReal = userIdFromUserDefault {
+            let userIdStr = userIdFromUserDefaultReal as? String
+            if let userIdStrReal = userIdStr, userIdStrReal.count == 32  {
+                iceUserId = userIdStrReal
+                triggerGreet = self.triggerGreetForOldUser
+            }
+        }
+        if let iceUserIdReal = iceUserId, let triggerGreetReal = triggerGreet {
+            return (
+                iceUserIdReal,
+                triggerGreetReal
+            )
+        } else {
+            let newIceUserId = ChatViewModel.randomString(length: 32)
+            UserDefaults.standard.set(newIceUserId, forKey: "iceUserId")
+            return (
+                newIceUserId,
+                self.triggerGreetForNewUser
+            )
+        }
+    }
+    
+    func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
+        print("Ice Execute computeSignature")
+        
+        let verbStr = verb.lowercased()
+        print("Ice verbStr:\(verbStr)")
+        
+        let pathStr = path.lowercased()
+        print("Ice pathStr:\(pathStr)")
+        
+        let paramListStr = paramList.sorted().joined(separator: "&")
+        print("Ice paramListStr:\(paramListStr)")
+        
+        var headerListNew = Array(repeating: "", count: headerList.count)
+        for (index,value) in headerList.enumerated() {
+            headerListNew[index] = value.lowercased()
+        }
+        print("Ice headerListNew: start- \(headerListNew) -end")
+        
+        let headerListStr = headerListNew.sorted().joined(separator: ",")
+        //base64EncodedString()
+        let bodyStr = body
+        
+        let secretKeyStr = secretKey
+        print("Ice secretKeyStr: start- \(secretKeyStr) -end")
+        
+        let messageStr = "\(verbStr);\(pathStr);\(paramListStr);\(headerListStr);\(bodyStr);\(timestamp);\(secretKeyStr)"
+        
+        print("Ice messageStr: start- \(messageStr) -end")
+        
+        let signature = messageStr.HmacSHA1(key: secretKeyStr)
+        return signature
+    }
+    
+    func computeTrackSign() {
+    
+    }
+    func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkDataArr:[[String:String]]?) -> Void) {
+        let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
+        let timeStamp = self.timeStampForTalk
+        print("Ice Request bodyString: start- \(bodyString) -end")
+        
+        let signature = self.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: [paramList], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timeStamp, secretKey: secret)
+        print("Ice signature: start- \(signature) -end")
+        
+        if let url = URL(string: urlString),
+            let body = bodyString.data(using: .utf8)// 将String转化为Data
+        {
+            var talkRequest = URLRequest(url:url)
+            talkRequest.httpMethod = "POST"
+            talkRequest.httpBody = body
+            talkRequest.setValue("\(body.count)", forHTTPHeaderField: "Content-Length")
+            talkRequest.setValue(appId, forHTTPHeaderField: appIdField)
+            talkRequest.setValue(String(timeStamp), forHTTPHeaderField: timestampField)
+            talkRequest.setValue(signature, forHTTPHeaderField: signatureField)
+            talkRequest.setValue(userId, forHTTPHeaderField: userIdField)
+            
+            (URLSession.shared.dataTask(with: talkRequest) {
+                (data,response,error) in
+                if error != nil {
+                    print("Ice Error: start- \(String(describing: error)) -end")
+                    DispatchQueue.main.async {//返回主线程更新UI
+                        completion(nil)
+                    }
+                    return
+                    
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                    //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
+                    print("Ice Response statusCode when not 200: start- \(httpStatus) -end")
+                    
+                    DispatchQueue.main.async {//返回主线程更新UI
+                        completion(nil)
+                    }
+                    return
+                    
+                }
+                
+                if let data = data, let dataString = String(data: data, encoding: .utf8){
+                    print("Ice Responce Data: start- \(dataString) -end")
+                    self.proposeResponseData(data: data)
+     
+                    DispatchQueue.main.async {//返回主线程更新UI
+                        completion(self.responseTalkDataArr)
+                    }
+                    
+                }
+                
+                
+                
+            }).resume()
+            
+        }
+    }
+    func proposeResponseData(data:Data) {
+        var talkDataArr = [[String: String]]()
+        var talkData = [
+            "member":"robot",
+            "type":"text"
+        ]
+        do {
+            let jsonAny = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
+            if let jsonDictionary = jsonAny as? NSDictionary,let impressionId = jsonDictionary["ImpressionID"], let answer = jsonDictionary["Answer"],let answerArray = answer as? NSArray {
+                let oneAnswer = answerArray[0]
+                
+                if let oneAnswerDic = oneAnswer as? NSDictionary,
+                    let type = oneAnswerDic["Type"], let typeStr = type as? String {
+                    
+                    print(typeStr)
+                    switch typeStr {
+                    case "Text":
+                        if let content = oneAnswerDic["Content"]{
+                            
+                            let contentStr = content as? String
+                            talkData["content"] = contentStr
+                            
+                        } else {
+                            let contentStr = "This is a Text, the data miss some important fields."
+                            talkData["content"] = contentStr
+                        }
+                        talkDataArr.append(talkData)
+                    case "Image":
+                        
+                        if let url = oneAnswerDic["Url"] {
+                            let urlStr = url as? String
+                            //robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
+                            print("This is a Image")
+                            talkData["type"] = "image"
+                            talkData["url"] = urlStr
+                        } else {
+                            let contentStr = "This is a Image, the data miss some important fields."
+                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                            talkData["content"] = contentStr
+                        }
+                        talkDataArr.append(talkData)
+                        
+                    case "Card":
+                        print("This is a Card")
+                        let impressionIdStr = impressionId as? String
+                        if let title = oneAnswerDic["Title"],
+                            let description = oneAnswerDic["Description"],
+                            let coverUrl = oneAnswerDic["CoverUrl"],
+                            let cardUrl = oneAnswerDic["Url"] {
+                            
+                            let titleStr = title as? String
+                            let cardUrlStr = cardUrl as? String
+                            let coverUrlStr = coverUrl as? String
+                            let descriptionStr = description as? String
+                            
+                            //robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
+                            talkData["type"] = "card"
+                            talkData["coverUrl"] = coverUrlStr
+                            talkData["title"] = titleStr
+                            talkData["url"] = cardUrlStr
+                            talkData["description"] = descriptionStr
+                            
+                            talkData["impressionId"] = impressionIdStr //用于user tracking的ImpressionID字段
+                            
+                            if let realCardUrlStr = cardUrlStr, let storyId = realCardUrlStr.matchingStrings(regexes:LinkPattern.story) {//NOTE:此处借用了string已有的扩展方法matchingStrings
+                                talkData["storyId"] = storyId //用于user tracking的feedID字段
+                            }
+                            
+                            
+                            talkDataArr.append(talkData)
+                            
+                            if answerArray.count > 1 {
+                                let theOtherAnswer = answerArray[1]
+                                if let theOtherAnswerDic = theOtherAnswer as? NSDictionary,
+                                    let theOtherAnswerType = theOtherAnswerDic["Type"], let theOtherAnswerTypeStr = theOtherAnswerType as? String {
+                                    if theOtherAnswerTypeStr == "Text" {
+                                        
+                                        if let content = theOtherAnswerDic["Content"]{
+                                            var theOtherTalkData = [
+                                                "member":"robot",
+                                                "type":"text"
+                                            ]
+                                            let contentStr = content as? String
+                                            theOtherTalkData["content"] = contentStr
+                                            talkDataArr.append(theOtherTalkData)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                    default:
+                        
+                        print("An unknow type response data.")
+                        /*let contentStr = "An unknow type response data."
+                         talkData["type"] = "text"
+                         talkData["content"] = contentStr
+                         */
+                        
+                    }
+                    
+                } /* else {
+                 let contentStr = "There is some Error on parsing data Step2"
+                 //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+                 talkData["type"] = "text"
+                 talkData["content"] = contentStr
+                 }*/
+                
+            } /*else {
+             let contentStr = "There is some Error on parsing data Step1"
+             //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
+             talkData["type"] = "text"
+             talkData["content"] = contentStr
+             }*/
+            self.responseTalkDataArr = talkDataArr
+            
+        } catch {
+            print("Catch Error in parsing Response Data")
+        }
+        
+    }
+
+    func createTrackRequest(_ cellData: CellData) {
+        
+    }
+}
 class ChatViewModel {
     static func buildTalkData() -> [String: String] {
         return [
@@ -396,6 +715,14 @@ class ChatViewModel {
             "coverUrl":""
         ]
     }
+    /*
+     var type = Infotype.text 对勾
+     var content: String = "" 对勾
+     var url: String = "" 对勾
+     var title: String = "" 对勾
+     var description: String = "" 对勾
+     var coverUrl: String = "" 对勾
+     */
     static let defaultTalkData = [
         "member":"robot",
         "type":"text",
@@ -453,7 +780,7 @@ class ChatViewModel {
                 saysWhat = SaysWhat(saysType: type, saysImage: oneTalkData["url"])
             case "card":
                 type = .card
-                saysWhat = SaysWhat(saysType: type, saysTitle: oneTalkData["title"], saysDescription: oneTalkData["description"], saysCover: oneTalkData["coverUrl"], saysUrl: oneTalkData["url"])
+                saysWhat = SaysWhat(saysType: type, saysTitle: oneTalkData["title"], saysDescription: oneTalkData["description"], saysCover: oneTalkData["coverUrl"], saysUrl: oneTalkData["url"], saysImpressionId: oneTalkData["impressionId"], saysStoryId: oneTalkData["storyId"])
             default:
                 type = .error
                 saysWhat = SaysWhat(saysType: .text, saysContent: "")
@@ -467,8 +794,42 @@ class ChatViewModel {
         let cellData = CellData(whoSays: member, saysWhat: saysWhat)
         return cellData
     }
-
-
+    
+    static func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
+        print("Ice Execute computeSignature")
+        
+        let verbStr = verb.lowercased()
+        print("Ice verbStr:\(verbStr)")
+        
+        let pathStr = path.lowercased()
+        print("Ice pathStr:\(pathStr)")
+        
+        let paramListStr = paramList.sorted().joined(separator: "&")
+        print("Ice paramListStr:\(paramListStr)")
+        
+        var headerListNew = Array(repeating: "", count: headerList.count)
+        for (index,value) in headerList.enumerated() {
+            headerListNew[index] = value.lowercased()
+        }
+        print("Ice headerListNew: start- \(headerListNew) -end")
+        
+        let headerListStr = headerListNew.sorted().joined(separator: ",")
+        //base64EncodedString()
+        let bodyStr = body
+        
+        let secretKeyStr = secretKey
+        print("Ice secretKeyStr: start- \(secretKeyStr) -end")
+        
+        let messageStr = "\(verbStr);\(pathStr);\(paramListStr);\(headerListStr);\(bodyStr);\(timestamp);\(secretKeyStr)"
+        
+        print("Ice messageStr: start- \(messageStr) -end")
+        
+        let signature = messageStr.HmacSHA1(key: secretKeyStr)
+        return signature
+    }
+    
+        
+        
     static func createResponseTalkData(data:Data) ->[[String: String]] {
         //var robotSaysWhat = SaysWhat()
         //var robotCellData:CellData? = nil
@@ -588,38 +949,7 @@ class ChatViewModel {
         
     }
 
-    static func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
-        print("Ice Execute computeSignature")
-        
-        let verbStr = verb.lowercased()
-        print("Ice verbStr:\(verbStr)")
-        
-        let pathStr = path.lowercased()
-        print("Ice pathStr:\(pathStr)")
-        
-        let paramListStr = paramList.sorted().joined(separator: "&")
-        print("Ice paramListStr:\(paramListStr)")
-        
-        var headerListNew = Array(repeating: "", count: headerList.count)
-        for (index,value) in headerList.enumerated() {
-            headerListNew[index] = value.lowercased()
-        }
-        print("Ice headerListNew: start- \(headerListNew) -end")
-        
-        let headerListStr = headerListNew.sorted().joined(separator: ",")
-        //base64EncodedString()
-        let bodyStr = body
-        
-        let secretKeyStr = secretKey
-        print("Ice secretKeyStr: start- \(secretKeyStr) -end")
-        
-        let messageStr = "\(verbStr);\(pathStr);\(paramListStr);\(headerListStr);\(bodyStr);\(timestamp);\(secretKeyStr)"
-        
-        print("Ice messageStr: start- \(messageStr) -end")
-        
-        let signature = messageStr.HmacSHA1(key: secretKeyStr)
-        return signature
-    }
+    
     
     static func randomString(length: Int) -> String {
         let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

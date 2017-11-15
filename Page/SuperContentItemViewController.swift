@@ -103,6 +103,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     } else {
                         // Fallback on earlier versions
                     }
+                } else if dataObject?.type == "manual" {
+                    isFullScreen = true
                 }
                 
                 // MARK: Add the webview as a subview of containerView
@@ -151,7 +153,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 
                 let typeString = dataObject?.type ?? ""
                 // MARK: If the sub type is a user comment, render web view directly
-                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html"].contains(typeString)  {
+                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html", "manual"].contains(typeString)  {
                     renderWebView()
                 } else {
                     getDetailInfo()
@@ -710,6 +712,29 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     print ("html file is not loaded correctly")
                 }
             }
+        }  else if dataObject?.type == "manual"{
+            // MARK: - If it's a url that might be saved
+            if let urlString = dataObject?.id,
+                let url = URL(string: urlString) {
+                if let data = Download.readFile(urlString, for: .cachesDirectory, as: "html"),
+                    let htmlString = String(data: data, encoding: .utf8){
+                    print ("found file \(htmlString)")
+                    webView?.loadHTMLString(htmlString, baseURL:url)
+                } else {
+                    print ("did not find file")
+                    Download.downloadUrl(urlString, to: .cachesDirectory, as: "html")
+                    let request = URLRequest(url: url)
+                    webView?.load(request)
+                }
+//                let url = URL(string: APIs.getUrl("htmlfile", type: "htmlfile"))
+//                do {
+//                    let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+//                    let storyHTML = (storyTemplate as String)
+//                    self.webView?.loadHTMLString(storyHTML, baseURL:url)
+//                } catch {
+//                    print ("html file is not loaded correctly")
+//                }
+            }
         }  else if dataObject?.type == "html"{
             // MARK: - If there's a need to open just the HTML file
             if let htmlFileName = dataObject?.id {
@@ -725,31 +750,39 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     }
                 }
             }
-        } else if dataObject?.type == "htmlbook"{
-            // MARK: - Open HTML Body Content from the html-book.html local file
-            let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
-            let resourceFileName = GB2Big5.convertHTMLFileName("html-book")
-            if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html"),
-                let contentHTMLPath = dataObject?.id,
-                let url = url {
-                do {
-                    let templateNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                    let template = templateNSString as String
-                    let contentNSString = try NSString(contentsOfFile:contentHTMLPath, encoding:String.Encoding.utf8.rawValue)
-                    let content = contentNSString as String
-                    //                    print(template)
-                    //                    print (content)
-                    var contentHTML = template.replacingOccurrences(of: "{html-book-content}", with: content)
-                    if let productId = dataObject?.headline.replacingOccurrences(of: "^try.", with: "", options: .regularExpression),
-                        contentHTMLPath.range(of: "try.") != nil {
-                        contentHTML = contentHTML.replacingOccurrences(of: "试读结束，如您对本书感兴趣，请返回之后购买。", with: "试读结束，如您对本书感兴趣，请<a href=\"buyproduct://\(productId)\">点击此处购买。</a>")
-                    }
-                    self.webView?.loadHTMLString(contentHTML, baseURL:url)
-                } catch {
-                    print ("cannot open the html book file")
-                    //self.webView?.load(request)
-                }
-            }
+//        } else if dataObject?.type == "htmlbook" {
+//            // MARK: - Open HTML Body Content from the html-book.html local file
+//            let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
+//            if let contentHTMLPath = dataObject?.id,
+//                let url = url {
+//                do {
+//                    let contentNSString = try NSString(contentsOfFile:contentHTMLPath, encoding:String.Encoding.utf8.rawValue)
+//                    let content = contentNSString as String
+//                    let resourceFileNameString: String
+//                    let replaceString: String
+//                    if content.range(of: "item-container") != nil {
+//                        resourceFileNameString = "list"
+//                        replaceString = "{list-content}"
+//                    } else {
+//                        resourceFileNameString = "html-book"
+//                        replaceString = "{html-book-content}"
+//                    }
+//                    let resourceFileName = GB2Big5.convertHTMLFileName(resourceFileNameString)
+//                    if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html") {
+//                        let templateNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
+//                        let template = templateNSString as String
+//                        var contentHTML = template.replacingOccurrences(of: replaceString, with: content)
+//                        if let productId = dataObject?.headline.replacingOccurrences(of: "^try.", with: "", options: .regularExpression),
+//                            contentHTMLPath.range(of: "try.") != nil {
+//                            contentHTML = contentHTML.replacingOccurrences(of: "试读结束，如您对本书感兴趣，请返回之后购买。", with: "试读结束，如您对本书感兴趣，请<a href=\"buyproduct://\(productId)\">点击此处购买。</a>")
+//                        }
+//                        self.webView?.loadHTMLString(contentHTML, baseURL:url)
+//                    }
+//                } catch {
+//                    print ("cannot open the html book file")
+//                    //self.webView?.load(request)
+//                }
+//            }
         } else {
             // MARK: - If it is other types of content such video and interactive features
             if let id = dataObject?.id, let type = dataObject?.type {

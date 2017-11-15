@@ -82,6 +82,8 @@ struct APIs {
         switch type {
         case "story":
             urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
+        case "htmlbook":
+            urlString = "\(webPageDomains)\(type)/\(id)"
         case "tag":
             if let encodedTag = id.removingPercentEncoding?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
                 urlString = "\(domain)\(type)/\(encodedTag)?type=json"
@@ -468,6 +470,19 @@ struct JSCodes {
         switch type {
         case autoPlayVideoType:
             return "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
+        case "manual":
+            var jsCode = ""
+            jsCode += "document.body.style.backgroundColor = '#FFF1E0';"
+            jsCode += "var sections = document.querySelectorAll('section, .rich_media_area_extra, .rich_media_area_primary');"
+            jsCode += "for (var i=0; i<sections.length; i++) {sections[i].style.backgroundColor = 'transparent';}"
+
+            jsCode += "var hiddenEles = document.querySelectorAll('.qr_code_pc');"
+            jsCode += "for (var j=0; j<hiddenEles.length; j++) {hiddenEles[j].style.display = 'none';}"
+            
+            jsCode += "sections = document.querySelectorAll('section, p, h2, img, div');"
+            jsCode += "var foundEnd = false;"
+            jsCode += "for (var k=0; k<sections.length; k++) {if (/^推荐[阅读]*$/i.test(sections[k].innerHTML)) {foundEnd = true;}if(foundEnd === true){sections[k].style.display = 'none';}}"
+            return jsCode
         default:
             let fontClass = Setting.getFontClass()
             return "window.gConnectionType = '\(Connection.current())';checkFontSize('\(fontClass)');"
@@ -475,6 +490,13 @@ struct JSCodes {
     }
     public static func get(in id: String, with json: String) -> String {
         return "updateProductsHTML('\(id)', \(json));"
+    }
+}
+
+// MARK: - Alert Messages that you might want to change for your own
+struct Alerts {
+    static func tryBook() {
+        Alert.present("试读结束", message: "如果您对本书的内容感兴趣，请返回购买")
     }
 }
 

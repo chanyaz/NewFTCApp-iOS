@@ -196,6 +196,16 @@ public struct FTCProducts {
             //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10599_bodyonly.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10599_Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.dailyenglish1",
+            "title":"读《金融时报》学英语（一）",
+            "teaser":"挑选FT每日英语文章精华，集结成册",
+            "image":"http://i.ftimg.net/picture/5/000074025_piclink.jpg",
+            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+            "download": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=ebook-english-1&bodyonly=yes&webview=ftcapp&ad=no&012",
+            "downloadfortry": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=ebook-english-1&bodyonly=yes&webview=ftcapp&ad=no&try=yes&012"
         ]
     ]
     

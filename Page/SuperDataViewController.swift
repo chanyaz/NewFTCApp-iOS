@@ -249,7 +249,59 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         self.webView?.load(request)
                     }
                 }
-            } else if dataObjectType == "clip" {
+                
+                
+//                func openDataView(_ id: String?, of type: String) {
+//                    if let id = id,
+//                        let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+//                        let listAPI = APIs.convert("https://danla2f5eudt1.cloudfront.net/\(type)/\(id.addUrlEncoding())?webview=ftcapp&bodyonly=yes&001")
+//                        let urlString = APIs.convert("http://www.ftchinese.com/\(type)/\(id)")
+//                        dataViewController.dataObject = [
+//                            "title": id,
+//                            //"api": APIs.get(id, type: type),
+//                            "listapi": listAPI,
+//                            "url": urlString,
+//                            "screenName":"\(type)/\(id)"
+//                        ]
+//                        dataViewController.pageTitle = id
+//                        self.navigationController?.pushViewController(dataViewController, animated: true)
+//                    }
+//                }
+                
+            } else if dataObjectType == "htmlbook" {
+                // MARK: - Open HTML Body Content from the html-book.html local file
+                let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
+                if let contentHTMLPath = dataObject["id"],
+                    let url = url {
+                    do {
+                        let contentNSString = try NSString(contentsOfFile:contentHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                        let content = contentNSString as String
+                        let resourceFileNameString: String
+                        let replaceString: String
+                        if content.range(of: "item-container") != nil {
+                            resourceFileNameString = "list"
+                            replaceString = "{list-content}"
+                        } else {
+                            resourceFileNameString = "html-book"
+                            replaceString = "{html-book-content}"
+                        }
+                        let resourceFileName = GB2Big5.convertHTMLFileName(resourceFileNameString)
+                        if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html") {
+                            let templateNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                            let template = templateNSString as String
+                            var contentHTML = template.replacingOccurrences(of: replaceString, with: content)
+                            if let productId = dataObject["headline"]?.replacingOccurrences(of: "^try.", with: "", options: .regularExpression),
+                                contentHTMLPath.range(of: "try.") != nil {
+                                contentHTML = contentHTML.replacingOccurrences(of: "试读结束，如您对本书感兴趣，请返回之后购买。", with: "试读结束，如您对本书感兴趣，请<a href=\"buyproduct://\(productId)\">点击此处购买。</a>")
+                            }
+                            self.webView?.loadHTMLString(contentHTML, baseURL:url)
+                        }
+                    } catch {
+                        print ("cannot open the html book file")
+                        //self.webView?.load(request)
+                    }
+                }
+            }  else if dataObjectType == "clip" {
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
                     let fileName = GB2Big5.convertHTMLFileName("myft")
@@ -602,6 +654,14 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             }
                             )
                         }
+                    } else if item.type == "manual" {
+                        let apiUrl = item.id
+                        if Download.readFile(apiUrl, for: .cachesDirectory, as: "html") == nil {
+                            print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                        } else {
+                            print ("File already exists. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                        }
+                        Download.downloadUrl(apiUrl, to: .cachesDirectory, as: "html")
                     }
                 }
             }
@@ -1239,6 +1299,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     navigationController?.pushViewController(contentItemViewController, animated: true)
                 }
                 
+            case "TryBook":
+                Alerts.tryBook()
+                break
+                
             case "ViewController":
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
                     navigationController?.pushViewController(chatViewController, animated: true)
@@ -1254,7 +1318,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     var pageIndexCount = 0
                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
                         for (itemIndex, item) in section.items.enumerated() {
-                            if ["story", "video", "interactive", "photo"].contains(item.type) {
+                            if ["story", "video", "interactive", "photo", "manual"].contains(item.type) {
                                 if sectionIndex == indexPath.section && itemIndex == indexPath.row {
                                     currentPageIndex = pageIndexCount
                                 }
@@ -1284,10 +1348,21 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                      */
                     
                     
-                    let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
-                    let pageData = AdLayout.insertAdId(to: withAd.contentItems, with: adchId)
+                    
+                    let pageData: [ContentItem]
+                    
+                    if selectedItem.type == "manual" {
+                        // MARK: For manual html pages in ebooks, hide bottom bar and ads
+                        pageData = pageDataRaw
+                        detailViewController.showBottomBar = false
+                    } else {
+                        let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
+                        pageData = AdLayout.insertAdId(to: withAd.contentItems, with: adchId)
+                        currentPageIndex = withAd.pageIndex
+                    }
+                    
                     //print (pageData)
-                    currentPageIndex = withAd.pageIndex
+                    
                     pageData[currentPageIndex].isLandingPage = true
                     detailViewController.themeColor = themeColor
                     detailViewController.contentPageData = pageData
@@ -1377,7 +1452,8 @@ extension SuperDataViewController {
                 "com.ft.ftchinese.mobile.book.magazine2",
                 "com.ft.ftchinese.mobile.book.career",
                 "com.ft.ftchinese.mobile.book.economy1",
-                "com.ft.ftchinese.mobile.book.economy2"
+                "com.ft.ftchinese.mobile.book.economy2",
+                "com.ft.ftchinese.mobile.book.dailyenglish1"
                 ]
             let json = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: ids)
             let jsCode = JSCodes.get(in: "iap-ebooks", with: json)

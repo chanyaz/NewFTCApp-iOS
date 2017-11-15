@@ -147,44 +147,44 @@ extension UIViewController: SFSafariViewControllerDelegate{
     }
     
     func openHTMLBook(_ fileLocation: String, productId: String) {
+        
+        
+        
         print ("open html file from location: \(fileLocation)")
-        //        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-        //            detailViewController.contentPageData = [ContentItem(
-        //                id: fileLocation,
-        //                image: "",
-        //                headline: "",
-        //                lead: "",
-        //                type: "htmlfile",
-        //                preferSponsorImage: "",
-        //                tag: "",
-        //                customLink: "",
-        //                timeStamp: 0,
-        //                section: 0,
-        //                row: 0)]
-        //            detailViewController.showBottomBar = false
-        //            self.navigationController?.pushViewController(detailViewController, animated: true)
-        //            return
-        //        }
-        if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+        if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController  {
             //print(dataViewController.view.frame)
-            contentItemViewController.dataObject = ContentItem(
-                id: fileLocation,
-                image: "",
-                headline: productId,
-                lead: "",
-                type: "htmlbook",
-                preferSponsorImage: "",
-                tag: "",
-                customLink: "",
-                timeStamp: 0,
-                section: 0,
-                row: 0)
-            contentItemViewController.pageTitle = "FT电子书"
-            contentItemViewController.isFullScreen = true
-            contentItemViewController.hidesBottomBarWhenPushed = true
+            dataViewController.dataObject = [
+                "id": fileLocation,
+                "headline": productId,
+                "type": "htmlbook",
+                "screenName":"htmlbook/\(productId)",
+                "url":  APIs.get(productId, type: "htmlbook")
+            ]
+            let title = IAP.findProductInfoById(productId)?["title"] as? String ?? "FT电子书"
+            dataViewController.pageTitle = title
+            //dataViewController.isFullScreen = true
+            dataViewController.hidesBottomBarWhenPushed = true
             //contentItemViewController.themeColor = self.pageThemeColor
-            navigationController?.pushViewController(contentItemViewController, animated: true)
+            navigationController?.pushViewController(dataViewController, animated: true)
         }
+        
+        
+        
+        //        if let id = id,
+        //            let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+        //            let listAPI = APIs.convert("https://danla2f5eudt1.cloudfront.net/\(type)/\(id.addUrlEncoding())?webview=ftcapp&bodyonly=yes&001")
+        //            let urlString = APIs.convert("http://www.ftchinese.com/\(type)/\(id)")
+        //            dataViewController.dataObject = [
+        //                "title": id,
+        //                //"api": APIs.get(id, type: type),
+        //                "listapi": listAPI,
+        //                "url": urlString,
+        //                "screenName":"\(type)/\(id)"
+        //            ]
+        //            dataViewController.pageTitle = id
+        //            self.navigationController?.pushViewController(dataViewController, animated: true)
+        //        }
+        
     }
     
     

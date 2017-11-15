@@ -178,14 +178,22 @@ struct Download {
         }
     }
     
+
+    
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
-        var fileName = urlString.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
+        var fileName = urlString
+        
+        if fileName.range(of: "mp.weixin.qq.com") != nil {
+            fileName = fileName.md5()
+        } else {
+            fileName = fileName.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
             .replacingOccurrences(of: ".html?.*pageid=", with: "-", options: .regularExpression)
             .replacingOccurrences(of: "[?].*", with: "", options: .regularExpression)
             .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
             .replacingOccurrences(of: "-type-json", with: ".json")
             .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
             .replacingOccurrences(of: "%", with: "")
+        }
         if fileName == "" {
             fileName = "home"
         }

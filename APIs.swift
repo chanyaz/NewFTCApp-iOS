@@ -469,6 +469,13 @@ struct JSCodes {
         return "updateProductsHTML('\(id)', \(json));"
     }
 }
+
+struct Alerts {
+    static func tryBook() {
+        Alert.present("试读结束", message: "如果您对本书的内容感兴趣，请返回购买")
+    }
+}
+
 // MARK: - person info page
 struct personInfo {
     static let infoMap:[[String: String]] = [

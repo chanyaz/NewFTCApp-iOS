@@ -438,7 +438,7 @@ class Chat {
         if let realIdVender = UIDevice.current.identifierForVendor {
             let uuidStr = realIdVender.uuidString
             if let regex = try? NSRegularExpression(pattern: "-", options:[]) {//NOTE:try? 将错误转换成可选值
-                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.characters.count), withTemplate: "")
+                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.count), withTemplate: "")
                 
                 return cleanedUuidStr
             }
@@ -739,7 +739,7 @@ class ChatViewModel {
         if let realIdVender = UIDevice.current.identifierForVendor {
             let uuidStr = realIdVender.uuidString
             if let regex = try? NSRegularExpression(pattern: "-", options:[]) {//NOTE:try? 将错误转换成可选值
-                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.characters.count), withTemplate: "")
+                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.count), withTemplate: "")
                 
                 return cleanedUuidStr
             }

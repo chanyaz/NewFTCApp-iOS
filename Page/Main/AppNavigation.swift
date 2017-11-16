@@ -28,7 +28,7 @@ struct AppNavigation {
                     //"api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
                     //"api": "https://d1budb999l6vta.cloudfront.net/channel/json.html?pageid=home&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/?webview=ftcapp&newad=yes",
-                    "listapi":"https://d1budb999l6vta.cloudfront.net/?webview=ftcapp&bodyonly=yes&newad=yes&maxB=1&backupfile=localbackup&showIAP=yes&005",
+                    "listapi":"https://d1budb999l6vta.cloudfront.net/?webview=ftcapp&bodyonly=yes&newad=yes&maxB=1&backupfile=localbackup&showIAP=yes&007",
                     "compactLayout": "home",
                     "coverTheme": "Classic",
                     "screenName":"homepage",

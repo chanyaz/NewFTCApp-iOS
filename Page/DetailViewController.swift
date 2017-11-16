@@ -290,6 +290,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // MARK: Save Language Preference
         let languageIndex = sender.selectedSegmentIndex
         UserDefaults.standard.set(languageIndex, forKey: Key.languagePreference)
+        actualLanguageIndex = languageIndex
         print ("language is switched manually to \(languageIndex)")
         // MARK: Posting a notification is the best way to update content as there might be more than one ContentItemController that needs to update display
         let object = languageIndex

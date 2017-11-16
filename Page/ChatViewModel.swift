@@ -10,7 +10,7 @@
 
 import Foundation
 
-/********* 几种Model的func中会用到的数据类型 **********************/
+/********* 几种和table数据关系密切的数据类型 **********************/
 enum Member {
     case robot
     case you
@@ -23,7 +23,7 @@ enum Infotype {
     case error
 }
 
-struct SaysWhat {
+struct SaysWhat { //MARK:其仅仅没有处理talkData的member字段
     var type = Infotype.text
     var content = ""
     var url = ""
@@ -32,68 +32,67 @@ struct SaysWhat {
     var coverUrl = ""
     var impressionId = ""
     var storyId = ""
-    
-    //文本类型构造器
-    init(saysType type: Infotype, saysContent content: String?) {
-        self.type = type
-        if(self.type == .text) {
-            if let contentStr = content{
-                self.content = contentStr
-            } else {
-                self.content = "The Content field is nil"
+    /* talkData:[String:String] =
+         [
+             "member":"",
+             "type":"",
+             "content":"",
+             "url":"",
+             "title":"",
+             "description":"",
+             "coverUrl":""
+         ]
+     */
+    init(_ talkData: [String:String]) {
+        if let type = talkData["type"] {
+            switch type {
+            case "text":
+                self.type = .text
+            case "image":
+                self.type = .image
+            case "card":
+                self.type = .card
+            default:
+                self.type = .error
             }
             
+            
+            if self.type == .text {
+                if let contentStr = talkData["content"] {
+                    self.content = contentStr
+                }
+                
+            } else if self.type == .image {
+                if let urlStr = talkData["url"] {
+                    self.url = urlStr
+                }
+                
+            } else if self.type == .card {
+                if let titleStr = talkData["title"] {
+                    self.title = titleStr
+                }
+                if let descriptionStr = talkData["description"] {
+                    self.description = descriptionStr
+                }
+                if let coverUrlStr = talkData["coverUrl"] {
+                    self.coverUrl = coverUrlStr
+                }
+                if let urlStr = talkData["url"] {
+                    self.url = urlStr
+                }
+                if let impressionIdStr = talkData["impressionId"] {
+                    self.impressionId = impressionIdStr
+                }
+                if let storyIdStr = talkData["storyId"] {
+                    self.storyId = storyIdStr
+                }
+            }
         }
+
     }
-    
-    //图片类型构造器
-    init(saysType type: Infotype, saysImage url: String?){
-        self.type = type
-        if(self.type == .image){
-            if let urlStr = url {
-                self.url = urlStr
-            } else {
-                self.url = "landscape.jpeg"
-            }
-            
-        }
-    }
-    
-    //图文类型构造器 //TODO:待简化， 这里参数只需要一个——talkData即可
-    init(saysType type: Infotype, saysTitle title: String?, saysDescription description: String?, saysCover coverUrl: String?, saysUrl cardUrl:String?, saysImpressionId impressionId: String?, saysStoryId storyId: String?) {
-        self.type = type
-        if(type == .card) {
-            if let titleStr = title {
-                self.title = titleStr
-            } else {
-                self.title = "The Title field is nil"
-            }
-            
-            if let descriptionStr = description {
-                self.description = descriptionStr
-            } else {
-                self.description = ""
-            }
-            
-            if let coverUrlStr = coverUrl {
-                self.coverUrl = coverUrlStr
-            } else {
-                self.coverUrl = "landscape.jpeg"
-            }
-            
-            if let urlStr = cardUrl {
-                self.url = urlStr
-            } else {
-                self.url = "http://www.ftchinese.com/story/001074079"
-            }
-            
-            self.impressionId = impressionId ?? ""
-            self.storyId = storyId ?? ""
-        }
-    }
-    
+
     //空构造器
-    init() {
+    init() { //NOTE:对于Struct而言，空构造器不会自动获得，想要有的话还是需要写一下；而Class是可以自动获得空构造器的（如果所有属性都带有初始值）
         
     }
     
@@ -102,7 +101,6 @@ struct SaysWhat {
 
 class CellData {
    
-    
     //MARK:属性类型1：用以区分不同类型的Cell（包括3种Cell:历史记录分割线Cell、获取更多历史数据提示Cell、正常Cell）
     var isHistoryCutline = false  //是否为历史记录分割线
     var isGetMoreHistory = false //是否为获取更多历史数据的提示语单元
@@ -148,7 +146,7 @@ class CellData {
     var textColor = UIColor.black//需要在构造器中根据条件得到
     
     //MARK：属性类型5：基于当前屏幕宽度（即当前Cell宽度）得到的基本尺寸
-    let screenWidth = ChatViewModel.screenWidth ?? CGFloat(375)
+    let screenWidth = SomeGlobal.screenWidth ?? CGFloat(375)
     var maxBubbleImageWidth:CGFloat {//气泡最大宽度
         return screenWidth - headImageLength - cellInsets.left - cellInsets.right - bubbleInsets.right - bubbleShorterLen - headImageLength
     }
@@ -303,7 +301,7 @@ class CellData {
         let computeWidth = max(size.size.width,20)
         /* QUEST:boundingRect为什么不能直接得到正确结果？而且为什么
          * 已解决：因为此处的font大小和实际font大小不同，只用在cell view中为UILabelView设置属性font为一样的UIFont对象，才能保证大小合适
-         * 另说明：此处当文字多余一行时，自动就是宽度固定为最大宽度，高度自适应
+         * 另说明：此处当文字多于一行时，自动就是宽度固定为最大宽度，高度自适应
          */
         let computeHeight = size.size.height
      
@@ -389,7 +387,7 @@ class CellData {
 
 }
 
-/******* Model: 提供一些方法，和数据联系紧密，Controller中会用到这些方法 ****/
+/******* Chat类: 提供一些方法，和小冰对话式推荐通讯关系密切 ****/
 class Chat {
     let triggerGreetForOldUser = "【端用户新对话打开信号，内容无法显示】"
     let triggerGreetForNewUser = "【端用户首次打开信号，内容无法显示】"
@@ -473,7 +471,7 @@ class Chat {
                 triggerGreetReal
             )
         } else {
-            let newIceUserId = ChatViewModel.randomString(length: 32)
+            let newIceUserId = SomeGlobal.randomString(length: 32)
             UserDefaults.standard.set(newIceUserId, forKey: "iceUserId")
             return (
                 newIceUserId,
@@ -562,7 +560,7 @@ class Chat {
                 
                 if let data = data, let dataString = String(data: data, encoding: .utf8){
                     print("Ice Responce Data: start- \(dataString) -end")
-                    self.proposeResponseData(data: data)
+                    self.parseResponseData(data: data)
      
                     DispatchQueue.main.async {//返回主线程更新UI
                         completion(self.responseTalkDataArr)
@@ -576,7 +574,7 @@ class Chat {
             
         }
     }
-    func proposeResponseData(data:Data) {
+    func parseResponseData(data:Data) {
         var talkDataArr = [[String: String]]()
         var talkData = [
             "member":"robot",
@@ -669,28 +667,12 @@ class Chat {
                         
                         
                     default:
-                        
                         print("An unknow type response data.")
-                        /*let contentStr = "An unknow type response data."
-                         talkData["type"] = "text"
-                         talkData["content"] = contentStr
-                         */
-                        
                     }
                     
-                } /* else {
-                 let contentStr = "There is some Error on parsing data Step2"
-                 //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                 talkData["type"] = "text"
-                 talkData["content"] = contentStr
-                 }*/
+                }
                 
-            } /*else {
-             let contentStr = "There is some Error on parsing data Step1"
-             //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-             talkData["type"] = "text"
-             talkData["content"] = contentStr
-             }*/
+            }
             self.responseTalkDataArr = talkDataArr
             
         } catch {
@@ -703,7 +685,9 @@ class Chat {
         
     }
 }
-class ChatViewModel {
+
+/******* SomeGlobal: 提供一些全局性质的方法和属性 ****/
+class SomeGlobal {
     static func buildTalkData() -> [String: String] {
         return [
             "member":"",
@@ -715,37 +699,8 @@ class ChatViewModel {
             "coverUrl":""
         ]
     }
-    /*
-     var type = Infotype.text 对勾
-     var content: String = "" 对勾
-     var url: String = "" 对勾
-     var title: String = "" 对勾
-     var description: String = "" 对勾
-     var coverUrl: String = "" 对勾
-     */
-    static let defaultTalkData = [
-        "member":"robot",
-        "type":"text",
-        "content":"你好！我是微软小冰。\n- 想和我聊天？\n随便输入你想说的话吧，比如'我喜欢你'、'你吃饭了吗？'\n- 想看精美图片？\n试试输入'xx图片'，比如'玫瑰花图片'、'小狗图片'\n- 想看图文新闻？\n试试输入'新闻'、'热点新闻'"
-    ]
-    static let triggerGreetForOldUser = "【端用户新对话打开信号，内容无法显示】"
-    static let triggerGreetForNewUser = "【端用户首次打开信号，内容无法显示】"
-    static let triggerNewsContent = "【端用户首次打开信号，推荐新闻】"
-    
     static var screenWidth:CGFloat? = nil
-    
-    //获取设备Id
-    static var deviceCode:String? {
-        if let realIdVender = UIDevice.current.identifierForVendor {
-            let uuidStr = realIdVender.uuidString
-            if let regex = try? NSRegularExpression(pattern: "-", options:[]) {//NOTE:try? 将错误转换成可选值
-                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.count), withTemplate: "")
-                
-                return cleanedUuidStr
-            }
-        }
-        return nil
-    }
+
     static func getTimeStampOfSeconds() -> Int{
         return Int(Date().timeIntervalSince1970)
     }
@@ -753,9 +708,9 @@ class ChatViewModel {
         return Date()
     }
     static func buildCellData(_ oneTalkData:[String:String]) -> CellData {//根据historyTalkData数据得到CellData数据
-        //let oneTalkData = self.historyTalkData[row]
         var saysWhat: SaysWhat
         var member:Member
+        //MARK:处理talkData的member字段，然后其他字段交给SaysWhat构造器处理
         if let valueForMember = oneTalkData["member"] {
             switch valueForMember {
             case "robot":
@@ -768,29 +723,7 @@ class ChatViewModel {
         } else {
             member = .no
         }
-        
-        var type:Infotype
-        if let valueForType = oneTalkData["type"] {
-            switch valueForType {
-            case "text":
-                type = .text
-                saysWhat = SaysWhat(saysType: type, saysContent: oneTalkData["content"])
-            case "image":
-                type = .image
-                saysWhat = SaysWhat(saysType: type, saysImage: oneTalkData["url"])
-            case "card":
-                type = .card
-                saysWhat = SaysWhat(saysType: type, saysTitle: oneTalkData["title"], saysDescription: oneTalkData["description"], saysCover: oneTalkData["coverUrl"], saysUrl: oneTalkData["url"], saysImpressionId: oneTalkData["impressionId"], saysStoryId: oneTalkData["storyId"])
-            default:
-                type = .error
-                saysWhat = SaysWhat(saysType: .text, saysContent: "")
-                
-            }
-        } else {
-            saysWhat = SaysWhat(saysType: .text, saysContent: "")
-        }
-        
-        
+        saysWhat = SaysWhat(oneTalkData)
         let cellData = CellData(whoSays: member, saysWhat: saysWhat)
         return cellData
     }
@@ -827,130 +760,7 @@ class ChatViewModel {
         let signature = messageStr.HmacSHA1(key: secretKeyStr)
         return signature
     }
-    
-        
-        
-    static func createResponseTalkData(data:Data) ->[[String: String]] {
-        //var robotSaysWhat = SaysWhat()
-        //var robotCellData:CellData? = nil
-        var talkDataArr = [[String: String]]()
-        var talkData = [
-            "member":"robot",
-            "type":"text"
-        ]
-        
-        do {
-            let jsonAny = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
-            if let jsonDictionary = jsonAny as? NSDictionary,let answer = jsonDictionary["Answer"],let answerArray = answer as? NSArray {
-                let oneAnswer = answerArray[0]
-                
-                if let oneAnswerDic = oneAnswer as? NSDictionary,
-                    let type = oneAnswerDic["Type"], let typeStr = type as? String {
-                    
-                    print(typeStr)
-                    switch typeStr {
-                    case "Text":
-                        if let content = oneAnswerDic["Content"]{
-                            
-                            let contentStr = content as? String
-                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                            talkData["content"] = contentStr
-                            
-                        } else {
-                            let contentStr = "This is a Text, the data miss some important fields."
-                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                            talkData["content"] = contentStr
-                        }
-                        talkDataArr.append(talkData)
-                    case "Image":
-                        
-                        if let url = oneAnswerDic["Url"] {
-                            let urlStr = url as? String
-                            //robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
-                            print("This is a Image")
-                            talkData["type"] = "image"
-                            talkData["url"] = urlStr
-                        } else {
-                            let contentStr = "This is a Image, the data miss some important fields."
-                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                            talkData["content"] = contentStr
-                        }
-                        talkDataArr.append(talkData)
-                        
-                    case "Card":
-                        print("This is a Card")
-                        
-                        if let title = oneAnswerDic["Title"],
-                            let description = oneAnswerDic["Description"],
-                            let coverUrl = oneAnswerDic["CoverUrl"],
-                            let cardUrl = oneAnswerDic["Url"] {
-                            
-                            let titleStr = title as? String
-                            let cardUrlStr = cardUrl as? String
-                            let coverUrlStr = coverUrl as? String
-                            let descriptionStr = description as? String
-                            //robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
-                            talkData["type"] = "card"
-                            talkData["coverUrl"] = coverUrlStr
-                            talkData["title"] = titleStr
-                            talkData["url"] = cardUrlStr
-                            talkData["description"] = descriptionStr
-                            talkDataArr.append(talkData)
-                       
-                            if answerArray.count > 1 {
-                                let theOtherAnswer = answerArray[1]
-                                if let theOtherAnswerDic = theOtherAnswer as? NSDictionary,
-                                    let theOtherAnswerType = theOtherAnswerDic["Type"], let theOtherAnswerTypeStr = theOtherAnswerType as? String {
-                                    if theOtherAnswerTypeStr == "Text" {
-                                        
-                                        if let content = theOtherAnswerDic["Content"]{
-                                            var theOtherTalkData = [
-                                                "member":"robot",
-                                                "type":"text"
-                                            ]
-                                            let contentStr = content as? String
-                                            theOtherTalkData["content"] = contentStr
-                                            talkDataArr.append(theOtherTalkData)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        
-                    default:
-                        
-                        print("An unknow type response data.")
-                        /*let contentStr = "An unknow type response data."
-                        talkData["type"] = "text"
-                        talkData["content"] = contentStr
-                         */
-                        
-                    }
-                    
-                } /* else {
-                    let contentStr = "There is some Error on parsing data Step2"
-                    //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                    talkData["type"] = "text"
-                    talkData["content"] = contentStr
-                }*/
-                
-            } /*else {
-                let contentStr = "There is some Error on parsing data Step1"
-                //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                talkData["type"] = "text"
-                talkData["content"] = contentStr
-            }*/
-            return talkDataArr
-            
-        } catch {
-            return [[String: String]]()
-        }
-        
-    }
-
-    
-    
+ 
     static func randomString(length: Int) -> String {
         let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let len = UInt32(letters.length)

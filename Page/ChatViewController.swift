@@ -17,9 +17,8 @@ var showAnimateExecute = 0
 var screenWidth = CGFloat(0)
 class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
     
-    
+    var chat = Chat()
       //MARK:属性初始化时不能直接使用其他属性
-  
     var autoScrollWhenTalk = false
     var historyTalkData:[[String:String]]? = nil
   
@@ -143,7 +142,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                             print("Chat showingData Num:\(self.showingData.count)")
                             var willAddHistoryCellData = [CellData]()
                             for data in willAddHistoryData {
-                                let oneCellData = ChatViewModel.buildCellData(data)
+                                let oneCellData = SomeGlobal.buildCellData(data)
                                 willAddHistoryCellData.append(oneCellData)
                             }
                             self.showingCellData.insert(contentsOf:willAddHistoryCellData, at:0)
@@ -216,17 +215,17 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 "content":currentYourTalk
             ]
             self.showingData.append(oneTalkData)
-            let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+            let oneCellData = SomeGlobal.buildCellData(oneTalkData)
             //self.needAutoReloadData = true
             self.showingCellData.append(oneCellData)
             //self.needAutoReloadData = false
             //self.scrollTobottomWhenReloadData()
             self.inputBlock.text = ""
-            self.createTalkRequest(myInputText:currentYourTalk, completion: { talkDataArr in
+            self.chat.createTalkRequest(myInputText:currentYourTalk, completion: { talkDataArr in
                 if let realTalkDataArr = talkDataArr {
                     for oneTalkData in realTalkDataArr {
                         self.showingData.append(oneTalkData)
-                        let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                        let oneCellData = SomeGlobal.buildCellData(oneTalkData)
                         self.showingCellData.append(oneCellData)
                     }
                 }
@@ -242,20 +241,17 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 "type":"text",
                 "content":currentYourTalk
             ]
-            //self.needAutoReloadData = true
             self.showingData.append(oneTalkData)
-            //self.needAutoReloadData = false
-            //self.scrollTobottomWhenReloadData()
             self.inputBlock.text = ""
-            let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+            let oneCellData = SomeGlobal.buildCellData(oneTalkData)
             
             self.showingCellData.append(oneCellData)
-            self.createTalkRequest(myInputText:currentYourTalk, completion: {
+            self.chat.createTalkRequest(myInputText:currentYourTalk, completion: {
                 talkDataArr in
                 if let realTalkDataArr = talkDataArr {
                     for oneTalkData in realTalkDataArr {
                         self.showingData.append(oneTalkData)
-                        let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                        let oneCellData = SomeGlobal.buildCellData(oneTalkData)
                         self.showingCellData.append(oneCellData)
                     }
                 }
@@ -355,7 +351,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentRow = indexPath.row
-        //let cellData = ChatViewModel.buildCellData(self.showingData[currentRow])
         let cellData = self.showingCellData[currentRow]
         
         if cellData.isHistoryCutline {
@@ -376,7 +371,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let userIdStr = userIdFromUserDefaultReal as? String
             if let userIdStrReal = userIdStr, userIdStrReal.count == 32  {
                 iceUserId = userIdStrReal
-                triggerGreet = ChatViewModel.triggerGreetForOldUser
+                triggerGreet = self.chat.triggerGreetForOldUser
             }
         }
         if let iceUserIdReal = iceUserId, let triggerGreetReal = triggerGreet {
@@ -385,102 +380,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 triggerGreetReal
             )
         } else {
-            let newIceUserId = ChatViewModel.randomString(length: 32)
+            let newIceUserId = SomeGlobal.randomString(length: 32)
             UserDefaults.standard.set(newIceUserId, forKey: "iceUserId")
             return (
                 newIceUserId,
-                ChatViewModel.triggerGreetForNewUser
+                self.chat.triggerGreetForNewUser
             )
         }
     }
         
-   func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkDataArr:[[String:String]]?) -> Void) {
-        let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
-    
-        print("Ice Request bodyString: start- \(bodyString) -end")
-        let appIdField = "x-msxiaoice-request-app-id"
-    
-        //小冰正式服务器
-    
-        let urlString = "https://service.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15"
-        let appId = "XIeQemRXxREgGsyPki"
-        let secret = "4b3f82a71fb54cbe9e4c8f125998c787"
-        let paramList = "api-version=2017-06-15"
- 
-        //小冰测试服务器
-        /*
-        let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
-        let appId = "XI36GDstzRkCzD18Fh"
-        let secret = "5c3c48acd5434663897109d18a2f62c5"
-        let paramList = "api-version=2017-06-15-Int"
-         */
-    
-        let timestampField = "x-msxiaoice-request-timestamp"
-        let timestamp = Int(Date().timeIntervalSince1970)//生成时间戳
-        print("Ice timestamp:\(timestamp)")
-        let userIdField = "x-msxiaoice-request-user-id"
-        let userId = self.iceUserInfo.iceUserId
-    
-        let signatureField = "x-msxiaoice-request-signature"
-
-        let signature = ChatViewModel.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: [paramList], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timestamp, secretKey: secret)
-        print("Ice signature: start- \(signature) -end")
-        
-        if let url = URL(string: urlString),
-            let body = bodyString.data(using: .utf8)// 将String转化为Data
-        {
-            var talkRequest = URLRequest(url:url)
-            talkRequest.httpMethod = "POST"
-            talkRequest.httpBody = body
-            talkRequest.setValue("\(body.count)", forHTTPHeaderField: "Content-Length")
-            talkRequest.setValue(appId, forHTTPHeaderField: appIdField)
-            talkRequest.setValue(String(timestamp), forHTTPHeaderField: timestampField)
-            talkRequest.setValue(signature, forHTTPHeaderField: signatureField)
-            talkRequest.setValue(userId, forHTTPHeaderField: userIdField)
-      
-            (URLSession.shared.dataTask(with: talkRequest) {
-                (data,response,error) in
-                if error != nil {
-                    print("Ice Error: start- \(String(describing: error)) -end")
-                    DispatchQueue.main.async {//返回主线程更新UI
-                        completion(nil)
-                    }
-                    return
-                   
-                }
-                
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                    //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
-                    print("Ice Response statusCode when not 200: start- \(httpStatus) -end")
-
-                    DispatchQueue.main.async {//返回主线程更新UI
-                        completion(nil)
-                    }
-                    return
-                    
-                }
-                
-                if let data = data, let dataString = String(data: data, encoding: .utf8){
-                    print("Ice Responce Data: start- \(dataString) -end")
-                    //explainRobotTalk = dataString
-                    let talkDataArr:[[String:String]]?
-                    talkDataArr = ChatViewModel.createResponseTalkData(data: data)
-                   // createResponseCellData(data: Data)
-                    
-                    DispatchQueue.main.async {//返回主线程更新UI
-                        completion(talkDataArr)
-                    }
-                    
-                }
-
-                
-                
-            }).resume()
-            
-        }
-    }
-    
-    
+   
     //FIXME:要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部。此外，还需要增加调用self.modifyTheOffset来调整，但是这样会使滚动不连贯.
     func tableViewScrollToBottom(animated:Bool, delay dedayMs:Int) {
         //self.modifiyTheOffset(animated: animated)
@@ -513,12 +422,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.viewDidLoad()
         print("Chat Execute viewDidLoad")
         // Do any additional setup after loading the view.
-        ChatViewModel.screenWidth = UIScreen.main.bounds.width
+        SomeGlobal.screenWidth = UIScreen.main.bounds.width
         print("Chat Size UIScreen width Controller:\(UIScreen.main.bounds.width)")
-        //MARK:监听键盘弹出、收起事件
-        //NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        //NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow(_:)), name:NSNotification.Name.UIKeyboardDidShow, object: nil)
-        //NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+        //MARK:监听键盘事件
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object:nil)
         //MARK:监听是否点击Home键以及重新进入界面
         NotificationCenter.default.addObserver(self, selector: #selector(self.applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
@@ -578,7 +484,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("Chat showingData Num:\(self.showingData.count)")
         var initShowingCellData = [CellData]()
         for data in self.showingData {
-            let oneCellData = ChatViewModel.buildCellData(data)
+            let oneCellData = SomeGlobal.buildCellData(data)
             initShowingCellData.append(oneCellData)
         }
         if initShowingContainHistory == true {
@@ -596,22 +502,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("ice userinfo iceUserId:\(iceUserId)")
         print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
         
-        let deviceCode = ChatViewModel.deviceCode
-        print("DeviceCode:\(deviceCode ?? "")")
-        self.createTalkRequest(myInputText: triggerGreetContent, completion: {
+        self.chat.createTalkRequest(myInputText: triggerGreetContent, completion: {
             talkDataArr in
             if let realTalkDataArr = talkDataArr {
                 for oneTalkData in realTalkDataArr {
                     self.showingData.append(oneTalkData)
-                    let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                    let oneCellData = SomeGlobal.buildCellData(oneTalkData)
                     self.showingCellData.append(oneCellData)
                 }
-                self.createTalkRequest(myInputText:ChatViewModel.triggerNewsContent, completion: {
+                self.chat.createTalkRequest(myInputText:self.chat.triggerNewsContent, completion: {
                     talkDataArr in
                     if let realTalkDataArr = talkDataArr {
                         for oneTalkData in realTalkDataArr {
                             self.showingData.append(oneTalkData)
-                            let oneCellData = ChatViewModel.buildCellData(oneTalkData)
+                            let oneCellData = SomeGlobal.buildCellData(oneTalkData)
                             self.showingCellData.append(oneCellData)
                             break //首次推荐新闻只显示card，不显示text
                         }
@@ -636,8 +540,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     override func viewDidAppear(_ animated: Bool) {
         print("View Did Appear")
         Track.screenView("Chat/Xiaobing")
-        //let theDate = ChatViewModel.getTimeStampOfDate()
-        //print("timeStampOfDate:\(theDate)")
     }
  
 

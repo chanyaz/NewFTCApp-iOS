@@ -194,8 +194,10 @@ class CellData {
     
     var bubbleImage: String = ""//需要在构造器中根据条件得到
     
-    
-   
+    //MARK：属性类型8：用于trackData
+    var impressionId = ""
+    var storyId = ""
+    var channel = "综合"
     //MARK:关于Cell高度
     var cellHeightByHeadImage:CGFloat {//由头像得到的Cell高度
         get {
@@ -318,12 +320,9 @@ class CellData {
         self.cellHeightByBubble = bubbleImageHeight + bubbleInsets.top + bubbleImageInsets.bottom
     }
     
-
     //创建Image类型数据:
-    
      func buildImageCellData() {
-        
-     self.bubbleImageWidth = self.imageWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
+        self.bubbleImageWidth = self.imageWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
         self.bubbleImageHeight = imageHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
         self.bubbleImageX = (whoSays == .robot) ? headImageWithInsets : screenWidth - headImageWithInsets - bubbleImageWidth
          // self.bubbleImageY在cell view里面更新
@@ -334,8 +333,7 @@ class CellData {
         self.cellHeightByBubble = bubbleImageHeight + bubbleInsets.top + bubbleImageInsets.bottom
     }
     
-    
-    //创建Card类型数据:
+    //创建Card类型数据: //TODO:简化参数，直接为SaysWhat就好
     func buildCardCellData(title titleStr: String, coverUrl coverUrlStr: String, description descriptionStr:String, impressionId impressionIdStr: String, storyId storyIdStr: String) {
 
         self.bubbleImageWidth = self.imageWidth + self.bubbleImageInsets.left + self.bubbleImageInsets.right
@@ -345,7 +343,6 @@ class CellData {
         self.saysWhatWidth = imageWidth
         self.saysWhatX = bubbleImageX + bubbleImageInsets.left
         
-
         // MAKR:处理title
         let atts = [NSAttributedStringKey.font: self.titleFont]
         let titleNSString = titleStr as NSString
@@ -376,13 +373,14 @@ class CellData {
              //self.descriptionY在cell view里更新
         }
         
-        
-
         self.saysWhatHeight = self.titleHeight + imageHeight + descriptionHeight
         self.bubbleImageHeight = self.saysWhatHeight + bubbleImageInsets.top + bubbleImageInsets.bottom
-        
         self.cellHeightByBubble = bubbleImageHeight + bubbleInsets.top + bubbleImageInsets.bottom
         
+        self.impressionId = impressionIdStr
+        self.storyId = storyIdStr
+        
+        //TODO:增加对于self.channel的更新
     }
 
 }
@@ -392,12 +390,8 @@ class Chat {
     let triggerGreetForOldUser = "【端用户新对话打开信号，内容无法显示】"
     let triggerGreetForNewUser = "【端用户首次打开信号，内容无法显示】"
     let triggerNewsContent = "【端用户首次打开信号，推荐新闻】"
-    var iceUserInfo:(iceUserId:String, triggerGreetContent:String) {
-        return self.determineUser()
-    }
-    var userId: String {
-        return self.iceUserInfo.iceUserId
-    }
+    var iceUserInfo:(iceUserId:String, triggerGreetContent:String)? = nil
+    var userId: String? = nil
     
     let appIdField = "x-msxiaoice-request-app-id"
     let userIdField = "x-msxiaoice-request-user-id"
@@ -408,7 +402,7 @@ class Chat {
     let urlString = "https://service.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15"
     let appId = "XIeQemRXxREgGsyPki"
     let secret = "4b3f82a71fb54cbe9e4c8f125998c787"
-    let paramList = "api-version=2017-06-15"
+    let paramList = ["api-version=2017-06-15"]
     
     //小冰测试服务器
     /*
@@ -417,7 +411,7 @@ class Chat {
      let secret = "5c3c48acd5434663897109d18a2f62c5"
      let paramList = "api-version=2017-06-15-Int"
     */
-    var timeStampForTalk:Int { //用以对话请求的时间戳
+    var timeStampFrom1970:Int { //用以对话请求的时间戳
         return Int(Date().timeIntervalSince1970)
     }
     
@@ -430,30 +424,28 @@ class Chat {
     //小冰测试服务器
      //let trackUrlString = "https://sai-int-recommstorage.azurewebsites.net/api/Recommender/UpdateUserBehavior"
     
-    var behaviorID = ""//唯一，标志某唯一行为
-    let deviceType = 0 //0表示iPhone, 1表示android
-    var deviceID:String {
-        if let realIdVender = UIDevice.current.identifierForVendor {
-            let uuidStr = realIdVender.uuidString
-            if let regex = try? NSRegularExpression(pattern: "-", options:[]) {//NOTE:try? 将错误转换成可选值
-                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.count), withTemplate: "")
-                
-                return cleanedUuidStr
-            }
-        }
-        return ""
+    var behaviorId:String {//唯一，标志某唯一行为 MARK:计算结果每次都不同，故使用计算属性生成
+        return SomeGlobal.randomString(length: 16)
     }
-    var timeStampForTrack:String {
+    let deviceType = 0 //0表示iPhone, 1表示android
+    var deviceId:String? = nil//MARK:计算结果为固定值，故只需在init中更新一次,而非使用计算属性
+    var timeStampByFormat:String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let convertedDate = dateFormatter.string(from:Date())
         return convertedDate
     }
     let actionType = 81
-    let sessionID = ""
+    let sessionId = ""
     let pos = 1
-    
-    
+    var trackSign:String? = nil //MARK:计算结果为固定值，故只需在init中更新一次,而非使用计算属性
+    var viewTime = 0 //需要通过阅读文章后再返回来计算
+    init() {
+        self.iceUserInfo = self.determineUser()
+        self.userId = self.iceUserInfo?.iceUserId
+        self.deviceId = self.getDeviceId()
+        self.trackSign = self.computeTrackSign(secretKey: self.secret, parameList: self.paramList)
+    }
     func determineUser() -> (iceUserId: String, triggerGreetContent: String){
         let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
         var iceUserId: String? = nil
@@ -479,8 +471,18 @@ class Chat {
             )
         }
     }
-    
-    func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
+    func getDeviceId() -> String {
+        if let realIdVender = UIDevice.current.identifierForVendor {
+            let uuidStr = realIdVender.uuidString
+            if let regex = try? NSRegularExpression(pattern: "-", options:[]) {//NOTE:try? 将错误转换成可选值
+                let cleanedUuidStr = regex.stringByReplacingMatches(in: uuidStr, options: [], range: NSMakeRange(0, uuidStr.count), withTemplate: "")
+                
+                return cleanedUuidStr
+            }
+        }
+        return ""
+    }
+    func computeTalkSign(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
         print("Ice Execute computeSignature")
         
         let verbStr = verb.lowercased()
@@ -509,69 +511,61 @@ class Chat {
         
         print("Ice messageStr: start- \(messageStr) -end")
         
-        let signature = messageStr.HmacSHA1(key: secretKeyStr)
-        return signature
+        return messageStr.HmacSHA1(key: secretKeyStr)
     }
     
-    func computeTrackSign() {
-    
+    func computeTrackSign(secretKey:String, parameList:[String]) -> String {
+        let secretKeyStr = secretKey
+        let paramListStr = paramList.sorted().joined(separator: "&")
+        let messageStr = "\(secretKeyStr);\(paramListStr)"
+        return messageStr.HmacSHA1(key: secretKeyStr)
     }
+    
     func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkDataArr:[[String:String]]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
-        let timeStamp = self.timeStampForTalk
+        let timeStamp = self.timeStampFrom1970
         print("Ice Request bodyString: start- \(bodyString) -end")
         
-        let signature = self.computeSignature(verb: "post", path: "/api/Conversation/GetResponse", paramList: [paramList], headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timeStamp, secretKey: secret)
-        print("Ice signature: start- \(signature) -end")
-        
-        if let url = URL(string: urlString),
-            let body = bodyString.data(using: .utf8)// 将String转化为Data
-        {
-            var talkRequest = URLRequest(url:url)
-            talkRequest.httpMethod = "POST"
-            talkRequest.httpBody = body
-            talkRequest.setValue("\(body.count)", forHTTPHeaderField: "Content-Length")
-            talkRequest.setValue(appId, forHTTPHeaderField: appIdField)
-            talkRequest.setValue(String(timeStamp), forHTTPHeaderField: timestampField)
-            talkRequest.setValue(signature, forHTTPHeaderField: signatureField)
-            talkRequest.setValue(userId, forHTTPHeaderField: userIdField)
+        if let userId = self.userId {
+            let signature = self.computeTalkSign(verb: "post", path: "/api/Conversation/GetResponse", paramList: paramList, headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timeStamp, secretKey: secret)
+            print("Ice signature: start- \(signature) -end")
             
-            (URLSession.shared.dataTask(with: talkRequest) {
-                (data,response,error) in
-                if error != nil {
-                    print("Ice Error: start- \(String(describing: error)) -end")
-                    DispatchQueue.main.async {//返回主线程更新UI
-                        completion(nil)
+            if let url = URL(string: urlString),let body = bodyString.data(using: .utf8) { // 将String转化为Data
+                var talkRequest = URLRequest(url:url)
+                talkRequest.httpMethod = "POST"
+                talkRequest.httpBody = body
+                talkRequest.setValue("\(body.count)", forHTTPHeaderField: "Content-Length")
+                talkRequest.setValue(appId, forHTTPHeaderField: appIdField)
+                talkRequest.setValue(String(timeStamp), forHTTPHeaderField: timestampField)
+                talkRequest.setValue(signature, forHTTPHeaderField: signatureField)
+                talkRequest.setValue(userId, forHTTPHeaderField: userIdField)
+                
+                (URLSession.shared.dataTask(with: talkRequest) {
+                    (data,response,error) in
+                    if error != nil {
+                        print("Ice Error: start- \(String(describing: error)) -end")
+                        DispatchQueue.main.async {//返回主线程更新UI
+                            completion(nil)
+                        }
+                        return
                     }
-                    return
-                    
-                }
-                
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                    //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
-                    print("Ice Response statusCode when not 200: start- \(httpStatus) -end")
-                    
-                    DispatchQueue.main.async {//返回主线程更新UI
-                        completion(nil)
+                    if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                        //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
+                        print("Ice Response statusCode when not 200: start- \(httpStatus) -end")
+                        DispatchQueue.main.async {//返回主线程更新UI
+                            completion(nil)
+                        }
+                        return
                     }
-                    return
-                    
-                }
-                
-                if let data = data, let dataString = String(data: data, encoding: .utf8){
-                    print("Ice Responce Data: start- \(dataString) -end")
-                    self.parseResponseData(data: data)
-     
-                    DispatchQueue.main.async {//返回主线程更新UI
-                        completion(self.responseTalkDataArr)
+                    if let data = data, let dataString = String(data: data, encoding: .utf8){
+                        print("Ice Responce Data: start- \(dataString) -end")
+                        self.parseResponseData(data: data)
+                        DispatchQueue.main.async {//返回主线程更新UI
+                            completion(self.responseTalkDataArr)
+                        }
                     }
-                    
-                }
-                
-                
-                
-            }).resume()
-            
+                }).resume()
+            }
         }
     }
     
@@ -631,10 +625,10 @@ class Chat {
                                 }
                             }
                             
-                            
                         default:
                             print("An unknow type response data.")
                         }
+                        
                         talkDataArr.append(talkData)
                     }
                 }
@@ -645,10 +639,14 @@ class Chat {
         } catch {
             print("Catch Error in parsing Response Data")
         }
-        
     }
 
     func createTrackRequest(_ cellData: CellData) {
+        //TODO：更新self.viewTime,这里有个问题是应该点击的时候发送，如果是回到此界面再发送的话有可能发送不了了（因为可能不回来了）
+        if let trackSign = self.trackSign, let deviceId = self.deviceId, let userId = self.userId {
+            let bodyString = "{appKey:\(self.secret),sign:\(trackSign),ts:\(self.timeStampFrom1970),userList:[{userId:\(userId),behaviorList:[{behaviorID:\(self.behaviorId),deviceType:\(self.deviceType),deviceID:\(deviceId),timeStamp:\(self.timeStampByFormat),actionType:\(self.actionType),sessionID:\(self.sessionId),impressionID:\(cellData.impressionId),channel:\(cellData.channel),feedID:\(cellData.storyId),viewTime:\(self.viewTime),pos:\(self.pos)}]}]}"
+            print(bodyString)
+        }
         
     }
 }

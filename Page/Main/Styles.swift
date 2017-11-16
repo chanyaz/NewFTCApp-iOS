@@ -10,12 +10,13 @@ import Foundation
 import UIKit
 struct Color {
     // MARK: Grouped mostly based on functions
+    // MARK: Use tuple for day and night colors as it is clearer
     struct Content {
         static let headline = "#000000"
         static let body = "#333333"
         static let lead = "#777777"
         static let border = "#e9decf"
-        static let background = "#FFF1E0"
+        static let background = (day: "#FFF1E0", night: "#333333")
         static let backgroundForSectionCover = "#f2dfce"
         static let tag = "#9E2F50"
         static let time = "#8b572a"

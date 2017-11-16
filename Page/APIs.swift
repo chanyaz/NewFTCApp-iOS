@@ -531,6 +531,18 @@ struct Settings {
                     section: 0,
                     row: 0),
                 ContentItem(
+                    id: "night-reading-mode",
+                    image: "",
+                    headline: "夜间模式",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0),
+                ContentItem(
                     id: "enable-push",
                     image: "",
                     headline: "新闻推送",

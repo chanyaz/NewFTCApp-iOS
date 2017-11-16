@@ -32,6 +32,10 @@ struct Setting {
             settingType = "switch"
             settingDefault = 0
             settingOn = true
+        case "night-reading-mode":
+            settingType = "switch"
+            settingDefault = 0
+            settingOn = false
         case "no-image-with-data":
             settingType = "switch"
             settingDefault = 0

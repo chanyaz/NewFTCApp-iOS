@@ -161,7 +161,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
-            let jsCode = "window.gConnectionType = '\(Connection.current())';window.gNoImageWithData='\(Setting.getSwitchStatus("no-image-with-data"))';"
+            var jsCode = "window.gConnectionType = '\(Connection.current())';window.gNoImageWithData='\(Setting.getSwitchStatus("no-image-with-data"))';"
+            let isNightMode = Setting.isSwitchOn("night-reading-mode")
+            if isNightMode {
+                jsCode += JSCodes.turnOnNightClass
+            }
             let userScript = WKUserScript(
                 source: jsCode,
                 injectionTime: WKUserScriptInjectionTime.atDocumentStart,

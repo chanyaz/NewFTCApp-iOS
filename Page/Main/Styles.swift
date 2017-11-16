@@ -12,22 +12,22 @@ struct Color {
     // MARK: Grouped mostly based on functions
     // MARK: Use tuple for day and night colors as it is clearer
     struct Content {
-        static let headline = "#000000"
-        static let body = "#333333"
-        static let lead = "#777777"
-        static let border = "#e9decf"
-        static let background = (day: "#FFF1E0", night: "#333333")
-        static let backgroundForSectionCover = "#f2dfce"
-        static let tag = "#9E2F50"
-        static let time = "#8b572a"
+        static let headline = (day: "#000000", night: "#BBBBBB")
+        static let body = (day: "#333333", night: "#AAAAAA")
+        static let lead = (day: "#777777", night: "#AAAAAA")
+        static let border = (day: "#e9decf", night: "#333333")
+        static let background = (day: "#FFF1E0", night: "#000000")
+        static let backgroundForSectionCover = (day: "#f2dfce", night: "#333333")
+        static let tag = (day: "#9E2F50", night: "#BBBBBB")
+        static let time = (day: "#8b572a", night: "#BBBBBB")
     }
     
     struct Tab {
-        static let text = "#333333"
-        static let normalText = "#555555"
-        static let highlightedText = "#c0282e"
-        static let border = "#d4c9bc"
-        static let background = "#f7e9d8"
+        static let text = (day: "#333333", night: "#AAAAAA")
+        static let normalText = (day: "#555555", night: "#AAAAAA")
+        static let highlightedText = (day: "#c0282e", night: "#BBBBBB")
+        static let border = (day: "#d4c9bc", night: "#333333")
+        static let background = (day: "#f7e9d8", night: "#000000")
     }
     
     struct Button {
@@ -42,13 +42,13 @@ struct Color {
     }
     
     struct Header {
-        static let text = "#333333"
+        static let text = (day: "#333333", night: "#AAAAAA")
     }
     
     struct ChannelScroller {
-        static let text = "#565656"
-        static let highlightedText = "#c0282c"
-        static let background = "#fff9f5"
+        static let text = (day: "#565656", night: "#AAAAAA")
+        static let highlightedText = (day: "#c0282c", night: "#AAAAAA")
+        static let background = (day: "#fff9f5", night: "#333333")
         static let showBottomBorder = false
         static let bottomBorderWidth: CGFloat = 0
         static let addTextSpace = false
@@ -56,9 +56,9 @@ struct Color {
     
     
     struct Ad {
-        static let background = "#f6e9d8"
-        static let sign = "#555555"
-        static let signBackground = "#ecd4b4"
+        static let background = (day: "#f6e9d8", night: "#AAAAAA")
+        static let sign = (day: "#555555", night: "#AAAAAA")
+        static let signBackground = (day: "#ecd4b4", night: "#BBBBBB")
         static let showFullScreenAdBetweenPages = true
         static let showFullScreenAdWhenLaunch = true
     }

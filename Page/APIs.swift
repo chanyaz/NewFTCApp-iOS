@@ -465,10 +465,20 @@ struct DeviceToken {
 
 // MARK: - JS Codes you might need to execute in your web views
 struct JSCodes {
+    static let turnOnNightClass = "document.querySelector('html').className += ' night';"
     static let autoPlayVideoType = "autoPlayVideo"
     static func get(_ type: String) -> String {
+        let isNightMode = Setting.isSwitchOn("night-reading-mode")
+        let nightModeCode: String
+        if isNightMode {
+            nightModeCode = turnOnNightClass
+        } else {
+            nightModeCode = ""
+        }
         switch type {
         case autoPlayVideoType:
+            var jsCode = "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
+            jsCode += nightModeCode
             return "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
         case "manual":
             var jsCode = ""
@@ -482,10 +492,13 @@ struct JSCodes {
             jsCode += "sections = document.querySelectorAll('section, p, h2, img, div');"
             jsCode += "var foundEnd = false;"
             jsCode += "for (var k=0; k<sections.length; k++) {if (/^推荐[阅读]*$/i.test(sections[k].innerHTML)) {foundEnd = true;}if(foundEnd === true){sections[k].style.display = 'none';}}"
+            jsCode += nightModeCode
             return jsCode
         default:
             let fontClass = Setting.getFontClass()
-            return "window.gConnectionType = '\(Connection.current())';checkFontSize('\(fontClass)');"
+            var jsCode = "window.gConnectionType = '\(Connection.current())';checkFontSize('\(fontClass)');"
+            jsCode += nightModeCode
+            return jsCode
         }
     }
     public static func get(in id: String, with json: String) -> String {

@@ -261,4 +261,19 @@ struct Setting {
         return [contentSection]
     }
     
+    static func getColorString(_ colors: (day: String, night: String)) -> String {
+        let isNightMode = isSwitchOn("night-reading-mode")
+        let hexString: String
+        if isNightMode {
+            hexString = colors.night.replacingOccurrences(of: "#", with: "")
+        } else {
+            hexString = colors.day.replacingOccurrences(of: "#", with: "")
+        }
+        return hexString
+    }
+    
+    static func getColorString(_ color: String) -> String {
+        return color
+    }
+    
 }

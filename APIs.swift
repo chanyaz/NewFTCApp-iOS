@@ -455,6 +455,7 @@ struct DeviceToken {
 
 // MARK: - JS Codes you might need to execute in your web views
 struct JSCodes {
+    static let turnOnNightClass = "document.querySelector('html').className += ' night';"
     static let autoPlayVideoType = "autoPlayVideo"
     static func get(_ type: String) -> String {
         switch type {

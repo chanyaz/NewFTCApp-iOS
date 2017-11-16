@@ -32,15 +32,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var showingCellData = [CellData]() {
         didSet {
             if(self.isTalkListFirstReloadData == false && self.isLoadHistoryDataAtTop == false && self.isGetMoreHistorySign == false) {
-   
-                print("chat auto reload data")
-                
                 self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
-                print("showingCellDataNum:\(showingCellData.count)")
+                //print("showingCellDataNum:\(showingCellData.count)")
                 self.tableViewScrollToBottom(animated: true,delay: 100)
-                
-                print("scroll3")
-             
             }
         }
     }
@@ -55,7 +49,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
  
     func scrollTobottomWhenReloadData() {
         self.talkListBlock.reloadData() //就是会执行tableView的函数，所以不能在tableView函数中再次执行reloadData,因为这样的话会陷入死循环
-        print("showingCellDataNum:\(showingCellData.count)")
+        //print("showingCellDataNum:\(showingCellData.count)")
         let currentIndexPath = IndexPath(row: showingCellData.count-1, section: 0)
         self.talkListBlock.scrollToRow(at: currentIndexPath, at: .bottom, animated: true)
     }
@@ -77,7 +71,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
  
     @IBOutlet var mySwipeGesture: UISwipeGestureRecognizer!
     @IBAction func dismissKeyboardWhenSwipe(_ sender: UISwipeGestureRecognizer) {//When swipe
-        print("You are swipping")
+        //print("You are swipping")
         self.inputBlock.resignFirstResponder()
     }
     
@@ -97,13 +91,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
         } else if (sender.state == .ended) {
             stopLocation = sender.location(in: self.view)
-            print("Here a")
 
             let dy = stopLocation.y - startLocation.y
-            print("Chat dy:\(dy)")
-            print("Chat scrollOffSet:\(scrollOffset)")
+            //print("Chat dy:\(dy)")
+            //print("Chat scrollOffSet:\(scrollOffset)")
             if(self.addedGetHistorySignToShowingCellData == true) {//MARK:不管pan了多少距离，只要有addedGetHistorySignToShowingCellData，就移除该数据
-                print("Here b")
                 self.isLoadHistoryDataAtTop = true
                 self.showingCellData.remove(at: 0)
                 self.addedGetHistorySignToShowingCellData = false
@@ -112,16 +104,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 self.isLoadHistoryDataAtTop = false
             }
             if(scrollOffset <= 0 && dy > 200){
-                print("Here c")
                 self.isLoadHistoryDataAtTop = true
                 
                 var willAddHistoryData: [[String: String]]
                 if let realHistoryTalkData = self.historyTalkData {
                     let historyNum = realHistoryTalkData.count
-                    print("Chat historyNum:\(historyNum)")
+                    //print("Chat historyNum:\(historyNum)")
                     //MARK:只显示历史会话中最近的10条记录
                     if historyNum > 0 {
-                        print("Here d")
                         self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"正在加载历史聊天数据..."), at: 0)
                         self.addedGetHistorySignToShowingCellData = true
                         self.talkListBlock.reloadData()
@@ -133,20 +123,19 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                             self.historyTalkData = Array(realHistoryTalkData[0...historyNum-11])
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-                            print("Here e")
                             if(self.addedGetHistorySignToShowingCellData == true) {
                                 self.showingCellData.remove(at: 0)
                                 self.addedGetHistorySignToShowingCellData = false
                             }
                             self.showingData.insert(contentsOf:willAddHistoryData,at:0)
-                            print("Chat showingData Num:\(self.showingData.count)")
+                            //print("Chat showingData Num:\(self.showingData.count)")
                             var willAddHistoryCellData = [CellData]()
                             for data in willAddHistoryData {
                                 let oneCellData = SomeGlobal.buildCellData(data)
                                 willAddHistoryCellData.append(oneCellData)
                             }
                             self.showingCellData.insert(contentsOf:willAddHistoryCellData, at:0)
-                            print("Chat showingCellData Num:\(self.showingCellData.count)")
+                            //print("Chat showingCellData Num:\(self.showingCellData.count)")
                             
                             self.talkListBlock.reloadData()
                             
@@ -160,14 +149,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                         
                     } else {
                         self.isLoadHistoryDataAtTop = false
-                        print("Here f")
                     }
                 
                 } else {
-                    //self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"没有更多历史记录了"), at: 0)
-                    //self.talkListBlock.reloadData()
                     self.isLoadHistoryDataAtTop = false
-                    print("Here g")
                 }
                 
             }
@@ -176,11 +161,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         } else if sender.state == .changed {
             //print("Show the getHistorySign")
             if scrollOffset <= 0 && self.addedGetHistorySignToShowingCellData == false  {
-                print("Here h")
                 self.isGetMoreHistorySign = true
                 if let realHistoryTalkData = self.historyTalkData {
                     let historyNum = realHistoryTalkData.count
-                    print("Chat historyNum:\(historyNum)")
+                    //print("Chat historyNum:\(historyNum)")
                     //MARK:只显示历史会话中最近的10条记录
                     if historyNum > 0 {
                         self.showingCellData.insert(CellData(getMoreHistory:true, signContent:"下拉加载更多历史聊天数据"), at: 0)
@@ -334,7 +318,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @objc func applicationWillResignActive(_ notification:NSNotification){
         //MARK:在该controller为inactive状态时（比如点击了Home键),将键盘置于收缩状态
         self.inputBlock.resignFirstResponder()
-        print("applicationWillResignActive")
+        //print("applicationWillResignActive")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -395,7 +379,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         //self.modifiyTheOffset(animated: animated)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(dedayMs)) {
-                //self.modifiyTheOffset(animated: animated)
                 let showingCellDataCount = self.showingCellData.count
                 if showingCellDataCount > 0 {
                     let indexPath = IndexPath(row: showingCellDataCount-1, section: 0)
@@ -410,9 +393,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     func modifiyTheOffset(animated:Bool) {
         if(self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height) {
-            print("scroll2")
-            print("talkListBlock.contentSize.height:\(self.talkListBlock.contentSize.height)")
-            print("talkListBlock.frame.size.height:\(self.talkListBlock.frame.size.height)")
             let offset = CGPoint(x: 0, y: self.talkListBlock.contentSize.height-self.talkListBlock.frame.size.height)
             self.talkListBlock.setContentOffset(offset, animated: animated)
         }
@@ -423,7 +403,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("Chat Execute viewDidLoad")
         // Do any additional setup after loading the view.
         SomeGlobal.screenWidth = UIScreen.main.bounds.width
-        print("Chat Size UIScreen width Controller:\(UIScreen.main.bounds.width)")
+        //print("Chat Size UIScreen width Controller:\(UIScreen.main.bounds.width)")
         //MARK:监听键盘事件
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object:nil)
         //MARK:监听是否点击Home键以及重新进入界面
@@ -458,7 +438,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 let jsonAny = try JSONSerialization.jsonObject(with: savedTalkData, options: .mutableContainers)
                 if let jsonDic = jsonAny as? NSArray, let historyTalk = jsonDic as? [[String:String]] {
                     self.historyTalkData = historyTalk
-                    print("historyTalkDataNum:\(self.historyTalkData?.count ?? 0)")
+                    //print("historyTalkDataNum:\(self.historyTalkData?.count ?? 0)")
                 }
             }
         } catch {
@@ -467,7 +447,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         var initShowingContainHistory = false
         if let realHistoryTalkData = self.historyTalkData {
             let historyNum = realHistoryTalkData.count
-            print("Chat historyNum:\(historyNum)")
+            //print("Chat historyNum:\(historyNum)")
             //MARK:初始时只显示历史会话中最近的10条记录， self.showingData为展示的数据（包含历史记录和新增数据），self.historyTalkData为去掉已经展示部分的历史数据
             if historyNum > 0 {
                 initShowingContainHistory = true
@@ -481,7 +461,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             }//否则self.showingData不变, self.historyTalkData不变
             
         }
-        print("Chat showingData Num:\(self.showingData.count)")
+        //print("Chat showingData Num:\(self.showingData.count)")
         var initShowingCellData = [CellData]()
         for data in self.showingData {
             let oneCellData = SomeGlobal.buildCellData(data)
@@ -491,16 +471,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             initShowingCellData.append(CellData(cutline:true)) //此时不涉及showingData的问题，showingData是为了存储的数据，而历史记录数据不用存储
         }
         self.showingCellData = initShowingCellData
-        print("Chat showingCellData Num:\(self.showingCellData.count)")
+        //print("Chat showingCellData Num:\(self.showingCellData.count)")
         self.talkListBlock.reloadData()
         self.isTalkListFirstReloadData = false
         self.tableViewScrollToBottom(animated: false, delay: 100)
         
         let iceUserInfo = self.iceUserInfo
         let triggerGreetContent = iceUserInfo.triggerGreetContent
-        let iceUserId = iceUserInfo.iceUserId
-        print("ice userinfo iceUserId:\(iceUserId)")
-        print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
+        //print("ice userinfo iceUserId:\(iceUserId)")
+        //print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
         
         self.chat.createTalkRequest(myInputText: triggerGreetContent, completion: {
             talkDataArr in
@@ -547,7 +526,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.viewWillDisappear(false)
         print("viewWillDisappear")
         do {
-            print("do")
             var toSaveHistoryTalkArr:[[String: String]]
             var toSaveTalkData:Data
             var newHistoryTalkData:[[String: String]]
@@ -560,20 +538,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             }
             
             let newHistoryNum = newHistoryTalkData.count
-            print("newHistoryNum:\(newHistoryNum)")
+            //print("newHistoryNum:\(newHistoryNum)")
             //MARK:只存储最近的100条对话记录 // TODO:增加手指下拉动作监测，拉一次多展现10条历史对话记录
             if newHistoryNum > 0 {
                 if newHistoryNum <= 100  {
                     toSaveHistoryTalkArr = newHistoryTalkData
-                    print("case 1:\(toSaveHistoryTalkArr.count)")
+                    //print("case 1:\(toSaveHistoryTalkArr.count)")
                     
                 } else {
                     toSaveHistoryTalkArr = Array(newHistoryTalkData[newHistoryNum-100...newHistoryNum-1])
-                    print("case 2:\(toSaveHistoryTalkArr.count)")
+                    //print("case 2:\(toSaveHistoryTalkArr.count)")
                 }
 
                 toSaveTalkData = try JSONSerialization.data(withJSONObject: toSaveHistoryTalkArr, options:.prettyPrinted)
-                print("toSaveTalkDataNum:\(toSaveTalkData.count)")
+                //print("toSaveTalkDataNum:\(toSaveTalkData.count)")
                 Download.saveFile(toSaveTalkData, filename: "chatHistoryTalk", to:.cachesDirectory , as: "json")
             }
     

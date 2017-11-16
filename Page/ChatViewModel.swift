@@ -574,102 +574,69 @@ class Chat {
             
         }
     }
+    
     func parseResponseData(data:Data) {
         var talkDataArr = [[String: String]]()
-        var talkData = [
-            "member":"robot",
-            "type":"text"
-        ]
+        
         do {
             let jsonAny = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
             if let jsonDictionary = jsonAny as? NSDictionary,let impressionId = jsonDictionary["ImpressionID"], let answer = jsonDictionary["Answer"],let answerArray = answer as? NSArray {
-                let oneAnswer = answerArray[0]
                 
-                if let oneAnswerDic = oneAnswer as? NSDictionary,
-                    let type = oneAnswerDic["Type"], let typeStr = type as? String {
+                //MARK:answer字段是数组，有几条就显示几条
+                for oneAnswer in answerArray {
                     
-                    print(typeStr)
-                    switch typeStr {
-                    case "Text":
-                        if let content = oneAnswerDic["Content"]{
-                            
-                            let contentStr = content as? String
-                            talkData["content"] = contentStr
-                            
-                        } else {
-                            let contentStr = "This is a Text, the data miss some important fields."
-                            talkData["content"] = contentStr
-                        }
-                        talkDataArr.append(talkData)
-                    case "Image":
-                        
-                        if let url = oneAnswerDic["Url"] {
-                            let urlStr = url as? String
-                            //robotSaysWhat = SaysWhat(saysType: .image, saysImage:urlStr)
-                            print("This is a Image")
-                            talkData["type"] = "image"
-                            talkData["url"] = urlStr
-                        } else {
-                            let contentStr = "This is a Image, the data miss some important fields."
-                            //robotSaysWhat = SaysWhat(saysType: .text, saysContent: contentStr)
-                            talkData["content"] = contentStr
-                        }
-                        talkDataArr.append(talkData)
-                        
-                    case "Card":
-                        print("This is a Card")
-                        let impressionIdStr = impressionId as? String
-                        if let title = oneAnswerDic["Title"],
-                            let description = oneAnswerDic["Description"],
-                            let coverUrl = oneAnswerDic["CoverUrl"],
-                            let cardUrl = oneAnswerDic["Url"] {
-                            
-                            let titleStr = title as? String
-                            let cardUrlStr = cardUrl as? String
-                            let coverUrlStr = coverUrl as? String
-                            let descriptionStr = description as? String
-                            
-                            //robotSaysWhat = SaysWhat(saysType: .card, saysTitle: titleStr, saysDescription: descriptionStr, saysCover: coverUrlStr, saysUrl: cardUrlStr)
-                            talkData["type"] = "card"
-                            talkData["coverUrl"] = coverUrlStr
-                            talkData["title"] = titleStr
-                            talkData["url"] = cardUrlStr
-                            talkData["description"] = descriptionStr
-                            
-                            talkData["impressionId"] = impressionIdStr //用于user tracking的ImpressionID字段
-                            
-                            if let realCardUrlStr = cardUrlStr, let storyId = realCardUrlStr.matchingStrings(regexes:LinkPattern.story) {//NOTE:此处借用了string已有的扩展方法matchingStrings
-                                talkData["storyId"] = storyId //用于user tracking的feedID字段
+                    if let oneAnswerDic = oneAnswer as? NSDictionary,
+                        let type = oneAnswerDic["Type"], let typeStr = type as? String {
+                        var talkData = [
+                            "member":"robot",
+                            "type":"text"
+                        ]
+                        print(typeStr)
+                        switch typeStr {
+                        case "Text":
+                            if let content = oneAnswerDic["Content"]{
+                                let contentStr = content as? String
+                                talkData["content"] = contentStr
                             }
                             
+                        case "Image":
+                            if let url = oneAnswerDic["Url"] {
+                                let urlStr = url as? String
+                                print("This is a Image")
+                                talkData["type"] = "image"
+                                talkData["url"] = urlStr
+                            }
                             
-                            talkDataArr.append(talkData)
-                            
-                            if answerArray.count > 1 {
-                                let theOtherAnswer = answerArray[1]
-                                if let theOtherAnswerDic = theOtherAnswer as? NSDictionary,
-                                    let theOtherAnswerType = theOtherAnswerDic["Type"], let theOtherAnswerTypeStr = theOtherAnswerType as? String {
-                                    if theOtherAnswerTypeStr == "Text" {
-                                        
-                                        if let content = theOtherAnswerDic["Content"]{
-                                            var theOtherTalkData = [
-                                                "member":"robot",
-                                                "type":"text"
-                                            ]
-                                            let contentStr = content as? String
-                                            theOtherTalkData["content"] = contentStr
-                                            talkDataArr.append(theOtherTalkData)
-                                        }
-                                    }
+                        case "Card":
+                            let impressionIdStr = impressionId as? String
+                            if let title = oneAnswerDic["Title"],
+                                let description = oneAnswerDic["Description"],
+                                let coverUrl = oneAnswerDic["CoverUrl"],
+                                let cardUrl = oneAnswerDic["Url"] {
+                                
+                                let titleStr = title as? String
+                                let cardUrlStr = cardUrl as? String
+                                let coverUrlStr = coverUrl as? String
+                                let descriptionStr = description as? String
+    
+                                talkData["type"] = "card"
+                                talkData["coverUrl"] = coverUrlStr
+                                talkData["title"] = titleStr
+                                talkData["url"] = cardUrlStr
+                                talkData["description"] = descriptionStr
+                                
+                                talkData["impressionId"] = impressionIdStr //用于user tracking的ImpressionID字段
+                                if let realCardUrlStr = cardUrlStr, let storyId = realCardUrlStr.matchingStrings(regexes:LinkPattern.story) {//NOTE:此处借用了string已有的扩展方法matchingStrings
+                                    talkData["storyId"] = storyId //用于user tracking的feedID字段
                                 }
                             }
+                            
+                            
+                        default:
+                            print("An unknow type response data.")
                         }
-                        
-                        
-                    default:
-                        print("An unknow type response data.")
+                        talkDataArr.append(talkData)
                     }
-                    
                 }
                 
             }
@@ -747,7 +714,6 @@ class SomeGlobal {
         print("Ice headerListNew: start- \(headerListNew) -end")
         
         let headerListStr = headerListNew.sorted().joined(separator: ",")
-        //base64EncodedString()
         let bodyStr = body
         
         let secretKeyStr = secretKey
@@ -777,7 +743,6 @@ class SomeGlobal {
 }
 
 extension String {
-    
     /// HmacSHA1 Encrypt
     ///
     /// -Parameter key: secret key
@@ -795,8 +760,6 @@ extension String {
         } else {
             return ""
         }
-        
-        
     }
 }
 

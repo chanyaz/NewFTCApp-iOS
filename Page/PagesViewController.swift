@@ -44,6 +44,24 @@ class PagesViewController: UIViewController, UIPageViewControllerDelegate {
         applyStyles()
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
+        
+        // MARK: - Notification For English Status Change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(nightModeChanged),
+            name: Notification.Name(rawValue: Event.nightModeChanged),
+            object: nil
+        )
+        
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
+    }
+    
+    @objc public func nightModeChanged() {
+        print ("pages view controller should update styles now")
+        applyStyles()
     }
     
     override func didReceiveMemoryWarning() {

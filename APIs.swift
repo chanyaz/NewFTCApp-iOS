@@ -243,6 +243,7 @@ struct ErrorMessages {
 
 // MARK: - Use struct to store information so that Xcode can auto-complete codes
 struct Event {
+    static let nightModeChanged = "Night Mode Changed"
     static let englishStatusChange = "English Status Change"
     static let languageSelected = "Language Selected in Story Page"
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
@@ -455,6 +456,7 @@ struct DeviceToken {
 
 // MARK: - JS Codes you might need to execute in your web views
 struct JSCodes {
+    static let turnOnNightClass = "document.querySelector('html').className += ' night';"
     static let autoPlayVideoType = "autoPlayVideo"
     static func get(_ type: String) -> String {
         switch type {

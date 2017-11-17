@@ -14,10 +14,10 @@ struct AppNavigation {
     public static let appMap = [
         "News": [
             "title": "FT中文网",
-            "title-image":"FTC-Header",
-            "navColor": "#333333",
-            "navBackGroundColor": "#f7e9d8",
-            "navBorderColor": "#d5c6b3",
+            "title-image":(day: "FTC-Header", night: "FTC-Header-Night"),
+            "navColor": (day: "#333333", night: "#AAAAAA"),
+            "navBackGroundColor": (day: "#f7e9d8", night: "#000000"),
+            "navBorderColor": (day: "#d5c6b3", night: "#000000"),
             "navBorderWidth": "1",
             "isNavLightContent": false,
             "navRightItem": "Search",
@@ -429,6 +429,13 @@ struct AppNavigation {
     public static func getNavigationProperty(for tabName: String, of property: String) -> String? {
         if let p = appMap[tabName]?[property] as? String {
             return p
+        }
+        if let p = appMap[tabName]?[property] as? (day: String, night: String) {
+            let isNightMode = Setting.isSwitchOn("night-reading-mode")
+            if isNightMode {
+                return p.night
+            }
+            return p.day
         }
         return nil
     }

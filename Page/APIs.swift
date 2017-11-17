@@ -258,6 +258,7 @@ struct Event {
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"
     static let changeFont = "switch font"
     static let newAdCreativeDownloaded = "New Ad Creative Downloaded"
+    static let nightModeChanged = "Night Mode Changed"
     //    static func paidPostUpdate(for page: String) -> String {
     //        let paidPostUpdated = "Paid Post Update"
     //        return "\(paidPostUpdated) for \(page)"
@@ -465,11 +466,21 @@ struct DeviceToken {
 
 // MARK: - JS Codes you might need to execute in your web views
 struct JSCodes {
+    static let turnOnNightClass = "document.querySelector('html').className += ' night';"
+    static let turnOffNightClass = "document.querySelector('html').className = document.querySelector('html').className.replace(' night', '');"
     static let autoPlayVideoType = "autoPlayVideo"
     static func get(_ type: String) -> String {
+        let isNightMode = Setting.isSwitchOn("night-reading-mode")
+        let nightModeCode: String
+        if isNightMode {
+            nightModeCode = turnOnNightClass
+        } else {
+            nightModeCode = ""
+        }
         switch type {
         case autoPlayVideoType:
-            return "window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
+            let jsCode = "\(nightModeCode)window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
+            return jsCode
         case "manual":
             var jsCode = ""
             jsCode += "document.body.style.backgroundColor = '#FFF1E0';"
@@ -482,10 +493,12 @@ struct JSCodes {
             jsCode += "sections = document.querySelectorAll('section, p, h2, img, div');"
             jsCode += "var foundEnd = false;"
             jsCode += "for (var k=0; k<sections.length; k++) {if (/^推荐[阅读]*$/i.test(sections[k].innerHTML)) {foundEnd = true;}if(foundEnd === true){sections[k].style.display = 'none';}}"
+            jsCode += nightModeCode
             return jsCode
         default:
             let fontClass = Setting.getFontClass()
-            return "window.gConnectionType = '\(Connection.current())';checkFontSize('\(fontClass)');"
+            let jsCode = "window.gConnectionType = '\(Connection.current())';\(nightModeCode)checkFontSize('\(fontClass)');"
+            return jsCode
         }
     }
     public static func get(in id: String, with json: String) -> String {

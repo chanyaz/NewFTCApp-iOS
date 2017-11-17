@@ -33,7 +33,7 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
             if isNavLightContent == true {
                 pageThemeColor = themeColor
             } else {
-                pageThemeColor = Color.Tab.highlightedText
+                pageThemeColor = Setting.getColorString(Color.Tab.highlightedText)
             }
         }
     }

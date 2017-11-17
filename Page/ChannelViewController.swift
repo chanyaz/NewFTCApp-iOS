@@ -126,9 +126,34 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             }
         }
         
-        //flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         channelScrollerView?.delegate = self
         channelScrollerView?.dataSource = self
+        updateColorScheme()
+        if let channelScrollerView = channelScrollerView {
+            self.view.addSubview(channelScrollerView)
+        }
+        modelController.delegate = self
+        
+        // MARK: - Notification For English Status Change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(nightModeChanged),
+            name: Notification.Name(rawValue: Event.nightModeChanged),
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
+    }
+    
+    @objc public override func nightModeChanged() {
+        super.nightModeChanged()
+        updateColorScheme()
+        channelScrollerView?.reloadData()
+    }
+    
+    func updateColorScheme() {
         channelScrollerView?.backgroundColor = UIColor(hex: Color.ChannelScroller.background)
         channelScrollerView?.showsHorizontalScrollIndicator = false
         let thickness = Color.ChannelScroller.bottomBorderWidth
@@ -136,42 +161,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             let borderColor = UIColor(hex: Color.Content.border)
             channelScrollerView?.layer.addBorder(edge: .bottom, color: borderColor, thickness: thickness)
         }
-        //channelScrollerView?.collectionViewLayout.sectionInset =
-        //channelScrollerView.backgroundColor = UIColor(hex: Color.Tab.background)
-        if let channelScrollerView = channelScrollerView {
-            self.view.addSubview(channelScrollerView)
-        }
-        //        }
-        
-        
-        
-        // MARK: - Observing notification about page panning end
-        //        if let tabName = self.tabName {
-        //            NotificationCenter.default.addObserver(
-        //                self,
-        //                selector: #selector(pagePanningEnd(_:)),
-        //                name: NSNotification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
-        //                object: nil
-        //            )
-        //        }
-        // MARK: Set modelController's delegate to self
-        modelController.delegate = self
-        
     }
-    
-    deinit {
-        // MARK: - Starting from iOS 8, Observers will automatically be removed when deinit.
-        // MARK: - Remove Panning End Observer
-        //        if let tabName = self.tabName {
-        //            NotificationCenter.default.removeObserver(
-        //                self,
-        //                name: Notification.Name(rawValue: Event.pagePanningEnd(for: tabName)),
-        //                object: nil
-        //            )
-        //        }
-    }
-    
-    // navItem = AppNavigation.getNavigationProperty(for: currentTabName, of: "navRightItem")
     
     fileprivate func createNavItem(for currentTabName: String, of navItemString: String) {
         func insertButton(_ button: UIBarButtonItem, to navItemString: String) {

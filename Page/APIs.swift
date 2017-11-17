@@ -467,7 +467,7 @@ struct DeviceToken {
 // MARK: - JS Codes you might need to execute in your web views
 struct JSCodes {
     static let turnOnNightClass = "setTimeout(function(){document.documentElement.className += ' night';},0);"
-    static let turnOffNightClass = "document.documentElement.className = document.documentElement.className.replace(' night', '');"
+    static let turnOffNightClass = "document.documentElement.className = document.documentElement.className.replace(/night/g, '');"
     static let autoPlayVideoType = "autoPlayVideo"
     static func get(_ type: String) -> String {
         let isNightMode = Setting.isSwitchOn("night-reading-mode")

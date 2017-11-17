@@ -22,42 +22,31 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     lazy var player: AVPlayer? = nil
     lazy var playerItem: AVPlayerItem? = nil
     var playerLayer: AVPlayerLayer? = nil
-    
     var queuePlayer:AVQueuePlayer?
-    
     let nowPlayingCenter = NowPlayingCenter()
     let download = DownloadHelper(directory: "audio")
-    
     var fetchAudioResults: [ContentSection]?
     var item: ContentItem?
     var themeColor: String?
-    
     var tabView = CustomTab()
-    
-    
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return UIStatusBarStyle.default
     }
+    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         let tabViewHeight: CGFloat = 90
         let width = UIScreen.main.bounds.width
         let height = self.view.bounds.height
         tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.9)
         tabView.frame = CGRect(x:0,y:height - tabViewHeight,width:width,height:tabViewHeight)
-        
         self.tabBar.addSubview(tabView)
-        
-//        tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
         tabView.playAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
         self.tabBar.isHidden = true
         view.addSubview(self.tabView)
         let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
         tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
-//        tabView.upSwipeButton.addGestureRecognizer(tapGestureRecognizer1)
-
         tabView.progressSlider.addTarget(self, action: #selector(changeSlider), for: UIControlEvents.valueChanged)
         tabView.isHidden = true
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
@@ -72,12 +61,8 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
         print("sliderValueChanged button\(currentTime)")
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        
-    }
     override func viewDidAppear(_ animated: Bool) {
         fetchAudioResults = TabBarAudioContent.sharedInstance.fetchResults
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateMiniPlay),
@@ -91,9 +76,9 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             object: nil
         )
     }
+    
     //    把此页面的所有信息都传给AudioPlayBar,包括player，playerItem
     @objc func openAudio(){
-
         if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
             let tabItem = TabBarAudioContent.sharedInstance.item
             if let tabItem = tabItem ,let audioFileUrl = tabItem.caudio {
@@ -104,14 +89,10 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             }
             audioPlayerController.modalPresentationStyle = .custom
             self.present(audioPlayerController, animated: true, completion: nil)
-//            navigationController?.pushViewController(audioPlayerController, animated: true)
         }
         
     }
-//    let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController
-//    override var childViewControllerForStatusBarStyle: UIViewController?{
-//        return audioPlayerController
-//    }
+
     @objc func pauseOrPlay(sender: UIButton) {
         let  player = TabBarAudioContent.sharedInstance.player
         let  playerItem = TabBarAudioContent.sharedInstance.playerItem

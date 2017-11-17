@@ -134,21 +134,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 webView?.clipsToBounds = true
                 webView?.scrollView.bounces = false
                 
-                // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
-                NotificationCenter.default.addObserver(
-                    self,
-                    selector: #selector(handleLanguagePreferenceChange),
-                    name: Notification.Name(rawValue: Event.languagePreferenceChanged),
-                    object: nil
-                )
-                
-                // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
-                NotificationCenter.default.addObserver(
-                    self,
-                    selector: #selector(changeFont(_:)),
-                    name: Notification.Name(rawValue: Event.changeFont),
-                    object: nil
-                )
+
                 
                 
                 let typeString = dataObject?.type ?? ""
@@ -161,6 +147,30 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 navigationController?.delegate = self
             }
         }
+        
+        // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleLanguagePreferenceChange),
+            name: Notification.Name(rawValue: Event.languagePreferenceChanged),
+            object: nil
+        )
+        
+        // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(changeFont(_:)),
+            name: Notification.Name(rawValue: Event.changeFont),
+            object: nil
+        )
+        
+        // MARK: - Notification For Night Mode Status Change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(nightModeChanged),
+            name: Notification.Name(rawValue: Event.nightModeChanged),
+            object: nil
+        )
     }
     
     override func viewDidLoad() {
@@ -184,16 +194,14 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     }
                 }
             }
-            
         }
         
     }
     
     deinit {
-        //MARK: Some of the deinit might be useful in the future
-        //        self.webView?.removeObserver(self, forKeyPath: "estimatedProgress")
-        //        self.webView?.removeObserver(self, forKeyPath: "canGoBack")
-        //        self.webView?.removeObserver(self, forKeyPath: "canGoForward")
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.languagePreferenceChanged), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.changeFont), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
         
         // MARK: - Stop loading and remove message handlers to avoid leak
         webView?.stopLoading()
@@ -241,24 +249,22 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         }
     }
     
-    //    func paidPostUpdate(_ notification: Notification) {
-    //        if let itemCell = notification.object as? ContentItem {
-    //            let section = itemCell.section
-    //            let row = itemCell.row
-    //            if fetches.fetchResults.count > section {
-    //                if fetches.fetchResults[section].items.count > row {
-    //                    if itemCell.adModel?.headline != nil{
-    //                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
-    //                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
-    //                        collectionView?.reloadData()
-    //                    } else {
-    //                        print ("Paid Post: The adModel has no headline")
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //
+    @objc public func nightModeChanged() {
+        let webViewBG = UIColor(hex: Color.Content.background)
+        view.backgroundColor = webViewBG
+        let isNightMode = Setting.isSwitchOn("night-reading-mode")
+        let jsCode: String
+        if isNightMode {
+            jsCode = JSCodes.turnOnNightClass
+        } else {
+            jsCode = JSCodes.turnOffNightClass
+        }
+        webView?.evaluateJavaScript(jsCode) { (result, error) in
+            if result != nil {
+                print (result ?? "unprintable JS result")
+            }
+        }
+    }
     
     private func getDetailInfo() {
         if let id = dataObject?.id, dataObject?.type == "story" {

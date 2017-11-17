@@ -243,6 +243,7 @@ struct ErrorMessages {
 
 // MARK: - Use struct to store information so that Xcode can auto-complete codes
 struct Event {
+    static let nightModeChanged = "Night Mode Changed"
     static let englishStatusChange = "English Status Change"
     static let languageSelected = "Language Selected in Story Page"
     static let languagePreferenceChanged = "Language Preference Changed By User Tap"

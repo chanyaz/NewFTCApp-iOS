@@ -22,17 +22,8 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // MARK: Customize Tab Bar Styles
-        if #available(iOS 10.0, *) {
-            self.tabBar.unselectedItemTintColor = UIColor(hex: Color.Tab.normalText)
-        } else {
-            // Fallback on earlier versions
-        }
-        self.tabBar.tintColor = UIColor(hex: Color.Tab.highlightedText)
-        self.tabBar.barTintColor = UIColor(hex: Color.Tab.background)
-        self.tabBar.backgroundImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Tab.background))
-        self.tabBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Tab.border))
-        self.tabBar.isTranslucent = false
+
+        updateColorScheme()
         
         // MARK: - Get current language preference
         LanguageSetting.shared.currentPrefence = Setting.getCurrentOption("language-preference").index
@@ -52,8 +43,37 @@ class CustomTabBarController: UITabBarController {
             }
         }
         
+        // MARK: - Notification For Night Mode Status Change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(nightModeChanged),
+            name: Notification.Name(rawValue: Event.nightModeChanged),
+            object: nil
+        )
+        
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
+    }
+    
+    @objc public func nightModeChanged() {
+        updateColorScheme()
+    }
+    
+    func updateColorScheme() {
+        // MARK: Customize Tab Bar Styles
+        if #available(iOS 10.0, *) {
+            self.tabBar.unselectedItemTintColor = UIColor(hex: Color.Tab.normalText)
+        } else {
+            // Fallback on earlier versions
+        }
+        self.tabBar.tintColor = UIColor(hex: Color.Tab.highlightedText)
+        self.tabBar.barTintColor = UIColor(hex: Color.Tab.background)
+        self.tabBar.backgroundImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Tab.background))
+        self.tabBar.shadowImage = UIImage.colorForNavBar(color: UIColor(hex: Color.Tab.border))
+        self.tabBar.isTranslucent = false
+    }
 
     func getTabBarImages() -> [UIImage?] {
         let imageNames = ["NewsDim", "EnglishDim", "AcademyDim", "VideoDim", "MyFTDim"]

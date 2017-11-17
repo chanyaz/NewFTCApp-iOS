@@ -16,6 +16,29 @@ class CustomNavigationController: UINavigationController, UINavigationController
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
+        updateColorScheme()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // MARK: - Notification For English Status Change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(nightModeChanged),
+            name: Notification.Name(rawValue: Event.nightModeChanged),
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
+    }
+    
+    @objc public func nightModeChanged() {
+        updateColorScheme()
+    }
+    
+    func updateColorScheme() {
         tabBarController?.tabBar.tintColor = AppNavigation.getThemeColor(for: tabName)
     }
     
@@ -32,7 +55,8 @@ class CustomNavigationController: UINavigationController, UINavigationController
     override var preferredStatusBarStyle : UIStatusBarStyle {
         if let currentTabName = tabName {
             isLightContent = AppNavigation.isNavigationPropertyTrue(for: currentTabName, of: "isNavLightContent")
-            if isLightContent == true {
+            let isNightMode = Setting.isSwitchOn("night-reading-mode")
+            if isLightContent == true || isNightMode == true {
                 return UIStatusBarStyle.lightContent
             }
         }

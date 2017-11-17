@@ -57,8 +57,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
         if dataObject["api"] != nil || ["follow", "read", "iap", "setting", "options"].contains(dataObjectType){
-            //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             
             // MARK: - Get Layout Strategy
             let layoutKey = layoutType()
@@ -85,24 +83,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 let collectionViewInsets = UIEdgeInsetsMake(14, 0, 0, 0)
                 collectionView?.contentInset = collectionViewInsets;
                 collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(collectionViewInsets.top, 0, collectionViewInsets.bottom, 0);
-                
-                
-                //                let paddingSpace = sectionInsets.left * (getSizeInfo().itemsPerRow + 1)
-                //                let availableWidth = view.frame.width - paddingSpace
-                //                //print("availableWidth : \(availableWidth)")
-                //
-                //                if (horizontalClass != .regular || verticalCass != .regular) && layoutStrategy != "Icons" {
-                //                    if #available(iOS 10.0, *) {
-                //                        flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-                //                    } else {
-                //                        flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 250)
-                //                    }
-                //                    cellWidth = availableWidth
-                //                }
-                
-                //let paddingSpace = sectionInsets.left * (getSizeInfo().itemsPerRow + 1)
                 let availableWidth = min(view.frame.width, maxWidth)
-                //print("availableWidth : \(availableWidth)")
                 if #available(iOS 10.0, *) {
                     flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
                 } else {
@@ -132,12 +113,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
             collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
             collectionView?.register(UINib.init(nibName: "SimpleHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "SimpleHeaderView")
-            
-            // MARK: Cell for Regular Size
-            //            collectionView?.register(UINib.init(nibName: "ChannelCellRegular", bundle: nil), forCellWithReuseIdentifier: "ChannelCellRegular")
-            //            collectionView?.register(UINib.init(nibName: "CoverCellRegular", bundle: nil), forCellWithReuseIdentifier: "CoverCellRegular")
-            //            collectionView?.register(UINib.init(nibName: "AdCellRegular", bundle: nil), forCellWithReuseIdentifier: "AdCellRegular")
-            //            collectionView?.register(UINib.init(nibName: "HotArticleCellRegular", bundle: nil), forCellWithReuseIdentifier: "HotArticleCellRegular")
             
             // MARK: - Update Styles
             view.backgroundColor = UIColor(hex: Color.Content.background)
@@ -254,24 +229,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     }
                 }
                 
-                
-//                func openDataView(_ id: String?, of type: String) {
-//                    if let id = id,
-//                        let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
-//                        let listAPI = APIs.convert("https://danla2f5eudt1.cloudfront.net/\(type)/\(id.addUrlEncoding())?webview=ftcapp&bodyonly=yes&001")
-//                        let urlString = APIs.convert("http://www.ftchinese.com/\(type)/\(id)")
-//                        dataViewController.dataObject = [
-//                            "title": id,
-//                            //"api": APIs.get(id, type: type),
-//                            "listapi": listAPI,
-//                            "url": urlString,
-//                            "screenName":"\(type)/\(id)"
-//                        ]
-//                        dataViewController.pageTitle = id
-//                        self.navigationController?.pushViewController(dataViewController, animated: true)
-//                    }
-//                }
-                
             } else if dataObjectType == "htmlbook" {
                 // MARK: - Open HTML Body Content from the html-book.html local file
                 let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
@@ -337,14 +294,16 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         
         // MARK: Only update the navigation title when it is pushed
         navigationItem.title = pageTitle.removingPercentEncoding
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector:#selector(paidPostUpdate(_:)),
-//            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
-//            object: nil
-//        )
         
-        //openHTMLInBundle("register", title: "注册", isFullScreen: true, hidesBottomBar: true)
+        // MARK: - Notification For English Status Change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(nightModeChanged),
+            name: Notification.Name(rawValue: Event.nightModeChanged),
+            object: nil
+        )
+        
+        
     }
     
     @objc public func refreshWebView(_ sender: Any) {
@@ -417,7 +376,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             of: "{iap-js-code}",
                             with: iapCode
                         )
-                        //print (listHTML)
                         DispatchQueue.main.async {
                             self.webView?.loadHTMLString(listHTML, baseURL:url)
                             self.refreshControl.endRefreshing()
@@ -451,7 +409,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         }
         //updateWebviewTraffic()
         filterDataWithAudioUrl()
-        //TabBarAudioContent.sharedInstance.fetchResults = fetches.fetchResults
         // MARK: In setting page, you might need to update UI to reflected change in preference
         if let type = dataObject["type"],
             type == "setting" {
@@ -491,69 +448,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         }
     }
     
-    
-    //    private func updateWebviewTraffic() {
-    //        if isWebViewFirstLoading == true {
-    //            isWebViewFirstLoading = false
-    //            return
-    //        }
-    //
-    //
-    //        //        if let listAPI = dataObject["listapi"],
-    //        //        let urlStringOriginal = dataObject["url"] {
-    //        //            let fileExtension = "html"
-    //        //            let urlString = APIs.convert(urlStringOriginal)
-    //        //            webViewScrollPoint = webView?.scrollView.contentOffset
-    //        //            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
-    //        //        }
-    //
-    //        //let jsCode = "refreshAllAds();ga('send', 'pageview');"
-    //        let jsCode = "ga('send', 'pageview');"
-    //        webView?.evaluateJavaScript(jsCode) { (result, error) in
-    //            if error == nil {
-    //                print ("pv recorded and ad refreshed")
-    //            } else {
-    //                print (error ?? "pv record error")
-    //                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
-    //                self.refreshWebView(self.refreshControl)
-    //            }
-    //        }
-    //
-    //    }
-    
-    
-    //    override func viewDidAppear(_ animated: Bool) {
-    //        super.viewDidAppear(animated)
-    //
-    //        print ("view did appear called")
-    //    }
-    
-    
-    //    override func viewWillLayoutSubviews() {
-    //        //         print("33333")//第一次启动出现3次，转屏出现一次
-    //        super.viewWillLayoutSubviews()
-    //        print ("view will layout subviews called")
-    //        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-    //        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-    //
-    //        if horizontalClass == .regular && verticalCass == .regular {
-    //            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
-    //                isLandscape = true
-    //                collectionView?.collectionViewLayout=flowLayoutH
-    //                flowLayoutH.minimumInteritemSpacing = 0
-    //                flowLayoutH.minimumLineSpacing = 0
-    //            }
-    //
-    //            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
-    //                isLandscape = false
-    //                collectionView?.collectionViewLayout=flowLayout
-    //                flowLayout.minimumInteritemSpacing = 0
-    //                flowLayout.minimumLineSpacing = 0
-    //            }
-    //        }
-    //    }
-    
-    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         print("view will transition called. ")//第一次启动不运行，转屏出现一次
@@ -561,12 +455,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     deinit {
-        //MARK: Remove Paid Post Observer
-//        NotificationCenter.default.removeObserver(
-//            self,
-//            name: Notification.Name(rawValue: Event.paidPostUpdate(for: pageTitle)),
-//            object: nil
-//        )
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
+        
         // MARK: release all the delegate to avoid crash in iOS 9
         webView?.scrollView.delegate = nil
         webView?.navigationDelegate = nil
@@ -574,6 +464,27 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         collectionView?.dataSource = nil
         collectionView?.delegate = nil
         print ("Data View Controller of \(pageTitle) removed successfully")
+    }
+    
+    @objc public func nightModeChanged() {
+        view.backgroundColor = UIColor(hex: Color.Content.background)
+        collectionView?.backgroundColor = UIColor(hex: Color.Content.background)
+        collectionView?.reloadData()
+        let webViewBG = UIColor(hex: Color.Content.background)
+        webView?.backgroundColor = webViewBG
+        webView?.scrollView.backgroundColor = webViewBG
+        let isNightMode = Setting.isSwitchOn("night-reading-mode")
+        let jsCode: String
+        if isNightMode {
+            jsCode = JSCodes.turnOnNightClass
+        } else {
+            jsCode = JSCodes.turnOffNightClass
+        }
+        webView?.evaluateJavaScript(jsCode) { (result, error) in
+            if result != nil {
+                print (result ?? "unprintable JS result")
+            }
+        }
     }
     
     private func getAPI(_ urlString: String) {

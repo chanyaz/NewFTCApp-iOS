@@ -85,6 +85,17 @@ struct Setting {
     static func saveSwitchChange(_ id: String, isOn: Bool) {
         let value = (isOn) ? "On": "Off"
         UserDefaults.standard.set(value, forKey: "\(keyPrefix)\(id)")
+        //MARK: extra things for switch is changed
+        switch id {
+        case "night-reading-mode":
+            let name = Notification.Name(rawValue: Event.nightModeChanged)
+            NotificationCenter.default.post(name: name, object: isOn)
+        case "enable-push":
+            // TODO: Work on this when there is time
+            print ("the push nofitication is set to \(isOn), check the user preference")
+        default:
+            break
+        }
     }
     
     static func getSwitchStatus(_ id: String) -> String {

@@ -195,19 +195,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         }
         self.navigationItem.rightBarButtonItem = audioButton
         
-        
-        
         // MARK: - Segmented Control
         let items = ["中文", "英文", "对照"]
         languages = UISegmentedControl(items: items)
         languages?.selectedSegmentIndex = 0
         
-        
-        
         // MARK: Add target action method
         languages?.addTarget(self, action: #selector(switchLanguage(_:)), for: .valueChanged)
-        
-        
         
         self.navigationItem.titleView = languages
         
@@ -225,6 +219,14 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             object: nil
         )
         
+        // MARK: - Notification For English Status Change
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(nightModeChanged),
+            name: Notification.Name(rawValue: Event.nightModeChanged),
+            object: nil
+        )
+        
         // MARK: - Color Scheme for the view
         initStyle()
         
@@ -236,6 +238,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
          gestureRecognizer.delegate = self
          view.addGestureRecognizer(gestureRecognizer)
          */
+    }
+    
+    deinit {
+        // MARK: - Notification For English Status Change
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.englishStatusChange), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
+        print ("detail view controller removed! ")
     }
     
     @objc public func listen() {
@@ -319,11 +328,16 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         
     }
     
+    @objc public override func nightModeChanged() {
+        super.nightModeChanged()
+        updateColorScheme()        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    private func initStyle() {
+    private func updateColorScheme() {
         let tabBackGround = UIColor(hex: Color.Tab.background)
         let buttonTint = UIColor(hex: Color.Button.tint)
         toolBar.backgroundColor = tabBackGround
@@ -356,6 +370,10 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         bookMark.tintColor = buttonTint
         saveButton.tintColor = buttonTint
         fontButton.tintColor = buttonTint
+    }
+    
+    private func initStyle() {
+        updateColorScheme()
         checkSaveButton()
     }
     

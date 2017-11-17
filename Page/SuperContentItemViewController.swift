@@ -656,6 +656,16 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     default:
                         resourceFileName = "story"
                     }
+                    
+                    let isNightMode = Setting.isSwitchOn("night-reading-mode")
+                    let nightClass: String
+                    if isNightMode {
+                        nightClass = " night"
+                    } else {
+                        nightClass = ""
+                    }
+                    
+                    
                     let finalFileName = GB2Big5.convertHTMLFileName(resourceFileName)
                     if let adHTMLPath = Bundle.main.path(forResource: finalFileName, ofType: "html"){
                         do {
@@ -684,6 +694,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                                 .replacingOccurrences(of: "{ad-mpu}", with: adMPU)
                                 .replacingOccurrences(of: "{font-class}", with: fontClass)
                                 .replacingOccurrences(of: "{comments-id}", with: commentsId)
+                                .replacingOccurrences(of: "{night-class}", with: nightClass)
                             //print(storyHTML)
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {

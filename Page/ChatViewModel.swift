@@ -197,7 +197,7 @@ class CellData {
     //MARK：属性类型8：用于trackData
     var impressionId = ""
     var storyId = ""
-    var channel = "综合"
+    var channel = "综合"//待在构造器中通过storyId获取
     //MARK:关于Cell高度
     var cellHeightByHeadImage:CGFloat {//由头像得到的Cell高度
         get {
@@ -380,7 +380,46 @@ class CellData {
         self.impressionId = impressionIdStr
         self.storyId = storyIdStr
         
-        //TODO:增加对于self.channel的更新
+        //TODO:获取文章频道self.channel的更新
+        let getChannelUrl = "http://www.ftchinese.com/index.php/jsapi/getStoryChannel/\(storyIdStr)"
+        if let url = URL(string: getChannelUrl) { // 将String转化为Data
+            var getChannelRequest = URLRequest(url:url)
+            getChannelRequest.httpMethod = "GET"
+            
+            (URLSession.shared.dataTask(with: getChannelRequest) {
+                (data,response,error) in
+                if error != nil {
+                    print("GetChannel Error: start- \(String(describing: error)) -end")
+                    return
+                }
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                    print("GetChannel Response statusCode is not 200: start- \(httpStatus) -end")
+                    return
+                }
+                if let data = data, let dataString = String(data: data, encoding: .utf8){
+                    print("GetChannel Data: start- \(dataString) -end")
+                    
+                    
+                    if let jsonAny = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
+                    , let jsonArray = jsonAny as? NSArray {
+                        var channelArr = [String]()
+                        for oneChannel in jsonArray {
+                            let transform = "Any-Hex/Java"
+                            if let input = oneChannel as? NSString, let convertedString = input.mutableCopy() as? NSMutableString {
+                                CFStringTransform(convertedString, nil, transform as NSString, true) //NOTE:把unicode转换为string,待做成一个通用方法
+                                let oneChannelStr = convertedString as String
+                                channelArr.append(oneChannelStr)
+                            }
+                        }
+                        print("GetChannel chanels:\(channelArr)")
+                        if channelArr.count > 0 {
+                            self.channel = channelArr[0]
+                            print("GetChannel channel:\(self.channel)")
+                        }
+                    }
+                }
+            }).resume()
+        }
     }
 
 }
@@ -398,17 +437,19 @@ class Chat {
     let timestampField = "x-msxiaoice-request-timestamp"
     let signatureField = "x-msxiaoice-request-signature"
     
+    let appKey = "vAKjG4el8hL2MW3yD9QpgwcWJsdmEXoxqilLPTpy"
+    let secret = "bJicIuWGOAYkh6hEcPXeF45KOi7opu7dDAw2SjJWvIf5VuAYk6tWMrLgfmYdhR1o"
     //小冰正式服务器
     let urlString = "https://service.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15"
     let appId = "XIeQemRXxREgGsyPki"
-    let secret = "4b3f82a71fb54cbe9e4c8f125998c787"
+    let secretKey = "4b3f82a71fb54cbe9e4c8f125998c787"
     let paramList = ["api-version=2017-06-15"]
-    
+    //let secretUpload = "vAKjG4el8hL2MW3yD9QpgwcWJsdmEXoxqilLPTpy"
     //小冰测试服务器
     /*
      let urlString = "https://sai-pilot.msxiaobing.com/api/Conversation/GetResponse?api-version=2017-06-15-Int"
      let appId = "XI36GDstzRkCzD18Fh"
-     let secret = "5c3c48acd5434663897109d18a2f62c5"
+     let secretKey = "5c3c48acd5434663897109d18a2f62c5"
      let paramList = "api-version=2017-06-15-Int"
     */
     var timeStampFrom1970:Int { //用以对话请求的时间戳
@@ -420,10 +461,11 @@ class Chat {
     
     ///About Tracking click
     //小冰正式服务器
-    let trackUrlString = "https://sai-prod-recommstorage.azurewebsites.net/api/Recommender/UpdateUserBehavior"
+     //let trackUrlString = "https://sai-prod-recommstorage.azurewebsites.net/api/Recommender/UpdateUserBehavior" //错的
+    let trackUrlString = "https://sai-prod-recommstorage.azurewebsites.net/api/Store/UpdateUserBehavior"
     //小冰测试服务器
-     //let trackUrlString = "https://sai-int-recommstorage.azurewebsites.net/api/Recommender/UpdateUserBehavior"
-    
+     //let trackUrlString = "https://sai-int-recommstorage.azurewebsites.net/api/Recommender/UpdateUserBehavior" //错的
+    //let trackUrlString = "https://sai-int-recommstorage.azurewebsites.net/api/Store/UpdateUserBehavior"
     var behaviorId:String {//唯一，标志某唯一行为 MARK:计算结果每次都不同，故使用计算属性生成
         return SomeGlobal.randomString(length: 16)
     }
@@ -436,16 +478,19 @@ class Chat {
         return convertedDate
     }
     let actionType = 81
-    let sessionId = ""
+    //let sessionId = ""
     let pos = 1
-    var trackSign:String? = nil //MARK:计算结果为固定值，故只需在init中更新一次,而非使用计算属性
+    //var trackSign:String? = nil //MARK:计算结果为固定值，故只需在init中更新一次,而非使用计算属性
     var viewTime = 0 //需要通过阅读文章后再返回来计算
+    
     init() {
         self.iceUserInfo = self.determineUser()
         self.userId = self.iceUserInfo?.iceUserId
         self.deviceId = self.getDeviceId()
-        self.trackSign = self.computeTrackSign(secretKey: self.secret, parameList: self.paramList)
+        //self.trackSign = self.computeTrackSign(secretKey: self.secretUpload, parameList: self.paramList)
+        //print("track sign:\(self.trackSign ?? "")")
     }
+    
     func determineUser() -> (iceUserId: String, triggerGreetContent: String){
         let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
         var iceUserId: String? = nil
@@ -471,6 +516,7 @@ class Chat {
             )
         }
     }
+    
     func getDeviceId() -> String {
         if let realIdVender = UIDevice.current.identifierForVendor {
             let uuidStr = realIdVender.uuidString
@@ -482,6 +528,7 @@ class Chat {
         }
         return ""
     }
+    
     func computeTalkSign(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
         print("Ice Execute computeSignature")
         
@@ -511,14 +558,15 @@ class Chat {
         
         print("Ice messageStr: start- \(messageStr) -end")
         
-        return messageStr.HmacSHA1(key: secretKeyStr)
+        return messageStr.HmacSHA1Base64(key: secretKeyStr)
     }
     
-    func computeTrackSign(secretKey:String, parameList:[String]) -> String {
-        let secretKeyStr = secretKey
+    func computeTrackSign(secret:String, parameList:[String]) -> String {
+        let secretStr = secret
         let paramListStr = paramList.sorted().joined(separator: "&")
-        let messageStr = "\(secretKeyStr);\(paramListStr)"
-        return messageStr.HmacSHA1(key: secretKeyStr)
+        let messageStr = "\(secretStr);\(paramListStr)"
+        print("Track messageStr:\(messageStr)")
+        return messageStr.HmacSHA1UpperHex(key: secretStr)
     }
     
     func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkDataArr:[[String:String]]?) -> Void) {
@@ -527,7 +575,7 @@ class Chat {
         print("Ice Request bodyString: start- \(bodyString) -end")
         
         if let userId = self.userId {
-            let signature = self.computeTalkSign(verb: "post", path: "/api/Conversation/GetResponse", paramList: paramList, headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timeStamp, secretKey: secret)
+            let signature = self.computeTalkSign(verb: "post", path: "/api/Conversation/GetResponse", paramList: paramList, headerList: ["\(appIdField):\(appId)","\(userIdField):\(userId)"], body: bodyString, timestamp: timeStamp, secretKey: secretKey)
             print("Ice signature: start- \(signature) -end")
             
             if let url = URL(string: urlString),let body = bodyString.data(using: .utf8) { // 将String转化为Data
@@ -568,6 +616,7 @@ class Chat {
             }
         }
     }
+    
     
     func parseResponseData(data:Data) {
         var talkDataArr = [[String: String]]()
@@ -643,9 +692,36 @@ class Chat {
 
     func createTrackRequest(_ cellData: CellData) {
         //TODO：更新self.viewTime,这里有个问题是应该点击的时候发送，如果是回到此界面再发送的话有可能发送不了了（因为可能不回来了）
-        if let trackSign = self.trackSign, let deviceId = self.deviceId, let userId = self.userId {
-            let bodyString = "{appKey:\(self.secret),sign:\(trackSign),ts:\(self.timeStampFrom1970),userList:[{userId:\(userId),behaviorList:[{behaviorID:\(self.behaviorId),deviceType:\(self.deviceType),deviceID:\(deviceId),timeStamp:\(self.timeStampByFormat),actionType:\(self.actionType),sessionID:\(self.sessionId),impressionID:\(cellData.impressionId),channel:\(cellData.channel),feedID:\(cellData.storyId),viewTime:\(self.viewTime),pos:\(self.pos)}]}]}"
-            print(bodyString)
+        //let trackSign = self.computeTrackSign(secret: self.secret, parameList: self.paramList)
+        let trackSign = "DB548632CAF019743AE89B56D48867619CA097DB"
+        print("track sign:\(trackSign)")
+        if let deviceId = self.deviceId, let userId = self.userId {
+            let bodyString = "{\"appkey\":\"\(self.appKey)\",\"sign\":\"\(trackSign)\",\"ts\":\(self.timeStampFrom1970),\"userList\":[{\"userID\":\"\(userId)\",\"behaviorList\":[{\"behaviorID\":\"\(self.behaviorId)\",\"deviceType\":\(self.deviceType),\"deviceID\":\"\(deviceId)\",\"timeStamp\":\"\(self.timeStampByFormat)\",\"actionType\":\(self.actionType),\"impressionID\":\"\(cellData.impressionId)\",\"channel\":\"\(cellData.channel)\",\"feedID\":\"\(cellData.storyId)\",\"viewTime\":\(self.viewTime),\"pos\":\(self.pos)}]}]}"
+            print("Track body:\(bodyString)")
+            
+            if  let url = URL(string: self.trackUrlString), let body = bodyString.data(using: .utf8) {
+                var trackRequest = URLRequest(url:url)
+                trackRequest.httpMethod = "POST"
+                trackRequest.httpBody = body
+                trackRequest.setValue("\(body.count)", forHTTPHeaderField: "Content-Length")
+                
+                (URLSession.shared.dataTask(with: trackRequest) {
+                    (data,response,error) in
+                    if error != nil {
+                        print("Track Error: start- \(String(describing: error)) -end")
+                        return
+                    }
+                    if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                        print("Track Response statusCode is not 200: start- \(httpStatus) -end")
+                        return
+                    }
+                    if let data = data, let dataString = String(data: data, encoding: .utf8){
+                        print("Track Responce Data: start- \(dataString) -end")
+                       
+                    }
+                }).resume()
+            }
+            
         }
         
     }
@@ -692,38 +768,6 @@ class SomeGlobal {
         let cellData = CellData(whoSays: member, saysWhat: saysWhat)
         return cellData
     }
-    
-    static func computeSignature(verb:String, path:String, paramList:[String], headerList:[String],body:String,timestamp:Int,secretKey:String) -> String {
-        print("Ice Execute computeSignature")
-        
-        let verbStr = verb.lowercased()
-        print("Ice verbStr:\(verbStr)")
-        
-        let pathStr = path.lowercased()
-        print("Ice pathStr:\(pathStr)")
-        
-        let paramListStr = paramList.sorted().joined(separator: "&")
-        print("Ice paramListStr:\(paramListStr)")
-        
-        var headerListNew = Array(repeating: "", count: headerList.count)
-        for (index,value) in headerList.enumerated() {
-            headerListNew[index] = value.lowercased()
-        }
-        print("Ice headerListNew: start- \(headerListNew) -end")
-        
-        let headerListStr = headerListNew.sorted().joined(separator: ",")
-        let bodyStr = body
-        
-        let secretKeyStr = secretKey
-        print("Ice secretKeyStr: start- \(secretKeyStr) -end")
-        
-        let messageStr = "\(verbStr);\(pathStr);\(paramListStr);\(headerListStr);\(bodyStr);\(timestamp);\(secretKeyStr)"
-        
-        print("Ice messageStr: start- \(messageStr) -end")
-        
-        let signature = messageStr.HmacSHA1(key: secretKeyStr)
-        return signature
-    }
  
     static func randomString(length: Int) -> String {
         let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -745,7 +789,7 @@ extension String {
     ///
     /// -Parameter key: secret key
     ///
-    func HmacSHA1(key: String) -> String {
+    func HmacSHA1Base64(key: String) -> String {
         let cKey = key.cString(using: String.Encoding.utf8)
         let cData = self.cString(using: String.Encoding.utf8)
         var result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
@@ -754,7 +798,29 @@ extension String {
             CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), realCKey, Int(strlen(realCKey)), realCData, Int(strlen(realCData)), &result)
             let hmacData:NSData = NSData(bytes: result, length: (Int(CC_SHA1_DIGEST_LENGTH)))
             let hmacBase64 = hmacData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength76Characters)
+            print("Sign not base64:\(String(describing: hmacData))")
             return String(hmacBase64)
+        } else {
+            return ""
+        }
+    }
+    func HmacSHA1UpperHex(key: String) -> String {
+        let cKey = key.cString(using: String.Encoding.utf8)
+        let cData = self.cString(using: String.Encoding.utf8)
+        var result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
+        
+        if let realCKey = cKey, let realCData = cData {
+            CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), realCKey, Int(strlen(realCKey)), realCData, Int(strlen(realCData)), &result)
+            let hmacData:NSData = NSData(bytes: result, length: (Int(CC_SHA1_DIGEST_LENGTH)))
+            let hmacDataStr = String(describing: hmacData)
+            //let uuidStr = realIdVender.uuidString
+            if let regex = try? NSRegularExpression(pattern: "\\s|<|>", options:[]) {//NOTE:try? 将错误转换成可选值
+                let cleanedHmacDataStr = regex.stringByReplacingMatches(in: hmacDataStr, options: [], range: NSMakeRange(0, hmacDataStr.count), withTemplate: "")
+               
+                return cleanedHmacDataStr.uppercased()
+            } else {
+                return ""
+            }
         } else {
             return ""
         }

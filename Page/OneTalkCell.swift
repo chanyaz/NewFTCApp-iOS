@@ -54,6 +54,7 @@ class OneTalkCell: UITableViewCell {
                     if let theRealController = theController as? ChatViewController {
                         print("get the real controller")
                         theRealController.inputBlock.resignFirstResponder()
+                        theRealController.chat.createTrackRequest(self.cellData)
                     }
                 }
                 topController.openLink(openUrl)

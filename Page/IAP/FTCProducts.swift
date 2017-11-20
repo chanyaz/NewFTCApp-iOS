@@ -37,44 +37,43 @@ public struct FTCProducts {
     ]
     private static let membershipData = [
         [
-            "id":"com.ft.ftchinese.mobile.subscription.premium",
+            "id":"com.ft.ftchinese.mobile.subscription.vip",
             "title":"高端会员",
             "teaser":"注册成为高端会员",
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",
             "benefits": [
+                "会员期间阅读FT中文网所有独家付费内容",
                 "会员期间屏蔽全站广告，带来极佳的阅读体验",
-                "会员期间免费阅读FT中文网所有付费内容，每篇付费内容有一个免费分享名额",
-                "购买FT自有产品享受VIP折扣",
-                "购买FT电子书可免费发送至kindle",
-                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过"
+                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过",
+                "每周编辑精选，精选不可错过的独家深度文章",
+                "获得价值3999元的FT中文网年会门票"
             ]
         ],
         [
-            "id":"com.ft.ftchinese.mobile.subscription.standard",
+            "id":"com.ft.ftchinese.mobile.subscription.member",
             "title":"普通会员",
             "teaser":"注册成为普通会员",
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",
             "benefits": [
-                "会员期间屏蔽部分网站广告，升级阅读体验",
-                "会员期间免费阅读付费内容",
-                "购买FT电子书可免费发送至kindle",
-                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过"
-            ]
-        ],
-        [
-            "id":"com.ft.ftchinese.mobile.subscription.trial",
-            "title":"试读会员",
-            "teaser":"注册成为试读会员",
-            "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
-            "period":"month",
-            "benefits": [
-                "1个月内屏蔽部分网站广告，升级阅读体验",
-                "会员期间免费阅读4篇付费内容",
+                "会员期间阅读FT中文网所有独家付费内容",
+                "会员期间屏蔽全站广告，带来极佳的阅读体验",
                 "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过"
             ]
         ]
+//        [
+//            "id":"com.ft.ftchinese.mobile.subscription.trial",
+//            "title":"试读会员",
+//            "teaser":"注册成为试读会员",
+//            "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
+//            "period":"month",
+//            "benefits": [
+//                "1个月内屏蔽部分网站广告，升级阅读体验",
+//                "会员期间免费阅读4篇付费内容",
+//                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过"
+//            ]
+//        ]
     ]
     
 //    private static let eBooksData = [

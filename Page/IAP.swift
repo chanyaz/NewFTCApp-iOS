@@ -46,16 +46,18 @@ struct IAP {
                 var isPurchased = FTCProducts.store.isProductPurchased(id)
                 
                 // MARK: - Membership Benefits
-                var benefitsString = ""
-                if let benefits = oneProduct["benefits"] as? [String] {
-                    for benefit in benefits {
-                        benefitsString += ",'\(benefit)'"
-                    }
-                }
+                //var benefitsString = ""
+//                if let benefits = oneProduct["benefits"] as? [String] {
+//                    for benefit in benefits {
+//                        benefitsString += ",'\(benefit)'"
+//                    }
+//                }
+                let productBenefits = oneProduct["benefits"] as? [String]
                 
-                if benefitsString != "" {
-                    benefitsString = ",benefits:[\(benefitsString)]".replacingOccurrences(of: "[,", with: "[")
-                }
+                 //
+//                if benefitsString != "" {
+//                    benefitsString = ",benefits:[\(benefitsString)]".replacingOccurrences(of: "[,", with: "[")
+//                }
                 
                 // MARK: - If isPurchaed is false, check the user default
                 // FIXME: - This might be a potential loophole later if we are selling more expensive products
@@ -134,6 +136,7 @@ struct IAP {
                 contentItem.expireDateString = expireDateString
                 contentItem.periodString = periodString
                 contentItem.productPrice = productPrice
+                contentItem.productBenefits = productBenefits
                 contentItems.append(contentItem)
             }
         }

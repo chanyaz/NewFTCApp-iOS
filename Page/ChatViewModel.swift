@@ -406,7 +406,7 @@ class CellData {
                         for oneChannel in jsonArray {
                             let transform = "Any-Hex/Java"
                             if let input = oneChannel as? NSString, let convertedString = input.mutableCopy() as? NSMutableString {
-                                CFStringTransform(convertedString, nil, transform as NSString, true) //NOTE:把unicode转换为string,待做成一个通用方法
+                                CFStringTransform(convertedString, nil, transform as NSString, true) //  NOTE:把unicode转换为string,待做成一个通用方法
                                 let oneChannelStr = convertedString as String
                                 channelArr.append(oneChannelStr)
                             }
@@ -482,7 +482,9 @@ class Chat {
     let pos = 1
     //var trackSign:String? = nil //MARK:计算结果为固定值，故只需在init中更新一次,而非使用计算属性
     var viewTime = 0 //需要通过阅读文章后再返回来计算
-    
+    let channel = "Chat"
+    var cardReadStartTime = 0
+    var cardReadEndTime = 0
     init() {
         self.iceUserInfo = self.determineUser()
         self.userId = self.iceUserInfo?.iceUserId
@@ -561,13 +563,7 @@ class Chat {
         return messageStr.HmacSHA1Base64(key: secretKeyStr)
     }
     
-    func computeTrackSign(secret:String, parameList:[String]) -> String {
-        let secretStr = secret
-        let paramListStr = paramList.sorted().joined(separator: "&")
-        let messageStr = "\(secretStr);\(paramListStr)"
-        print("Track messageStr:\(messageStr)")
-        return messageStr.HmacSHA1UpperHex(key: secretStr)
-    }
+    
     
     func createTalkRequest(myInputText inputText:String = "", completion: @escaping (_ talkDataArr:[[String:String]]?) -> Void) {
         let bodyString = "{\"query\":\"\(inputText)\",\"messageType\":\"text\"}"
@@ -690,13 +686,68 @@ class Chat {
         }
     }
 
+    func computeTrackSign(secret:String, bodyDic:[String:Any]) -> String {
+        _ = secret
+        //let paramListStr = paramList.sorted().joined(separator: "&")
+        //let messageStr = "\(secretStr);\(paramListStr)"
+        //print("Track messageStr:\(messageStr)")
+        //return messageStr.HmacSHA1UpperHex(key: secretStr)
+        var body = bodyDic
+        body.removeValue(forKey: "sign")
+        let bodyKeyArr = body.keys.sorted()
+        print("bodyKeyArr:\(bodyKeyArr)")
+        var messageStr = self.secret
+        for key in bodyKeyArr {
+            if let value = body[key] {
+               let valueStr = SomeGlobal.convertAnyToJsonStr(value)
+               
+               messageStr += "\(key)\(valueStr)"
+            }
+            
+        }
+        print("Track messageStr:\(messageStr)")
+        return messageStr.HmacSHA1X2(key: self.secret)
+    }
+    
+    
     func createTrackRequest(_ cellData: CellData) {
         //TODO：更新self.viewTime,这里有个问题是应该点击的时候发送，如果是回到此界面再发送的话有可能发送不了了（因为可能不回来了）
         //let trackSign = self.computeTrackSign(secret: self.secret, parameList: self.paramList)
-        let trackSign = "DB548632CAF019743AE89B56D48867619CA097DB"
-        print("track sign:\(trackSign)")
+        //let trackSign = "DB548632CAF019743AE89B56D48867619CA097DB"
+        
         if let deviceId = self.deviceId, let userId = self.userId {
-            let bodyString = "{\"appkey\":\"\(self.appKey)\",\"sign\":\"\(trackSign)\",\"ts\":\(self.timeStampFrom1970),\"userList\":[{\"userID\":\"\(userId)\",\"behaviorList\":[{\"behaviorID\":\"\(self.behaviorId)\",\"deviceType\":\(self.deviceType),\"deviceID\":\"\(deviceId)\",\"timeStamp\":\"\(self.timeStampByFormat)\",\"actionType\":\(self.actionType),\"impressionID\":\"\(cellData.impressionId)\",\"channel\":\"\(cellData.channel)\",\"feedID\":\"\(cellData.storyId)\",\"viewTime\":\(self.viewTime),\"pos\":\(self.pos)}]}]}"
+            let tsValue = self.timeStampFrom1970
+            let behaviorIDValue = self.behaviorId
+            let timeStampValue = self.timeStampByFormat
+            var bodyDic:[String:Any] = [//Dic
+                "appkey":self.appKey,
+                "sign":"",
+                "ts":tsValue,
+                "userList":[ //Array
+                    [//Dic
+                        "userID":userId,
+                        "behaviorList":[//Array
+                            [//Dic
+                                "behaviorID": behaviorIDValue,
+                                "deviceType":self.deviceType,
+                                "deviceID":deviceId,
+                                "timeStamp": timeStampValue,
+                                "actionType": self.actionType,
+                                "impressionID":cellData.impressionId,
+                                "channel":self.channel,
+                                "feedID":cellData.storyId,
+                                "viewTime":self.viewTime,
+                                "pos": self.pos
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+            let trackSign = self.computeTrackSign(secret: self.secret, bodyDic: bodyDic)
+            print("track sign:\(trackSign)")
+            bodyDic["sign"] = trackSign
+            //let bodyString = "{\"appkey\":\"\(self.appKey)\",\"sign\":\"\(trackSign)\",\"ts\":\(self.timeStampFrom1970),\"userList\":[{\"userID\":\"\(userId)\",\"behaviorList\":[{\"behaviorID\":\"\(self.behaviorId)\",\"deviceType\":\(self.deviceType),\"deviceID\":\"\(deviceId)\",\"timeStamp\":\"\(self.timeStampByFormat)\",\"actionType\":\(self.actionType),\"impressionID\":\"\(cellData.impressionId)\",\"channel\":\"\(cellData.channel)\",\"feedID\":\"\(cellData.storyId)\",\"viewTime\":\(self.viewTime),\"pos\":\(self.pos)}]}]}"
+            let bodyString = SomeGlobal.convertAnyToJsonStr(bodyDic)
             print("Track body:\(bodyString)")
             
             if  let url = URL(string: self.trackUrlString), let body = bodyString.data(using: .utf8) {
@@ -728,6 +779,7 @@ class Chat {
 }
 
 /******* SomeGlobal: 提供一些全局性质的方法和属性 ****/
+
 class SomeGlobal {
     static func buildTalkData() -> [String: String] {
         return [
@@ -782,6 +834,37 @@ class SomeGlobal {
         }
         return randomString
     }
+    
+    static func convertAnyToJsonStr(_ anyObj:Any) -> String { //仅针对Any是[String:Any]和[[String:Any]]有效
+        var resultStr :String? = nil
+           
+        if ((anyObj as? [String:Any]) != nil) || ((anyObj as? [[String:Any]]) != nil) {
+            let valueAny:Any?
+            if let valueDic = anyObj as? [String:Any] {
+                valueAny = valueDic
+            } else if let valueArr = anyObj as? [[String:Any]] {
+                valueAny = valueArr
+            } else {
+                valueAny = nil
+            }
+            if let realValueAny = valueAny {
+                do {
+                   let jsonData = try JSONSerialization.data(withJSONObject: realValueAny)
+            
+                    let convertedStr = String(data:jsonData, encoding:String.Encoding.utf8 )
+                    resultStr = convertedStr
+                } catch {
+                    
+                }
+            }
+        } else {
+            resultStr = String(describing:anyObj)
+        }
+        
+        return resultStr ?? ""
+      
+    }
+    
 }
 
 extension String {
@@ -804,26 +887,21 @@ extension String {
             return ""
         }
     }
-    func HmacSHA1UpperHex(key: String) -> String {
+    func HmacSHA1X2(key: String) -> String {
         let cKey = key.cString(using: String.Encoding.utf8)
         let cData = self.cString(using: String.Encoding.utf8)
-        var result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
-        
-        if let realCKey = cKey, let realCData = cData {
+        var result = [UInt8](repeating:0, count:Int(CC_SHA1_DIGEST_LENGTH))
+
+        if  let realCKey = cKey, let realCData = cData{
             CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), realCKey, Int(strlen(realCKey)), realCData, Int(strlen(realCData)), &result)
-            let hmacData:NSData = NSData(bytes: result, length: (Int(CC_SHA1_DIGEST_LENGTH)))
-            let hmacDataStr = String(describing: hmacData)
-            //let uuidStr = realIdVender.uuidString
-            if let regex = try? NSRegularExpression(pattern: "\\s|<|>", options:[]) {//NOTE:try? 将错误转换成可选值
-                let cleanedHmacDataStr = regex.stringByReplacingMatches(in: hmacDataStr, options: [], range: NSMakeRange(0, hmacDataStr.count), withTemplate: "")
-               
-                return cleanedHmacDataStr.uppercased()
-            } else {
-                return ""
+            let hexBytes = result.map {
+                String(format:"%02hhX", $0)
             }
+            return hexBytes.joined()
         } else {
             return ""
         }
+        
     }
 }
 

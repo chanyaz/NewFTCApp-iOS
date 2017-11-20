@@ -59,6 +59,7 @@ class OneTalkCell: UITableViewCell {
                 }
                 topController.openLink(openUrl)
                 Track.event(category: "Chat/Xiaobing", action: "Open story", label: "\(self.cardUrl)")
+                //更新topController.chat的cardReadStartTime属性即此时的时间戳
             }
         }
     }

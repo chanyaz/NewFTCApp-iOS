@@ -482,7 +482,9 @@ class Chat {
     let pos = 1
     //var trackSign:String? = nil //MARK:计算结果为固定值，故只需在init中更新一次,而非使用计算属性
     var viewTime = 0 //需要通过阅读文章后再返回来计算
-    
+    let channel = "Chat"
+    var cardReadStartTime = 0
+    var cardReadEndTime = 0
     init() {
         self.iceUserInfo = self.determineUser()
         self.userId = self.iceUserInfo?.iceUserId
@@ -732,7 +734,7 @@ class Chat {
                                 "timeStamp": timeStampValue,
                                 "actionType": self.actionType,
                                 "impressionID":cellData.impressionId,
-                                "channel":cellData.channel,
+                                "channel":self.channel,
                                 "feedID":cellData.storyId,
                                 "viewTime":self.viewTime,
                                 "pos": self.pos

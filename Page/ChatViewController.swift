@@ -519,12 +519,17 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     override func viewDidAppear(_ animated: Bool) {
         print("View Did Appear")
         Track.screenView("Chat/Xiaobing")
+        
+        //TODO:再记录一个card文章阅读结束时间时间戳，然后发送createTrackRequest
+        
     }
  
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)
         print("viewWillDisappear")
+        
+        // TODO:如果是退出小冰，就执行存储；如果是点击card文章，那就不执行存储,记录一个card文章阅读开始时间时间戳即可
         do {
             var toSaveHistoryTalkArr:[[String: String]]
             var toSaveTalkData:Data
@@ -559,7 +564,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
         }
    }
-  
+ 
     deinit {
         NotificationCenter.default.removeObserver(self)
         print ("Chat View Controller deinit successfully")

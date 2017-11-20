@@ -371,6 +371,12 @@ struct AppNavigation {
             "navBackGroundColor": "#5a8caf",
             "isNavLightContent": true,
             "Channels": [
+                [
+                    "title": "设置",
+                    "type": "setting",
+                    "compactLayout": "",
+                    "screenName":"myft/preference"
+                ],
                 ["title": "已读",
                  "type": "read",
                  "screenName":"myft",
@@ -391,23 +397,32 @@ struct AppNavigation {
                     "compactLayout": ""
                 ],
                 [
-                    "title": "设置",
-                    "type": "setting",
-                    "compactLayout": "",
-                    "screenName":"myft/preference"
+                    "title": "会员订阅",
+                    "type": "iap",
+                    "subtype":"membership",
+                    "compactLayout": "books",
+                    "screenName":"myft/membership"
                 ],
-//                [
-//                    "title": "订阅",
-//                    "api":"https://d37m993yiqhccr.cloudfront.net/users/favstorylist?type=json",
-//                    "url":"http://www.ftchinese.com/users/favstorylist",
-//                    "screenName":"myft/subscription"
-//                ],
+                [
+                    "title": "FT电子书",
+                    "type": "iap",
+                    "subtype":"ebook",
+                    "compactLayout": "books",
+                    "screenName":"homepage/ebook"
+                ],
                 [
                     "title": "账户",
                     "type": "account",
                     "url":"http://app003.ftmailbox.com/iphone-2014.html",
                     "screenName":"myft/account"
+                ],
+                [
+                    "title": "FT商城",
+                    "url":"https://shop193762308.taobao.com/index.htm",
+                    "screenName":"myft/account"
                 ]
+                
+                
             ]
         ]
     ]

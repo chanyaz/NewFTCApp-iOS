@@ -33,7 +33,7 @@ class ContentItem{
     var keywords: String?
     var adchId: String?
     
-    
+    var linkSource: String?
     
     // MARK: detail data that only comes with detail content API
     var cbody: String?
@@ -62,6 +62,7 @@ class ContentItem{
     var expireDateString: String?
     var periodString: String?
     var productPrice: String?
+    var productBenefits: [String]?
     
     var isSelected = false
     

@@ -41,6 +41,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                     id = urlString
                     type = "webpage"
                 }
+                let linkSource = (urlString.matchingStrings(regexes: LinkPattern.xiaobingStoryLink) != nil) ? "xiaobing" : nil
                 if let type = type,
                     ["tag", "archiver"].contains(type) == true {
                     openDataView(id, of: type)
@@ -70,6 +71,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                             section: 0,
                             row: 0)
                         contentItem.adchId = adchId
+                        contentItem.linkSource = linkSource
                         detailViewController.contentPageData = [contentItem]
                         self.navigationController?.pushViewController(detailViewController, animated: true)
                         return

@@ -62,6 +62,7 @@ class ContentItem{
     var expireDateString: String?
     var periodString: String?
     var productPrice: String?
+    var productBenefits: [String]?
     
     var isSelected = false
     

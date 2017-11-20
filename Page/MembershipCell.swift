@@ -58,7 +58,11 @@ class MembershipCell: CustomCell {
             lead.text = leadText
         }
         
-        
+        if let productBenefits = itemCell?.productBenefits {
+            print (productBenefits)
+            // TODO: Display Product Benefits
+            
+        }
 
         
         // MARK: - update buy button content

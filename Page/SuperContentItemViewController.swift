@@ -657,13 +657,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                         resourceFileName = "story"
                     }
                     
-                    let isNightMode = Setting.isSwitchOn("night-reading-mode")
-                    let nightClass: String
-                    if isNightMode {
-                        nightClass = " night"
-                    } else {
-                        nightClass = ""
-                    }
+                    let nightClass = Setting.getNightClass()
+                    
                     
                     
                     let finalFileName = GB2Big5.convertHTMLFileName(resourceFileName)

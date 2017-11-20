@@ -109,6 +109,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             collectionView?.register(UINib.init(nibName: "SettingCell", bundle: nil), forCellWithReuseIdentifier: "SettingCell")
             collectionView?.register(UINib.init(nibName: "OptionCell", bundle: nil), forCellWithReuseIdentifier: "OptionCell")
             collectionView?.register(UINib.init(nibName: "BookCell", bundle: nil), forCellWithReuseIdentifier: "BookCell")
+            collectionView?.register(UINib.init(nibName: "MembershipCell", bundle: nil), forCellWithReuseIdentifier: "MembershipCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
             collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
@@ -861,6 +862,15 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 cell.updateUI()
                 return cell
             }
+        case "MembershipCell":
+            if let cell = cellItem as? MembershipCell {
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.pageTitle = pageTitle
+                cell.themeColor = themeColor
+                cell.updateUI()
+                return cell
+            }
         case "FollowCell":
             if let cell = cellItem as? FollowCell {
                 cell.cellWidth = cellWidth
@@ -1042,6 +1052,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
              */
             if item.type == "ebook" {
                 reuseIdentifier = "BookCell"
+            } else if item.type == "membership" {
+                reuseIdentifier = "MembershipCell"
             } else if item.type == "follow" {
                 reuseIdentifier = "FollowCell"
             } else if item.type == "setting" {
@@ -1324,10 +1336,11 @@ extension SuperDataViewController {
             }
             // MARK: - Get product regardless of the request result
             print ("product loaded: \(String(describing: IAPs.shared.products))")
+            let dataObjectSubType = self?.dataObject["subtype"] ?? "membership"
             
             let contentSections = ContentSection(
                 title: "",
-                items: IAP.get(IAPs.shared.products, in: "ebook"),
+                items: IAP.get(IAPs.shared.products, in: dataObjectSubType),
                 type: "List",
                 adid: ""
             )

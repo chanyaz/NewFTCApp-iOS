@@ -40,6 +40,8 @@ struct Color {
         static let standardFont = "#777777"
         static let standardBorder = "#FAAE76"
         static let switchBackground = "#12a5b3"
+        static let subscriptionBackground = "#0d7680"
+        static let subscriptionColor = "#FFFFFF"
     }
 
     struct Header {

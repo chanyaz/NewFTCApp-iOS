@@ -9,6 +9,7 @@
 import UIKit
 
 class CollectInfoController: UIViewController,UITableViewDataSource, UITableViewDelegate {
+    private let download = DownloadHelper(directory: "audio")
     var selectCellArray:[NSIndexPath] = []
     var dataArray:NSMutableArray = []
     var selectArray:NSMutableArray = []
@@ -147,6 +148,10 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         sender.isSelected = !sender.isSelected
         self.infoTableView.endUpdates()
         print("dataArray allselect --\(dataArray) --  selectCellArray --\(selectArray)")
+        removeAllAudios()
+    }
+    func removeAllAudios() {
+        Download.removeFiles(["mp3"])
     }
     @IBAction func deleteAction(_ sender: UIButton){
         print("deleteAction execute")

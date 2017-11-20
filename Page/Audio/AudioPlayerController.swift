@@ -74,7 +74,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     @IBOutlet weak var switchChAndEnAudio: UISegmentedControl!
     let love = UIButton()
-    let downloadButton = UIButtonEnhanced()
+    let downloadButton = UIButtonDownloadedChange()
     let playlist = UIButton()
     let share = UIButton()
     @IBOutlet weak var audioImage: UIImageView!
@@ -196,7 +196,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         //        NowPlayingCenter().updatePlayingCenter()
         
     }
-    
+//    @IBAction func deleteAudio(_ sender: UIButton) {
+//        removeAllAudios()
+//    }
     
     var isLove:Bool = false
     @objc func favorite(_ sender: UIButton) {
@@ -224,7 +226,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         
         if audioUrlString != "" {
             print("download button\( audioUrlString)")
-            if let button = sender as? UIButtonEnhanced {
+            if let button = sender as? UIButtonDownloadedChange {
                 // FIXME: should handle all the status and actions to the download helper
                 download.takeActions(audioUrlString, currentStatus: button.status)
                 print("download button\( button.status)")
@@ -232,7 +234,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             
         }
     }
-    
+   
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -413,7 +415,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
-        startRotateAnimate()
+        if TabBarAudioContent.sharedInstance.isPlaying == true{
+           startRotateAnimate()
+        }else{
+//           stopRotateAnimate() //it can not be added
+        }
+        
         self.setNeedsStatusBarAppearanceUpdate()
         print("bar status style--\(self.preferredStatusBarStyle)")
     }
@@ -468,15 +475,17 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         audioImage.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0)
     }
     @objc public func switchLanguage(_ sender: UISegmentedControl) {
+        removePlayerItemObservers()
         let languageIndex = sender.selectedSegmentIndex
         let item0 = TabBarAudioContent.sharedInstance.item
-        print ("language is switched manually to \(languageIndex)")
+        print ("language is switched manually to \(languageIndex)---item0\(String(describing: item0))")
         if languageIndex == 1{
             if let eaudioUrl = item0?.eaudio{
                 audioUrlString = eaudioUrl
                 print("engilsh audioUrlString--\(audioUrlString)")
             }else if let caudioUrl = item0?.caudio, item0?.eaudio==nil{
                 audioUrlString = caudioUrl
+                print("engilsh do not exsit--\(audioUrlString)")
             }
         }else{
             if let caudioUrl = item0?.caudio{
@@ -493,6 +502,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
+                downloadButton.status = .success
             }
             // MARK: - Draw a circle around the downloadButton
             downloadButton.drawCircle()
@@ -509,6 +519,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
             
             TabBarAudioContent.sharedInstance.playerItem = playerItem
+//            TabBarAudioContent.sharedInstance.audioUrl = audioUrl
+//            TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
 
             if let player = player {
                 player.play()
@@ -518,6 +530,27 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
+            // MARK: - Update audio play progress
+//            player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
+//                if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
+//                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
+//                    let duration = CMTimeGetSeconds(d)
+//                    if duration.isNaN == false {
+//                        self?.progressSlider.maximumValue = Float(duration)
+//                        if self?.progressSlider.isHighlighted == false {
+//                            self?.progressSlider.value = Float((CMTimeGetSeconds(time)))
+//                        }
+//                        self?.updatePlayTime(current: time, duration: d)
+//                        TabBarAudioContent.sharedInstance.duration = d
+//                        TabBarAudioContent.sharedInstance.time = time
+//                    }
+//                }
+//            }
+            
+            addDownloadObserve()
+            addPlayerItemObservers()
+            NowPlayingCenter().updatePlayingCenter()
+            enableBackGroundMode()
         }
         
     }
@@ -676,6 +709,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
+                downloadButton.status = .success
             }
             // MARK: - Draw a circle around the downloadButton
             downloadButton.drawCircle()
@@ -785,7 +819,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     func removeAllAudios() {
         Download.removeFiles(["mp3"])
-        //        downloadButton.status = .remote
+        downloadButton.status = .remote
     }
     
     private func updateAVPlayerWithLocalUrl() {

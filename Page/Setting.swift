@@ -287,4 +287,12 @@ struct Setting {
         return color
     }
     
+    static func getNightClass() -> String {
+        let isNightMode = isSwitchOn("night-reading-mode")
+        if isNightMode {
+            return " night"
+        }
+        return ""
+    }
+    
 }

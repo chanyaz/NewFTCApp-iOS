@@ -365,8 +365,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             listContentString = defaultString
                         }
                         let listTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                        let nightClass = Setting.getNightClass()
                         var listHTML = (listTemplate as String)
                             .replacingOccurrences(of: "{list-content}", with: listContentString)
+                        .replacingOccurrences(of: "{list-content}", with: nightClass)
                         var iapCode = ""
                         if let jsCode = IAPs.shared.jsCodes,
                             listAPI.range(of: "showIAP=yes") != nil {

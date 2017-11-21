@@ -12,9 +12,6 @@ class MembershipCell: CustomCell {
     // TODO: What if status is changed? For example, after a user buy the product.
     
     
-    // MARK: - Style settings for this class
-    let imageWidth = 160
-    let imageHeight = 216
     //var adModel: AdModel?
     var pageTitle = ""
     
@@ -38,7 +35,7 @@ class MembershipCell: CustomCell {
         }
     }
     
-
+    
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
@@ -52,18 +49,14 @@ class MembershipCell: CustomCell {
         
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        
-        
-        if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
-            lead.text = leadText
-        }
+        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         
         if let productBenefits = itemCell?.productBenefits {
             print (productBenefits)
             // TODO: Display Product Benefits
             
         }
-
+        
         
         // MARK: - update buy button content
         //buyButton.setTitle(itemCell?.productPrice, for: .normal)

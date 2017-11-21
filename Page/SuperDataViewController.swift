@@ -1116,9 +1116,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     
-    var playerAPI = PlayerAPI()
+
     @objc func openPlay(sender: UIButton?){
-        playerAPI.openPlay()
+        PlayerAPI.sharedInstance.openPlay()
     }
     func filterDataWithAudioUrl(){
         var resultsWithAudioUrl = [ContentSection]()

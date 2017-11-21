@@ -691,8 +691,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     private func prepareAudioPlay() {
-        print("when actualAudioLanguageIndex change, audioUrlString is \(audioUrlString)")
+        
         audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
+        print("when actualAudioLanguageIndex change, audioUrlString is \(audioUrlString)")
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
             var audioUrl = url
@@ -736,7 +737,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
-            print("when actualAudioLanguageIndex change, playerItem is \(playerItem)")
+            print("when actualAudioLanguageIndex change, playerItem is \(String(describing: playerItem))")
             // MARK: - Update audio play progress
             player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
                 if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {

@@ -1023,7 +1023,7 @@ extension SuperContentItemViewController: WKNavigationDelegate {
     }
 }
 
-var playerAPI = PlayerAPI()
+
 // MARK: Handle Message from Web View
 extension SuperContentItemViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -1054,7 +1054,7 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
                         TabBarAudioContent.sharedInstance.item = itemCell
                         print ("call out the audio view for this url: \(audioFileUrl)")
                     }
-                    playerAPI.openPlay()
+                    PlayerAPI.sharedInstance.openPlay()
                     
                 }
             case "clip":

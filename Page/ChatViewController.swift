@@ -18,7 +18,10 @@ var screenWidth = CGFloat(0)
 class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
     
     var chat = Chat()
-      //MARK:属性初始化时不能直接使用其他属性
+      //NOTE:属性初始化时不能直接使用其他属性
+    var isReadingCard = false
+    var clickedCellData = CellData() //用于存储被点击card对应的那个cell的cellData
+    
     var autoScrollWhenTalk = false
     var historyTalkData:[[String:String]]? = nil
   
@@ -521,6 +524,13 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         Track.screenView("Chat/Xiaobing")
         
         //TODO:再记录一个card文章阅读结束时间时间戳，然后发送createTrackRequest
+        if self.isReadingCard == true {
+            self.chat.cardReadEndTime = SomeGlobal.getTimeStampFrom1970()
+            print("Track cardReadEndTime:\(self.chat.cardReadEndTime)")
+            self.isReadingCard = false
+            Track.event(category: "Chat/Xiaobing", action: "Back afterReading", label: "\(self.clickedCellData.saysWhat.url)")
+            self.chat.createTrackRequest(self.clickedCellData)
+        }
         
     }
  
@@ -530,7 +540,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("viewWillDisappear")
         
         // TODO:如果是退出小冰，就执行存储；如果是点击card文章，那就不执行存储,记录一个card文章阅读开始时间时间戳即可
-        do {
+        if self.isReadingCard == false {
+            
             var toSaveHistoryTalkArr:[[String: String]]
             var toSaveTalkData:Data
             var newHistoryTalkData:[[String: String]]
@@ -554,15 +565,19 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     toSaveHistoryTalkArr = Array(newHistoryTalkData[newHistoryNum-100...newHistoryNum-1])
                     //print("case 2:\(toSaveHistoryTalkArr.count)")
                 }
-
-                toSaveTalkData = try JSONSerialization.data(withJSONObject: toSaveHistoryTalkArr, options:.prettyPrinted)
-                //print("toSaveTalkDataNum:\(toSaveTalkData.count)")
-                Download.saveFile(toSaveTalkData, filename: "chatHistoryTalk", to:.cachesDirectory , as: "json")
+                do {
+                    toSaveTalkData = try JSONSerialization.data(withJSONObject: toSaveHistoryTalkArr, options:.prettyPrinted)
+                    //print("toSaveTalkDataNum:\(toSaveTalkData.count)")
+                    Download.saveFile(toSaveTalkData, filename: "chatHistoryTalk", to:.cachesDirectory , as: "json")
+                } catch {
+                    
+                }
             }
-    
-        } catch {
-            
+        } else {
+            self.chat.cardReadStartTime = SomeGlobal.getTimeStampFrom1970()
+            print("Track cardReadStartTime:\(self.chat.cardReadStartTime)")
         }
+        
    }
  
     deinit {

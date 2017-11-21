@@ -173,7 +173,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             // MARK: Under iOS 9, this will eventually cause the follow error:
             /*
              objc[5112]: Cannot form weak reference to instance (0x13fa0fa00) of class Page.DataViewController. It is possible that this object was over-released, or is in the process of deallocation.
-            */
+             */
             webView?.scrollView.delegate = self
             webView?.navigationDelegate = self
             webView?.clipsToBounds = true
@@ -369,7 +369,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         let nightClass = Setting.getNightClass()
                         var listHTML = (listTemplate as String)
                             .replacingOccurrences(of: "{list-content}", with: listContentString)
-                        .replacingOccurrences(of: "{list-content}", with: nightClass)
+                            .replacingOccurrences(of: "{list-content}", with: nightClass)
                         var iapCode = ""
                         if let jsCode = IAPs.shared.jsCodes,
                             listAPI.range(of: "showIAP=yes") != nil {
@@ -383,7 +383,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             self.webView?.loadHTMLString(listHTML, baseURL:url)
                             self.refreshControl.endRefreshing()
                         }
-
+                        
                     } catch {
                         DispatchQueue.main.async {
                             self.webView?.load(request)
@@ -402,7 +402,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             }
         }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print ("view will appear called")
@@ -657,23 +657,23 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     
-//    @objc func paidPostUpdate(_ notification: Notification) {
-//        if let itemCell = notification.object as? ContentItem {
-//            let section = itemCell.section
-//            let row = itemCell.row
-//            if fetches.fetchResults.count > section {
-//                if fetches.fetchResults[section].items.count > row {
-//                    if itemCell.adModel?.headline != nil{
-//                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
-//                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
-//                        collectionView?.reloadData()
-//                    } else {
-//                        print ("Paid Post: The adModel has no headline")
-//                    }
-//                }
-//            }
-//        }
-//    }
+    //    @objc func paidPostUpdate(_ notification: Notification) {
+    //        if let itemCell = notification.object as? ContentItem {
+    //            let section = itemCell.section
+    //            let row = itemCell.row
+    //            if fetches.fetchResults.count > section {
+    //                if fetches.fetchResults[section].items.count > row {
+    //                    if itemCell.adModel?.headline != nil{
+    //                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
+    //                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
+    //                        collectionView?.reloadData()
+    //                    } else {
+    //                        print ("Paid Post: The adModel has no headline")
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
     
     
     @objc func refreshControlDidFire(sender:AnyObject) {
@@ -839,22 +839,22 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
-//        case "LineCell":
-//            if let cell = cellItem as? LineCell {
-//                cell.pageTitle = pageTitle
-//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-//                cell.cellWidth = cellWidth
-//                cell.updateUI()
-//                return cell
-//            }
-//        case "PaidPostCell":
-//            if let cell = cellItem as? PaidPostCell {
-//                cell.cellWidth = cellWidth
-//                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-//                cell.pageTitle = pageTitle
-//                cell.updateUI()
-//                return cell
-//            }
+            //        case "LineCell":
+            //            if let cell = cellItem as? LineCell {
+            //                cell.pageTitle = pageTitle
+            //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+            //                cell.cellWidth = cellWidth
+            //                cell.updateUI()
+            //                return cell
+            //            }
+            //        case "PaidPostCell":
+            //            if let cell = cellItem as? PaidPostCell {
+            //                cell.cellWidth = cellWidth
+            //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+            //                cell.pageTitle = pageTitle
+            //                cell.updateUI()
+            //                return cell
+        //            }
         case "BookCell":
             if let cell = cellItem as? BookCell {
                 cell.cellWidth = cellWidth
@@ -1181,6 +1181,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             }
         } else {
             switch selectedItem.type {
+            case "membership":
+                return false
             case "column":
                 if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
                     dataViewController.dataObject = [
@@ -1384,7 +1386,7 @@ extension SuperDataViewController {
                 "com.ft.ftchinese.mobile.book.economy1",
                 "com.ft.ftchinese.mobile.book.economy2",
                 "com.ft.ftchinese.mobile.book.dailyenglish1"
-                ]
+            ]
             let json = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: ids)
             let jsCode = JSCodes.get(in: "iap-ebooks", with: json)
             IAPs.shared.jsCodes = jsCode
@@ -1395,16 +1397,16 @@ extension SuperDataViewController {
                     print (result ?? "unprintable JS result")
                 }
             }
-//            let contentSections = ContentSection(
-//                title: "",
-//                items: IAP.get(IAPs.shared.products, in: type),
-//                type: "List",
-//                adid: ""
-//            )
-//            let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
-//            //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-//            //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-//            self?.updateUI(with: results)
+            //            let contentSections = ContentSection(
+            //                title: "",
+            //                items: IAP.get(IAPs.shared.products, in: type),
+            //                type: "List",
+            //                adid: ""
+            //            )
+            //            let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
+            //            //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
+            //            //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
+            //            self?.updateUI(with: results)
             
             
             //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
@@ -1544,8 +1546,8 @@ extension SuperDataViewController: WKScriptMessageHandler {
             prefetch()
             // MARK: Extract Adid
             if let body = message.body as? [String: Any],
-            let meta = body["meta"] as? [String: String],
-            let adId = meta["adid"] {
+                let meta = body["meta"] as? [String: String],
+                let adId = meta["adid"] {
                 adchId = adId
             }
         } else if message.name == "selectItem" {

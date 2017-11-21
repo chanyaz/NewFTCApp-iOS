@@ -481,10 +481,17 @@ class Chat {
     //let sessionId = ""
     let pos = 1
     //var trackSign:String? = nil //MARK:计算结果为固定值，故只需在init中更新一次,而非使用计算属性
-    var viewTime = 0 //需要通过阅读文章后再返回来计算
     let channel = "Chat"
     var cardReadStartTime = 0
     var cardReadEndTime = 0
+    var viewTime:Int {
+        if cardReadEndTime > cardReadStartTime {
+            return cardReadEndTime - cardReadStartTime
+        } else {
+            return 0
+        }
+    }
+
     init() {
         self.iceUserInfo = self.determineUser()
         self.userId = self.iceUserInfo?.iceUserId
@@ -594,7 +601,7 @@ class Chat {
                         return
                     }
                     if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                        //explainRobotTalk = "Status code is not 200. It is \(httpStatus.statusCode)"
+                        //explainRobotTalk = "Status code is not 200 or 202. It is \(httpStatus.statusCode)"
                         print("Ice Response statusCode when not 200: start- \(httpStatus) -end")
                         DispatchQueue.main.async {//返回主线程更新UI
                             completion(nil)
@@ -746,7 +753,7 @@ class Chat {
             let trackSign = self.computeTrackSign(secret: self.secret, bodyDic: bodyDic)
             print("track sign:\(trackSign)")
             bodyDic["sign"] = trackSign
-            //let bodyString = "{\"appkey\":\"\(self.appKey)\",\"sign\":\"\(trackSign)\",\"ts\":\(self.timeStampFrom1970),\"userList\":[{\"userID\":\"\(userId)\",\"behaviorList\":[{\"behaviorID\":\"\(self.behaviorId)\",\"deviceType\":\(self.deviceType),\"deviceID\":\"\(deviceId)\",\"timeStamp\":\"\(self.timeStampByFormat)\",\"actionType\":\(self.actionType),\"impressionID\":\"\(cellData.impressionId)\",\"channel\":\"\(cellData.channel)\",\"feedID\":\"\(cellData.storyId)\",\"viewTime\":\(self.viewTime),\"pos\":\(self.pos)}]}]}"
+   
             let bodyString = SomeGlobal.convertAnyToJsonStr(bodyDic)
             print("Track body:\(bodyString)")
             
@@ -762,8 +769,10 @@ class Chat {
                         print("Track Error: start- \(String(describing: error)) -end")
                         return
                     }
-                    if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                        print("Track Response statusCode is not 200: start- \(httpStatus) -end")
+                    
+                    
+                    if let httpStatus = response as? HTTPURLResponse,  String(describing:httpStatus.statusCode).range(of:"^2[0-9]{2}$", options:.regularExpression, range: nil, locale:nil) == nil {
+                        print("Track Response statusCode is not 2xx: start- \(httpStatus) -end")
                         return
                     }
                     if let data = data, let dataString = String(data: data, encoding: .utf8){
@@ -863,6 +872,10 @@ class SomeGlobal {
         
         return resultStr ?? ""
       
+    }
+    
+    static func getTimeStampFrom1970() -> Int {
+        return Int(Date().timeIntervalSince1970)
     }
     
 }

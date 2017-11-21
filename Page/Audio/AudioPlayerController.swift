@@ -62,7 +62,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         fetchResults: [ContentSection]()
     )
 
-    
+    private var actualAudioLanguageIndex = 0
     var angle :Double = 0
     let imageWidth = 408   // 16 * 52
     let imageHeight = 234  // 9 * 52
@@ -74,7 +74,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     @IBOutlet weak var switchChAndEnAudio: UISegmentedControl!
     let love = UIButton()
-    let downloadButton = UIButtonEnhanced()
+    let downloadButton = UIButtonDownloadedChange()
     let playlist = UIButton()
     let share = UIButton()
     @IBOutlet weak var audioImage: UIImageView!
@@ -196,7 +196,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         //        NowPlayingCenter().updatePlayingCenter()
         
     }
-    
+//    @IBAction func deleteAudio(_ sender: UIButton) {
+//        removeAllAudios()
+//    }
     
     var isLove:Bool = false
     @objc func favorite(_ sender: UIButton) {
@@ -224,7 +226,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         
         if audioUrlString != "" {
             print("download button\( audioUrlString)")
-            if let button = sender as? UIButtonEnhanced {
+            if let button = sender as? UIButtonDownloadedChange {
                 // FIXME: should handle all the status and actions to the download helper
                 download.takeActions(audioUrlString, currentStatus: button.status)
                 print("download button\( button.status)")
@@ -232,7 +234,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             
         }
     }
-    
+   
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -413,7 +415,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
-        startRotateAnimate()
+        if TabBarAudioContent.sharedInstance.isPlaying == true{
+           startRotateAnimate()
+        }else{
+//           stopRotateAnimate() //it can not be added
+        }
+        
         self.setNeedsStatusBarAppearanceUpdate()
         print("bar status style--\(self.preferredStatusBarStyle)")
     }
@@ -431,7 +438,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     private func initStyle() {
-        switchChAndEnAudio.selectedSegmentIndex = 0
+        actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
+        switchChAndEnAudio.selectedSegmentIndex = actualAudioLanguageIndex
         switchChAndEnAudio.backgroundColor = UIColor(hex: "12a5b3", alpha: 1)
         switchChAndEnAudio.tintColor = UIColor.white
         switchChAndEnAudio.layer.borderColor = UIColor(hex: "12a5b3", alpha: 1).cgColor
@@ -468,15 +476,19 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         audioImage.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0)
     }
     @objc public func switchLanguage(_ sender: UISegmentedControl) {
+        removePlayerItemObservers()
         let languageIndex = sender.selectedSegmentIndex
+        UserDefaults.standard.set(languageIndex, forKey: Key.audioLanguagePreference)
+//        actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
         let item0 = TabBarAudioContent.sharedInstance.item
-        print ("language is switched manually to \(languageIndex)")
+        print ("language is switched manually to \(languageIndex)---item0\(String(describing: item0))")
         if languageIndex == 1{
             if let eaudioUrl = item0?.eaudio{
                 audioUrlString = eaudioUrl
                 print("engilsh audioUrlString--\(audioUrlString)")
             }else if let caudioUrl = item0?.caudio, item0?.eaudio==nil{
                 audioUrlString = caudioUrl
+                print("engilsh do not exsit--\(audioUrlString)")
             }
         }else{
             if let caudioUrl = item0?.caudio{
@@ -493,6 +505,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
+                downloadButton.status = .success
             }
             // MARK: - Draw a circle around the downloadButton
             downloadButton.drawCircle()
@@ -507,8 +520,14 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 player = AVPlayer()
                 
             }
-            
+            if languageIndex == 1{
+                TabBarAudioContent.sharedInstance.audioHeadLine = item?.eheadline
+            }else{
+                TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
+            }
             TabBarAudioContent.sharedInstance.playerItem = playerItem
+            TabBarAudioContent.sharedInstance.audioUrl = audioUrl
+            
 
             if let player = player {
                 player.play()
@@ -518,6 +537,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
+            // MARK: - Update audio play progress
+
+            addDownloadObserve()
+            addPlayerItemObservers()
+            NowPlayingCenter().updatePlayingCenter()
+            enableBackGroundMode()
         }
         
     }
@@ -651,6 +676,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     private func parseAudioMessage() {
         let body = TabBarAudioContent.sharedInstance.body
+        print(" body--\(body)")
         if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
             audioTitle = title
             audioUrlString = audioFileUrl
@@ -665,7 +691,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     private func prepareAudioPlay() {
-        
+        print("when actualAudioLanguageIndex change, audioUrlString is \(audioUrlString)")
         audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
@@ -676,6 +702,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
+                downloadButton.status = .success
             }
             // MARK: - Draw a circle around the downloadButton
             downloadButton.drawCircle()
@@ -690,10 +717,15 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 player = AVPlayer()
                 
             }
-            
+            actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
+            if actualAudioLanguageIndex == 1{
+                TabBarAudioContent.sharedInstance.audioHeadLine = item?.eheadline
+            }else{
+                TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
+            }
             TabBarAudioContent.sharedInstance.playerItem = playerItem
             TabBarAudioContent.sharedInstance.audioUrl = audioUrl
-            TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
+//            TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
             
             if let player = player {
                 player.play()
@@ -704,7 +736,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
-            
+            print("when actualAudioLanguageIndex change, playerItem is \(playerItem)")
             // MARK: - Update audio play progress
             player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
                 if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
@@ -736,17 +768,35 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
     }
     func updateSingleTonData(){
-        if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].caudio {
-            TabBarAudioContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
-            self.tabView.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
-            getLoadedImage(item: fetchAudioResults[0].items[playingIndex])
-            
-            TabBarAudioContent.sharedInstance.body["title"] = fetchAudioResults[0].items[playingIndex].headline
-            TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-            TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(fetchAudioResults[0].items[playingIndex].id)"
-            TabBarAudioContent.sharedInstance.playingIndex = playingIndex
-            parseAudioMessage()
+        actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
+        print("actualAudioLanguageIndex is \(actualAudioLanguageIndex)")
+        if actualAudioLanguageIndex == 0{
+            if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].caudio {
+                TabBarAudioContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
+                self.tabView.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
+                getLoadedImage(item: fetchAudioResults[0].items[playingIndex])
+                
+                TabBarAudioContent.sharedInstance.body["title"] = fetchAudioResults[0].items[playingIndex].headline
+                TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(fetchAudioResults[0].items[playingIndex].id)"
+                TabBarAudioContent.sharedInstance.playingIndex = playingIndex
+                parseAudioMessage()
+            }
+        }else if actualAudioLanguageIndex == 1{
+            if let fetchAudioResults = fetchAudioResults, let audioFileUrl = fetchAudioResults[0].items[playingIndex].eaudio {
+                print("actualAudioLanguageIndex==1 audioFileUrl--\(audioFileUrl)")
+                TabBarAudioContent.sharedInstance.item = fetchAudioResults[0].items[playingIndex]
+                self.tabView.playStatus.text = fetchAudioResults[0].items[playingIndex].eheadline
+                getLoadedImage(item: fetchAudioResults[0].items[playingIndex])
+                // to do: change headline to eheadline
+                TabBarAudioContent.sharedInstance.body["title"] = fetchAudioResults[0].items[playingIndex].headline
+                TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(fetchAudioResults[0].items[playingIndex].id)"
+                TabBarAudioContent.sharedInstance.playingIndex = playingIndex
+                parseAudioMessage()
+            }
         }
+
     }
     
     @objc public func updatePlayButtonUI() {
@@ -785,7 +835,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     func removeAllAudios() {
         Download.removeFiles(["mp3"])
-        //        downloadButton.status = .remote
+        downloadButton.status = .remote
     }
     
     private func updateAVPlayerWithLocalUrl() {

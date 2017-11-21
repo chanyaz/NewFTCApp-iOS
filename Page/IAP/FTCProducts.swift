@@ -39,27 +39,27 @@ public struct FTCProducts {
         [
             "id":"com.ft.ftchinese.mobile.subscription.vip",
             "title":"高端会员",
-            "teaser":"注册成为高端会员",
+            "teaser":"",
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",
             "benefits": [
-                "会员期间阅读FT中文网所有独家付费内容",
-                "会员期间屏蔽全站广告，带来极佳的阅读体验",
-                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过",
-                "每周编辑精选，精选不可错过的独家深度文章",
-                "获得价值3999元的FT中文网年会门票"
+                "《FT周刊》，精选不可错过的必读内容",
+                "获得两张价值3999元的FT中文网年会门票",
+                "阅读FT中文网所有独家内容",
+                "屏蔽广告，整个世界清净了",
+                "订制内容推送到客户端"
             ]
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.member",
             "title":"普通会员",
-            "teaser":"注册成为普通会员",
+            "teaser":"",
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",
             "benefits": [
-                "会员期间阅读FT中文网所有独家付费内容",
-                "会员期间屏蔽全站广告，带来极佳的阅读体验",
-                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过"
+                "阅读FT中文网所有独家内容",
+                "屏蔽广告，整个世界清净了",
+                "订制内容推送到客户端"
             ]
         ]
 //        [
@@ -76,40 +76,6 @@ public struct FTCProducts {
 //        ]
     ]
     
-//    private static let eBooksData = [
-//        [
-//            "id":"com.ft.ftchinese.mobile.book.OutlookoftheFutureof2017",
-//            "title":"精选2016，展望2017",
-//            "teaser":" 2017年，我们熟悉的那个世界是否正在远去？",
-//            "image":"http://i.ftimg.net/picture/9/000068669_piclink.jpg",
-//            //"download": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html",
-//            //"download": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese.epub",
-//            //"downloadfortry": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese_Short.epub"
-//            //"downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
-//            "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
-//            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
-//        ],
-//        [
-//            "id":"com.ft.ftchinese.mobile.book.lunch1",
-//            "title":"与FT共进午餐（一）",
-//            "teaser":"英国《金融时报》最受欢迎的栏目",
-//            "image":"http://i.ftimg.net/picture/2/000068702_piclink.jpg",
-//            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_I_FTChinese.epub",
-//            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_I_FTChinese_Short.epub"
-//            "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch1_body.html",
-//            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch1Preview.html"
-//        ],
-//        [
-//            "id":"com.ft.ftchinese.mobile.book.lunch2",
-//            "title":"与FT共进午餐（二）",
-//            "teaser":"英国《金融时报》最受欢迎的栏目",
-//            "image":"http://i.ftimg.net/picture/3/000068703_piclink.jpg",
-//            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
-//            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
-//            "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch2_body.html",
-//            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch2Preview.html"
-//        ]
-//    ]
     
     
     

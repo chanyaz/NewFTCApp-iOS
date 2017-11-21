@@ -12,9 +12,6 @@ class MembershipCell: CustomCell {
     // TODO: What if status is changed? For example, after a user buy the product.
     
     
-    // MARK: - Style settings for this class
-    let imageWidth = 160
-    let imageHeight = 216
     //var adModel: AdModel?
     var pageTitle = ""
     
@@ -24,21 +21,17 @@ class MembershipCell: CustomCell {
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var iapBackground: UIView!
     @IBOutlet weak var price: UILabel!
+    @IBOutlet weak var benefitsLabel: UILabel!
     
     
     @IBOutlet weak var buyButton: UIButton!
     @IBAction func buy(_ sender: Any) {
-        if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController,
-            let topController = UIApplication.topViewController() {
-            contentItemViewController.dataObject = itemCell
-            contentItemViewController.hidesBottomBarWhenPushed = true
-            contentItemViewController.themeColor = themeColor
-            contentItemViewController.action = "buy"
-            topController.navigationController?.pushViewController(contentItemViewController, animated: true)
+        if let id = itemCell?.id {
+            IAP.buy(id)
         }
     }
     
-
+    
     
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
@@ -49,22 +42,24 @@ class MembershipCell: CustomCell {
     }
     
     private func updateContent() {
-        
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
+        lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         
-        
-        if let leadText = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression) {
-            lead.text = leadText
-        }
-        
+        var benefitsString = ""
         if let productBenefits = itemCell?.productBenefits {
-            print (productBenefits)
             // TODO: Display Product Benefits
-            
+            for benefit in productBenefits {
+                benefitsString += "- \(benefit)\n"
+            }
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 8
+            paragraphStyle.lineBreakMode = .byTruncatingTail
+            let setStr = NSMutableAttributedString.init(string: benefitsString)
+            setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (benefitsString.count)))
+            benefitsLabel.attributedText = setStr
         }
 
-        
         // MARK: - update buy button content
         //buyButton.setTitle(itemCell?.productPrice, for: .normal)
         price.text = "\(itemCell?.productPrice ?? "")/年"

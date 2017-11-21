@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.shared.applicationIconBadgeNumber = 0
         Track.event(category: "\(DeviceInfo.checkDeviceType()) App Launch", action: "Success", label: Bundle.main.bundleIdentifier ?? "")
-
+        
         
         // MARK: - Get current language preference
         LanguageSetting.shared.currentPrefence = Setting.getCurrentOption("language-preference").index
@@ -69,8 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         
-
-
+        
+        
         
         return true
     }
@@ -112,15 +112,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: - Received remote notification
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        print(userInfo)
-        UIApplication.shared.applicationIconBadgeNumber = 0
+    //    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+    //        print(userInfo)
+    //
+    //
+    //    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
         if let aps = userInfo["aps"] as? NSDictionary {
             let title: String = (aps["alert"] as? [String:String])?["title"] ?? "为您推荐"
             //let lead: String = (aps["alert"] as? [String:String])?["body"] ?? ""
-            if let notiAction = userInfo["action"], let id = userInfo["id"] {
-                if application.applicationState == .inactive || application.applicationState == .background{
-                    NotificationHelper.open(notiAction as? String, id: id as? String, title: title)
+            
+            if let notiAction = userInfo["action"],
+                let id = userInfo["id"] as? String {
+                if let isContentAvailable = aps["content-available"] as? Int,
+                    isContentAvailable == 1 {
+                    print ("received a silent notification with the value of \(isContentAvailable)")
+                    Download.grabHTMLResource(id, completionHandler: { (fetchResult) in
+                        // MARK: - Make sure to always execute completionHandler correctly. Otherwise the system will not let you access internet for ensuing silent notifications.
+                        completionHandler(fetchResult)
+                    })
+                } else if application.applicationState == .inactive || application.applicationState == .background{
+                    UIApplication.shared.applicationIconBadgeNumber = 0
+                    NotificationHelper.open(notiAction as? String, id: id, title: title)
                     //rootViewController.openNotification(notiAction as? String, id: id as? String, title: title)
                 } else {
                     //                        let alert = UIAlertController(title: title, message: lead, preferredStyle: UIAlertControllerStyle.alert)
@@ -133,7 +148,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
         }
-        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

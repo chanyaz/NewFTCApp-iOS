@@ -37,6 +37,18 @@ public struct FTCProducts {
     ]
     private static let membershipData = [
         [
+            "id":"com.ft.ftchinese.mobile.subscription.member",
+            "title":"普通会员",
+            "teaser":"",
+            "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
+            "period":"year",
+            "benefits": [
+                "阅读FT中文网所有独家内容",
+                "屏蔽广告，整个世界清净了",
+                "订制内容推送到客户端"
+            ]
+        ],
+        [
             "id":"com.ft.ftchinese.mobile.subscription.vip",
             "title":"高端会员",
             "teaser":"",
@@ -51,29 +63,32 @@ public struct FTCProducts {
             ]
         ],
         [
-            "id":"com.ft.ftchinese.mobile.subscription.member",
-            "title":"普通会员",
+            "id":"com.ft.ftchinese.mobile.subscription.diamond",
+            "title":"钻石会员",
             "teaser":"",
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",
             "benefits": [
+                "《FT投资参考》和《FT科技季刊》",
+                "《FT周刊》，精选不可错过的必读内容",
+                "两张张价值9999元的FT中文网年会贵宾门票",
                 "阅读FT中文网所有独家内容",
                 "屏蔽广告，整个世界清净了",
                 "订制内容推送到客户端"
             ]
         ]
-//        [
-//            "id":"com.ft.ftchinese.mobile.subscription.trial",
-//            "title":"试读会员",
-//            "teaser":"注册成为试读会员",
-//            "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
-//            "period":"month",
-//            "benefits": [
-//                "1个月内屏蔽部分网站广告，升级阅读体验",
-//                "会员期间免费阅读4篇付费内容",
-//                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过"
-//            ]
-//        ]
+        //        [
+        //            "id":"com.ft.ftchinese.mobile.subscription.trial",
+        //            "title":"试读会员",
+        //            "teaser":"注册成为试读会员",
+        //            "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
+        //            "period":"month",
+        //            "benefits": [
+        //                "1个月内屏蔽部分网站广告，升级阅读体验",
+        //                "会员期间免费阅读4篇付费内容",
+        //                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过"
+        //            ]
+        //        ]
     ]
     
     
@@ -172,7 +187,7 @@ public struct FTCProducts {
             "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
         ]
-
+        
     ]
     
     // MARK: - Add product group names and titles

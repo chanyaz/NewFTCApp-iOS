@@ -178,7 +178,7 @@ struct Download {
         }
     }
     
-
+    
     
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
         var fileName = urlString
@@ -187,12 +187,12 @@ struct Download {
             fileName = fileName.md5()
         } else {
             fileName = fileName.replacingOccurrences(of: "^http[s]*://[^/]+/",with: "",options: .regularExpression)
-            .replacingOccurrences(of: ".html?.*pageid=", with: "-", options: .regularExpression)
-            .replacingOccurrences(of: "[?].*", with: "", options: .regularExpression)
-            .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
-            .replacingOccurrences(of: "-type-json", with: ".json")
-            .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
-            .replacingOccurrences(of: "%", with: "")
+                .replacingOccurrences(of: ".html?.*pageid=", with: "-", options: .regularExpression)
+                .replacingOccurrences(of: "[?].*", with: "", options: .regularExpression)
+                .replacingOccurrences(of: "[/?=]", with: "-", options: .regularExpression)
+                .replacingOccurrences(of: "-type-json", with: ".json")
+                .replacingOccurrences(of: "\\.([a-zA-Z-]+\\.[a-zA-Z-]+$)", with: "-$1", options: .regularExpression)
+                .replacingOccurrences(of: "%", with: "")
         }
         if fileName == "" {
             fileName = "home"
@@ -287,7 +287,7 @@ struct Download {
         }
         return contentItems
     }
-
+    
     
     // MARK: - Retrieve a property value from the user default's "my purchase" key
     public static func getPropertyFromUserDefault(_ id: String, property: String) -> String? {
@@ -311,6 +311,43 @@ struct Download {
     public static func getQueryStringParameter(url: String, param: String) -> String? {
         guard let url = URLComponents(string: url) else { return nil }
         return url.queryItems?.first(where: { $0.name == param })?.value
+    }
+    
+    public static func grabHTMLResource(_ listAPI: String, completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        //MARK: Do this only when user is using wifi
+        if IJReachability().connectedToNetworkOfType() == .wiFi {
+            Track.event(category: "Background Download", action: "Request", label: listAPI)
+            let listAPIString = APIs.convert(Download.addVersion(listAPI))
+            if let url = URL(string: listAPIString) {
+                getDataFromUrl(url) {(data, response, error)  in
+                    print ("response from get data from url: \(listAPI)")
+                    if error != nil {
+                        handleServerError(listAPIString, error: error)
+                        Track.event(category: "Background Download", action: "Fail", label: listAPI)
+                        completionHandler(.noData)
+                    }
+                    if let data = data,
+                        error == nil,
+                        HTMLValidator.validate(data, url: listAPIString) {
+                        saveFile(data, filename: listAPI, to: .cachesDirectory, as: "html")
+                        Track.event(category: "Background Download", action: "Success", label: listAPI)
+                        DispatchQueue.main.async { () -> Void in
+                            UIApplication.shared.applicationIconBadgeNumber = 1
+                        }
+                        completionHandler(.newData)
+                    } else {
+                        Track.event(category: "Background Download", action: "HTML Valid Fail", label: listAPI)
+                        completionHandler(.noData)
+                    }
+                }
+            } else {
+                Track.event(category: "Background Download", action: "Illegal Url", label: listAPI)
+                completionHandler(.noData)
+            }
+        } else {
+            Track.event(category: "Background Download", action: "Abort for Lack of Wifi", label: listAPI)
+            completionHandler(.noData)
+        }
     }
     
 }

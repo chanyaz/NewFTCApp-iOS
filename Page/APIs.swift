@@ -270,6 +270,7 @@ struct Event {
 // MARK: - Use struct to store information so that Xcode can auto-complete codes
 struct Key {
     static let languagePreference = "Language Preference"
+    static let audioLanguagePreference = "Audio Language Preference"
     static let domainIndex = "Domain Index"
     static let searchHistory = "Search History"
     static let audioHistory = ["Audio Headline History","Audio URL History","Audio Id History","Audio Last Play Time History"]

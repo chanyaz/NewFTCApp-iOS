@@ -260,6 +260,7 @@ struct Event {
 // MARK: - Use struct to store information so that Xcode can auto-complete codes
 struct Key {
     static let languagePreference = "Language Preference"
+    static let audioLanguagePreference = "Audio Language Preference"
     static let domainIndex = "Domain Index"
     static let searchHistory = "Search History"
     static let audioHistory = ["Audio Headline History","Audio URL History","Audio Id History","Audio Last Play Time History"]
@@ -274,6 +275,7 @@ struct ImageService {
 
 // MARK: - Recognize link patterns in your specific web site so that your app opens links intelligently, rather than opening everything with web view or safari view.
 struct LinkPattern {
+    static let xiaobingStoryLink = ["http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=([0-9]+)&impressionId=[a-z0-9A-Z]+$","http://cslog.trafficmanager.cn/Home/Log\\?content=.*&originalId=([0-9]+)&impressionId=[a-z0-9A-Z]+$"]
     static let story = ["http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/story/([0-9]+)","http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=([0-9]+)&impressionId=[a-z0-9A-Z]+$","http://cslog.trafficmanager.cn/Home/Log\\?content=.*&originalId=([0-9]+)&impressionId=[a-z0-9A-Z]+$"]
     static let interactive = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/interactive/([0-9]+)"]
     static let video = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/video/([0-9]+)"]

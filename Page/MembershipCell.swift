@@ -21,17 +21,13 @@ class MembershipCell: CustomCell {
     @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var iapBackground: UIView!
     @IBOutlet weak var price: UILabel!
+    @IBOutlet weak var benefitsLabel: UILabel!
     
     
     @IBOutlet weak var buyButton: UIButton!
     @IBAction func buy(_ sender: Any) {
-        if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController,
-            let topController = UIApplication.topViewController() {
-            contentItemViewController.dataObject = itemCell
-            contentItemViewController.hidesBottomBarWhenPushed = true
-            contentItemViewController.themeColor = themeColor
-            contentItemViewController.action = "buy"
-            topController.navigationController?.pushViewController(contentItemViewController, animated: true)
+        if let id = itemCell?.id {
+            IAP.buy(id)
         }
     }
     
@@ -46,18 +42,24 @@ class MembershipCell: CustomCell {
     }
     
     private func updateContent() {
-        
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         
+        var benefitsString = ""
         if let productBenefits = itemCell?.productBenefits {
-            print (productBenefits)
             // TODO: Display Product Benefits
-            
+            for benefit in productBenefits {
+                benefitsString += "- \(benefit)\n"
+            }
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 8
+            paragraphStyle.lineBreakMode = .byTruncatingTail
+            let setStr = NSMutableAttributedString.init(string: benefitsString)
+            setStr.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, (benefitsString.count)))
+            benefitsLabel.attributedText = setStr
         }
-        
-        
+
         // MARK: - update buy button content
         //buyButton.setTitle(itemCell?.productPrice, for: .normal)
         price.text = "\(itemCell?.productPrice ?? "")/年"

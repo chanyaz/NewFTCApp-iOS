@@ -71,7 +71,7 @@ public func setLastPlayAudio(){
     }
 }
 class PlayerAPI {
-
+    static var sharedInstance = PlayerAPI()
     let nowPlayingCenter = NowPlayingCenter()
     func openPlay(){
         var player = TabBarAudioContent.sharedInstance.player

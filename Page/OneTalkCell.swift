@@ -54,12 +54,15 @@ class OneTalkCell: UITableViewCell {
                     if let theRealController = theController as? ChatViewController {
                         print("get the real controller")
                         theRealController.inputBlock.resignFirstResponder()
-                        theRealController.chat.createTrackRequest(self.cellData)
+                        //theRealController.chat.createTrackRequest(self.cellData)
+                        theRealController.isReadingCard = true
+                        theRealController.clickedCellData = self.cellData
                     }
                 }
                 topController.openLink(openUrl)
+                
                 Track.event(category: "Chat/Xiaobing", action: "Open story", label: "\(self.cardUrl)")
-                //更新topController.chat的cardReadStartTime属性即此时的时间戳
+                
             }
         }
     }

@@ -28,11 +28,11 @@ struct ShareHelper {
         print("Start downloading \(url) for WeChat Shareing. lastPathComponent: \(url.absoluteString)")
         ShareHelper.sharedInstance.thumbnail = UIImage(named: "ftcicon.jpg")
         Download.getDataFromUrl(url) {(data, response, error)  in
-            DispatchQueue.main.async { () -> Void in
+            //DispatchQueue.main.async { () -> Void in
                 guard let data = data , error == nil else {return}
                 ShareHelper.sharedInstance.thumbnail = UIImage(data: data)
                 print("finished downloading wechat share icon: \(url.absoluteString)")
-            }
+            //}
         }
     }
 }
@@ -61,6 +61,7 @@ extension UIViewController {
                 activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: [openInSafari])
             }
             activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
+            
             
             // MARK: Use this to support both iPhone and iPad
             activityVC.modalPresentationStyle = UIModalPresentationStyle.popover

@@ -10,9 +10,7 @@ import UIKit
 
 class MembershipCell: CustomCell {
     // TODO: What if status is changed? For example, after a user buy the product.
-    
-    
-    //var adModel: AdModel?
+
     var pageTitle = ""
     
     @IBOutlet weak var containerView: UIView!
@@ -30,10 +28,7 @@ class MembershipCell: CustomCell {
             IAP.buy(id)
         }
     }
-    
-    
-    
-    
+
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
         setupLayout()
@@ -61,21 +56,15 @@ class MembershipCell: CustomCell {
         }
 
         // MARK: - update buy button content
-        //buyButton.setTitle(itemCell?.productPrice, for: .normal)
         price.text = "\(itemCell?.productPrice ?? "")/年"
-        
+        buyButton.setTitle("订阅", for: .normal)
+        buyButton.setTitle("已订阅", for: .disabled)
         if let id = itemCell?.id {
             let status = IAP.checkStatus(id)
-            let buttons = [buyButton]
-            for button in buttons {
-                button?.isHidden = true
-            }
-            
-            switch status {
-            case "success", "pendingdownload":
-                print ("success or pending download")
-            default:
-                buyButton.isHidden = false
+            if ["success", "pendingdownload"].contains(status) {
+                buyButton.isEnabled = false
+            } else {
+                buyButton.isEnabled = true
             }
         }
         
@@ -99,7 +88,6 @@ class MembershipCell: CustomCell {
         buyButton.setTitleColor(UIColor(hex: Color.Button.subscriptionColor), for: .normal)
         
     }
-    
     
     private func sizeCell() {
         // MARK: - Use calculated cell width to diplay auto-sizing cells

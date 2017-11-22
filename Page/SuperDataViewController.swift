@@ -137,11 +137,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             
             // MARK: Tell the web view what kind of connection the user is currently on
             let contentController = WKUserContentController();
-            var jsCode = "window.gConnectionType = '\(Connection.current())';window.gNoImageWithData='\(Setting.getSwitchStatus("no-image-with-data"))';"
-            let isNightMode = Setting.isSwitchOn("night-reading-mode")
-            if isNightMode {
-                jsCode += JSCodes.turnOnNightClass
-            }
+            let jsCode = "window.gConnectionType = '\(Connection.current())';window.gNoImageWithData='\(Setting.getSwitchStatus("no-image-with-data"))';"
             let userScript = WKUserScript(
                 source: jsCode,
                 injectionTime: WKUserScriptInjectionTime.atDocumentStart,
@@ -369,7 +365,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         let nightClass = Setting.getNightClass()
                         var listHTML = (listTemplate as String)
                             .replacingOccurrences(of: "{list-content}", with: listContentString)
-                            .replacingOccurrences(of: "{list-content}", with: nightClass)
+                            .replacingOccurrences(of: "{night-class}", with: nightClass)
                         var iapCode = ""
                         if let jsCode = IAPs.shared.jsCodes,
                             listAPI.range(of: "showIAP=yes") != nil {

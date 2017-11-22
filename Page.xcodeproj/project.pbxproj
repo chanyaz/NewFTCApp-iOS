@@ -333,6 +333,10 @@
 		F2251B521FA84F16001B6236 /* PersonInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */; };
 		F2251B551FA85CBC001B6236 /* PortraitTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2251B531FA85CBC001B6236 /* PortraitTableViewCell.swift */; };
 		F2251B561FA85CBC001B6236 /* PortraitTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2251B541FA85CBC001B6236 /* PortraitTableViewCell.xib */; };
+		F22545DA1FC5174E00322C42 /* AudioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22545D91FC5174E00322C42 /* AudioModel.swift */; };
+		F22545DB1FC5174E00322C42 /* AudioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22545D91FC5174E00322C42 /* AudioModel.swift */; };
+		F22545DD1FC5626300322C42 /* RemoteDownloadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22545DC1FC5626300322C42 /* RemoteDownloadHelper.swift */; };
+		F22545DE1FC5626300322C42 /* RemoteDownloadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22545DC1FC5626300322C42 /* RemoteDownloadHelper.swift */; };
 		F234B9521FA1C4CB00AACDAB /* my-love-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = F234B9501FA1C4C500AACDAB /* my-love-big5.html */; };
 		F234B9531FA1C4CE00AACDAB /* my-love.html in Resources */ = {isa = PBXBuildFile; fileRef = F234B9511FA1C4C500AACDAB /* my-love.html */; };
 		F234EC731F15D1DB003F6DD0 /* HotArticleCellRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234EC711F15D1DB003F6DD0 /* HotArticleCellRegular.swift */; };
@@ -642,6 +646,8 @@
 		F2251B501FA84F16001B6236 /* PersonInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonInfoTableViewCell.xib; sourceTree = "<group>"; };
 		F2251B531FA85CBC001B6236 /* PortraitTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitTableViewCell.swift; sourceTree = "<group>"; };
 		F2251B541FA85CBC001B6236 /* PortraitTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortraitTableViewCell.xib; sourceTree = "<group>"; };
+		F22545D91FC5174E00322C42 /* AudioModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioModel.swift; path = Audio/AudioModel.swift; sourceTree = "<group>"; };
+		F22545DC1FC5626300322C42 /* RemoteDownloadHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDownloadHelper.swift; sourceTree = "<group>"; };
 		F23455511FA09F5F001C1AE8 /* person-information.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information.html"; path = "Page/FTCC/person-information.html"; sourceTree = SOURCE_ROOT; };
 		F23455521FA09F5F001C1AE8 /* person-information-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "person-information-big5.html"; path = "Page/FTCC/person-information-big5.html"; sourceTree = SOURCE_ROOT; };
 		F234B9501FA1C4C500AACDAB /* my-love-big5.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "my-love-big5.html"; path = "Page/FTCC/my-love-big5.html"; sourceTree = SOURCE_ROOT; };
@@ -1007,9 +1013,11 @@
 				600C0D031F5D582500226F84 /* AudioPlayerHelper.swift */,
 				600BD6A41F21A6560077C104 /* AudioPlayer.swift */,
 				600BD6A31F21A6560077C104 /* AudioHelper.swift */,
+				F22545DC1FC5626300322C42 /* RemoteDownloadHelper.swift */,
 				600BD6A51F21A6560077C104 /* DownloadHelper.swift */,
 				600BD6A61F21A6570077C104 /* NowPlayingCenter.swift */,
 				F24B798F1F5555FA001B62A2 /* AudioPlayerController.swift */,
+				F22545D91FC5174E00322C42 /* AudioModel.swift */,
 				F24B79901F5555FA001B62A2 /* CustomPresentationAnimation.swift */,
 				F24B79911F5555FA001B62A2 /* CustomPresentationController.swift */,
 				F2D792681F5CEBA2005A7588 /* ListPerColumnViewController.swift */,
@@ -1972,8 +1980,10 @@
 				F2E090701F5A6A3900F4409F /* ColumnViewController.swift in Sources */,
 				F241183F1FAEAA4C00EE50EB /* SubscribeSchemeViewController.swift in Sources */,
 				6021534E1F397C650077A7AF /* ShareImageActivityProvider.swift in Sources */,
+				F22545DB1FC5174E00322C42 /* AudioModel.swift in Sources */,
 				F2E0906D1F5A6A3900F4409F /* ColumnCollectionViewCell.swift in Sources */,
 				6021534F1F397C650077A7AF /* DownloadHelper.swift in Sources */,
+				F22545DE1FC5626300322C42 /* RemoteDownloadHelper.swift in Sources */,
 				602153B41F399E9A0077A7AF /* Styles.swift in Sources */,
 				6013F6C01F6F99DB00F83462 /* Setting.swift in Sources */,
 				F24B79971F5555FA001B62A2 /* CustomPresentationController.swift in Sources */,
@@ -2040,6 +2050,7 @@
 				602153A51F399E010077A7AF /* EnglishNavigationController.swift in Sources */,
 				604F2F821FA845B500A923E5 /* SuperContentItemViewController.swift in Sources */,
 				608C55231EF7973A00AF27CB /* ChannelModelController.swift in Sources */,
+				F22545DD1FC5626300322C42 /* RemoteDownloadHelper.swift in Sources */,
 				60FEBB511EF0CEAE00C3EBB6 /* CoverCell.swift in Sources */,
 				503A3B091EF4C9CD00FB6006 /* ChannelScrollerCell.swift in Sources */,
 				605750F31F1461F400552DAC /* WKWebPage.swift in Sources */,
@@ -2130,6 +2141,7 @@
 				60C5586E1F2990CD004C4E0E /* LaunchScreen.swift in Sources */,
 				60C558701F299F09004C4E0E /* AdSchedule.swift in Sources */,
 				60C0D6601F18BF5800E6F77D /* Impressions.swift in Sources */,
+				F22545DA1FC5174E00322C42 /* AudioModel.swift in Sources */,
 				603726B11F72050E0084F938 /* LanguageSetting.swift in Sources */,
 				60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */,
 				F24B79941F5555FA001B62A2 /* CustomPresentationAnimation.swift in Sources */,

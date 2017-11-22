@@ -13,27 +13,6 @@ import MediaPlayer
 import WebKit
 import SafariServices
 
-class TabBarAudioContent {
-    static let sharedInstance = TabBarAudioContent()
-    var body = [String: String]()
-    var item: ContentItem?
-    var player:AVPlayer? = nil
-    var playerItem: AVPlayerItem? = nil
-    var audioHeadLine: String? = nil
-    var audioUrl: URL? = nil
-    var duration: CMTime? = nil
-    var time:CMTime? = nil
-    var sliderValue:Float? = nil
-    var isPlaying:Bool=false
-    var isPlayFinish:Bool=false
-    var isPlayStart:Bool=false
-    var fetchResults: [ContentSection]?
-    var items = [ContentItem]()
-    var mode:Int?
-    var playingIndex:Int?
-}
-
-
 class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate,UIGestureRecognizerDelegate,CAAnimationDelegate{
     
     private var audioTitle = ""
@@ -43,7 +22,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     private lazy var playerItem: AVPlayerItem? = nil
     //    private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
-    private let download = DownloadHelper(directory: "audio")
+    private let download = DownloadHelper(directory: "audioData")
     private let playerAPI = PlayerAPI()
     private var queuePlayer:AVQueuePlayer?
     private var playerItems: [AVPlayerItem]? = []
@@ -218,7 +197,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             launchActionSheet(for: item, from: sender)
         }
     }
+    private var downloadedItem:[String:String]=[:]
     @objc func download(_ sender: Any) {
+        let item = TabBarAudioContent.sharedInstance.item
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
             audioUrlString = playerAPI.parseAudioUrl(urlString: audioFileUrl)
@@ -228,11 +209,33 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             print("download button\( audioUrlString)")
             if let button = sender as? UIButtonDownloadedChange {
                 // FIXME: should handle all the status and actions to the download helper
-                download.takeActions(audioUrlString, currentStatus: button.status)
+//                download.takeActions(audioUrlString, currentStatus: button.status)
                 print("download button\( button.status)")
             }
             
         }
+        if let item = item{
+            let headline = item.headline
+            let image = item.image
+            let lead = item.lead
+            let caudio = item.caudio
+            let eaudio = item.eaudio
+            let item = [
+                "headline": headline,
+                "lead": lead,
+                "image": image,
+                "caudio": caudio,
+                "eaudio": eaudio
+            ]
+            do {
+                let bodyData = try JSONSerialization.data(withJSONObject: item , options:.prettyPrinted)
+                Download.saveFile(bodyData, filename: "audioData", to:.cachesDirectory , as: nil)
+                print("download bodyData--\( bodyData)")
+            } catch {
+                
+            }
+        }
+
     }
    
     override func didReceiveMemoryWarning() {

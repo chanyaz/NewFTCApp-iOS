@@ -13,6 +13,8 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     var selectCellArray:[NSIndexPath] = []
     var dataArray:NSMutableArray = []
     var selectArray:NSMutableArray = []
+    
+    var allDataArray:NSMutableArray = []
     //    var selectArray = NSMutableArray() as? [NSIndexPath]
     var isRepeatOpenMyDownload:Bool=false
     var isEditting :Bool=false
@@ -25,21 +27,28 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     let buttonHeight: CGFloat = 55
     let leftMoveDistance: CGFloat = 45
     let cellContent: NSArray = ["谁能预测未来样子1", "谁能预测未来样子2", "谁能预测未来样子3","随谁能预测未来样子4","谁能预测未来样子5"]
+    let allCellContent:NSMutableArray = [["headline":"谁能预测未来样子1","image":"1111"],
+                                  [
+                                    "headline":"谁能预测未来样子2","image":"2222"
+        ],[
+            "headline":"谁能预测未来样子3","image":"3333"
+        ]]
+    let allCellDatas:NSMutableArray = []
+
     @IBOutlet weak var infoTableView: UITableView!
     @IBOutlet weak var toolBar: UIView!
     @IBOutlet weak var allSelectBtn: UIButton!
     @IBOutlet weak var deleteBtn: UIButton!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
-        super.viewDidLoad() 
+        super.viewDidLoad()
 //        self.infoTableView.frame = CGRect(x:0, y: 0, width: screenWidth, height: screenHeight-172)
         self.infoTableView.delegate = self
         self.infoTableView.dataSource = self
         
         print("\(view.layoutMargins.bottom)")
 //        toolbarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 89, OtherIphoneValue: 55)
-        
-//       toolBar.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
+
 //        self.allSelectBtn.backgroundColor = UIColor.red
         self.allSelectBtn.setTitleColor(UIColor.black, for: .normal)
         self.deleteBtn.setTitleColor(UIColor.black, for: .normal)
@@ -63,50 +72,39 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         self.infoTableView.allowsMultipleSelection = true
         self.infoTableView.allowsSelectionDuringEditing = true
         print("dateArray--\(self.selectCellArray)")
-//        self.allSelect.frame = CGRect(x: 0, y: 0, width: (screenWidth)/2, height:buttonHeight)
-//        self.allSelect.setTitle("全选", for: .normal)
-//        self.allSelect.setTitleColor(UIColor.black, for: .normal)
-//        self.allSelect.backgroundColor = UIColor.red
-//        self.allSelect.contentVerticalAlignment = .center
-//        allSelect.addTarget(self, action: #selector(allSelectAction), for: .touchUpInside)
-//        allSelect.layer.addBorder(edge: .right, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
-//        allSelect.layer.borderWidth = 1
 
-//        self.delete.frame = CGRect(x: screenWidth/2, y: 0, width: (screenWidth)/2, height:buttonHeight)
-//        self.delete.setTitle("删除", for: .normal)
-//        self.delete.setTitleColor(UIColor.black, for: .normal)
-//        self.delete.backgroundColor = UIColor.blue
-//        self.delete.contentVerticalAlignment = .center
-//        delete.addTarget(self, action: #selector(deleteAction), for: .touchUpInside)
+        //       Mark:Get the downloaded data here，Cycle to add
+        do {
+            if let downloadedData = Download.readFile("audioData", for: .cachesDirectory, as: nil) {
+                let downloadedJsonData = try JSONSerialization.jsonObject(with: downloadedData, options: .mutableContainers) as! [String : Any]
+                for index in downloadedJsonData{
+                     print("download bodyData1--\( index)")
+//             index 是输出(key: "headline", value: 追随内心，还是追随大数据？)此格式key-value数据
+                }
+                allCellDatas.add(downloadedJsonData)
+               
+//                print("download bodyData1--\( downloadedJsonData)")
+            }
+        } catch {
+            
+        }
         
-//        self.navigationController?.toolbar.barStyle = .black
-//        self.navigationController?.toolbar.barTintColor = UIColor.white
-//        self.navigationController?.toolbar.frame = CGRect(x: 0, y: screenHeight-toolbarHeight, width: screenWidth, height: toolbarHeight)
-//        self.navigationController?.toolbar.layer.addBorder(edge: .top, color: UIColor(hex: Color.AudioList.border, alpha: 1), thickness: 1)
+//        dataArray = cellContent.mutableCopy() as! NSMutableArray
         
+        dataArray = allCellDatas.mutableCopy() as! NSMutableArray
 
-//        let allSelectButton = UIBarButtonItem(customView: allSelect)
-//        let deleteButton = UIBarButtonItem(customView: delete)
-//        let space = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
-//        let toolArray = [allSelectButton,deleteButton]
-//        allSelectButton.backgroundVerticalPositionAdjustment(for: .default)
-//        allSelectButton.setTitlePositionAdjustment(UIOffset(horizontal: 30, vertical: 30), for: UIBarMetrics.default)
-//        self.toolbarItems = toolArray
+        
         self.view.backgroundColor = UIColor.white
-        dataArray = cellContent.mutableCopy() as! NSMutableArray
         let image = UIImage(named: "NavBack")
         let backImage = image?.imageWithImage(image: image!, scaledToSize: CGSize(width: 12, height: 22))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backNavigation))
 
-   
+        
         toolBar.layer.zPosition = 100000
         toolBar.isUserInteractionEnabled = true
     }
     override func viewWillAppear(_ animated: Bool) {
-//        self.navigationController?.toolbar.isHidden = true
         hideView()
-       
-//        self.toolBar.isHidden = true
     }
     override func viewDidDisappear(_ animated: Bool) {
 
@@ -120,7 +118,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         print("collectInfoController deinit")
         self.infoTableView.delegate = nil
         self.infoTableView.dataSource = nil
-//        self.navigationController?.toolbar.isHidden = true
     }
     @IBAction func allSelectAction(_ sender: UIButton){
         print("allSelectAction execute")
@@ -272,7 +269,28 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CollectTableViewCell") as! CollectTableViewCell
-        cell.selectedLabel.text = dataArray[indexPath.row] as? String
+//        cell.selectedLabel.text = dataArray[indexPath.row] as? String
+       let dictionaryData = dataArray[indexPath.row] as! NSDictionary
+        cell.selectedLabel.text = dictionaryData["headline"] as? String
+        let aa = dictionaryData["image"] as? String
+        let url = URL(string: aa!)
+        let sessionTask = URLSession.shared
+        let request = URLRequest(url: url!)
+        let task = sessionTask.dataTask(with: request, completionHandler: {(data: Data?, response: URLResponse?, error: Error?) -> Void in
+            if (error == nil) {
+                let image: UIImage = UIImage(data: data!)!
+                OperationQueue.main.addOperation({
+                    cell.selectedImageView.image = image
+                })
+
+            }
+
+        })
+        task.resume()
+//        let data = try? Data(contentsOf: url!)
+//        let image: UIImage = UIImage(data: data!)!
+//        cell.selectedImageView.image = image
+        
         cell.accessoryType = .none
         cell.isEditting = self.isEditting
         if self.selectArray.contains(indexPath){
@@ -280,11 +298,11 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         }else{
             cell.isSelected = false
         }
-        if let results = TabBarAudioContent.sharedInstance.fetchResults{
+//        if let results = TabBarAudioContent.sharedInstance.fetchResults{
 //            print("test detailImage\(results[0].items[0].coverImage)")
-            cell.selectedImageView.image = results[0].items[0].coverImage
+//            cell.selectedImageView.image = results[0].items[0].coverImage
             
-        }
+//        }
         
         return cell
         
@@ -301,50 +319,8 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.none
     }
-    //    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-    //        let delete = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
-    //            // delete item at indexPath
-    //        }
-    //        delete.backgroundColor = UIColor.blue
-    //
-    //        return [delete]
-    //    }
-    //    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    //            self.dataArray.remove(self.dataArray[indexPath.row])
-    //            self.infoTableView.beginUpdates()
-    //            self.infoTableView.deselectRow(at: indexPath, animated: true)
-    //            self.infoTableView.endUpdates()
-    //        print("tableView \(dataArray)")
-    //    }
-    //    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-    
-    
-    //    }
+
     
 }
-extension CollectInfoController {
-    fileprivate func insertIAPView() {
-        let verticalPadding: CGFloat = 10
-        let buttonHeight: CGFloat = 34
-        let iapView = IAPView()
-        let containerViewFrame = view.frame
-        let width: CGFloat = view.frame.width
-        let height: CGFloat = buttonHeight + 2 * verticalPadding
-        iapView.frame = CGRect(x: 0, y: containerViewFrame.height - height, width: width, height: height)
-        iapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        // MARK: This is important for autolayout constraints to kick in properly
-        iapView.translatesAutoresizingMaskIntoConstraints = false
-//        iapView.themeColor = themeColor
-//        iapView.dataObject = dataObject
-//        iapView.verticalPadding = verticalPadding
-//        iapView.action = self.action
-//        iapView.initUI()
-        view.addSubview(iapView)
-        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.lessThanOrEqual, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.lessThanOrEqual, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
-        view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: height))
-        
-    }
-}
+
+

@@ -273,23 +273,28 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
        let dictionaryData = dataArray[indexPath.row] as! NSDictionary
         cell.selectedLabel.text = dictionaryData["headline"] as? String
         let aa = dictionaryData["image"] as? String
+        
         let url = URL(string: aa!)
-        let sessionTask = URLSession.shared
-        let request = URLRequest(url: url!)
-        let task = sessionTask.dataTask(with: request, completionHandler: {(data: Data?, response: URLResponse?, error: Error?) -> Void in
-            if (error == nil) {
-                let image: UIImage = UIImage(data: data!)!
-                OperationQueue.main.addOperation({
-                    cell.selectedImageView.image = image
-                })
+        if let url = url{
+           let lastPathName = url.deletingPathExtension()
+            cell.selectedImageView.image = UIImage(named: lastPathName.absoluteString)
+        }
+        
+//        let url = URL(string: aa!)
+//        let sessionTask = URLSession.shared
+//        let request = URLRequest(url: url!)
+//        let task = sessionTask.dataTask(with: request, completionHandler: {(data: Data?, response: URLResponse?, error: Error?) -> Void in
+//            if (error == nil) {
+//                let image: UIImage = UIImage(data: data!)!
+//                OperationQueue.main.addOperation({
+//                    cell.selectedImageView.image = image
+//                })
+//
+//            }
+//
+//        })
+//        task.resume()
 
-            }
-
-        })
-        task.resume()
-//        let data = try? Data(contentsOf: url!)
-//        let image: UIImage = UIImage(data: data!)!
-//        cell.selectedImageView.image = image
         
         cell.accessoryType = .none
         cell.isEditting = self.isEditting

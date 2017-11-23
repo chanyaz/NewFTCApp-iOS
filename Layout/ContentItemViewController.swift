@@ -59,7 +59,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
     }
     @objc func isHideAudio(sender: UISwipeGestureRecognizer){
         if sender.direction == .up{
-            print("up hide audio")
+//            print("up hide audio")
             let customNavigation = self.navigationController as? CustomNavigationController
 //            customNavigation?.tabView.isHidden = true
             if  let tabAudioView = customNavigation?.tabView{
@@ -73,7 +73,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
             }
 
         }else if sender.direction == .down{
-            print("down show audio")
+//            print("down show audio")
             let customNavigation = self.navigationController as? CustomNavigationController
             if  let tabAudioView = customNavigation?.tabView{
                 UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {

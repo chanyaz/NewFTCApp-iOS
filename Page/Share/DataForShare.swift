@@ -10,13 +10,12 @@
 import UIKit
 
 class DataForShare: NSObject, UIActivityItemSource {
-    var url: String = ShareHelper.sharedInstance.webPageUrl
-    //var url: String = "https://mp.weixin.qq.com/s/mkpsKBfSvotGzj8gYeoMcA"
-    var lead: String = ShareHelper.sharedInstance.webPageDescription
-    var imageCover: String = ShareHelper.sharedInstance.webPageImage
+    var url: String = ShareHelper.shared.webPageUrl
+    var lead: String = ShareHelper.shared.webPageDescription
+    var imageCover: String = ShareHelper.shared.webPageImage
     
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        let title = ShareHelper.sharedInstance.webPageTitle
+        let title = ShareHelper.shared.webPageTitle
         return title
     }
     
@@ -25,11 +24,11 @@ class DataForShare: NSObject, UIActivityItemSource {
         var textForShare = ""
         
         if activityType?.rawValue == "com.tencent.xin.sharetimeline" {
-            return URL(string: ShareHelper.sharedInstance.webPageUrl)
+            return URL(string: ShareHelper.shared.webPageUrl)
         } else if activityType == UIActivityType.mail {
-            textForShare = ShareHelper.sharedInstance.webPageDescription
+            textForShare = ShareHelper.shared.webPageDescription
         } else if activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter {
-            textForShare = "【" + ShareHelper.sharedInstance.webPageTitle + "】" + ShareHelper.sharedInstance.webPageDescription
+            textForShare = "【" + ShareHelper.shared.webPageTitle + "】" + ShareHelper.shared.webPageDescription
             let textForShareCredit = "（分享自 @FT中文网）"
             let textForShareLimit = 140
             let textForShareTailCount = textForShareCredit.count + url.count
@@ -40,26 +39,19 @@ class DataForShare: NSObject, UIActivityItemSource {
             }
             textForShare = textForShare + "（分享自 @FT中文网）"
         } else {
-            textForShare = ShareHelper.sharedInstance.webPageTitle
+            textForShare = ShareHelper.shared.webPageTitle
         }
         return textForShare
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivityType?) -> String {
-        
-        if(activityType == UIActivityType.mail){
-            return ShareHelper.sharedInstance.webPageTitle
-        } else {
-            return ShareHelper.sharedInstance.webPageTitle
-        }
+        return ShareHelper.shared.webPageTitle
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController,
         thumbnailImageForActivityType activityType: UIActivityType?,
         suggestedSize size: CGSize) -> UIImage? {
-        //var image : UIImage
         if let image = UIImage(named: "ShareIcon") {
-            //image = image.resizableImage(withCapInsets: UIEdgeInsets.zero)
             return image.resizableImage(withCapInsets: UIEdgeInsets.zero)
         }
         return nil

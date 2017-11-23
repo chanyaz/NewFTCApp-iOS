@@ -46,6 +46,8 @@
 		50EC3A631EF1E18E00BF17AD /* Ad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC3A611EF1E18E00BF17AD /* Ad.swift */; };
 		50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50EC3A621EF1E18E00BF17AD /* Ad.xib */; };
 		50F610631F2DAF8F00E3AABC /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F610621F2DAF8F00E3AABC /* PaddingLabel.swift */; };
+		600BC5061FC683FA00652ADA /* CustomShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BC5051FC683FA00652ADA /* CustomShareViewController.swift */; };
+		600BC5071FC683FA00652ADA /* CustomShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BC5051FC683FA00652ADA /* CustomShareViewController.swift */; };
 		600BD69F1F1DBAFF0077C104 /* PushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD69E1F1DBAFF0077C104 /* PushHelper.swift */; };
 		600BD6A21F1EF20B0077C104 /* English.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6A11F1EF20B0077C104 /* English.swift */; };
 		600BD6A71F21A6570077C104 /* AudioHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6A31F21A6560077C104 /* AudioHelper.swift */; };
@@ -464,6 +466,7 @@
 		50EC3A621EF1E18E00BF17AD /* Ad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Ad.xib; sourceTree = "<group>"; };
 		50F610621F2DAF8F00E3AABC /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		580171059509F2486AE61ABB /* Pods-FTCC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FTCC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FTCC/Pods-FTCC.debug.xcconfig"; sourceTree = "<group>"; };
+		600BC5051FC683FA00652ADA /* CustomShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomShareViewController.swift; sourceTree = "<group>"; };
 		600BD69E1F1DBAFF0077C104 /* PushHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushHelper.swift; sourceTree = "<group>"; };
 		600BD6A11F1EF20B0077C104 /* English.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = English.swift; sourceTree = "<group>"; };
 		600BD6A31F21A6560077C104 /* AudioHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioHelper.swift; path = Audio/AudioHelper.swift; sourceTree = "<group>"; };
@@ -1159,6 +1162,7 @@
 			isa = PBXGroup;
 			children = (
 				60986A431F1CAC5300583157 /* ShareHelper.swift */,
+				600BC5051FC683FA00652ADA /* CustomShareViewController.swift */,
 				60986A411F1CAC5300583157 /* DataForShare.swift */,
 				60986A421F1CAC5300583157 /* OpenInSafari.swift */,
 				60986A441F1CAC5300583157 /* ShareImageActivityProvider.swift */,
@@ -1982,6 +1986,7 @@
 				6021534E1F397C650077A7AF /* ShareImageActivityProvider.swift in Sources */,
 				F22545DB1FC5174E00322C42 /* AudioModel.swift in Sources */,
 				F2E0906D1F5A6A3900F4409F /* ColumnCollectionViewCell.swift in Sources */,
+				600BC5071FC683FA00652ADA /* CustomShareViewController.swift in Sources */,
 				6021534F1F397C650077A7AF /* DownloadHelper.swift in Sources */,
 				F22545DE1FC5626300322C42 /* RemoteDownloadHelper.swift in Sources */,
 				602153B41F399E9A0077A7AF /* Styles.swift in Sources */,
@@ -2065,6 +2070,7 @@
 				50F610631F2DAF8F00E3AABC /* PaddingLabel.swift in Sources */,
 				50E535C71F0729900082B181 /* ChannelModelDelegate.swift in Sources */,
 				60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */,
+				600BC5061FC683FA00652ADA /* CustomShareViewController.swift in Sources */,
 				F24B79921F5555FA001B62A2 /* AudioPlayerController.swift in Sources */,
 				60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */,
 				60D461C41F1C4F79009B7196 /* Track.swift in Sources */,

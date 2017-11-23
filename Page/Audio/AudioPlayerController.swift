@@ -688,7 +688,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 with: "$1",
                 options: .regularExpression
             )
-            ShareHelper.sharedInstance.webPageTitle = title
+            ShareHelper.shared.webPageTitle = title
             print("parsed audioUrlString--\(audioUrlString)")
         }
     }

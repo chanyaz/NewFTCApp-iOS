@@ -63,16 +63,16 @@ class WeChatShare : UIActivity{
             return
         }
         let message = WXMediaMessage()
-        message.title = ShareHelper.sharedInstance.webPageTitle
-        message.description = ShareHelper.sharedInstance.webPageDescription
-        var image = ShareHelper.sharedInstance.thumbnail
+        message.title = ShareHelper.shared.webPageTitle
+        message.description = ShareHelper.shared.webPageDescription
+        var image = ShareHelper.shared.thumbnail
         image = image?.resizableImage(withCapInsets: UIEdgeInsets.zero)
         if image == nil {
             image = UIImage(named: "ShareIcon")
         }
         message.setThumbImage(image)
         let webpageObj = WXWebpageObject()
-        let shareUrl = ShareHelper.sharedInstance.webPageUrl.replacingOccurrences(
+        let shareUrl = ShareHelper.shared.webPageUrl.replacingOccurrences(
             of: "#ccode=[0-9A-Za-z]+$",
             with: "",
             options: .regularExpression)

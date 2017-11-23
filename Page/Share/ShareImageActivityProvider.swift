@@ -13,7 +13,7 @@ class ShareImageActivityProvider: UIActivityItemProvider {
     
     override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any?
     {
-        return ShareHelper.sharedInstance.thumbnail
+        return ShareHelper.shared.thumbnail
     }
     
 }

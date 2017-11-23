@@ -517,4 +517,5 @@ extension DetailViewController: DetailModelDelegate {
         // MARK: Ask the view controller to hide or show status bar
         setNeedsStatusBarAppearanceUpdate()
     }
+
 }

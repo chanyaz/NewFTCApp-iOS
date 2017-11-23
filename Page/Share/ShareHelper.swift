@@ -41,6 +41,7 @@ struct ShareHelper {
 
 
 extension UIViewController {
+    
     func launchActionSheet(for item: ContentItem, from sender: Any) {
         print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
         // MARK: - update some global variables
@@ -93,8 +94,6 @@ extension UIViewController {
             
             // MARK: Use this to support both iPhone and iPad
             activityVC.modalPresentationStyle = .overCurrentContext
-            present(activityVC, animated: true, completion: nil)
-            
             let popoverPresentationController = activityVC.popoverPresentationController
             if let sender = sender as? UIView {
                 popoverPresentationController?.sourceView = sender
@@ -103,10 +102,7 @@ extension UIViewController {
             } else {
                 popoverPresentationController?.sourceView = view
             }
-            
-            
-
-        
+            present(activityVC, animated: true, completion: nil)
         } else {
             launchActionSheet(for: item, from: sender)
         }

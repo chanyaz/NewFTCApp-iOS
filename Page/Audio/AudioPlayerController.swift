@@ -220,24 +220,35 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             let lead = item.lead
             let caudio = item.caudio
             let eaudio = item.eaudio
-            let item = [
-                "headline": headline,
-                "lead": lead,
-                "image": image,
-                "caudio": caudio,
-                "eaudio": eaudio
-            ]
-            do {
-                let bodyData = try JSONSerialization.data(withJSONObject: item , options:.prettyPrinted)
-                Download.saveFile(bodyData, filename: "audioData", to:.cachesDirectory , as: nil)
-                print("download bodyData--\( bodyData)")
-            } catch {
-                
+     
+            if let caudio = caudio,let eaudio = eaudio{
+                let item = [
+                    "headline": headline,
+                    "lead": lead,
+                    "image": getFileName(urlString: image),
+                    "caudio": getFileName(urlString: caudio),
+                    "eaudio": getFileName(urlString: eaudio)
+                ]
+                do {
+                    let bodyData = try JSONSerialization.data(withJSONObject: item , options:.prettyPrinted)
+                    Download.saveFile(bodyData, filename: "audioData", to:.cachesDirectory , as: nil)
+                    print("download bodyData--\( bodyData)")
+                } catch {
+                    
+                }
             }
         }
 
     }
-   
+    func getFileName(urlString:String)-> String{
+        var lastPathName = ""
+        let urlString = playerAPI.parseAudioUrl(urlString: urlString)
+        let url = URL(string: urlString)
+        if let url = url{
+           lastPathName = url.lastPathComponent
+        }
+        return lastPathName
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

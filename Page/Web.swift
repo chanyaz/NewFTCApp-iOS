@@ -79,7 +79,6 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 }
                 self.present(webVC, animated: true, completion: nil)
             case "ftcregister":
-                print ("register page")
                 let item = ContentItem(
                     id: "register",
                     image: "",
@@ -97,7 +96,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                     contentItemViewController.dataObject = item
                     contentItemViewController.pageTitle = item.headline
                     contentItemViewController.isFullScreen = true
-                    contentItemViewController.subType = .UserComments
+                    //contentItemViewController.subType = .UserComments
                     navigationController?.pushViewController(contentItemViewController, animated: true)
                 }
             case "weixinlogin":

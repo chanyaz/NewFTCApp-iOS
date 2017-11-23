@@ -133,13 +133,10 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 webView?.navigationDelegate = self
                 webView?.clipsToBounds = true
                 webView?.scrollView.bounces = false
-                
 
-                
-                
                 let typeString = dataObject?.type ?? ""
                 // MARK: If the sub type is a user comment, render web view directly
-                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html", "manual"].contains(typeString)  {
+                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html", "manual", "register"].contains(typeString)  {
                     renderWebView()
                 } else {
                     getDetailInfo()

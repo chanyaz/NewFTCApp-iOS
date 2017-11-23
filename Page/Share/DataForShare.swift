@@ -9,20 +9,24 @@
 
 import UIKit
 
-
 class DataForShare: NSObject, UIActivityItemSource {
     var url: String = ShareHelper.sharedInstance.webPageUrl
+    //var url: String = "https://mp.weixin.qq.com/s/mkpsKBfSvotGzj8gYeoMcA"
     var lead: String = ShareHelper.sharedInstance.webPageDescription
     var imageCover: String = ShareHelper.sharedInstance.webPageImage
     
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        return ShareHelper.sharedInstance.webPageTitle;
+        let title = ShareHelper.sharedInstance.webPageTitle
+        return title
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any? {
         //Sina Weibo cannot handle arrays. It's either text or image
         var textForShare = ""
-        if activityType == UIActivityType.mail {
+        
+        if activityType?.rawValue == "com.tencent.xin.sharetimeline" {
+            return URL(string: ShareHelper.sharedInstance.webPageUrl)
+        } else if activityType == UIActivityType.mail {
             textForShare = ShareHelper.sharedInstance.webPageDescription
         } else if activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter {
             textForShare = "【" + ShareHelper.sharedInstance.webPageTitle + "】" + ShareHelper.sharedInstance.webPageDescription

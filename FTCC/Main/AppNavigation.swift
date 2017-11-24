@@ -97,4 +97,18 @@ struct AppNavigation {
         return themeColor
     }
     
+    
+    public static func getChannelData(of screenName: String) -> [String: String]? {
+        for (_, value) in appMap {
+            if let channels = value["Channels"] as? [[String: String]] {
+                for channel in channels {
+                    if let screenNameString = channel["screenName"],
+                        screenName == screenNameString {
+                        return channel
+                    }
+                }
+            }
+        }
+        return nil
+    }
 }

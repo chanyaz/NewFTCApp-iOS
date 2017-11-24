@@ -17,8 +17,9 @@ class WeChatShare : UIActivity{
     
     override var activityType: UIActivityType {
         switch to {
-        case "moment": return UIActivityType(rawValue: "WeChatMoment")
+        case "moment", "moment-custom": return UIActivityType(rawValue: "WeChatMoment")
         case "fav": return UIActivityType(rawValue: "WeChatFav")
+        case "wechat-custom": return UIActivityType(rawValue: "WeChat")
         default: return UIActivityType(rawValue: "WeChat")
         }
     }
@@ -26,6 +27,8 @@ class WeChatShare : UIActivity{
     override var activityImage: UIImage? {
         switch to {
         case "moment": return UIImage(named: "Moment")
+        case "moment-custom": return UIImage(named: "MomentCustom")
+        case "wechat-custom": return UIImage(named: "WeChatCustom")
         case "fav": return UIImage(named: "WeChatFav")
         default: return UIImage(named: "WeChat")
         }
@@ -33,7 +36,8 @@ class WeChatShare : UIActivity{
     
     override var activityTitle : String {
         switch to {
-        case "moment": return "微信朋友圈"
+        case "moment", "moment-custom": return "微信朋友圈"
+        case "wechat-custom": return "微信好友"
         case "fav": return "微信收藏"
         default: return "微信好友"
         }
@@ -53,8 +57,9 @@ class WeChatShare : UIActivity{
     override func perform() {
         var toString = ""
         switch to {
-        case "moment": toString = "moment"
+        case "moment","moment-custom": toString = "moment"
         case "fav": toString = "fav"
+        case "wechat-custom": toString = "chat"
         default: toString = "chat"
         }
         if WXApi.isWXAppInstalled() == false {
@@ -92,7 +97,7 @@ class WeChatShare : UIActivity{
         }
         WXApi.send(req)
     }
-
+    
 }
 
 // use a subclass to return different value for fav

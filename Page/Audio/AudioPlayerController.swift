@@ -202,7 +202,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     private var downloadedItem:[String:String]=[:]
     @objc func download(_ sender: Any) {
-        let allReadedDatas:NSMutableArray = []
+//        let allReadedDatas:NSMutableArray = []
         let item = TabBarAudioContent.sharedInstance.item
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{

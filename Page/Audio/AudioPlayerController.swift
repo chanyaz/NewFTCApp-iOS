@@ -175,9 +175,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         //        NowPlayingCenter().updatePlayingCenter()
         
     }
-//    @IBAction func deleteAudio(_ sender: UIButton) {
-//        removeAllAudios()
-//    }
+    
     
     var isLove:Bool = false
     @objc func favorite(_ sender: UIButton) {
@@ -197,8 +195,14 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             launchActionSheet(for: item, from: sender)
         }
     }
+    
+    @IBAction func deleteAudio(_ sender: UIButton) {
+//        removeAllAudios()
+        Download.removeFileName("audioData",  for: .cachesDirectory, as: nil)
+    }
     private var downloadedItem:[String:String]=[:]
     @objc func download(_ sender: Any) {
+        let allReadedDatas:NSMutableArray = []
         let item = TabBarAudioContent.sharedInstance.item
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
@@ -228,16 +232,45 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     "image": getFileName(urlString: image),
                     "caudio": getFileName(urlString: caudio),
                     "eaudio": getFileName(urlString: eaudio)
-                ]
+                    ]
+                
+//                let downloadRealData = Download.readFileData("audioData", for: .cachesDirectory, as: nil)
+//                print("file downloadRealData \(String(describing: downloadRealData))")
+//                if let downloadRealData = downloadRealData{
+//                    do {
+//                        let dataAsString = String(data: downloadRealData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+////                        allReadedDatas.add(dataAsString ?? <#default value#>)
+//                        let jsonData = try JSONSerialization.jsonObject(with: downloadRealData, options: .mutableContainers)
+//                        print("file jsonData1--\(String(describing: jsonData))")
+//                        (jsonData as AnyObject).add(item)
+//                        print("file jsonData2--\(String(describing: jsonData))")
+//                    } catch {
+//
+//                    }
+//                }
+                
                 do {
                     let bodyData = try JSONSerialization.data(withJSONObject: item , options:.prettyPrinted)
                     Download.saveFile(bodyData, filename: "audioData", to:.cachesDirectory , as: nil)
-                    print("download bodyData--\( bodyData)")
+                    print("download bodyData write--\( bodyData)")
                 } catch {
                     
                 }
+                Download.createDirectory(directoryName: "audioDirectory", to: .cachesDirectory)
+               
             }
         }
+//        do {
+//            if let downloadedData = Download.readFile("audioData", for: .cachesDirectory, as: nil) {
+//                let downloadedJsonData = try JSONSerialization.jsonObject(with: downloadedData, options: .mutableContainers) as! [String : Any]
+//                 print("download bodyData read--\( downloadedJsonData)")
+//            }
+//        } catch {
+//
+//        }
+        
+//        let path = Download.getFilePath("audioData", for: .cachesDirectory, as: nil)
+        
 
     }
     func getFileName(urlString:String)-> String{

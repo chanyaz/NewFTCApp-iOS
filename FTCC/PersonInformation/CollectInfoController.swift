@@ -75,15 +75,17 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
 
         //       Mark:Get the downloaded data here，Cycle to add
         do {
+            print(" audioData file?--\( Download.readFile("audioData", for: .cachesDirectory, as: nil) )")
             if let downloadedData = Download.readFile("audioData", for: .cachesDirectory, as: nil) {
                 let downloadedJsonData = try JSONSerialization.jsonObject(with: downloadedData, options: .mutableContainers) as! [String : Any]
                 for index in downloadedJsonData{
-                     print("download bodyData1--\( index)")
+                     print("download json item--\( index)")
 //             index 是输出(key: "headline", value: 追随内心，还是追随大数据？)此格式key-value数据
                 }
+                
                 allCellDatas.add(downloadedJsonData)
-               
-//                print("download bodyData1--\( downloadedJsonData)")
+//               let bodyData = try JSONSerialization.data(withJSONObject: allCellDatas , options:.prettyPrinted)
+                print("download bodyData1--\( downloadedJsonData)---bodyData：\(allCellDatas)")
             }
         } catch {
             
@@ -273,27 +275,11 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
        let dictionaryData = dataArray[indexPath.row] as! NSDictionary
         cell.selectedLabel.text = dictionaryData["headline"] as? String
         let aa = dictionaryData["image"] as? String
+        let bb = aa?.components(separatedBy: ".")
+        print("aa---\(bb![0])--\(bb![1])")
+        cell.selectedImageView.image = UIImage(named: bb![0])
+
         
-        let url = URL(string: aa!)
-        if let url = url{
-           let lastPathName = url.deletingPathExtension()
-            cell.selectedImageView.image = UIImage(named: lastPathName.absoluteString)
-        }
-        
-//        let url = URL(string: aa!)
-//        let sessionTask = URLSession.shared
-//        let request = URLRequest(url: url!)
-//        let task = sessionTask.dataTask(with: request, completionHandler: {(data: Data?, response: URLResponse?, error: Error?) -> Void in
-//            if (error == nil) {
-//                let image: UIImage = UIImage(data: data!)!
-//                OperationQueue.main.addOperation({
-//                    cell.selectedImageView.image = image
-//                })
-//
-//            }
-//
-//        })
-//        task.resume()
 
         
         cell.accessoryType = .none

@@ -350,6 +350,101 @@ struct Download {
         }
     }
     
+    public static func saveFiles(_ data: Data, filename: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
+        if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
+            if let directoryPath = URL(string: directoryPathString) {
+                let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
+                let filePath = directoryPath.appendingPathComponent(realFileName)
+                let fileManager = FileManager.default
+                if FileManager().fileExists(atPath: filePath.path) {
+                    do {
+                        let file = try FileHandle(forWritingTo: filePath)
+                        file.seekToEndOfFile()
+                        file.write(data)
+                        print("again write data to file : \(data) successfully!")
+                    } catch let error as NSError {
+                        print("Couldn't again write to file: \(error.localizedDescription)")
+                    }
+                }else{
+                    let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
+                    do {
+                        let file = try FileHandle(forWritingTo: filePath)
+                        file.write(data)
+                        print("write to file: \(realFileName) successfully!")
+                    } catch let error as NSError {
+                        print("Couldn't write data to file: \(error.localizedDescription)--created:\(created)")
+                    }
+                }
+                
+                
+            }
+        }
+    }
+    
+    public static func readFileData(_ urlString: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> Data?{
+//        var jsonData:[String : Any]=[:]
+//        let allReadedDatas:NSMutableArray = []
+        var data:Data? = nil
+        let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
+        do {
+            let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileURL = DocumentDirURL.appendingPathComponent(fileName)
+            if FileManager().fileExists(atPath: fileURL.path) {
+                let file = FileHandle(forReadingAtPath: fileURL.path)
+                if let file = file{
+                    data = file.readDataToEndOfFile()
+                    print("read data from file: \(String(describing: data)) ")
+//                    jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String : Any]
+//                    allReadedDatas.add(jsonData)
+//                    print("read from file: \(data) -----\(jsonData) successfully!")
+                    
+                }
+            }
+            return data
+        } catch {
+            return nil
+        }
+    }
+    
+    public static func removeFileName(_ urlString: String,for directory: FileManager.SearchPathDirectory, as fileExtension: String?){
+        let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
+        do {
+            let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileURL = DocumentDirURL.appendingPathComponent(fileName)
+            try FileManager.default.removeItem(atPath: fileURL.path)
+           
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
+    public static func createDirectory(directoryName: String,to: FileManager.SearchPathDirectory){
+         do {
+            if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
+                if let directoryPath = URL(string: directoryPathString) {
+                    let filePath = directoryPath.appendingPathComponent(directoryName)
+                    try FileManager.default.createDirectory(atPath: filePath.path, withIntermediateDirectories: true, attributes: nil)
+                }
+            }
+         } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
+    public static func removeDirectory(directoryName: String,for directory: FileManager.SearchPathDirectory){
+        do {
+            
+//            let directoryPathString = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
+//            if let directoryPath = URL(string: directoryPathString) {
+//            FileManager.default.contentsOfDirectory(atPath: directoryPath)
+//            }
+
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
+    
 }
 
 

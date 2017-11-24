@@ -23,7 +23,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     @IBOutlet weak var actionButton: UIBarButtonItem!
     @IBAction func actionSheet(_ sender: Any) {
         let item = contentPageData[currentPageIndex]
-        launchActionSheet(for: item, from: sender)
+        //launchActionSheet(for: item, from: sender)
+        launchShareAction(for: item, from: sender)
     }
     
     @IBAction func launchComment(_ sender: Any) {
@@ -516,4 +517,5 @@ extension DetailViewController: DetailModelDelegate {
         // MARK: Ask the view controller to hide or show status bar
         setNeedsStatusBarAppearanceUpdate()
     }
+
 }

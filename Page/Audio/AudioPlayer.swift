@@ -210,10 +210,10 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     override func loadView() {
         super.loadView()
-        ShareHelper.sharedInstance.webPageTitle = ""
-        ShareHelper.sharedInstance.webPageDescription = ""
-        ShareHelper.sharedInstance.webPageImage = ""
-        ShareHelper.sharedInstance.webPageImageIcon = ""
+        ShareHelper.shared.webPageTitle = ""
+        ShareHelper.shared.webPageDescription = ""
+        ShareHelper.shared.webPageImage = ""
+        ShareHelper.shared.webPageImageIcon = ""
         parseAudioMessage()
         prepareAudioPlay()
         enableBackGroundMode()
@@ -243,8 +243,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ShareHelper.sharedInstance.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
-        let url = "\(ShareHelper.sharedInstance.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
+        ShareHelper.shared.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
+        let url = "\(ShareHelper.shared.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
         if let url = URL(string:url) {
             let req = URLRequest(url:url)
             webView?.load(req)
@@ -291,10 +291,10 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             if let infoForShare = message.body as? String{
                 print(infoForShare)
                 let toArray = infoForShare.components(separatedBy: "|")
-                ShareHelper.sharedInstance.webPageDescription = toArray[2]
-                ShareHelper.sharedInstance.webPageImage = toArray[0]
-                ShareHelper.sharedInstance.webPageImageIcon = toArray[1]
-                print("get image icon from web page: \(ShareHelper.sharedInstance.webPageImageIcon)")
+                ShareHelper.shared.webPageDescription = toArray[2]
+                ShareHelper.shared.webPageImage = toArray[0]
+                ShareHelper.shared.webPageImageIcon = toArray[1]
+                print("get image icon from web page: \(ShareHelper.shared.webPageImageIcon)")
             }
         }
     }
@@ -370,7 +370,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 with: "$1",
                 options: .regularExpression
             )
-            ShareHelper.sharedInstance.webPageTitle = title
+            ShareHelper.shared.webPageTitle = title
         }
     }
     

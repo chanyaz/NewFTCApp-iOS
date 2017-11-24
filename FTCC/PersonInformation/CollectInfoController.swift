@@ -75,7 +75,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
 
         //       Mark:Get the downloaded data here，Cycle to add
         do {
-            print(" audioData file?--\( Download.readFile("audioData", for: .cachesDirectory, as: nil) )")
+//            print(" audioData file?--\( Download.readFile("audioData", for: .cachesDirectory, as: nil) )")
             if let downloadedData = Download.readFile("audioData", for: .cachesDirectory, as: nil) {
                 let downloadedJsonData = try JSONSerialization.jsonObject(with: downloadedData, options: .mutableContainers) as! [String : Any]
                 for index in downloadedJsonData{

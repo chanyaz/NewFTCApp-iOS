@@ -379,40 +379,34 @@ struct Download {
         }
     }
     
-    public static func saveFiles(_ data: Data, filename: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
-        if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
-            if let directoryPath = URL(string: directoryPathString) {
-                let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
-                let filePath = directoryPath.appendingPathComponent(realFileName)
-                let fileManager = FileManager.default
-                if FileManager().fileExists(atPath: filePath.path) {
-                    do {
-                        let file = try FileHandle(forWritingTo: filePath)
-                        file.seekToEndOfFile()
-                        file.write(data)
-                        print("again write data to file : \(data) successfully!")
-                    } catch let error as NSError {
-                        print("Couldn't again write to file: \(error.localizedDescription)")
-                    }
-                }else{
-                    let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
-                    do {
-                        let file = try FileHandle(forWritingTo: filePath)
-                        file.write(data)
-                        print("write to file: \(realFileName) successfully!")
-                    } catch let error as NSError {
-                        print("Couldn't write data to file: \(error.localizedDescription)--created:\(created)")
-                    }
+    public static func saveFiles(_ data: Data,directoryName: String, filename: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
+        if let directoryPath = getDirectoryUrlFromDirectory(directoryName, for: to){
+            let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
+            let filePath = directoryPath.appendingPathComponent(realFileName)
+            let fileManager = FileManager.default
+            if FileManager().fileExists(atPath: filePath.path) {
+                do {
+                    let file = try FileHandle(forWritingTo: filePath)
+                    file.seekToEndOfFile()
+                    file.write(data)
+                    print("again write data to file : \(data) successfully!")
+                } catch let error as NSError {
+                    print("Couldn't again write to file: \(error.localizedDescription)")
                 }
-                
-                
+            }else{
+                let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
+                do {
+                    let file = try FileHandle(forWritingTo: filePath)
+                    file.write(data)
+                    print("write file to : \(realFileName) successfully!")
+                } catch let error as NSError {
+                    print("Couldn't write data to file: \(error.localizedDescription)--created:\(created)")
+                }
             }
         }
     }
     
     public static func readFileData(_ urlString: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> Data?{
-//        var jsonData:[String : Any]=[:]
-//        let allReadedDatas:NSMutableArray = []
         var data:Data? = nil
         let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
         do {
@@ -423,10 +417,7 @@ struct Download {
                 if let file = file{
                     data = file.readDataToEndOfFile()
                     print("read data from file: \(String(describing: data)) ")
-//                    jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String : Any]
-//                    allReadedDatas.add(jsonData)
-//                    print("read from file: \(data) -----\(jsonData) successfully!")
-                    
+
                 }
             }
             return data
@@ -459,11 +450,8 @@ struct Download {
                     }
                 }
             }
-//            return directoryName
          } catch let error as NSError {
             print(error.localizedDescription)
-//            return error.localizedDescription
-            
         }
     }
 
@@ -485,7 +473,7 @@ struct Download {
     // To do:gets the filename under the directory
     
     // delete Directory
-    public static func removeDirectory(directoryName: String,for directory: FileManager.SearchPathDirectory, as fileExtension: String?){
+    public static func removeDirectory(directoryName: String,for directory: FileManager.SearchPathDirectory){
         do {
             let fileManager =  FileManager.default
             if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){

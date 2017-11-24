@@ -198,10 +198,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     @IBAction func deleteAudio(_ sender: UIButton) {
 //        removeAllAudios()
+        Download.removeDirectory(directoryName: "audioDirectory", for: .cachesDirectory)
         Download.removeFileName("audioData",  for: .cachesDirectory, as: nil)
     }
     private var downloadedItem:[String:String]=[:]
     @objc func download(_ sender: Any) {
+        Download.createDirectory(directoryName: "audioDirectory", to: .cachesDirectory)
 //        let allReadedDatas:NSMutableArray = []
         let item = TabBarAudioContent.sharedInstance.item
         let body = TabBarAudioContent.sharedInstance.body
@@ -251,31 +253,17 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 
                 do {
                     let bodyData = try JSONSerialization.data(withJSONObject: item , options:.prettyPrinted)
-                    Download.saveFile(bodyData, filename: "audioData", to:.cachesDirectory , as: nil)
+                    Download.saveFiles(bodyData, directoryName: "audioDirectory", filename: "audioData", to:.cachesDirectory , as: nil)
                     print("download bodyData write--\( bodyData)")
                 } catch {
                     
                 }
              
-//                Download.createDirectory(directoryName: "audioDirectory", to: .cachesDirectory)
-//                print("NSHomeDirectory()--\( NSSearchPathForDirectoriesInDomains(.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true))")
+                
                 
             }
         }
-//        do {
-//            if let downloadedData = Download.readFile("audioData", for: .cachesDirectory, as: nil) {
-//                let downloadedJsonData = try JSONSerialization.jsonObject(with: downloadedData, options: .mutableContainers) as! [String : Any]
-//                 print("download bodyData read--\( downloadedJsonData)")
-//            }
-//        } catch {
-//
-//        }
-        do {
-            let DocumentDirURL = try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            print("NSHomeDirectory()--\( DocumentDirURL)")
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
+
 //        let path = Download.getFilePath("audioData", for: .cachesDirectory, as: nil)
         
 

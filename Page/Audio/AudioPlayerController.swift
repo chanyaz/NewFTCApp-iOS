@@ -256,8 +256,10 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 } catch {
                     
                 }
-                Download.createDirectory(directoryName: "audioDirectory", to: .cachesDirectory)
-               
+             
+//                Download.createDirectory(directoryName: "audioDirectory", to: .cachesDirectory)
+//                print("NSHomeDirectory()--\( NSSearchPathForDirectoriesInDomains(.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true))")
+                
             }
         }
 //        do {
@@ -268,7 +270,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
 //        } catch {
 //
 //        }
-        
+        do {
+            let DocumentDirURL = try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            print("NSHomeDirectory()--\( DocumentDirURL)")
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
 //        let path = Download.getFilePath("audioData", for: .cachesDirectory, as: nil)
         
 

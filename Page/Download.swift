@@ -417,34 +417,124 @@ struct Download {
             print(error.localizedDescription)
         }
     }
-    
-    public static func createDirectory(directoryName: String,to: FileManager.SearchPathDirectory){
+//  Create Directory
+    public static func createDirectory(directoryName: String,to: FileManager.SearchPathDirectory) {
          do {
             if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
                 if let directoryPath = URL(string: directoryPathString) {
                     let filePath = directoryPath.appendingPathComponent(directoryName)
-                    try FileManager.default.createDirectory(atPath: filePath.path, withIntermediateDirectories: true, attributes: nil)
+                    if FileManager().fileExists(atPath: filePath.path) {
+                        return
+                    }else{
+                        try FileManager.default.createDirectory(atPath: filePath.path, withIntermediateDirectories: true, attributes: nil)
+                    }
                 }
             }
+//            return directoryName
          } catch let error as NSError {
+            print(error.localizedDescription)
+//            return error.localizedDescription
+            
+        }
+    }
+
+//    Get the path according to the file name
+    private static func getDirectoryUrlFromDirectory(_ directoryName: String,for directory: FileManager.SearchPathDirectory) -> URL? {
+        var fileURL :URL? = nil
+        do {
+            let directoryURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
+            if directoryName != ""{
+                fileURL = directoryURL.appendingPathComponent(directoryName)
+            }else{
+                fileURL = directoryURL
+            }
+            return fileURL
+        } catch {
+            return nil
+        }
+    }
+    // To do:gets the filename under the directory
+    
+    // delete Directory
+    public static func removeDirectory(directoryName: String,for directory: FileManager.SearchPathDirectory, as fileExtension: String?){
+        do {
+            let fileManager =  FileManager.default
+            if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                try fileManager.removeItem(at: directoryUrl)
+                print("remove directory \(directoryUrl)")
+            }
+        } catch let error as NSError {
             print(error.localizedDescription)
         }
     }
-    
-    public static func removeDirectory(directoryName: String,for directory: FileManager.SearchPathDirectory){
+//    Remove the corresponding type of file under this path according to the path
+    public static func removeDirectoryAccordingToType(directoryName: String,for directory: FileManager.SearchPathDirectory,_ fileTypes: [String]){
         do {
-            
-//            let directoryPathString = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
-//            if let directoryPath = URL(string: directoryPathString) {
-//            FileManager.default.contentsOfDirectory(atPath: directoryPath)
-//            }
+            let fileManager =  FileManager.default
+            if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                let subDirectories = try fileManager.contentsOfDirectory(at: directoryUrl, includingPropertiesForKeys: nil, options: [])
+                let creativeTypes = fileTypes
+                let creativeFiles = subDirectories.filter{ creativeTypes.contains($0.pathExtension) }
+                for creativeFile in creativeFiles {
+                    let creativeFileString = creativeFile.lastPathComponent
+                    try fileManager.removeItem(at: creativeFile)
+                    print("remove file according to type from directory: \(creativeFileString)")
+                }
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
 
+//  Delete file under a certain path according to filename
+    public static func removeFileAccordingToFileName(_ urlString: String,directoryName: String,for directory: FileManager.SearchPathDirectory, as fileExtension: String?){
+        let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
+        do {
+            let fileManager =  FileManager.default
+            if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                let fileUrl = directoryUrl.appendingPathComponent(fileName)
+                try fileManager.removeItem(at: fileUrl)
+                print("remove file according to fileName from directory: \(fileUrl)")
+            }
+            
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+//   Rename file or directory
+    public static func renameFile(oldFileName:String,newFileName:String,directoryName: String,for directory: FileManager.SearchPathDirectory){
+        do {
+            let fileManager =  FileManager.default
+            if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                let oldFileUrl = directoryUrl.appendingPathComponent(oldFileName)
+                let newFileUrl = directoryUrl.appendingPathComponent(newFileName)
+                try fileManager.moveItem(at: oldFileUrl, to: newFileUrl)
+            }
         } catch let error as NSError {
             print(error.localizedDescription)
         }
     }
     
+    public static func getFileCreatedTime(fileName:String,directoryName: String,for directory: FileManager.SearchPathDirectory)->Date{
+        let time = Date()
+        do {
+            let fileManager =  FileManager.default
+            if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                let fileUrl = directoryUrl.appendingPathComponent(fileName)
+                let attributes =  try fileManager.attributesOfItem(atPath: fileUrl.absoluteString)
+                if let time = attributes[FileAttributeKey.creationDate] as? Date{
+                    return time
+                }
+            }
+            return time
+        } catch {
+            return Date(timeIntervalSince1970: 0)
+        }
+    }
     
+    
+
+ 
 }
 
 

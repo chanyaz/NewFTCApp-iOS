@@ -11,8 +11,5 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
     }
-    func createFolders(){
-        
-    }
-    
+ 
 }

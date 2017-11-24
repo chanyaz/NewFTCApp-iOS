@@ -10,11 +10,12 @@ import UIKit
 
 class OpenInSafari : UIActivity{
     
-    override init() {
+    init(to: String) {
+        self.to = to
         self.text = ""
-        
     }
     
+    var to: String
     var text:String?
     
     
@@ -24,7 +25,11 @@ class OpenInSafari : UIActivity{
     
     override var activityImage: UIImage?
     {
-        return UIImage(named: "Safari")!
+        if to == "safari-custom" {
+            return UIImage(named: "SafariCustom")
+        } else {
+            return UIImage(named: "Safari")
+        }
     }
     
     override var activityTitle : String
@@ -39,7 +44,7 @@ class OpenInSafari : UIActivity{
     
     
     override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-        return true;
+        return true
     }
     
     override func perform() {

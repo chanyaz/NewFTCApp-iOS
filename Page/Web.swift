@@ -109,6 +109,18 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 let action = url.host
                 let id = url.lastPathComponent
                 NotificationHelper.open(action, id: id, title: "title")
+            case "screen":
+                if let hostString = url.host {
+                    let screenName = hostString + url.path
+                    if let dataObject = AppNavigation.getChannelData(of: screenName),
+                        let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController  {
+                        //print(dataViewController.view.frame)
+                        dataViewController.dataObject = dataObject
+                        dataViewController.hidesBottomBarWhenPushed = true
+                        dataViewController.pageTitle = dataObject["title"] ?? ""
+                        navigationController?.pushViewController(dataViewController, animated: true)
+                    }
+                }
             case "fileinbundle":
                 if let fileName = url.host {
                     let title = url.lastPathComponent

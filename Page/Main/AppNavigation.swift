@@ -396,13 +396,13 @@ struct AppNavigation {
                     "Insert Content": "follows",
                     "compactLayout": ""
                 ],
-                [
-                    "title": "会员订阅",
-                    "type": "iap",
-                    "subtype":"membership",
-                    "compactLayout": "books",
-                    "screenName":"myft/membership"
-                ],
+//                [
+//                    "title": "会员订阅",
+//                    "type": "iap",
+//                    "subtype":"membership",
+//                    "compactLayout": "books",
+//                    "screenName":"myft/membership"
+//                ],
                 [
                     "title": "FT电子书",
                     "type": "iap",
@@ -421,8 +421,6 @@ struct AppNavigation {
                     "url":"https://shop193762308.taobao.com/index.htm",
                     "screenName":"myft/account"
                 ]
-                
-                
             ]
         ]
     ]
@@ -483,6 +481,20 @@ struct AppNavigation {
             themeColor = UIColor(hex: Color.Tab.highlightedText)
         }
         return themeColor
+    }
+    
+    public static func getChannelData(of screenName: String) -> [String: String]? {
+        for (_, value) in appMap {
+            if let channels = value["Channels"] as? [[String: String]] {
+                for channel in channels {
+                    if let screenNameString = channel["screenName"],
+                        screenName == screenNameString {
+                        return channel
+                    }
+                }
+            }
+        }
+        return nil
     }
     
 }

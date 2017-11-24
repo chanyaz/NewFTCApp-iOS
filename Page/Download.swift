@@ -313,6 +313,22 @@ struct Download {
         return url.queryItems?.first(where: { $0.name == param })?.value
     }
     
+    
+    public static func matches(for regex: String, in text: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let results = regex.matches(in: text,
+                                        range: NSRange(text.startIndex..., in: text))
+            return results.map {
+                String(text[Range($0.range, in: text)!])
+            }
+        } catch let error {
+            print("invalid regex: \(error.localizedDescription)")
+            return []
+        }
+    }
+    
+    
     public static func grabHTMLResource(_ listAPI: String, completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         //MARK: Do this only when user is using wifi
         if IJReachability().connectedToNetworkOfType() == .wiFi {
@@ -334,7 +350,20 @@ struct Download {
                         DispatchQueue.main.async { () -> Void in
                             UIApplication.shared.applicationIconBadgeNumber = 1
                         }
+                        // MARK: - Continue to parse the HTML and download story json files
+                        if let htmlCode = String(data: data, encoding: .utf8){
+                            let storyIdPatterns = "data-id=\"([0-9]+)\" data-type=\"story\""
+                            let storyIds = matches(for: storyIdPatterns, in: htmlCode)
+                            for storyIdString in storyIds {
+                                if let storyId = storyIdString.matchingFirstString(regex: storyIdPatterns) {
+                                    let apiUrl = APIs.get(storyId, type: "story")
+                                    downloadUrl(apiUrl, to: .cachesDirectory, as: "json")
+                                }
+                            }
+                        }
+
                         completionHandler(.newData)
+
                     } else {
                         Track.event(category: "Background Download", action: "HTML Valid Fail", label: listAPI)
                         completionHandler(.noData)

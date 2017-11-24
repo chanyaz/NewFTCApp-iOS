@@ -42,18 +42,44 @@ struct ShareHelper {
 
 extension UIViewController {
     
+    func launchShareAction(for item: ContentItem, from sender: Any) {
+        if WXApi.isWXAppSupport() == true {
+            launchCustomActionSheet(for: item, from: sender)
+        } else {
+            launchActionSheet(for: item, from: sender)
+        }
+    }
+    
+    
+    func launchCustomActionSheet(for item: ContentItem, from sender: Any) {
+        updateShareContent(for: item, from: sender)
+        let activityVC = CustomShareViewController()
+        activityVC.shareItems = [
+            WeChatShare(to: "chat-custom"),
+            WeChatShare(to: "moment-custom"),
+            OpenInSafari(to: "safari-custom"),
+            ShareMore(contentItem: item, from: sender)
+        ]
+
+        // MARK: Use this to support both iPhone and iPad
+        activityVC.modalPresentationStyle = .overCurrentContext
+        let popoverPresentationController = activityVC.popoverPresentationController
+        if let sender = sender as? UIView {
+            popoverPresentationController?.sourceView = sender
+        } else if let sender = sender as? UIBarButtonItem {
+            popoverPresentationController?.barButtonItem = sender
+        } else {
+            popoverPresentationController?.sourceView = view
+        }
+        present(activityVC, animated: true, completion: nil)
+    }
+    
     func launchActionSheet(for item: ContentItem, from sender: Any) {
-        print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
-        // MARK: - update some global variables
-        ShareHelper.shared.webPageUrl = "\(Share.base)\(item.type)/\(item.id)?full=y#ccode=\(Share.CampaignCode.actionsheet)"
-        ShareHelper.shared.webPageTitle = item.headline
-        ShareHelper.shared.webPageDescription = item.lead
-        ShareHelper.shared.webPageImage = item.image
-        ShareHelper.shared.webPageImageIcon = ShareHelper.shared.webPageImage
+        updateShareContent(for: item, from: sender)
         if let url = URL(string: ShareHelper.shared.webPageUrl), let iconImage = UIImage(named: "ShareIcon.jpg") {
             let wcActivity = WeChatShare(to: "chat")
             let wcCircle = WeChatShare(to: "moment")
-            let openInSafari = OpenInSafari()
+            let openInSafari = OpenInSafari(to: "safari")
             let shareData = DataForShare()
             let image = ShareImageActivityProvider(placeholderItem: iconImage)
             let objectsToShare = [shareData, url, image] as [Any]
@@ -88,24 +114,18 @@ extension UIViewController {
         }
     }
     
-    func launchShareAction(for item: ContentItem, from sender: Any) {
-        if WXApi.isWXAppSupport() == true || 1 == 1 {
-            let activityVC = CustomShareViewController()
-            
-            // MARK: Use this to support both iPhone and iPad
-            activityVC.modalPresentationStyle = .overCurrentContext
-            let popoverPresentationController = activityVC.popoverPresentationController
-            if let sender = sender as? UIView {
-                popoverPresentationController?.sourceView = sender
-            } else if let sender = sender as? UIBarButtonItem {
-                popoverPresentationController?.barButtonItem = sender
-            } else {
-                popoverPresentationController?.sourceView = view
-            }
-            present(activityVC, animated: true, completion: nil)
-        } else {
-            launchActionSheet(for: item, from: sender)
-        }
+    func updateShareContent (for item: ContentItem, from sender: Any) {
+        print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
+        // MARK: - update some global variables
+        ShareHelper.shared.webPageUrl = "\(Share.base)\(item.type)/\(item.id)?full=y#ccode=\(Share.CampaignCode.actionsheet)"
+        ShareHelper.shared.webPageTitle = item.headline
+        ShareHelper.shared.webPageDescription = item.lead
+        ShareHelper.shared.webPageImage = item.image
+        ShareHelper.shared.webPageImageIcon = ShareHelper.shared.webPageImage
+        
     }
+    
+
+    
 }
 

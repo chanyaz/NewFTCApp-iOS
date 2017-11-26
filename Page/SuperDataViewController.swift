@@ -647,7 +647,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 getAPI(urlString)
             }
         } else {
-            //TODO: Show a warning if there's no api to get
+            //MARK: Report to GA if there's no api to get
+            Track.event(category: "CatchError", action: "no API or Type for dataObject", label: String(describing: dataObject))
+            Track.catchError("no API or Type for dataObject: \(String(describing: dataObject))", withFatal: 1)
             print("results : error")
         }
     }
@@ -674,7 +676,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     @objc func refreshControlDidFire(sender:AnyObject) {
         print ("pull to refresh fired")
-        // TODO: Handle Pull to Refresh
+        // MARK: Handle Pull to Refresh
         requestNewContent()
     }
     

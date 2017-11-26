@@ -72,7 +72,7 @@ class DetailModelController: ModelController {
         // Return the index of the given data view controller.
         // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
         if let currentPageIndex = pageIds.index(of: viewController.pageId) {
-            print ("index Of ViewController: \(currentPageIndex)")
+            // print ("index Of ViewController: \(currentPageIndex)")
             // TODO: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
             //currentPageTitle = pageTitles[currentPageIndex]
             self.currentPageIndex = currentPageIndex as Int

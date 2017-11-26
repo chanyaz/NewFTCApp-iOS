@@ -383,22 +383,23 @@ struct Download {
         if let directoryPath = getDirectoryUrlFromDirectory(directoryName, for: to){
             let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
             let filePath = directoryPath.appendingPathComponent(realFileName)
+//            print("filePath with directoryName:\(filePath)")
             let fileManager = FileManager.default
             if FileManager().fileExists(atPath: filePath.path) {
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
-                    file.seekToEndOfFile()
+//                    file.seekToEndOfFile()
                     file.write(data)
                     print("again write data to file : \(data) successfully!")
                 } catch let error as NSError {
                     print("Couldn't again write to file: \(error.localizedDescription)")
                 }
             }else{
-                let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
+                let created = fileManager.createFile(atPath: filePath.path, contents: nil, attributes: nil)
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
                     file.write(data)
-                    print("write file to : \(realFileName) successfully!")
+                    print("write data to file : \(realFileName) successfully!")
                 } catch let error as NSError {
                     print("Couldn't write data to file: \(error.localizedDescription)--created:\(created)")
                 }
@@ -548,7 +549,22 @@ struct Download {
             return Date(timeIntervalSince1970: 0)
         }
     }
-    
+    public static func getDownloadedFilePathInDirectory(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory) -> String? {
+//        let url = URL(string:url)
+//        if let lastComponent = url?.lastPathComponent {
+//            print("Downloaded File lastComponent is:\(lastComponent)")
+            if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                let templatepathInDocument = directoryUrl.appendingPathComponent(url)
+                var templatePath: String? = nil
+                if  FileManager().fileExists(atPath: templatepathInDocument.path) {
+                    templatePath = templatepathInDocument.path
+                }
+                return templatePath
+            }
+//        }
+       
+        return nil
+    }
     
 
  

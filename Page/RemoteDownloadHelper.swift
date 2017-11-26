@@ -8,6 +8,13 @@
 
 import Foundation
 class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
+    public var directory: String
+    public let remoteDownloadStatusNotificationName = "download status change"
+    public let remoteDownloadProgressNotificationName = "download progress change"
+    public var currentStatus: DownloadStatus = .remote
+    init(directory: String) {
+        self.directory = directory
+    }
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
     }

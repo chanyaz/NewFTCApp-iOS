@@ -15,6 +15,7 @@ import SafariServices
 
 class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate,UIGestureRecognizerDelegate,CAAnimationDelegate{
     
+    private var audioDirectoryName = "audioDirectory"
     private var audioTitle = ""
     private var audioUrlString = ""
     private var audioId = ""
@@ -198,12 +199,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     
     @IBAction func deleteAudio(_ sender: UIButton) {
 //        removeAllAudios()
-        Download.removeDirectory(directoryName: "audioDirectory", for: .cachesDirectory)
+        Download.removeDirectory(directoryName: audioDirectoryName, for: .cachesDirectory)
         Download.removeFileName("audioData",  for: .cachesDirectory, as: nil)
     }
     private var downloadedItem:[String:String]=[:]
     @objc func download(_ sender: Any) {
-        Download.createDirectory(directoryName: "audioDirectory", to: .cachesDirectory)
+        Download.createDirectory(directoryName: audioDirectoryName, to: .cachesDirectory)
 //        let allReadedDatas:NSMutableArray = []
         let item = TabBarAudioContent.sharedInstance.item
         let body = TabBarAudioContent.sharedInstance.body
@@ -221,50 +222,107 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             
         }
         if let item = item{
-            let headline = item.headline
+//            let headline = item.headline
             let image = item.image
-            let lead = item.lead
+//            let lead = item.lead
             let caudio = item.caudio
             let eaudio = item.eaudio
      
             if let caudio = caudio,let eaudio = eaudio{
-                let item = [
-                    "headline": headline,
-                    "lead": lead,
-                    "image": getFileName(urlString: image),
-                    "caudio": getFileName(urlString: caudio),
-                    "eaudio": getFileName(urlString: eaudio)
-                    ]
-                
-//                let downloadRealData = Download.readFileData("audioData", for: .cachesDirectory, as: nil)
-//                print("file downloadRealData \(String(describing: downloadRealData))")
-//                if let downloadRealData = downloadRealData{
-//                    do {
-//                        let dataAsString = String(data: downloadRealData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-////                        allReadedDatas.add(dataAsString ?? <#default value#>)
-//                        let jsonData = try JSONSerialization.jsonObject(with: downloadRealData, options: .mutableContainers)
-//                        print("file jsonData1--\(String(describing: jsonData))")
-//                        (jsonData as AnyObject).add(item)
-//                        print("file jsonData2--\(String(describing: jsonData))")
-//                    } catch {
-//
-//                    }
-//                }
-                
-                do {
-                    let bodyData = try JSONSerialization.data(withJSONObject: item , options:.prettyPrinted)
-                    Download.saveFiles(bodyData, directoryName: "audioDirectory", filename: "audioData", to:.cachesDirectory , as: nil)
-                    print("download bodyData write--\( bodyData)")
-                } catch {
-                    
+//                let item = [
+//                    "headline": headline,
+//                    "lead": lead,
+//                    "image": getFileName(urlString: image),
+//                    "caudio": getFileName(urlString: caudio),
+//                    "eaudio": getFileName(urlString: eaudio)
+//                    ]
+                actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
+                if actualAudioLanguageIndex == 1{
+                    if let localAudioFile = Download.getDownloadedFilePathInDirectory(self.getFileName(urlString: eaudio), directoryName: audioDirectoryName, for: .cachesDirectory){
+                        print("localAudioFile eaudio path is: \(localAudioFile)")
+                        //                    return
+                    }else{
+                        let parseEaudio = playerAPI.parseAudioUrl(urlString: eaudio)
+                        let eaudioUrl = URL(string: parseEaudio)
+                        if let url = eaudioUrl{
+                            let request = URLRequest(url:url)
+                            URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+                                if error != nil ,let error = error{
+                                    print("audio request error\(error)")
+                                    return
+                                }
+                                guard let data = data else {
+                                    return
+                                }
+                                print ("caudio url string is:\(self.getFileName(urlString: eaudio))")
+                                Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: self.getFileName(urlString: eaudio), to:.cachesDirectory , as: nil)
+                            }).resume()
+                        }
+                    }
+                }else{
+                    if let localAudioFile = Download.getDownloadedFilePathInDirectory(self.getFileName(urlString: caudio), directoryName: audioDirectoryName, for: .cachesDirectory){
+                        print("localAudioFile caudio path is: \(localAudioFile)")
+                        //                    return
+                    }else{
+                        let parseCaudio = playerAPI.parseAudioUrl(urlString: caudio)
+                        let parseCaudioUrl = URL(string: parseCaudio)
+                        if let url = parseCaudioUrl{
+                            //                        print ("caudio url url is:\(caudio)")
+                            let request = URLRequest(url:url)
+                            
+                            URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+                                if error != nil ,let error = error{
+                                    print("audio request error\(error)")
+                                    return
+                                }
+                                
+                                guard let data = data else {
+                                    return
+                                }
+                                print ("caudio url string is:\(self.getFileName(urlString: caudio))")
+                                Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: self.getFileName(urlString: caudio), to:.cachesDirectory , as: "mp3")
+                                
+                            }).resume()
+                        }
+                    }
                 }
+
+
+                if let localAudioFile = Download.getDownloadedFilePathInDirectory(self.getFileName(urlString: image), directoryName: audioDirectoryName, for: .cachesDirectory){
+                    print("localAudioFile path is: \(localAudioFile)")
+//                    return
+                }else{
+                    let parseImage = playerAPI.parseAudioUrl(urlString: image)
+                    let parseImageUrl = URL(string: parseImage)
+                    if let url = parseImageUrl{
+                        let request = URLRequest(url:url)
+                        URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+                            if error != nil ,let error = error{
+                                print("audio request error\(error)")
+                                return
+                            }
+                            guard let data = data else {
+                                return
+                            }
+                            print ("caudio url string is:\(self.getFileName(urlString: image))")
+                            Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: self.getFileName(urlString: image), to:.cachesDirectory , as: nil)
+                        }).resume()
+                    }
+                }
+                
+//                do {
+//                    let bodyData = try JSONSerialization.data(withJSONObject: item , options:.prettyPrinted)
+//                    Download.saveFiles(bodyData, directoryName: audioDirectoryName, filename: "audioData", to:.cachesDirectory , as: nil)
+//                    print("download bodyData write--\( bodyData)")
+//                } catch {
+//
+//                }
              
                 
                 
             }
         }
 
-//        let path = Download.getFilePath("audioData", for: .cachesDirectory, as: nil)
         
 
     }

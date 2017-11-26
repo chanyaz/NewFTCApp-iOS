@@ -522,7 +522,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             ["story", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
             if let id = dataObject?.id {
-                let urlString = APIs.getUrl(id, type: type)
+                let urlString = (subType == .None) ? APIs.getUrl(id, type: type) : APIs.getUrl(id, type: type, subType: subType)
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
                     let lead: String

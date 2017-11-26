@@ -199,6 +199,21 @@ struct APIs {
         return urlString
     }
     
+
+    // MARK: Get url string for subtypes by adding parameters to type urlstring
+    static func getUrl(_ id: String, type: String, subType: ContentSubType) -> String {
+        let urlString = getUrl(id, type: type)
+        let finalUrlString: String
+        let connector = (urlString.range(of: "?") == nil) ? "?" : "&"
+        switch subType {
+        case .UserComments:
+            finalUrlString = "\(urlString)\(connector)ad=no"
+        default:
+            finalUrlString = urlString
+        }
+        return finalUrlString
+    }
+    
     // MARK: Add query parameter to the url so that the web pages knows it is opened in our app. Then it'll do things like hide headers.
     static func newQueryForWebPage() -> URLQueryItem {
         return URLQueryItem(name: "webview", value: "ftcapp")

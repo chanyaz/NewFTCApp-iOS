@@ -2,18 +2,12 @@
 
 ## Development Milestones
 ### Task at Hand: 
-1. 电子书阅读
-2. Update Ads
-3. Big 5 Version
-4. 恢复购买
 5. 高端会员
 
 ### Bugs
 2. 金融英语速读无法评论
 3. 金融英语速读无法听
 4. 接口的可用率仍然非常低，告知超哥，并在iOS客户端监控并记录到GA
-
-
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
@@ -105,6 +99,11 @@
 2. Done: Clippings
 3. Done: Read
 4. API: If there's under 5 follows, request all of them as one request. Otherwise request the latest 10000 items and filter them 
+1. 电子书阅读
+2. Update Ads
+3. Big 5 Version
+4. 恢复购买
+
 
 Data View: 
 1. Watch List

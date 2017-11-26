@@ -687,7 +687,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                                 .replacingOccurrences(of: "{font-class}", with: fontClass)
                                 .replacingOccurrences(of: "{comments-id}", with: commentsId)
                                 .replacingOccurrences(of: "{night-class}", with: nightClass)
-                            //print(storyHTML)
                             self.webView?.loadHTMLString(storyHTML, baseURL:url)
                         } catch {
                             self.webView?.load(request)
@@ -735,16 +734,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     let request = URLRequest(url: url)
                     webView?.load(request)
                 }
-//                let url = URL(string: APIs.getUrl("htmlfile", type: "htmlfile"))
-//                do {
-//                    let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-//                    let storyHTML = (storyTemplate as String)
-//                    self.webView?.loadHTMLString(storyHTML, baseURL:url)
-//                } catch {
-//                    print ("html file is not loaded correctly")
-//                }
             }
-        }  else if dataObject?.type == "html"{
+        } else if dataObject?.type == "html"{
             // MARK: - If there's a need to open just the HTML file
             if let htmlFileName = dataObject?.id {
                 let url = URL(string: APIs.getUrl(htmlFileName, type: "html"))
@@ -759,39 +750,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     }
                 }
             }
-//        } else if dataObject?.type == "htmlbook" {
-//            // MARK: - Open HTML Body Content from the html-book.html local file
-//            let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
-//            if let contentHTMLPath = dataObject?.id,
-//                let url = url {
-//                do {
-//                    let contentNSString = try NSString(contentsOfFile:contentHTMLPath, encoding:String.Encoding.utf8.rawValue)
-//                    let content = contentNSString as String
-//                    let resourceFileNameString: String
-//                    let replaceString: String
-//                    if content.range(of: "item-container") != nil {
-//                        resourceFileNameString = "list"
-//                        replaceString = "{list-content}"
-//                    } else {
-//                        resourceFileNameString = "html-book"
-//                        replaceString = "{html-book-content}"
-//                    }
-//                    let resourceFileName = GB2Big5.convertHTMLFileName(resourceFileNameString)
-//                    if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html") {
-//                        let templateNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
-//                        let template = templateNSString as String
-//                        var contentHTML = template.replacingOccurrences(of: replaceString, with: content)
-//                        if let productId = dataObject?.headline.replacingOccurrences(of: "^try.", with: "", options: .regularExpression),
-//                            contentHTMLPath.range(of: "try.") != nil {
-//                            contentHTML = contentHTML.replacingOccurrences(of: "试读结束，如您对本书感兴趣，请返回之后购买。", with: "试读结束，如您对本书感兴趣，请<a href=\"buyproduct://\(productId)\">点击此处购买。</a>")
-//                        }
-//                        self.webView?.loadHTMLString(contentHTML, baseURL:url)
-//                    }
-//                } catch {
-//                    print ("cannot open the html book file")
-//                    //self.webView?.load(request)
-//                }
-//            }
         } else {
             // MARK: - If it is other types of content such video and interactive features
             if let id = dataObject?.id, let type = dataObject?.type {
@@ -850,29 +808,17 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         let eHeadline = dataObject?.eheadline ?? ""
         let eBody = dataObject?.ebody ?? ""
         let cBody = dataObject?.cbody ?? ""
-        //let languageChoice: Int
         let cHeadline = dataObject?.headline ?? ""
         if eBody != "" && languagePreference == 1 {
             headline = eHeadline
             body = eBody
-            //languageChoice = 1
         } else if eBody != "" && languagePreference == 2 {
             headline = "<div>\(eHeadline)</div><div>\(cHeadline)</div>"
             body = getCEbodyHTML(eBody: eBody, cBody: cBody)
-            //languageChoice = 2
         } else {
             headline = cHeadline
             body = cBody
-            //languageChoice = 0
         }
-        // postLanguageChoice(languageChoice)
-        //print ("language choice posted as \(languageChoice)")
-        
-        
-        //let adBanner = "<script type=\"text/javascript\">document.write(writeAdNew({devices: ['iPhoneApp'],pattern:'Banner',position:'Num1'}));</script>"
-        
-        
-        
         let bodyWithMPU = body.replacingOccurrences(
             of: "[\r\t\n]",
             with: "",
@@ -938,67 +884,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         return combinedText
     }
     
-    
-    /*
-     
-     fileprivate func htmlToAttributedString(_ htmltext: String) -> NSMutableAttributedString? {
-     // MARK: remove p tags in text
-     let text = htmltext.replacingOccurrences(of: "(</[pP]>[\n\r]*<[pP]>)+", with: "\n", options: .regularExpression)
-     .replacingOccurrences(of: "(^<[pP]>)+", with: "", options: .regularExpression)
-     .replacingOccurrences(of: "(</[pP]>)+$", with: "", options: .regularExpression)
-     // text = "some text"
-     // MARK: Set the overall text style
-     let bodyColor = UIColor(hex: Color.Content.body)
-     let paragraphStyle = NSMutableParagraphStyle()
-     paragraphStyle.paragraphSpacing = 12.0
-     paragraphStyle.lineHeightMultiple = 1.2
-     
-     let defaultBodyDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-     let bodySize = defaultBodyDescriptor.pointSize + FontSize.bodyExtraSize
-     let bodyFont = UIFont(descriptor: defaultBodyDescriptor, size: bodySize)
-     
-     let bodyAttributes:[String:AnyObject] = [
-     NSAttributedStringKey.font.rawValue: bodyFont,
-     //NSFontAttributeName:UIFont.preferredFont(forTextStyle: .body),
-     NSAttributedStringKey.foregroundColor.rawValue: bodyColor,
-     NSAttributedStringKey.paragraphStyle.rawValue: paragraphStyle
-     ]
-     let attrString = NSMutableAttributedString(string: text, attributes:nil)
-     // MARK: Handle bold tag
-     let pattern = "<[bi]>(.*)</[bi]>"
-     let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
-     let range = NSMakeRange(0, text.characters.count)
-     attrString.addAttributes(bodyAttributes, range: NSMakeRange(0, attrString.length))
-     let boldParagraphStyle = NSMutableParagraphStyle()
-     boldParagraphStyle.paragraphSpacing = 6.0
-     let boldAttributes:[String:AnyObject] = [
-     //NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body).bold(),
-     NSAttributedStringKey.font.rawValue: bodyFont.bold(),
-     NSAttributedStringKey.paragraphStyle.rawValue: boldParagraphStyle
-     ]
-     
-     if let matches = regex?.matches(in: text, options: [], range: range) {
-     print(matches.count)
-     //Iterate over regex matches
-     for match in matches.reversed() {
-     //Properly print match range
-     print(match.range)
-     let value = attrString.attributedSubstring(from: match.range(at: 1)).string
-     print (value)
-     //attrString.addAttribute(NSLinkAttributeName, value: "http://www.ft.com/", range: match.rangeAt(0))
-     attrString.addAttributes(boldAttributes, range: match.range(at: 0))
-     attrString.replaceCharacters(in: match.range(at: 0), with: "\(value)")
-     }
-     }
-     
-     // MARK: if there are unhandled tags, use WebView to open the content
-     if attrString.string.contains("<") && attrString.string.contains(">") {
-     return nil
-     }
-     return attrString
-     }
-     */
-    
 }
 
 // MARK: Handle links here
@@ -1052,7 +937,6 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
                         print ("call out the audio view for this url: \(audioFileUrl)")
                     }
                     PlayerAPI.sharedInstance.openPlay()
-                    
                 }
             case "clip":
                 print ("clip this: \(body)")
@@ -1116,36 +1000,5 @@ extension SuperContentItemViewController {
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: height))
-        
     }
 }
-
-
-
-//extension String {
-//    func htmlAttributedString() -> NSMutableAttributedString? {
-//        print ("use html attributed string extension for: ")
-//        print (self)
-//        let storyHTML: String?
-//        if let adHTMLPath = Bundle.main.path(forResource: "storybody", ofType: "html"){
-//            do {
-//                let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
-//                storyHTML = (storyTemplate as String).replacingOccurrences(of: "{story-body-text}", with: self)
-//            } catch {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
-//        guard let text = storyHTML else {
-//            return nil
-//        }
-//        guard let data = text.data(using: String.Encoding.utf16, allowLossyConversion: false) else { return nil }
-//        guard let html = try? NSMutableAttributedString(data: data, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil) else { return nil }
-//        return html
-//    }
-//}
-
-// Done: 1. MPU ads in story page;
-// TODO: 2. Sponsorship Ads in story page;
-

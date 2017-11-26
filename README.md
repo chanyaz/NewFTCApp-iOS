@@ -1,37 +1,89 @@
 # New FTChinese iOS App
 
-## Development Milestones
-### Task at Hand: 
-5. 高端会员
+## Overall Goal
 
-### Bugs
-2. 金融英语速读无法评论
-3. 金融英语速读无法听
-4. 接口的可用率仍然非常低，告知超哥，并在iOS客户端监控并记录到GA
+There are a thousand details that you need to pay attention to for an app to work properly. These, like sharing, push notification, swiping between pages are basically the same thing. But it takes a lot of repetitive work to make everything right. 
+
+The aim of this project is to get rid of the trouble of reinventing wheels so that you, the developer, can focus on the unique features of your app. Using it as a "scalfold", a seasoned iOS SWIFT developer should be able to build a decent news app in a few minutes. 
+
+For now, it does the following things: 
+
+## News App With Enough Functionalities
+### News Reader
+### Billigual Support
+### Swipe between Channels
+### Advertising: including launch ad, in page, banners, MPUs and paid post
+### In-app Purchase: buying, downloading. Auto-renewing subscription in the working. 
+
+## Some good features
+### All possible customizations in one place: You just need to replicate the target "ftchinese"
+### Smooth Panning between content
+### Pull to refresh
+### JSON formating that supports as many as possible APIs
+### Newspaper experience on iPad
+
+## Future development
+### Infinite Scrolling for page that uses collection view
+### Autorenewing Subscription
+
+## Pitfalls: What we learned the hard way
+### Dynamic Type Support: 
+It is more trouble than it's worth. We implemented for a while but readers don't understand why the fonts become so large even though they set it by themselves. It is good intension, but users don't buy it. They just think your design is bad. 
+
+### WKWebView VS Collection View: 
+If you want to build anything more complicated than the current FTChinese news app, then I'd suggest that you use HTML (WKWebView) as much as possible, rather than Collection View or Table View. The problem with collection view is that it is hard to make it scrolling smoothly, despite what you heard in WWDC. 
+
+As a proof, you can look at other apps developed by the world's best iOS developers such as WeChat, PodCast, Apple App Store. Scoll their home and list screens. Then launch the FTChinese app and compare the smoothness. Once you notice the difference, it's hard to un-notice it. 
+
+The FTChinese allows you to use collection to display list screens. But we suggest that you stick to WKWebView as much as possible. For advanced iOS developers, you can use profilling to check the difference between collection view and WKWebView. 
+
+### Sharing: 
+If a large chunk of your audience is in China, you should use WeChat's SDK rather than it's share extension for sharing. And you should use a customized action sheet view controller rather than the iOS one. There are serious bugs with WeChat's share extension and there's no way to hide it from the iOS' default action view controller. If user experience bugs after they share, they blame you, not Apple or WeChat. So my advice is, use your own share sheet and fall back to iOS develop activity view controller. 
+
+### Always Validate: 
+As a client side, don't trust anyone or anything, not even your own servers. If you have large audience in China, that's especially true. For example, what can go wrong with an HTML snippet of less than 10k? According to our own tracking, it returns wrong results 5000 times a day. If we don't validate every HTML snippet we get, some users are going to be really upset. 
+
+
+
+
+## How To Start
+$ sudo gem install cocoapods
+
+$ pod install --repo-update
+
+$ open Page.xcworkspace
+
+For more, check out [Cocoa Pod](https://cocoapods.org/)
+
+
+
+
+
+## Deprecated: Development Milestones moved to Redmine
 
 ### Channel Page: 
 1. Done: Stop using auto-resizing cells on Regular size. 
 2. Done: Use prefetch to make scrolling smooth. 
-3. FT Academy
-4. FT Intelligence
-5. Most Popular
-6. Videos
-7. Calendar
+3. Done: FT Academy
+4. Done: FT Intelligence
+5. Done: Most Popular
+6. Done: Videos
+7. Done: Calendar
 8. Done: Title View: Image for News Channel
-9. Infinite Scrolling in Home and Channel Pages
+9. Rejected: Infinite Scrolling in Home and Channel Pages
 10. Done: Make all channel pages available
 
 
-### APIs
+### Done: APIs
 1. Done: Stories
 2. Done: Retrieve and convert other types of API. 
-3. Interactive Features
-4. Videos: 
-5. Switch Between Domains for APIs
-6. Stories By Date
+3. Done: Interactive Features
+4. Done: Videos: 
+5. Done: Switch Between Domains for APIs
+6. Done: Stories By Date
 
 
-### Advertising: 
+### Done: Advertising: 
 1. Done: Retrieve Ad info from Dolphin's script string
 2. Done: Send third party impressions until they are confirmed
 3. Done: Tap link for Ad Views
@@ -44,13 +96,13 @@
 10. Done: Parse Video Ad into native
 11. Special Report: Adjustment based on API
 12. Done: In-Page Full Screen: Disable Close Button and Function
-13. MPU New: Adjustment based on Date
-14. Implement new ad setting
+13. Done: MPU New: Adjustment based on Date
+14. Done: Implement new ad setting
 
 
 ### Content Page: 
 1. Done: Come up with bilingual and english switch. 
-2. Functionalities and buttons. 
+2. Done: Functionalities and buttons. 
 3. Done: Video. 
 4. Done: Interactive Features. 
 5. Done: custom link
@@ -65,32 +117,32 @@
 14. Done: Tag page should show title in navigation
 15. Done: Add new layout to display all cover
 16. Done: User comments
-17. Display column layout on iPad
+17. Done: Display column layout on iPad
 18. Done: Show Font Size preference
 
 
-### Sharing
+### Done: Sharing
 1. Done: WeChat
 2. Done: Need Check: Built-ins
 
-### Tracking
+### Done: Tracking
 1. Done: Google
-2. FTC's own tracking
+2. Done: FTC's own tracking
 
 ### AI
-1. Chat Room
+1. Done: Chat Room
 2. Customer Service
-3. Recommendation
+3. Rejected: Recommendation
 
 ### Core data
 
-### Notifications
+### Done: Notifications
 1. Done: Handle Notification Types
 2. Done: Move Notification Extensions
 
 ### Done: Today Widget
 
-### In-App Purchase: StoreKit
+### Done: In-App Purchase: StoreKit
 1. Done: eBook
 2. Done: eReader
 
@@ -98,20 +150,20 @@
 1. Done: Follow: Save the preference as a Dictionary. a. In content page; b. In MyFT Page Channel List
 2. Done: Clippings
 3. Done: Read
-4. API: If there's under 5 follows, request all of them as one request. Otherwise request the latest 10000 items and filter them 
-1. 电子书阅读
-2. Update Ads
-3. Big 5 Version
-4. 恢复购买
+4. Done: API: If there's under 5 follows, request all of them as one request. Otherwise request the latest 10000 items and filter them 
+1. Done: 电子书阅读
+3. Done: Big 5 Version
+4. Done: 恢复购买
+2. Done: 金融英语速读无法评论
 
 
 Data View: 
-1. Watch List
-2. Reading History
-3. Login and Register
-4. My Subscription
+1. Done: Watch List
+2. Done: Reading History
+3. Done: Login and Register
+4. Done: My Subscription
 
-### Big 5 Version: https://github.com/Insfgg99x/FGReverser
+### Done: Big 5 Version: https://github.com/Insfgg99x/FGReverser
 
 ## Completed Tasks
 
@@ -171,36 +223,3 @@ track "listen to story" end event
 4. Done: 每日英语双语阅读的Switch颜色需要更换
 5. Done: 视频的Bug：退出页面还在播，已经翻页的还在播放
 6. Done: 下啦刷新设置页面
-
-
-## How To Start
-$ sudo gem install cocoapods
-
-$ pod install --repo-update
-
-$ open Page.xcworkspace
-
-For more, check out [Cocoa Pod](https://cocoapods.org/)
-
-
-## Overall Goal
-The aim of this project is to create a "mother of all news apps". With this project as a "scalfold", anyone who knows the basics of iOS development should be able to build a decent news app in a few minutes. For now, we have two milestones. 
-
-## Migrate the current FTChinese hybrid app to a pure native app
-### News Reader
-### Billigual Support
-### Channels
-### Advertising: including launch ad, in page ad and paid post
-### In-app Purchase
-
-## Enhancement to existing hybrid app
-### Done: All possible customizations in one place
-### Done: Smooth Panning between content
-### Done: Pull to refresh
-### Infinite Scrolling in Home and Channel Pages
-### Dynamic Type Support
-### Autorenewing Subscription
-### JSON formating that supports as many as possible APIs
-### Newspaper experience on iPad
-
-

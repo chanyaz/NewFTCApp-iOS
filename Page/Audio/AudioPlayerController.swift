@@ -24,7 +24,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     //    private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = RemoteDownloadHelper(directory: "audioDirectory")
-    private let playerAPI = PlayerAPI()
+    private let playerAPI = PlayerAPI.sharedInstance
     private var queuePlayer:AVQueuePlayer?
     private var playerItems: [AVPlayerItem]? = []
     private var urls: [URL] = []
@@ -637,7 +637,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         var playerItemTemp : AVPlayerItem?
         if let fetchAudioResults = fetchAudioResults {
             for (index, item0) in fetchAudioResults[0].items.enumerated() {
-                if let fileUrl = item0.caudio {
+                let fileUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
+//                if let fileUrl = item0.caudio {
                     urlOrigStrings.append(fileUrl)
                     if audioUrlString == fileUrl{
                         playingUrlStr = fileUrl
@@ -650,7 +651,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                         playerItems?.append(playerItemTemp!)
                     }
                     
-                }
+//                }
             }
         }
         print("urlString filtered audioUrlString --\(audioUrlString)")

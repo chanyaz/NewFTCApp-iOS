@@ -137,7 +137,6 @@ struct AppNavigation {
                     "compactLayout": "OutOfBox",
                     "coverTheme": "OutOfBox-LifeStyle"
                 ],
-
                 [
                     "title": "特别报导",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",

@@ -178,8 +178,25 @@ class PlayerAPI {
         parsedUrlString =  parsedUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         return parsedUrlString
     }
+    public func getUrlAccordingToAudioLanguageIndex(item:ContentItem?)-> String{
+       let actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
+        var cleanUrl = ""
+        if actualAudioLanguageIndex == 1{
+            if let eaudioUrl = item?.eaudio{
+                cleanUrl = eaudioUrl
+            }else if let caudioUrl = item?.caudio, item?.eaudio==nil{
+                cleanUrl = caudioUrl
+            }
+        }else{
+            if let caudioUrl = item?.caudio{
+                cleanUrl = caudioUrl
+            }
+        }
+        return cleanUrl
+    }
+    
 }
-// MARK: extension is not ideal, a better solution should be a subclass of UIButton
+
 class UIButtonDownloadedChange: UIButton {
     var progress: Float = 0 {
         didSet {
@@ -211,7 +228,7 @@ class UIButtonDownloadedChange: UIButton {
             case .downloading:
                 buttonImageName = "PauseBtn"
             case .success:
-                buttonImageName = "DeleteButton"
+                buttonImageName = "DownLoadEndBtn"
             case .paused:
                 buttonImageName = "DownLoadBtn"
             case .resumed:

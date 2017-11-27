@@ -457,7 +457,7 @@ struct Download {
     }
 
 //    Get the path according to the file name
-    private static func getDirectoryUrlFromDirectory(_ directoryName: String,for directory: FileManager.SearchPathDirectory) -> URL? {
+    public static func getDirectoryUrlFromDirectory(_ directoryName: String,for directory: FileManager.SearchPathDirectory) -> URL? {
         var fileURL :URL? = nil
         do {
             let directoryURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)

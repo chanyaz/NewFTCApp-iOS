@@ -23,7 +23,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     private lazy var playerItem: AVPlayerItem? = nil
     //    private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
-    private let download = DownloadHelper(directory: "audioData")
+    private let download = RemoteDownloadHelper(directory: "audioDirectory")
     private let playerAPI = PlayerAPI()
     private var queuePlayer:AVQueuePlayer?
     private var playerItems: [AVPlayerItem]? = []
@@ -205,22 +205,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     private var downloadedItem:[String:String]=[:]
     @objc func download(_ sender: Any) {
         Download.createDirectory(directoryName: audioDirectoryName, to: .cachesDirectory)
-//        let allReadedDatas:NSMutableArray = []
         let item = TabBarAudioContent.sharedInstance.item
-        let body = TabBarAudioContent.sharedInstance.body
-        if let audioFileUrl = body["audioFileUrl"]{
-            audioUrlString = playerAPI.parseAudioUrl(urlString: audioFileUrl)
-        }
-        
-        if audioUrlString != "" {
-            print("download button\( audioUrlString)")
-            if let button = sender as? UIButtonDownloadedChange {
-                // FIXME: should handle all the status and actions to the download helper
-//                download.takeActions(audioUrlString, currentStatus: button.status)
-                print("download button\( button.status)")
-            }
-            
-        }
         if let item = item{
 //            let headline = item.headline
             let image = item.image
@@ -229,68 +214,24 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             let eaudio = item.eaudio
      
             if let caudio = caudio,let eaudio = eaudio{
-//                let item = [
-//                    "headline": headline,
-//                    "lead": lead,
-//                    "image": getFileName(urlString: image),
-//                    "caudio": getFileName(urlString: caudio),
-//                    "eaudio": getFileName(urlString: eaudio)
-//                    ]
                 actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
                 if actualAudioLanguageIndex == 1{
-                    if let localAudioFile = Download.getDownloadedFilePathInDirectory(self.getFileName(urlString: eaudio), directoryName: audioDirectoryName, for: .cachesDirectory){
-                        print("localAudioFile eaudio path is: \(localAudioFile)")
-                        //                    return
-                    }else{
-                        let parseEaudio = playerAPI.parseAudioUrl(urlString: eaudio)
-                        let eaudioUrl = URL(string: parseEaudio)
-                        if let url = eaudioUrl{
-                            let request = URLRequest(url:url)
-                            URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
-                                if error != nil ,let error = error{
-                                    print("audio request error\(error)")
-                                    return
-                                }
-                                guard let data = data else {
-                                    return
-                                }
-                                print ("caudio url string is:\(self.getFileName(urlString: eaudio))")
-                                Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: self.getFileName(urlString: eaudio), to:.cachesDirectory , as: nil)
-                            }).resume()
-                        }
+                    print("download button\( eaudio)")
+                    if let button = sender as? UIButtonDownloadedChange {
+                        download.takeActions(eaudio, directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
+                        print("download button status\( button.status)")
                     }
                 }else{
-                    if let localAudioFile = Download.getDownloadedFilePathInDirectory(self.getFileName(urlString: caudio), directoryName: audioDirectoryName, for: .cachesDirectory){
-                        print("localAudioFile caudio path is: \(localAudioFile)")
-                        //                    return
-                    }else{
-                        let parseCaudio = playerAPI.parseAudioUrl(urlString: caudio)
-                        let parseCaudioUrl = URL(string: parseCaudio)
-                        if let url = parseCaudioUrl{
-                            //                        print ("caudio url url is:\(caudio)")
-                            let request = URLRequest(url:url)
-                            
-                            URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
-                                if error != nil ,let error = error{
-                                    print("audio request error\(error)")
-                                    return
-                                }
-                                
-                                guard let data = data else {
-                                    return
-                                }
-                                print ("caudio url string is:\(self.getFileName(urlString: caudio))")
-                                Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: self.getFileName(urlString: caudio), to:.cachesDirectory , as: "mp3")
-                                
-                            }).resume()
-                        }
+                    print("download button\( caudio)")
+                    if let button = sender as? UIButtonDownloadedChange {
+                        download.takeActions(caudio, directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
+                        print("download button status\( button.status)")
                     }
                 }
 
 
-                if let localAudioFile = Download.getDownloadedFilePathInDirectory(self.getFileName(urlString: image), directoryName: audioDirectoryName, for: .cachesDirectory){
+                if let localAudioFile = download.checkDownloadedFileInDirectory(self.getFileName(urlString: image), directoryName: audioDirectoryName, for: .cachesDirectory){
                     print("localAudioFile path is: \(localAudioFile)")
-//                    return
                 }else{
                     let parseImage = playerAPI.parseAudioUrl(urlString: image)
                     let parseImageUrl = URL(string: parseImage)
@@ -304,19 +245,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                             guard let data = data else {
                                 return
                             }
-                            print ("caudio url string is:\(self.getFileName(urlString: image))")
                             Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: self.getFileName(urlString: image), to:.cachesDirectory , as: nil)
                         }).resume()
                     }
                 }
                 
-//                do {
-//                    let bodyData = try JSONSerialization.data(withJSONObject: item , options:.prettyPrinted)
-//                    Download.saveFiles(bodyData, directoryName: audioDirectoryName, filename: "audioData", to:.cachesDirectory , as: nil)
-//                    print("download bodyData write--\( bodyData)")
-//                } catch {
-//
-//                }
+
              
                 
                 
@@ -419,8 +353,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         getPlayingUrl()
         addPlayerItemObservers()
         updateProgressSlider()
-        let data = fetchAudioResults![0].items[playingIndex]
-        getLoadedImage(item: data)
+        if let fetchAudioResults = fetchAudioResults{
+            let data = fetchAudioResults[0].items[playingIndex]
+            getLoadedImage(item: data)
+            let cleanUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: data)
+            checkLocalFileToUpdateButtonStatus(urlString: self.getFileName(urlString: cleanUrl))
+        }
         updatePlayButtonUI()
         self.playStatus.text = fetchAudioResults![0].items[playingIndex].headline
 //        rotateAnimation()
@@ -432,6 +370,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             object: nil
         )
         setNeedsStatusBarAppearanceUpdate()
+        
     }
     func getLoadedImage(item: ContentItem){
         if let loadedImage = item.coverImage {
@@ -523,6 +462,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         
         self.setNeedsStatusBarAppearanceUpdate()
         print("bar status style--\(self.preferredStatusBarStyle)")
+        
+        addDownloadObserve()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -574,6 +515,28 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.view.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0.8)
         containerView.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0.9)
         audioImage.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0)
+        
+        
+
+        
+    }
+    public func isExistLocalFile(urlString:String)->Bool{
+        var isExist : Bool
+        if download.checkDownloadedFileInDirectory(urlString, directoryName: audioDirectoryName, for: .cachesDirectory) != nil{
+            isExist = true
+        }else{
+            isExist = false
+        }
+        return isExist
+    }
+    public func checkLocalFileToUpdateButtonStatus(urlString:String){
+        if isExistLocalFile(urlString: urlString) == true{
+            downloadButton.setImage(UIImage(named:"DownLoadEndBtn"), for: .normal)
+            downloadButton.status = .success
+        }else{
+            downloadButton.setImage(UIImage(named:"DownLoadBtn"), for: .normal)
+            downloadButton.status = .remote
+        }
     }
     @objc public func switchLanguage(_ sender: UISegmentedControl) {
         removePlayerItemObservers()
@@ -596,23 +559,25 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 print("chinese audioUrlString--\(audioUrlString)")
             }
         }
-        audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
 
-        if let url = URL(string: audioUrlString) {
-            var audioUrl = url
-            let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: " ")
-            if let localAudioFile = download.checkDownloadedFileInDirectory(cleanAudioUrl) {
-                print ("The Audio is already downloaded")
+        var audioUrl :URL? = nil
+        if audioUrlString != "" {
+            checkLocalFileToUpdateButtonStatus(urlString: self.getFileName(urlString: audioUrlString))
+            if let localAudioFile = download.checkDownloadedFileInDirectory(self.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
                 audioUrl = URL(fileURLWithPath: localAudioFile)
-                downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
-                downloadButton.status = .success
+                
+            }else{
+                audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
+                if let url = URL(string: audioUrlString){
+                    audioUrl = url
+                }
             }
-            // MARK: - Draw a circle around the downloadButton
             downloadButton.drawCircle()
-            
-            let asset = AVURLAsset(url: audioUrl)
-            
-            playerItem = AVPlayerItem(asset: asset)
+            if let audioUrl = audioUrl{
+                print ("checking audioUrl: \(audioUrl)")
+                let asset = AVURLAsset(url: audioUrl)
+                playerItem = AVPlayerItem(asset: asset)
+            }
             
             if player != nil {
                 
@@ -639,7 +604,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
             // MARK: - Update audio play progress
 
-            addDownloadObserve()
+//            addDownloadObserve()
             addPlayerItemObservers()
             NowPlayingCenter().updatePlayingCenter()
             enableBackGroundMode()
@@ -748,24 +713,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
                 player.pause()
             }
-            //            nowPlayingCenter.updateTimeForPlayerItem(player)
-            //            updateProgressSlider()
-            // MARK: - Update audio play progress
-            //            player.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-            //                print("addPeriodicTimeObserver action")
-            //                if let d = self?.playerItem?.duration {
-            //                    let duration = CMTimeGetSeconds(d)
-            //                    if duration.isNaN == false {
-            //                        self?.progressSlider.maximumValue = Float(duration)
-            //                        if self?.progressSlider.isHighlighted == false {
-            //                            self?.progressSlider.value = Float((CMTimeGetSeconds(time)))
-            //                        }
-            //                        TabBarAudioContent.sharedInstance.duration = d
-            //                        TabBarAudioContent.sharedInstance.time = time
-            //                        self?.updatePlayTime(current: time, duration: d)
-            //                    }
-            //                }
-            //            }
             
             print("getDataFromeTab player----\(player)--playerItem---\(String(describing: playerItem))")
         }
@@ -787,31 +734,31 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             )
             ShareHelper.shared.webPageTitle = title
             print("parsed audioUrlString--\(audioUrlString)")
+            
         }
     }
     
     private func prepareAudioPlay() {
         
-        audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
+        var audioUrl :URL? = nil
         print("when actualAudioLanguageIndex change, audioUrlString is \(audioUrlString)")
-        if let url = URL(string: audioUrlString) {
-            // MARK: - Check if the file already exists locally
-            var audioUrl = url
-            //print ("checking the file in documents: \(audioUrlString)")
-            let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: " ")
-            if let localAudioFile = download.checkDownloadedFileInDirectory(cleanAudioUrl) {
-                print ("The Audio is already downloaded")
+        if audioUrlString != "" {
+            checkLocalFileToUpdateButtonStatus(urlString: self.getFileName(urlString: audioUrlString))
+            if let localAudioFile = download.checkDownloadedFileInDirectory(self.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
+                
                 audioUrl = URL(fileURLWithPath: localAudioFile)
-                downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
-                downloadButton.status = .success
+            }else{
+                audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
+                if let url = URL(string: audioUrlString){
+                    audioUrl = url
+                }
             }
-            // MARK: - Draw a circle around the downloadButton
             downloadButton.drawCircle()
-            
-            let asset = AVURLAsset(url: audioUrl)
-            
-            playerItem = AVPlayerItem(asset: asset)
-            
+            if let audioUrl = audioUrl{
+                print ("checking audioUrl: \(audioUrl)")
+                let asset = AVURLAsset(url: audioUrl)
+                playerItem = AVPlayerItem(asset: asset)
+            }
             if player != nil {
                 
             }else {
@@ -855,7 +802,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 }
             }
             
-            addDownloadObserve()
+//            addDownloadObserve()
             addPlayerItemObservers()
             NowPlayingCenter().updatePlayingCenter()
             enableBackGroundMode()
@@ -940,18 +887,22 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     private func updateAVPlayerWithLocalUrl() {
-        if let localAudioFile = download.checkDownloadedFileInDirectory(audioUrlString) {
+        if audioUrlString != "" {
             let currentSliderValue = self.progressSlider.value
-            let audioUrl = URL(fileURLWithPath: localAudioFile)
-            let asset = AVURLAsset(url: audioUrl)
-            removePlayerItemObservers()
-            playerItem = AVPlayerItem(asset: asset)
-            player?.replaceCurrentItem(with: playerItem)
-            addPlayerItemObservers()
-            let currentTime = CMTimeMake(Int64(currentSliderValue), 1)
-            playerItem?.seek(to: currentTime)
-            nowPlayingCenter.updateTimeForPlayerItem(player)
-            print ("now use local file to play at \(currentTime)")
+            if let localAudioFile = download.checkDownloadedFileInDirectory(self.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
+                print ("local audio file is: \(localAudioFile)")
+                let localAudioFile = playerAPI.parseAudioUrl(urlString: localAudioFile)
+                let audioUrl = URL(fileURLWithPath: localAudioFile)
+                let asset = AVURLAsset(url: audioUrl)
+                removePlayerItemObservers()
+                playerItem = AVPlayerItem(asset: asset)
+                player?.replaceCurrentItem(with: playerItem)
+                addPlayerItemObservers()
+                let currentTime = CMTimeMake(Int64(currentSliderValue), 1)
+                playerItem?.seek(to: currentTime)
+                nowPlayingCenter.updateTimeForPlayerItem(player)
+                print ("now use local file to play at \(currentTime)")
+            }
         }
     }
     
@@ -1198,8 +1149,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             if let object = notification.object as? (id: String, status: DownloadStatus) {
                 let status = object.status
                 let id = object.id
-                // MARK: The Player Need to verify that the current file matches status change
-                let cleanAudioUrl = self.audioUrlString.replacingOccurrences(of: "%20", with: "")
+                let item0 = TabBarAudioContent.sharedInstance.item
+                let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
                 print ("Handle download Status Change: \(cleanAudioUrl) =? \(id)")
                 if cleanAudioUrl.contains(id) == true {
                     switch status {
@@ -1226,10 +1177,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 let id = object.id
                 let percentage = object.percentage
                 // MARK: The Player Need to verify that the current file matches status change
-                let cleanAudioUrl = self.audioUrlString.replacingOccurrences(of: "%20", with: "")
+                let item0 = TabBarAudioContent.sharedInstance.item
+                let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
                 if cleanAudioUrl.contains(id) == true {
                     self.downloadButton.progress = percentage/100
                     self.downloadButton.status = .resumed
+                    print("downloadButton progress is:\(percentage)")
                 }
             }
         }

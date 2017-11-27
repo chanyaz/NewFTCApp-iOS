@@ -50,6 +50,8 @@
 		600BC5071FC683FA00652ADA /* CustomShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BC5051FC683FA00652ADA /* CustomShareViewController.swift */; };
 		600BC5091FC7D81B00652ADA /* ShareMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BC5081FC7D81B00652ADA /* ShareMore.swift */; };
 		600BC50A1FC7D81B00652ADA /* ShareMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BC5081FC7D81B00652ADA /* ShareMore.swift */; };
+		600BC50C1FCBAF1900652ADA /* Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BC50B1FCBAF1900652ADA /* Screenshot.swift */; };
+		600BC50D1FCBAF1900652ADA /* Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BC50B1FCBAF1900652ADA /* Screenshot.swift */; };
 		600BD69F1F1DBAFF0077C104 /* PushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD69E1F1DBAFF0077C104 /* PushHelper.swift */; };
 		600BD6A21F1EF20B0077C104 /* English.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6A11F1EF20B0077C104 /* English.swift */; };
 		600BD6A71F21A6570077C104 /* AudioHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD6A31F21A6560077C104 /* AudioHelper.swift */; };
@@ -470,6 +472,7 @@
 		580171059509F2486AE61ABB /* Pods-FTCC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FTCC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FTCC/Pods-FTCC.debug.xcconfig"; sourceTree = "<group>"; };
 		600BC5051FC683FA00652ADA /* CustomShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomShareViewController.swift; sourceTree = "<group>"; };
 		600BC5081FC7D81B00652ADA /* ShareMore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMore.swift; sourceTree = "<group>"; };
+		600BC50B1FCBAF1900652ADA /* Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshot.swift; sourceTree = "<group>"; };
 		600BD69E1F1DBAFF0077C104 /* PushHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushHelper.swift; sourceTree = "<group>"; };
 		600BD6A11F1EF20B0077C104 /* English.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = English.swift; sourceTree = "<group>"; };
 		600BD6A31F21A6560077C104 /* AudioHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioHelper.swift; path = Audio/AudioHelper.swift; sourceTree = "<group>"; };
@@ -1164,6 +1167,7 @@
 		60986A4B1F1CAC5E00583157 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				600BC50B1FCBAF1900652ADA /* Screenshot.swift */,
 				60986A431F1CAC5300583157 /* ShareHelper.swift */,
 				600BC5051FC683FA00652ADA /* CustomShareViewController.swift */,
 				60986A411F1CAC5300583157 /* DataForShare.swift */,
@@ -1975,6 +1979,7 @@
 				602153431F397C650077A7AF /* Web.swift in Sources */,
 				50C31B401F6DF2EF00F4CF61 /* OutOfBoxCoverCell.swift in Sources */,
 				F2C216E01FB030F500927980 /* SubscribeSchemeTableViewCell.swift in Sources */,
+				600BC50D1FCBAF1900652ADA /* Screenshot.swift in Sources */,
 				602153451F397C650077A7AF /* PagesViewController.swift in Sources */,
 				60F1A52C1F5E98DE0007F9F3 /* IAPView.swift in Sources */,
 				602CD2971F565FD500FFC1EA /* IAPHelper.swift in Sources */,
@@ -2083,6 +2088,7 @@
 				AF15D6EE1F1743CB0034CE6E /* PostData.swift in Sources */,
 				AF8E93031F124844007CD6DE /* ArticleStyle.swift in Sources */,
 				60124FB61F316F2400CFA04C /* ChatViewController.swift in Sources */,
+				600BC50C1FCBAF1900652ADA /* Screenshot.swift in Sources */,
 				602153A31F399E010077A7AF /* CustomNavigationController.swift in Sources */,
 				600BD6A81F21A6570077C104 /* AudioPlayer.swift in Sources */,
 				60986A471F1CAC5300583157 /* OpenInSafari.swift in Sources */,

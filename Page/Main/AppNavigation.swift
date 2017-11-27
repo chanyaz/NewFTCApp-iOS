@@ -141,7 +141,7 @@ struct AppNavigation {
                 [
                     "title": "特别报导",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
-                    "listapi":"https://d1budb999l6vta.cloudfront.net/channel/special.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no",
+                    "listapi":"https://d1budb999l6vta.cloudfront.net/channel/special.html?webview=ftcapp&bodyonly=yes&newad=yes&ad=no&001",
                     // MARK: Use the keeplinks parameter to tell web view that there's no need to replace the links in this page
                     "url":"http://www.ftchinese.com/channel/special.html?newad=yes&ad=no&keeplinks=yes",
                     "screenName":"homepage/special",
@@ -396,13 +396,13 @@ struct AppNavigation {
                     "Insert Content": "follows",
                     "compactLayout": ""
                 ],
-//                [
-//                    "title": "会员订阅",
-//                    "type": "iap",
-//                    "subtype":"membership",
-//                    "compactLayout": "books",
-//                    "screenName":"myft/membership"
-//                ],
+                [
+                    "title": "会员订阅",
+                    "type": "iap",
+                    "subtype":"membership",
+                    "compactLayout": "books",
+                    "screenName":"myft/membership"
+                ],
                 [
                     "title": "FT电子书",
                     "type": "iap",

@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import AVFoundation
+import WebKit
 
 struct ShareHelper {
     static var shared = ShareHelper()
@@ -25,17 +27,51 @@ struct ShareHelper {
     var webPageDescription: String
     var webPageImage: String
     var webPageImageIcon: String
+    var currentWebView: WKWebView?
     
     static func updateThubmnail(_ url: URL) {
         print("Start downloading \(url) for WeChat Shareing. lastPathComponent: \(url.absoluteString)")
         ShareHelper.shared.thumbnail = UIImage(named: "ftcicon.jpg")
         Download.getDataFromUrl(url) {(data, response, error)  in
             //DispatchQueue.main.async { () -> Void in
-                guard let data = data , error == nil else {return}
-                ShareHelper.shared.thumbnail = UIImage(data: data)
-                print("finished downloading wechat share icon: \(url.absoluteString)")
+            guard let data = data , error == nil else {return}
+            ShareHelper.shared.thumbnail = UIImage(data: data)
+            print("finished downloading wechat share icon: \(url.absoluteString)")
             //}
         }
+    }
+    
+    static func stitchImages(images: [UIImage], isVertical: Bool) -> UIImage {
+        var stitchedImages : UIImage!
+        if images.count > 0 {
+            var maxWidth = CGFloat(0), maxHeight = CGFloat(0)
+            for image in images {
+                if image.size.width > maxWidth {
+                    maxWidth = image.size.width
+                }
+                if image.size.height > maxHeight {
+                    maxHeight = image.size.height
+                }
+            }
+            var totalSize : CGSize
+            let maxSize = CGSize(width: maxWidth, height: maxHeight)
+            if isVertical {
+                totalSize = CGSize(width: maxSize.width, height: maxSize.height * (CGFloat)(images.count))
+            } else {
+                totalSize = CGSize(width: maxSize.width  * (CGFloat)(images.count), height:  maxSize.height)
+            }
+            UIGraphicsBeginImageContext(totalSize)
+            for image in images {
+                let offset = (CGFloat)(images.index(of: image)!)
+                let rect =  AVMakeRect(aspectRatio: image.size, insideRect: isVertical ?
+                    CGRect(x: 0, y: maxSize.height * offset, width: maxSize.width, height: maxSize.height) :
+                    CGRect(x: maxSize.width * offset, y: 0, width: maxSize.width, height: maxSize.height))
+                image.draw(in: rect)
+            }
+            stitchedImages = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+        }
+        return stitchedImages
     }
 }
 
@@ -57,10 +93,11 @@ extension UIViewController {
         activityVC.shareItems = [
             WeChatShare(to: "chat-custom"),
             WeChatShare(to: "moment-custom"),
-            OpenInSafari(to: "safari-custom"),
+            WeChatShare(to: "chat-screenshot"),
+            //OpenInSafari(to: "safari-custom"),
             ShareMore(contentItem: item, from: sender)
         ]
-
+        
         // MARK: Use this to support both iPhone and iPad
         activityVC.modalPresentationStyle = .overCurrentContext
         let popoverPresentationController = activityVC.popoverPresentationController
@@ -89,7 +126,7 @@ extension UIViewController {
             } else {
                 activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: [openInSafari])
             }
-
+            
             activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
             // MARK: Use this to support both iPhone and iPad
             activityVC.modalPresentationStyle = UIModalPresentationStyle.popover
@@ -114,6 +151,22 @@ extension UIViewController {
         }
     }
     
+    func getCurrentWebView() {
+        if let detailViewController = self as? DetailViewController,
+            let viewPages = detailViewController.pageViewController?.viewControllers {
+            print ("this is a detail view")
+            let currentPageIndexNumber = detailViewController.currentPageIndex
+            for viewPage in viewPages {
+                if let viewPage = viewPage as? ContentItemViewController,
+                    viewPage.dataObject?.id == detailViewController.contentPageData[currentPageIndexNumber].id {
+                    //ShareHelper.shared.fullPageImage = viewPage.webView?.screenshot()
+                    ShareHelper.shared.currentWebView = viewPage.webView
+                    break
+                }
+            }
+        }
+    }
+    
     func updateShareContent (for item: ContentItem, from sender: Any) {
         print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
         // MARK: - update some global variables
@@ -122,10 +175,11 @@ extension UIViewController {
         ShareHelper.shared.webPageDescription = item.lead
         ShareHelper.shared.webPageImage = item.image
         ShareHelper.shared.webPageImageIcon = ShareHelper.shared.webPageImage
+        getCurrentWebView()
         
+        // MARK: - capture the screen shot of the webview
+        // captureScreenShot()
     }
-    
-
     
 }
 

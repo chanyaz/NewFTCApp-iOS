@@ -19,7 +19,8 @@ class WeChatShare : UIActivity{
         switch to {
         case "moment", "moment-custom": return UIActivityType(rawValue: "WeChatMoment")
         case "fav": return UIActivityType(rawValue: "WeChatFav")
-        case "wechat-custom": return UIActivityType(rawValue: "WeChat")
+        case "chat-custom": return UIActivityType(rawValue: "WeChat")
+        case "chat-screenshot": return UIActivityType(rawValue: "WeChat")
         default: return UIActivityType(rawValue: "WeChat")
         }
     }
@@ -28,7 +29,7 @@ class WeChatShare : UIActivity{
         switch to {
         case "moment": return UIImage(named: "Moment")
         case "moment-custom": return UIImage(named: "MomentCustom")
-        case "wechat-custom": return UIImage(named: "WeChatCustom")
+        case "chat-custom": return UIImage(named: "WeChatCustom")
         case "fav": return UIImage(named: "WeChatFav")
         default: return UIImage(named: "WeChat")
         }
@@ -37,7 +38,8 @@ class WeChatShare : UIActivity{
     override var activityTitle : String {
         switch to {
         case "moment", "moment-custom": return "微信朋友圈"
-        case "wechat-custom": return "微信好友"
+        case "chat-custom": return "微信好友"
+        case "chat-screenshot": return "截屏给好友"
         case "fav": return "微信收藏"
         default: return "微信好友"
         }
@@ -59,7 +61,8 @@ class WeChatShare : UIActivity{
         switch to {
         case "moment","moment-custom": toString = "moment"
         case "fav": toString = "fav"
-        case "wechat-custom": toString = "chat"
+        case "chat-custom": toString = "chat"
+        case "chat-screenshot": toString = "chat"
         default: toString = "chat"
         }
         if WXApi.isWXAppInstalled() == false {
@@ -68,6 +71,7 @@ class WeChatShare : UIActivity{
             return
         }
         let message = WXMediaMessage()
+        
         message.title = ShareHelper.shared.webPageTitle
         message.description = ShareHelper.shared.webPageDescription
         var image = ShareHelper.shared.thumbnail
@@ -75,27 +79,73 @@ class WeChatShare : UIActivity{
         if image == nil {
             image = UIImage(named: "ShareIcon")
         }
-        message.setThumbImage(image)
-        let webpageObj = WXWebpageObject()
-        let shareUrl = ShareHelper.shared.webPageUrl.replacingOccurrences(
-            of: "#ccode=[0-9A-Za-z]+$",
-            with: "",
-            options: .regularExpression)
-        let c = Share.CampaignCode.wechat
-        webpageObj.webpageUrl = "\(shareUrl)#ccode=\(c)"
-        print ("wechat webpage obj url is \(webpageObj.webpageUrl)")
-        message.mediaObject = webpageObj
-        let req = SendMessageToWXReq()
-        req.bText = false
-        req.message = message
-        if toString == "chat" {
-            req.scene = 0
-        } else if toString == "fav" {
-            req.scene = 2
+        
+        if to.range(of: "screenshot") != nil {
+            let imageObject =  WXImageObject()
+            if let currentWebView = ShareHelper.shared.currentWebView
+                 {
+                    currentWebView.snapshots(completion: { (image) in
+                        
+                        if let image = image {
+                        imageObject.imageData = UIImagePNGRepresentation(image)
+                        message.mediaObject = imageObject
+                        
+                        
+                        let req = SendMessageToWXReq()
+                        req.bText = false
+                        req.message = message
+                        
+                        if toString.range(of: "chat") != nil {
+                            req.scene = 0
+                        } else if toString.range(of: "moment") != nil {
+                            req.scene = 1
+                        } else if toString == "fav" {
+                            req.scene = 2
+                        } else {
+                            req.scene = 1
+                        }
+                        WXApi.send(req)
+                        
+                        }
+                        
+                    })
+                    //let image = currentWebView.snapshots(10)
+                    
+
+            }
         } else {
-            req.scene = 1
+            message.setThumbImage(image)
+            let webpageObj = WXWebpageObject()
+            let shareUrl = ShareHelper.shared.webPageUrl.replacingOccurrences (
+                of: "#ccode=[0-9A-Za-z]+$",
+                with: "",
+                options: .regularExpression
+            )
+            let c = Share.CampaignCode.wechat
+            webpageObj.webpageUrl = "\(shareUrl)#ccode=\(c)"
+            print ("wechat webpage obj url is \(webpageObj.webpageUrl)")
+            message.mediaObject = webpageObj
+            
+            
+            let req = SendMessageToWXReq()
+            req.bText = false
+            req.message = message
+            
+            if toString.range(of: "chat") != nil {
+                req.scene = 0
+            } else if toString.range(of: "moment") != nil {
+                req.scene = 1
+            } else if toString == "fav" {
+                req.scene = 2
+            } else {
+                req.scene = 1
+            }
+            WXApi.send(req)
+            
+            
         }
-        WXApi.send(req)
+        
+
     }
     
 }

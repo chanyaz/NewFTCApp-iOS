@@ -137,18 +137,7 @@ class BigImageCell: CustomCell {
     }
     
     @IBAction func tapSoundButton(_ sender: Any) {
-        if let itemCell = itemCell {
-            let audioFileUrl = PlayerAPI.sharedInstance.getUrlAccordingToAudioLanguageIndex(item: itemCell)
-            TabBarAudioContent.sharedInstance.body["title"] = itemCell.headline
-            TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-            TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
-            TabBarAudioContent.sharedInstance.item = itemCell
-
-        }
-
-    
-        print("TabBarAudioContent.sharedInstance.body\(TabBarAudioContent.sharedInstance.body)")
-        
+        PlayerAPI.sharedInstance.getSingletonItem(item: itemCell)
     }
     
     @IBAction func tapTagButton(_ sender: UIButton) {

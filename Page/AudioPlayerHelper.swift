@@ -195,6 +195,31 @@ class PlayerAPI {
         return cleanUrl
     }
     
+    public func getToPlayIndex(_ urlString:String,fetchAudioResults:[ContentSection]?) ->Int{
+        var toPlayIndex = 0
+        if let fetchAudioResults = fetchAudioResults {
+            for (index, item0) in fetchAudioResults[0].items.enumerated() {
+                if let fileUrl = item0.caudio {
+                    if urlString == fileUrl{
+                        toPlayIndex = index
+                    }
+                }
+            }
+        }
+        print("urlString toPlayIndex--\(toPlayIndex)")
+//        TabBarAudioContent.sharedInstance.playingIndex = toPlayIndex
+        return toPlayIndex
+    }
+    public func getSingletonItem(item: ContentItem?) {
+        if let item = item {
+            let audioFileUrl = getUrlAccordingToAudioLanguageIndex(item: item)
+            TabBarAudioContent.sharedInstance.body["title"] = item.headline
+            TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+            TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(item.id)"
+            TabBarAudioContent.sharedInstance.item = item
+        }
+    }
+    
 }
 
 class UIButtonDownloadedChange: UIButton {

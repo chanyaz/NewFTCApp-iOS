@@ -424,6 +424,34 @@ struct Download {
         return nil
     }
     
+    public static func readFileDataWithTime(_ urlString: String, directoryName: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> [String:Any]?{
+        var data:Data? = nil
+        var content = [String:Any]()
+        let fileManager =  FileManager.default
+        if let directoryPath = getDirectoryUrlFromDirectory(directoryName, for: directory){
+            let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
+            let fileURL = directoryPath.appendingPathComponent(fileName)
+            if FileManager().fileExists(atPath: fileURL.path) {
+                do {
+                    let attributes =  try fileManager.attributesOfItem(atPath: fileURL.path)
+                    let file = FileHandle(forReadingAtPath: fileURL.path)
+                    if let file = file,let time = attributes[FileAttributeKey.creationDate] as? Date{
+                        data = file.readDataToEndOfFile()
+                        content["data"] = data
+                        content["time"] = time.timeIntervalSince1970
+                        print("read data from file: \(String(describing: data)) ")
+                        print("subDirectry file time is:\(time.timeIntervalSince1970)")
+                        return content
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }
+            return nil
+        }
+        return nil
+    }
+    
     public static func readSubFilesInDirector(directoryName: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> [String]?{
         do {
             let fileManager =  FileManager.default
@@ -434,11 +462,7 @@ struct Download {
                         let creativeFileString = subDirectry.lastPathComponent
                         subDirectoriesNamesString.append(creativeFileString)
             
-                        let attributes =  try fileManager.attributesOfItem(atPath: subDirectry.path)
-                        if let time = attributes[FileAttributeKey.creationDate] as? Date{
-                            print("subDirectry file time is:\(time.timeIntervalSince1970)")
-                            
-                        }
+                        
                         print("subDirectry file name is: \(creativeFileString)")
                     }
                 return subDirectoriesNamesString

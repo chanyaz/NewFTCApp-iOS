@@ -929,14 +929,7 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
             case "listen":
                 if let audioUrlString = body["audio"] {
                     print ("should do something to call out the audio view for this url: \(audioUrlString)")
-                    if let itemCell = dataObject{
-                        let audioFileUrl = PlayerAPI.sharedInstance.getUrlAccordingToAudioLanguageIndex(item: itemCell)
-                        TabBarAudioContent.sharedInstance.body["title"] = itemCell.headline
-                        TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
-                        TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(itemCell.id)"
-                        TabBarAudioContent.sharedInstance.item = itemCell
-                        print ("call out the audio view for this url: \(audioFileUrl)")
-                    }
+                    PlayerAPI.sharedInstance.getSingletonItem(item: dataObject)
                     PlayerAPI.sharedInstance.openPlay()
                 }
             case "clip":

@@ -245,13 +245,10 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     }
                 }
                 
-                let imageName = self.getFileName(urlString: image)
-                let url = URL(string:imageName)
-                var newName = ""
-                if let imageNameExtension = url?.pathExtension{
-                     newName = headline+"."+imageNameExtension
-                }
-               
+
+                
+                let newName = headline + ".jpg"
+
                 
                 if let localAudioFile = download.checkDownloadedFileInDirectory(newName, directoryName: audioDirectoryName, for: .cachesDirectory){
                     print("localAudioFile path is: \(localAudioFile)")
@@ -268,7 +265,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                             guard let data = data else {
                                 return
                             }
-                            Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: newName, to:.cachesDirectory , as: nil)
+                            Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: headline, to:.cachesDirectory , as: "jpg")
                             
                         }).resume()
                     }

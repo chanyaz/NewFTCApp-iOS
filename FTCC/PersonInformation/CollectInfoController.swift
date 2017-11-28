@@ -27,7 +27,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     var toolbarHeight: CGFloat = 55
     let buttonHeight: CGFloat = 55
     let leftMoveDistance: CGFloat = 45
-    let cellContent: NSArray = ["谁能预测未来样子1", "谁能预测未来样子2", "谁能预测未来样子3","随谁能预测未来样子4","谁能预测未来样子5"]
+    var cellContent = [String:Any]()
     let allCellContent:NSMutableArray = [["headline":"谁能预测未来样子1","image":"1111"],
                                   [
                                     "headline":"谁能预测未来样子2","image":"2222"
@@ -50,7 +50,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         print("\(view.layoutMargins.bottom)")
 //        toolbarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 89, OtherIphoneValue: 55)
 
-//        self.allSelectBtn.backgroundColor = UIColor.red
         self.allSelectBtn.setTitleColor(UIColor.black, for: .normal)
         self.deleteBtn.setTitleColor(UIColor.black, for: .normal)
         allSelectBtn.layer.addBorder(edge: .right, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
@@ -72,41 +71,33 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         editButton.addTarget(self, action: #selector(edit), for: .touchUpInside)
         self.infoTableView.allowsMultipleSelection = true
         self.infoTableView.allowsSelectionDuringEditing = true
-        print("dateArray--\(self.selectCellArray)")
+        print("selectCellArray--\(self.selectCellArray)")
+        
+        
 
         //       Mark:Get the downloaded data here，Cycle to add，获取本地数据
-        do {
-            if let subFilesName = Download.readSubFilesInDirector(directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
-                for subFileName in subFilesName {
-                    print(" subDirectry Files Name--\( subFileName )")
-                    //            应该添加循环读取数据，返回一个Data数组，对数组进行处理，按照图片的时间进行处理
-                    if let downloadedData = Download.readFileData(subFileName, directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
-                        let downloadedJsonData = String(data: downloadedData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-                        print("download downloadedData--\( downloadedData)")
-//                        let downloadedJsonData = try JSONSerialization.jsonObject(with: downloadedData, options: .mutableContainers) as! [String : Any]
-//                        for index in downloadedJsonData{
-//                            print("download json item--\( index)")
-                            //             index 是输出(key: "headline", value: 追随内心，还是追随大数据？)此格式key-value数据
-//                        }
-                        
-                        allCellDatas.add(downloadedJsonData as Any)
+        if let subFilesName = Download.readSubFilesInDirector(directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
+            for subFileName in subFilesName {
+                //应该添加循环读取数据，返回一个Data数组，对数组进行处理，按照图片的时间进行处理
+                let subFilesNameWithoutExtension = (subFileName.components(separatedBy: "."))[0]
+                if let downloadedData = Download.readFileDataWithTime(subFilesNameWithoutExtension, directoryName: audioDirectoryName, for: .cachesDirectory, as: "jpg"){
+                    let time = downloadedData["time"] as? Double
+                    let data = downloadedData["data"] as! Data
+                    let downloadedParsedData = UIImage(data: data)
+                    cellContent["headline"] = subFilesNameWithoutExtension
+                    cellContent["img"] = downloadedParsedData
+                    cellContent["time"] = time
+                    allCellDatas.add(cellContent as Any)
+                    print("subDirectry Files Name--\(String(describing:  subFileName))--cellContent:---\(cellContent)")
 
-//                        print("download bodyData1--\( downloadedJsonData)---bodyData：\(allCellDatas)")
-                    }
                 }
             }
+           
             
-            
-
         }
-//        catch {
-//
-//        }
-        
-//        dataArray = cellContent.mutableCopy() as! NSMutableArray
-        
-        dataArray = allCellDatas.mutableCopy() as! NSMutableArray
 
+        dataArray = allCellDatas.mutableCopy() as! NSMutableArray
+//        print("download dataArray--\( dataArray)")
         
         self.view.backgroundColor = UIColor.white
         let image = UIImage(named: "NavBack")
@@ -278,20 +269,42 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
             }
         }
         
+//        if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+//            let pageData = TabBarAudioContent.sharedInstance.item
+//            contentItemViewController.dataObject = pageData
+//             ContentItemRenderContent.addPersonInfo = false
+//            self.navigationController?.pushViewController(contentItemViewController, animated: true)
+//        }
+        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+            var pageData = [ContentItem]()
+//            print("currentPageIndex is:--\(TabBarAudioContent.sharedInstance.playingIndex)---fetchResults is:\(TabBarAudioContent.sharedInstance.fetchResults)")
+            if let currentPageIndex = TabBarAudioContent.sharedInstance.playingIndex,let fetchResults = TabBarAudioContent.sharedInstance.fetchResults{
+                print("currentPageIndex is:--\(currentPageIndex)---fetchResults is:\(fetchResults)")
+                for (_, section) in (fetchResults.enumerated()) {
+                    for (_, item) in section.items.enumerated() {
+                        if ["story", "video", "interactive", "photo", "manual"].contains(item.type) {
+                            pageData.append(item)
+                        }
+                        
+                    }
+                }
+                pageData[currentPageIndex].isLandingPage = true
+                detailViewController.contentPageData = pageData
+                detailViewController.currentPageIndex = currentPageIndex
+                navigationController?.pushViewController(detailViewController, animated: true)
+            }
+
+            
+        }
+        
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CollectTableViewCell") as! CollectTableViewCell
-//        cell.selectedLabel.text = dataArray[indexPath.row] as? String
-       let dictionaryData = dataArray[indexPath.row] as! NSDictionary
+       let dictionaryData = dataArray[indexPath.row]  as! NSDictionary
         cell.selectedLabel.text = dictionaryData["headline"] as? String
-        let aa = dictionaryData["image"] as? String
-        let bb = aa?.components(separatedBy: ".")
-        print("aa---\(bb![0])--\(bb![1])")
-        cell.selectedImageView.image = UIImage(named: bb![0])
-
-        
+        cell.selectedImageView.image = dictionaryData["img"] as? UIImage
 
         
         cell.accessoryType = .none
@@ -301,11 +314,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         }else{
             cell.isSelected = false
         }
-//        if let results = TabBarAudioContent.sharedInstance.fetchResults{
-//            print("test detailImage\(results[0].items[0].coverImage)")
-//            cell.selectedImageView.image = results[0].items[0].coverImage
-            
-//        }
+
         
         return cell
         

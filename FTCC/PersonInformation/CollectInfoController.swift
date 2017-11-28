@@ -9,7 +9,8 @@
 import UIKit
 
 class CollectInfoController: UIViewController,UITableViewDataSource, UITableViewDelegate {
-    private let download = DownloadHelper(directory: "audio")
+    private let download = RemoteDownloadHelper(directory: "audio")
+    private var audioDirectoryName = "audioDirectory"
     var selectCellArray:[NSIndexPath] = []
     var dataArray:NSMutableArray = []
     var selectArray:NSMutableArray = []
@@ -73,23 +74,34 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         self.infoTableView.allowsSelectionDuringEditing = true
         print("dateArray--\(self.selectCellArray)")
 
-        //       Mark:Get the downloaded data here，Cycle to add
+        //       Mark:Get the downloaded data here，Cycle to add，获取本地数据
         do {
-//            print(" audioData file?--\( Download.readFile("audioData", for: .cachesDirectory, as: nil) )")
-            if let downloadedData = Download.readFile("audioData", for: .cachesDirectory, as: nil) {
-                let downloadedJsonData = try JSONSerialization.jsonObject(with: downloadedData, options: .mutableContainers) as! [String : Any]
-                for index in downloadedJsonData{
-                     print("download json item--\( index)")
-//             index 是输出(key: "headline", value: 追随内心，还是追随大数据？)此格式key-value数据
+            if let subFilesName = Download.readSubFilesInDirector(directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
+                for subFileName in subFilesName {
+                    print(" subDirectry Files Name--\( subFileName )")
+                    //            应该添加循环读取数据，返回一个Data数组，对数组进行处理，按照图片的时间进行处理
+                    if let downloadedData = Download.readFileData(subFileName, directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
+                        let downloadedJsonData = String(data: downloadedData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                        print("download downloadedData--\( downloadedData)")
+//                        let downloadedJsonData = try JSONSerialization.jsonObject(with: downloadedData, options: .mutableContainers) as! [String : Any]
+//                        for index in downloadedJsonData{
+//                            print("download json item--\( index)")
+                            //             index 是输出(key: "headline", value: 追随内心，还是追随大数据？)此格式key-value数据
+//                        }
+                        
+                        allCellDatas.add(downloadedJsonData as Any)
+
+//                        print("download bodyData1--\( downloadedJsonData)---bodyData：\(allCellDatas)")
+                    }
                 }
-                
-                allCellDatas.add(downloadedJsonData)
-//               let bodyData = try JSONSerialization.data(withJSONObject: allCellDatas , options:.prettyPrinted)
-                print("download bodyData1--\( downloadedJsonData)---bodyData：\(allCellDatas)")
             }
-        } catch {
             
+            
+
         }
+//        catch {
+//
+//        }
         
 //        dataArray = cellContent.mutableCopy() as! NSMutableArray
         

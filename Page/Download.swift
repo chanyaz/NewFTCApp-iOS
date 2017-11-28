@@ -407,24 +407,47 @@ struct Download {
         }
     }
     
-    public static func readFileData(_ urlString: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> Data?{
+    public static func readFileData(_ urlString: String, directoryName: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> Data?{
         var data:Data? = nil
-        let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
-        do {
-            let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileURL = DocumentDirURL.appendingPathComponent(fileName)
+        if let directoryPath = getDirectoryUrlFromDirectory(directoryName, for: directory){
+            let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
+            let fileURL = directoryPath.appendingPathComponent(fileName)
             if FileManager().fileExists(atPath: fileURL.path) {
                 let file = FileHandle(forReadingAtPath: fileURL.path)
                 if let file = file{
                     data = file.readDataToEndOfFile()
                     print("read data from file: \(String(describing: data)) ")
-
                 }
             }
             return data
-        } catch {
-            return nil
         }
+        return nil
+    }
+    
+    public static func readSubFilesInDirector(directoryName: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> [String]?{
+        do {
+            let fileManager =  FileManager.default
+            if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                let subDirectories = try fileManager.contentsOfDirectory(at: directoryUrl, includingPropertiesForKeys: nil, options: [])
+                var subDirectoriesNamesString = [String]()
+                    for subDirectry in subDirectories {
+                        let creativeFileString = subDirectry.lastPathComponent
+                        subDirectoriesNamesString.append(creativeFileString)
+            
+                        let attributes =  try fileManager.attributesOfItem(atPath: subDirectry.path)
+                        if let time = attributes[FileAttributeKey.creationDate] as? Date{
+                            print("subDirectry file time is:\(time.timeIntervalSince1970)")
+                            
+                        }
+                        print("subDirectry file name is: \(creativeFileString)")
+                    }
+                return subDirectoriesNamesString
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+
+        return nil
     }
     
     public static func removeFileName(_ urlString: String,for directory: FileManager.SearchPathDirectory, as fileExtension: String?){
@@ -534,17 +557,20 @@ struct Download {
     }
     
     public static func getFileCreatedTime(fileName:String,directoryName: String,for directory: FileManager.SearchPathDirectory)->Date{
-        let time = Date()
+//        let time = Date()
         do {
             let fileManager =  FileManager.default
             if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                
                 let fileUrl = directoryUrl.appendingPathComponent(fileName)
-                let attributes =  try fileManager.attributesOfItem(atPath: fileUrl.absoluteString)
+                let attributes =  try fileManager.attributesOfItem(atPath: fileUrl.path)
                 if let time = attributes[FileAttributeKey.creationDate] as? Date{
+                    print("created file time is:\(time.timeIntervalSince1970)")
+                    
                     return time
                 }
             }
-            return time
+            return Date(timeIntervalSince1970: 0)
         } catch {
             return Date(timeIntervalSince1970: 0)
         }
@@ -563,6 +589,14 @@ struct Download {
             }
 //        }
        
+        return nil
+    }
+    
+    public static func getFileExtension(_ urlString: String) -> String? {
+        let url = URL(string:urlString)
+        if let imageNameExtension = url?.pathExtension{
+            return imageNameExtension
+        }
         return nil
     }
     

@@ -207,30 +207,53 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         Download.createDirectory(directoryName: audioDirectoryName, to: .cachesDirectory)
         let item = TabBarAudioContent.sharedInstance.item
         if let item = item{
-//            let headline = item.headline
+            let headline = item.headline
             let image = item.image
 //            let lead = item.lead
             let caudio = item.caudio
             let eaudio = item.eaudio
      
+//            do {
+//                let headlineData = try JSONSerialization.data(withJSONObject: headline , options:.prettyPrinted)
+//                Download.saveFiles(headlineData, directoryName: self.audioDirectoryName, filename: "headline", to:.cachesDirectory , as: nil)
+//                print("download headlineData write--\( headlineData)")
+//            } catch {
+//
+//            }
+//            获取毫秒数
+            let currentDate = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let dateInString = dateFormatter.string(from: currentDate)
+            let timeInterval = Int((currentDate.timeIntervalSince1970)*100000)
+            print("current date String is:\(dateInString)--timeInterval is:\(Int(timeInterval))")
+          
+
+            
+            
             if let caudio = caudio,let eaudio = eaudio{
                 actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
                 if actualAudioLanguageIndex == 1{
-                    print("download button\( eaudio)")
                     if let button = sender as? UIButtonDownloadedChange {
                         download.takeActions(eaudio, directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
-                        print("download button status\( button.status)")
+                        print("download button status:\( button.status)--\(eaudio)")
                     }
                 }else{
-                    print("download button\( caudio)")
                     if let button = sender as? UIButtonDownloadedChange {
                         download.takeActions(caudio, directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
-                        print("download button status\( button.status)")
+                        print("download button status:\( button.status)--\(caudio)")
                     }
                 }
-
-
-                if let localAudioFile = download.checkDownloadedFileInDirectory(self.getFileName(urlString: image), directoryName: audioDirectoryName, for: .cachesDirectory){
+                
+                let imageName = self.getFileName(urlString: image)
+                let url = URL(string:imageName)
+                var newName = ""
+                if let imageNameExtension = url?.pathExtension{
+                     newName = headline+"."+imageNameExtension
+                }
+               
+                
+                if let localAudioFile = download.checkDownloadedFileInDirectory(newName, directoryName: audioDirectoryName, for: .cachesDirectory){
                     print("localAudioFile path is: \(localAudioFile)")
                 }else{
                     let parseImage = playerAPI.parseAudioUrl(urlString: image)
@@ -245,13 +268,17 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                             guard let data = data else {
                                 return
                             }
-                            Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: self.getFileName(urlString: image), to:.cachesDirectory , as: nil)
+                            Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: newName, to:.cachesDirectory , as: nil)
+                            
                         }).resume()
                     }
+                    
+     
                 }
                 
-
-             
+                //            获取文件创建时间
+                let fileCreateTime = Download.getFileCreatedTime(fileName: newName, directoryName: audioDirectoryName, for: .cachesDirectory)
+                print("file create time\(fileCreateTime)")
                 
                 
             }
@@ -637,8 +664,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         var playerItemTemp : AVPlayerItem?
         if let fetchAudioResults = fetchAudioResults {
             for (index, item0) in fetchAudioResults[0].items.enumerated() {
-                let fileUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
-//                if let fileUrl = item0.caudio {
+//                let fileUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
+                if let fileUrl = item0.caudio {
                     urlOrigStrings.append(fileUrl)
                     if audioUrlString == fileUrl{
                         playingUrlStr = fileUrl
@@ -651,7 +678,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                         playerItems?.append(playerItemTemp!)
                     }
                     
-//                }
+                }
             }
         }
         print("urlString filtered audioUrlString --\(audioUrlString)")

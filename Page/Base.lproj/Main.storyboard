@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vNc-Sx-VQw">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -288,7 +288,7 @@
                                                     <state key="normal" image="DownloadButton"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="headline" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gg-OT-Udx">
-                                                    <rect key="frame" x="28" y="11" width="65" height="21"/>
+                                                    <rect key="frame" x="35" y="11" width="65" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -402,7 +402,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eF5-AJ-LAw">
-                                        <rect key="frame" x="62.666666666666671" y="130" width="250" height="250"/>
+                                        <rect key="frame" x="62.666666666666657" y="130" width="249.99999999999997" height="250"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="250" id="csB-Ji-Mkv"/>
                                             <constraint firstAttribute="height" constant="250" id="zxi-PH-RyI"/>
@@ -886,6 +886,7 @@
                                     <constraints>
                                         <constraint firstAttribute="top" secondItem="XHu-UA-NBY" secondAttribute="top" constant="-8" id="7or-SM-c6j"/>
                                         <constraint firstItem="XHu-UA-NBY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YeH-ia-5vW" secondAttribute="leading" constant="20" symbolic="YES" id="C0m-k2-XIa"/>
+                                        <constraint firstItem="blY-Ma-aQj" firstAttribute="centerX" secondItem="YeH-ia-5vW" secondAttribute="centerX" id="D8w-Yh-zN9"/>
                                         <constraint firstItem="5Oc-HK-ovk" firstAttribute="top" secondItem="YeH-ia-5vW" secondAttribute="top" constant="8" id="MGt-QP-mF4"/>
                                         <constraint firstAttribute="trailing" secondItem="XHu-UA-NBY" secondAttribute="trailing" constant="8" id="OzF-HQ-vJ1"/>
                                         <constraint firstItem="5Oc-HK-ovk" firstAttribute="leading" secondItem="YeH-ia-5vW" secondAttribute="leading" constant="8" id="fLD-93-7eG"/>
@@ -894,9 +895,6 @@
                                     </constraints>
                                 </view>
                                 <color key="backgroundColor" red="0.14901960780000001" green="0.4549019608" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstItem="blY-Ma-aQj" firstAttribute="centerX" secondItem="UGt-dm-kTe" secondAttribute="centerX" id="3LD-dc-EV1"/>
-                                </constraints>
                                 <blurEffect style="light"/>
                             </visualEffectView>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="qcv-oT-wIb">
@@ -991,7 +989,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R35-Eh-XrX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2938.4000000000001" y="1226.6009852216748"/>
+            <point key="canvasLocation" x="-2938.4000000000001" y="1225.8620689655172"/>
         </scene>
     </scenes>
     <resources>

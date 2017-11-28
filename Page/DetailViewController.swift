@@ -255,10 +255,13 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 let text: String
                 let eventCategory = "Listen To Story"
                 
-                
+                // dataObject.caudio = "https://creatives.ftimg.net/album/c5fe0be8-ca48-11e7-ab18-7a9fb7d6163e.mp3"
                 // TODO: Check if there's audio file attached to this item
                 if let caudio = dataObject.caudio, caudio != "" {
                     print ("There is chinese audio: \(caudio) for this item, handle it later. ")
+//                    PlayerAPI.sharedInstance.getSingletonItem(item: dataObject)
+//                    PlayerAPI.sharedInstance.openPlay()
+                    return
                 }
                 // TODO: Check if there's audio file attached to this item
                 if let eaudio = dataObject.eaudio, eaudio != "" {

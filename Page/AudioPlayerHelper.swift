@@ -150,8 +150,8 @@ class PlayerAPI {
             print("player item not isExist")
             return
         }
- 
     }
+    
     @objc func playerDidFinishPlaying() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: CustomTabBarController())
         TabBarAudioContent.sharedInstance.player?.pause()

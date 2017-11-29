@@ -227,12 +227,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
                 if actualAudioLanguageIndex == 1{
                     if let button = sender as? UIButtonDownloadedChange {
-                        download.takeActions(eaudio, directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
+                        download.takeActions(eaudio, directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status, newFileName: headline)
                         print("download button status:\( button.status)--\(eaudio)")
                     }
                 }else{
                     if let button = sender as? UIButtonDownloadedChange {
-                        download.takeActions(caudio,directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
+                        download.takeActions(caudio,directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status, newFileName: headline)
                         print("download button status:\( button.status)--\(caudio)")
                     }
                 }
@@ -1172,7 +1172,13 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 let item0 = TabBarAudioContent.sharedInstance.item
                 let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
                 print ("Handle download Status Change: \(cleanAudioUrl) =? \(id)")
-                if cleanAudioUrl.contains(id) == true {
+                var headline = ""
+                let lastPathName = self.getFileName(urlString: cleanAudioUrl)
+                if let headline0 = item0?.headline{
+                    headline = headline0
+                }
+
+                if id.contains(headline) == true && id.contains(lastPathName) == true {
                     switch status {
                     case .downloading, .remote:
                         self.downloadButton.progress = 0
@@ -1199,10 +1205,16 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 // MARK: The Player Need to verify that the current file matches status change
                 let item0 = TabBarAudioContent.sharedInstance.item
                 let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
-                if cleanAudioUrl.contains(id) == true {
+                var headline = ""
+                let lastPathName = self.getFileName(urlString: cleanAudioUrl)
+                if let headline0 = item0?.headline{
+                    headline = headline0
+                }
+                
+                if id.contains(headline) == true && id.contains(lastPathName) == true {
                     self.downloadButton.progress = percentage/100
                     self.downloadButton.status = .resumed
-                    print("downloadButton progress is:\(percentage)--\(self.downloadButton.progress)")
+                    print("downloadButton progress is:\(percentage)--id:\(id)")
                 }
             }
         }

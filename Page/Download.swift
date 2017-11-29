@@ -457,7 +457,7 @@ struct Download {
         return nil
     }
     
-    public static func readSubFilesInDirector(directoryName: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> [String]?{
+    public static func readSubFilesInDirectory(directoryName: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> [String]?{
         do {
             let fileManager =  FileManager.default
             if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
@@ -560,8 +560,9 @@ struct Download {
             let fileManager =  FileManager.default
             if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
                 let subDirectories = try fileManager.contentsOfDirectory(at: directoryUrl, includingPropertiesForKeys: nil, options: [])
-//                let creativeTypes = filePrefixName
-                let creativeFiles = subDirectories.filter{filePrefixName.contains(($0.lastPathComponent).components(separatedBy: ".")[0]) }
+
+                let creativeFiles = subDirectories.filter{($0.lastPathComponent).contains(filePrefixName) }
+//                let creativeFiles = subDirectories.filter{filePrefixName.contains(($0.lastPathComponent).components(separatedBy: ".")[0]) }
                 for creativeFile in creativeFiles {
                     let creativeFileString = creativeFile.lastPathComponent
                     try fileManager.removeItem(at: creativeFile)

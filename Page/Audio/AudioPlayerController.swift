@@ -204,6 +204,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     private var downloadedItem:[String:String]=[:]
     @objc func download(_ sender: Any) {
+        
         Download.createDirectory(directoryName: audioDirectoryName, to: .cachesDirectory)
         let item = TabBarAudioContent.sharedInstance.item
         if let item = item{
@@ -231,7 +232,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     }
                 }else{
                     if let button = sender as? UIButtonDownloadedChange {
-                        download.takeActions(caudio, directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
+                        download.takeActions(caudio,directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
                         print("download button status:\( button.status)--\(caudio)")
                     }
                 }
@@ -270,8 +271,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 
             }
         }
-
         
+        downloadButton.drawCircle()
 
     }
     func getFileName(urlString:String)-> String{
@@ -359,6 +360,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let themeColor = UIColor(hex: Color.Content.headline)
         audioImage.backgroundColor = themeColor
 
+        
         initStyle()
         fetchAudioResults = TabBarAudioContent.sharedInstance.fetchResults
         player = TabBarAudioContent.sharedInstance.player
@@ -384,6 +386,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             object: nil
         )
         setNeedsStatusBarAppearanceUpdate()
+        addDownloadObserve()
         
     }
     func getLoadedImage(item: ContentItem){
@@ -477,7 +480,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.setNeedsStatusBarAppearanceUpdate()
         print("bar status style--\(self.preferredStatusBarStyle)")
         
-        addDownloadObserve()
+//        addDownloadObserve()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -586,7 +589,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     audioUrl = url
                 }
             }
-            downloadButton.drawCircle()
+//            downloadButton.drawCircle()
             if let audioUrl = audioUrl{
                 print ("checking audioUrl: \(audioUrl)")
                 let asset = AVURLAsset(url: audioUrl)
@@ -644,6 +647,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
         }
     }
+    
+    
     private func getPlayingUrl(){
         //        get playingIndex
         playingIndex = 0
@@ -768,7 +773,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     audioUrl = url
                 }
             }
-            downloadButton.drawCircle()
+//            downloadButton.drawCircle()
             if let audioUrl = audioUrl{
                 print ("checking audioUrl: \(audioUrl)")
                 let asset = AVURLAsset(url: audioUrl)
@@ -1197,7 +1202,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 if cleanAudioUrl.contains(id) == true {
                     self.downloadButton.progress = percentage/100
                     self.downloadButton.status = .resumed
-                    print("downloadButton progress is:\(percentage)")
+                    print("downloadButton progress is:\(percentage)--\(self.downloadButton.progress)")
                 }
             }
         }

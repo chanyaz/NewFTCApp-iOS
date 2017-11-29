@@ -11,7 +11,7 @@ import UIKit
 class CollectInfoController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     private let download = RemoteDownloadHelper(directory: "audio")
     private var audioDirectoryName = "audioDirectory"
-    var selectCellArray:[NSIndexPath] = []
+//    var selectCellArray:[NSIndexPath] = []
     var dataArray:NSMutableArray = []
     var selectArray:NSMutableArray = []
     
@@ -71,8 +71,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         editButton.addTarget(self, action: #selector(edit), for: .touchUpInside)
         self.infoTableView.allowsMultipleSelection = true
         self.infoTableView.allowsSelectionDuringEditing = true
-        print("selectCellArray--\(self.selectCellArray)")
-        
         
 
         //       Mark:Get the downloaded data here，Cycle to add，获取本地数据
@@ -80,6 +78,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
             for subFileName in subFilesName {
                 //应该添加循环读取数据，返回一个Data数组，对数组进行处理，按照图片的时间进行处理
                 let subFilesNameWithoutExtension = (subFileName.components(separatedBy: "."))[0]
+//                let subFilesExtension = (subFileName.components(separatedBy: "."))[1]
                 if let downloadedData = Download.readFileDataWithTime(subFilesNameWithoutExtension, directoryName: audioDirectoryName, for: .cachesDirectory, as: "jpg"),let readData = Download.readFileData(subFilesNameWithoutExtension + "[index]", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
                     let time = downloadedData["time"] as? Double
                     let data = downloadedData["data"] as! Data
@@ -87,16 +86,12 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                     cellContent["headline"] = subFilesNameWithoutExtension
                     cellContent["img"] = downloadedParsedData
                     cellContent["time"] = time
-//                    allCellDatas.add(cellContent as Any)
                     print("subDirectry Files Name--\(String(describing:  subFileName))--cellContent:---\(cellContent)")
                     let dataAsString = String(data: readData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
                     cellContent["index"] = dataAsString
                     allCellDatas.add(cellContent as Any)
                 }
                 
-                
-                
-                print("download bodyData write--\(allCellDatas)")
             }
            
             
@@ -159,7 +154,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         sender.isSelected = !sender.isSelected
         self.infoTableView.endUpdates()
         print("dataArray allselect --\(dataArray) --  selectCellArray --\(selectArray)")
-        removeAllAudios()
     }
     func removeAllAudios() {
         Download.removeFiles(["mp3"])
@@ -167,6 +161,8 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     @IBAction func deleteAction(_ sender: UIButton){
         print("deleteAction execute")
         if self.infoTableView.isEditing{
+            
+            
             self.infoTableView.beginUpdates()
             let indexArr = NSMutableArray() //镜像数组,存放需删除的数据源
             var indexPathToDelete:[IndexPath] = []
@@ -175,9 +171,23 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                 indexArr.add(self.dataArray[indexPath.row])
                 indexPathToDelete.append(indexPath)
             }
-            
-            
             print("dataArray --\(dataArray) -- indexArr000000 --\(indexArr) -- selectArray00000 --\(selectArray)")
+            
+            if isAllSelect{
+                Download.removeDirectory(directoryName: audioDirectoryName, for: .cachesDirectory)
+            }else{
+                print("selectArray pathUrl is：\(selectArray)")
+                for oneSelectArray in indexArr {
+                    let oneSelectArray = oneSelectArray as! NSDictionary
+                    let pathUrl = oneSelectArray["headline"] as! String
+                    Download.removeFileAccordingToFilePrefixName(pathUrl, directoryName: audioDirectoryName, for: .cachesDirectory)
+                    Download.removeFileAccordingToFileName(pathUrl+"[index]", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil)
+                }
+                
+            }
+            
+            
+            
             
             indexArr.enumerateObjects { (obj, idx, true) in
                 if self.dataArray.contains(obj){
@@ -189,11 +199,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
             self.selectArray.removeAllObjects()  //需要清空对象，不然没删除完全。
             self.infoTableView.endUpdates()
             print("dataArray --\(dataArray) -- indexArr11111 --\(indexArr) -- selectArray11111 --\(selectArray)")
-            if isAllSelect{
-                Download.removeDirectory(directoryName: audioDirectoryName, for: .cachesDirectory)
-            }else{
-                Download.removeFileAccordingToFileName(selectArray[1] as! String, directoryName: audioDirectoryName, for: .cachesDirectory, as: nil)
-            }
+            
             
         }
     }

@@ -550,7 +550,24 @@ struct Download {
             print(error.localizedDescription)
         }
     }
-
+    public static func removeFileAccordingToFilePrefixName(_ filePrefixName: String,directoryName: String,for directory: FileManager.SearchPathDirectory){
+        do {
+            let fileManager =  FileManager.default
+            if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+                let subDirectories = try fileManager.contentsOfDirectory(at: directoryUrl, includingPropertiesForKeys: nil, options: [])
+//                let creativeTypes = filePrefixName
+                let creativeFiles = subDirectories.filter{filePrefixName.contains(($0.lastPathComponent).components(separatedBy: ".")[0]) }
+                for creativeFile in creativeFiles {
+                    let creativeFileString = creativeFile.lastPathComponent
+                    try fileManager.removeItem(at: creativeFile)
+                    print("remove file according to file prefix name: \(creativeFileString)")
+                }
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
 //  Delete file under a certain path according to filename
     public static func removeFileAccordingToFileName(_ urlString: String,directoryName: String,for directory: FileManager.SearchPathDirectory, as fileExtension: String?){
         let fileName = getFileNameFromUrlString(urlString, as: fileExtension)

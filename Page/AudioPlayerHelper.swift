@@ -238,6 +238,7 @@ class UIButtonDownloadedChange: UIButton {
     var progress: Float = 0 {
         didSet {
             circleShape.strokeEnd = CGFloat(self.progress)
+            print("progress--\(progress)")
         }
     }
     

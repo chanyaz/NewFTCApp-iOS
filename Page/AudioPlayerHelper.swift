@@ -92,14 +92,11 @@ class PlayerAPI {
         if let url = URL(string: audioUrlString) {
             let audioUrl = url
             let asset = AVURLAsset(url: audioUrl)
-            
-//            playerItem = AVPlayerItem(asset: asset)
             playerItem = AVPlayerItem(asset: asset)
             if player != nil {
                 print("item player exist")
             }else {
                 print("item player do not exist")
-//                player = AVPlayer()
                 player = AVPlayer()
             }
             TabBarAudioContent.sharedInstance.isPlaying = true

@@ -112,3 +112,4 @@ struct AppNavigation {
         return nil
     }
 }
+

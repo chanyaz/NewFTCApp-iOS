@@ -34,8 +34,8 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
     }
     
     //TODO: Deal with space in the file url
-    public func startDownload(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory) {
-        let fileName = getFileName(urlString: url)
+    public func startDownload(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
+        let fileName = newFileName + getFileName(urlString: url)
         if let localAudioFile = Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory){
             print ("localAudioFile already exists as \(localAudioFile). No need to download. ")
             postStatusChange(localAudioFile, status: .success)
@@ -54,7 +54,7 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
     }
     
     
-    public func takeActions(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,currentStatus: DownloadStatus) {
+    public func takeActions(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,currentStatus: DownloadStatus,newFileName:String ) {
         print (currentStatus)
         switch currentStatus {
         case .remote:
@@ -65,7 +65,7 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
                 let alert = UIAlertController(title: "要用流量下载吗？", message: "您现在是用的数据，下载文件可能会产生流量费，您可以先连接Wi-Fi再下载", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "立即下载",
                                               style: UIAlertActionStyle.default,
-                                              handler: {_ in self.startDownload(url, directoryName: directoryName, for: directory)}
+                                              handler: {_ in self.startDownload(url, directoryName: directoryName, for: directory, newFileName: newFileName)}
                 ))
                 alert.addAction(UIAlertAction(title: "暂时不下载", style: UIAlertActionStyle.default, handler: nil))
                 UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
@@ -75,46 +75,45 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
                 alert.addAction(UIAlertAction(title: "知道了", style: UIAlertActionStyle.default, handler: nil))
                 UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
             } else {
-                startDownload(url,directoryName: directoryName,for: directory)
+                startDownload(url,directoryName: directoryName,for: directory, newFileName: newFileName)
             }
             
         case .success:
-            successDownload(url,directoryName: directoryName,for: directory)
+            successDownload(url,directoryName: directoryName,for: directory, newFileName: newFileName)
             break
         case .downloading, .resumed:
-            pauseDownload(url,directoryName: directoryName,for: directory)
+            pauseDownload(url,directoryName: directoryName,for: directory, newFileName: newFileName)
         case .paused:
-            resumeDownload(url,directoryName: directoryName,for: directory)
+            resumeDownload(url,directoryName: directoryName,for: directory, newFileName: newFileName)
         }
     }
 
-    public func successDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory) {
-        
-        let fileName = getFileName(urlString: url)
+    public func successDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
+
+        let fileName = newFileName + getFileName(urlString: url)
         if Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory) != nil{
 //            removeDownloadedFile(localFileLocation, directoryName: directoryName, for: directory)
             postStatusChange(fileName, status: .success)
         }
     }
-    public func removeDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory) {
-
-        let fileName = getFileName(urlString: url)
+    public func removeDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
+        let fileName = newFileName + getFileName(urlString: url)
         if let localFileLocation = Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory){
             removeDownloadedFile(localFileLocation, directoryName: directoryName, for: directory)
             postStatusChange(fileName, status: .remote)
         }
     }
     
-    public func pauseDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory) {
-        let fileName = getFileName(urlString: url)
+    public func pauseDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
+        let fileName = newFileName + getFileName(urlString: url)
         if Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory) != nil{
             downloadTasks[fileName]?.suspend()
             postStatusChange(fileName, status: .paused)
         }
     }
     
-    public func resumeDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory) {
-        let fileName = getFileName(urlString: url)
+    public func resumeDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
+        let fileName = newFileName + getFileName(urlString: url)
         if Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory) != nil{
             downloadTasks[fileName]?.resume()
             postStatusChange(fileName, status: .resumed)

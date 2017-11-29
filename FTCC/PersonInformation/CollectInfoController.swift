@@ -11,7 +11,7 @@ import UIKit
 class CollectInfoController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     private let download = RemoteDownloadHelper(directory: "audio")
     private var audioDirectoryName = "audioDirectory"
-//    var selectCellArray:[NSIndexPath] = []
+    //    var selectCellArray:[NSIndexPath] = []
     var dataArray:NSMutableArray = []
     var selectArray:NSMutableArray = []
     
@@ -19,7 +19,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     //    var selectArray = NSMutableArray() as? [NSIndexPath]
     var isRepeatOpenMyDownload:Bool=false
     var isEditting :Bool=false
-//    let infoTableView = UITableView()
+    //    let infoTableView = UITableView()
     let allSelect = UIButton()
     let delete = UIButton()
     let screenWidth = UIScreen.main.bounds.width
@@ -29,13 +29,13 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     let leftMoveDistance: CGFloat = 45
     var cellContent = [String:Any]()
     let allCellContent:NSMutableArray = [["headline":"谁能预测未来样子1","image":"1111"],
-                                  [
-                                    "headline":"谁能预测未来样子2","image":"2222"
+                                         [
+                                            "headline":"谁能预测未来样子2","image":"2222"
         ],[
             "headline":"谁能预测未来样子3","image":"3333"
         ]]
     let allCellDatas:NSMutableArray = []
-
+    
     @IBOutlet weak var infoTableView: UITableView!
     @IBOutlet weak var toolBar: UIView!
     @IBOutlet weak var allSelectBtn: UIButton!
@@ -43,13 +43,13 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.infoTableView.frame = CGRect(x:0, y: 0, width: screenWidth, height: screenHeight-172)
+        //        self.infoTableView.frame = CGRect(x:0, y: 0, width: screenWidth, height: screenHeight-172)
         self.infoTableView.delegate = self
         self.infoTableView.dataSource = self
         
         print("\(view.layoutMargins.bottom)")
-//        toolbarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 89, OtherIphoneValue: 55)
-
+        //        toolbarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 89, OtherIphoneValue: 55)
+        
         self.allSelectBtn.setTitleColor(UIColor.black, for: .normal)
         self.deleteBtn.setTitleColor(UIColor.black, for: .normal)
         allSelectBtn.layer.addBorder(edge: .right, color: UIColor(hex: Color.AudioList.border, alpha: 0.6), thickness: 0.5)
@@ -72,13 +72,13 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         self.infoTableView.allowsMultipleSelection = true
         self.infoTableView.allowsSelectionDuringEditing = true
         
-
+        
         //       Mark:Get the downloaded data here，Cycle to add，获取本地数据
-        if let subFilesName = Download.readSubFilesInDirector(directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
+        if let subFilesName = Download.readSubFilesInDirectory(directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
             for subFileName in subFilesName {
                 //应该添加循环读取数据，返回一个Data数组，对数组进行处理，按照图片的时间进行处理
                 let subFilesNameWithoutExtension = (subFileName.components(separatedBy: "."))[0]
-//                let subFilesExtension = (subFileName.components(separatedBy: "."))[1]
+                //                let subFilesExtension = (subFileName.components(separatedBy: "."))[1]
                 if let downloadedData = Download.readFileDataWithTime(subFilesNameWithoutExtension, directoryName: audioDirectoryName, for: .cachesDirectory, as: "jpg"),let readData = Download.readFileData(subFilesNameWithoutExtension + "[index]", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
                     let time = downloadedData["time"] as? Double
                     let data = downloadedData["data"] as! Data
@@ -93,19 +93,19 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                 }
                 
             }
-           
+            
             
         }
-
+        
         
         dataArray = allCellDatas.mutableCopy() as! NSMutableArray
-//        print("download dataArray--\( dataArray)")
+        //        print("download dataArray--\( dataArray)")
         
         self.view.backgroundColor = UIColor.white
         let image = UIImage(named: "NavBack")
         let backImage = image?.imageWithImage(image: image!, scaledToSize: CGSize(width: 12, height: 22))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backNavigation))
-
+        
         
         toolBar.layer.zPosition = 100000
         toolBar.isUserInteractionEnabled = true
@@ -114,11 +114,11 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         hideView()
     }
     override func viewDidDisappear(_ animated: Bool) {
-
+        
     }
     @objc func backNavigation(){
         print("collectInfoController dismiss")
-//        self.navigationController?.toolbar.isHidden = true
+        //        self.navigationController?.toolbar.isHidden = true
         self.navigationController?.popViewController(animated: true)
     }
     deinit {
@@ -182,6 +182,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                     let pathUrl = oneSelectArray["headline"] as! String
                     Download.removeFileAccordingToFilePrefixName(pathUrl, directoryName: audioDirectoryName, for: .cachesDirectory)
                     Download.removeFileAccordingToFileName(pathUrl+"[index]", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil)
+                    
                 }
                 
             }
@@ -210,15 +211,15 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         if !sender.isSelected{
             self.isEditting = true
             self.infoTableView.setEditing(true, animated: true)
-//            self.toolBar.isHidden = false
+            //            self.toolBar.isHidden = false
             showView()
             tableViewBottomConstraint.constant = 0
-//            self.navigationController?.toolbar.isHidden = false
+            //            self.navigationController?.toolbar.isHidden = false
         }else{
             self.isEditting = false
             self.infoTableView.setEditing(false, animated: true)
-//            self.navigationController?.toolbar.isHidden = true
-//            self.toolBar.isHidden = true
+            //            self.navigationController?.toolbar.isHidden = true
+            //            self.toolBar.isHidden = true
             hideView()
             tableViewBottomConstraint.constant = -50
         }
@@ -236,16 +237,16 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         
     }
     func hideView(){
-            print("up hide audio")
-            if  let toolBar = toolBar{
-                let deltaY = toolBar.bounds.height + 50
-                UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                    toolBar.transform = CGAffineTransform(translationX: 0,y: deltaY)
-                    toolBar.setNeedsUpdateConstraints()
-                }, completion: { (true) in
-                    
-                })
-            }
+        print("up hide audio")
+        if  let toolBar = toolBar{
+            let deltaY = toolBar.bounds.height + 50
+            UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                toolBar.transform = CGAffineTransform(translationX: 0,y: deltaY)
+                toolBar.setNeedsUpdateConstraints()
+            }, completion: { (true) in
+                
+            })
+        }
     }
     func showView(){
         print("down show audio")
@@ -287,40 +288,42 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                 }
             }else{
                 print("您点击了第\(indexPath.row + 1)个cell")
-                    let data = dataArray[indexPath.row]  as! NSDictionary
-                    if let index = data["index"] as? String{
-                        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-                            var pageData = [ContentItem]()
-                            if let index = Int(index),let fetchResults = TabBarAudioContent.sharedInstance.fetchResults{
-                                print("currentPageIndex is:--\(index)---fetchResults is:\(fetchResults)")
-                                for (_, section) in (fetchResults.enumerated()) {
-                                    for (_, item) in section.items.enumerated() {
-                                        if ["story", "video", "interactive", "photo", "manual"].contains(item.type) {
-                                            pageData.append(item)
-                                        }
-            
+                let data = dataArray[indexPath.row]  as! NSDictionary
+                if let index = data["index"] as? String{
+                    if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+                        var pageData = [ContentItem]()
+                        if let index = Int(index),let fetchResults = TabBarAudioContent.sharedInstance.fetchResults{
+                            print("currentPageIndex is:--\(index)---fetchResults is:\(fetchResults)")
+                            for (_, section) in (fetchResults.enumerated()) {
+                                for (_, item) in section.items.enumerated() {
+                                    if ["story"].contains(item.type) {
+                                        pageData.append(item)
                                     }
+                                    
                                 }
-                                pageData[index].isLandingPage = true
-                                detailViewController.contentPageData = pageData
-                                detailViewController.currentPageIndex = index
-                                navigationController?.pushViewController(detailViewController, animated: true)
                             }
+                            pageData[index].isLandingPage = true
+                            detailViewController.contentPageData = pageData
+                            detailViewController.currentPageIndex = index
+                            navigationController?.pushViewController(detailViewController, animated: true)
                         }
                     }
+                }
+                
+                
             }
         }
         
-
+        
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CollectTableViewCell") as! CollectTableViewCell
-       let dictionaryData = dataArray[indexPath.row]  as! NSDictionary
+        let dictionaryData = dataArray[indexPath.row]  as! NSDictionary
         cell.selectedLabel.text = dictionaryData["headline"] as? String
         cell.selectedImageView.image = dictionaryData["img"] as? UIImage
-
+        
         
         cell.accessoryType = .none
         cell.isEditting = self.isEditting
@@ -329,7 +332,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         }else{
             cell.isSelected = false
         }
-
+        
         
         return cell
         
@@ -346,7 +349,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.none
     }
-
+    
     
 }
 

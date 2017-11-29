@@ -59,9 +59,6 @@ class CustomNavigationController: UINavigationController, UINavigationController
         )
     }
 
-//    override var preferredStatusBarStyle : UIStatusBarStyle {
-//        return UIStatusBarStyle.default
-//    }
     override func viewDidLoad() {
         super.viewDidLoad()
         let width = UIScreen.main.bounds.width
@@ -79,8 +76,8 @@ class CustomNavigationController: UINavigationController, UINavigationController
         tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
         tabView.progressSlider.addTarget(self, action: #selector(changeSlider), for: UIControlEvents.valueChanged)
         tabView.isHidden = true
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        try? AVAudioSession.sharedInstance().setActive(true)
+//        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+//        try? AVAudioSession.sharedInstance().setActive(true)
         addPlayerItemObservers()
         NotificationCenter.default.addObserver(
             self,
@@ -194,27 +191,27 @@ class CustomNavigationController: UINavigationController, UINavigationController
         }
     }
     
-    func updateAVPlayerWithLocalUrl() {
-        if let localAudioFile = download.checkDownloadedFileInDirectory(audioUrlString) {
-            let currentSliderValue = tabView.progressSlider.value
-            let audioUrl = URL(fileURLWithPath: localAudioFile)
-            let asset = AVURLAsset(url: audioUrl)
-            removePlayerItemObservers()
-            playerItem = AVPlayerItem(asset: asset)
-            player?.replaceCurrentItem(with: playerItem)
-            addPlayerItemObservers()
-            let currentTime = CMTimeMake(Int64(currentSliderValue), 1)
-            playerItem?.seek(to: currentTime)
-            nowPlayingCenter.updateTimeForPlayerItem(player)
-            print ("now use local file to play at \(currentTime)")
-        }
-    }
+//    func updateAVPlayerWithLocalUrl() {
+//        if let localAudioFile = download.checkDownloadedFileInDirectory(audioUrlString) {
+//            let currentSliderValue = tabView.progressSlider.value
+//            let audioUrl = URL(fileURLWithPath: localAudioFile)
+//            let asset = AVURLAsset(url: audioUrl)
+//            removePlayerItemObservers()
+//            playerItem = AVPlayerItem(asset: asset)
+//            player?.replaceCurrentItem(with: playerItem)
+//            addPlayerItemObservers()
+//            let currentTime = CMTimeMake(Int64(currentSliderValue), 1)
+//            playerItem?.seek(to: currentTime)
+//            nowPlayingCenter.updateTimeForPlayerItem(player)
+//            print ("now use local file to play at \(currentTime)")
+//        }
+//    }
     
     func removePlayerItemObservers() {
         NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
-        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
-        playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
+//        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+//        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+//        playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
     }
     
     private func addPlayerItemObservers() {
@@ -222,9 +219,9 @@ class CustomNavigationController: UINavigationController, UINavigationController
         NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
         
         // MARK: - Update buffer status
-        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
+//        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+//        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+//        playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
     }
     
     
@@ -250,33 +247,33 @@ class CustomNavigationController: UINavigationController, UINavigationController
         nowPlayingCenter.updateTimeForPlayerItem(player)
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if object is AVPlayerItem {
-            if let k = keyPath {
-                switch k {
-                case "playbackBufferEmpty":
-                    // Show loader
-                    print ("is loading...")
-                    self.tabView.playStatus.text = "加载中..."
-                case "playbackLikelyToKeepUp":
-                    // Hide loader
-                    print ("should be playing. Duration is \(String(describing: playerItem?.duration))")
-                    self.tabView.playStatus.text = audioTitle
-                case "playbackBufferFull":
-                    // Hide loader
-                    self.tabView.playStatus.text = audioTitle
-                    print ("load successfully")
-                default:
-                    self.tabView.playStatus.text = audioTitle
-                    break
-                }
-            }
-            if let time = playerItem?.currentTime(), let duration = playerItem?.duration {
-                updatePlayTime(current: time, duration: duration)
-            }
-            nowPlayingCenter.updateTimeForPlayerItem(player)
-        }
-    }
+//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+//        if object is AVPlayerItem {
+//            if let k = keyPath {
+//                switch k {
+//                case "playbackBufferEmpty":
+//                    // Show loader
+//                    print ("is loading...")
+//                    self.tabView.playStatus.text = "加载中..."
+//                case "playbackLikelyToKeepUp":
+//                    // Hide loader
+//                    print ("should be playing. Duration is \(String(describing: playerItem?.duration))")
+//                    self.tabView.playStatus.text = audioTitle
+//                case "playbackBufferFull":
+//                    // Hide loader
+//                    self.tabView.playStatus.text = audioTitle
+//                    print ("load successfully")
+//                default:
+//                    self.tabView.playStatus.text = audioTitle
+//                    break
+//                }
+//            }
+//            if let time = playerItem?.currentTime(), let duration = playerItem?.duration {
+//                updatePlayTime(current: time, duration: duration)
+//            }
+//            nowPlayingCenter.updateTimeForPlayerItem(player)
+//        }
+//    }
     
     // MARK: On mobile phone, lock the screen to portrait only
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {

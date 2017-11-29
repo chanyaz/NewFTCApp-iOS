@@ -237,17 +237,25 @@ class PlayerAPI {
         directoryName = name
         return directoryName
     }
-//    public func getGeneralTypeData(fetchResults:[ContentSection]?) {
-//        let content = [String:Any]()
+//    public func getJsonData(fetchResults:[ContentSection]?) {
+//        var contentItem = [String:Any]()
+//        var contentSection = [String:Any]()
 //        var pageData = [ContentItem]()
 //        if let fetchResults = fetchResults{
 //            for (sectionIndex, section) in (fetchResults.enumerated()) {
+//                contentSection["title"] = section.title
+//                contentSection["adid"] = section.adid
+//                contentSection["items"] = section.items
+//                contentSection["type"] = section.type
 //                for (itemIndex, item) in section.items.enumerated() {
+//                    item.adchId
+//
 //                    pageData.append(item)
+//
 //                }
 //            }
 //        }
-//       
+//
 //    }
     
 }

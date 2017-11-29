@@ -116,6 +116,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
                 
             }else if indexPath.row == 1{
                 if let collectInfoController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
+                    ContentInfoRenderContent.isDownloadedList = false
                     collectInfoController.navigationItem.backBarButtonItem?.title = ""
                     navigationController?.pushViewController(collectInfoController, animated: true)
                     

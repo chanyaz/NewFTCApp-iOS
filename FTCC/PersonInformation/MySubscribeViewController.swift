@@ -60,6 +60,7 @@ class MySubscribeViewController: UIViewController,UITableViewDataSource, UITable
         if indexPath.row == 0{
 
                 if let collectInfoController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CollectInfoController") as? CollectInfoController {
+                    ContentInfoRenderContent.isDownloadedList = true
                     self.navigationController?.pushViewController(collectInfoController, animated: true)
                     print("collectInfoController load?")
                     

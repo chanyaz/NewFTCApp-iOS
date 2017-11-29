@@ -884,6 +884,7 @@
                                     </subviews>
                                     <color key="backgroundColor" red="0.14901960780000001" green="0.4549019608" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <constraints>
+                                        <constraint firstItem="blY-Ma-aQj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5Oc-HK-ovk" secondAttribute="trailing" id="45k-bN-KLr"/>
                                         <constraint firstAttribute="top" secondItem="XHu-UA-NBY" secondAttribute="top" constant="-8" id="7or-SM-c6j"/>
                                         <constraint firstItem="XHu-UA-NBY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YeH-ia-5vW" secondAttribute="leading" constant="20" symbolic="YES" id="C0m-k2-XIa"/>
                                         <constraint firstItem="blY-Ma-aQj" firstAttribute="centerX" secondItem="YeH-ia-5vW" secondAttribute="centerX" id="D8w-Yh-zN9"/>

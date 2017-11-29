@@ -219,6 +219,18 @@ class PlayerAPI {
             TabBarAudioContent.sharedInstance.item = item
         }
     }
+//    public func getGeneralTypeData(fetchResults:[ContentSection]?) {
+//        let content = [String:Any]()
+//        var pageData = [ContentItem]()
+//        if let fetchResults = fetchResults{
+//            for (sectionIndex, section) in (fetchResults.enumerated()) {
+//                for (itemIndex, item) in section.items.enumerated() {
+//                    pageData.append(item)
+//                }
+//            }
+//        }
+//       
+//    }
     
 }
 
@@ -226,6 +238,7 @@ class UIButtonDownloadedChange: UIButton {
     var progress: Float = 0 {
         didSet {
             circleShape.strokeEnd = CGFloat(self.progress)
+            print("progress--\(progress)")
         }
     }
     

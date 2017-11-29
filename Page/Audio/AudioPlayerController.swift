@@ -37,10 +37,10 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     var themeColor: String?
     
     var fetchAudioResults: [ContentSection]?
-    var fetchesAudioObject = ContentFetchResults(
-        apiUrl: "",
-        fetchResults: [ContentSection]()
-    )
+//    var fetchesAudioObject = ContentFetchResults(
+//        apiUrl: "",
+//        fetchResults: [ContentSection]()
+//    )
 
     private var actualAudioLanguageIndex = 0
     var angle :Double = 0
@@ -204,6 +204,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     private var downloadedItem:[String:String]=[:]
     @objc func download(_ sender: Any) {
+        
         Download.createDirectory(directoryName: audioDirectoryName, to: .cachesDirectory)
         let item = TabBarAudioContent.sharedInstance.item
         if let item = item{
@@ -213,13 +214,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             let caudio = item.caudio
             let eaudio = item.eaudio
      
-//            do {
-//                let headlineData = try JSONSerialization.data(withJSONObject: headline , options:.prettyPrinted)
-//                Download.saveFiles(headlineData, directoryName: self.audioDirectoryName, filename: "headline", to:.cachesDirectory , as: nil)
-//                print("download headlineData write--\( headlineData)")
-//            } catch {
-//
-//            }
 //            获取毫秒数
             let currentDate = Date()
             let dateFormatter = DateFormatter()
@@ -227,9 +221,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             let dateInString = dateFormatter.string(from: currentDate)
             let timeInterval = Int((currentDate.timeIntervalSince1970)*100000)
             print("current date String is:\(dateInString)--timeInterval is:\(Int(timeInterval))")
-          
 
-            
             
             if let caudio = caudio,let eaudio = eaudio{
                 actualAudioLanguageIndex = UserDefaults.standard.integer(forKey: Key.audioLanguagePreference)
@@ -240,7 +232,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     }
                 }else{
                     if let button = sender as? UIButtonDownloadedChange {
-                        download.takeActions(caudio, directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
+                        download.takeActions(caudio,directoryName: audioDirectoryName, for: .cachesDirectory, currentStatus: button.status)
                         print("download button status:\( button.status)--\(caudio)")
                     }
                 }
@@ -266,22 +258,21 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                                 return
                             }
                             Download.saveFiles(data, directoryName: self.audioDirectoryName, filename: headline, to:.cachesDirectory , as: "jpg")
-                            
                         }).resume()
                     }
-                    
-     
+                }
+                let playingIndexStr = String(playingIndex)
+                if let playingIndexData = playingIndexStr.data(using: String.Encoding.utf8){
+                    Download.saveFiles(playingIndexData, directoryName: self.audioDirectoryName, filename: headline+"[index]", to:.cachesDirectory , as: nil)
+                    print("download bodyData write--\(playingIndex)")
                 }
                 
-                //            获取文件创建时间
-                let fileCreateTime = Download.getFileCreatedTime(fileName: newName, directoryName: audioDirectoryName, for: .cachesDirectory)
-                print("file create time\(fileCreateTime)")
                 
                 
             }
         }
-
         
+        downloadButton.drawCircle()
 
     }
     func getFileName(urlString:String)-> String{
@@ -369,6 +360,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let themeColor = UIColor(hex: Color.Content.headline)
         audioImage.backgroundColor = themeColor
 
+        
         initStyle()
         fetchAudioResults = TabBarAudioContent.sharedInstance.fetchResults
         player = TabBarAudioContent.sharedInstance.player
@@ -394,6 +386,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             object: nil
         )
         setNeedsStatusBarAppearanceUpdate()
+        addDownloadObserve()
         
     }
     func getLoadedImage(item: ContentItem){
@@ -487,7 +480,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.setNeedsStatusBarAppearanceUpdate()
         print("bar status style--\(self.preferredStatusBarStyle)")
         
-        addDownloadObserve()
+//        addDownloadObserve()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -596,7 +589,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     audioUrl = url
                 }
             }
-            downloadButton.drawCircle()
+//            downloadButton.drawCircle()
             if let audioUrl = audioUrl{
                 print ("checking audioUrl: \(audioUrl)")
                 let asset = AVURLAsset(url: audioUrl)
@@ -654,6 +647,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
         }
     }
+    
+    
     private func getPlayingUrl(){
         //        get playingIndex
         playingIndex = 0
@@ -778,7 +773,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     audioUrl = url
                 }
             }
-            downloadButton.drawCircle()
+//            downloadButton.drawCircle()
             if let audioUrl = audioUrl{
                 print ("checking audioUrl: \(audioUrl)")
                 let asset = AVURLAsset(url: audioUrl)
@@ -1207,7 +1202,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 if cleanAudioUrl.contains(id) == true {
                     self.downloadButton.progress = percentage/100
                     self.downloadButton.status = .resumed
-                    print("downloadButton progress is:\(percentage)")
+                    print("downloadButton progress is:\(percentage)--\(self.downloadButton.progress)")
                 }
             }
         }

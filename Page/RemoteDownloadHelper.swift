@@ -53,6 +53,7 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
         }
     }
     
+    
     public func takeActions(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,currentStatus: DownloadStatus) {
         print (currentStatus)
         switch currentStatus {
@@ -79,7 +80,6 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
             
         case .success:
             successDownload(url,directoryName: directoryName,for: directory)
-//            removeDownload(url,directoryName: directoryName,for: directory)
             break
         case .downloading, .resumed:
             pauseDownload(url,directoryName: directoryName,for: directory)

@@ -11,7 +11,7 @@ import UIKit
 class CollectInfoController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     private let download = RemoteDownloadHelper(directory: "audio")
     private var audioDirectoryName = "audioDirectory"
-    var selectCellArray:[NSIndexPath] = []
+//    var selectCellArray:[NSIndexPath] = []
     var dataArray:NSMutableArray = []
     var selectArray:NSMutableArray = []
     
@@ -71,8 +71,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         editButton.addTarget(self, action: #selector(edit), for: .touchUpInside)
         self.infoTableView.allowsMultipleSelection = true
         self.infoTableView.allowsSelectionDuringEditing = true
-        print("selectCellArray--\(self.selectCellArray)")
-        
         
 
         //       Mark:Get the downloaded data here，Cycle to add，获取本地数据
@@ -80,22 +78,26 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
             for subFileName in subFilesName {
                 //应该添加循环读取数据，返回一个Data数组，对数组进行处理，按照图片的时间进行处理
                 let subFilesNameWithoutExtension = (subFileName.components(separatedBy: "."))[0]
-                if let downloadedData = Download.readFileDataWithTime(subFilesNameWithoutExtension, directoryName: audioDirectoryName, for: .cachesDirectory, as: "jpg"){
+//                let subFilesExtension = (subFileName.components(separatedBy: "."))[1]
+                if let downloadedData = Download.readFileDataWithTime(subFilesNameWithoutExtension, directoryName: audioDirectoryName, for: .cachesDirectory, as: "jpg"),let readData = Download.readFileData(subFilesNameWithoutExtension + "[index]", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
                     let time = downloadedData["time"] as? Double
                     let data = downloadedData["data"] as! Data
                     let downloadedParsedData = UIImage(data: data)
                     cellContent["headline"] = subFilesNameWithoutExtension
                     cellContent["img"] = downloadedParsedData
                     cellContent["time"] = time
-                    allCellDatas.add(cellContent as Any)
                     print("subDirectry Files Name--\(String(describing:  subFileName))--cellContent:---\(cellContent)")
-
+                    let dataAsString = String(data: readData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                    cellContent["index"] = dataAsString
+                    allCellDatas.add(cellContent as Any)
                 }
+                
             }
            
             
         }
 
+        
         dataArray = allCellDatas.mutableCopy() as! NSMutableArray
 //        print("download dataArray--\( dataArray)")
         
@@ -124,7 +126,9 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         self.infoTableView.delegate = nil
         self.infoTableView.dataSource = nil
     }
+    var isAllSelect:Bool = false
     @IBAction func allSelectAction(_ sender: UIButton){
+        isAllSelect = true
         print("allSelectAction execute")
         self.selectArray.removeAllObjects()
         self.infoTableView.beginUpdates()
@@ -150,7 +154,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         sender.isSelected = !sender.isSelected
         self.infoTableView.endUpdates()
         print("dataArray allselect --\(dataArray) --  selectCellArray --\(selectArray)")
-        removeAllAudios()
     }
     func removeAllAudios() {
         Download.removeFiles(["mp3"])
@@ -158,6 +161,8 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
     @IBAction func deleteAction(_ sender: UIButton){
         print("deleteAction execute")
         if self.infoTableView.isEditing{
+            
+            
             self.infoTableView.beginUpdates()
             let indexArr = NSMutableArray() //镜像数组,存放需删除的数据源
             var indexPathToDelete:[IndexPath] = []
@@ -166,9 +171,23 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                 indexArr.add(self.dataArray[indexPath.row])
                 indexPathToDelete.append(indexPath)
             }
-            
-            
             print("dataArray --\(dataArray) -- indexArr000000 --\(indexArr) -- selectArray00000 --\(selectArray)")
+            
+            if isAllSelect{
+                Download.removeDirectory(directoryName: audioDirectoryName, for: .cachesDirectory)
+            }else{
+                print("selectArray pathUrl is：\(selectArray)")
+                for oneSelectArray in indexArr {
+                    let oneSelectArray = oneSelectArray as! NSDictionary
+                    let pathUrl = oneSelectArray["headline"] as! String
+                    Download.removeFileAccordingToFilePrefixName(pathUrl, directoryName: audioDirectoryName, for: .cachesDirectory)
+                    Download.removeFileAccordingToFileName(pathUrl+"[index]", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil)
+                }
+                
+            }
+            
+            
+            
             
             indexArr.enumerateObjects { (obj, idx, true) in
                 if self.dataArray.contains(obj){
@@ -181,9 +200,11 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
             self.infoTableView.endUpdates()
             print("dataArray --\(dataArray) -- indexArr11111 --\(indexArr) -- selectArray11111 --\(selectArray)")
             
+            
         }
     }
     @objc func edit(_ sender: UIButton){
+        isAllSelect = false
         //        self.selectCellArray.removeAll()
         self.selectArray.removeAllObjects()
         if !sender.isSelected{
@@ -266,37 +287,31 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                 }
             }else{
                 print("您点击了第\(indexPath.row + 1)个cell")
-            }
-        }
-        
-//        if let contentItemViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
-//            let pageData = TabBarAudioContent.sharedInstance.item
-//            contentItemViewController.dataObject = pageData
-//             ContentItemRenderContent.addPersonInfo = false
-//            self.navigationController?.pushViewController(contentItemViewController, animated: true)
-//        }
-        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-            var pageData = [ContentItem]()
-//            print("currentPageIndex is:--\(TabBarAudioContent.sharedInstance.playingIndex)---fetchResults is:\(TabBarAudioContent.sharedInstance.fetchResults)")
-            if let currentPageIndex = TabBarAudioContent.sharedInstance.playingIndex,let fetchResults = TabBarAudioContent.sharedInstance.fetchResults{
-                print("currentPageIndex is:--\(currentPageIndex)---fetchResults is:\(fetchResults)")
-                for (_, section) in (fetchResults.enumerated()) {
-                    for (_, item) in section.items.enumerated() {
-                        if ["story", "video", "interactive", "photo", "manual"].contains(item.type) {
-                            pageData.append(item)
-                        }
-                        
-                    }
-                }
-                pageData[currentPageIndex].isLandingPage = true
-                detailViewController.contentPageData = pageData
-                detailViewController.currentPageIndex = currentPageIndex
-                navigationController?.pushViewController(detailViewController, animated: true)
-            }
-
+                    let data = dataArray[indexPath.row]  as! NSDictionary
+                    if let index = data["index"] as? String{
+                        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+                            var pageData = [ContentItem]()
+                            if let index = Int(index),let fetchResults = TabBarAudioContent.sharedInstance.fetchResults{
+                                print("currentPageIndex is:--\(index)---fetchResults is:\(fetchResults)")
+                                for (_, section) in (fetchResults.enumerated()) {
+                                    for (_, item) in section.items.enumerated() {
+                                        if ["story", "video", "interactive", "photo", "manual"].contains(item.type) {
+                                            pageData.append(item)
+                                        }
             
+                                    }
+                                }
+                                pageData[index].isLandingPage = true
+                                detailViewController.contentPageData = pageData
+                                detailViewController.currentPageIndex = index
+                                navigationController?.pushViewController(detailViewController, animated: true)
+                            }
+                        }
+                    }
+            }
         }
         
+
         
     }
     

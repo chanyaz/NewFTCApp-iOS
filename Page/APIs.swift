@@ -199,6 +199,38 @@ struct APIs {
         return urlString
     }
     
+    
+    // MARK: Use different domains for different types of content
+    static func getSecureUrl(_ id: String, type: String) -> String {
+        let urlString: String
+        let originalDomain = getUrlStringInLanguage(htmlDomains)
+        let domain = checkServer(originalDomain)
+        
+        switch type {
+        case "video":
+            urlString = "\(domain)\(type)/\(id)?webview=ftcapp&002"
+        case "radio":
+            urlString = "\(domain)interactive/\(id)?webview=ftcapp&001"
+        case "interactive", "gym", "special":
+            urlString = "\(domain)interactive/\(id)?webview=ftcapp&i=3&001"
+        case "story":
+            urlString = "\(domain)/\(type)/\(id)?webview=ftcapp&full=y"
+        case "photonews", "photo":
+            urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
+        case "register":
+            urlString = "\(domain)index.php/users/register?i=4&webview=ftcapp"
+        case "htmlbook":
+            urlString = "\(domain)htmlbook"
+        case "htmlfile":
+            urlString = "\(domain)htmlfile"
+        case "html":
+            urlString = "\(domain)\(id).html"
+        default:
+            urlString = "\(domain)"
+        }
+        return urlString
+    }
+    
 
     // MARK: Get url string for subtypes by adding parameters to type urlstring
     static func getUrl(_ id: String, type: String, subType: ContentSubType) -> String {

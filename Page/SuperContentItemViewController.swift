@@ -754,14 +754,18 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             // MARK: - If it is other types of content such video and interactive features
             if let id = dataObject?.id, let type = dataObject?.type {
                 let urlStringOriginal: String
+                let baseUrlString: String
                 if  dataObject?.audioFileUrl != nil && type == "interactive" {
                     // MARK: - Radio should use a different combination or url than other types of interactives
                     urlStringOriginal = APIs.getUrl(id, type: "radio")
+                    baseUrlString = urlStringOriginal
                 } else if let customLink = dataObject?.customLink,
                     customLink != "" {
                     urlStringOriginal = customLink
+                    baseUrlString = urlStringOriginal
                 } else {
-                    urlStringOriginal = APIs.getUrl(id, type: type)
+                    urlStringOriginal = APIs.getSecureUrl(id, type: type)
+                    baseUrlString = APIs.getUrl(id, type: type)
                 }
                 let urlString = APIs.convert(urlStringOriginal)
                 print ("loading \(urlString)")
@@ -772,10 +776,35 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     } else {
                         urlComponents.queryItems = [newQuery]
                     }
-                    if let url = urlComponents.url {
-                        print ("url is now \(url)")
-                        let request = URLRequest(url: url)
-                        webView?.load(request)
+                    if let url = urlComponents.url,
+                        let baseUrl = URL(string: baseUrlString) {
+                        
+                        // MARK: - If it's a url that might be saved
+                        if url.scheme == "https" {
+                            if let data = Download.readFile(urlString, for: .cachesDirectory, as: "html"),
+                                let htmlString = String(data: data, encoding: .utf8) {
+                                //print ("found file \(htmlString)")
+                                webView?.loadHTMLString(htmlString, baseURL:baseUrl)
+                                Download.downloadUrl(urlString, to: .cachesDirectory, as: "html")
+                            } else {
+                                // MARK: If the file has not been downloaded yet
+                                Download.getDataFromUrl(url, completion: {[weak self] (data, response, error) in
+                                    if let data = data {
+                                        if let htmlString = String(data: data, encoding: .utf8) {
+                                            DispatchQueue.main.async {
+                                                self?.webView?.loadHTMLString(htmlString, baseURL:baseUrl)
+                                            }
+                                            Download.saveFile(data, filename: urlString, to: .cachesDirectory, as: "html")
+                                        }
+                                    }
+                                })
+                            }
+                        } else {
+                            print ("Not HTTPS, Load Directly in Browser")
+                            let request = URLRequest(url: url)
+                            webView?.load(request)
+                        }
+
                     }
                 }
             }

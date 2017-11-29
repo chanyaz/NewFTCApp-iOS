@@ -319,7 +319,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         view.addSubview(activityIndicator)
         activityIndicator.center = self.view.center
         activityIndicator.startAnimating()
-        let listAPIString = APIs.convert(Download.addVersion(listAPI))
+        let listAPIString = APIs.convert(Download.addVersionAndTimeStamp(listAPI))
+        print ("requesting api from: \(listAPIString)")
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
                 if error != nil {

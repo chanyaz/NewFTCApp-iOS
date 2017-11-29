@@ -239,6 +239,7 @@ struct APIs {
         contentItems = "<div class=\"block-container has-side\"><div class=\"block-inner\"><div class=\"content-container\"><div class=\"content-inner\"><div class=\"list-container\"><div class=\"list-inner\"><div class=\"items\">\(contentItems)<div class=\"clearfloat\"></div></div></div></div><div class=\"clearfloat block-bottom\"></div></div></div><div class=\"side-container\"><div class=\"side-inner\"><script type=\"text/javascript\">document.write (writeAdNew({devices: ['PC','PadWeb','iPhoneApp','AndroidApp'],pattern:'MPU',position:'Right1'}));</script></div></div><div class=\"clearfloat\"></div></div></div>"
         return contentItems
     }
+    
 }
 
 // MARK: - Error message in diffent languages

@@ -15,6 +15,7 @@ import SafariServices
 
 class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate,UIGestureRecognizerDelegate,CAAnimationDelegate{
     
+    private let playerAPI = PlayerAPI.sharedInstance
     private var audioDirectoryName = "audioDirectory"
     private var audioTitle = ""
     private var audioUrlString = ""
@@ -24,7 +25,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     //    private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = RemoteDownloadHelper(directory: "audioDirectory")
-    private let playerAPI = PlayerAPI.sharedInstance
+    
     private var queuePlayer:AVQueuePlayer?
     private var playerItems: [AVPlayerItem]? = []
     private var urls: [URL] = []
@@ -271,7 +272,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 
             }
         }
-        
+
+         
         downloadButton.drawCircle()
 
     }
@@ -656,7 +658,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         var playerItemTemp : AVPlayerItem?
         if let fetchAudioResults = fetchAudioResults {
             for (index, item0) in fetchAudioResults[0].items.enumerated() {
-//                let fileUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
                 if let fileUrl = item0.caudio {
                     urlOrigStrings.append(fileUrl)
                     if audioUrlString == fileUrl{
@@ -674,7 +675,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
         }
         print("urlString filtered audioUrlString --\(audioUrlString)")
-//        print("urlString playerItems---\(String(describing: playerItems))")
         
         print("urlString playingIndex222--\(playingIndex)")
         TabBarAudioContent.sharedInstance.playingIndex = playingIndex
@@ -709,7 +709,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         
         player = TabBarAudioContent.sharedInstance.player
         playerItem = TabBarAudioContent.sharedInstance.playerItem
-        //        let isPlaying = TabBarAudioContent.sharedInstance.isPlaying
+
         if player != nil {
             
         }else {

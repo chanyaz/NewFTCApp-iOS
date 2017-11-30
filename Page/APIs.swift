@@ -219,37 +219,37 @@ struct APIs {
     
     
     
-    // MARK: Use different domains for different types of content
-    static func getUrl(_ id: String, type: String) -> String {
-        let urlString: String
-        let webPageDomain = getUrlStringInLanguage(webPageDomains)
-        let publicDomain = getUrlStringInLanguage(publicDomains)
-        switch type {
-        case "video":
-            urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&002"
-        case "radio":
-            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&001"
-        case "interactive", "gym", "special":
-            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
-        case "channel", "tag", "archive", "archiver":
-            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
-        case "story":
-            urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
-        case "photonews", "photo":
-            urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
-        case "register":
-            urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
-        case "htmlbook":
-            urlString = "\(webPageDomain)htmlbook"
-        case "htmlfile":
-            urlString = "\(webPageDomain)htmlfile"
-        case "html":
-            urlString = "\(webPageDomain)\(id).html"
-        default:
-            urlString = "\(webPageDomain)"
-        }
-        return urlString
-    }
+//    // MARK: Use different domains for different types of content
+//    static func getUrl(_ id: String, type: String) -> String {
+//        let urlString: String
+//        let webPageDomain = getUrlStringInLanguage(webPageDomains)
+//        let publicDomain = getUrlStringInLanguage(publicDomains)
+//        switch type {
+//        case "video":
+//            urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&002"
+//        case "radio":
+//            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&001"
+//        case "interactive", "gym", "special":
+//            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
+//        case "channel", "tag", "archive", "archiver":
+//            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
+//        case "story":
+//            urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
+//        case "photonews", "photo":
+//            urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
+//        case "register":
+//            urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
+//        case "htmlbook":
+//            urlString = "\(webPageDomain)htmlbook"
+//        case "htmlfile":
+//            urlString = "\(webPageDomain)htmlfile"
+//        case "html":
+//            urlString = "\(webPageDomain)\(id).html"
+//        default:
+//            urlString = "\(webPageDomain)"
+//        }
+//        return urlString
+//    }
     
     
 //    // MARK: Use different domains for different types of content
@@ -288,7 +288,7 @@ struct APIs {
 
     // MARK: Get url string for subtypes by adding parameters to type urlstring
     static func getUrl(_ id: String, type: String, subType: ContentSubType) -> String {
-        let urlString = getUrl(id, type: type)
+        let urlString = getUrl(id, type: type, isSecure: false, isPartial: false)
         let finalUrlString: String
         let connector = (urlString.range(of: "?") == nil) ? "?" : "&"
         switch subType {

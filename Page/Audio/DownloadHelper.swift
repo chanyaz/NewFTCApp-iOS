@@ -70,7 +70,8 @@ class DownloadHelper: NSObject,URLSessionDownloadDelegate {
                 downloadTasks[fileName] = backgroundSession.downloadTask(with: request)
                 downloadTasks[fileName]?.resume()
                 postStatusChange(fileName, status: .downloading)
-                // TODO: track the action of download
+                // MARK: track the action of download
+                Track.event(category: "Download", action: "Start", label: url)
             } else {
                 print ("file already exists as \(fileName). No need to download. ")
                 postStatusChange(fileName, status: .success)
@@ -176,6 +177,7 @@ class DownloadHelper: NSObject,URLSessionDownloadDelegate {
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        print ("downloading finish: \(String(describing: session.configuration.identifier))! ")
         if let id = session.configuration.identifier {
             let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
             let documentDirectoryPath:String = path[0]
@@ -210,6 +212,7 @@ class DownloadHelper: NSObject,URLSessionDownloadDelegate {
                     didWriteData bytesWritten: Int64,
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64){
+        print ("downloading update: \(String(describing: session.configuration.identifier))! ")
         // MARK: - evaluateJavaScript is very energy consuming, do this only every 1k download
         if let productId = session.configuration.identifier {
             let totalMBsWritten = String(format: "%.1f", Float(totalBytesWritten)/1000000)
@@ -235,6 +238,7 @@ class DownloadHelper: NSObject,URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession,
                     task: URLSessionTask,
                     didCompleteWithError error: Error?){
+        print ("downloading error: \(String(describing: session.configuration.identifier))! ")
         if (error != nil) {
             print(error!.localizedDescription)
             if let productId = session.configuration.identifier {

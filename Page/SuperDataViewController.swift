@@ -225,10 +225,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         self.webView?.load(request)
                     }
                 }
-                
             } else if dataObjectType == "htmlbook" {
                 // MARK: - Open HTML Body Content from the html-book.html local file
-                let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
+                let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook", isSecure: false, isPartial: false))
                 if let contentHTMLPath = dataObject["id"],
                     let url = url {
                     do {

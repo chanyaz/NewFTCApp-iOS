@@ -246,38 +246,55 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     }
     
     @objc public func listen() {
-        if let playSpeechViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlaySpeech") as? PlaySpeech {
-            // MARK: Prepare for speech body data
-            let currentContentItemView = modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!)
-            if let dataObject = currentContentItemView?.dataObject {
-                let title: String
-                let language: String
-                let text: String
-                let eventCategory = "Listen To Story"
-                
-                // dataObject.caudio = "https://creatives.ftimg.net/album/c5fe0be8-ca48-11e7-ab18-7a9fb7d6163e.mp3"
-                // TODO: Check if there's audio file attached to this item
-                if let caudio = dataObject.caudio, caudio != "" {
-                    print ("There is chinese audio: \(caudio) for this item, handle it later. ")
-//                    PlayerAPI.sharedInstance.getSingletonItem(item: dataObject)
-//                    PlayerAPI.sharedInstance.openPlay()
-                    return
+        // MARK: Prepare for speech body data
+        let currentContentItemView = modelController.viewControllerAtIndex(currentPageIndex, storyboard: self.storyboard!)
+        if let dataObject = currentContentItemView?.dataObject {
+            let title: String
+            let language: String
+            let text: String
+            let eventCategory = "Listen To Story"
+
+            // MARK: 0 means Chinese
+            if actualLanguageIndex == 0 {
+                title = dataObject.headline
+                language = "ch"
+                text = dataObject.cbody ?? ""
+            } else {
+                title = dataObject.eheadline ?? ""
+                language = "en"
+                text = dataObject.ebody ?? ""
+            }
+            
+            // dataObject.caudio = "https://creatives.ftimg.net/album/c5fe0be8-ca48-11e7-ab18-7a9fb7d6163e.mp3"
+            let audioFileUrl: String?
+            
+            // TODO: Check if there's audio file attached to this item
+            if let caudio = dataObject.caudio,
+                caudio != "",
+                language == "ch"{
+                print ("There is chinese audio: \(caudio) for this item, handle it later. ")
+                //                    PlayerAPI.sharedInstance.getSingletonItem(item: dataObject)
+                //                    PlayerAPI.sharedInstance.openPlay()
+                audioFileUrl = caudio
+            } else if let eaudio = dataObject.eaudio,
+                eaudio != "",
+                language == "en" {
+                print ("There is english audio: \(eaudio) for this item, handle it later. ")
+                audioFileUrl = eaudio
+            } else {
+                audioFileUrl = nil
+            }
+            
+            if let audioFileUrl = audioFileUrl {
+                if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
+                    AudioContent.sharedInstance.body["title"] = title
+                    AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
+                    AudioContent.sharedInstance.body["interactiveUrl"] = APIs.getUrl(dataObject.id, type: dataObject.type, isSecure: false, isPartial: false)
+                    audioPlayer.item = dataObject
+                    audioPlayer.themeColor = themeColor
+                    navigationController?.pushViewController(audioPlayer, animated: true)
                 }
-                // TODO: Check if there's audio file attached to this item
-                if let eaudio = dataObject.eaudio, eaudio != "" {
-                    print ("There is english audio: \(eaudio) for this item, handle it later. ")
-                }
-                
-                // MARK: 0 means Chinese
-                if actualLanguageIndex == 0 {
-                    title = dataObject.headline
-                    language = "ch"
-                    text = dataObject.cbody ?? ""
-                } else {
-                    title = dataObject.eheadline ?? ""
-                    language = "en"
-                    text = dataObject.ebody ?? ""
-                }
+            } else {
                 let body = [
                     "title": title,
                     "language": language,
@@ -286,10 +303,11 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                     "id": dataObject.id
                 ]
                 SpeechContent.sharedInstance.body = body
-                navigationController?.pushViewController(playSpeechViewController, animated: true)
+                if let playSpeechViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlaySpeech") as? PlaySpeech {
+                    navigationController?.pushViewController(playSpeechViewController, animated: true)
+                }
             }
-        } else {
-            print ("cannot play the speech")
+            
         }
     }
     
@@ -434,5 +452,5 @@ extension DetailViewController: DetailModelDelegate {
         // MARK: Ask the view controller to hide or show status bar
         setNeedsStatusBarAppearanceUpdate()
     }
-
+    
 }

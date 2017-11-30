@@ -522,7 +522,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             ["story", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
             if let id = dataObject?.id {
-                let urlString = (subType == .None) ? APIs.getUrl(id, type: type) : APIs.getUrl(id, type: type, subType: subType)
+                let urlString = (subType == .None) ? APIs.getUrl(id, type: type, isSecure: false, isPartial: false) : APIs.getUrl(id, type: type, subType: subType)
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
                     let lead: String
@@ -699,7 +699,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         } else if dataObject?.type == "register"{
             let fileName = GB2Big5.convertHTMLFileName("register")
             if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html"){
-                let url = URL(string: APIs.getUrl("register", type: "register"))
+                let url = URL(string: APIs.getUrl("register", type: "register", isSecure: false, isPartial: false))
                 do {
                     let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                     let storyHTML = (storyTemplate as String)
@@ -711,7 +711,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         } else if dataObject?.type == "htmlfile"{
             // MARK: - If there's a need to open just the HTML file
             if let adHTMLPath = dataObject?.id {
-                let url = URL(string: APIs.getUrl("htmlfile", type: "htmlfile"))
+                let url = URL(string: APIs.getUrl("htmlfile", type: "htmlfile", isSecure: false, isPartial: false))
                 do {
                     let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                     let storyHTML = (storyTemplate as String)
@@ -738,7 +738,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         } else if dataObject?.type == "html"{
             // MARK: - If there's a need to open just the HTML file
             if let htmlFileName = dataObject?.id {
-                let url = URL(string: APIs.getUrl(htmlFileName, type: "html"))
+                let url = URL(string: APIs.getUrl(htmlFileName, type: "html", isSecure: false, isPartial: false))
                 let resourceFileName = GB2Big5.convertHTMLFileName(htmlFileName)
                 if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html") {
                     do {
@@ -757,7 +757,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 let baseUrlString: String
                 if  dataObject?.audioFileUrl != nil && type == "interactive" {
                     // MARK: - Radio should use a different combination or url than other types of interactives
-                    urlStringOriginal = APIs.getUrl(id, type: "radio")
+                    urlStringOriginal = APIs.getUrl(id, type: "radio", isSecure: false, isPartial: false)
                     baseUrlString = urlStringOriginal
                 } else if let customLink = dataObject?.customLink,
                     customLink != "" {

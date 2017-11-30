@@ -232,8 +232,8 @@ struct AppNavigation {
                 [
                     "title": "Exclusive Content",
                     //"api": "https://d1budb999l6vta.cloudfront.net/channel/json.html?pageid=ev&dfadfadfadfadf",
-                    "listapi": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=editorchoice&webview=ftcapp&bodyonly=yes&newad=yes&016",
-                    "url":"http://www.ftchinese.com/editorchoice.html?webview=ftcapp&newad=yes&ad=no",
+                    "listapi": "https://d1budb999l6vta.cloudfront.net/channel/editorchoice.html?webview=ftcapp&bodyonly=yes&ad=no&018",
+                    "url":"http://www.ftchinese.com/channel/editorchoice.html?webview=ftcapp&newad=yes&ad=no",
                     "screenName":"english/video",
                     "coverTheme": ""
                 ]

@@ -243,10 +243,18 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ShareHelper.shared.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
-        let url = "\(ShareHelper.shared.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
-        if let url = URL(string:url) {
-            let req = URLRequest(url:url)
+        let url: String
+        if let id = item?.id, let type = item?.type {
+            let shareUrl = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
+            ShareHelper.shared.webPageUrl = shareUrl
+            url = "\(shareUrl)&hideheader=yes&ad=no&inNavigation=yes&v=1"
+            .replacingOccurrences(of: "&i=3", with: "")
+        } else {
+            ShareHelper.shared.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
+            url = "\(ShareHelper.shared.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
+        }
+        if let urlFinal = URL(string:url) {
+            let req = URLRequest(url:urlFinal)
             webView?.load(req)
         }
         navigationItem.title = item?.headline
@@ -361,8 +369,10 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     private func parseAudioMessage() {
         let body = AudioContent.sharedInstance.body
-        if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
-            print (title)
+        if let title = body["title"],
+            let audioFileUrl = body["audioFileUrl"],
+            let interactiveUrl = body["interactiveUrl"] {
+            //print (title)
             audioTitle = title
             audioUrlString = audioFileUrl.replacingOccurrences(of: " ", with: "%20")
             audioId = interactiveUrl.replacingOccurrences(
@@ -370,6 +380,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 with: "$1",
                 options: .regularExpression
             )
+            print ("audio id is \(audioId)")
             ShareHelper.shared.webPageTitle = title
         }
     }
@@ -555,7 +566,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                     
                 case "playbackLikelyToKeepUp":
                     // Hide loader
-                    print ("should be playing. Duration is \(String(describing: playerItem?.duration))")
+                    print ("Audio Player: should be playing. Duration is \(String(describing: playerItem?.duration))")
                     playStatus.text = audioTitle
                 case "playbackBufferFull":
                     // Hide loader
@@ -593,7 +604,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                         self.updateAVPlayerWithLocalUrl()
                         self.downloadButton.progress = 0
                     }
-                    print ("notification received for \(status)")
+                    print ("Audio Player: notification received for \(status)")
                     self.downloadButton.status = status
                     //self.downloadButton.progress = 0
                 }

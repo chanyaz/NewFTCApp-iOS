@@ -118,8 +118,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //
     //    }
     
+
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
         if let aps = userInfo["aps"] as? NSDictionary {
             let title: String = (aps["alert"] as? [String:String])?["title"] ?? "为您推荐"
             //let lead: String = (aps["alert"] as? [String:String])?["body"] ?? ""

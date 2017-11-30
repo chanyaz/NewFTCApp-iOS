@@ -61,7 +61,7 @@ struct APIs {
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg", "cover", "thumbnail", "html", "OutlookoftheFutureof2017", "lunch2", "lunch1"]
     
     
-    private static func getUrlStringInLanguage(_ from: [String]) -> String {
+    public static func getUrlStringInLanguage(_ from: [String]) -> String {
         let currentPrefence = LanguageSetting.shared.currentPrefence
         let urlString: String
         if currentPrefence > 0 && currentPrefence < htmlDomains.count{
@@ -169,6 +169,56 @@ struct APIs {
         return from
     }
     
+    
+    // MARK: Use different domains for different types of content
+    static func getUrl(_ id: String, type: String, isSecure: Bool, isPartial: Bool) -> String {
+        let urlString: String
+        let webPageDomain: String
+        let publicDomain: String
+        if isSecure == true {
+            let originalDomain = getUrlStringInLanguage(htmlDomains)
+            let domain = checkServer(originalDomain)
+            webPageDomain = domain
+            publicDomain = domain
+        } else {
+            webPageDomain = getUrlStringInLanguage(webPageDomains)
+            publicDomain = getUrlStringInLanguage(publicDomains)
+        }
+        let partialParameter: String
+        if isPartial == true {
+            partialParameter = "?bodyonly=yes"
+        } else {
+            partialParameter = "?"
+        }
+        switch type {
+        case "video":
+            urlString = "\(webPageDomain)\(type)/\(id)\(partialParameter)&webview=ftcapp&002"
+        case "radio":
+            urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&001"
+        case "interactive", "gym", "special":
+            urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&i=3&001"
+        case "channel", "tag", "archive", "archiver":
+            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())\(partialParameter)&webview=ftcapp&001"
+        case "story":
+            urlString = "\(publicDomain)/\(type)/\(id)\(partialParameter)&webview=ftcapp&full=y"
+        case "photonews", "photo":
+            urlString = "\(webPageDomain)photonews/\(id)\(partialParameter)&webview=ftcapp&i=3"
+        case "register":
+            urlString = "\(publicDomain)index.php/users/register\(partialParameter)&i=4&webview=ftcapp"
+        case "htmlbook":
+            urlString = "\(webPageDomain)htmlbook\(partialParameter)"
+        case "htmlfile":
+            urlString = "\(webPageDomain)htmlfile\(partialParameter)"
+        case "html":
+            urlString = "\(webPageDomain)\(id).html\(partialParameter)"
+        default:
+            urlString = "\(webPageDomain)\(partialParameter)"
+        }
+        return urlString
+    }
+    
+    
+    
     // MARK: Use different domains for different types of content
     static func getUrl(_ id: String, type: String) -> String {
         let urlString: String
@@ -181,6 +231,8 @@ struct APIs {
             urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&001"
         case "interactive", "gym", "special":
             urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
+        case "channel", "tag", "archive", "archiver":
+            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
         case "story":
             urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
         case "photonews", "photo":
@@ -200,36 +252,38 @@ struct APIs {
     }
     
     
-    // MARK: Use different domains for different types of content
-    static func getSecureUrl(_ id: String, type: String) -> String {
-        let urlString: String
-        let originalDomain = getUrlStringInLanguage(htmlDomains)
-        let domain = checkServer(originalDomain)
-        
-        switch type {
-        case "video":
-            urlString = "\(domain)\(type)/\(id)?webview=ftcapp&002"
-        case "radio":
-            urlString = "\(domain)interactive/\(id)?webview=ftcapp&001"
-        case "interactive", "gym", "special":
-            urlString = "\(domain)interactive/\(id)?webview=ftcapp&i=3&001"
-        case "story":
-            urlString = "\(domain)/\(type)/\(id)?webview=ftcapp&full=y"
-        case "photonews", "photo":
-            urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
-        case "register":
-            urlString = "\(domain)index.php/users/register?i=4&webview=ftcapp"
-        case "htmlbook":
-            urlString = "\(domain)htmlbook"
-        case "htmlfile":
-            urlString = "\(domain)htmlfile"
-        case "html":
-            urlString = "\(domain)\(id).html"
-        default:
-            urlString = "\(domain)"
-        }
-        return urlString
-    }
+//    // MARK: Use different domains for different types of content
+//    static func getSecureUrl(_ id: String, type: String) -> String {
+//        let urlString: String
+//        let originalDomain = getUrlStringInLanguage(htmlDomains)
+//        let domain = checkServer(originalDomain)
+//
+//        switch type {
+//        case "video":
+//            urlString = "\(domain)\(type)/\(id)?webview=ftcapp&002"
+//        case "radio":
+//            urlString = "\(domain)interactive/\(id)?webview=ftcapp&001"
+//        case "interactive", "gym", "special":
+//            urlString = "\(domain)interactive/\(id)?webview=ftcapp&i=3&001"
+//        case "channel", "tag", "archive", "archiver":
+//            urlString = "\(domain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
+//        case "story":
+//            urlString = "\(domain)/\(type)/\(id)?webview=ftcapp&full=y"
+//        case "photonews", "photo":
+//            urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
+//        case "register":
+//            urlString = "\(domain)index.php/users/register?i=4&webview=ftcapp"
+//        case "htmlbook":
+//            urlString = "\(domain)htmlbook"
+//        case "htmlfile":
+//            urlString = "\(domain)htmlfile"
+//        case "html":
+//            urlString = "\(domain)\(id).html"
+//        default:
+//            urlString = "\(domain)"
+//        }
+//        return urlString
+//    }
     
 
     // MARK: Get url string for subtypes by adding parameters to type urlstring
@@ -340,6 +394,7 @@ struct LinkPattern {
     static let photonews = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
     static let tag = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
     static let archiver = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/archiver/([0-9-]+)"]
+    static let channel = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/([0-9-a-zA-Z]+.html)"]
     static let other = ["^(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
     //other:"http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=[0-9]+&impressionId=[a-z0-9A-Z]+$"
 }

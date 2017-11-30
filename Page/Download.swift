@@ -178,11 +178,8 @@ struct Download {
         }
     }
     
-    
-    
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
         var fileName = urlString
-        
         if fileName.range(of: "mp.weixin.qq.com") != nil {
             fileName = fileName.md5()
         } else {

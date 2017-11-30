@@ -764,8 +764,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     urlStringOriginal = customLink
                     baseUrlString = urlStringOriginal
                 } else {
-                    urlStringOriginal = APIs.getSecureUrl(id, type: type)
-                    baseUrlString = APIs.getUrl(id, type: type)
+                    urlStringOriginal = APIs.getUrl(id, type: type, isSecure: true, isPartial: false)
+                    baseUrlString = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
                 }
                 let urlString = APIs.convert(urlStringOriginal)
                 print ("loading \(urlString)")
@@ -778,12 +778,10 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     }
                     if let url = urlComponents.url,
                         let baseUrl = URL(string: baseUrlString) {
-                        
                         // MARK: - If it's a url that might be saved
                         if url.scheme == "https" {
                             if let data = Download.readFile(urlString, for: .cachesDirectory, as: "html"),
                                 let htmlString = String(data: data, encoding: .utf8) {
-                                //print ("found file \(htmlString)")
                                 webView?.loadHTMLString(htmlString, baseURL:baseUrl)
                                 Download.downloadUrl(urlString, to: .cachesDirectory, as: "html")
                             } else {

@@ -37,13 +37,16 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.archiver) {
                     id = contentId
                     type = "archiver"
+                } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.channel) {
+                    id = contentId
+                    type = "channel"
                 } else if urlString.matchingStrings(regexes: LinkPattern.other) != nil {
                     id = urlString
                     type = "webpage"
                 }
                 let linkSource = (urlString.matchingStrings(regexes: LinkPattern.xiaobingStoryLink) != nil) ? "xiaobing" : nil
                 if let type = type,
-                    ["tag", "archiver"].contains(type) == true {
+                    ["tag", "archiver", "channel"].contains(type) == true {
                     openDataView(id, of: type)
                     return
                 }
@@ -229,8 +232,12 @@ extension UIViewController: SFSafariViewControllerDelegate{
     func openDataView(_ id: String?, of type: String) {
         if let id = id,
             let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
-            let listAPI = APIs.convert("https://danla2f5eudt1.cloudfront.net/\(type)/\(id.addUrlEncoding())?webview=ftcapp&bodyonly=yes&001")
-            let urlString = APIs.convert("http://www.ftchinese.com/\(type)/\(id)")
+//            let domain = APIs.getUrlStringInLanguage(APIs.htmlDomains)
+//            let finalDomain = APIs.checkServer(domain)
+//            let listAPI = APIs.convert("\(finalDomain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&bodyonly=yes&001")
+//            let urlString = APIs.convert("http://www.ftchinese.com/\(type)/\(id)")
+            let listAPI = APIs.getUrl(id, type: type, isSecure: true, isPartial: true)
+            let urlString = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
             dataViewController.dataObject = [
                 "title": id,
                 //"api": APIs.get(id, type: type),

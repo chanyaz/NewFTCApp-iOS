@@ -71,8 +71,12 @@ public func setLastPlayAudio(){
     }
 }
 class PlayerAPI {
+ 
     static var sharedInstance = PlayerAPI()
     let nowPlayingCenter = NowPlayingCenter()
+    
+//    private let download = RemoteDownloadHelper(directory: "audioDirectory")
+
     func openPlay(){
         var player = TabBarAudioContent.sharedInstance.player
         var playerItem = TabBarAudioContent.sharedInstance.playerItem
@@ -88,6 +92,18 @@ class PlayerAPI {
             audioUrlString = self.parseAudioUrl(urlString: audioFileUrl)
         }
         
+        
+//        if audioUrlString != "" {
+//            if let localAudioFile = download.checkDownloadedFileInDirectory(download.getFileName(urlString: audioUrlString)+body["title"]!, directoryName: "audioDirectory", for: .cachesDirectory){
+//
+////                audioUrl = URL(fileURLWithPath: localAudioFile)
+//            }else{
+//                audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
+//                if let url = URL(string: audioUrlString){
+//                    audioUrl = url
+//                }
+//            }
+//        }
         
         if let url = URL(string: audioUrlString) {
             let audioUrl = url
@@ -216,17 +232,30 @@ class PlayerAPI {
             TabBarAudioContent.sharedInstance.item = item
         }
     }
-//    public func getGeneralTypeData(fetchResults:[ContentSection]?) {
-//        let content = [String:Any]()
+    public  func getDirectoryName(_ name: String) -> String {
+        var directoryName = ""
+        directoryName = name
+        return directoryName
+    }
+//    public func getJsonData(fetchResults:[ContentSection]?) {
+//        var contentItem = [String:Any]()
+//        var contentSection = [String:Any]()
 //        var pageData = [ContentItem]()
 //        if let fetchResults = fetchResults{
 //            for (sectionIndex, section) in (fetchResults.enumerated()) {
+//                contentSection["title"] = section.title
+//                contentSection["adid"] = section.adid
+//                contentSection["items"] = section.items
+//                contentSection["type"] = section.type
 //                for (itemIndex, item) in section.items.enumerated() {
+//                    item.adchId
+//
 //                    pageData.append(item)
+//
 //                }
 //            }
 //        }
-//       
+//
 //    }
     
 }
@@ -273,5 +302,7 @@ class UIButtonDownloadedChange: UIButton {
         }
     }
 }
+
+
 
 

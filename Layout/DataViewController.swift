@@ -1,5 +1,5 @@
 
-class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate {
+class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         let swipeGestureRecognizerDown = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
@@ -13,6 +13,7 @@ class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate {
         swipeGestureRecognizerUp.delegate = self
         webView?.addGestureRecognizer(swipeGestureRecognizerUp)
         self.view.addGestureRecognizer(swipeGestureRecognizerUp)
+        
     }
     @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true

@@ -11,6 +11,7 @@ import UIKit
 class CollectInfoController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     private let download = RemoteDownloadHelper(directory: "audio")
     private var audioDirectoryName = "audioDirectory"
+    fileprivate let contentAPI = ContentFetch()
     //    var selectCellArray:[NSIndexPath] = []
     var dataArray:NSMutableArray = []
     var selectArray:NSMutableArray = []
@@ -72,34 +73,41 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         self.infoTableView.allowsMultipleSelection = true
         self.infoTableView.allowsSelectionDuringEditing = true
         
+        if ContentInfoRenderContent.isDownloadedList == true{
+            
         
         //       Mark:Get the downloaded data here，Cycle to add，获取本地数据
-        if let subFilesName = Download.readSubFilesInDirectory(directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
-            for subFileName in subFilesName {
-                //应该添加循环读取数据，返回一个Data数组，对数组进行处理，按照图片的时间进行处理
-                let subFilesNameWithoutExtension = (subFileName.components(separatedBy: "."))[0]
-                //                let subFilesExtension = (subFileName.components(separatedBy: "."))[1]
-                if let downloadedData = Download.readFileDataWithTime(subFilesNameWithoutExtension, directoryName: audioDirectoryName, for: .cachesDirectory, as: "jpg"),let readData = Download.readFileData(subFilesNameWithoutExtension + "[index]", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
-                    let time = downloadedData["time"] as? Double
-                    let data = downloadedData["data"] as! Data
-                    let downloadedParsedData = UIImage(data: data)
-                    cellContent["headline"] = subFilesNameWithoutExtension
-                    cellContent["img"] = downloadedParsedData
-                    cellContent["time"] = time
-                    print("subDirectry Files Name--\(String(describing:  subFileName))--cellContent:---\(cellContent)")
-                    let dataAsString = String(data: readData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-                    cellContent["index"] = dataAsString
-                    allCellDatas.add(cellContent as Any)
+            if let subFilesName = Download.readSubFilesInDirectory(directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
+                for subFileName in subFilesName {
+                    //应该添加循环读取数据，返回一个Data数组，对数组进行处理，按照图片的时间进行处理
+                    let subFilesNameWithoutExtension = (subFileName.components(separatedBy: "."))[0]
+                    //                let subFilesExtension = (subFileName.components(separatedBy: "."))[1]
+                    if let downloadedData = Download.readFileDataWithTime(subFilesNameWithoutExtension, directoryName: audioDirectoryName, for: .cachesDirectory, as: "jpg"),let readIndexData = Download.readFileData(subFilesNameWithoutExtension + "-index", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil),let readTagData = Download.readFileData(subFilesNameWithoutExtension + "-tag", directoryName: audioDirectoryName, for: .cachesDirectory, as: nil){
+                        let time = downloadedData["time"] as? Double
+                        let data = downloadedData["data"] as! Data
+                        let downloadedParsedData = UIImage(data: data)
+                        cellContent["headline"] = subFilesNameWithoutExtension
+                        cellContent["img"] = downloadedParsedData
+                        cellContent["time"] = time
+                        
+                        print("subDirectry Files Name--\(String(describing:  subFileName))--cellContent:---\(cellContent)")
+                        let readIndexDataAsString = String(data: readIndexData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                        cellContent["index"] = readIndexDataAsString
+                        let readTagDataAsString = String(data: readTagData,encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                        cellContent["tag"] = readTagDataAsString
+                        allCellDatas.add(cellContent as Any)
+                    }
+                    
                 }
                 
+                
             }
-            
-            
+            dataArray = allCellDatas.mutableCopy() as! NSMutableArray
+        }else{
+            dataArray = allCellContent.mutableCopy() as! NSMutableArray
         }
         
-        
-        dataArray = allCellDatas.mutableCopy() as! NSMutableArray
-        //        print("download dataArray--\( dataArray)")
+                print("download dataArray--\( dataArray)")
         
         self.view.backgroundColor = UIColor.white
         let image = UIImage(named: "NavBack")
@@ -271,6 +279,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         return self.dataArray.count
         
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
@@ -287,26 +296,51 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                     cell.selectedButton.setImage(UIImage(named:"LoveList"), for: UIControlState.normal)
                 }
             }else{
+                // TODO:还需要去做实现读取tag链接，需要保存tag，对本地文件进行比较，看怎么读取的呢？有2中情况，第1种为获取首页，第2种为获取各种专栏页面，获取的链接形式不一样，最好用tagAPI函数读取urlString名
                 print("您点击了第\(indexPath.row + 1)个cell")
                 let data = dataArray[indexPath.row]  as! NSDictionary
                 if let index = data["index"] as? String{
                     if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
                         var pageData = [ContentItem]()
-                        if let index = Int(index),let fetchResults = TabBarAudioContent.sharedInstance.fetchResults{
-                            print("currentPageIndex is:--\(index)---fetchResults is:\(fetchResults)")
-                            for (_, section) in (fetchResults.enumerated()) {
-                                for (_, item) in section.items.enumerated() {
-                                    if ["story"].contains(item.type) {
-                                        pageData.append(item)
+                        
+                        let urlString = "indexphp-jsapi-publish-ftcc"
+                        if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
+                            //print ("found \(urlString) in caches directory. ")
+                            if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
+                            {
+                                let contentSections = contentAPI.formatJSON(resultsDictionary)
+                                let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
+                                print ("read results from local file\(results)")
+                                
+                                if let index = Int(index){
+                                    let fetchResults = results.fetchResults
+                                    print("currentPageIndex is:--\(index)---fetchResults is:\(fetchResults)")
+                                    for (_, section) in (fetchResults.enumerated()) {
+                                        for (_, item) in section.items.enumerated() {
+                                            if ["story"].contains(item.type) {
+                                                pageData.append(item)
+                                            }
+                                            
+                                        }
                                     }
-                                    
+                                    pageData[index].isLandingPage = true
+                                    detailViewController.contentPageData = pageData
+                                    detailViewController.currentPageIndex = index
+                                    navigationController?.pushViewController(detailViewController, animated: true)
                                 }
+                                
+                                //print ("update UI from local file with \(urlString)")
                             }
-                            pageData[index].isLandingPage = true
-                            detailViewController.contentPageData = pageData
-                            detailViewController.currentPageIndex = index
-                            navigationController?.pushViewController(detailViewController, animated: true)
                         }
+//                        var tag = data["tag"]
+//                        let tagAPI = APIs.get(tag, type: "tag")
+//
+//                        detailViewController.pageData =  ["title": tag,
+//                                                         "api": tagAPI,
+//                                                         "url":"",
+//                                                         "screenName":"tag/\(tag)"]
+                        
+                        
                     }
                 }
                 

@@ -15,6 +15,7 @@ import SafariServices
 
 class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationDelegate,UIViewControllerTransitioningDelegate,UIGestureRecognizerDelegate,CAAnimationDelegate{
     
+    private let playerAPI = PlayerAPI.sharedInstance
     private var audioDirectoryName = "audioDirectory"
     private var audioTitle = ""
     private var audioUrlString = ""
@@ -24,7 +25,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     //    private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = RemoteDownloadHelper(directory: "audioDirectory")
-    private let playerAPI = PlayerAPI.sharedInstance
+    
     private var queuePlayer:AVQueuePlayer?
     private var playerItems: [AVPlayerItem]? = []
     private var urls: [URL] = []
@@ -203,6 +204,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         Download.removeFileName("audioData",  for: .cachesDirectory, as: nil)
     }
     private var downloadedItem:[String:String]=[:]
+    
     @objc func download(_ sender: Any) {
         
         Download.createDirectory(directoryName: audioDirectoryName, to: .cachesDirectory)
@@ -210,7 +212,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         if let item = item{
             let headline = item.headline
             let image = item.image
-//            let lead = item.lead
+            let tag = item.tag
             let caudio = item.caudio
             let eaudio = item.eaudio
      
@@ -240,8 +242,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
 
                 
                 let newName = headline + ".jpg"
-
-                
                 if let localAudioFile = download.checkDownloadedFileInDirectory(newName, directoryName: audioDirectoryName, for: .cachesDirectory){
                     print("localAudioFile path is: \(localAudioFile)")
                 }else{
@@ -263,15 +263,20 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 }
                 let playingIndexStr = String(playingIndex)
                 if let playingIndexData = playingIndexStr.data(using: String.Encoding.utf8){
-                    Download.saveFiles(playingIndexData, directoryName: self.audioDirectoryName, filename: headline+"[index]", to:.cachesDirectory , as: nil)
-                    print("download bodyData write--\(playingIndex)")
+                    Download.saveFiles(playingIndexData, directoryName: self.audioDirectoryName, filename: headline+"-index", to:.cachesDirectory , as: nil)
+                    print("download playingIndex--\(playingIndex)")
                 }
-                
+                let tagStr = String(tag)
+                if let tagStr = tagStr.data(using: String.Encoding.utf8){
+                    Download.saveFiles(tagStr, directoryName: self.audioDirectoryName, filename: headline+"-tag", to:.cachesDirectory , as: nil)
+                    print("download tag--\(tag)")
+                }
                 
                 
             }
         }
-        
+   
+         
         downloadButton.drawCircle()
 
     }
@@ -656,7 +661,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         var playerItemTemp : AVPlayerItem?
         if let fetchAudioResults = fetchAudioResults {
             for (index, item0) in fetchAudioResults[0].items.enumerated() {
-//                let fileUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
                 if let fileUrl = item0.caudio {
                     urlOrigStrings.append(fileUrl)
                     if audioUrlString == fileUrl{
@@ -674,7 +678,6 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
         }
         print("urlString filtered audioUrlString --\(audioUrlString)")
-//        print("urlString playerItems---\(String(describing: playerItems))")
         
         print("urlString playingIndex222--\(playingIndex)")
         TabBarAudioContent.sharedInstance.playingIndex = playingIndex
@@ -709,7 +712,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         
         player = TabBarAudioContent.sharedInstance.player
         playerItem = TabBarAudioContent.sharedInstance.playerItem
-        //        let isPlaying = TabBarAudioContent.sharedInstance.isPlaying
+
         if player != nil {
             
         }else {
@@ -1171,7 +1174,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 let id = object.id
                 let item0 = TabBarAudioContent.sharedInstance.item
                 let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
-                print ("Handle download Status Change: \(cleanAudioUrl) =? \(id)")
+//                print ("Handle download Status Change: \(cleanAudioUrl) =? \(id)")
                 var headline = ""
                 let lastPathName = self.getFileName(urlString: cleanAudioUrl)
                 if let headline0 = item0?.headline{
@@ -1214,7 +1217,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 if id.contains(headline) == true && id.contains(lastPathName) == true {
                     self.downloadButton.progress = percentage/100
                     self.downloadButton.status = .resumed
-                    print("downloadButton progress is:\(percentage)--id:\(id)")
+//                    print("downloadButton progress is:\(percentage)--id:\(id)")
                 }
             }
         }

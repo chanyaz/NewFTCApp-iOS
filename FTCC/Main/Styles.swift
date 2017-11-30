@@ -150,4 +150,7 @@ struct Share {
 struct ToolBarStatus {
     static let shouldHide = true
 }
+struct PlayTabBarStatus {
+    static let isShouldHide = false
+}
 

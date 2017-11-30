@@ -25,9 +25,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var autoScrollWhenTalk = false
     var historyTalkData:[[String:String]]? = nil
   
-    var iceUserInfo:(iceUserId:String, triggerGreetContent:String) {
-        return self.determineUser()
-    }
+   
     
     //MAKR: showingData用于存储展示数据中必要的数据，该数据会存储进Caches
     //MARK: showingCellData用于存储展示数据中所有Cell有关数据，该数据依赖shoingData生成
@@ -350,32 +348,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
   
     
-    func determineUser() -> (iceUserId: String, triggerGreetContent: String){
-        let userIdFromUserDefault = UserDefaults.standard.object(forKey: "iceUserId")
-        var iceUserId: String? = nil
-        var triggerGreet: String? = nil
-        if let userIdFromUserDefaultReal = userIdFromUserDefault {
-            let userIdStr = userIdFromUserDefaultReal as? String
-            if let userIdStrReal = userIdStr, userIdStrReal.count == 32  {
-                iceUserId = userIdStrReal
-                triggerGreet = self.chat.triggerGreetForOldUser
-            }
-        }
-        if let iceUserIdReal = iceUserId, let triggerGreetReal = triggerGreet {
-            return (
-                iceUserIdReal,
-                triggerGreetReal
-            )
-        } else {
-            let newIceUserId = SomeGlobal.randomString(length: 32)
-            UserDefaults.standard.set(newIceUserId, forKey: "iceUserId")
-            return (
-                newIceUserId,
-                self.chat.triggerGreetForNewUser
-            )
-        }
-    }
-        
+  
    
     //FIXME:要延迟若干毫秒再滚动到底部，否则如果self.talkListBlock.contentSize.height > self.talkListBlock.frame.size.height，就没法滚动到底部。此外，还需要增加调用self.modifyTheOffset来调整，但是这样会使滚动不连贯.
     func tableViewScrollToBottom(animated:Bool, delay dedayMs:Int) {
@@ -479,8 +452,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.isTalkListFirstReloadData = false
         self.tableViewScrollToBottom(animated: false, delay: 100)
         
-        let iceUserInfo = self.iceUserInfo
+        let iceUserInfo = self.chat.iceUserInfo
         let triggerGreetContent = iceUserInfo.triggerGreetContent
+           
         //print("ice userinfo iceUserId:\(iceUserId)")
         //print("ice userinfo triggerGreetContent:\(triggerGreetContent)")
         

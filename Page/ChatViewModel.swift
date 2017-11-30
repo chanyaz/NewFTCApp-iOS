@@ -429,7 +429,7 @@ class Chat {
     let triggerGreetForOldUser = "【端用户新对话打开信号，内容无法显示】"
     let triggerGreetForNewUser = "【端用户首次打开信号，内容无法显示】"
     let triggerNewsContent = "【端用户首次打开信号，推荐新闻】"
-    var iceUserInfo:(iceUserId:String, triggerGreetContent:String)? = nil
+    var iceUserInfo:(iceUserId:String, triggerGreetContent:String) = (iceUserId:"", triggerGreetContent:"")
     var userId: String? = nil
     
     let appIdField = "x-msxiaoice-request-app-id"
@@ -494,7 +494,7 @@ class Chat {
 
     init() {
         self.iceUserInfo = self.determineUser()
-        self.userId = self.iceUserInfo?.iceUserId
+        self.userId = self.iceUserInfo.iceUserId
         self.deviceId = self.getDeviceId()
         //self.trackSign = self.computeTrackSign(secretKey: self.secretUpload, parameList: self.paramList)
         //print("track sign:\(self.trackSign ?? "")")

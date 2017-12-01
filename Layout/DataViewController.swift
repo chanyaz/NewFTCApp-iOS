@@ -1,5 +1,9 @@
 
 class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate{
+//    fileprivate var fetches = ContentFetchResults(
+//        apiUrl: "",
+//        fetchResults: [ContentSection]()
+//    )
     override func viewDidLoad() {
         super.viewDidLoad()
         let swipeGestureRecognizerDown = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
@@ -44,13 +48,13 @@ class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate{
             }
         }
     }
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return handleItemSelect(indexPath)
-    }
-    
-    // MARK: - Move the handle cell selection to a function so that it can be used in different cases
-    fileprivate func handleItemSelect(_ indexPath: IndexPath) -> Bool {
-        // MARK: Check the fetchResults to make sure there's no out-of-range error
+//    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+//        return handleItemSelect(indexPath)
+//    }
+//
+////     MARK: - Move the handle cell selection to a function so that it can be used in different cases
+//    fileprivate func handleItemSelect(_ indexPath: IndexPath) -> Bool {
+////         MARK: Check the fetchResults to make sure there's no out-of-range error
 //        if fetches.fetchResults.count <= indexPath.section || fetches.fetchResults.count == 0 || indexPath.section < 0 {
 //            Track.event(category: "CatchError", action: "Out of Range", label: "handleItemSelect 1")
 //            print ("There is not enough sections in fetchResults")
@@ -62,10 +66,50 @@ class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate{
 //            return false
 //        }
 //        let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
-        if layoutStrategy == "Icons"{
-            return false
-        }
-        return false
-    }
+//        if layoutStrategy == "Icons"{
+//            return false
+//        }
+//        if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
+//            var pageData1 = [ContentItem]()
+//            //                    var pageData2 = [ContentItem]()
+//            var currentPageIndex = 0
+//            var pageIndexCount = 0
+//            for (sectionIndex, section) in fetches.fetchResults.enumerated() {
+//                for (itemIndex, item) in section.items.enumerated() {
+//                    if ["story", "video", "interactive", "photo", "manual"].contains(item.type) {
+//                        if sectionIndex == indexPath.section && itemIndex == indexPath.row {
+//                            currentPageIndex = pageIndexCount
+//                        }
+//                        pageData1.append(item)
+//                        pageIndexCount += 1
+//                    }
+//
+//                }
+//            }
+//            let pageDataRaw = pageData1
+//
+//            let pageData: [ContentItem]
+//
+//            if selectedItem.type == "manual" {
+//                // MARK: For manual html pages in ebooks, hide bottom bar and ads
+//                pageData = pageDataRaw
+//                detailViewController.showBottomBar = false
+//            } else {
+//                let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
+//                pageData = AdLayout.insertAdId(to: withAd.contentItems, with: adchId)
+//                currentPageIndex = withAd.pageIndex
+//            }
+//
+//            //print (pageData)
+//
+//            pageData[currentPageIndex].isLandingPage = true
+//            detailViewController.themeColor = themeColor
+//            detailViewController.contentPageData = pageData
+//            detailViewController.currentPageIndex = currentPageIndex
+//            navigationController?.pushViewController(detailViewController, animated: true)
+//        }
+//
+//        return true
+//    }
 }
 

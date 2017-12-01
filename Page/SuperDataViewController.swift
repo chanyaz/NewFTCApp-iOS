@@ -1166,6 +1166,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             return false
         }
         let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
+        if layoutStrategy == "Icons"{
+            return false
+        }
         // MARK: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
         // MARK: if it is an audio file, push the audio view controller
         if let audioFileUrl = selectedItem.audioFileUrl {

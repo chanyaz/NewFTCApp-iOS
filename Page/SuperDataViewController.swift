@@ -225,10 +225,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         self.webView?.load(request)
                     }
                 }
-                
             } else if dataObjectType == "htmlbook" {
                 // MARK: - Open HTML Body Content from the html-book.html local file
-                let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook"))
+                let url = URL(string: APIs.getUrl("htmlbook", type: "htmlbook", isSecure: false, isPartial: false))
                 if let contentHTMLPath = dataObject["id"],
                     let url = url {
                     do {
@@ -319,7 +318,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         view.addSubview(activityIndicator)
         activityIndicator.center = self.view.center
         activityIndicator.startAnimating()
-        let listAPIString = APIs.convert(Download.addVersion(listAPI))
+        let listAPIString = APIs.convert(Download.addVersionAndTimeStamp(listAPI))
+        print ("requesting api from: \(listAPIString)")
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
                 if error != nil {

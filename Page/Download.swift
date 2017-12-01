@@ -178,11 +178,8 @@ struct Download {
         }
     }
     
-    
-    
     private static func getFileNameFromUrlString(_ urlString: String, as fileExtension: String?) -> String {
         var fileName = urlString
-        
         if fileName.range(of: "mp.weixin.qq.com") != nil {
             fileName = fileName.md5()
         } else {
@@ -298,21 +295,27 @@ struct Download {
     }
     
     // MARK: - Add a version parameter for request
-    public static func addVersion(_ urlString: String) -> String {
+    public static func addVersionAndTimeStamp(_ urlString: String) -> String {
+        // MARK: Get a new time stamp every x minutes so that user won't be stuck with a very old cache.
+        let cacheMinute = 1
+        let date = Date()
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        let hour = calendar.component(.hour, from: date)
+        let minutes = calendar.component(.minute, from: date)
+        let minutesTrucated = cacheMinute*Int(minutes/cacheMinute)
+        let timeStamp = "&t=\(year)\(month)\(day)\(hour)\(minutesTrucated)"
         let versionFromBundle: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        if urlString.range(of: "?") != nil{
-            return "\(urlString)&v=\(versionFromBundle)"
-        } else {
-            return "\(urlString)?v=\(versionFromBundle)"
-        }
+        let connector = (urlString.range(of: "?") == nil) ? "?": "&"
+        return "\(urlString)\(connector)v=\(versionFromBundle)\(timeStamp)"
     }
-    
     
     public static func getQueryStringParameter(url: String, param: String) -> String? {
         guard let url = URLComponents(string: url) else { return nil }
         return url.queryItems?.first(where: { $0.name == param })?.value
     }
-    
     
     public static func matches(for regex: String, in text: String) -> [String] {
         do {
@@ -328,12 +331,11 @@ struct Download {
         }
     }
     
-    
     public static func grabHTMLResource(_ listAPI: String, completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         //MARK: Do this only when user is using wifi
         if IJReachability().connectedToNetworkOfType() == .wiFi {
             Track.event(category: "Background Download", action: "Request", label: listAPI)
-            let listAPIString = APIs.convert(Download.addVersion(listAPI))
+            let listAPIString = APIs.convert(Download.addVersionAndTimeStamp(listAPI))
             if let url = URL(string: listAPIString) {
                 getDataFromUrl(url) {(data, response, error)  in
                     print ("response from get data from url: \(listAPI)")

@@ -198,11 +198,11 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
     }
     
-    @IBAction func deleteAudio(_ sender: UIButton) {
-//        removeAllAudios()
-        Download.removeDirectory(directoryName: audioDirectoryName, for: .cachesDirectory)
-        Download.removeFileName("audioData",  for: .cachesDirectory, as: nil)
-    }
+//    @IBAction func deleteAudio(_ sender: UIButton) {
+////        removeAllAudios()
+//        Download.removeDirectory(directoryName: audioDirectoryName, for: .cachesDirectory)
+//        Download.removeFileName("audioData",  for: .cachesDirectory, as: nil)
+//    }
     private var downloadedItem:[String:String]=[:]
     
     @objc func download(_ sender: Any) {

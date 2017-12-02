@@ -85,7 +85,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
     }
     @IBAction func ButtonPlayPause(_ sender: UIButton) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
+        playerAPI.removeObserver(self, name: Notification.Name(rawValue: "reloadView").rawValue, object: nil)
+        playerAPI.postObserver(name: "reloadView", object: self)
         if let player = player {
             print("ButtonPlayPause\(player)")
             
@@ -280,15 +281,15 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         downloadButton.drawCircle()
 
     }
-    func getFileName(urlString:String)-> String{
-        var lastPathName = ""
-        let urlString = playerAPI.parseAudioUrl(urlString: urlString)
-        let url = URL(string: urlString)
-        if let url = url{
-           lastPathName = url.lastPathComponent
-        }
-        return lastPathName
-    }
+//    func getFileName(urlString:String)-> String{
+//        var lastPathName = ""
+//        let urlString = playerAPI.parseAudioUrl(urlString: urlString)
+//        let url = URL(string: urlString)
+//        if let url = url{
+//           lastPathName = url.lastPathComponent
+//        }
+//        return lastPathName
+//    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -378,10 +379,11 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             let data = fetchAudioResults[0].items[playingIndex]
             getLoadedImage(item: data)
             let cleanUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: data)
-            checkLocalFileToUpdateButtonStatus(urlString: self.getFileName(urlString: cleanUrl))
+            checkLocalFileToUpdateButtonStatus(urlString: download.getFileName(urlString: cleanUrl))
+            self.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
         }
         updatePlayButtonUI()
-        self.playStatus.text = fetchAudioResults![0].items[playingIndex].headline
+        
 //        rotateAnimation()
 //        startRotateAnimate()
         NotificationCenter.default.addObserver(
@@ -584,8 +586,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
 
         var audioUrl :URL? = nil
         if audioUrlString != "" {
-            checkLocalFileToUpdateButtonStatus(urlString: self.getFileName(urlString: audioUrlString))
-            if let localAudioFile = download.checkDownloadedFileInDirectory(self.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
+            checkLocalFileToUpdateButtonStatus(urlString: download.getFileName(urlString: audioUrlString))
+            if let localAudioFile = download.checkDownloadedFileInDirectory(download.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 
             }else{
@@ -594,7 +596,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     audioUrl = url
                 }
             }
-//            downloadButton.drawCircle()
+
             if let audioUrl = audioUrl{
                 print ("checking audioUrl: \(audioUrl)")
                 let asset = AVURLAsset(url: audioUrl)
@@ -630,6 +632,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             addPlayerItemObservers()
             NowPlayingCenter().updatePlayingCenter()
             enableBackGroundMode()
+            playerAPI.removeObserver(self, name: Notification.Name(rawValue: "reloadView").rawValue, object: nil)
+            playerAPI.postObserver(name: "reloadView", object: self)
         }
         
     }
@@ -766,8 +770,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         var audioUrl :URL? = nil
         print("when actualAudioLanguageIndex change, audioUrlString is \(audioUrlString)")
         if audioUrlString != "" {
-            checkLocalFileToUpdateButtonStatus(urlString: self.getFileName(urlString: audioUrlString))
-            if let localAudioFile = download.checkDownloadedFileInDirectory(self.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
+            checkLocalFileToUpdateButtonStatus(urlString: download.getFileName(urlString: audioUrlString))
+            if let localAudioFile = download.checkDownloadedFileInDirectory(download.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
                 
                 audioUrl = URL(fileURLWithPath: localAudioFile)
             }else{
@@ -798,14 +802,15 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             TabBarAudioContent.sharedInstance.audioUrl = audioUrl
 //            TabBarAudioContent.sharedInstance.audioHeadLine = item?.headline
             
-            if let player = player {
-                player.play()
-            }
+            
             playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
             // MARK: - If user is using wifi, buffer the audio immediately
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
+            }
+            if let player = player {
+                player.play()
             }
             print("when actualAudioLanguageIndex change, playerItem is \(String(describing: playerItem))")
             // MARK: - Update audio play progress
@@ -829,12 +834,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             addPlayerItemObservers()
             NowPlayingCenter().updatePlayingCenter()
             enableBackGroundMode()
-            NotificationCenter.default.removeObserver(
-                self,
-                name: Notification.Name(rawValue: "reloadView"),
-                object: nil
-            )
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadView"), object: self)
+            playerAPI.removeObserver(self, name: Notification.Name(rawValue: "reloadView").rawValue, object: nil)
+            playerAPI.postObserver(name: "reloadView", object: self)
+            
             //            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
         }
     }
@@ -912,7 +914,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     private func updateAVPlayerWithLocalUrl() {
         if audioUrlString != "" {
             let currentSliderValue = self.progressSlider.value
-            if let localAudioFile = download.checkDownloadedFileInDirectory(self.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
+            if let localAudioFile = download.checkDownloadedFileInDirectory(download.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
                 print ("local audio file is: \(localAudioFile)")
                 let localAudioFile = playerAPI.parseAudioUrl(urlString: localAudioFile)
                 let audioUrl = URL(fileURLWithPath: localAudioFile)
@@ -959,11 +961,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             name: Notification.Name(rawValue: download.downloadProgressNotificationName),
             object: nil
         )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: Notification.Name(rawValue: "reloadView"),
-            object: nil
-        )
+        playerAPI.removeObserver(self, name: Notification.Name(rawValue: "reloadView").rawValue, object: nil)
     }
     // MARK: - Observe download status change
     func addDownloadObserve(){
@@ -1176,7 +1174,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
 //                print ("Handle download Status Change: \(cleanAudioUrl) =? \(id)")
                 var headline = ""
-                let lastPathName = self.getFileName(urlString: cleanAudioUrl)
+                let lastPathName = self.download.getFileName(urlString: cleanAudioUrl)
                 if let headline0 = item0?.headline{
                     headline = headline0
                 }
@@ -1209,7 +1207,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 let item0 = TabBarAudioContent.sharedInstance.item
                 let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
                 var headline = ""
-                let lastPathName = self.getFileName(urlString: cleanAudioUrl)
+                let lastPathName = self.download.getFileName(urlString: cleanAudioUrl)
                 if let headline0 = item0?.headline{
                     headline = headline0
                 }

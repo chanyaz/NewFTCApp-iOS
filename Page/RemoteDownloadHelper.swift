@@ -23,6 +23,7 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
+    
     func getFileName(urlString:String)-> String{
         var lastPathName = ""
         let urlString = playerAPI.parseAudioUrl(urlString: urlString)
@@ -32,6 +33,7 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
         }
         return lastPathName
     }
+    
     
     //TODO: Deal with space in the file url
     public func startDownload(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {

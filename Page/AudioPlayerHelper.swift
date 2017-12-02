@@ -74,37 +74,26 @@ class PlayerAPI {
  
     static var sharedInstance = PlayerAPI()
     let nowPlayingCenter = NowPlayingCenter()
-    
-//    private let download = RemoteDownloadHelper(directory: "audioDirectory")
+    var player = TabBarAudioContent.sharedInstance.player
+    var playerItem = TabBarAudioContent.sharedInstance.playerItem
+    var fetchAudioResults = TabBarAudioContent.sharedInstance.fetchResults
 
     func openPlay(){
-        var player = TabBarAudioContent.sharedInstance.player
-        var playerItem = TabBarAudioContent.sharedInstance.playerItem
+//        var player = TabBarAudioContent.sharedInstance.player
+//        var playerItem = TabBarAudioContent.sharedInstance.playerItem
         var audioUrlString:String = ""
         self.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime.rawValue, object: playerItem)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "updateMiniPlay"), object: nil)
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
-        
-        print("player item exist url")
 //        需要使用body，因为有2种语言
         let body = TabBarAudioContent.sharedInstance.body
         if let audioFileUrl = body["audioFileUrl"]{
             audioUrlString = self.parseAudioUrl(urlString: audioFileUrl)
+            getPlayingUrl(audioFileUrl, fetchAudioResults: fetchAudioResults)
+//            print("tabbar playing index\(index)")
         }
         
-        
-//        if audioUrlString != "" {
-//            if let localAudioFile = download.checkDownloadedFileInDirectory(download.getFileName(urlString: audioUrlString)+body["title"]!, directoryName: "audioDirectory", for: .cachesDirectory){
-//
-////                audioUrl = URL(fileURLWithPath: localAudioFile)
-//            }else{
-//                audioUrlString = playerAPI.parseAudioUrl(urlString: audioUrlString)
-//                if let url = URL(string: audioUrlString){
-//                    audioUrl = url
-//                }
-//            }
-//        }
         
         if let url = URL(string: audioUrlString) {
             let audioUrl = url
@@ -116,7 +105,6 @@ class PlayerAPI {
                 print("item player do not exist")
                 player = AVPlayer()
             }
-//            TabBarAudioContent.sharedInstance.isPlaying = true
             let statusType = IJReachability().connectedToNetworkOfType()
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
@@ -174,6 +162,7 @@ class PlayerAPI {
         TabBarAudioContent.sharedInstance.isPlayFinish = true
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
       NowPlayingCenter().updateTimeForPlayerItem(TabBarAudioContent.sharedInstance.player)
+        orderPlay()
     }
     public func addObserver(_ observer: Any,name:String, _ actionSection: Selector, object anObject: Any?) {
 //        NotificationCenter.default.addObserver(observer,selector:actionSection, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: anObject)
@@ -220,17 +209,133 @@ class PlayerAPI {
         var toPlayIndex = 0
         if let fetchAudioResults = fetchAudioResults {
             for (index, item0) in fetchAudioResults[0].items.enumerated() {
-                if let fileUrl = item0.caudio {
-                    if urlString == fileUrl{
-                        toPlayIndex = index
-                    }
+                let fileUrl = getUrlAccordingToAudioLanguageIndex(item: item0)
+                if urlString == fileUrl{
+                    toPlayIndex = index
                 }
             }
         }
         print("urlString toPlayIndex--\(toPlayIndex)")
-//        TabBarAudioContent.sharedInstance.playingIndex = toPlayIndex
         return toPlayIndex
     }
+//    可以直接获取播放playItem，获取item和fetchAudioResults,获取对应的index和playItem，考虑需不需要合并到一起呢，当下一首的时候index添加，
+    private var queuePlayer:AVQueuePlayer?
+    private var playerItems: [AVPlayerItem]? = []
+    private var urlOrigStrings: [String] = []
+    private var urlTempString = ""
+    private var playingUrlStr:String? = ""
+    private var playingIndex:Int = 0
+
+    var count:Int = 0
+    private func getPlayingUrl(_ urlString:String,fetchAudioResults:[ContentSection]?){
+         playingIndex = 0
+         urlOrigStrings = []
+        var playerItemTemp : AVPlayerItem?
+        if let fetchAudioResults = fetchAudioResults {
+            for (index, item0) in fetchAudioResults[0].items.enumerated() {
+                let fileUrl = getUrlAccordingToAudioLanguageIndex(item: item0)
+                urlOrigStrings.append(fileUrl)
+                if urlString == fileUrl{
+                    print("fileUrl:\(fileUrl)--urlString:\(urlString)")
+                    playingUrlStr = fileUrl
+                    playingIndex = index
+                }
+                urlTempString = parseAudioUrl(urlString: fileUrl)
+                
+                if let urlAsset = URL(string: urlTempString){
+                    playerItemTemp = AVPlayerItem(url: urlAsset) //可以用于播放的playItem
+                    playerItems?.append(playerItemTemp!)
+                }
+
+            }
+        }
+        print("filtered audio urlString --\(urlString)")
+        
+        print("urlString playingIndex--\(playingIndex)")
+        TabBarAudioContent.sharedInstance.playingIndex = playingIndex
+        
+    }
+    @objc func playerFinishPlaying() {
+        let startTime = CMTimeMake(0, 1)
+        self.playerItem?.seek(to: startTime)
+        self.player?.pause()
+        nowPlayingCenter.updateTimeForPlayerItem(player)
+        let mode = TabBarAudioContent.sharedInstance.mode
+        print("mode11 \(String(describing: mode))")
+        if let mode = TabBarAudioContent.sharedInstance.mode {
+            switch mode {
+            case 0:
+                orderPlay()
+            case 1:
+                onePlay()
+            case 2:
+                randomPlay()
+            default:
+                orderPlay()
+            }
+        }
+        else{
+            print("mode is nil orderPlay")
+            orderPlay()
+        }
+    }
+    func orderPlay(){
+        count = urlOrigStrings.count
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        playingIndex += 1
+        if playingIndex >= count{
+            playingIndex = 0
+        }
+        print("when orderPlay, urlString playingIndex---\(playingIndex)")
+        updateSingleTonData(fetchAudioResults: fetchAudioResults)
+        openPlay()
+        let currentItem = TabBarAudioContent.sharedInstance.player?.currentItem
+        if let nextItem = playerItems?[playingIndex]{
+            queuePlayer?.advanceToNextItem()
+            currentItem?.seek(to: kCMTimeZero)
+            queuePlayer?.insert(nextItem, after: currentItem)
+            self.player?.play()
+        }
+        
+    }
+    func randomPlay(){
+        let randomIndex = Int(arc4random_uniform(UInt32(urlOrigStrings.count)))
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        playingIndex = randomIndex
+        print("when randomPlay,urlString playingIndex---\(playingIndex)")
+        updateSingleTonData(fetchAudioResults: fetchAudioResults)
+        openPlay()
+        let currentItem = TabBarAudioContent.sharedInstance.player?.currentItem
+        if let nextItem = playerItems?[playingIndex]{
+            queuePlayer?.advanceToNextItem()
+            currentItem?.seek(to: kCMTimeZero)
+            queuePlayer?.insert(nextItem, after: currentItem)
+            self.player?.play()
+        }
+    }
+    func onePlay(){
+        let startTime = CMTimeMake(0, 1)
+        self.playerItem?.seek(to: startTime)
+        self.player?.pause()
+        nowPlayingCenter.updateTimeForPlayerItem(player)
+    }
+    func updateSingleTonData(fetchAudioResults:[ContentSection]?){
+        if let fetchAudioResults = fetchAudioResults{
+            getSingletonItem(item: fetchAudioResults[0].items[playingIndex])
+            TabBarAudioContent.sharedInstance.playingIndex = playingIndex
+//                parseAudioMessage()
+        }
+        
+    }
+//    private func parseAudioMessage() {
+//        let body = TabBarAudioContent.sharedInstance.body
+//        print(" body--\(body)")
+//        if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
+//            audioUrlString = audioFileUrl
+//            print("parsed audioUrlString--\(audioUrlString)")
+//
+//        }
+//    }
     
     public func getSingletonItem(item: ContentItem?) {
         if let item = item {
@@ -239,6 +344,7 @@ class PlayerAPI {
             TabBarAudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
             TabBarAudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(item.id)"
             TabBarAudioContent.sharedInstance.item = item
+            print("singleton item\(item.headline)")
         }
     }
     public  func getDirectoryName(_ name: String) -> String {
@@ -246,26 +352,7 @@ class PlayerAPI {
         directoryName = name
         return directoryName
     }
-//    public func getJsonData(fetchResults:[ContentSection]?) {
-//        var contentItem = [String:Any]()
-//        var contentSection = [String:Any]()
-//        var pageData = [ContentItem]()
-//        if let fetchResults = fetchResults{
-//            for (sectionIndex, section) in (fetchResults.enumerated()) {
-//                contentSection["title"] = section.title
-//                contentSection["adid"] = section.adid
-//                contentSection["items"] = section.items
-//                contentSection["type"] = section.type
-//                for (itemIndex, item) in section.items.enumerated() {
-//                    item.adchId
-//
-//                    pageData.append(item)
-//
-//                }
-//            }
-//        }
-//
-//    }
+
     
 }
 

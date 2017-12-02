@@ -644,7 +644,20 @@ struct Download {
         return nil
     }
     
-
+    public static func checkDownloadedFileInDirectory(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory) -> String? {
+        
+        if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
+            let templatepathInDocument = directoryUrl.appendingPathComponent(url)
+            var templatePath: String? = nil
+            if  FileManager().fileExists(atPath: templatepathInDocument.path) {
+                templatePath = templatepathInDocument.path
+            }
+            return templatePath
+        }else{
+            return nil
+        }
+        
+    }
  
 }
 

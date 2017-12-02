@@ -130,21 +130,17 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
             print ("file \(url) cannot be deleted")
         }
     }
-    public func checkDownloadedFileInDirectory(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory) -> String? {
-        
-        if let directoryUrl = Download.getDirectoryUrlFromDirectory(directoryName, for: directory){
-            let templatepathInDocument = directoryUrl.appendingPathComponent(url)
-            var templatePath: String? = nil
-            if  FileManager().fileExists(atPath: templatepathInDocument.path) {
-                templatePath = templatepathInDocument.path
-            }
+    
+    public func checkDownloadedFileToUpdateStatus(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory) -> String? {
+        if let templatePath = Download.checkDownloadedFileInDirectory(url, directoryName: directoryName, for: directory){
             currentStatus = .success
             return templatePath
         }else{
             currentStatus = .remote
             return nil
         }
-
+       
+        
     }
     // MARK: keep a reference of all the Download Tasks
     private var downloadTasks = [String: URLSessionDownloadTask]()

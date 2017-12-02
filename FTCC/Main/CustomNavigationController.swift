@@ -144,7 +144,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
         // Dispose of any resources that can be recreated.
     }
     @objc func updateMiniPlay(){
-        print("How many times updateMiniPlay observe run?")
+//        print("How many times updateMiniPlay observe run?")
         tabView.isHidden = false
         if let item = TabBarAudioContent.sharedInstance.item{
             player = TabBarAudioContent.sharedInstance.player

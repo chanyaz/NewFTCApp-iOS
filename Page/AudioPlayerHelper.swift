@@ -87,16 +87,26 @@ class PlayerAPI {
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try? AVAudioSession.sharedInstance().setActive(true)
 //        需要使用body，因为有2种语言
+        var audioUrl :URL? = nil
         let body = TabBarAudioContent.sharedInstance.body
-        if let audioFileUrl = body["audioFileUrl"]{
-            audioUrlString = self.parseAudioUrl(urlString: audioFileUrl)
+        if let audioFileUrl = body["audioFileUrl"],let title = body["title"]{
+            
             getPlayingUrl(audioFileUrl, fetchAudioResults: fetchAudioResults)
 //            print("tabbar playing index\(index)")
+            let fileName = title + getFileName(urlString: audioFileUrl)
+            if let localAudioFile = Download.checkDownloadedFileInDirectory(fileName, directoryName: "audioDirectory", for: .cachesDirectory){
+                print("localAudioFile path--\(localAudioFile)")
+                audioUrl = URL(fileURLWithPath: localAudioFile)
+            }else{
+                audioUrlString = self.parseAudioUrl(urlString: audioFileUrl)
+                if let url = URL(string: audioUrlString){
+                    audioUrl = url
+                }
+            }
         }
         
-        
-        if let url = URL(string: audioUrlString) {
-            let audioUrl = url
+  
+        if let audioUrl = audioUrl {
             let asset = AVURLAsset(url: audioUrl)
             playerItem = AVPlayerItem(asset: asset)
             if player != nil {
@@ -156,13 +166,32 @@ class PlayerAPI {
     }
     
     @objc func playerDidFinishPlaying() {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: UIApplication.shared.keyWindow?.rootViewController)
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playFinish"), object: UIApplication.shared.keyWindow?.rootViewController)
         print("player finish play")
-        TabBarAudioContent.sharedInstance.player?.pause()
+//        TabBarAudioContent.sharedInstance.player?.pause()
         TabBarAudioContent.sharedInstance.isPlayFinish = true
-        TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
-      NowPlayingCenter().updateTimeForPlayerItem(TabBarAudioContent.sharedInstance.player)
-        orderPlay()
+//        TabBarAudioContent.sharedInstance.playerItem?.seek(to: kCMTimeZero)
+// NowPlayingCenter().updateTimeForPlayerItem(TabBarAudioContent.sharedInstance.player)
+        let startTime = CMTimeMake(0, 1)
+        self.playerItem?.seek(to: startTime)
+        self.player?.pause()
+        nowPlayingCenter.updateTimeForPlayerItem(player)
+        if let mode = TabBarAudioContent.sharedInstance.mode {
+            switch mode {
+            case 0:
+                orderPlay()
+            case 1:
+                onePlay()
+            case 2:
+                randomPlay()
+            default:
+                orderPlay()
+            }
+        }
+        else{
+            print("mode is nil orderPlay")
+            orderPlay()
+        }
     }
     public func addObserver(_ observer: Any,name:String, _ actionSection: Selector, object anObject: Any?) {
 //        NotificationCenter.default.addObserver(observer,selector:actionSection, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: anObject)
@@ -255,30 +284,7 @@ class PlayerAPI {
         TabBarAudioContent.sharedInstance.playingIndex = playingIndex
         
     }
-    @objc func playerFinishPlaying() {
-        let startTime = CMTimeMake(0, 1)
-        self.playerItem?.seek(to: startTime)
-        self.player?.pause()
-        nowPlayingCenter.updateTimeForPlayerItem(player)
-        let mode = TabBarAudioContent.sharedInstance.mode
-        print("mode11 \(String(describing: mode))")
-        if let mode = TabBarAudioContent.sharedInstance.mode {
-            switch mode {
-            case 0:
-                orderPlay()
-            case 1:
-                onePlay()
-            case 2:
-                randomPlay()
-            default:
-                orderPlay()
-            }
-        }
-        else{
-            print("mode is nil orderPlay")
-            orderPlay()
-        }
-    }
+
     func orderPlay(){
         count = urlOrigStrings.count
         NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
@@ -352,8 +358,25 @@ class PlayerAPI {
         directoryName = name
         return directoryName
     }
-
     
+    func getFileName(urlString:String)-> String{
+        var lastPathName = ""
+        let urlString = parseAudioUrl(urlString: urlString)
+        let url = URL(string: urlString)
+        if let url = url{
+            lastPathName = url.lastPathComponent
+        }
+        return lastPathName
+    }
+    func getNewFileName()->String{
+        var newFileSring = ""
+        let body = TabBarAudioContent.sharedInstance.body
+        if let audioFileUrl = body["audioFileUrl"],let title = body["title"]{
+            newFileSring = title + getFileName(urlString: audioFileUrl)
+            return newFileSring
+        }
+        return newFileSring
+    }
 }
 
 class UIButtonDownloadedChange: UIButton {

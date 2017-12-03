@@ -24,20 +24,12 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
         return queue
     }()
     
-    func getFileName(urlString:String)-> String{
-        var lastPathName = ""
-        let urlString = playerAPI.parseAudioUrl(urlString: urlString)
-        let url = URL(string: urlString)
-        if let url = url{
-            lastPathName = url.lastPathComponent
-        }
-        return lastPathName
-    }
+ 
     
     
     //TODO: Deal with space in the file url
     public func startDownload(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
-        let fileName = newFileName + getFileName(urlString: url)
+        let fileName = newFileName + playerAPI.getFileName(urlString: url)
         if let localAudioFile = Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory){
             print ("localAudioFile already exists as \(localAudioFile). No need to download. ")
             postStatusChange(localAudioFile, status: .success)
@@ -92,14 +84,14 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
 
     public func successDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
 
-        let fileName = newFileName + getFileName(urlString: url)
+        let fileName = newFileName + playerAPI.getFileName(urlString: url)
         if Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory) != nil{
 //            removeDownloadedFile(localFileLocation, directoryName: directoryName, for: directory)
             postStatusChange(fileName, status: .success)
         }
     }
     public func removeDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
-        let fileName = newFileName + getFileName(urlString: url)
+        let fileName = newFileName + playerAPI.getFileName(urlString: url)
         if let localFileLocation = Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory){
             removeDownloadedFile(localFileLocation, directoryName: directoryName, for: directory)
             postStatusChange(fileName, status: .remote)
@@ -107,7 +99,7 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
     }
     
     public func pauseDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
-        let fileName = newFileName + getFileName(urlString: url)
+        let fileName = newFileName + playerAPI.getFileName(urlString: url)
         if Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory) != nil{
             downloadTasks[fileName]?.suspend()
             postStatusChange(fileName, status: .paused)
@@ -115,7 +107,7 @@ class RemoteDownloadHelper: NSObject,URLSessionDownloadDelegate {
     }
     
     public func resumeDownload(_ url: String, directoryName: String,for directory: FileManager.SearchPathDirectory,newFileName:String) {
-        let fileName = newFileName + getFileName(urlString: url)
+        let fileName = newFileName + playerAPI.getFileName(urlString: url)
         if Download.getDownloadedFilePathInDirectory(fileName, directoryName: directoryName, for: directory) != nil{
             downloadTasks[fileName]?.resume()
             postStatusChange(fileName, status: .resumed)

@@ -281,15 +281,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         downloadButton.drawCircle()
         
     }
-    //    func getFileName(urlString:String)-> String{
-    //        var lastPathName = ""
-    //        let urlString = playerAPI.parseAudioUrl(urlString: urlString)
-    //        let url = URL(string: urlString)
-    //        if let url = url{
-    //           lastPathName = url.lastPathComponent
-    //        }
-    //        return lastPathName
-    //    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -305,6 +297,12 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
         var spaceBetweenListAndView: CGFloat = 0
+//        if let downLoadEndBtn = UIImage(named:"DownLoadEndBtn"){
+//            let downLoadEndBtnHeight = downLoadEndBtn.size.height
+//            let downLoadEndBtnWidth = downLoadEndBtn.size.width
+//            downloadButton.frame.size.width = downLoadEndBtnWidth
+//            downloadButton.frame.size.height = downLoadEndBtnHeight
+//        }
         
         spaceBetweenListAndView = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 0, OtherIphoneValue: 25)
         exitTopConstraint.constant = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 60, OtherIphoneValue: 30)
@@ -365,12 +363,13 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         playStatus.textColor = UIColor(hex: Color.Content.background)
         let themeColor = UIColor(hex: Color.Content.headline)
         audioImage.backgroundColor = themeColor
-        
-        
         initStyle()
+        
         fetchAudioResults = TabBarAudioContent.sharedInstance.fetchResults
         player = TabBarAudioContent.sharedInstance.player
         playerItem = TabBarAudioContent.sharedInstance.playerItem
+        
+       
         parseAudioMessage()
         getPlayingUrl()
         addPlayerItemObservers()
@@ -379,7 +378,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             let data = fetchAudioResults[0].items[playingIndex]
             getLoadedImage(item: data)
             let cleanUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: data)
-            checkLocalFileToUpdateButtonStatus(urlString: download.getFileName(urlString: cleanUrl))
+            checkLocalFileToUpdateButtonStatus(urlString: data.headline+playerAPI.getFileName(urlString: cleanUrl))
             self.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
         }
         updatePlayButtonUI()
@@ -552,10 +551,24 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         return isExist
     }
     public func checkLocalFileToUpdateButtonStatus(urlString:String){
+//        print("checkLocalFileToUpdateButtonStatus urlString\(urlString)")
+
         if isExistLocalFile(urlString: urlString) == true{
+            if let downLoadEndBtn = UIImage(named:"DownLoadEndBtn"){
+                let downLoadEndBtnHeight = downLoadEndBtn.size.height
+                let downLoadEndBtnWidth = downLoadEndBtn.size.width
+                downloadButton.frame.size.width = downLoadEndBtnWidth
+                downloadButton.frame.size.height = downLoadEndBtnHeight
+            }
             downloadButton.setImage(UIImage(named:"DownLoadEndBtn"), for: .normal)
             downloadButton.status = .success
         }else{
+            if let downLoadBtn = UIImage(named:"DownLoadBtn"){
+                let downLoadBtnHeight = downLoadBtn.size.height
+                let downLoadBtnWidth = downLoadBtn.size.width
+                downloadButton.frame.size.width = downLoadBtnWidth
+                downloadButton.frame.size.height = downLoadBtnHeight
+            }
             downloadButton.setImage(UIImage(named:"DownLoadBtn"), for: .normal)
             downloadButton.status = .remote
         }
@@ -583,9 +596,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
         
         var audioUrl :URL? = nil
-        if audioUrlString != "" {
-            checkLocalFileToUpdateButtonStatus(urlString: download.getFileName(urlString: audioUrlString))
-            if let localAudioFile = download.checkDownloadedFileToUpdateStatus(download.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
+        if audioUrlString != "" ,let item0 = item0{
+            checkLocalFileToUpdateButtonStatus(urlString: item0.headline+playerAPI.getFileName(urlString: audioUrlString))
+            if let localAudioFile = download.checkDownloadedFileToUpdateStatus(item0.headline+playerAPI.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 
             }else{
@@ -762,14 +775,15 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             
         }
     }
+
     
     private func prepareAudioPlay() {
         
         var audioUrl :URL? = nil
         print("when actualAudioLanguageIndex change, audioUrlString is \(audioUrlString)")
         if audioUrlString != "" {
-            checkLocalFileToUpdateButtonStatus(urlString: download.getFileName(urlString: audioUrlString))
-            if let localAudioFile = download.checkDownloadedFileToUpdateStatus(download.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
+            checkLocalFileToUpdateButtonStatus(urlString: playerAPI.getNewFileName())
+            if let localAudioFile = download.checkDownloadedFileToUpdateStatus(playerAPI.getNewFileName(), directoryName: audioDirectoryName, for: .cachesDirectory){
                 
                 audioUrl = URL(fileURLWithPath: localAudioFile)
 //                print("local audioUrl: \(audioUrl)")
@@ -912,7 +926,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     private func updateAVPlayerWithLocalUrl() {
         if audioUrlString != "" {
             let currentSliderValue = self.progressSlider.value
-            if let localAudioFile = download.checkDownloadedFileToUpdateStatus(download.getFileName(urlString: audioUrlString), directoryName: audioDirectoryName, for: .cachesDirectory){
+            if let localAudioFile = download.checkDownloadedFileToUpdateStatus(playerAPI.getNewFileName(), directoryName: audioDirectoryName, for: .cachesDirectory){
                 print ("local audio file is: \(localAudioFile)")
                 let localAudioFile = playerAPI.parseAudioUrl(urlString: localAudioFile)
                 let audioUrl = URL(fileURLWithPath: localAudioFile)
@@ -1172,7 +1186,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
                 //                print ("Handle download Status Change: \(cleanAudioUrl) =? \(id)")
                 var headline = ""
-                let lastPathName = self.download.getFileName(urlString: cleanAudioUrl)
+                let lastPathName = self.playerAPI.getFileName(urlString: cleanAudioUrl)
                 if let headline0 = item0?.headline{
                     headline = headline0
                 }
@@ -1205,7 +1219,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 let item0 = TabBarAudioContent.sharedInstance.item
                 let cleanAudioUrl  = self.playerAPI.getUrlAccordingToAudioLanguageIndex(item: item0)
                 var headline = ""
-                let lastPathName = self.download.getFileName(urlString: cleanAudioUrl)
+                let lastPathName = self.playerAPI.getFileName(urlString: cleanAudioUrl)
                 if let headline0 = item0?.headline{
                     headline = headline0
                 }

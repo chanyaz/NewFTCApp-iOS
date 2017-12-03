@@ -386,6 +386,16 @@ class UIButtonDownloadedChange: UIButton {
             print("progress--\(progress)")
         }
     }
+//    var downLoadBtnHeight: Float = 0{
+//        didSet {
+//
+//        }
+//    }
+//    var downLoadBtnWidth: Float = 0{
+//        didSet {
+//            self.frame.size.width = CGFloat(downLoadBtnWidth)
+//        }
+//    }
     
     var circleShape = CAShapeLayer()
     public func drawCircle() {
@@ -405,18 +415,34 @@ class UIButtonDownloadedChange: UIButton {
     var status: DownloadStatus = .remote {
         didSet{
             var buttonImageName = ""
+            var downLoadEndBtnWidth:CGFloat = 0
+            var downLoadEndBtnHeight:CGFloat = 0
             switch self.status {
             case .remote:
+                downLoadEndBtnWidth = 19
+                downLoadEndBtnHeight = 19
                 buttonImageName = "DownLoadBtn"
             case .downloading:
+                downLoadEndBtnWidth = 19
+                downLoadEndBtnHeight = 19
                 buttonImageName = "PauseBtn"
             case .success:
+                downLoadEndBtnWidth = 25
+                downLoadEndBtnHeight = 19
                 buttonImageName = "DownLoadEndBtn"
             case .paused:
+                downLoadEndBtnWidth = 19
+                downLoadEndBtnHeight = 19
                 buttonImageName = "DownLoadBtn"
             case .resumed:
+                downLoadEndBtnWidth = 19
+                downLoadEndBtnHeight = 19
                 buttonImageName = "PauseBtn"
             }
+
+            self.frame.size.width = CGFloat(downLoadEndBtnWidth)
+            self.frame.size.height = CGFloat(downLoadEndBtnHeight)
+            print("button status--\(self.status)")
             self.setImage(UIImage(named: buttonImageName), for: .normal)
         }
     }

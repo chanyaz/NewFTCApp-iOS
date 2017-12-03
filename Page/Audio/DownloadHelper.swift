@@ -17,7 +17,7 @@ enum DownloadStatus {
     case success
 }
 
-class DownloadHelper: NSObject,URLSessionDownloadDelegate {
+class DownloadHelper: NSObject, URLSessionDownloadDelegate {
     
     public var directory: String
     public let downloadStatusNotificationName = "download status change"

@@ -212,7 +212,7 @@ class DownloadHelper: NSObject, URLSessionDownloadDelegate {
                     didWriteData bytesWritten: Int64,
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64){
-        print ("downloading update: \(String(describing: session.configuration.identifier))! ")
+        print ("downloading update: \(totalBytesWritten)/\(totalBytesExpectedToWrite)(\(Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))) \(String(describing: session.configuration.identifier))! ")
         // MARK: - evaluateJavaScript is very energy consuming, do this only every 1k download
         if let productId = session.configuration.identifier {
             let totalMBsWritten = String(format: "%.1f", Float(totalBytesWritten)/1000000)

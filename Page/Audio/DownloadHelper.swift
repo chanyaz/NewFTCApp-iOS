@@ -177,7 +177,7 @@ class DownloadHelper: NSObject, URLSessionDownloadDelegate {
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print ("downloading finish: \(String(describing: session.configuration.identifier))! ")
+        print ("downloading finish: \(downloadTask.taskIdentifier). \(session.configuration.identifier ?? "")! ")
         if let id = session.configuration.identifier {
             let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
             let documentDirectoryPath:String = path[0]
@@ -191,7 +191,7 @@ class DownloadHelper: NSObject, URLSessionDownloadDelegate {
                 do {
                     try fileManager.moveItem(at: location, to: destinationURLForFile)
                     // MARK: - Update UI and track download success
-                    print("download success")
+                    print("download and save success for \(downloadTask.taskIdentifier). \(session.configuration.identifier ?? "")")
                     postStatusChange(id, status: .success)
                 }catch{
                     print("An error occurred while moving file to destination url")
@@ -212,7 +212,7 @@ class DownloadHelper: NSObject, URLSessionDownloadDelegate {
                     didWriteData bytesWritten: Int64,
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64){
-        print ("downloading update: \(totalBytesWritten)/\(totalBytesExpectedToWrite)(\(Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))) \(String(describing: session.configuration.identifier))! ")
+        print ("downloading update: \(totalBytesWritten)/\(totalBytesExpectedToWrite)(\(Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))) \(downloadTask.taskIdentifier). \(session.configuration.identifier ?? "")! ")
         // MARK: - evaluateJavaScript is very energy consuming, do this only every 1k download
         if let productId = session.configuration.identifier {
             let totalMBsWritten = String(format: "%.1f", Float(totalBytesWritten)/1000000)

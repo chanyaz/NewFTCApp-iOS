@@ -53,6 +53,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     var count:Int = 0
     var tabView = CustomSmallPlayView()
     
+
+    
     @IBOutlet weak var switchChAndEnAudio: UISegmentedControl!
     let love = UIButton()
     let downloadButton = UIButtonDownloadedChange()
@@ -297,13 +299,30 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         let margin:CGFloat = 20
         let space = (width - margin*2 - buttonWidth*4)/3
         var spaceBetweenListAndView: CGFloat = 0
-//        if let downLoadEndBtn = UIImage(named:"DownLoadEndBtn"){
-//            let downLoadEndBtnHeight = downLoadEndBtn.size.height
-//            let downLoadEndBtnWidth = downLoadEndBtn.size.width
-//            downloadButton.frame.size.width = downLoadEndBtnWidth
-//            downloadButton.frame.size.height = downLoadEndBtnHeight
-//        }
+        var downLoadBtnWidth:CGFloat = 0
+        var downLoadBtnHeight: CGFloat = 0
         
+        if let fetchAudioResults = TabBarAudioContent.sharedInstance.fetchResults{
+            let data = fetchAudioResults[0].items[playingIndex]
+            let cleanUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: data)
+            if isExistLocalFile(urlString: data.headline+playerAPI.getFileName(urlString: cleanUrl)) == true{
+                downloadButton.status = .success
+            }else{
+                downloadButton.status = .remote
+            }
+           
+        }
+        if downloadButton.status == .success,let downLoadEndBtn = UIImage(named:"DownLoadEndBtn"){
+
+            downLoadBtnHeight = downLoadEndBtn.size.height
+            downLoadBtnWidth = downLoadEndBtn.size.width
+            print("downLoadEndBtnHeight success---\(downLoadBtnHeight)--downLoadBtnWidth:\(downLoadBtnWidth)")
+        }
+        if downloadButton.status == .remote {
+            downLoadBtnHeight = 19
+            downLoadBtnWidth = 19
+            print("downLoadEndBtnHeight remote---\(downLoadBtnHeight)--downLoadBtnWidth:\(downLoadBtnWidth)")
+        }
         spaceBetweenListAndView = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 0, OtherIphoneValue: 25)
         exitTopConstraint.constant = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 60, OtherIphoneValue: 30)
         headLineBottomConstraint.constant = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 80, OtherIphoneValue: 45)
@@ -314,7 +333,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         
         
         downloadButton.attributedTitle(for: UIControlState.normal)
-        downloadButton.setImage(UIImage(named:"DownLoadBtn"), for: UIControlState.normal)
+//        downloadButton.setImage(UIImage(named:"DownLoadBtn"), for: UIControlState.normal)
+//        downloadButton.status = .remote
         downloadButton.addTarget(self, action: #selector(self.download(_:)), for: UIControlEvents.touchUpInside)
         
         
@@ -343,8 +363,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         self.downloadButton.translatesAutoresizingMaskIntoConstraints = false
         self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self.share, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: -space))
         self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.containerView, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -spaceBetweenListAndView))
-        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonWidth))
-        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: buttonHeight))
+        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: downLoadBtnWidth))
+        self.containerView.addConstraint(NSLayoutConstraint(item: downloadButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: downLoadBtnHeight))
         
         self.love.translatesAutoresizingMaskIntoConstraints = false
         self.containerView.addConstraint(NSLayoutConstraint(item: love, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.playlist, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: space))
@@ -377,8 +397,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         if let fetchAudioResults = fetchAudioResults{
             let data = fetchAudioResults[0].items[playingIndex]
             getLoadedImage(item: data)
-            let cleanUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: data)
-            checkLocalFileToUpdateButtonStatus(urlString: data.headline+playerAPI.getFileName(urlString: cleanUrl))
+//            let cleanUrl = playerAPI.getUrlAccordingToAudioLanguageIndex(item: data)
+//            checkLocalFileToUpdateButtonStatus(urlString: data.headline+playerAPI.getFileName(urlString: cleanUrl))
             self.playStatus.text = fetchAudioResults[0].items[playingIndex].headline
         }
         updatePlayButtonUI()
@@ -554,22 +574,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
 //        print("checkLocalFileToUpdateButtonStatus urlString\(urlString)")
 
         if isExistLocalFile(urlString: urlString) == true{
-            if let downLoadEndBtn = UIImage(named:"DownLoadEndBtn"){
-                let downLoadEndBtnHeight = downLoadEndBtn.size.height
-                let downLoadEndBtnWidth = downLoadEndBtn.size.width
-                downloadButton.frame.size.width = downLoadEndBtnWidth
-                downloadButton.frame.size.height = downLoadEndBtnHeight
-            }
-            downloadButton.setImage(UIImage(named:"DownLoadEndBtn"), for: .normal)
             downloadButton.status = .success
         }else{
-            if let downLoadBtn = UIImage(named:"DownLoadBtn"){
-                let downLoadBtnHeight = downLoadBtn.size.height
-                let downLoadBtnWidth = downLoadBtn.size.width
-                downloadButton.frame.size.width = downLoadBtnWidth
-                downloadButton.frame.size.height = downLoadBtnHeight
-            }
-            downloadButton.setImage(UIImage(named:"DownLoadBtn"), for: .normal)
             downloadButton.status = .remote
         }
     }
@@ -1195,12 +1201,15 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     switch status {
                     case .downloading, .remote:
                         self.downloadButton.progress = 0
+//                        self.downloadButton.downLoadBtnHeight = 30
                     case .paused, .resumed:
                         break
                     case .success:
                         // MARK: if a file is downloaded, prepare the audio asset again
                         self.updateAVPlayerWithLocalUrl()
                         self.downloadButton.progress = 0
+//                        self.downloadButton.downLoadBtnHeight = 19
+//                        self.downloadButton.downLoadBtnWidth = 25
                     }
                     print ("notification received for \(status)")
                     self.downloadButton.status = status

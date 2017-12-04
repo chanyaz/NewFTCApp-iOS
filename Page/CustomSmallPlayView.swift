@@ -159,9 +159,9 @@ class CustomSmallPlayView: UIView {
             let controller = UIApplication.shared.keyWindow?.rootViewController
             controller?.present(audioPlayerController, animated: true, completion: nil)
           
-            controller?.navigationController?.navigationBar.barStyle = .black
+//            controller?.navigationController?.navigationBar.barStyle = .black
         }
-//        self.navigationBar.barStyle = .black
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateBarStyle1"), object: self)
     }
     @objc func changeSlider(_ sender: UISlider) {
         let currentValue = sender.value

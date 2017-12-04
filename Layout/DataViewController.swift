@@ -24,9 +24,29 @@ class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate{
     }
     @objc func isHideAudio(sender: UISwipeGestureRecognizer){
         if sender.direction == .up{
-            PlayerAPI.sharedInstance.fadeOutSmallPlayView()
+//            PlayerAPI.sharedInstance.fadeOutSmallPlayView()
+            let customNavigation = self.navigationController as? CustomNavigationController
+            if  let tabAudioView = customNavigation?.tabView{
+                let deltaY = tabAudioView.bounds.height
+                UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    tabAudioView.transform = CGAffineTransform(translationX: 0,y: deltaY)
+                    tabAudioView.setNeedsUpdateConstraints()
+                }, completion: { (true) in
+                    
+                })
+            }
+            
         }else if sender.direction == .down{
-            PlayerAPI.sharedInstance.fadeInSmallPlayView()
+//            PlayerAPI.sharedInstance.fadeInSmallPlayView()
+            let customNavigation = self.navigationController as? CustomNavigationController
+            if  let tabAudioView = customNavigation?.tabView{
+                UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    tabAudioView.transform = CGAffineTransform.identity
+                    tabAudioView.setNeedsUpdateConstraints()
+                }, completion: { (true) in
+                    
+                })
+            }
         }
     }
 //    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {

@@ -64,12 +64,12 @@ class CustomNavigationController: UINavigationController, UINavigationController
         let height = self.view.bounds.height
         var homeTabBarHeight: CGFloat = 0
         homeTabBarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 124, OtherIphoneValue: 90)
-        tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.5)
+        tabView.backgroundColor = UIColor(hex: Color.Tab.highlightedText, alpha: 0.5)
         tabView.frame = CGRect(x:0,y:height - homeTabBarHeight,width:width,height:homeTabBarHeight)
         view.addSubview(self.tabView)
         tabView.isHidden = true
 //        tabView.playAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
-//        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
+//        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio1))
 //        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
 //        tabView.progressSlider.addTarget(self, action: #selector(changeSlider), for: UIControlEvents.valueChanged)
         
@@ -82,10 +82,19 @@ class CustomNavigationController: UINavigationController, UINavigationController
             name: Notification.Name(rawValue: "updateBarStyle"),
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateBarStyle1),
+            name: Notification.Name(rawValue: "updateBarStyle1"),
+            object: nil
+        )
     }
     
     @objc func updateBarStyle(){
         self.navigationBar.barStyle = .default
+    }
+    @objc func updateBarStyle1(){
+        self.navigationBar.barStyle = .black
     }
     
 //    @objc func changeSlider(_ sender: UISlider) {
@@ -95,7 +104,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
 //        print("sliderValueChanged button\(currentTime)")
 //    }
     
-//    @objc func openAudio(){
+//    @objc func openAudio1(){
 //        if let audioPlayerController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayerController") as? AudioPlayerController {
 //            let tabItem = TabBarAudioContent.sharedInstance.item
 //            if let tabItem = tabItem ,let audioFileUrl = tabItem.caudio {

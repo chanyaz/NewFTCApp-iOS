@@ -138,6 +138,7 @@ class BigImageCell: CustomCell {
     
     @IBAction func tapSoundButton(_ sender: Any) {
         PlayerAPI.sharedInstance.getSingletonItem(item: itemCell)
+        PlayerAPI.sharedInstance.fadeInSmallPlayView()
     }
     
     @IBAction func tapTagButton(_ sender: UIButton) {

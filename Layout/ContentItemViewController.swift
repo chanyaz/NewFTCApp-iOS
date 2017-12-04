@@ -28,7 +28,7 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
             self.infoTableView.register(UINib.init(nibName: "PortraitTableViewCell", bundle: nil), forCellReuseIdentifier: "PortraitTableViewCell")
             self.view.addSubview(infoTableView)
             ContentItemRenderContent.addPersonInfo = false
-            showTabPlay(isShouldHide: false)
+         
         }
    
         let swipeGestureRecognizerDown = UISwipeGestureRecognizer(target: self, action: #selector(self.isHideAudio))
@@ -50,30 +50,9 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
     }
     @objc func isHideAudio(sender: UISwipeGestureRecognizer){
         if sender.direction == .up{
-//            print("up hide audio")
-            let customNavigation = self.navigationController as? CustomNavigationController
-//            customNavigation?.tabView.isHidden = true
-            if  let tabAudioView = customNavigation?.tabView{
-                let deltaY = tabAudioView.bounds.height
-                UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                    tabAudioView.transform = CGAffineTransform(translationX: 0,y: deltaY)
-                    tabAudioView.setNeedsUpdateConstraints()
-                }, completion: { (true) in
-                    
-                })
-            }
-
+            PlayerAPI.sharedInstance.fadeOutSmallPlayView()
         }else if sender.direction == .down{
-//            print("down show audio")
-            let customNavigation = self.navigationController as? CustomNavigationController
-            if  let tabAudioView = customNavigation?.tabView{
-                UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                    tabAudioView.transform = CGAffineTransform.identity
-                    tabAudioView.setNeedsUpdateConstraints()
-                }, completion: { (true) in
-                    
-                })
-            }
+            PlayerAPI.sharedInstance.fadeInSmallPlayView()
         }
     }
 
@@ -195,93 +174,6 @@ class ContentItemViewController: SuperContentItemViewController, UITableViewData
     }
 }
 
-extension UIViewController{
-    func showTabPlay(isShouldHide:Bool){
-        let customNavigation = self.navigationController as? CustomNavigationController
-        if  let tabAudioView = customNavigation?.tabView{
-            if isShouldHide == false{
-                tabAudioView.isHidden = false
-                let deltaY = tabAudioView.bounds.height
-                UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                    tabAudioView.transform = CGAffineTransform(translationX: 0,y: deltaY)
-                    tabAudioView.setNeedsUpdateConstraints()
-                }, completion: { (true) in
-                    
-                })
-            }else{
-                tabAudioView.isHidden = true
-            }
-        }
-    }
 
-    
- 
-}
 
-class openPlayController:UIViewController{
-    var tabView = CustomSmallPlayView()
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let width = UIScreen.main.bounds.width
-        let height = self.view.bounds.height
-        
-        var homeTabBarHeight: CGFloat = 0
-        
-        homeTabBarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 124, OtherIphoneValue: 90)
-        
-        tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.5)
-        tabView.frame = CGRect(x:0,y:height - homeTabBarHeight,width:width,height:homeTabBarHeight)
-        view.addSubview(self.tabView)
-        tabView.playAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
-        UIApplication.shared.keyWindow?.rootViewController?.view.addSubview(tabView)
-//        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(self.openAudio))
-//        tabView.smallView.addGestureRecognizer(tapGestureRecognizer1)
-//        tabView.progressSlider.addTarget(self, action: #selector(changeSlider), for: UIControlEvents.valueChanged)
-//        tabView.isHidden = true
 
-//        addPlayerItemObservers()
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(updateBarStyle),
-//            name: Notification.Name(rawValue: "updateBarStyle"),
-//            object: nil
-//        )
-    }
-//    func openTabPlay(){
-//        let tabView = CustomSmallPlayView()
-//        let width = UIScreen.main.bounds.width
-//        let height = self.view.bounds.height
-//
-//        var homeTabBarHeight: CGFloat = 0
-//
-//        homeTabBarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 124, OtherIphoneValue: 90)
-//
-//        tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.5)
-//        tabView.frame = CGRect(x:0,y:height - homeTabBarHeight,width:width,height:homeTabBarHeight)
-//        UIApplication.shared.keyWindow?.rootViewController?.view.addSubview(tabView)
-//        tabView.playAndPauseButton.addTarget(self, action: #selector(pauseOrPlay), for: UIControlEvents.touchUpInside)
-//    }
-    @objc func pauseOrPlay(sender: UIButton) {
-        let  player = TabBarAudioContent.sharedInstance.player
-        let  playerItem = TabBarAudioContent.sharedInstance.playerItem
-        
-        if (player != nil) {
-            print("item11 palyer isExist \(String(describing: playerItem))")
-            if player?.rate != 0 && player?.error == nil {
-                print("palyer item pause)")
-                tabView.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = false
-                player?.pause()
-                
-            } else {
-                print("palyer item play)")
-                tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = true
-                
-                player?.play()
-                player?.replaceCurrentItem(with: playerItem)
-                
-            }
-        }
-    }
-}

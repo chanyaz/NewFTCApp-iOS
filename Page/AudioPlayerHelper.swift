@@ -71,13 +71,62 @@ public func setLastPlayAudio(){
     }
 }
 class PlayerAPI {
- 
+    var tabView = CustomSmallPlayView()
     static var sharedInstance = PlayerAPI()
     let nowPlayingCenter = NowPlayingCenter()
     var player = TabBarAudioContent.sharedInstance.player
     var playerItem = TabBarAudioContent.sharedInstance.playerItem
     var fetchAudioResults = TabBarAudioContent.sharedInstance.fetchResults
-
+    func showSmallPlayView(){
+        if TabBarAudioContent.sharedInstance.playerShowed == true {
+            print ("audio already initiated")
+            return
+        }
+        if let controller = UIApplication.shared.keyWindow?.rootViewController {
+            TabBarAudioContent.sharedInstance.playerShowed = true
+            print ("audio initiated")
+            let width = UIScreen.main.bounds.width
+            let height = UIScreen.main.bounds.height
+            var homeTabBarHeight: CGFloat = 0
+            homeTabBarHeight = UIDevice.current.setDifferentDeviceLayoutValue(iphoneXValue: 124, OtherIphoneValue: 90)
+            tabView.backgroundColor = UIColor(hex: "12a5b3", alpha: 0.5)
+            tabView.frame = CGRect(x:0,y:height - homeTabBarHeight,width:width,height:homeTabBarHeight)
+            tabView.tag = 1001
+            controller.view.addSubview(self.tabView)
+        }
+    }
+    func filerSmallPlayView()->UIView?{
+        let controller = UIApplication.shared.keyWindow?.rootViewController
+        let views = controller?.view.subviews
+        for view in views! {
+            if view.isKind(of: CustomSmallPlayView.self){
+                 print("views include----\(view)")
+                return view as? CustomSmallPlayView
+            }
+        }
+       return nil
+    }
+    func fadeOutSmallPlayView(){
+        if  let tabAudioView = filerSmallPlayView(){
+            let deltaY = tabAudioView.bounds.height
+            UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                tabAudioView.transform = CGAffineTransform(translationX: 0,y: deltaY)
+                tabAudioView.setNeedsUpdateConstraints()
+            }, completion: { (true) in
+                
+            })
+        }
+    }
+    func fadeInSmallPlayView(){
+        if  let tabAudioView = filerSmallPlayView(){
+            UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                tabAudioView.transform = CGAffineTransform.identity
+                tabAudioView.setNeedsUpdateConstraints()
+            }, completion: { (true) in
+                
+            })
+        }
+    }
     func openPlay(){
 //        var player = TabBarAudioContent.sharedInstance.player
 //        var playerItem = TabBarAudioContent.sharedInstance.playerItem
@@ -159,6 +208,7 @@ class PlayerAPI {
                 print("NowPlayingCenter updatePlayingInfo \(title)")
                 NowPlayingCenter().updatePlayingCenter()
             }
+            
         }else{
             print("player item do not exist")
             return

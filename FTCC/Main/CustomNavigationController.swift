@@ -144,6 +144,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
         // Dispose of any resources that can be recreated.
     }
     @objc func updateMiniPlay(){
+//        print("How many times updateMiniPlay observe run?")
         tabView.isHidden = false
         if let item = TabBarAudioContent.sharedInstance.item{
             player = TabBarAudioContent.sharedInstance.player
@@ -207,21 +208,16 @@ class CustomNavigationController: UINavigationController, UINavigationController
 //        }
 //    }
     
-    func removePlayerItemObservers() {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
+//    func removePlayerItemObservers() {
+//        NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
 //        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
 //        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
 //        playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
-    }
+//    }
     
     private func addPlayerItemObservers() {
         // MARK: - Observe Play to the End
         NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-        
-        // MARK: - Update buffer status
-//        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
-//        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
-//        playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
     }
     
     
@@ -229,7 +225,6 @@ class CustomNavigationController: UINavigationController, UINavigationController
     @objc public func updatePlayButtonUI() {
         if TabBarAudioContent.sharedInstance.isPlaying{
             tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
-            
         }else{
             tabView.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
         }
@@ -237,6 +232,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
     
     @objc func playerDidFinishPlaying() {
         print("finish playing")
+        //        TODO:需要加上循环播放
         let startTime = CMTimeMake(0, 1)
         TabBarAudioContent.sharedInstance.player?.pause()
         TabBarAudioContent.sharedInstance.playerItem?.seek(to: startTime)
@@ -247,33 +243,6 @@ class CustomNavigationController: UINavigationController, UINavigationController
         nowPlayingCenter.updateTimeForPlayerItem(player)
     }
     
-//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-//        if object is AVPlayerItem {
-//            if let k = keyPath {
-//                switch k {
-//                case "playbackBufferEmpty":
-//                    // Show loader
-//                    print ("is loading...")
-//                    self.tabView.playStatus.text = "加载中..."
-//                case "playbackLikelyToKeepUp":
-//                    // Hide loader
-//                    print ("should be playing. Duration is \(String(describing: playerItem?.duration))")
-//                    self.tabView.playStatus.text = audioTitle
-//                case "playbackBufferFull":
-//                    // Hide loader
-//                    self.tabView.playStatus.text = audioTitle
-//                    print ("load successfully")
-//                default:
-//                    self.tabView.playStatus.text = audioTitle
-//                    break
-//                }
-//            }
-//            if let time = playerItem?.currentTime(), let duration = playerItem?.duration {
-//                updatePlayTime(current: time, duration: duration)
-//            }
-//            nowPlayingCenter.updateTimeForPlayerItem(player)
-//        }
-//    }
     
     // MARK: On mobile phone, lock the screen to portrait only
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {

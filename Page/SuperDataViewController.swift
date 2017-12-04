@@ -640,7 +640,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             } else if type == "options" {
                 loadOptions()
             } else if type == "follow" {
-                let urlString = APIs.get("follow", type: type)
+                let urlString = Download.addVersionAndTimeStamp(APIs.get("follow", type: type))
                 getAPI(urlString)
             } else {
                 let urlString = APIs.get("", type: type)
@@ -1293,8 +1293,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         currentPageIndex = withAd.pageIndex
                     }
                     
-                    //print (pageData)
-                    
+//                    print (pageData)
+                    if pageData.count <= currentPageIndex {
+                        print ("current page index is \(currentPageIndex), which is higer or equal to page data count of \(pageData.count)")
+                        return false
+                    }
                     pageData[currentPageIndex].isLandingPage = true
                     detailViewController.themeColor = themeColor
                     detailViewController.contentPageData = pageData

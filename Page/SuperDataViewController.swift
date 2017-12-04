@@ -309,7 +309,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             let urlString = APIs.convert(urlStringOriginal)
             let fileExtension = "html"
             requestNewContentForWebview(
-                APIs.convert(listAPI),
+                listAPI,
                 urlString: urlString,
                 fileExtension: fileExtension
             )

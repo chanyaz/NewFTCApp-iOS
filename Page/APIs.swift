@@ -155,25 +155,29 @@ struct APIs {
                 backupHTMLDomains2[currentIndex],
                 backupHTMLDomains3[currentIndex]
             ]
+            //print ("Server Watch: \(servers.joined(separator: ","))")
             // MARK: if you are checking a url that is not using one of the backup servers, return immediately.
-            var isUrlUsingOneOfServers = false
+            var serverUsedByFromString: String? = nil
             for server in servers {
                 if from.hasPrefix(server) {
-                    isUrlUsingOneOfServers = true
+                    serverUsedByFromString = server
                     break
                 }
             }
-            if isUrlUsingOneOfServers == false {
+            if serverUsedByFromString == nil {
+                //print ("Server Watch: did not find \(from)")
                 return from
             }
+            //print ("Server Watch: found \(from)")
             if let errorServerIndex = servers.index(of: serverNotResponding) {
                 var nextServerIndex = errorServerIndex + 1
                 if nextServerIndex >= servers.count {
                     nextServerIndex = 0
                 }
 
-                if isUrlUsingOneOfServers == true {
-                    let newUrlString = from.replacingOccurrences(of: serverNotResponding, with: servers[nextServerIndex])
+                if let serverUsedByFromString = serverUsedByFromString {
+                    let newUrlString = from.replacingOccurrences(of: serverUsedByFromString, with: servers[nextServerIndex])
+                    //print ("Server Watch: new url string is \(newUrlString)")
                     return newUrlString
                 }
             }

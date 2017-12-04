@@ -705,6 +705,7 @@
 		F2E090781F5A721E00F4409F /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTabBarController.swift; path = FTCC/CustomTabBarController.swift; sourceTree = "<group>"; };
 		F2E0907D1F5A736E00F4409F /* CustomAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimation.swift; sourceTree = "<group>"; };
 		F2E0907E1F5A736E00F4409F /* CustomPresentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPresentController.swift; sourceTree = "<group>"; };
+		F2E6C7AE1FD50DEE0059ECBD /* FTCC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FTCC.entitlements; path = FTCC/FTCC.entitlements; sourceTree = "<group>"; };
 		F2F92B151F0B6C0C00C4E043 /* AdCellRegular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCellRegular.swift; sourceTree = "<group>"; };
 		F2F92B161F0B6C0C00C4E043 /* AdCellRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdCellRegular.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1234,6 +1235,7 @@
 		60D3C8B41EBFF5DC0085BEF6 = {
 			isa = PBXGroup;
 			children = (
+				F2E6C7AE1FD50DEE0059ECBD /* FTCC.entitlements */,
 				60D3C8BF1EBFF5DC0085BEF6 /* Page */,
 				50D4BD561F63BE1700DD64E1 /* FT今日焦点 */,
 				604B99041F7CC05B00C60281 /* FTC Notification Service Extension */,
@@ -1576,7 +1578,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -2286,6 +2288,7 @@
 			baseConfigurationReference = 580171059509F2486AE61ABB /* Pods-FTCC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FTCC/FTCC.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;
@@ -2305,6 +2308,7 @@
 			baseConfigurationReference = 25F43C0D286D295E626A3347 /* Pods-FTCC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FTCC/FTCC.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CAEDT8EKGV;

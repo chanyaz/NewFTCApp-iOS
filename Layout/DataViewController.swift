@@ -24,8 +24,8 @@ class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate{
     }
     @objc func isHideAudio(sender: UISwipeGestureRecognizer){
         if sender.direction == .up{
+//            PlayerAPI.sharedInstance.fadeOutSmallPlayView()
             let customNavigation = self.navigationController as? CustomNavigationController
-            //            customNavigation?.tabView.isHidden = true
             if  let tabAudioView = customNavigation?.tabView{
                 let deltaY = tabAudioView.bounds.height
                 UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
@@ -37,6 +37,7 @@ class DataViewController: SuperDataViewController,UIGestureRecognizerDelegate{
             }
             
         }else if sender.direction == .down{
+//            PlayerAPI.sharedInstance.fadeInSmallPlayView()
             let customNavigation = self.navigationController as? CustomNavigationController
             if  let tabAudioView = customNavigation?.tabView{
                 UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {

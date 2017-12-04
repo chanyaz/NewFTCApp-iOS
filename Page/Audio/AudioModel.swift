@@ -25,6 +25,7 @@ class TabBarAudioContent {
     var fetchResults: [ContentSection]?
     var mode:Int?
     var playingIndex:Int?
+    var playerShowed = false
     init(){
         
     }

@@ -155,12 +155,24 @@ struct APIs {
                 backupHTMLDomains2[currentIndex],
                 backupHTMLDomains3[currentIndex]
             ]
+            // MARK: if you are checking a url that is not using one of the backup servers, return immediately.
+            var isUrlUsingOneOfServers = false
+            for server in servers {
+                if from.hasPrefix(server) {
+                    isUrlUsingOneOfServers = true
+                    break
+                }
+            }
+            if isUrlUsingOneOfServers == false {
+                return from
+            }
             if let errorServerIndex = servers.index(of: serverNotResponding) {
                 var nextServerIndex = errorServerIndex + 1
                 if nextServerIndex >= servers.count {
                     nextServerIndex = 0
                 }
-                if from.hasPrefix(serverNotResponding) {
+
+                if isUrlUsingOneOfServers == true {
                     let newUrlString = from.replacingOccurrences(of: serverNotResponding, with: servers[nextServerIndex])
                     return newUrlString
                 }
@@ -779,10 +791,12 @@ struct HTMLValidator {
     static func validate(_ htmlData: Data, url: String) -> Bool {
         if let htmlCode = String(data: htmlData, encoding: .utf8){
             if htmlCode.range(of: "item-container") != nil {
-                print ("htmlCode validated! ")
+                print ("\(url) html validated! ")
                 return true
             } else {
-                print ("htmlCode not validated! ")
+                // MARK: If the html validation fails, mark the current server as not responding so that the client can switch to another backup server
+                print ("\(url) HTML validation failed and marked as not responding: \(htmlCode)")
+                Download.markServerAsNotResponding(url)
                 Track.event(category: "CatchError", action: "HTML Validation Fail", label: url)
                 return false
             }

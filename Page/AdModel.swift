@@ -150,6 +150,11 @@ struct AdParser {
     public static func getAdchID(_ dataObject: ContentItem?) -> String {
         if let dataObject = dataObject,
             let keywords = dataObject.keywords {
+            for sponsor in Sponsors.shared.sponsors {
+                if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) && sponsor.adid != "" {
+                    return sponsor.adid
+                }
+            }
             if keywords.range(of:"lifestyle") != nil {
                 return "1800"
             }
@@ -158,9 +163,6 @@ struct AdParser {
             }
             if keywords.range(of:"opinion") != nil {
                 return "1600"
-            }
-            if keywords.range(of:"management") != nil {
-                return "1700"
             }
             if keywords.range(of:"创新经济") != nil {
                 return "2100"

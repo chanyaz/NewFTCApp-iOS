@@ -11,12 +11,17 @@ struct Download {
     public static let serverNotRespondingKey = "Server Not Responding Key"
     
     public static func handleServerError(_ urlString: String, error: NSError?) {
+        markServerAsNotResponding(urlString)
+        Track.catchError("\(urlString) Request Error: \(String(describing: error))", withFatal: 1)
+        Track.event(category: "CatchError", action: "Fail to Connect", label: urlString)
+    }
+    
+    public static func markServerAsNotResponding(_ urlString: String) {
         // MARK: get the server part of the the url string
         let serverNotResponding = urlString.replacingOccurrences(of: "^(http[s]*://[^/]+/).*$", with: "$1", options: .regularExpression)
         // MARK: save the server that has returned error so that the APIs knows it should look for the backup server
         UserDefaults.standard.set(serverNotResponding, forKey: Download.serverNotRespondingKey)
-        Track.catchError("\(urlString) Request Error: \(String(describing: error))", withFatal: 1)
-        Track.event(category: "CatchError", action: "Fail to Connect", label: urlString)
+        print ("\(serverNotResponding) marked as not responding")
     }
     
     public static func getDataFromUrl(_ url:URL, completion: @escaping ((_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> Void)) {

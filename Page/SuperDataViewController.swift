@@ -147,6 +147,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
             contentController.add(LeakAvoider(delegate:self), name: "alert")
             contentController.add(LeakAvoider(delegate:self), name: "items")
+            contentController.add(LeakAvoider(delegate:self), name: "sponsors")
             contentController.add(LeakAvoider(delegate:self), name: "selectItem")
             config.userContentController = contentController
             config.allowsInlineMediaPlayback = true
@@ -307,7 +308,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             let urlStringOriginal = dataObject["url"] {
             let urlString = APIs.convert(urlStringOriginal)
             let fileExtension = "html"
-            requestNewContentForWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
+            requestNewContentForWebview(
+                APIs.convert(listAPI),
+                urlString: urlString,
+                fileExtension: fileExtension
+            )
         } else {
             activityIndicator.removeFromSuperview()
             refreshControl.endRefreshing()
@@ -1553,6 +1558,22 @@ extension SuperDataViewController: WKScriptMessageHandler {
                 let meta = body["meta"] as? [String: String],
                 let adId = meta["adid"] {
                 adchId = adId
+            }
+        } else if message.name == "sponsors" {
+            // MARK: Get sponsor information
+            if let body = message.body as? [[String: String]] {
+                var sponsors = [Sponsor]()
+                for item in body {
+                    let sponsor = Sponsor(
+                        tag: item["tag"] ?? "",
+                        title: item["title"] ?? "",
+                        adid: item["adid"] ?? "",
+                        channel: item["channel"] ?? ""
+                    )
+                    sponsors.append(sponsor)
+                }
+                Sponsors.shared.sponsors = sponsors
+                //print ("sponsors is now \(Sponsors.shared.sponsors)")
             }
         } else if message.name == "selectItem" {
             //print (message.body)

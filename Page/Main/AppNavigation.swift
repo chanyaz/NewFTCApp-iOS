@@ -28,7 +28,7 @@ struct AppNavigation {
                     //"api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
                     //"api": "https://d1budb999l6vta.cloudfront.net/channel/json.html?pageid=home&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/?webview=ftcapp&newad=yes",
-                    "listapi":"https://d1budb999l6vta.cloudfront.net/?webview=ftcapp&bodyonly=yes&newad=yes&maxB=1&backupfile=localbackup&showIAP=yes&018",
+                    "listapi":"https://d1budb999l6vta.cloudfront.net/?webview=ftcapp&bodyonly=yes&newad=yes&maxB=1&backupfile=localbackup&showIAP=yes&019",
                     "compactLayout": "home",
                     "coverTheme": "Classic",
                     "screenName":"homepage",
@@ -234,9 +234,18 @@ struct AppNavigation {
                     //"api": "https://d1budb999l6vta.cloudfront.net/channel/json.html?pageid=ev&dfadfadfadfadf",
                     "listapi": "https://d1budb999l6vta.cloudfront.net/channel/editorchoice.html?webview=ftcapp&bodyonly=yes&ad=no&018",
                     "url":"http://www.ftchinese.com/channel/editorchoice.html?webview=ftcapp&newad=yes&ad=no",
-                    "screenName":"english/video",
+                    "screenName":"english/test",
+                    "coverTheme": ""
+                ],
+                [
+                    "title": "测试",
+                    //"api": "https://d1budb999l6vta.cloudfront.net/channel/json.html?pageid=ev&dfadfadfadfadf",
+                    "listapi": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=test1&webview=ftcapp&bodyonly=yes&ad=no&018",
+                    "url":"http://www.ftchinese.com/channel/editorchoice.html?webview=ftcapp&newad=yes&ad=no",
+                    "screenName":"english/test1",
                     "coverTheme": ""
                 ]
+                
             ]
         ],
         "Academy": [

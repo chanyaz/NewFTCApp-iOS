@@ -116,7 +116,7 @@ class ContentFetch {
                             .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
                         let shortlead = item["shortlead"] as? String ?? ""
                             .replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-                        let type = item["type"] as? String ?? ""
+                        let type = item["type"] as? String ?? "story"
                         let preferSponsorImage = item["preferSponsorImage"] as? String ?? ""
                         let tag = item["tag"] as? String ?? ""
                         let customLink = item["customLink"] as? String ?? ""

@@ -184,6 +184,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
             UserDefaults.standard.set(true, forKey: identifier)
             // TODO: - save purchase history here, something like updatePurchaseHistory()
             UserDefaults.standard.synchronize()
+            //let isPurchased = UserDefaults.standard.bool(forKey: identifier)
             print ("\(identifier) is set to \(UserDefaults.standard.bool(forKey: identifier))")
             let transactionSuccessObject = [
                 "id": identifier,

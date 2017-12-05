@@ -302,7 +302,7 @@ struct Download {
     // MARK: - Add a version parameter for request
     public static func addVersionAndTimeStamp(_ urlString: String) -> String {
         // MARK: Get a new time stamp every x minutes so that user won't be stuck with a very old cache.
-        let cacheMinute = 1
+        let cacheMinute = 3
         let date = Date()
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)

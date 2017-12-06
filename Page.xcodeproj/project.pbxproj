@@ -74,6 +74,8 @@
 		601417701EEA3F7600DC3EF9 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */; };
 		601418081EEA919300DC3EF9 /* IJReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601418071EEA919300DC3EF9 /* IJReachability.swift */; };
 		6014180B1EEA9CC000DC3EF9 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6014180A1EEA9CC000DC3EF9 /* Download.swift */; };
+		60169E2E1FD77E5A003DB051 /* Privilege.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60169E2D1FD77E5A003DB051 /* Privilege.swift */; };
+		60169E2F1FD77E5A003DB051 /* Privilege.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60169E2D1FD77E5A003DB051 /* Privilege.swift */; };
 		6017AAE71F879D63008D3FBF /* SmoothCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6017AAE51F879D63008D3FBF /* SmoothCoverCell.swift */; };
 		6017AAE81F879D63008D3FBF /* SmoothCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6017AAE51F879D63008D3FBF /* SmoothCoverCell.swift */; };
 		6017AAE91F879D63008D3FBF /* SmoothCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6017AAE61F879D63008D3FBF /* SmoothCoverCell.xib */; };
@@ -495,6 +497,7 @@
 		6014176F1EEA3F7600DC3EF9 /* DataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
 		601418071EEA919300DC3EF9 /* IJReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IJReachability.swift; sourceTree = "<group>"; };
 		6014180A1EEA9CC000DC3EF9 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
+		60169E2D1FD77E5A003DB051 /* Privilege.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Privilege.swift; sourceTree = "<group>"; };
 		6017AAE51F879D63008D3FBF /* SmoothCoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothCoverCell.swift; sourceTree = "<group>"; };
 		6017AAE61F879D63008D3FBF /* SmoothCoverCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SmoothCoverCell.xib; sourceTree = "<group>"; };
 		6019A9CF1F4C457D00B8FB69 /* FollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
@@ -994,6 +997,7 @@
 			isa = PBXGroup;
 			children = (
 				602CD2921F565FD500FFC1EA /* FTCProducts.swift */,
+				60169E2D1FD77E5A003DB051 /* Privilege.swift */,
 				60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */,
 				602CD2931F565FD500FFC1EA /* IAPHelper.swift */,
 				6072F9F21F57ED280035AD92 /* IAP.swift */,
@@ -1932,6 +1936,7 @@
 				F2E0906E1F5A6A3900F4409F /* ColumnMyListCell.swift in Sources */,
 				602153191F397C650077A7AF /* WKWebPage.swift in Sources */,
 				6021531A1F397C650077A7AF /* PlaySpeech.swift in Sources */,
+				60169E2F1FD77E5A003DB051 /* Privilege.swift in Sources */,
 				6021531C1F397C650077A7AF /* ChannelCellRegular.swift in Sources */,
 				6021531D1F397C650077A7AF /* HotArticleCellRegular.swift in Sources */,
 				50C31B461F7006D500F4CF61 /* OptionCell.swift in Sources */,
@@ -2064,6 +2069,7 @@
 				602153A41F399E010077A7AF /* CustomTabBarController.swift in Sources */,
 				60CA7BC41EF28AD4000CD9B4 /* HeaderView.swift in Sources */,
 				602153A81F399E010077A7AF /* VideoNavigationController.swift in Sources */,
+				60169E2E1FD77E5A003DB051 /* Privilege.swift in Sources */,
 				605750F91F1499F000552DAC /* UIImage+Attachments.swift in Sources */,
 				602CD2961F565FD500FFC1EA /* IAPHelper.swift in Sources */,
 				600BD6A21F1EF20B0077C104 /* English.swift in Sources */,

@@ -41,7 +41,8 @@ open class IAPHelper : NSObject  {
             // MARK: - Saving the purchase information when you init the app again. If the user is not online or logged into apple account, he/she will not be able to use or see the products he already bought last time. So the user defaults need to be updated in the view controller event listeners when a purchase or download is successful. This is useful if the user switch to another device.
             // TODO: - User defaults may not be the best place to store information about purchased products in a real application. An owner of a jailbroken device could easily access your app’s UserDefaults plist, and modify it to ‘unlock’ purchases. If this sort of thing concerns you, then it’s worth checking out Apple’s documentation on Validating App Store Receipts – this allows you to verify that a user has made a particular purchase.
             let purchased = UserDefaults.standard.bool(forKey: productIdentifier)
-            print ("\(productIdentifier) is set to \(UserDefaults.standard.bool(forKey: productIdentifier))")
+            print ("\(productIdentifier) is set to \(purchased)")
+
             let downloaded = { () -> Bool in
                 if Download.checkFilePath(fileUrl: productIdentifier, for: .documentDirectory) == nil {
                     return false
@@ -115,7 +116,7 @@ extension IAPHelper: SKProductsRequestDelegate {
 //            print("Found product: \(p.productIdentifier) \(p.localizedTitle) \(p.price.floatValue)")
 //        }
     }
-    
+
     public func request(_ request: SKRequest, didFailWithError error: Error) {
         print("Failed to load list of products.")
         print("Error: \(error.localizedDescription)")
@@ -182,7 +183,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         if let identifier = identifier {
             purchasedProductIdentifiers.insert(identifier)
             UserDefaults.standard.set(true, forKey: identifier)
-            // TODO: - save purchase history here, something like updatePurchaseHistory()
+            // MARK: - save purchase history here, something like updatePurchaseHistory()
             UserDefaults.standard.synchronize()
             //let isPurchased = UserDefaults.standard.bool(forKey: identifier)
             print ("\(identifier) is set to \(UserDefaults.standard.bool(forKey: identifier))")

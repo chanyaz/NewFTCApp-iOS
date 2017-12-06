@@ -46,7 +46,8 @@ public struct FTCProducts {
                 "阅读FT中文网所有独家内容",
                 "屏蔽广告，整个世界清净了",
                 "订制内容推送到客户端"
-            ]
+            ],
+            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.vip",

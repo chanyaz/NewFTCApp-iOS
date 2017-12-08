@@ -33,10 +33,8 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         self.dismiss(animated: true)
     }
     
-    public init(item: ContentItem)
-    {
+    public init(item: ContentItem) {
         self.item = item
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -62,6 +60,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         changePlayModeButton?.addGestureRecognizer(tapGestureRecognizer)
         
     }
+    
     var i:Int=0
     @objc func tapGesture(sender: UITapGestureRecognizer) {
         i+=1
@@ -159,8 +158,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         print("present dismiss nil")
         if dismissed == self {
             return CustomPresentationAnimation(isPresenting: false)
-        }
-        else {
+        } else {
             print("present dismiss nil11")
             return nil
         }

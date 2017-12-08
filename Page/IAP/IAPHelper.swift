@@ -52,12 +52,12 @@ open class IAPHelper : NSObject  {
             }()
             if downloaded {
                 purchasedProductIdentifiers.insert(productIdentifier)
-                print("Previously downloaded: \(productIdentifier)")
+                print("IAP Helper: Previously downloaded: \(productIdentifier)")
             } else if purchased {
                 purchasedProductIdentifiers.insert(productIdentifier)
-                print("Previously purchased: \(productIdentifier)")
+                print("IAP Helper: Previously purchased: \(productIdentifier)")
             } else {
-                print("Not purchased: \(productIdentifier)")
+                print("IAP Helper: Not purchased: \(productIdentifier)")
             }
         }
         super.init()

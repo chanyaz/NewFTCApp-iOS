@@ -24,7 +24,7 @@
 
 import Foundation
 
-public struct FTCProducts {
+public struct IAPProducts {
     // MARK: Store all products locally to avoid networking problems
     private static let subscriptionsData = [
         [
@@ -44,10 +44,10 @@ public struct FTCProducts {
             "period":"year",
             "benefits": [
                 "阅读FT中文网所有独家内容",
-                "屏蔽广告，整个世界清净了",
-                "订制内容推送到客户端"
+                "收听英文文章音频",
+                "屏蔽广告，整个世界清净了"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true)
+            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.vip",
@@ -56,12 +56,13 @@ public struct FTCProducts {
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",
             "benefits": [
-                "《FT周刊》，精选不可错过的必读内容",
+                "《FT编辑精选》，每周不可错过的独家必读内容",
                 "获得两张价值3999元的FT中文网年会门票",
-                "阅读FT中文网所有独家内容",
                 "屏蔽广告，整个世界清净了",
-                "订制内容推送到客户端"
-            ]
+                "阅读FT中文网所有独家内容",
+                "收听英文文章音频"
+            ],
+            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.diamond",
@@ -76,7 +77,8 @@ public struct FTCProducts {
                 "阅读FT中文网所有独家内容",
                 "屏蔽广告，整个世界清净了",
                 "订制内容推送到客户端"
-            ]
+            ],
+            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ]
         //        [
         //            "id":"com.ft.ftchinese.mobile.subscription.trial",
@@ -91,9 +93,6 @@ public struct FTCProducts {
         //            ]
         //        ]
     ]
-    
-    
-    
     
     private static let eBooksData = [
         [

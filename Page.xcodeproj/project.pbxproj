@@ -206,8 +206,8 @@
 		602153C31F39A4390077A7AF /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = 602153BE1F39A4390077A7AF /* mute.png */; };
 		602153C41F39A4390077A7AF /* ShareIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 602153BF1F39A4390077A7AF /* ShareIcon.jpg */; };
 		602153C51F39A4390077A7AF /* sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 602153C01F39A4390077A7AF /* sound.png */; };
-		602CD2941F565FD500FFC1EA /* FTCProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602CD2921F565FD500FFC1EA /* FTCProducts.swift */; };
-		602CD2951F565FD500FFC1EA /* FTCProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602CD2921F565FD500FFC1EA /* FTCProducts.swift */; };
+		602CD2941F565FD500FFC1EA /* IAPProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602CD2921F565FD500FFC1EA /* IAPProducts.swift */; };
+		602CD2951F565FD500FFC1EA /* IAPProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602CD2921F565FD500FFC1EA /* IAPProducts.swift */; };
 		602CD2961F565FD500FFC1EA /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602CD2931F565FD500FFC1EA /* IAPHelper.swift */; };
 		602CD2971F565FD500FFC1EA /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602CD2931F565FD500FFC1EA /* IAPHelper.swift */; };
 		602E88401F43DD9600BBB4AF /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602E883F1F43DD9600BBB4AF /* Alert.swift */; };
@@ -541,7 +541,7 @@
 		602153BE1F39A4390077A7AF /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mute.png; path = Images/mute.png; sourceTree = "<group>"; };
 		602153BF1F39A4390077A7AF /* ShareIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ShareIcon.jpg; path = Images/ShareIcon.jpg; sourceTree = "<group>"; };
 		602153C01F39A4390077A7AF /* sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sound.png; path = Images/sound.png; sourceTree = "<group>"; };
-		602CD2921F565FD500FFC1EA /* FTCProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FTCProducts.swift; path = IAP/FTCProducts.swift; sourceTree = "<group>"; };
+		602CD2921F565FD500FFC1EA /* IAPProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IAPProducts.swift; path = IAP/IAPProducts.swift; sourceTree = "<group>"; };
 		602CD2931F565FD500FFC1EA /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IAPHelper.swift; path = IAP/IAPHelper.swift; sourceTree = "<group>"; };
 		602E883F1F43DD9600BBB4AF /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		60316B9F1F8063EF00C4FEE2 /* ClassicCoverCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassicCoverCell.xib; sourceTree = "<group>"; };
@@ -996,7 +996,7 @@
 		602CD2981F565FDC00FFC1EA /* IAP */ = {
 			isa = PBXGroup;
 			children = (
-				602CD2921F565FD500FFC1EA /* FTCProducts.swift */,
+				602CD2921F565FD500FFC1EA /* IAPProducts.swift */,
 				60169E2D1FD77E5A003DB051 /* Privilege.swift */,
 				60F1A52A1F5E98DE0007F9F3 /* IAPView.swift */,
 				602CD2931F565FD500FFC1EA /* IAPHelper.swift */,
@@ -2018,7 +2018,7 @@
 				602E88411F43DD9600BBB4AF /* Alert.swift in Sources */,
 				602153501F397C650077A7AF /* HappyUser.swift in Sources */,
 				602153511F397C650077A7AF /* LeakAvoider.swift in Sources */,
-				602CD2951F565FD500FFC1EA /* FTCProducts.swift in Sources */,
+				602CD2951F565FD500FFC1EA /* IAPProducts.swift in Sources */,
 				F2E0906A1F5A6A3900F4409F /* ColumnAllListCell.swift in Sources */,
 				602153521F397C650077A7AF /* ChannelCell.swift in Sources */,
 				604F2F8A1FA849D300A923E5 /* DataViewController.swift in Sources */,
@@ -2182,7 +2182,7 @@
 				601418081EEA919300DC3EF9 /* IJReachability.swift in Sources */,
 				6014180B1EEA9CC000DC3EF9 /* Download.swift in Sources */,
 				50C31B331F6CCFF000F4CF61 /* SettingCell.swift in Sources */,
-				602CD2941F565FD500FFC1EA /* FTCProducts.swift in Sources */,
+				602CD2941F565FD500FFC1EA /* IAPProducts.swift in Sources */,
 				6093F1641EE8EFA4009F16EE /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

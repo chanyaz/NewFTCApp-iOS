@@ -397,9 +397,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 }
                 // MARK: Display IAP Products on List Page, only for the first time
                 if listAPI.range(of: "showIAP=yes") != nil && IAPs.shared.jsCodes == nil {
-                    self.loadProductsHTML(for: "ebook")
+                    DispatchQueue.main.async {
+                        self.loadProductsHTML(for: "ebook")
+                    }
                 }
-                
             }
         }
     }

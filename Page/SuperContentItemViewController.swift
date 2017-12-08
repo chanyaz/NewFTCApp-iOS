@@ -26,8 +26,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     // MARK: show in full screen
     var isFullScreen = false
     
-    
-    
     // MARK: sub type such as user comments
     var subType: ContentSubType = .None
     

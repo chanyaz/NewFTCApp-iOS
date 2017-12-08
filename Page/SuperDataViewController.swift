@@ -397,9 +397,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 }
                 // MARK: Display IAP Products on List Page, only for the first time
                 if listAPI.range(of: "showIAP=yes") != nil && IAPs.shared.jsCodes == nil {
-                    self.loadProductsHTML(for: "ebook")
+                    DispatchQueue.main.async {
+                        self.loadProductsHTML(for: "ebook")
+                    }
                 }
-                
             }
         }
     }
@@ -1340,7 +1341,7 @@ extension SuperDataViewController {
     // MARK: - load IAP products and update UI
     fileprivate func loadProducts() {
         IAPs.shared.products = []
-        FTCProducts.store.requestProducts{[weak self] success, products in
+        IAPProducts.store.requestProducts{[weak self] success, products in
             if success {
                 if let products = products {
                     //self?.products = products
@@ -1373,7 +1374,7 @@ extension SuperDataViewController {
     // MARK: - load IAP products and update UI
     fileprivate func loadProductsHTML(for type: String) {
         IAPs.shared.products = []
-        FTCProducts.store.requestProducts{[weak self] success, products in
+        IAPProducts.store.requestProducts{[weak self] success, products in
             if success {
                 if let products = products {
                     //self?.products = products

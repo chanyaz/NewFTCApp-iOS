@@ -1281,7 +1281,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
+
         if dismissed == self {
             return CustomPresentationAnimation(isPresenting: false)
         }

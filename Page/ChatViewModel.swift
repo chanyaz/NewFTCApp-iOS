@@ -496,8 +496,6 @@ class Chat {
         self.iceUserInfo = self.determineUser()
         self.userId = self.iceUserInfo.iceUserId
         self.deviceId = self.getDeviceId()
-        //self.trackSign = self.computeTrackSign(secretKey: self.secretUpload, parameList: self.paramList)
-        //print("track sign:\(self.trackSign ?? "")")
     }
     
     func determineUser() -> (iceUserId: String, triggerGreetContent: String){
@@ -643,6 +641,7 @@ class Chat {
                             if let content = oneAnswerDic["Content"]{
                                 let contentStr = content as? String
                                 talkData["content"] = contentStr
+                                //talkData["content"] = "放心，我会告诉你真相的。<a href = \"http://www.google.com\">点我</a>"
                             }
                             
                         case "Image":

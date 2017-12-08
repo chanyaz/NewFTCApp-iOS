@@ -1340,7 +1340,7 @@ extension SuperDataViewController {
     // MARK: - load IAP products and update UI
     fileprivate func loadProducts() {
         IAPs.shared.products = []
-        FTCProducts.store.requestProducts{[weak self] success, products in
+        IAPProducts.store.requestProducts{[weak self] success, products in
             if success {
                 if let products = products {
                     //self?.products = products
@@ -1373,7 +1373,7 @@ extension SuperDataViewController {
     // MARK: - load IAP products and update UI
     fileprivate func loadProductsHTML(for type: String) {
         IAPs.shared.products = []
-        FTCProducts.store.requestProducts{[weak self] success, products in
+        IAPProducts.store.requestProducts{[weak self] success, products in
             if success {
                 if let products = products {
                     //self?.products = products

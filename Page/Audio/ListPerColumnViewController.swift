@@ -33,10 +33,8 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         self.dismiss(animated: true)
     }
     
-    public init(item: ContentItem)
-    {
+    public init(item: ContentItem) {
         self.item = item
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -62,6 +60,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         changePlayModeButton?.addGestureRecognizer(tapGestureRecognizer)
         
     }
+    
     var i:Int=0
     @objc func tapGesture(sender: UITapGestureRecognizer) {
         i+=1

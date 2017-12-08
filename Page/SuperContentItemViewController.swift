@@ -810,7 +810,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     }
     
     @objc open func restore() {
-        FTCProducts.store.restorePurchases()
+        IAPProducts.store.restorePurchases()
         Track.event(category: "IAP", action: "restore", label: "All")
     }
     

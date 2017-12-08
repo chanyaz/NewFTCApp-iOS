@@ -18,7 +18,7 @@ struct IAP {
     
     public static func get(_ products: [SKProduct], in group: String?) -> [ContentItem] {
         var contentItems = [ContentItem]()
-        for oneProduct in FTCProducts.allProducts {
+        for oneProduct in IAPProducts.allProducts {
             if let id = oneProduct["id"] as? String {
                 // MARK: If product group doesn't fit, fall through the loop immediately
                 let productGroup = oneProduct["group"] as? String ?? ""
@@ -43,7 +43,7 @@ struct IAP {
                     }
                 }()
                 // MARK: - Get product information from StoreKit
-                var isPurchased = FTCProducts.store.isProductPurchased(id)
+                var isPurchased = IAPProducts.store.isProductPurchased(id)
                 
                 // MARK: - Membership Benefits
                 //var benefitsString = ""
@@ -266,7 +266,7 @@ struct IAP {
         //        let productId = urlString.replacingOccurrences(of: "buy://", with: "")
         let product = findSKProductByID(id)
         if let product = product {
-            FTCProducts.store.buyProduct(product)
+            IAPProducts.store.buyProduct(product)
             // MARK: Update the interface go let users know the buying is in process
             //            let jsCode = "iapActions('\(productId)', 'pending');"
             //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
@@ -274,12 +274,12 @@ struct IAP {
             trackIAPActions("buy", productId: id)
         } else {
             print ("cannot find the product id, try load product again")
-            FTCProducts.store.requestProducts{success, products in
+            IAPProducts.store.requestProducts{success, products in
                 if success {
                     if let products = products {
                         IAPs.shared.products = products
                         if let productNew = findSKProductByID(id) {
-                            FTCProducts.store.buyProduct(productNew)
+                            IAPProducts.store.buyProduct(productNew)
                             // TODO: Update the interface go let users know the buying is in process
                         }
                     }
@@ -434,7 +434,7 @@ struct IAP {
         let fileName = getFileName(id)
         if Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) != nil {
             return "success"
-        } else if FTCProducts.store.isProductPurchased(id) == true {
+        } else if IAPProducts.store.isProductPurchased(id) == true {
             return "pendingdownload"
         }
         return "new"
@@ -492,7 +492,7 @@ struct IAP {
     
     public static func findProductInfoById(_ productID: String) -> [String: Any]? {
         var product: [String: Any]?
-        for p in FTCProducts.allProducts {
+        for p in IAPProducts.allProducts {
             if let id = p["id"] as? String {
                 if id == productID {
                     product = p

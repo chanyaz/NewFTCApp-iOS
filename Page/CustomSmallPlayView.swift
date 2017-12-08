@@ -164,36 +164,48 @@ class CustomSmallPlayView: UIView {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateBarStyle1"), object: self)
     }
     @objc func changeSlider(_ sender: UISlider) {
-        let currentValue = sender.value
-        let currentTime = CMTimeMake(Int64(currentValue), 1)
-        TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
-        print("sliderValueChanged button\(currentTime)")
+        var currentValue = sender.value
+        if let playerItem = TabBarAudioContent.sharedInstance.playerItem {
+            print("current time:\(playerItem.currentTime)")
+            let d = playerItem.duration
+            currentValue = currentValue*Float(CMTimeGetSeconds(d))
+            let currentTime = CMTimeMake(Int64(currentValue), 1)
+            playerItem.seek(to: currentTime)
+            print("sliderValueChanged button\(currentTime)")
+        }
     }
-    
+    var timer: Timer?
     @objc func updateMiniPlay(){
-        //        print("How many times updateMiniPlay observe run?")
         self.isHidden = false
         if let item = TabBarAudioContent.sharedInstance.item{
             player = TabBarAudioContent.sharedInstance.player
             self.playStatus.text = item.headline
-            updateProgressSlider()
+            timer = nil;
+            timer = Timer.scheduledTimer(timeInterval: 1/30, target: self, selector: #selector(updateProgressSlider), userInfo: nil, repeats: true)
+            if let timer = timer{
+                timer.fire()
+            }
+//            updateProgressSlider()
             updatePlayButtonUI()
         }
     }
-    func updateProgressSlider(){
-        // MARK: - Update audio play progress
-        player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-            if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-                let duration = CMTimeGetSeconds(d)
-                if duration.isNaN == false {
-                    self?.progressSlider.maximumValue = Float(duration)
-                    if self?.progressSlider.isHighlighted == false {
-                        self?.progressSlider.value = Float((CMTimeGetSeconds(time)))
-                    }
-                    self?.updatePlayTime(current: time, duration: d)
-                    TabBarAudioContent.sharedInstance.duration = d
-                    TabBarAudioContent.sharedInstance.time = time
+    
+    @objc func updateProgressSlider(){
+        
+        //  使用另一种方式更新进度条播放，此方式不用一直监听，消耗大量内存
+        if let playerItem = TabBarAudioContent.sharedInstance.playerItem {
+//            print("current time:\(playerItem.currentTime)")
+            let d = playerItem.duration
+            let time = playerItem.currentTime()
+            let duration = CMTimeGetSeconds(d)
+            if duration.isNaN == false {
+                self.progressSlider.maximumValue = 1.0
+                if self.progressSlider.isHighlighted == false {
+                    self.progressSlider.value = Float((CMTimeGetSeconds(time))/(CMTimeGetSeconds(d)))
                 }
+                self.updatePlayTime(current: time, duration: d)
+                TabBarAudioContent.sharedInstance.duration = d
+                TabBarAudioContent.sharedInstance.time = time
             }
         }
     }
@@ -219,6 +231,8 @@ class CustomSmallPlayView: UIView {
         }
     }
     @objc public func updatePlayButtonUI() {
+//        player = TabBarAudioContent.sharedInstance.player
+//        if (player?.rate != 0) && (player?.error == nil) {
         if TabBarAudioContent.sharedInstance.isPlaying{
             self.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
         }else{

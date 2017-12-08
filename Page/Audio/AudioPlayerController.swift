@@ -42,7 +42,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
     //        apiUrl: "",
     //        fetchResults: [ContentSection]()
     //    )
-    
+    private lazy var timeObserver: Any? = {return nil} ()
     private var actualAudioLanguageIndex = 0
     var angle :Double = 0
     let imageWidth = 408   // 16 * 52
@@ -658,7 +658,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         return true
     }
     func updateProgressSlider(){
-        player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
+        timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
             if let d = self?.playerItem?.duration {
                 let duration = CMTimeGetSeconds(d)
                 if duration.isNaN == false {
@@ -832,7 +832,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             }
             print("when actualAudioLanguageIndex change, playerItem is \(String(describing: playerItem))")
             // MARK: - Update audio play progress
-            player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
+            player?.removeTimeObserver(timeObserver as Any)
+            timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
                 if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
                     let duration = CMTimeGetSeconds(d)
@@ -919,6 +920,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             name: Notification.Name(rawValue: "reloadAudio"),
             object: nil
         )
+        player?.removeTimeObserver(timeObserver as Any)
         print ("deinit successfully and observer removed")
     }
     

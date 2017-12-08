@@ -96,13 +96,13 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                 stopRotateAnimate()
                 player.pause()
                 playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = false
+//                TabBarAudioContent.sharedInstance.isPlaying = false
             } else {
                 resumeRotateAnimate()
                 player.play()
                 player.replaceCurrentItem(with: playerItem)
                 playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = true
+//                TabBarAudioContent.sharedInstance.isPlaying = true
                 // TODO: - Need to find a way to display media duration and current time in lock screen
                 var mediaLength: NSNumber = 0
                 if let d = self.playerItem?.duration {
@@ -497,7 +497,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         Track.screenView(screenName)
-        if TabBarAudioContent.sharedInstance.isPlaying == true{
+        if (player?.rate != 0) && (player?.error == nil) {
+//        if TabBarAudioContent.sharedInstance.isPlaying == true{
             startRotateAnimate()
         }else{
             //           stopRotateAnimate() //it can not be added
@@ -749,7 +750,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         }
         
         if let player = player{
-            if TabBarAudioContent.sharedInstance.isPlaying{
+            if (player.rate != 0) && (player.error == nil) {
+//            if TabBarAudioContent.sharedInstance.isPlaying{
                 playAndPauseButton.setImage(UIImage(named:"PauseBtn"), for: UIControlState.normal)
                 player.play()
                 player.replaceCurrentItem(with: playerItem)

@@ -116,10 +116,22 @@ class CustomSmallPlayView: UIView {
             name: Notification.Name(rawValue: "reloadView"),
             object: nil
         )
+        addPlayerItemObservers()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    private func addPlayerItemObservers() {
+ NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
+    }
+    
+
+    
+    @objc func playerDidFinishPlaying() {
+//        print("finish playing")
+        self.progressSlider.value = 0
+        self.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
     }
     @objc func pauseOrPlay(sender: UIButton) {
         let  player = TabBarAudioContent.sharedInstance.player
@@ -130,14 +142,13 @@ class CustomSmallPlayView: UIView {
             if player?.rate != 0 && player?.error == nil {
                 print("palyer item pause)")
                 self.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = false
+//                TabBarAudioContent.sharedInstance.isPlaying = false
                 player?.pause()
                 
             } else {
                 print("palyer item play)")
                 self.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = true
-                
+//                TabBarAudioContent.sharedInstance.isPlaying = true
                 player?.play()
                 player?.replaceCurrentItem(with: playerItem)
                 
@@ -214,26 +225,22 @@ class CustomSmallPlayView: UIView {
         self.playTime.text = time.durationText
     }
     @objc func reloadAudioView(){
-        if let item = TabBarAudioContent.sharedInstance.item,let audioUrlStrFromList = item.caudio  {
-            print("audioUrlStrFromList--\(audioUrlStrFromList)")
+        if let item = TabBarAudioContent.sharedInstance.item,let _ = item.caudio  {
+//            print("audioUrlStrFromList--\(audioUrlStrFromList)")
             self.playStatus.text = item.headline
-            //           为什么 TabBarAudioContent.sharedInstance.audioHeadLine 一直保持初始值？因为点击首页播放按钮触发的赋值动作，collectionView中cell监听的动作只要其他地方监听会一直触发动作（有待继续核实）
-            
+            //  为什么 TabBarAudioContent.sharedInstance.audioHeadLine 一直保持初始值？因为点击首页播放按钮触发的赋值动作，collectionView中cell监听的动作只要其他地方监听会一直触发动作（有待继续核实）
         }
-        print("audioUrlStrFromList isplaying？--\(TabBarAudioContent.sharedInstance.isPlaying)")
-        
-        //        updatePlayButtonUI()
         //        反着的原因是可能是初始监控为true的原因
-        if TabBarAudioContent.sharedInstance.isPlaying{
+        if (player?.rate != 0) && (player?.error == nil) {
+//        if TabBarAudioContent.sharedInstance.isPlaying{
             self.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
         }else{
             self.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
         }
     }
     @objc public func updatePlayButtonUI() {
-//        player = TabBarAudioContent.sharedInstance.player
-//        if (player?.rate != 0) && (player?.error == nil) {
-        if TabBarAudioContent.sharedInstance.isPlaying{
+        if (player?.rate != 0) && (player?.error == nil) {
+//        if TabBarAudioContent.sharedInstance.isPlaying{
             self.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
         }else{
             self.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)

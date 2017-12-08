@@ -19,7 +19,7 @@ class TabBarAudioContent {
     var duration: CMTime? = nil
     var time:CMTime? = nil
     var sliderValue:Float? = nil
-    var isPlaying:Bool=false
+//    var isPlaying:Bool=false
     var isPlayFinish:Bool=false
     var isPlayStart:Bool=false
     var fetchResults: [ContentSection]?
@@ -53,7 +53,7 @@ class TabBarAudioContent {
         self.duration = duration
         self.time = time
         self.sliderValue = sliderValue
-        self.isPlaying = isPlaying
+//        self.isPlaying = isPlaying
         self.fetchResults = fetchResults
         self.mode = mode
         self.playingIndex = playingIndex

@@ -278,15 +278,10 @@ struct IAP {
                 if success {
                     if let products = products {
                         IAPs.shared.products = products
-                        if let productNew = self.findSKProductByID(id) {
+                        if let productNew = findSKProductByID(id) {
                             FTCProducts.store.buyProduct(productNew)
-                            // MARK: Update the interface go let users know the buying is in process
-                            //                            let jsCode = "iapActions('\(productId)', 'pending');"
-                            //                            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                            //                            }
+                            // TODO: Update the interface go let users know the buying is in process
                         }
-                        //                        self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
-                        //                        self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
                     }
                 } else {
                     print ("cannot connect to app store right now!")

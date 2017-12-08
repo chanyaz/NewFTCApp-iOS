@@ -159,8 +159,7 @@ class ListPerColumnViewController: UIViewController, UITableViewDelegate, UITabl
         print("present dismiss nil")
         if dismissed == self {
             return CustomPresentationAnimation(isPresenting: false)
-        }
-        else {
+        } else {
             print("present dismiss nil11")
             return nil
         }

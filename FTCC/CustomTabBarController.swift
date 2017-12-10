@@ -102,13 +102,13 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
             if player?.rate != 0 && player?.error == nil {
                 print("palyer item pause)")
                 tabView.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = false
+
                 player?.pause()
                 
             } else {
                 print("palyer item play)")
                 tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = true
+
 
                 player?.play()
                 player?.replaceCurrentItem(with: playerItem)
@@ -158,11 +158,11 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
 //           为什么 TabBarAudioContent.sharedInstance.audioHeadLine 一直保持初始值？因为点击首页播放按钮触发的赋值动作，collectionView中cell监听的动作只要其他地方监听会一直触发动作（有待继续核实）
             
         }
-        print("audioUrlStrFromList isplaying？--\(TabBarAudioContent.sharedInstance.isPlaying)")
+
         
 //        updatePlayButtonUI()
 //        反着的原因是可能是初始监控为true的原因
-        if TabBarAudioContent.sharedInstance.isPlaying{
+         if (player?.rate != 0) && (player?.error == nil) {
             tabView.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
         }else{
             tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
@@ -205,7 +205,7 @@ class CustomTabBarController: UITabBarController,UITabBarControllerDelegate {
     
     
     @objc public func updatePlayButtonUI() {
-        if TabBarAudioContent.sharedInstance.isPlaying{
+         if (player?.rate != 0) && (player?.error == nil) {
             tabView.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
             
         }else{

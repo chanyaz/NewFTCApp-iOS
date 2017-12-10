@@ -88,6 +88,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
             name: Notification.Name(rawValue: "updateBarStyle1"),
             object: nil
         )
+
     }
     
     @objc func updateBarStyle(){
@@ -95,6 +96,21 @@ class CustomNavigationController: UINavigationController, UINavigationController
     }
     @objc func updateBarStyle1(){
         self.navigationBar.barStyle = .black
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: NSNotification.Name(rawValue: "updateBarStyle"),
+            object: nil
+        )
+        NotificationCenter.default.removeObserver(
+            self,
+            name: NSNotification.Name(rawValue: "updateBarStyle1"),
+            object: nil
+        )
     }
     
 //    @objc func changeSlider(_ sender: UISlider) {
@@ -143,10 +159,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
 //        }
 //    }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
 //    @objc func updateMiniPlay(){
 //        tabView.isHidden = false
 //        if let item = TabBarAudioContent.sharedInstance.item{
@@ -197,10 +210,9 @@ class CustomNavigationController: UINavigationController, UINavigationController
     
 
     
-    private func addPlayerItemObservers() {
-        // MARK: - Observe Play to the End
-        NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
-    }
+//    private func addPlayerItemObservers() {
+// NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
+//    }
     
     
     
@@ -212,17 +224,17 @@ class CustomNavigationController: UINavigationController, UINavigationController
 //        }
 //    }
     
-    @objc func playerDidFinishPlaying() {
-        print("finish playing")
-        let startTime = CMTimeMake(0, 1)
-        TabBarAudioContent.sharedInstance.player?.pause()
-        TabBarAudioContent.sharedInstance.playerItem?.seek(to: startTime)
-        self.playerItem?.seek(to: startTime)
-        self.player?.pause()
-        self.tabView.progressSlider.value = 0
-        self.tabView.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
-        nowPlayingCenter.updateTimeForPlayerItem(player)
-    }
+//    @objc func playerDidFinishPlaying() {
+//        print("finish playing")
+//        let startTime = CMTimeMake(0, 1)
+//        TabBarAudioContent.sharedInstance.player?.pause()
+//        TabBarAudioContent.sharedInstance.playerItem?.seek(to: startTime)
+//        self.playerItem?.seek(to: startTime)
+//        self.player?.pause()
+//        self.tabView.progressSlider.value = 0
+//        self.tabView.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
+//        nowPlayingCenter.updateTimeForPlayerItem(player)
+//    }
     
     
     // MARK: On mobile phone, lock the screen to portrait only

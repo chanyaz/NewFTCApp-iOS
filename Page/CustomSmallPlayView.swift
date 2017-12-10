@@ -116,10 +116,22 @@ class CustomSmallPlayView: UIView {
             name: Notification.Name(rawValue: "reloadView"),
             object: nil
         )
+        addPlayerItemObservers()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    private func addPlayerItemObservers() {
+ NotificationCenter.default.addObserver(self,selector:#selector(self.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: TabBarAudioContent.sharedInstance.playerItem)
+    }
+    
+
+    
+    @objc func playerDidFinishPlaying() {
+//        print("finish playing")
+        self.progressSlider.value = 0
+        self.playAndPauseButton.setImage(UIImage(named:"PlayBtn"), for: UIControlState.normal)
     }
     @objc func pauseOrPlay(sender: UIButton) {
         let  player = TabBarAudioContent.sharedInstance.player
@@ -130,14 +142,13 @@ class CustomSmallPlayView: UIView {
             if player?.rate != 0 && player?.error == nil {
                 print("palyer item pause)")
                 self.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = false
+//                TabBarAudioContent.sharedInstance.isPlaying = false
                 player?.pause()
                 
             } else {
                 print("palyer item play)")
                 self.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
-                TabBarAudioContent.sharedInstance.isPlaying = true
-                
+//                TabBarAudioContent.sharedInstance.isPlaying = true
                 player?.play()
                 player?.replaceCurrentItem(with: playerItem)
                 
@@ -164,36 +175,48 @@ class CustomSmallPlayView: UIView {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateBarStyle1"), object: self)
     }
     @objc func changeSlider(_ sender: UISlider) {
-        let currentValue = sender.value
-        let currentTime = CMTimeMake(Int64(currentValue), 1)
-        TabBarAudioContent.sharedInstance.playerItem?.seek(to: currentTime)
-        print("sliderValueChanged button\(currentTime)")
+        var currentValue = sender.value
+        if let playerItem = TabBarAudioContent.sharedInstance.playerItem {
+            print("current time:\(playerItem.currentTime)")
+            let d = playerItem.duration
+            currentValue = currentValue*Float(CMTimeGetSeconds(d))
+            let currentTime = CMTimeMake(Int64(currentValue), 1)
+            playerItem.seek(to: currentTime)
+            print("sliderValueChanged button\(currentTime)")
+        }
     }
-    
+    var timer: Timer?
     @objc func updateMiniPlay(){
-        //        print("How many times updateMiniPlay observe run?")
         self.isHidden = false
         if let item = TabBarAudioContent.sharedInstance.item{
             player = TabBarAudioContent.sharedInstance.player
             self.playStatus.text = item.headline
-            updateProgressSlider()
+            timer = nil;
+            timer = Timer.scheduledTimer(timeInterval: 1/30, target: self, selector: #selector(updateProgressSlider), userInfo: nil, repeats: true)
+            if let timer = timer{
+                timer.fire()
+            }
+//            updateProgressSlider()
             updatePlayButtonUI()
         }
     }
-    func updateProgressSlider(){
-        // MARK: - Update audio play progress
-        player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1/30.0, Int32(NSEC_PER_SEC)), queue: nil) { [weak self] time in
-            if let d = TabBarAudioContent.sharedInstance.playerItem?.duration {
-                let duration = CMTimeGetSeconds(d)
-                if duration.isNaN == false {
-                    self?.progressSlider.maximumValue = Float(duration)
-                    if self?.progressSlider.isHighlighted == false {
-                        self?.progressSlider.value = Float((CMTimeGetSeconds(time)))
-                    }
-                    self?.updatePlayTime(current: time, duration: d)
-                    TabBarAudioContent.sharedInstance.duration = d
-                    TabBarAudioContent.sharedInstance.time = time
+    
+    @objc func updateProgressSlider(){
+        
+        //  使用另一种方式更新进度条播放，此方式不用一直监听，消耗大量内存
+        if let playerItem = TabBarAudioContent.sharedInstance.playerItem {
+//            print("current time:\(playerItem.currentTime)")
+            let d = playerItem.duration
+            let time = playerItem.currentTime()
+            let duration = CMTimeGetSeconds(d)
+            if duration.isNaN == false {
+                self.progressSlider.maximumValue = 1.0
+                if self.progressSlider.isHighlighted == false {
+                    self.progressSlider.value = Float((CMTimeGetSeconds(time))/(CMTimeGetSeconds(d)))
                 }
+                self.updatePlayTime(current: time, duration: d)
+                TabBarAudioContent.sharedInstance.duration = d
+                TabBarAudioContent.sharedInstance.time = time
             }
         }
     }
@@ -202,24 +225,22 @@ class CustomSmallPlayView: UIView {
         self.playTime.text = time.durationText
     }
     @objc func reloadAudioView(){
-        if let item = TabBarAudioContent.sharedInstance.item,let audioUrlStrFromList = item.caudio  {
-            print("audioUrlStrFromList--\(audioUrlStrFromList)")
+        if let item = TabBarAudioContent.sharedInstance.item,let _ = item.caudio  {
+//            print("audioUrlStrFromList--\(audioUrlStrFromList)")
             self.playStatus.text = item.headline
-            //           为什么 TabBarAudioContent.sharedInstance.audioHeadLine 一直保持初始值？因为点击首页播放按钮触发的赋值动作，collectionView中cell监听的动作只要其他地方监听会一直触发动作（有待继续核实）
-            
+            //  为什么 TabBarAudioContent.sharedInstance.audioHeadLine 一直保持初始值？因为点击首页播放按钮触发的赋值动作，collectionView中cell监听的动作只要其他地方监听会一直触发动作（有待继续核实）
         }
-        print("audioUrlStrFromList isplaying？--\(TabBarAudioContent.sharedInstance.isPlaying)")
-        
-        //        updatePlayButtonUI()
         //        反着的原因是可能是初始监控为true的原因
-        if TabBarAudioContent.sharedInstance.isPlaying{
+        if (player?.rate != 0) && (player?.error == nil) {
+//        if TabBarAudioContent.sharedInstance.isPlaying{
             self.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)
         }else{
             self.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
         }
     }
     @objc public func updatePlayButtonUI() {
-        if TabBarAudioContent.sharedInstance.isPlaying{
+        if (player?.rate != 0) && (player?.error == nil) {
+//        if TabBarAudioContent.sharedInstance.isPlaying{
             self.playAndPauseButton.setImage(UIImage(named:"HomePauseBtn"), for: UIControlState.normal)
         }else{
             self.playAndPauseButton.setImage(UIImage(named:"HomePlayBtn"), for: UIControlState.normal)

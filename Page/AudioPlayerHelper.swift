@@ -141,7 +141,7 @@ class PlayerAPI {
                 player?.replaceCurrentItem(with: playerItem)
                 
             }
-            TabBarAudioContent.sharedInstance.isPlaying = true
+//            TabBarAudioContent.sharedInstance.isPlaying = true
             TabBarAudioContent.sharedInstance.playerItem = playerItem
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateMiniPlay"), object: self)
             self.addObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime.rawValue, #selector(self.playerDidFinishPlaying), object: playerItem)
@@ -185,9 +185,7 @@ class PlayerAPI {
         }
     }
     public func addObserver(_ observer: Any,name:String, _ actionSection: Selector, object anObject: Any?) {
-//        NotificationCenter.default.addObserver(observer,selector:actionSection, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: anObject)
         NotificationCenter.default.addObserver(observer,selector:actionSection, name: NSNotification.Name(rawValue: name), object: anObject)
-       
     }
 
     public func removeObserver(_ observer: Any,name:String,object anObject: Any?) {
@@ -324,15 +322,7 @@ class PlayerAPI {
         }
         
     }
-//    private func parseAudioMessage() {
-//        let body = TabBarAudioContent.sharedInstance.body
-//        print(" body--\(body)")
-//        if let title = body["title"], let audioFileUrl = body["audioFileUrl"], let interactiveUrl = body["interactiveUrl"] {
-//            audioUrlString = audioFileUrl
-//            print("parsed audioUrlString--\(audioUrlString)")
-//
-//        }
-//    }
+
     
     public func getSingletonItem(item: ContentItem?) {
         if let item = item {
@@ -408,17 +398,7 @@ class UIButtonDownloadedChange: UIButton {
             print("progress--\(progress)")
         }
     }
-//    var downLoadBtnHeight: Float = 0{
-//        didSet {
-//
-//        }
-//    }
-//    var downLoadBtnWidth: Float = 0{
-//        didSet {
-//            self.frame.size.width = CGFloat(downLoadBtnWidth)
-//        }
-//    }
-    
+ 
     var circleShape = CAShapeLayer()
     public func drawCircle() {
         let x: CGFloat = 0.0

@@ -15,12 +15,14 @@ struct Privilege {
     var englishText = false
     var englishAudio = false
     var exclusiveContent = false
+    var editorsChoice = false
     
-    init(adBlock: Bool, englishText: Bool, englishAudio: Bool, exclusiveContent: Bool) {
+    init(adBlock: Bool, englishText: Bool, englishAudio: Bool, exclusiveContent: Bool, editorsChoice: Bool) {
         self.adBlock = adBlock
         self.englishText = englishText
         self.englishAudio = englishAudio
         self.exclusiveContent = exclusiveContent
+        self.editorsChoice = editorsChoice
     }
     
     init() {
@@ -28,6 +30,7 @@ struct Privilege {
         self.englishText = false
         self.englishAudio = false
         self.exclusiveContent = false
+        self.editorsChoice = false
     }
 
 }

@@ -26,8 +26,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     // MARK: show in full screen
     var isFullScreen = false
     
-    
-    
     // MARK: sub type such as user comments
     var subType: ContentSubType = .None
     
@@ -810,7 +808,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     }
     
     @objc open func restore() {
-        FTCProducts.store.restorePurchases()
+        IAPProducts.store.restorePurchases()
         Track.event(category: "IAP", action: "restore", label: "All")
     }
     

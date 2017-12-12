@@ -285,7 +285,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 // TODO: If a user bought the eBook, he should be able to listen to it without membership privilege
                 if Privilege.shared.englishAudio == false {
                     if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
-                        let membershipChannelData = AppNavigation.getChannelData(of: "myft/membership"){
+                        let membershipChannelData = AppNavigation.getChannelData(of: "myft/membership") {
                         // searchViewController
                         
                         // Mark: Show a reason why user is redirected here

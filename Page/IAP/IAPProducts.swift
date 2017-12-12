@@ -183,6 +183,16 @@ public struct IAPProducts {
             //"downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.yearin2018",
+            "title":"FT中文网2018年刊",
+            "teaser":"挑选FT每日英语文章精华，集结成册",
+            "image":"http://i.ftimg.net/picture/5/000074025_piclink.jpg",
+            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+            "download": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=audiobook&bodyonly=yes&webview=ftcapp&ad=no&v=6.8&012",
+            "downloadfortry": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=audiobook&bodyonly=yes&webview=ftcapp&ad=no&try=yes&v=6.8&012"
         ]
         
     ]

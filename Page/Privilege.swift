@@ -82,6 +82,18 @@ struct PrivilegeHelper {
             return privilge.editorsChoice
         }
     }
+    
+    // TODO: Need to get the correct words
+    static func getDescription(_ privilegeType: PrivilegeType) -> (title: String, body: String) {
+        switch privilegeType {
+        case .EnglishAudio:
+            return ("付费功能", "收听英文语音需要付费")
+        case .ExclusiveContent:
+            return ("付费功能", "查看独家内容需要付费")
+        case .EditorsChoice:
+            return ("付费功能", "阅读编辑精选需要付费")
+        }
+    }
 }
 
 

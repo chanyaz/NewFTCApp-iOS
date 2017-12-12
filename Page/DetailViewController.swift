@@ -283,15 +283,18 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 audioFileUrl = eaudio
                 // MARK: If the user doesn't have the necessary privilege to listen to English audio, present membership options to him
                 // TODO: If a user bought the eBook, he should be able to listen to it without membership privilege
-                if Privilege.shared.englishAudio == false || 1>0 {
+                if Privilege.shared.englishAudio == false {
                     if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
                         let membershipChannelData = AppNavigation.getChannelData(of: "myft/membership"){
                         // searchViewController
-                        // TODO: 1. Only show options that include this privilege
-                        // TODO: 2. Show a reason why user is redirected here
+                        
+                        // Mark: Show a reason why user is redirected here
+                        let privilegeDescription = PrivilegeHelper.getDescription(.EnglishAudio)
                         dataViewController.dataObject = membershipChannelData
+                        // Mark: Only show options that include this privilege
                         dataViewController.withPrivilege = .EnglishAudio
-                        dataViewController.pageTitle = "付费功能"
+                        dataViewController.privilegeDescriptionBody = privilegeDescription.body
+                        dataViewController.pageTitle = privilegeDescription.title
                         navigationController?.pushViewController(dataViewController, animated: true)
                         return
                     }

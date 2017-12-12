@@ -25,6 +25,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     let maxWidth: CGFloat = 768
     var adchId = AdLayout.homeAdChId
     var withPrivilege: PrivilegeType?
+    var privilegeDescriptionBody: String?
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
     
@@ -1354,7 +1355,7 @@ extension SuperDataViewController {
             let dataObjectSubType = self?.dataObject["subtype"] ?? "membership"
             let items = IAP.get(IAPs.shared.products, in: dataObjectSubType, with: self?.withPrivilege)
             let contentSections = ContentSection(
-                title: "",
+                title: self?.privilegeDescriptionBody ?? "",
                 items: items,
                 type: "List",
                 adid: ""

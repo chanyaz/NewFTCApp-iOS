@@ -71,6 +71,17 @@ struct PrivilegeHelper {
             }
         }
     }
+    
+    static func isPrivilegeIncluded(_ privilegeType: PrivilegeType, in privilge: Privilege) -> Bool {
+        switch privilegeType {
+        case .EnglishAudio:
+            return privilge.englishAudio
+        case .ExclusiveContent:
+            return privilge.exclusiveContent
+        case .EditorsChoice:
+            return privilge.editorsChoice
+        }
+    }
 }
 
 
@@ -80,3 +91,8 @@ enum AdDisplay {
     case all
 }
 
+enum PrivilegeType {
+    case EnglishAudio
+    case ExclusiveContent
+    case EditorsChoice
+}

@@ -17,13 +17,22 @@ struct IAP {
     public static let purchaseHistoryKey = "purchase history"
     public static let purchasedPropertyString = "purchased"
     
-    public static func get(_ products: [SKProduct], in group: String?) -> [ContentItem] {
+    public static func get(_ products: [SKProduct], in group: String?, with privilege: PrivilegeType?) -> [ContentItem] {
         var contentItems = [ContentItem]()
+        
         for oneProduct in IAPProducts.allProducts {
             if let id = oneProduct["id"] as? String {
                 // MARK: If product group doesn't fit, fall through the loop immediately
                 let productGroup = oneProduct["group"] as? String ?? ""
                 if let groupFilterString = group, groupFilterString != productGroup {
+                    continue
+                }
+                
+                // MARK: - If the privilege type doesn't fit, fall through the loop immediately
+                if let privilege = privilege,
+                    let productPrivilege = oneProduct["privilege"] as? Privilege,
+                    PrivilegeHelper.isPrivilegeIncluded(privilege, in: productPrivilege) == false {
+                    print ("Privilge Check: \(privilege) not included in \(productPrivilege)")
                     continue
                 }
                 
@@ -147,7 +156,7 @@ struct IAP {
     
     
     public static func getJSON(_ products: [SKProduct], in group: String?, shuffle: Bool, filter: [String]?) -> String {
-        var contentItems = get(products, in: group)
+        var contentItems = get(products, in: group, with: nil)
         if shuffle {
             contentItems = contentItems.shuffled()
         }

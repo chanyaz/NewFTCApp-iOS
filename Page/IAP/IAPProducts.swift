@@ -44,10 +44,9 @@ public struct IAPProducts {
             "period":"year",
             "benefits": [
                 "阅读FT中文网所有独家内容",
-                "收听英文文章音频",
-                "屏蔽广告，整个世界清净了"
+                "收听英文文章音频"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.vip",
@@ -58,11 +57,10 @@ public struct IAPProducts {
             "benefits": [
                 "《FT编辑精选》，每周不可错过的独家必读内容",
                 "获得两张价值3999元的FT中文网年会门票",
-                "屏蔽广告，整个世界清净了",
                 "阅读FT中文网所有独家内容",
                 "收听英文文章音频"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.diamond",
@@ -75,10 +73,9 @@ public struct IAPProducts {
                 "《FT周刊》，精选不可错过的必读内容",
                 "两张张价值9999元的FT中文网年会贵宾门票",
                 "阅读FT中文网所有独家内容",
-                "屏蔽广告，整个世界清净了",
                 "订制内容推送到客户端"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ]
         //        [
         //            "id":"com.ft.ftchinese.mobile.subscription.trial",

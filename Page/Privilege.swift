@@ -11,14 +11,14 @@ struct Privilege {
     
     static var shared = Privilege()
     
-    var adBlock = false
+    var adDisplay: AdDisplay = .all
     var englishText = false
     var englishAudio = false
     var exclusiveContent = false
     var editorsChoice = false
     
-    init(adBlock: Bool, englishText: Bool, englishAudio: Bool, exclusiveContent: Bool, editorsChoice: Bool) {
-        self.adBlock = adBlock
+    init(adDisplay: AdDisplay, englishText: Bool, englishAudio: Bool, exclusiveContent: Bool, editorsChoice: Bool) {
+        self.adDisplay = adDisplay
         self.englishText = englishText
         self.englishAudio = englishAudio
         self.exclusiveContent = exclusiveContent
@@ -26,7 +26,7 @@ struct Privilege {
     }
     
     init() {
-        self.adBlock = false
+        self.adDisplay = .all
         self.englishText = false
         self.englishAudio = false
         self.exclusiveContent = false
@@ -34,3 +34,49 @@ struct Privilege {
     }
 
 }
+
+struct PrivilegeHelper {
+    
+    static func updateFromDevice() {
+        let memberships = IAPProducts.memberships
+        for membership in memberships {
+            if let id = membership["id"] as? String {
+                let purchased = UserDefaults.standard.bool(forKey: id)
+                //print ("IAP: \(id) purchase status is \(purchased)")
+                if purchased == true {
+                    if let privilege = membership["privilege"] as? Privilege {
+                        Privilege.shared = privilege
+                        print ("IAP: check locally and privilege is \(privilege)")
+                    }
+                }
+            }
+        }
+    }
+    
+    static func updateFromNetwork() {
+        let memberships = IAPProducts.memberships
+        for membership in memberships {
+            if let id = membership["id"] as? String {
+                let purchased = IAP.checkStatus(id)
+                //print ("IAP: \(id) purchase status is \(purchased)")
+                if purchased != "new" {
+                    if let privilege = membership["privilege"] as? Privilege {
+                        Privilege.shared = privilege
+                        print ("IAP: check from network and privilege is \(privilege)")
+                    }
+                } else {
+                    UserDefaults.standard.set(false, forKey: id)
+                    print ("IAP: check from network and \(id)'s purchase status is set to false")
+                }
+            }
+        }
+    }
+}
+
+
+enum AdDisplay {
+    case no
+    case reasonable
+    case all
+}
+

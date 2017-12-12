@@ -1379,6 +1379,9 @@ extension SuperDataViewController {
                 if let products = products {
                     //self?.products = products
                     IAPs.shared.products = products
+                    
+                    // MARK: Update privilege from network
+                    PrivilegeHelper.updateFromNetwork()
                 }
             }
             // MARK: - Get product regardless of the request result

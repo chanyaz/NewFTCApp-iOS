@@ -43,24 +43,34 @@ struct Download {
     }
     
     public static func saveFile(_ data: Data, filename: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
-        if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
-            if let directoryPath = URL(string: directoryPathString) {
-                let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
-                let filePath = directoryPath.appendingPathComponent(realFileName)
-                let fileManager = FileManager.default
-                let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
-                //                if created {
-                //                    print("\(realFileName) created successfully")
-                //                } else {
-                //                    print("Couldn't create file for some reason")
-                //                }
-                // Write that JSON to the file created earlier
-                do {
-                    let file = try FileHandle(forWritingTo: filePath)
-                    file.write(data)
-                    print("write to file: \(realFileName) successfully!")
-                } catch let error as NSError {
-                    print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
+        DispatchQueue.global().async {
+            // MARK: - If the file is JSON, it should be validated first
+            // TODO: - Find out why JSONSerialization.isValidJSONObject(data) doesn't work
+            if fileExtension == "json" {
+                let JSON = try? JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
+                if let _ = JSON as? NSDictionary {
+                    print("JSON Validation Success for \(filename)")
+                } else {
+                    print("JSON Validation Failure for \(filename)")
+                    return
+                }
+            } else {
+                print("JSON Validation is not needed for \(filename)")
+            }
+            if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
+                if let directoryPath = URL(string: directoryPathString) {
+                    let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
+                    let filePath = directoryPath.appendingPathComponent(realFileName)
+                    let fileManager = FileManager.default
+                    let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
+                    // MARK: - Write that JSON to the file created earlier
+                    do {
+                        let file = try FileHandle(forWritingTo: filePath)
+                        file.write(data)
+                        print("write to file: \(realFileName) successfully!")
+                    } catch let error as NSError {
+                        print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
+                    }
                 }
             }
         }

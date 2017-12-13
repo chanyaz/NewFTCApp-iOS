@@ -547,6 +547,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 for item in items {
                     if item.type == "story" {
                         let apiUrl = APIs.get(item.id, type: item.type)
+                        //print ("read story json: \(apiUrl)")
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "json") == nil {
                             print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         } else {

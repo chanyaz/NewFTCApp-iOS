@@ -329,18 +329,20 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         print ("requesting api from: \(listAPIString)")
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
-                if error != nil {
-                    Download.handleServerError(listAPIString, error: error)
+                DispatchQueue.global().async {
+                    if error != nil {
+                        Download.handleServerError(listAPIString, error: error)
+                    }
+                    if let data = data,
+                        error == nil,
+                        HTMLValidator.validate(data, url: listAPIString) {
+                        Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
+                    }
+                    DispatchQueue.main.async {
+                        self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
+                        self?.activityIndicator.removeFromSuperview()
+                    }
                 }
-                if let data = data,
-                    error == nil,
-                    HTMLValidator.validate(data, url: listAPIString) {
-                    Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
-                }
-                DispatchQueue.main.async {
-                    self?.activityIndicator.removeFromSuperview()
-                }
-                self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
             }
         }
     }

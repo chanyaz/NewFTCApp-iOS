@@ -93,8 +93,8 @@ extension UIViewController {
         activityVC.shareItems = [
             WeChatShare(to: "chat-custom"),
             WeChatShare(to: "moment-custom"),
-            WeChatShare(to: "chat-screenshot"),
-            //OpenInSafari(to: "safari-custom"),
+            //WeChatShare(to: "chat-screenshot"),
+            OpenInSafari(to: "safari-custom"),
             ShareMore(contentItem: item, from: sender)
         ]
         

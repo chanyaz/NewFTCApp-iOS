@@ -43,19 +43,15 @@ struct Download {
     }
     
     public static func saveFile(_ data: Data, filename: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
-        DispatchQueue.global().async {
             // MARK: - If the file is JSON, it should be validated first
             // TODO: - Find out why JSONSerialization.isValidJSONObject(data) doesn't work
             if fileExtension == "json" {
                 let JSON = try? JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
                 if let _ = JSON as? NSDictionary {
-                    print("JSON Validation Success for \(filename)")
                 } else {
-                    print("JSON Validation Failure for \(filename)")
+                    Track.event(category: "CatchError", action: "JSON Validation Failure", label: filename)
                     return
                 }
-            } else {
-                print("JSON Validation is not needed for \(filename)")
             }
             if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {
                 if let directoryPath = URL(string: directoryPathString) {
@@ -73,7 +69,6 @@ struct Download {
                     }
                 }
             }
-        }
     }
     
     public static func readFile(_ urlString: String, for directory: FileManager.SearchPathDirectory, as fileExtension: String?) -> Data? {
@@ -491,7 +486,7 @@ struct Download {
         return nil
     }
     
-    public static func removeFileName(_ urlString: String,for directory: FileManager.SearchPathDirectory, as fileExtension: String?){
+    public static func removeFile(_ urlString: String,for directory: FileManager.SearchPathDirectory, as fileExtension: String?){
         let fileName = getFileNameFromUrlString(urlString, as: fileExtension)
         do {
             let DocumentDirURL = try FileManager.default.url(for: directory, in: .userDomainMask, appropriateFor: nil, create: true)

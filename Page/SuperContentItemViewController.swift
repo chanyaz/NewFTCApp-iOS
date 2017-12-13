@@ -262,7 +262,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     }
     
     private func getDetailInfo() {
-        if let id = dataObject?.id, dataObject?.type == "story" {
+        if let id = dataObject?.id, let type = dataObject?.type, type == "story" {
             //MARK: if it is a story, get the API
             let urlString = APIs.get(id, type: "story")
             view.addSubview(activityIndicator)
@@ -272,19 +272,20 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             // MARK: Check the local file
             if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
                 //print ("found \(urlString) in caches directory. ")
-                if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
-                {
+                if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) {
                     let contentSections = contentAPI.formatJSON(resultsDictionary)
                     let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
                     updateUI(of: id, with: results)
                     print ("update content UI from local file with \(urlString), no need to connect to internet again")
                     activityIndicator.removeFromSuperview()
                     return
+                } else {
+                    // MARK: If the json file is not valid, remove the file and render web page
+                    Download.removeFile(urlString, for: .cachesDirectory, as: "json")
                 }
             }
             
-            contentAPI.fetchContentForUrl(urlString, fetchUpdate: .OnlyOnWifi) {
-                [weak self] results, error in
+            contentAPI.fetchContentForUrl(urlString, fetchUpdate: .OnlyOnWifi) {[weak self] results, error in
                 DispatchQueue.main.async {
                     self?.activityIndicator.removeFromSuperview()
                     if let error = error {
@@ -301,7 +302,17 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                         self?.updatePageContent()
                         return
                     }
-                    self?.updateUI(of: id, with: results)
+                    if let results = results {
+                        self?.updateUI(of: id, with: results)
+                    } else {
+                        // MARK: If the result is empty, render the page with the base url
+                        let publicUrl = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
+                        if let url = URL(string: publicUrl) {
+                            let request = URLRequest(url: url)
+                            self?.webView?.load(request)
+                        }
+                        Track.event(category: "CatchError", action: "Content Fetch is Empty", label: urlString)
+                    }
                     print ("update content UI from internet with \(urlString)")
                 }
             }

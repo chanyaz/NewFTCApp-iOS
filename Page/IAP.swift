@@ -15,14 +15,24 @@ struct IAP {
     // MARK: - The key name for purchase information in user defaults
     public static let myPurchasesKey = "My Purchases"
     public static let purchaseHistoryKey = "purchase history"
+    public static let purchasedPropertyString = "purchased"
     
-    public static func get(_ products: [SKProduct], in group: String?) -> [ContentItem] {
+    public static func get(_ products: [SKProduct], in group: String?, with privilege: PrivilegeType?) -> [ContentItem] {
         var contentItems = [ContentItem]()
+        
         for oneProduct in IAPProducts.allProducts {
             if let id = oneProduct["id"] as? String {
                 // MARK: If product group doesn't fit, fall through the loop immediately
                 let productGroup = oneProduct["group"] as? String ?? ""
                 if let groupFilterString = group, groupFilterString != productGroup {
+                    continue
+                }
+                
+                // MARK: - If the privilege type doesn't fit, fall through the loop immediately
+                if let privilege = privilege,
+                    let productPrivilege = oneProduct["privilege"] as? Privilege,
+                    PrivilegeHelper.isPrivilegeIncluded(privilege, in: productPrivilege) == false {
+                    print ("Privilge Check: \(privilege) not included in \(productPrivilege)")
                     continue
                 }
                 
@@ -47,22 +57,22 @@ struct IAP {
                 
                 // MARK: - Membership Benefits
                 //var benefitsString = ""
-//                if let benefits = oneProduct["benefits"] as? [String] {
-//                    for benefit in benefits {
-//                        benefitsString += ",'\(benefit)'"
-//                    }
-//                }
+                //                if let benefits = oneProduct["benefits"] as? [String] {
+                //                    for benefit in benefits {
+                //                        benefitsString += ",'\(benefit)'"
+                //                    }
+                //                }
                 let productBenefits = oneProduct["benefits"] as? [String]
                 
-                 //
-//                if benefitsString != "" {
-//                    benefitsString = ",benefits:[\(benefitsString)]".replacingOccurrences(of: "[,", with: "[")
-//                }
+                //
+                //                if benefitsString != "" {
+                //                    benefitsString = ",benefits:[\(benefitsString)]".replacingOccurrences(of: "[,", with: "[")
+                //                }
                 
                 // MARK: - If isPurchaed is false, check the user default
                 // FIXME: - This might be a potential loophole later if we are selling more expensive products
                 if isPurchased == false {
-                    if Download.getPropertyFromUserDefault(id, property: "purchased") == "Y" {
+                    if Download.getPropertyFromUserDefault(id, property: purchasedPropertyString) == "Y" {
                         isPurchased = true
                     }
                 }
@@ -146,7 +156,7 @@ struct IAP {
     
     
     public static func getJSON(_ products: [SKProduct], in group: String?, shuffle: Bool, filter: [String]?) -> String {
-        var contentItems = get(products, in: group)
+        var contentItems = get(products, in: group, with: nil)
         if shuffle {
             contentItems = contentItems.shuffled()
         }
@@ -235,6 +245,19 @@ struct IAP {
             //print ("created my purchase status: ")
             //print (myPurchases)
         }
+    }
+    
+    // MARK: - Check if one piece of IAP is in the user default's "my purchase" key
+    public static func checkPurchaseInDevice(_ productId: String, property: String) -> String? {
+        if let myPurchases = UserDefaults.standard.dictionary(forKey: myPurchasesKey) as? [String: Dictionary<String, String>] {
+            if let myPurchase = myPurchases[productId] {
+                print ("myPurchase: \(myPurchase)")
+                if let value = myPurchase[property]{
+                    return value
+                }
+            }
+        }
+        return nil
     }
     
     public static func updatePurchaseHistory(_ productId: String, date: Date?) {
@@ -433,8 +456,10 @@ struct IAP {
     public static func checkStatus(_ id: String) -> String {
         let fileName = getFileName(id)
         if Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) != nil {
+            savePurchase(id, property: purchasedPropertyString, value: "Y")
             return "success"
         } else if IAPProducts.store.isProductPurchased(id) == true {
+            savePurchase(id, property: purchasedPropertyString, value: "Y")
             return "pendingdownload"
         }
         return "new"
@@ -450,11 +475,11 @@ struct IAP {
         }
         let fileName = getFileName(productId)
         let filePath = "\(dirPath)/\(fileName)"
-        IAP.trackIAPActions("remove download", productId: productId)
+        trackIAPActions("remove download", productId: productId)
         do {
             try fileManager.removeItem(atPath: filePath)
             print ("removed the file at \(filePath)")
-            IAP.savePurchase(productId, property: "purchased", value: "Y")
+            savePurchase(productId, property: purchasedPropertyString, value: "Y")
         } catch let error as NSError {
             print(error.debugDescription)
         }

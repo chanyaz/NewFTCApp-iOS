@@ -268,7 +268,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             // dataObject.caudio = "https://creatives.ftimg.net/album/c5fe0be8-ca48-11e7-ab18-7a9fb7d6163e.mp3"
             let audioFileUrl: String?
             
-            // TODO: Check if there's audio file attached to this item
+            // MARK: Check if there's audio file attached to this item
             if let caudio = dataObject.caudio,
                 caudio != "",
                 language == "ch"{
@@ -281,6 +281,25 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 language == "en" {
                 print ("There is english audio: \(eaudio) for this item, handle it later. ")
                 audioFileUrl = eaudio
+                // MARK: If the user doesn't have the necessary privilege to listen to English audio, present membership options to him
+                // TODO: If a user bought the eBook, he should be able to listen to it without membership privilege
+                if Privilege.shared.englishAudio == false {
+                    if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
+                        let membershipChannelData = AppNavigation.getChannelData(of: "myft/membership") {
+                        // searchViewController
+                        
+                        // Mark: Show a reason why user is redirected here
+                        let privilegeDescription = PrivilegeHelper.getDescription(.EnglishAudio)
+                        dataViewController.dataObject = membershipChannelData
+                        // Mark: Only show options that include this privilege
+                        dataViewController.withPrivilege = .EnglishAudio
+                        dataViewController.privilegeDescriptionBody = privilegeDescription.body
+                        dataViewController.pageTitle = privilegeDescription.title
+                        navigationController?.pushViewController(dataViewController, animated: true)
+                        return
+                    }
+                    
+                }
             } else {
                 audioFileUrl = nil
             }

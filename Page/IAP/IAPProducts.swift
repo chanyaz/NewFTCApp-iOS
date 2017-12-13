@@ -44,10 +44,9 @@ public struct IAPProducts {
             "period":"year",
             "benefits": [
                 "阅读FT中文网所有独家内容",
-                "收听英文文章音频",
-                "屏蔽广告，整个世界清净了"
+                "收听英文文章音频"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.vip",
@@ -58,11 +57,10 @@ public struct IAPProducts {
             "benefits": [
                 "《FT编辑精选》，每周不可错过的独家必读内容",
                 "获得两张价值3999元的FT中文网年会门票",
-                "屏蔽广告，整个世界清净了",
                 "阅读FT中文网所有独家内容",
                 "收听英文文章音频"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.diamond",
@@ -75,10 +73,9 @@ public struct IAPProducts {
                 "《FT周刊》，精选不可错过的必读内容",
                 "两张张价值9999元的FT中文网年会贵宾门票",
                 "阅读FT中文网所有独家内容",
-                "屏蔽广告，整个世界清净了",
                 "订制内容推送到客户端"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ]
         //        [
         //            "id":"com.ft.ftchinese.mobile.subscription.trial",
@@ -186,6 +183,16 @@ public struct IAPProducts {
             //"downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.yearin2018",
+            "title":"FT中文网2018年刊",
+            "teaser":"挑选FT每日英语文章精华，集结成册",
+            "image":"http://i.ftimg.net/picture/5/000074025_piclink.jpg",
+            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
+            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
+            "download": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=audiobook&bodyonly=yes&webview=ftcapp&ad=no&v=6.8&012",
+            "downloadfortry": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=audiobook&bodyonly=yes&webview=ftcapp&ad=no&try=yes&v=6.8&012"
         ]
         
     ]

@@ -144,7 +144,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
             case "buyproduct":
                 // MARK: open the product page
                 let productId = url.host
-                let products = IAP.get(IAPs.shared.products, in: "ebook")
+                let products = IAP.get(IAPs.shared.products, in: "ebook", with: nil)
                 for product in products {
                     if productId == product.id {
                         if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {

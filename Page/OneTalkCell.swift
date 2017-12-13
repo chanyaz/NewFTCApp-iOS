@@ -298,17 +298,46 @@ class OneTalkCell: UITableViewCell {
         if self.cellData.saysType == .text {
          
             self.addBubbleView(x: self.cellData.bubbleImageX, y: bubbleImageY, width: self.cellData.bubbleImageWidth, height: self.cellData.bubbleImageHeight)
-            let saysContentView = UILabel(frame: CGRect(x: self.cellData.saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
-            saysContentView.numberOfLines = 0
-            saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
+            let saysContentView = UITextView(frame: CGRect(x: self.cellData.saysWhatX, y: saysWhatY, width: self.cellData.saysWhatWidth, height: self.cellData.saysWhatHeight))
+            saysContentView.textContainerInset = .zero
+            saysContentView.textContainer.lineFragmentPadding = 0
+            //saysContentView.numberOfLines = 0
+            //saysContentView.lineBreakMode = NSLineBreakMode.byWordWrapping
             let content = self.cellData.saysWhat.content
             //TODO:Deal with the html code
-            //let cleanedContent = content.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
-            saysContentView.text = content
+            //Eg:"放心，我会告诉你真相的。<a href=\"www.ftchinese.com\">点我</a>"
+            if content.range(of:"</?a.*?>", options:.regularExpression,range:nil,locale:nil) != nil {
+                
+                if let regex1 = try? NSRegularExpression(pattern:"<a.*>",options:[]), let regex2 = try? NSRegularExpression(pattern:".*?<a.*?>(.*)</a>",options:[]), let regex3 = try? NSRegularExpression(pattern:".*?href\\s*=\\s*[\"\'](.*?)[\"\'].*",options:[]) {
+                    let normalContent = regex1.stringByReplacingMatches(in: content, options: [], range: NSMakeRange(0, content.count), withTemplate: "")
+                    let clickContent = regex2.stringByReplacingMatches(in: content, options:[], range: NSMakeRange(0, content.count), withTemplate: "$1")
+                    let hrefValue = regex3.stringByReplacingMatches(in: content, options:[], range: NSMakeRange(0, content.count), withTemplate: "$1")
+                    let attrs1 = [NSAttributedStringKey.foregroundColor:UIColor.black]
+                    let attrs2 = [NSAttributedStringKey.foregroundColor:UIColor.blue, NSAttributedStringKey.link: URL(string:hrefValue) ?? ""] as [NSAttributedStringKey : Any]
+                    let attrNormalContent = NSMutableAttributedString(string: normalContent, attributes: attrs1)
+                    let attrClickContent = NSMutableAttributedString(string: clickContent, attributes: attrs2)
+                    attrNormalContent.append(attrClickContent)
+                    saysContentView.attributedText = attrNormalContent
+                    print("href:\(hrefValue)")
+                    saysContentView.isSelectable = true
+                    
+                }
+ 
+                
+                
+            }else {
+                saysContentView.text = content
+                saysContentView.textColor = self.cellData.textColor
+                saysContentView.isSelectable = false
+            }
+            
             //let href = content.replacingOccurrences(of: "href=(.*) ", with: $0, options: .regularExpression, range: nil)
             saysContentView.font = self.cellData.normalFont
-            saysContentView.textColor = self.cellData.textColor
+            saysContentView.isEditable = false
+            saysContentView.isScrollEnabled = false
+            saysContentView.backgroundColor = UIColor.clear
             self.addSubview(saysContentView)
+
             
             
         } else if self.cellData.saysType == .image {

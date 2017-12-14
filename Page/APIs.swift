@@ -412,6 +412,12 @@ struct LinkPattern {
     static let archiver = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/archiver/([0-9-]+)"]
     static let channel = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/([0-9-a-zA-Z]+.html)"]
     static let other = ["^(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
+    static let image = [
+        "^(http[s]*://.*.jpg)$",
+        "^(http[s]*://.*.gif)$",
+        "^(http[s]*://.*.png)$",
+        "^(http[s]*://.*.jpeg)$"
+    ]
     //other:"http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=[0-9]+&impressionId=[a-z0-9A-Z]+$"
 }
 

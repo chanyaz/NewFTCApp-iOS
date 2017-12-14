@@ -49,10 +49,9 @@ extension UIApplication {
             let currentViewController = pageViewControllers[0]
             return currentViewController
         }
-        if let tabController = controller as? UITabBarController {
-            if let selected = tabController.selectedViewController {
-                return topViewController(controller: selected)
-            }
+        if let tabController = controller as? UITabBarController,
+            let selected = tabController.selectedViewController {
+            return topViewController(controller: selected)
         }
         if let presented = controller?.presentedViewController {
             return topViewController(controller: presented)
@@ -69,7 +68,8 @@ extension Date {
         return dateString
     }
 }
-public extension UIDevice{
+
+public extension UIDevice {
     
     var modelName: String {
         var systemInfo = utsname()

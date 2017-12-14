@@ -22,7 +22,10 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 var id: String? = nil
                 var type: String? = nil
                 // MARK: If the link pattern is recognizable, open it using native method
-                if let contentId = urlString.matchingStrings(regexes: LinkPattern.story) {
+                if let contentId = urlString.matchingStrings(regexes: LinkPattern.image) {
+                    id = contentId
+                    type = "image"
+                } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.story) {
                     id = contentId
                     type = "story"
                 } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.video) {
@@ -48,6 +51,31 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 if let type = type,
                     ["tag", "archiver", "channel"].contains(type) == true {
                     openDataView(id, of: type)
+                    return
+                }
+                if let type = type,
+                    ["image"].contains(type) == true,
+                    let id = id {
+                    let item = ContentItem(
+                        id: id,
+                        image: "",
+                        headline: "",
+                        lead: "",
+                        type: type,
+                        preferSponsorImage: "",
+                        tag: "",
+                        customLink: "",
+                        timeStamp: 0,
+                        section: 0,
+                        row: 0
+                    )
+                    if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+                        contentItemViewController.dataObject = item
+                        contentItemViewController.pageTitle = item.headline
+                        contentItemViewController.isFullScreen = true
+                        //contentItemViewController.subType = .UserComments
+                        navigationController?.pushViewController(contentItemViewController, animated: true)
+                    }
                     return
                 }
                 if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {

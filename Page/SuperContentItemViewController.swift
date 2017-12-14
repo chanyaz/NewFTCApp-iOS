@@ -134,7 +134,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
 
                 let typeString = dataObject?.type ?? ""
                 // MARK: If the sub type is a user comment, render web view directly
-                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html", "manual", "register"].contains(typeString)  {
+                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html", "manual", "register", "image"].contains(typeString)  {
                     renderWebView()
                 } else {
                     getDetailInfo()
@@ -754,6 +754,31 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                         let htmlNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
                         let htmlString = htmlNSString as String
                         self.webView?.loadHTMLString(htmlString, baseURL:url)
+                    } catch {
+                        print ("html file is not loaded correctly")
+                    }
+                }
+            }
+        } else if dataObject?.type == "image"{
+            // TODO: - Display the image in the middle of page
+            if let imageUrlString = dataObject?.id {
+                let url = URL(string: imageUrlString)
+                let resourceFileName = "list"
+                if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html") {
+                    do {
+                        let htmlNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                        let htmlString = htmlNSString as String
+                        let htmlStringWithImage = htmlString
+                            .replacingOccurrences(
+                                of: "{list-content}",
+                                with: "<img src=\"\(imageUrlString)\">")
+                            .replacingOccurrences(
+                                of: "{night-class}",
+                                with: " night image-view")
+                            .replacingOccurrences(
+                                of: "{iap-js-code}",
+                                with: "")
+                        self.webView?.loadHTMLString(htmlStringWithImage, baseURL:url)
                     } catch {
                         print ("html file is not loaded correctly")
                     }

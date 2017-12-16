@@ -66,6 +66,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: - Update membership status
         PrivilegeHelper.updateFromDevice()
         
+
+        
         // MARK: - Don't delete this. It's very useful.
         //GB2Big5.createDict()
         //let _ = GB2Big5.makeMyDict()
@@ -159,6 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         checkImpressions()
         checkImpressionTimer?.invalidate()
         UIApplication.shared.applicationIconBadgeNumber = 0
+        Engagement.save()
         
         //        if AppLaunch.sharedInstance.launched == true {
         //            if let rootViewController = window?.rootViewController {

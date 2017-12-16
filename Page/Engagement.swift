@@ -14,29 +14,70 @@ struct FootPrint {
     var log: [[String: Any]] = []
 }
 
-// MARK: - Only the light-weight engagement related data are that enought to calculate Recency, Frequency and Volumn
+// MARK: - Only the light-weight engagement related data that are enough to calculate Recency, Frequency and Volumn
 struct EngagementData {
     static var shared = EngagementData()
     var log: [[String: Any]] = []
+    var hasChecked = false
 }
 
 struct Engagement {
+    private static let engagementDataFileName = "engagementData"
+    private static let engagementDataFileExtension = "engagement"
+    private static let daysForEngagement: TimeInterval = 90
+    // MARK: When the app launches, check the file system for engagement data
+    private static func check() {
+        if EngagementData.shared.hasChecked == true {
+            return
+        }
+        if  let data = Download.readFile(engagementDataFileName, for: .documentDirectory, as: engagementDataFileExtension),
+            let json = try? JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0)),
+            let log = json as? [[String: Any]] {
+            EngagementData.shared.log = log
+        }
+        EngagementData.shared.hasChecked = true
+    }
+    
+    static func save() {
+        let logs = EngagementData.shared.log
+        let secondsInAday: TimeInterval = 24 * 60 * 60
+        let logsCleaned = logs.filter { (log) -> Bool in
+            if let timeStamp = log["time"] as? TimeInterval {
+                let engageDays = Date().timeIntervalSince1970 - daysForEngagement * secondsInAday
+                let daysPassed = (timeStamp - engageDays)/secondsInAday
+                print ("days passed: \(daysPassed)")
+                if timeStamp >= engageDays {
+                    print ("log: keep it")
+                return true
+                }
+                print ("log: remove it")
+                return false
+            }
+            return false
+        }
+        if let data = try? JSONSerialization.data(withJSONObject: logsCleaned, options: JSONSerialization.WritingOptions(rawValue: 0)) {
+            Download.saveFile(data, filename: engagementDataFileName, to: .documentDirectory, as: engagementDataFileExtension)
+        }
+    }
     
     static func screen(_ name: String) {
-        let unixDateStamp = Date().timeIntervalSince1970
-        let timeStamp = Double(unixDateStamp)
+        check()
+        let timeStamp = Date().timeIntervalSince1970
+        //let timeStamp = Double(unixDateStamp)
         let log: [String: Any] = [
             "time": timeStamp,
             "type": "screen",
             "name": name
         ]
         EngagementData.shared.log.append(log)
-        print ("Log is now: \(FootPrint.shared.log)")
+        save()
+        print ("Log is now: \(EngagementData.shared.log)")
     }
     
     static func event(category: String, action: String, label: String) {
-        let unixDateStamp = Date().timeIntervalSince1970
-        let timeStamp = Double(unixDateStamp)
+        check()
+        let timeStamp = Date().timeIntervalSince1970
+        //let timeStamp = Double(unixDateStamp)
         let log: [String: Any] = [
             "time": timeStamp,
             "type": "event",
@@ -49,8 +90,9 @@ struct Engagement {
     }
     
     static func catchError(_ description: String, withFatal: NSNumber) {
-        let unixDateStamp = Date().timeIntervalSince1970
-        let timeStamp = Double(unixDateStamp)
+        check()
+        let timeStamp = Date().timeIntervalSince1970
+        //let timeStamp = Double(unixDateStamp)
         let log: [String: Any] = [
             "time": timeStamp,
             "type": "error",

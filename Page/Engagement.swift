@@ -74,6 +74,11 @@ struct Engagement {
         print ("Log is now: \(EngagementData.shared.log)")
     }
     
+    static func score() -> (score: Double, frequency: Int, recency: Int, volumn: Int)? {
+        
+        return nil
+    }
+    
     static func event(category: String, action: String, label: String) {
         check()
         let timeStamp = Date().timeIntervalSince1970

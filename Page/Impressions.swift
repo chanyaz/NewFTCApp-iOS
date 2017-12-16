@@ -97,11 +97,14 @@ struct Impressions {
             let adName = impression.adName
             // MARK: Report a request event
             Track.event(category: adName, action: "Request", label: impressionUrlString)
-            send(impressionUrlString: impressionUrlString,
-                 timeStamp: timeStamp, adName: adName,
+            send(
+                impressionUrlString: impressionUrlString,
+                 timeStamp: timeStamp,
+                 adName: adName,
                  deviceType: deviceType,
                  impressionId: impressionId,
-                 action: "Request")
+                 action: "Request"
+            )
             print ("sent impression of \(adName): \(impressionUrlString)")
         }
     }

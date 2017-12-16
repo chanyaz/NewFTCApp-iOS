@@ -20,8 +20,8 @@ struct Track {
                 //print ("send track for screen name: \(name)")
             }
         }
-        // TODO: Send to FTChinese Log
-        
+        // MARK: Save screen name locally
+        Engagement.screen(name)
     }
     
     public static func event(category: String, action: String, label: String) {

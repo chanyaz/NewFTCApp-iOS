@@ -16,4 +16,14 @@ struct DateHelper {
         let dateInString = dateFormatter.string(from: currentDate)
         return dateInString
     }
+    
+    static func getDay(_ from: TimeInterval) -> Int {
+        let date = Date(timeIntervalSince1970: from)
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        let visitingDate = year * 10000 + month * 100 + day
+        return visitingDate
+    }
 }

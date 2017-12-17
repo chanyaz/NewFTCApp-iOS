@@ -25,6 +25,8 @@ struct Engagement {
     private static let engagementDataFileName = "engagementData"
     private static let engagementDataFileExtension = "engagement"
     private static let daysForEngagement: TimeInterval = 90
+    private static let secondsInAday: TimeInterval = 24 * 60 * 60
+
     // MARK: When the app launches, check the file system for engagement data
     private static func check() {
         if EngagementData.shared.hasChecked == true {
@@ -40,7 +42,6 @@ struct Engagement {
     
     static func save() {
         let logs = EngagementData.shared.log
-        let secondsInAday: TimeInterval = 24 * 60 * 60
         let logsCleaned = logs.filter { (log) -> Bool in
             if let timeStamp = log["time"] as? TimeInterval {
                 let engageDays = Date().timeIntervalSince1970 - daysForEngagement * secondsInAday
@@ -63,7 +64,6 @@ struct Engagement {
     static func screen(_ name: String) {
         check()
         let timeStamp = Date().timeIntervalSince1970
-        //let timeStamp = Double(unixDateStamp)
         let log: [String: Any] = [
             "time": timeStamp,
             "type": "screen",
@@ -71,18 +71,41 @@ struct Engagement {
         ]
         EngagementData.shared.log.append(log)
         save()
-        print ("Log is now: \(EngagementData.shared.log)")
+        let engagementScore = score()
+        print ("Log is now: \(EngagementData.shared.log) and engagement socre is \(engagementScore)")
     }
     
-    static func score() -> (score: Double, frequency: Int, recency: Int, volumn: Int)? {
-        
-        return nil
+    static func score() -> (score: Double, frequency: Int, recency: Int, volumn: Int) {
+        var volume = 0
+        var visitingDates = [Int]()
+        for log in EngagementData.shared.log {
+            if let timeStamp = log["time"] as? TimeInterval {
+                if let screenName = log["name"] as? String,
+                    screenName.range(of: "story") != nil {
+                    volume += 1
+                }
+                let visitingDate = DateHelper.getDay(timeStamp)
+                if visitingDates.contains(visitingDate) == false {
+                    visitingDates.append(visitingDate)
+                }
+            }
+        }
+        // MARK: Frequency is the number of days left in the dates array
+        let frequecy = visitingDates.count
+        let timeStamp = Date().timeIntervalSince1970
+        let currentDate = DateHelper.getDay(timeStamp)
+        visitingDates = visitingDates.filter {
+            $0 != currentDate
+        }
+        let lastVisitDate = visitingDates.last ?? 90
+        let recency = min(max(currentDate - lastVisitDate, 0),90)
+        let score: Double = (Double(frequecy) * sqrt(Double(volume)))/(1 + Double(recency))
+        return (score, frequecy, recency, volume)
     }
     
     static func event(category: String, action: String, label: String) {
         check()
         let timeStamp = Date().timeIntervalSince1970
-        //let timeStamp = Double(unixDateStamp)
         let log: [String: Any] = [
             "time": timeStamp,
             "type": "event",
@@ -97,7 +120,6 @@ struct Engagement {
     static func catchError(_ description: String, withFatal: NSNumber) {
         check()
         let timeStamp = Date().timeIntervalSince1970
-        //let timeStamp = Double(unixDateStamp)
         let log: [String: Any] = [
             "time": timeStamp,
             "type": "error",

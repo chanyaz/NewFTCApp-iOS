@@ -32,6 +32,7 @@ class ContentItem{
     var adModel: AdModel?
     var keywords: String?
     var adchId: String?
+    var hideAd = false
     
     var linkSource: String?
     

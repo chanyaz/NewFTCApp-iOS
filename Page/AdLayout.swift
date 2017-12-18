@@ -168,4 +168,12 @@ struct AdLayout {
         return newItems
     }
     
+    static func removeAds(in items: [ContentItem]) -> [ContentItem] {
+        let newItems = items
+        for item in newItems {
+            item.hideAd = true
+        }
+        return newItems
+    }
+    
 }

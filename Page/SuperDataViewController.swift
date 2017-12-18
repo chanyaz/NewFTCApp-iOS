@@ -1268,7 +1268,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                                 pageData1.append(item)
                                 pageIndexCount += 1
                             }
-                            
                         }
                     }
                     let pageDataRaw = pageData1
@@ -1289,14 +1288,12 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                      
                      let pageDataRaw = pageData1 //+ pageData2
                      */
-                    
-                    
-                    
+
                     let pageData: [ContentItem]
                     
-                    if selectedItem.type == "manual" {
+                    if selectedItem.type == "manual" || dataObject["type"] == "htmlbook" {
                         // MARK: For manual html pages in ebooks, hide bottom bar and ads
-                        pageData = pageDataRaw
+                        pageData = AdLayout.removeAds(in: pageDataRaw)
                         detailViewController.showBottomBar = false
                     } else {
                         let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)

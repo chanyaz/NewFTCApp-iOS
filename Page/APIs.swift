@@ -233,7 +233,16 @@ struct APIs {
         return urlString
     }
     
-    
+    // MARK: add paramter to indicate the url should hide ad
+    static func removeAd(_ urlString: String) -> String {
+        let connector: String
+        if urlString.range(of: "?") == nil {
+            connector = "?"
+        } else {
+            connector = "&"
+        }
+        return "\(urlString)\(connector)ad=no"
+    }
     
 //    // MARK: Use different domains for different types of content
 //    static func getUrl(_ id: String, type: String) -> String {

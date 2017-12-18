@@ -531,14 +531,19 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             ["story", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
             if let id = dataObject?.id {
-                let urlString = (subType == .None) ? APIs.getUrl(id, type: type, isSecure: false, isPartial: false) : APIs.getUrl(id, type: type, subType: subType)
+                let urlStringOriginal = (subType == .None) ? APIs.getUrl(id, type: type, isSecure: false, isPartial: false) : APIs.getUrl(id, type: type, subType: subType)
+                let urlString: String
+                if dataObject?.hideAd == true {
+                    urlString = APIs.removeAd(urlStringOriginal)
+                } else {
+                    urlString = urlStringOriginal
+                }
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
                     let lead: String
                     let tags = dataObject?.tag ?? ""
                     let tag: String
                     var imageHTML:String
-                    
                     
                     // MARK: story byline
                     let byline: String

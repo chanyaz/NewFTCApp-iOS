@@ -644,6 +644,9 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             if statusType == .wiFi {
                 player?.replaceCurrentItem(with: playerItem)
             }
+
+            resumeRotateAnimate()
+
             // MARK: - Update audio play progress
             
             //            addDownloadObserve()
@@ -850,7 +853,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
                     }
                 }
             }
-            
+            resumeRotateAnimate()
             //            addDownloadObserve()
             addPlayerItemObservers()
             NowPlayingCenter().updatePlayingCenter()

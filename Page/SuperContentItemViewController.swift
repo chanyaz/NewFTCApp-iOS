@@ -98,10 +98,11 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 if dataObject?.type == "video" {
                     if #available(iOS 10.0, *) {
                         config.mediaTypesRequiringUserActionForPlayback = .init(rawValue: 0)
-                    } else {
-                        // Fallback on earlier versions
                     }
                 } else if dataObject?.type == "manual" {
+                    isFullScreen = true
+                } else if dataObject?.isDownloaded == true && dataObject?.type == "story" {
+                    // MARK: If you open a story from a downloaded eBook.
                     isFullScreen = true
                 }
                 
@@ -115,6 +116,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     view = webView
                     view.clipsToBounds = false
                 }
+                
                 webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                 
                 // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.

@@ -1293,15 +1293,14 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     
                     if selectedItem.type == "manual" || dataObject["type"] == "htmlbook" {
                         // MARK: For manual html pages in ebooks, hide bottom bar and ads
-                        pageData = AdLayout.removeAds(in: pageDataRaw)
+                        let pageData1 = AdLayout.removeAds(in: pageDataRaw)
+                        pageData = AdLayout.markAsDownloaded(in: pageData1)
                         detailViewController.showBottomBar = false
                     } else {
                         let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
                         pageData = AdLayout.insertAdId(to: withAd.contentItems, with: adchId)
                         currentPageIndex = withAd.pageIndex
                     }
-                    
-//                    print (pageData)
                     if pageData.count <= currentPageIndex {
                         print ("current page index is \(currentPageIndex), which is higer or equal to page data count of \(pageData.count)")
                         return false

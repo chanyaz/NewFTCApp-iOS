@@ -114,6 +114,10 @@ struct IAP {
                     }
                 }
                 
+                if let productDescriptionFromBundle = oneProduct["description"] as? String {
+                    productDescription = productDescriptionFromBundle
+                }
+                
                 // MARK: if product description cannot be retrieved, use teaser
                 if productDescription == "" {
                     // MARK: if product description is empty, try get it from user default
@@ -369,7 +373,7 @@ struct IAP {
                     let request = URLRequest(url: url)
                     IAPs.shared.downloadTasks[productIdForTrying] = backgroundSession.downloadTask(with: request)
                     IAPs.shared.downloadTasks[productIdForTrying]?.resume()
-                    newStatus = "downloading"
+                    newStatus = "downloadingtrial"
                 } else {
                     newStatus = "fail"
                 }

@@ -395,12 +395,10 @@ struct Download {
         if let directoryPath = getDirectoryUrlFromDirectory(directoryName, for: to){
             let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
             let filePath = directoryPath.appendingPathComponent(realFileName)
-//            print("filePath with directoryName:\(filePath)")
             let fileManager = FileManager.default
             if FileManager().fileExists(atPath: filePath.path) {
                 do {
                     let file = try FileHandle(forWritingTo: filePath)
-//                    file.seekToEndOfFile()
                     file.write(data)
                     print("again write data to file : \(data) successfully!")
                 } catch let error as NSError {

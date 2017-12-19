@@ -176,4 +176,12 @@ struct AdLayout {
         return newItems
     }
     
+    static func markAsDownloaded(in items: [ContentItem]) -> [ContentItem] {
+        let newItems = items
+        for item in newItems {
+            item.isDownloaded = true
+        }
+        return newItems
+    }
+    
 }

@@ -61,9 +61,9 @@ open class IAPHelper : NSObject  {
             }
         }
         super.init()
-        // TODO: - If there's a receipt url, get the receipt data
+        // TODO: - If there's a receipt url, get the receipt
         if let url = IAPHelper.url {
-            receipt = NSData(contentsOf: url)
+            self.receipt = NSData(contentsOf: url)
         }
         //print (receipt ?? "no receipt is found")
         SKPaymentQueue.default().add(self)
@@ -104,7 +104,7 @@ extension IAPHelper {
 }
 
 
-// MARK: - SKProductsRequestDelegate: Handle requests' responses
+// MARK: - Step 1: Implement the SKProductsRequestDelegate protocol to handle product requests
 extension IAPHelper: SKProductsRequestDelegate {
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         //print("Loaded list of products...")
@@ -148,6 +148,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
                 restore(transaction: transaction)
                 break
             case .deferred:
+                // TODO: Defered Purchase!
                 print ("defered state! should do something")
                 break
             case .purchasing:

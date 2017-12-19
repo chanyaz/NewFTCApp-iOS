@@ -473,7 +473,7 @@ extension IAPView: URLSessionDownloadDelegate {
             if fileManager.fileExists(atPath: destinationURLForFile.path){
                 //showFileWithPath(path: destinationURLForFile.path)
                 print ("the file exists, you can open it. ")
-                newStatus = "success"
+                newStatus = (productId.hasPrefix("try")) ? "new" : "success"
             } else {
                 do {
                     try fileManager.moveItem(at: location, to: destinationURLForFile)
@@ -494,7 +494,7 @@ extension IAPView: URLSessionDownloadDelegate {
                     }
                     
                     IAP.trackIAPActions("download success", productId: productId)
-                    newStatus = "success"
+                    newStatus = (productId.hasPrefix("try")) ? "new" : "success"
                     if productId.hasPrefix("try") {
                         // TODO: - This is a trial file, open it immediately
                         print ("open the try book")

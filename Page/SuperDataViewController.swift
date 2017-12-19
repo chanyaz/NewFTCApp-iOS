@@ -473,8 +473,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
         
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: nil)
         
         // MARK: release all the delegate to avoid crash in iOS 9
@@ -576,7 +576,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                                 width: ImageSize.cover.width,
                                 height: ImageSize.cover.height,
                                 completion:{ (cellContentItem, error) in
-                                    //print ("\(item.image) is prefetched! ")
                             }
                             )
                         }
@@ -586,7 +585,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                                 width: ImageSize.thumbnail.width,
                                 height: ImageSize.thumbnail.height,
                                 completion:{ (cellContentItem, error) in
-                                    //print ("\(item.image) is prefetched! ")
                             }
                             )
                         }
@@ -608,11 +606,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     fileprivate func updateUI(with results: ContentFetchResults) {
         // MARK: - Insert Ads into the fetch results
         let layoutWay:String
-        //        if horizontalClass == .regular && verticalCass == .regular {
-        //            layoutWay = dataObject["regularLayout"] ?? "ipadhome"
-        //        } else {
-        //            layoutWay = dataObject["compactLayout"] ?? "home"
-        //        }
         layoutWay = dataObject["compactLayout"] ?? "home"
         // MARK: Insert Content
         let fetchResultsWithContent: [ContentSection]
@@ -641,8 +634,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     
     private func requestNewContent() {
-        //        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-        //        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
         if let api = dataObject["api"] {
             getAPI(api)
         } else if let type = dataObject["type"] {
@@ -677,24 +668,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     
-    //    @objc func paidPostUpdate(_ notification: Notification) {
-    //        if let itemCell = notification.object as? ContentItem {
-    //            let section = itemCell.section
-    //            let row = itemCell.row
-    //            if fetches.fetchResults.count > section {
-    //                if fetches.fetchResults[section].items.count > row {
-    //                    if itemCell.adModel?.headline != nil{
-    //                        print ("Paid Post: The adModel has headline. Update data source and reload. ")
-    //                        fetches.fetchResults[section].items[row].adModel = itemCell.adModel
-    //                        collectionView?.reloadData()
-    //                    } else {
-    //                        print ("Paid Post: The adModel has no headline")
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    
     
     @objc func refreshControlDidFire(sender:AnyObject) {
         print ("pull to refresh fired")
@@ -704,48 +677,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     private var webViewScrollPoint: CGPoint?
     
-    //    private func updateWebviewTraffic() {
-    //        if isWebViewFirstLoading == true {
-    //            isWebViewFirstLoading = false
-    //            return
-    //        }
-    //
-    //
-    ////        if let listAPI = dataObject["listapi"],
-    ////        let urlStringOriginal = dataObject["url"] {
-    ////            let fileExtension = "html"
-    ////            let urlString = APIs.convert(urlStringOriginal)
-    ////            webViewScrollPoint = webView?.scrollView.contentOffset
-    ////            renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
-    ////        }
-    //
-    //        //let jsCode = "refreshAllAds();ga('send', 'pageview');"
-    //        let jsCode = "ga('send', 'pageview');"
-    //        webView?.evaluateJavaScript(jsCode) { (result, error) in
-    //            if error == nil {
-    //                print ("pv recorded and ad refreshed")
-    //            } else {
-    //                print (error ?? "pv record error")
-    //                // MARK: If the javascript cannot be executed effectively, might need to refresh the web view.
-    //                self.refreshWebView(self.refreshControl)
-    //            }
-    //        }
-    //
-    //    }
-    
-    // MARK: if you are back from a pushed view controller, scroll to the original position
-    //    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    //        //print ("web view did finish navigation called! Should Scroll to the previous position if you are back from a pushed view controller! ")
-    //        if let webViewScrollPoint = webViewScrollPoint {
-    //            webView.scrollView.setContentOffset(webViewScrollPoint, animated: false)
-    //        }
-    //    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     // MARK: UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -753,9 +688,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        // print ("items.count-- \(fetches.fetchResults[section].items.count) ----items.count")
-        
         return fetches.fetchResults[section].items.count
     }
     
@@ -844,12 +776,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             if let cell = cellItem as? AdCellRegular {
                 cell.cellWidth = cellWidth
                 cell.updateUI()
-                //when itemCell change in AdCellRegular, updateUI() will be executed.After adding ad,comment the code
-                //                if cell.bounds.height<330{
-                //                    cell.adHint.isHidden=true
-                //                }else{
-                //                    cell.adHint.isHidden=false
-                //                }
                 return cell
             }
         case "HotArticleCellRegular":
@@ -859,22 +785,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 //              cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 return cell
             }
-            //        case "LineCell":
-            //            if let cell = cellItem as? LineCell {
-            //                cell.pageTitle = pageTitle
-            //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-            //                cell.cellWidth = cellWidth
-            //                cell.updateUI()
-            //                return cell
-            //            }
-            //        case "PaidPostCell":
-            //            if let cell = cellItem as? PaidPostCell {
-            //                cell.cellWidth = cellWidth
-            //                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
-            //                cell.pageTitle = pageTitle
-            //                cell.updateUI()
-            //                return cell
-        //            }
         case "BookCell":
             if let cell = cellItem as? BookCell {
                 cell.cellWidth = cellWidth
@@ -886,6 +796,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             }
         case "MembershipCell":
             if let cell = cellItem as? MembershipCell {
+                cell.buyState = .New
                 cell.cellWidth = cellWidth
                 cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
                 cell.pageTitle = pageTitle
@@ -954,7 +865,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 let ad = headerView as! Ad
                 ad.contentSection = fetches.fetchResults[indexPath.section]
                 ad.updateUI()
-                //print ("indexPath.section-- \(indexPath.section) ----indexPath.section")
                 return ad
             case "HeaderView":
                 let headerView = headerView as! HeaderView
@@ -971,7 +881,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             default:
                 assert(false, "Unknown Identifier")
             }
-            //            print ("headerView---- \(headerView) ----headerView")
             return headerView
         default:
             assert(false, "Unexpected element kind")
@@ -991,8 +900,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             return getReuseIdentifierForSectionHeader(section).sectionSize
         }
         return CGSize.zero
-        
-        //return CGSize(width: 300, height: 250)
     }
     
     // MARK: - Use different cell based on different strategy
@@ -1032,46 +939,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         } else if layoutStrategy == "Icons" {
             reuseIdentifier = "IconCell"
         } else {
-            //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-            /*
-             if horizontalClass == .regular && verticalCass == .regular {
-             
-             var isAd = false
-             var isHot = false
-             let isCover = ((indexPath.row == 0 ) )
-             
-             //                print("isLandscape----\(isLandscape)")
-             
-             if !isLandscape{
-             if indexPath.row == 6 {isAd = true}else{isAd = false}
-             if indexPath.row == 10 {isHot = true}else{isHot = false}
-             } else if isLandscape {
-             isAd = (indexPath.row == 5)
-             isHot = (indexPath.row == 9)
-             }
-             
-             //                if UIDevice.current.orientation.isPortrait{
-             //                    if indexPath.row == 6 {isAd = true}else{isAd = false}
-             //                    if indexPath.row == 10 {isHot = true}else{isHot = false}
-             //                }else if UIDevice.current.orientation.isLandscape {
-             //                    isAd = (indexPath.row == 5)
-             //                    isHot = (indexPath.row == 9)
-             //                }
-             
-             
-             if isCover && !isAd && !isHot {
-             reuseIdentifier = "CoverCellRegular"
-             } else if isAd && !isCover && !isHot {
-             reuseIdentifier = "AdCellRegular"
-             } else if !isAd && !isCover && isHot {
-             reuseIdentifier = "HotArticleCellRegular"
-             }
-             else {
-             reuseIdentifier = "ChannelCellRegular"
-             }
-             } else {
-             */
             if item.type == "ebook" {
                 reuseIdentifier = "BookCell"
             } else if item.type == "membership" {
@@ -1091,9 +958,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             } else {
                 reuseIdentifier = "ChannelCell"
             }
-            
         }
-        //        print ("reuseIdentifier---- \(reuseIdentifier) ----reuseIdentifier")
         return reuseIdentifier
     }
     
@@ -1122,7 +987,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         reuseIdentifier = "HeaderView"
                         sectionSize = CGSize(width: view.frame.width, height: 60)
                     }
-                    
                 } else {
                     reuseIdentifier = nil
                     sectionSize = CGSize.zero
@@ -1135,11 +999,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         return (reuseId: reuseIdentifier, sectionSize: sectionSize)
     }
     
-    
-    
     @objc func openPlay(sender: UIButton?){
         PlayerAPI.sharedInstance.openPlay()
     }
+    
     func filterDataWithAudioUrl(){
         var resultsWithAudioUrl = [ContentSection]()
         let results = fetches.fetchResults
@@ -1179,12 +1042,12 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         // MARK: Check the fetchResults to make sure there's no out-of-range error
         if fetches.fetchResults.count <= indexPath.section || fetches.fetchResults.count == 0 || indexPath.section < 0 {
             Track.event(category: "CatchError", action: "Out of Range", label: "handleItemSelect 1")
-            print ("There is not enough sections in fetchResults")
+            //print ("There is not enough sections in fetchResults")
             return false
         }
         if fetches.fetchResults[indexPath.section].items.count <= indexPath.row || fetches.fetchResults[indexPath.section].items.count == 0 || indexPath.row < 0 {
             Track.event(category: "CatchError", action: "Out of Range", label: "handleItemSelect 2")
-            print ("Row is \(indexPath.row). There is not enough rows in fetchResults Section")
+            //print ("Row is \(indexPath.row). There is not enough rows in fetchResults Section")
             return false
         }
         let selectedItem = fetches.fetchResults[indexPath.section].items[indexPath.row]
@@ -1282,24 +1145,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         }
                     }
                     let pageDataRaw = pageData1
-                    
-                    /* MARK: - Reorder the page
-                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
-                     for (itemIndex, item) in section.items.enumerated() {
-                     if ["story", "video", "interactive", "photo"].contains(item.type) {
-                     if sectionIndex > indexPath.section || (sectionIndex == indexPath.section && itemIndex >= indexPath.row) {
-                     pageData1.append(item)
-                     } else {
-                     pageData2.append(item)
-                     }
-                     
-                     }
-                     }
-                     }
-                     
-                     let pageDataRaw = pageData1 //+ pageData2
-                     */
-                    
                     let pageData: [ContentItem]
                     
                     if selectedItem.type == "manual" || dataObject["type"] == "htmlbook" {
@@ -1371,15 +1216,8 @@ extension SuperDataViewController {
                 adid: ""
             )
             let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
-            //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             self?.updateUI(with: results)
-            
-            
-            //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
-            //            self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
         }
-        
     }
     
     
@@ -1397,12 +1235,8 @@ extension SuperDataViewController {
                 }
             }
             // MARK: - Get product regardless of the request result
-            // print ("product loaded: \(String(describing: IAPs.shared.products))")
             
             // MARK: - Get only the type of products needed
-            
-            //print(IAP.getJSON(IAPs.shared.products, in: type))
-            
             
             let ids = [
                 "com.ft.ftchinese.mobile.book.magazine",
@@ -1443,7 +1277,10 @@ extension SuperDataViewController {
     
     // MARK: Handle Subscription Related Actions
     @objc public func handlePurchaseNotification(_ notification: Notification) {
-        print ("received purchase notification in \(self.pageTitle)")
+        // MARK: If the view controller is not a iap page, no need to update UI
+        if dataObject["type"] != "iap" {
+            return
+        }
         if let notificationObject = notification.object as? [String: Any?]{
             // MARK: when user buys or restores a product, we should display relevant information
             if let productID = notificationObject["id"] as? String,
@@ -1452,8 +1289,6 @@ extension SuperDataViewController {
                 for (_, product) in IAPs.shared.products.enumerated() {
                     guard product.productIdentifier == productID else { continue }
                     //var iapAction: String = "success"
-                    let currentProduct = IAP.findProductInfoById(productID)
-                    let productGroup = currentProduct?["group"] as? String
                     if actionType == "buy success" {
                         // MARK: Otherwise if it's a buy action, save the purchase information and update UI accordingly
                         let transactionDate = notificationObject["date"] as? Date
@@ -1463,7 +1298,7 @@ extension SuperDataViewController {
                     }
                     IAP.trackIAPActions(actionType, productId: productID)
                     DispatchQueue.main.async(execute: {
-                        //self?.switchUI(newStatus)
+                        self.switchUI(newStatus)
                     })
                 }
             } else if let errorObject = notification.object as? [String : String?] {
@@ -1484,7 +1319,7 @@ extension SuperDataViewController {
                     }
                     // MARK: update the buy button
                     DispatchQueue.main.async(execute: {
-                        //self.switchUI("fail")
+                        self.switchUI("fail")
                     })
                 }
             }
@@ -1496,12 +1331,48 @@ extension SuperDataViewController {
                 topViewController.present(alert, animated: true, completion: nil)
             }
             DispatchQueue.main.async(execute: {
-                //self.switchUI("fail")
+                self.switchUI("fail")
             })
             //            jsCode = "iapActions('', 'fail')"
             //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
             //            }
             IAP.trackIAPActions("buy or restore error", productId: "")
+        }
+    }
+    
+    
+    public func switchUI(_ actionType: String) {
+        switch actionType {
+        case "success":
+            print ("show open and delete button")
+            loadProducts()
+//            hideAll()
+//            buttons["open"]?.isHidden = false
+//            buttons["delete"]?.isHidden = false
+        case "pendingdownload":
+            print ("show download view only")
+//            hideAll()
+//            downloadingView.isHidden = false
+//            buttons["download"]?.isHidden = false
+        case "downloading":
+            print ("show downloading view")
+//            hideAll()
+//            downloadingView.isHidden = false
+        case "pending":
+            print ("show buy and try button. buy button disabled. ")
+//            hideAll()
+//            buttons["buy"]?.isHidden = false
+//            buttons["buy"]?.isEnabled = false
+//            buttons["try"]?.isHidden = false
+        case "fail", "new":
+            print ("show buy and try button")
+            loadProducts()
+//            hideAll()
+//            buttons["buy"]?.isHidden = false
+//            buttons["buy"]?.isEnabled = true
+//            buttons["try"]?.isHidden = false
+        default:
+            break
         }
     }
     

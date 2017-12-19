@@ -134,7 +134,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
 
                 let typeString = dataObject?.type ?? ""
                 // MARK: If the sub type is a user comment, render web view directly
-                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html", "manual", "register"].contains(typeString)  {
+                if subType == .UserComments || ["webpage", "ebook", "htmlbook", "html", "manual", "register", "image"].contains(typeString)  {
                     renderWebView()
                 } else {
                     getDetailInfo()
@@ -262,7 +262,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     }
     
     private func getDetailInfo() {
-        if let id = dataObject?.id, dataObject?.type == "story" {
+        if let id = dataObject?.id, let type = dataObject?.type, type == "story" {
             //MARK: if it is a story, get the API
             let urlString = APIs.get(id, type: "story")
             view.addSubview(activityIndicator)
@@ -272,19 +272,20 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             // MARK: Check the local file
             if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
                 //print ("found \(urlString) in caches directory. ")
-                if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
-                {
+                if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) {
                     let contentSections = contentAPI.formatJSON(resultsDictionary)
                     let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
                     updateUI(of: id, with: results)
                     print ("update content UI from local file with \(urlString), no need to connect to internet again")
                     activityIndicator.removeFromSuperview()
                     return
+                } else {
+                    // MARK: If the json file is not valid, remove the file and render web page
+                    Download.removeFile(urlString, for: .cachesDirectory, as: "json")
                 }
             }
             
-            contentAPI.fetchContentForUrl(urlString, fetchUpdate: .OnlyOnWifi) {
-                [weak self] results, error in
+            contentAPI.fetchContentForUrl(urlString, fetchUpdate: .OnlyOnWifi) {[weak self] results, error in
                 DispatchQueue.main.async {
                     self?.activityIndicator.removeFromSuperview()
                     if let error = error {
@@ -301,7 +302,17 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                         self?.updatePageContent()
                         return
                     }
-                    self?.updateUI(of: id, with: results)
+                    if let results = results {
+                        self?.updateUI(of: id, with: results)
+                    } else {
+                        // MARK: If the result is empty, render the page with the base url
+                        let publicUrl = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
+                        if let url = URL(string: publicUrl) {
+                            let request = URLRequest(url: url)
+                            self?.webView?.load(request)
+                        }
+                        Track.event(category: "CatchError", action: "Content Fetch is Empty", label: urlString)
+                    }
                     print ("update content UI from internet with \(urlString)")
                 }
             }
@@ -520,14 +531,19 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             ["story", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
             if let id = dataObject?.id {
-                let urlString = (subType == .None) ? APIs.getUrl(id, type: type, isSecure: false, isPartial: false) : APIs.getUrl(id, type: type, subType: subType)
+                let urlStringOriginal = (subType == .None) ? APIs.getUrl(id, type: type, isSecure: false, isPartial: false) : APIs.getUrl(id, type: type, subType: subType)
+                let urlString: String
+                if dataObject?.hideAd == true {
+                    urlString = APIs.removeAd(urlStringOriginal)
+                } else {
+                    urlString = urlStringOriginal
+                }
                 if let url = URL(string: urlString) {
                     let request = URLRequest(url: url)
                     let lead: String
                     let tags = dataObject?.tag ?? ""
                     let tag: String
                     var imageHTML:String
-                    
                     
                     // MARK: story byline
                     let byline: String
@@ -743,6 +759,31 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                         let htmlNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
                         let htmlString = htmlNSString as String
                         self.webView?.loadHTMLString(htmlString, baseURL:url)
+                    } catch {
+                        print ("html file is not loaded correctly")
+                    }
+                }
+            }
+        } else if dataObject?.type == "image"{
+            // TODO: - Display the image in the middle of page
+            if let imageUrlString = dataObject?.id {
+                let url = URL(string: imageUrlString)
+                let resourceFileName = "list"
+                if let templateHTMLPath = Bundle.main.path(forResource: resourceFileName, ofType: "html") {
+                    do {
+                        let htmlNSString = try NSString(contentsOfFile:templateHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                        let htmlString = htmlNSString as String
+                        let htmlStringWithImage = htmlString
+                            .replacingOccurrences(
+                                of: "{list-content}",
+                                with: "<img src=\"\(imageUrlString)\">")
+                            .replacingOccurrences(
+                                of: "{night-class}",
+                                with: " night image-view")
+                            .replacingOccurrences(
+                                of: "{iap-js-code}",
+                                with: "")
+                        self.webView?.loadHTMLString(htmlStringWithImage, baseURL:url)
                     } catch {
                         print ("html file is not loaded correctly")
                     }

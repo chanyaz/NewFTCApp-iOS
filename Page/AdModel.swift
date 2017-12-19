@@ -155,6 +155,7 @@ struct AdParser {
                     return sponsor.adid
                 }
             }
+            // TODO: should get the channel adchId from server side
             if keywords.range(of:"lifestyle") != nil {
                 return "1800"
             }

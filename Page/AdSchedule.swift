@@ -38,7 +38,7 @@ class AdSchedule {
     func parseSchedule() {
         if let scheduleDataFinal = getLatestScheduleData() {
             // MARK: - Get Current Date in String format of YYYYMMDD
-            let dateInString = getCurrentDateString(dateFormat: "yyyyMMdd")
+            let dateInString = DateHelper.getCurrentDateString(dateFormat: "yyyyMMdd")
             
             guard let dateInInt = Int(dateInString) else {
                 print("date can not be converted to int")
@@ -195,7 +195,7 @@ class AdSchedule {
     private func parseScheduleForDownloading() {
         if let scheduleDataFinal = getLatestScheduleData() {
             //Get Current Date in String format of YYYYMMDD
-            let dateInString = getCurrentDateString(dateFormat: "yyyyMMdd")
+            let dateInString = DateHelper.getCurrentDateString(dateFormat: "yyyyMMdd")
             guard let dateInInt = Int(dateInString) else {
                 print("date can not be converted to int")
                 return
@@ -471,19 +471,13 @@ class AdSchedule {
     
     // download the latest ad schedule and creatives
     func updateAdSchedule() {
-        let dateInString = getCurrentDateString(dateFormat: "yyyyMMddHHmm")
+        let dateInString = DateHelper.getCurrentDateString(dateFormat: "yyyyMMddHHmm")
         let urlString = lauchAdSchedule + "?" + dateInString
         let urlLauchAdSchedule = URL(string: urlString)
         grabFileFromWeb(url: urlLauchAdSchedule, fileName: self.adScheduleFileName, parseScheduleForDownload: true)
     }
     
-    private func getCurrentDateString(dateFormat: String) -> String {
-        let currentDate = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-        let dateInString = dateFormatter.string(from: currentDate)
-        return dateInString
-    }
+
     
     private func grabFileFromWeb(url: URL?, fileName: String, parseScheduleForDownload: Bool) {
         if let urlValue = url {

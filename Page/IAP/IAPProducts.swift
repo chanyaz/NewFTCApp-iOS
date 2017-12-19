@@ -44,10 +44,9 @@ public struct IAPProducts {
             "period":"year",
             "benefits": [
                 "阅读FT中文网所有独家内容",
-                "收听英文文章音频",
-                "屏蔽广告，整个世界清净了"
+                "收听英文文章音频"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.vip",
@@ -58,11 +57,10 @@ public struct IAPProducts {
             "benefits": [
                 "《FT编辑精选》，每周不可错过的独家必读内容",
                 "获得两张价值3999元的FT中文网年会门票",
-                "屏蔽广告，整个世界清净了",
                 "阅读FT中文网所有独家内容",
                 "收听英文文章音频"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.diamond",
@@ -75,10 +73,9 @@ public struct IAPProducts {
                 "《FT周刊》，精选不可错过的必读内容",
                 "两张张价值9999元的FT中文网年会贵宾门票",
                 "阅读FT中文网所有独家内容",
-                "屏蔽广告，整个世界清净了",
                 "订制内容推送到客户端"
             ],
-            "privilege": Privilege(adBlock: true, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ]
         //        [
         //            "id":"com.ft.ftchinese.mobile.subscription.trial",
@@ -100,8 +97,6 @@ public struct IAPProducts {
             "title":"生活时尚·旅行特刊",
             "teaser":"探寻世界的尽头",
             "image":"http://i.ftimg.net/picture/4/000073894_piclink.jpg",
-            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
-            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10582_bodyonly.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10582_Preview.html"
         ],
@@ -110,8 +105,6 @@ public struct IAPProducts {
             "title":"如何在“人工智能”时代生存？——创新经济特刊",
             "teaser":"终身学习，是我们在人工智能时代的宿命",
             "image":"http://i.ftimg.net/picture/7/000073887_piclink.jpg",
-            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
-            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10584_bodyonly.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10584_Preview.html"
         ],
@@ -120,8 +113,6 @@ public struct IAPProducts {
             "title":"管理·性别与职场",
             "teaser":"职场女性生存指南",
             "image":"http://i.ftimg.net/picture/7/000073927_piclink.jpg",
-            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
-            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10595_bodyonly.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10595_Preview.html"
         ],
@@ -130,8 +121,6 @@ public struct IAPProducts {
             "title":"10年，金融危机为我们留下了什么？",
             "teaser":"世界经济·第1辑",
             "image":"http://i.ftimg.net/picture/3/000073933_piclink.jpg",
-            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
-            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10598_bodyonly.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10598_Preview.html"
         ],
@@ -140,8 +129,6 @@ public struct IAPProducts {
             "title":"2018，掘金中国股市？",
             "teaser":"中国经济·第1辑",
             "image":"http://i.ftimg.net/picture/9/000073929_piclink.jpg",
-            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
-            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10599_bodyonly.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10599_Preview.html"
         ],
@@ -150,8 +137,6 @@ public struct IAPProducts {
             "title":"读《金融时报》学英语（一）",
             "teaser":"挑选FT每日英语文章精华，集结成册",
             "image":"http://i.ftimg.net/picture/5/000074025_piclink.jpg",
-            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
-            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=ebook-english-1&bodyonly=yes&webview=ftcapp&ad=no&012",
             "downloadfortry": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=ebook-english-1&bodyonly=yes&webview=ftcapp&ad=no&try=yes&012"
         ],
@@ -160,8 +145,6 @@ public struct IAPProducts {
             "title":"与FT共进午餐（一）",
             "teaser":"英国《金融时报》最受欢迎的栏目",
             "image":"http://i.ftimg.net/picture/2/000068702_piclink.jpg",
-            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_I_FTChinese.epub",
-            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_I_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch1_body.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch1Preview.html"
         ],
@@ -170,8 +153,6 @@ public struct IAPProducts {
             "title":"与FT共进午餐（二）",
             "teaser":"英国《金融时报》最受欢迎的栏目",
             "image":"http://i.ftimg.net/picture/3/000068703_piclink.jpg",
-            //            "download": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese.epub",
-            //            "downloadfortry": "https://creatives.ftimg.net/commodity/Yu_FT_GongJinWuCan_II_FTChinese_Short.epub"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch2_body.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch2Preview.html"
         ],
@@ -181,13 +162,18 @@ public struct IAPProducts {
             "teaser":" 2017年，我们熟悉的那个世界是否正在远去？",
             "image":"http://i.ftimg.net/picture/9/000068669_piclink.jpg",
             //"download": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html",
-            //"download": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese.epub",
-            //"downloadfortry": "https://creatives.ftimg.net/commodity/JingXuan_2016_ZhanWang_2017_YiYiYingGu_FTChinese_Short.epub"
             //"downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
             "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
+        ],
+        [
+            "id":"com.ft.ftchinese.mobile.book.yearin2018",
+            "title":"FT中文网2017年刊",
+            "teaser":"2017: 自信下的焦虑",
+            "image":"http://i.ftimg.net/picture/5/000074025_piclink.jpg",
+            "download": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=yearbook2017&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&013",
+            "downloadfortry": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=yearbook2017&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&013"
         ]
-        
     ]
     
     // MARK: - Add product group names and titles

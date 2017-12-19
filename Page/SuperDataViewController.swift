@@ -24,6 +24,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     var isVisible = false
     let maxWidth: CGFloat = 768
     var adchId = AdLayout.homeAdChId
+    var withPrivilege: PrivilegeType?
+    var privilegeDescriptionBody: String?
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
     
@@ -327,18 +329,20 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         print ("requesting api from: \(listAPIString)")
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
-                if error != nil {
-                    Download.handleServerError(listAPIString, error: error)
+                DispatchQueue.global().async {
+                    if error != nil {
+                        Download.handleServerError(listAPIString, error: error)
+                    }
+                    if let data = data,
+                        error == nil,
+                        HTMLValidator.validate(data, url: listAPIString) {
+                        Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
+                    }
+                    DispatchQueue.main.async {
+                        self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
+                        self?.activityIndicator.removeFromSuperview()
+                    }
                 }
-                if let data = data,
-                    error == nil,
-                    HTMLValidator.validate(data, url: listAPIString) {
-                    Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
-                }
-                DispatchQueue.main.async {
-                    self?.activityIndicator.removeFromSuperview()
-                }
-                self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
             }
         }
     }
@@ -547,6 +551,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 for item in items {
                     if item.type == "story" {
                         let apiUrl = APIs.get(item.id, type: item.type)
+                        //print ("read story json: \(apiUrl)")
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "json") == nil {
                             print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         } else {
@@ -1263,7 +1268,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                                 pageData1.append(item)
                                 pageIndexCount += 1
                             }
-                            
                         }
                     }
                     let pageDataRaw = pageData1
@@ -1284,14 +1288,12 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                      
                      let pageDataRaw = pageData1 //+ pageData2
                      */
-                    
-                    
-                    
+
                     let pageData: [ContentItem]
                     
-                    if selectedItem.type == "manual" {
+                    if selectedItem.type == "manual" || dataObject["type"] == "htmlbook" {
                         // MARK: For manual html pages in ebooks, hide bottom bar and ads
-                        pageData = pageDataRaw
+                        pageData = AdLayout.removeAds(in: pageDataRaw)
                         detailViewController.showBottomBar = false
                     } else {
                         let withAd = AdLayout.insertFullScreenAd(to: pageDataRaw, for: currentPageIndex)
@@ -1351,10 +1353,10 @@ extension SuperDataViewController {
             // MARK: - Get product regardless of the request result
             print ("product loaded: \(String(describing: IAPs.shared.products))")
             let dataObjectSubType = self?.dataObject["subtype"] ?? "membership"
-            
+            let items = IAP.get(IAPs.shared.products, in: dataObjectSubType, with: self?.withPrivilege)
             let contentSections = ContentSection(
-                title: "",
-                items: IAP.get(IAPs.shared.products, in: dataObjectSubType),
+                title: self?.privilegeDescriptionBody ?? "",
+                items: items,
                 type: "List",
                 adid: ""
             )
@@ -1379,6 +1381,9 @@ extension SuperDataViewController {
                 if let products = products {
                     //self?.products = products
                     IAPs.shared.products = products
+                    
+                    // MARK: Update privilege from network
+                    PrivilegeHelper.updateFromNetwork()
                 }
             }
             // MARK: - Get product regardless of the request result

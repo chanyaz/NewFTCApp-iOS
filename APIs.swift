@@ -323,6 +323,12 @@ struct LinkPattern {
     static let channel = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/([0-9-a-zA-Z]+.html)"]
     static let other = ["^(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
     //other:"http://int-cslog.chinacloudapp.cn/Home/Log\\?content=.*&originalId=[0-9]+&impressionId=[a-z0-9A-Z]+$"
+    static let image = [
+        "^(http[s]*://.*.jpg)$",
+        "^(http[s]*://.*.gif)$",
+        "^(http[s]*://.*.png)$",
+        "^(http[s]*://.*.jpeg)$"
+    ]
 }
 
 // MARK: - When you want to add content that are not already in your APIs. For example, you might want to add a most popular section to your home page.

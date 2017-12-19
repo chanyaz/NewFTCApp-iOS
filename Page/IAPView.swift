@@ -381,12 +381,13 @@ class IAPView: UIView {
                     if productGroup == "ebook" {
                         // iapAction = "downloading"
                         IAP.downloadProduct(productID)
-                        IAP.savePurchase(productID, property: "purchased", value: "Y")
+                        IAP.savePurchase(productID, property: IAP.purchasedPropertyString, value: "Y")
                         newStatus = "downloading"
                         
                     } else if actionType == "buy success" {
                         // MARK: Otherwise if it's a buy action, save the purchase information and update UI accordingly
                         let transactionDate = notificationObject["date"] as? Date
+                        IAP.savePurchase(productID, property: IAP.purchasedPropertyString, value: "Y")
                         IAP.updatePurchaseHistory(productID, date: transactionDate)
                         newStatus = "success"
                         /*
@@ -489,7 +490,7 @@ extension IAPView: URLSessionDownloadDelegate {
                     
                     // MARK: - Save the purchase information in the user default
                     if !productId.hasPrefix("try") {
-                        IAP.savePurchase(productId, property: "purchased", value: "Y")
+                        IAP.savePurchase(productId, property: IAP.purchasedPropertyString, value: "Y")
                     }
                     
                     IAP.trackIAPActions("download success", productId: productId)

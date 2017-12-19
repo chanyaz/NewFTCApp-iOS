@@ -228,15 +228,15 @@ struct AppNavigation {
                     "url":"http://www.ftchinese.com/channel/ev.html?webview=ftcapp&newad=yes",
                     "screenName":"english/video",
                     "coverTheme": ""
+                ],
+                [
+                    "title": "Exclusive Content",
+                    //"api": "https://d1budb999l6vta.cloudfront.net/channel/json.html?pageid=ev&dfadfadfadfadf",
+                    "listapi": "https://d1budb999l6vta.cloudfront.net/channel/editorchoice.html?webview=ftcapp&bodyonly=yes&ad=no&showEnglishAudio=yes&018",
+                    "url":"http://www.ftchinese.com/channel/editorchoice.html?webview=ftcapp&newad=yes&ad=no",
+                    "screenName":"english/test",
+                    "coverTheme": ""
                 ]
-//                [
-//                    "title": "Exclusive Content",
-//                    //"api": "https://d1budb999l6vta.cloudfront.net/channel/json.html?pageid=ev&dfadfadfadfadf",
-//                    "listapi": "https://d1budb999l6vta.cloudfront.net/channel/editorchoice.html?webview=ftcapp&bodyonly=yes&ad=no&018",
-//                    "url":"http://www.ftchinese.com/channel/editorchoice.html?webview=ftcapp&newad=yes&ad=no",
-//                    "screenName":"english/test",
-//                    "coverTheme": ""
-//                ],
 //                [
 //                    "title": "测试",
 //                    //"api": "https://d1budb999l6vta.cloudfront.net/channel/json.html?pageid=ev&dfadfadfadfadf",

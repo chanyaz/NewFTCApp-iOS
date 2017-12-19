@@ -26,7 +26,7 @@ struct Engagement {
     private static let engagementDataFileExtension = "engagement"
     private static let daysForEngagement: TimeInterval = 90
     private static let secondsInAday: TimeInterval = 24 * 60 * 60
-
+    
     // MARK: When the app launches, check the file system for engagement data
     private static func check() {
         if EngagementData.shared.hasChecked == true {
@@ -45,13 +45,13 @@ struct Engagement {
         let logsCleaned = logs.filter { (log) -> Bool in
             if let timeStamp = log["time"] as? TimeInterval {
                 let engageDays = Date().timeIntervalSince1970 - daysForEngagement * secondsInAday
-                let daysPassed = (timeStamp - engageDays)/secondsInAday
-                print ("days passed: \(daysPassed)")
+                //let daysPassed = (timeStamp - engageDays)/secondsInAday
+                //print ("days passed: \(daysPassed)")
                 if timeStamp >= engageDays {
-                    print ("log: keep it")
-                return true
+                    //print ("log: keep it")
+                    return true
                 }
-                print ("log: remove it")
+                //print ("log: remove it")
                 return false
             }
             return false

@@ -12,6 +12,7 @@ class MembershipCell: CustomCell {
     // TODO: What if status is changed? For example, after a user buy the product.
 
     var pageTitle = ""
+    var buyState: BuyState = .New
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
@@ -24,8 +25,30 @@ class MembershipCell: CustomCell {
     
     @IBOutlet weak var buyButton: UIButton!
     @IBAction func buy(_ sender: Any) {
-        if let id = itemCell?.id {
-            IAP.buy(id)
+//        if buyButton.isSelected == false {
+//            buyButton.isSelected = true
+//            if let id = itemCell?.id {
+//                IAP.buy(id)
+//            }
+//        } else {
+//
+//        }
+//        if buyState == .New {
+//            if let id = itemCell?.id {
+//                buyState = .Purchasing
+//                buyButton.setTitle("购买中", for: .normal)
+//                IAP.buy(id)
+//            }
+//        }
+        switch buyState {
+        case .New:
+            if let id = itemCell?.id {
+                buyState = .Purchasing
+                buyButton.setTitle("购买中...", for: .normal)
+                IAP.buy(id)
+            }
+        case .Purchasing, .Purchased:
+            print ("the item is already bought")
         }
     }
 
@@ -59,6 +82,7 @@ class MembershipCell: CustomCell {
         price.text = "\(itemCell?.productPrice ?? "")/年"
         buyButton.setTitle("订阅", for: .normal)
         buyButton.setTitle("已订阅", for: .disabled)
+        
         if let id = itemCell?.id {
             let status = IAP.checkStatus(id)
             if ["success", "pendingdownload"].contains(status) {

@@ -31,7 +31,6 @@ class IAPView: UIView {
     let downloadingStatus = UILabel()
     var currentDownloadStatus: DownloadStatus = .remote
     
-    
     public func initUI() {
         self.backgroundColor = UIColor(hex: Color.Content.background)
         if let price = dataObject?.productPrice {
@@ -58,7 +57,7 @@ class IAPView: UIView {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handlePurchaseNotification(_:)),
-            name: NSNotification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification),
+            name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification),
             object: nil
         )
         

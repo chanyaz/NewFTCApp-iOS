@@ -303,6 +303,15 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         )
         
         
+        // MARK: listen to in-app purchase transaction notification. There's no need to remove it in code after iOS 9 as the system will do that for you. https://useyourloaf.com/blog/unregistering-nsnotificationcenter-observers-in-ios-9/
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePurchaseNotification(_:)),
+            name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification),
+            object: nil
+        )
+        
+        
     }
     
     @objc public func refreshWebView(_ sender: Any) {
@@ -465,6 +474,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: nil)
         
         // MARK: release all the delegate to avoid crash in iOS 9
         webView?.scrollView.delegate = nil
@@ -1125,7 +1136,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     
-
+    
     @objc func openPlay(sender: UIButton?){
         PlayerAPI.sharedInstance.openPlay()
     }
@@ -1288,7 +1299,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                      
                      let pageDataRaw = pageData1 //+ pageData2
                      */
-
+                    
                     let pageData: [ContentItem]
                     
                     if selectedItem.type == "manual" || dataObject["type"] == "htmlbook" {
@@ -1429,6 +1440,70 @@ extension SuperDataViewController {
         
     }
     
+    
+    // MARK: Handle Subscription Related Actions
+    @objc public func handlePurchaseNotification(_ notification: Notification) {
+        print ("received purchase notification in \(self.pageTitle)")
+        if let notificationObject = notification.object as? [String: Any?]{
+            // MARK: when user buys or restores a product, we should display relevant information
+            if let productID = notificationObject["id"] as? String,
+                let actionType = notificationObject["actionType"] as? String {
+                var newStatus = "new"
+                for (_, product) in IAPs.shared.products.enumerated() {
+                    guard product.productIdentifier == productID else { continue }
+                    //var iapAction: String = "success"
+                    let currentProduct = IAP.findProductInfoById(productID)
+                    let productGroup = currentProduct?["group"] as? String
+                    if actionType == "buy success" {
+                        // MARK: Otherwise if it's a buy action, save the purchase information and update UI accordingly
+                        let transactionDate = notificationObject["date"] as? Date
+                        IAP.savePurchase(productID, property: IAP.purchasedPropertyString, value: "Y")
+                        IAP.updatePurchaseHistory(productID, date: transactionDate)
+                        newStatus = "success"
+                    }
+                    IAP.trackIAPActions(actionType, productId: productID)
+                    DispatchQueue.main.async(execute: {
+                        //self?.switchUI(newStatus)
+                    })
+                }
+            } else if let errorObject = notification.object as? [String : String?] {
+                // MARK: - When there is an error
+                if let productId = errorObject["id"]{
+                    let errorMessage = (errorObject["error"] ?? "") ?? ""
+                    let productIdForTracking = productId ?? ""
+                    // MARK: - If user cancel buying, no need to pop out alert
+                    if errorMessage == "usercancel" {
+                        IAP.trackIAPActions("cancel buying", productId: productIdForTracking)
+                    } else {
+                        let alert = UIAlertController(title: "交易失败，您的钱还在口袋里", message: errorMessage, preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
+                        if let topViewController = UIApplication.topViewController() {
+                            topViewController.present(alert, animated: true, completion: nil)
+                        }
+                        IAP.trackIAPActions("buy or restore error", productId: "\(productIdForTracking): \(errorMessage)")
+                    }
+                    // MARK: update the buy button
+                    DispatchQueue.main.async(execute: {
+                        //self.switchUI("fail")
+                    })
+                }
+            }
+        } else {
+            // MARK: When the transaction fail without any error message (NSError)
+            let alert = UIAlertController(title: "交易失败，您的钱还在口袋里", message: "未知错误", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
+            if let topViewController = UIApplication.topViewController() {
+                topViewController.present(alert, animated: true, completion: nil)
+            }
+            DispatchQueue.main.async(execute: {
+                //self.switchUI("fail")
+            })
+            //            jsCode = "iapActions('', 'fail')"
+            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
+            //            }
+            IAP.trackIAPActions("buy or restore error", productId: "")
+        }
+    }
     
 }
 

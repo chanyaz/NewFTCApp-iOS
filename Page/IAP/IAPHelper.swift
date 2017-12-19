@@ -27,6 +27,12 @@ import StoreKit
 public typealias ProductIdentifier = String
 public typealias ProductsRequestCompletionHandler = (_ success: Bool, _ products: [SKProduct]?) -> ()
 
+enum BuyState {
+    case New
+    case Purchasing
+    case Purchased
+}
+
 open class IAPHelper : NSObject  {
     fileprivate let productIdentifiers: Set<ProductIdentifier>
     fileprivate var purchasedProductIdentifiers = Set<ProductIdentifier>()
@@ -193,7 +199,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
                 "actionType": actionType,
                 "date": date as Any
                 ] as [String : Any]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: transactionSuccessObject)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: transactionSuccessObject)
         }
     }
     
@@ -233,7 +239,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
             "id": productId,
             "error": errorMessage
         ]
-        //print(transactionErrorObject)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: transactionErrorObject)
+
+        NotificationCenter.default.post(name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: transactionErrorObject)
     }
 }

@@ -239,16 +239,13 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         self.webView?.navigationDelegate = self
         self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.webView?.scrollView.delegate = self
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        
         let url: String
         if let id = item?.id, let type = item?.type {
             let shareUrl = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
             ShareHelper.shared.webPageUrl = shareUrl
             url = "\(shareUrl)&hideheader=yes&ad=no&inNavigation=yes&v=1"
-            .replacingOccurrences(of: "&i=3", with: "")
+                .replacingOccurrences(of: "&i=3", with: "")
         } else {
             ShareHelper.shared.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
             url = "\(ShareHelper.shared.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"

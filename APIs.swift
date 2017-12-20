@@ -503,6 +503,8 @@ struct DeviceToken {
 
 // MARK: - JS Codes you might need to execute in your web views
 struct JSCodes {
+    static let adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
+    static let adMPU2 = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle2',container:'mpuInStroy'}));</script>"
     static let turnOnNightClass = "document.querySelector('html').className += ' night';"
     static let turnOffNightClass = "document.documentElement.className = document.documentElement.className.replace(/night/g, '');"
     static let autoPlayVideoType = "autoPlayVideo"

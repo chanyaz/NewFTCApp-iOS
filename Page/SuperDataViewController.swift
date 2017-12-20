@@ -626,12 +626,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             self.fetches = resultsWithAds
             self.collectionView?.reloadData()
         }
-        
         activityIndicator.removeFromSuperview()
         refreshControl.endRefreshing()
-        
     }
-    
     
     private func requestNewContent() {
         if let api = dataObject["api"] {
@@ -666,8 +663,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             print("results : error")
         }
     }
-    
-    
     
     @objc func refreshControlDidFire(sender:AnyObject) {
         print ("pull to refresh fired")

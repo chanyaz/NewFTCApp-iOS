@@ -116,10 +116,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 
                 webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                 
-                // MARK: Use this so that I don't have to calculate the frame of the webView, which can be tricky.
-                //            webView = WKWebView(frame: self.view.bounds, configuration: config)
-                //            self.view = self.webView
-                
                 // MARK: set the web view opaque to avoid white screen during loading
                 webView?.isOpaque = false
                 webView?.backgroundColor = webViewBG
@@ -564,18 +560,18 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
         }  else if dataObject?.type == "manual"{
             // MARK: - If it's a url that might be saved
-            if let urlString = dataObject?.id,
-                let url = URL(string: urlString) {
-                if let data = Download.readFile(urlString, for: .cachesDirectory, as: "html"),
-                    let htmlString = String(data: data, encoding: .utf8){
-                    print ("found file \(htmlString)")
-                    webView?.loadHTMLString(htmlString, baseURL:url)
-                } else {
-                    print ("did not find file")
-                    Download.downloadUrl(urlString, to: .cachesDirectory, as: "html")
-                    let request = URLRequest(url: url)
-                    webView?.load(request)
-                }
+            if let urlString = dataObject?.id{
+                WebviewHelper.loadContent(url: urlString, base: urlString, webView: webView)
+//                if let data = Download.readFile(urlString, for: .cachesDirectory, as: "html"),
+//                    let htmlString = String(data: data, encoding: .utf8){
+//                    print ("found file \(htmlString)")
+//                    webView?.loadHTMLString(htmlString, baseURL:url)
+//                } else {
+//                    print ("did not find file")
+//                    Download.downloadUrl(urlString, to: .cachesDirectory, as: "html")
+//                    let request = URLRequest(url: url)
+//                    webView?.load(request)
+//                }
             }
         } else if dataObject?.type == "html"{
             // MARK: - If there's a need to open just the HTML file

@@ -52,11 +52,10 @@ struct WebviewHelper {
                 for (index, tag) in tagsArray.enumerated() {
                     relatedTopics += "<li class=\"story-theme mp\(index+1)\"><a target=\"_blank\" href=\"/tag/\(tag)\">\(tag)</a><div class=\"icon-right\"><button class=\"myft-follow plus\" data-tag=\"\(tag)\" data-type=\"tag\">关注</button></div></li>"
                 }
-                
                 let headlineBody = getHeadlineBody(dataObject)
                 let headline = headlineBody.headline
-                
                 let finalBody: String
+                
                 // MARK: Story Time
                 let timeStamp: String
                 var userCommentsOrder: String = ""
@@ -188,6 +187,39 @@ struct WebviewHelper {
         }
     }
     
+    // MARK: load content pages such as story, interactive, audio, video, etc...
+    static func loadContent(url: String, base: String, webView: WKWebView?) {
+        if let urlFinal = URL(string:url),
+            let baseUrl = URL(string: base) {
+            if url.hasPrefix("https://") {
+                // MARK: if url is https, it can be downloaded
+                if let data = Download.readFile(url, for: .cachesDirectory, as: "html"),
+                    let htmlString = String(data: data, encoding: .utf8) {
+                    webView?.loadHTMLString(htmlString, baseURL:baseUrl)
+                    // MARK: if user is on wifi, download the url for possible update of content.
+                    if IJReachability().connectedToNetworkOfType() == .wiFi {
+                        Download.downloadUrl(url, to: .cachesDirectory, as: "html")
+                    }
+                } else {
+                    // MARK: otherwise, download the url and load HTML String
+                    print ("Download Url: \(urlFinal)")
+                    Download.getDataFromUrl(urlFinal, completion: {[weak webView] (data, response, error) in
+                        if let data = data {
+                            if let htmlString = String(data: data, encoding: .utf8) {
+                                DispatchQueue.main.async {
+                                    webView?.loadHTMLString(htmlString, baseURL:baseUrl)
+                                }
+                                Download.saveFile(data, filename: url, to: .cachesDirectory, as: "html")
+                            }
+                        }
+                    })
+                }
+            } else {
+                let req = URLRequest(url:urlFinal)
+                webView?.load(req)
+            }
+        }
+    }
     
     static func getHeadlineBody(_ dataObject: ContentItem?) -> (headline: String, finalBody: String) {
         // MARK: Get values for the story content
@@ -230,7 +262,7 @@ struct WebviewHelper {
     }
     
     
-    static func getCEbodyHTML(eBody ebody: String, cBody cbody: String) -> String {
+    private static func getCEbodyHTML(eBody ebody: String, cBody cbody: String) -> String {
         func getHTML(_ htmls:[String], for index: Int, in className: String) -> String {
             let text: String
             if index < htmls.count {

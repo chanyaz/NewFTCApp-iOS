@@ -111,19 +111,19 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     @IBOutlet weak var loveButton: UIBarButtonItem!
     fileprivate func checkLoveButton() {
         if let item = item {
-        let key = "Saved clip"
-        let savedItems = UserDefaults.standard.array(forKey: key) as? [[String: String]] ?? [[String: String]]()
-        for savedItem in savedItems {
-            if item.id == savedItem["id"] && item.type == savedItem["type"] {
-                isSaved = true
-                break
+            let key = "Saved clip"
+            let savedItems = UserDefaults.standard.array(forKey: key) as? [[String: String]] ?? [[String: String]]()
+            for savedItem in savedItems {
+                if item.id == savedItem["id"] && item.type == savedItem["type"] {
+                    isSaved = true
+                    break
+                }
             }
-        }
-        if isSaved == true {
-            loveButton.image = UIImage(named: "Delete")
-        } else {
-            loveButton.image = UIImage(named: "Clip")
-        }
+            if isSaved == true {
+                loveButton.image = UIImage(named: "Delete")
+            } else {
+                loveButton.image = UIImage(named: "Clip")
+            }
         }
     }
     
@@ -191,9 +191,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             name: NSNotification.Name.AVAudioSessionRouteChange,
             object: nil
         )
-        
-        
-        
+
         NotificationCenter.default.removeObserver(self)
         
         // MARK: - Stop loading and remove message handlers to avoid leak
@@ -240,23 +238,31 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.webView?.scrollView.delegate = self
         
+        
         let url: String
-        if let id = item?.id, let type = item?.type {
-            let shareUrl = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
-            ShareHelper.shared.webPageUrl = shareUrl
-            url = "\(shareUrl)&hideheader=yes&ad=no&inNavigation=yes&v=1"
-                .replacingOccurrences(of: "&i=3", with: "")
+        if let id = item?.id,
+            let type = item?.type {
+            if type == "story" {
+                item?.hideAd = true
+                WebviewHelper.renderStory(type, subType: .None, dataObject: item, webView: webView)
+            } else {
+                let shareUrl = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
+                ShareHelper.shared.webPageUrl = shareUrl
+                let actualUrl = APIs.getUrl(id, type: type, isSecure: true, isPartial: false)
+                let finalUrl = APIs.addParameters(to: actualUrl, for: "audio")
+                url = APIs.addParameters(to: shareUrl, for: "audio")
+                WebviewHelper.loadContent(url: finalUrl, base: url, webView: webView)
+            }
         } else {
             ShareHelper.shared.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
             url = "\(ShareHelper.shared.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
+            WebviewHelper.loadContent(url: url, base: url, webView: webView)
         }
-        if let urlFinal = URL(string:url) {
-            let req = URLRequest(url:urlFinal)
-            webView?.load(req)
-        }
+        
         navigationItem.title = item?.headline
         initStyle()
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -285,6 +291,12 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             toolBar.backgroundColor = theme
             toolBar.barTintColor = theme
         }
+        let webViewBG = UIColor(hex: Color.Content.background)
+        view.backgroundColor = webViewBG
+        // MARK: set the web view opaque to avoid white screen during loading
+        webView?.isOpaque = false
+        webView?.backgroundColor = webViewBG
+        webView?.scrollView.backgroundColor = webViewBG
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -334,35 +346,35 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     
     // FIXME: - This is very simlar to the same func in ViewController. Consider optimize the code.
-//    func openInView(_ urlString : String) {
-//        ShareHelper.sharedInstance.webPageUrl = urlString
-//        let segueId = "Audio To WKWebView"
-//        if #available(iOS 9.0, *) {
-//            // MARK: - Use Safariview for iOS 9 and above
-//            if urlString.range(of: "www.ftchinese.com") == nil && urlString.range(of: "i.ftimg.net") == nil {
-//                // MARK: - When opening an outside url which we have no control over
-//                if let url = URL(string:urlString) {
-//                    if let urlScheme = url.scheme?.lowercased() {
-//                        if ["http", "https"].contains(urlScheme) {
-//                            // MARK: - Can open with SFSafariViewController
-//                            let webVC = SFSafariViewController(url: url)
-//                            webVC.delegate = self
-//                            self.present(webVC, animated: true, completion: nil)
-//                        } else {
-//                            // MARK: - When Scheme is not supported or no scheme is given, use openURL
-//                            UIApplication.shared.openURL(url)
-//                        }
-//                    }
-//                }
-//            } else {
-//                // MARK: Open a url on a page that we have control over
-//                self.performSegue(withIdentifier: segueId, sender: nil)
-//            }
-//        } else {
-//            // MARK: Fallback on earlier versions
-//            self.performSegue(withIdentifier: segueId, sender: nil)
-//        }
-//    }
+    //    func openInView(_ urlString : String) {
+    //        ShareHelper.sharedInstance.webPageUrl = urlString
+    //        let segueId = "Audio To WKWebView"
+    //        if #available(iOS 9.0, *) {
+    //            // MARK: - Use Safariview for iOS 9 and above
+    //            if urlString.range(of: "www.ftchinese.com") == nil && urlString.range(of: "i.ftimg.net") == nil {
+    //                // MARK: - When opening an outside url which we have no control over
+    //                if let url = URL(string:urlString) {
+    //                    if let urlScheme = url.scheme?.lowercased() {
+    //                        if ["http", "https"].contains(urlScheme) {
+    //                            // MARK: - Can open with SFSafariViewController
+    //                            let webVC = SFSafariViewController(url: url)
+    //                            webVC.delegate = self
+    //                            self.present(webVC, animated: true, completion: nil)
+    //                        } else {
+    //                            // MARK: - When Scheme is not supported or no scheme is given, use openURL
+    //                            UIApplication.shared.openURL(url)
+    //                        }
+    //                    }
+    //                }
+    //            } else {
+    //                // MARK: Open a url on a page that we have control over
+    //                self.performSegue(withIdentifier: segueId, sender: nil)
+    //            }
+    //        } else {
+    //            // MARK: Fallback on earlier versions
+    //            self.performSegue(withIdentifier: segueId, sender: nil)
+    //        }
+    //    }
     
     private func parseAudioMessage() {
         let body = AudioContent.sharedInstance.body

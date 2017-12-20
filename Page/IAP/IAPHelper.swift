@@ -168,6 +168,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         let productId = transaction.payment.productIdentifier
         savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)
         deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
+        PrivilegeHelper.updateFromDevice()
         SKPaymentQueue.default().finishTransaction(transaction)
     }
     

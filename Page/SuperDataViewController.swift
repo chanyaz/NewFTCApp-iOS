@@ -694,7 +694,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
         let cellItem = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        print ("cell life: cell for item at section: \(indexPath.section), row: \(indexPath.row)")
+        //print ("cell life: cell for item at section: \(indexPath.section), row: \(indexPath.row)")
         switch reuseIdentifier {
         case "CoverCell":
             if let cell = cellItem as? CoverCell {
@@ -843,7 +843,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        print ("cell life: prefetch")
+        //print ("cell life: prefetch")
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

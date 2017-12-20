@@ -25,26 +25,11 @@ class MembershipCell: CustomCell {
     
     @IBOutlet weak var buyButton: UIButton!
     @IBAction func buy(_ sender: Any) {
-//        if buyButton.isSelected == false {
-//            buyButton.isSelected = true
-//            if let id = itemCell?.id {
-//                IAP.buy(id)
-//            }
-//        } else {
-//
-//        }
-//        if buyState == .New {
-//            if let id = itemCell?.id {
-//                buyState = .Purchasing
-//                buyButton.setTitle("购买中", for: .normal)
-//                IAP.buy(id)
-//            }
-//        }
         switch buyState {
         case .New:
             if let id = itemCell?.id {
                 buyState = .Purchasing
-                buyButton.setTitle("购买中...", for: .normal)
+                buyButton.setTitle("连接中...", for: .normal)
                 IAP.buy(id)
             }
         case .Purchasing, .Purchased:

@@ -244,6 +244,26 @@ struct APIs {
         return "\(urlString)\(connector)ad=no"
     }
     
+    // MARK: add parameters for audio url
+    static func addParameters(to urlString: String, for type: String) -> String {
+        let connector: String
+        if urlString.range(of: "?") == nil {
+            connector = "?"
+        } else {
+            connector = "&"
+        }
+        let finalUrlString: String
+        switch type {
+        case "audio":
+            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&v=1"
+                .replacingOccurrences(of: "&i=3", with: "")
+                .replacingOccurrences(of: "?i=3", with: "")
+        default:
+            finalUrlString = urlString
+        }
+        return finalUrlString
+    }
+    
 //    // MARK: Use different domains for different types of content
 //    static func getUrl(_ id: String, type: String) -> String {
 //        let urlString: String

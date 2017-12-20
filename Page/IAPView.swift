@@ -522,7 +522,7 @@ extension IAPView: URLSessionDownloadDelegate {
                     totalBytesExpectedToWrite: Int64){
         // MARK: - evaluateJavaScript is very energy consuming, do this only every 1k download
         if let productId = session.configuration.identifier {
-            let totalMBsWritten = String(format: "%.1f", Float(totalBytesWritten)/1000000)
+            let totalMBsWritten = String(format: "%.3f", Float(totalBytesWritten)/1000000)
             let percentageNumber = 100 * Float(totalBytesWritten)/Float(totalBytesExpectedToWrite)
             if totalMBsWritten == "0.0" {
                 IAPs.shared.downloadProgresses[productId] = "0.0"
@@ -530,7 +530,7 @@ extension IAPView: URLSessionDownloadDelegate {
             // MARK: Since we have moved to native, we can update UI as frequently as we want.
             //if IAPs.shared.downloadProgresses[productId] != totalMBsWritten {
             IAPs.shared.downloadProgresses[productId] = totalMBsWritten
-            let totalMBsExpectedToWrite = String(format: "%.1f", Float(totalBytesExpectedToWrite)/1000000)
+            let totalMBsExpectedToWrite = String(format: "%.3f", Float(totalBytesExpectedToWrite)/1000000)
             // MARK: update UI in main queue
             DispatchQueue.main.async(execute: {
                 self.downloadingStatus.text = "\(totalMBsWritten)M / \(totalMBsExpectedToWrite)M 点击暂停"

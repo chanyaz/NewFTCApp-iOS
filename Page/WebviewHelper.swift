@@ -15,7 +15,7 @@ enum ContentSubType {
 }
 
 struct WebviewHelper {
-    static func renderWebviewForStory(_ type: String, subType: ContentSubType, dataObject: ContentItem?, webView: WKWebView?) {
+    static func renderStory(_ type: String, subType: ContentSubType, dataObject: ContentItem?, webView: WKWebView?) {
         if let id = dataObject?.id {
             let urlStringOriginal = (subType == .None) ? APIs.getUrl(id, type: type, isSecure: false, isPartial: false) : APIs.getUrl(id, type: type, subType: subType)
             let urlString: String

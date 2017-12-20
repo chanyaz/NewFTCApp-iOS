@@ -530,7 +530,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         if let type = dataObject?.type,
             ["story", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
-            WebviewHelper.renderWebviewForStory(type, subType: subType, dataObject: dataObject, webView: webView)
+            WebviewHelper.renderStory(type, subType: subType, dataObject: dataObject, webView: webView)
             if subType == .UserComments {
                 navigationItem.title = WebviewHelper.getHeadlineBody(dataObject).headline
             } else if type == "ebook" {

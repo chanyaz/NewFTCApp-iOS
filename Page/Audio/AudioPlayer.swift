@@ -31,6 +31,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     private lazy var webView: WKWebView? = nil
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = DownloadHelper(directory: "audio")
+    private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
     var item: ContentItem?
     var themeColor: String?

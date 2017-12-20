@@ -1277,26 +1277,21 @@ extension SuperDataViewController {
     
     // MARK: Handle Subscription Related Actions
     @objc public func handlePurchaseNotification(_ notification: Notification) {
-        // MARK: If the view controller is not a iap page, no need to update UI
+        // MARK: If the view controller is not an iap page, no need to update UI
         if dataObject["type"] != "iap" {
             return
         }
         if let notificationObject = notification.object as? [String: Any?]{
-            // MARK: when user buys or restores a product, we should display relevant information
+            // MARK: only user interface-related actions should be done here because the viewcontroller might not be active. 
             if let productID = notificationObject["id"] as? String,
                 let actionType = notificationObject["actionType"] as? String {
                 var newStatus = "new"
                 for (_, product) in IAPs.shared.products.enumerated() {
                     guard product.productIdentifier == productID else { continue }
-                    //var iapAction: String = "success"
-                    if actionType == "buy success" {
-                        // MARK: Otherwise if it's a buy action, save the purchase information and update UI accordingly
-                        let transactionDate = notificationObject["date"] as? Date
-                        IAP.savePurchase(productID, property: IAP.purchasedPropertyString, value: "Y")
-                        IAP.updatePurchaseHistory(productID, date: transactionDate)
+                    if ["buy success", "restore success"].contains(actionType) {
+                        // MARK: If it's a buy or restore action, mark the item as success
                         newStatus = "success"
                     }
-                    IAP.trackIAPActions(actionType, productId: productID)
                     DispatchQueue.main.async(execute: {
                         self.switchUI(newStatus)
                     })
@@ -1342,38 +1337,39 @@ extension SuperDataViewController {
     
     
     public func switchUI(_ actionType: String) {
-        switch actionType {
-        case "success":
-            print ("show open and delete button")
-            loadProducts()
-//            hideAll()
-//            buttons["open"]?.isHidden = false
-//            buttons["delete"]?.isHidden = false
-        case "pendingdownload":
-            print ("show download view only")
-//            hideAll()
-//            downloadingView.isHidden = false
-//            buttons["download"]?.isHidden = false
-        case "downloading":
-            print ("show downloading view")
-//            hideAll()
-//            downloadingView.isHidden = false
-        case "pending":
-            print ("show buy and try button. buy button disabled. ")
-//            hideAll()
-//            buttons["buy"]?.isHidden = false
-//            buttons["buy"]?.isEnabled = false
-//            buttons["try"]?.isHidden = false
-        case "fail", "new":
-            print ("show buy and try button")
-            loadProducts()
-//            hideAll()
-//            buttons["buy"]?.isHidden = false
-//            buttons["buy"]?.isEnabled = true
-//            buttons["try"]?.isHidden = false
-        default:
-            break
-        }
+        loadProducts()
+//        switch actionType {
+//        case "success":
+//            print ("show open and delete button")
+//            loadProducts()
+////            hideAll()
+////            buttons["open"]?.isHidden = false
+////            buttons["delete"]?.isHidden = false
+//        case "pendingdownload":
+//            print ("show download view only")
+////            hideAll()
+////            downloadingView.isHidden = false
+////            buttons["download"]?.isHidden = false
+//        case "downloading":
+//            print ("show downloading view")
+////            hideAll()
+////            downloadingView.isHidden = false
+//        case "pending":
+//            print ("show buy and try button. buy button disabled. ")
+////            hideAll()
+////            buttons["buy"]?.isHidden = false
+////            buttons["buy"]?.isEnabled = false
+////            buttons["try"]?.isHidden = false
+//        case "fail", "new":
+//            print ("show buy and try button")
+//            loadProducts()
+////            hideAll()
+////            buttons["buy"]?.isHidden = false
+////            buttons["buy"]?.isEnabled = true
+////            buttons["try"]?.isHidden = false
+//        default:
+//            break
+//        }
     }
     
 }
@@ -1400,11 +1396,8 @@ extension SuperDataViewController {
             
         }
     }
-    
-    
+
 }
-
-
 
 extension SuperDataViewController : UICollectionViewDelegateFlowLayout {
     
@@ -1422,7 +1415,6 @@ extension SuperDataViewController : UICollectionViewDelegateFlowLayout {
         }
         return (currentSizeClass, itemsPerRow)
     }
-    
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,

@@ -373,38 +373,16 @@ class IAPView: UIView {
                 var newStatus = "new"
                 for (_, product) in IAPs.shared.products.enumerated() {
                     guard product.productIdentifier == productID else { continue }
-                    //var iapAction: String = "success"
                     let currentProduct = IAP.findProductInfoById(productID)
                     let productGroup = currentProduct?["group"] as? String
                     // MARK: - If it's an eBook, download immediately and update UI to "downloading"
                     if productGroup == "ebook" {
                         // iapAction = "downloading"
                         IAP.downloadProduct(productID)
-                        IAP.savePurchase(productID, property: IAP.purchasedPropertyString, value: "Y")
                         newStatus = "downloading"
-                        
                     } else if actionType == "buy success" {
-                        // MARK: Otherwise if it's a buy action, save the purchase information and update UI accordingly
-                        let transactionDate = notificationObject["date"] as? Date
-                        IAP.savePurchase(productID, property: IAP.purchasedPropertyString, value: "Y")
-                        IAP.updatePurchaseHistory(productID, date: transactionDate)
                         newStatus = "success"
-                        /*
-                         if let periodLength = currentProduct?["period"] as? String {
-                         if let expire = getExpireDateFromPurchaseHistory(productID, periodLength: periodLength) {
-                         let expireDate = Date(timeIntervalSince1970: expire)
-                         let dayTimePeriodFormatter = DateFormatter()
-                         dayTimePeriodFormatter.dateFormat = "YYYY年MM月dd日"
-                         expireDateString = dayTimePeriodFormatter.string(from: expireDate)
-                         }
-                         }
-                         */
                     }
-                    //                    jsCode = "iapActions('\(productID)', '\(iapAction)')"
-                    //                    print(jsCode)
-                    //                    self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                    //                    }
-                    IAP.trackIAPActions(actionType, productId: productID)
                     DispatchQueue.main.async(execute: {
                         self.switchUI(newStatus)
                     })
@@ -429,11 +407,6 @@ class IAPView: UIView {
                     DispatchQueue.main.async(execute: {
                         self.switchUI("fail")
                     })
-                    
-                    // MARK: - For subscription types, should consider the situation of Failing to Renew in the webview's JavaScript Code of function iapActions, which means the UI should go back to renew button and display expire date
-                    //                    jsCode = "iapActions('\(productId ?? "")', 'fail')"
-                    //                    self.webView.evaluateJavaScript(jsCode) { (result, error) in
-                    //                    }
                 }
             }
         } else {
@@ -446,9 +419,6 @@ class IAPView: UIView {
             DispatchQueue.main.async(execute: {
                 self.switchUI("fail")
             })
-            //            jsCode = "iapActions('', 'fail')"
-            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-            //            }
             IAP.trackIAPActions("buy or restore error", productId: "")
         }
     }

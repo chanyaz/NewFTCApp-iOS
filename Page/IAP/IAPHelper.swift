@@ -79,6 +79,7 @@ open class IAPHelper : NSObject  {
 // MARK: - StoreKit API
 
 extension IAPHelper {
+    // MARK: Stage 1:  Retrieving Product Information
     // MARK: Request products from app store by passing product identifiers. Note that Apple doesn't allow you to request products if you don't already know the product ids.
     public func requestProducts(completionHandler: @escaping ProductsRequestCompletionHandler) {
         productsRequest?.cancel()
@@ -88,6 +89,7 @@ extension IAPHelper {
         productsRequest?.start()
     }
     
+    // MARK: - Stage 2: Requesting Payment
     public func buyProduct(_ product: SKProduct) {
         print("Buying \(product.productIdentifier)...")
         let payment = SKPayment(product: product)
@@ -109,8 +111,7 @@ extension IAPHelper {
     }
 }
 
-
-// MARK: - Step 1: Implement the SKProductsRequestDelegate protocol to handle product requests
+// MARK: - Stage 1:  Retrieving Product Information: Implement the SKProductsRequestDelegate protocol to handle product requests
 extension IAPHelper: SKProductsRequestDelegate {
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         //print("Loaded list of products...")
@@ -136,16 +137,14 @@ extension IAPHelper: SKProductsRequestDelegate {
     }
 }
 
-
-
-// MARK: - SKPaymentTransactionObserver
-
+// MARK: - Stage 3: Delivering Products
 extension IAPHelper: SKPaymentTransactionObserver {
+    
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             switch (transaction.transactionState) {
             case .purchased:
-                complete(transaction: transaction)
+                purchaseSuccess(transaction: transaction)
                 break
             case .failed:
                 fail(transaction: transaction)
@@ -164,36 +163,57 @@ extension IAPHelper: SKPaymentTransactionObserver {
         }
     }
     
-    private func complete(transaction: SKPaymentTransaction) {
-        print("complete...")
-        deliverPurchaseNotificationFor("buy success", identifier: transaction.payment.productIdentifier, date: transaction.transactionDate)
+    private func purchaseSuccess(transaction: SKPaymentTransaction) {
+        let actionType = "buy success"
+        let productId = transaction.payment.productIdentifier
+        savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)
+        deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
         SKPaymentQueue.default().finishTransaction(transaction)
     }
     
     private func restore(transaction: SKPaymentTransaction) {
-        guard let productIdentifier = transaction.original?.payment.productIdentifier else { return }
-        print("restore... \(productIdentifier)")
-        deliverPurchaseNotificationFor("restore success", identifier: productIdentifier, date: transaction.transactionDate)
+        let actionType = "restore success"
+        guard let productId = transaction.original?.payment.productIdentifier else { return }
+        savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)
+        deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
         SKPaymentQueue.default().finishTransaction(transaction)
     }
     
     private func fail(transaction: SKPaymentTransaction) {
         if let transactionError = transaction.error as NSError? {
             let productId = transaction.payment.productIdentifier
-            print("Transaction Error: \(String(describing: transaction.error?.localizedDescription))")
+            print("\(productId) Transaction Error: \(String(describing: transaction.error?.localizedDescription))")
+            switch (transactionError.code) {
+            case SKError.paymentCancelled.rawValue:
+                print("user cancelled the request")
+                IAP.trackIAPActions("cancel buying", productId: productId)
+                break
+            default:
+                let errorMessage = transactionError.localizedDescription
+                IAP.trackIAPActions("buy or restore error", productId: "\(productId): \(errorMessage)")
+                break
+            }
             deliverPurchaseFailNotification(transactionError, productId: productId)
-            SKPaymentQueue.default().finishTransaction(transaction)
         }
+        SKPaymentQueue.default().finishTransaction(transaction)
     }
     
+    // MARK: Update Information that are stored in the device
+    private func savePurchaseInfoToDevice(_ transaction: SKPaymentTransaction, actionType: String, productId: String) {
+        let transactionDate = transaction.transactionDate
+        // MARK: Update purchase history and Track here not in the IAP View or View Controller
+        IAP.savePurchase(productId, property: IAP.purchasedPropertyString, value: "Y")
+        IAP.updatePurchaseHistory(productId, date: transactionDate)
+        IAP.trackIAPActions(actionType, productId: productId)
+        purchasedProductIdentifiers.insert(productId)
+        UserDefaults.standard.set(true, forKey: productId)
+        // MARK: - save purchase history here, something like updatePurchaseHistory()
+        UserDefaults.standard.synchronize()
+    }
+    
+    // MARK: Send notifications to iap view or view controller so that UI can be updated
     private func deliverPurchaseNotificationFor(_ actionType: String, identifier: String?, date: Date?) {
         if let identifier = identifier {
-            purchasedProductIdentifiers.insert(identifier)
-            UserDefaults.standard.set(true, forKey: identifier)
-            // MARK: - save purchase history here, something like updatePurchaseHistory()
-            UserDefaults.standard.synchronize()
-            //let isPurchased = UserDefaults.standard.bool(forKey: identifier)
-            print ("\(identifier) is set to \(UserDefaults.standard.bool(forKey: identifier))")
             let transactionSuccessObject = [
                 "id": identifier,
                 "actionType": actionType,
@@ -204,42 +224,11 @@ extension IAPHelper: SKPaymentTransactionObserver {
     }
     
     private func deliverPurchaseFailNotification(_ transactionError: NSError?, productId: String) {
-        // MARK: - Handle User Cancel
-        var errorMessage: String? = nil
-        if let error = transactionError {
-            if error.domain == SKErrorDomain {
-                // Mark: - handle user cancel
-                switch (error.code) {
-                case SKError.paymentCancelled.rawValue:
-                    print("user cancelled the request")
-                    errorMessage = "usercancel"
-                    /*
-                     case SKError.unknown.rawValue:
-                     print("Unknown error")
-                     
-                     case SKError.clientInvalid.rawValue:
-                     print("client is not allowed to issue the request")
-                     
-                     
-                     
-                     case SKError.paymentInvalid.rawValue:
-                     print("purchase identifier was invalid")
-                     
-                     case SKError.paymentNotAllowed.rawValue:
-                     print("this device is not allowed to make the payment")
-                     */
-                default:
-                    errorMessage = transactionError?.localizedDescription
-                    break;
-                }
-            }
-        }
-        
+        let errorMessage = transactionError?.localizedDescription
         let transactionErrorObject = [
             "id": productId,
             "error": errorMessage
         ]
-
         NotificationCenter.default.post(name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: transactionErrorObject)
     }
 }

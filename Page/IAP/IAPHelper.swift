@@ -89,6 +89,17 @@ extension IAPHelper {
         productsRequest?.start()
     }
     
+    public func requestProduct(_ productIdentifier: String, completionHandler: @escaping ProductsRequestCompletionHandler) {
+        productsRequest?.cancel()
+        productsRequestCompletionHandler = completionHandler
+        let productIdentifiers: Set<ProductIdentifier>
+        productIdentifiers = [productIdentifier]
+        productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
+        productsRequest?.delegate = self
+        productsRequest?.start()
+    }
+    
+    
     // MARK: - Stage 2: Requesting Payment
     public func buyProduct(_ product: SKProduct) {
         print("Buying \(product.productIdentifier)...")

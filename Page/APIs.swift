@@ -820,10 +820,11 @@ struct Settings {
 }
 
 struct FullScreenFallBack {
-    static let id = "com.ft.ftchinese.mobile.book.lunch1"
+    static let id = "com.ft.ftchinese.mobile.book.yearin2018"
     static let link = ""
-    static let backgroundColor = "#ffcb9e"
+    static let backgroundColor = "#000000"
 }
+
 struct ContentItemRenderContent {
     static var addPersonInfo = false
 }

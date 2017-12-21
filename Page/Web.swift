@@ -178,8 +178,13 @@ extension UIViewController: SFSafariViewControllerDelegate{
                         if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
                             contentItemViewController.dataObject = product
                             contentItemViewController.hidesBottomBarWhenPushed = true
-                            navigationController?.isNavigationBarHidden = false
-                            navigationController?.pushViewController(contentItemViewController, animated: true)
+                            if navigationController != nil {
+                                navigationController?.isNavigationBarHidden = false
+                                navigationController?.pushViewController(contentItemViewController, animated: true)
+                            } else if let topViewController = UIApplication.topViewController() as? DataViewController {
+                                topViewController.navigationController?.isNavigationBarHidden = false
+                                topViewController.navigationController?.pushViewController(contentItemViewController, animated: true)
+                            }
                         }
                         break
                     }

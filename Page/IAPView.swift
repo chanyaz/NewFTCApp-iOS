@@ -36,6 +36,20 @@ class IAPView: UIView {
         if let price = dataObject?.productPrice {
             setButton(buttons["buy"], title: "购买：\(price)", disabledTitle: "连接中...", positions: [.right], width: "half", type: "highlight")
             buttons["buy"]?.addTarget(self, action: #selector(buy(_:)), for: .touchUpInside)
+            if price == "",
+                let productId = dataObject?.id {
+                IAPProducts.store.requestProduct(productId){[weak self] success, products in
+                    if success {
+                        // MARK: Update products info but not a replace
+//                        if let products = products {
+//                            //self?.products = products
+//                            IAPs.shared.products = products
+//                        }
+                        // MARK: Update UI to reflect the price
+                        
+                    }
+                }
+            }
         }
         setButton(buttons["try"], title: "试读", disabledTitle: "下载中...", positions: [.left], width: "half", type: "standard")
         buttons["try"]?.addTarget(self, action: #selector(tryProduct(_:)), for: .touchUpInside)

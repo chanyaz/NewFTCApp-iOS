@@ -395,7 +395,7 @@ class IAPView: UIView {
                 }()
                 let price = priceFormatter.string(from: product.price) ?? ""
                 DispatchQueue.main.async {
-                    print ("successfully get \(product.productIdentifier) at \(price)")
+                    //print ("successfully get \(product.productIdentifier) at \(price)")
                     self.setButton(self.buttons["buy"], title: "购买：\(price)", disabledTitle: "连接中...", positions: [.right], width: "half", type: "highlight")
                 }
             }

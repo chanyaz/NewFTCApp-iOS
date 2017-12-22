@@ -177,6 +177,25 @@ public struct IAPProducts {
         ]
     ]
     
+    // MARK: - update JSCode for displaying on WKWebView
+    public func updateIAPsJSCodes() {
+        let hightlightIds = ["com.ft.ftchinese.mobile.book.yearin2018"]
+        let highlightJSON = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: hightlightIds)
+        let hightJSCode = JSCodes.get(in: "iap-highlight", with: highlightJSON, where: "center")
+        
+        let ids = [
+            "com.ft.ftchinese.mobile.book.magazine",
+            "com.ft.ftchinese.mobile.book.magazine2",
+            "com.ft.ftchinese.mobile.book.career",
+            "com.ft.ftchinese.mobile.book.economy1",
+            "com.ft.ftchinese.mobile.book.economy2",
+            "com.ft.ftchinese.mobile.book.dailyenglish1"
+        ]
+        let json = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: ids)
+        let jsCode = JSCodes.get(in: "iap-ebooks", with: json, where: "rail")
+        IAPs.shared.jsCodes = "\(hightJSCode)\(jsCode)"
+    }
+    
     // MARK: - Add product group names and titles
     public static let subscriptions = addProductGroup(subscriptionsData, group: "subscription", groupTitle: "订阅")
     public static let eBooks = addProductGroup(eBooksData, group: "ebook", groupTitle: "FT电子书")

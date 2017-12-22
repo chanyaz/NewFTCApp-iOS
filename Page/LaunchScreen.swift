@@ -68,17 +68,6 @@ class LaunchScreen: UIViewController {
         if (adType != "none") {
             adSchedule.updateAdSchedule()
         }
-        // Do any additional setup after loading the view.
-        // print ("launch screen loaded")
-        
-        //        Timer.scheduledTimer(
-        //            timeInterval: 6,
-        //            target: self,
-        //            selector: #selector(close),
-        //            userInfo: nil,
-        //            repeats: true
-        //        )
-        
         // MARK: - Notification If New Ad Creative is Downloaded
         NotificationCenter.default.addObserver(
             self,

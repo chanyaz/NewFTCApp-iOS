@@ -660,8 +660,9 @@ struct JSCodes {
             return jsCode
         }
     }
-    public static func get(in id: String, with json: String) -> String {
-        return "updateProductsHTML('\(id)', \(json));"
+    public static func get(in id: String, with json: String, where position: String) -> String {
+        // updateProductsHTML
+        return "updateProductsHTML('\(id)', \(json), '\(position)');"
     }
 }
 

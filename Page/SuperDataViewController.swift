@@ -1232,39 +1232,13 @@ extension SuperDataViewController {
             // MARK: - Get product regardless of the request result
             
             // MARK: - Get only the type of products needed
+            updateIAPsJSCodes()
             
-            let ids = [
-                "com.ft.ftchinese.mobile.book.magazine",
-                "com.ft.ftchinese.mobile.book.magazine2",
-                "com.ft.ftchinese.mobile.book.career",
-                "com.ft.ftchinese.mobile.book.economy1",
-                "com.ft.ftchinese.mobile.book.economy2",
-                "com.ft.ftchinese.mobile.book.dailyenglish1"
-            ]
-            let json = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: ids)
-            let jsCode = JSCodes.get(in: "iap-ebooks", with: json)
-            IAPs.shared.jsCodes = jsCode
-            // print (jsCode)
-            //"document.getElementById('iap-ebooks').innerHTML = 'eBooks by FTC! ';"
             self?.webView?.evaluateJavaScript(jsCode) { (result, error) in
                 if result != nil {
                     print (result ?? "unprintable JS result")
                 }
             }
-            //            let contentSections = ContentSection(
-            //                title: "",
-            //                items: IAP.get(IAPs.shared.products, in: type),
-            //                type: "List",
-            //                adid: ""
-            //            )
-            //            let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
-            //            //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
-            //            //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
-            //            self?.updateUI(with: results)
-            
-            
-            //            self.productToJSCode(self.products, jsVariableName: "displayProductsOnHome", jsVariableType: "function")
-            //            self.productToJSCode(self.products, jsVariableName: "iapProducts", jsVariableType: "object")
         }
         
     }

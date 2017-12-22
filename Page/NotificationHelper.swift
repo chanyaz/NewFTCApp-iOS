@@ -99,6 +99,11 @@ struct NotificationHelper {
                     topController.openLink(url)
                     return
                 }
+            case "download":
+                if let url = URL(string: id) {
+                    topController.openLink(url)
+                    return
+                }
             default:
                 break
             }

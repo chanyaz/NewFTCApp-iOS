@@ -89,6 +89,17 @@ extension IAPHelper {
         productsRequest?.start()
     }
     
+    public func requestProduct(_ productIdentifier: String, completionHandler: @escaping ProductsRequestCompletionHandler) {
+        productsRequest?.cancel()
+        productsRequestCompletionHandler = completionHandler
+        let productIdentifiers: Set<ProductIdentifier>
+        productIdentifiers = [productIdentifier]
+        productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
+        productsRequest?.delegate = self
+        productsRequest?.start()
+    }
+    
+    
     // MARK: - Stage 2: Requesting Payment
     public func buyProduct(_ product: SKProduct) {
         print("Buying \(product.productIdentifier)...")
@@ -161,6 +172,19 @@ extension IAPHelper: SKPaymentTransactionObserver {
                 break
             }
         }
+    }
+    
+    public func paymentQueue(_ queue: SKPaymentQueue, shouldAddStorePayment payment: SKPayment, for product: SKProduct) -> Bool {
+        //MARK: Test Url: itms-services://?action=purchaseIntent&bundleId=com.ft.ftchinese.mobile&productIdentifier=com.ft.ftchinese.mobile.book.yearin2018
+        //MARK: Test Url: itms-services://?action=purchaseIntent&bundleId=com.ft.ftchinese.mobile&productIdentifier=com.ft.ftchinese.mobile.book.magazine2
+        
+        
+        print ("go to product page: \(product.productIdentifier)")
+        // MARK: Direct the user directly to the products store front so that they won't be confused
+        if let topViewController = UIApplication.topViewController() {
+            topViewController.openProductStoreFront(product.productIdentifier)
+        }
+        return true
     }
     
     private func purchaseSuccess(transaction: SKPaymentTransaction) {

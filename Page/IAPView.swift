@@ -31,12 +31,30 @@ class IAPView: UIView {
     let downloadingStatus = UILabel()
     var currentDownloadStatus: DownloadStatus = .remote
     
+
+    
     public func initUI() {
         self.backgroundColor = UIColor(hex: Color.Content.background)
         if let price = dataObject?.productPrice {
             setButton(buttons["buy"], title: "购买：\(price)", disabledTitle: "连接中...", positions: [.right], width: "half", type: "highlight")
             buttons["buy"]?.addTarget(self, action: #selector(buy(_:)), for: .touchUpInside)
+            if price == "",
+                dataObject?.id != nil {
+                for i in 1...3 {
+                    let step = TimeInterval(i)
+                    let checkTime: TimeInterval = 5 * step
+                    Timer.scheduledTimer(
+                        timeInterval: checkTime,
+                        target: self,
+                        selector: #selector(checkPrice),
+                        userInfo: nil,
+                        repeats: false
+                    )
+                }
+            }
         }
+        
+        
         setButton(buttons["try"], title: "试读", disabledTitle: "下载中...", positions: [.left], width: "half", type: "standard")
         buttons["try"]?.addTarget(self, action: #selector(tryProduct(_:)), for: .touchUpInside)
         
@@ -364,6 +382,24 @@ class IAPView: UIView {
         downloadingStatus.text = "点击此处重新加载"
     }
     
+    // MARK: - if the price information is not retrieved
+    @objc func checkPrice() {
+        for product in IAPs.shared.products {
+            if product.productIdentifier == dataObject?.id {
+                let priceFormatter: NumberFormatter = {
+                    let formatter = NumberFormatter()
+                    formatter.formatterBehavior = .behavior10_4
+                    formatter.numberStyle = .currency
+                    formatter.locale = product.priceLocale
+                    return formatter
+                }()
+                let price = priceFormatter.string(from: product.price) ?? IAP.getPriceInfoFromLocal(product.productIdentifier)
+                DispatchQueue.main.async {
+                    self.setButton(self.buttons["buy"], title: "购买：\(price)", disabledTitle: "连接中...", positions: [.right], width: "half", type: "highlight")
+                }
+            }
+        }
+    }
     
     // MARK: This should be public, as it will be called by other classes
     @objc public func handlePurchaseNotification(_ notification: Notification) {
@@ -479,25 +515,25 @@ extension IAPView: URLSessionDownloadDelegate {
                         }
                         
                         /*
-                        let config = FolioReaderConfig()
-                        config.scrollDirection = .horizontal
-                        config.allowSharing = false
-                        config.tintColor = UIColor(netHex: 0x9E2F50)
-                        config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
-                        config.enableTTS = false
-                        
-                        newStatus = "new"
-                        if let fileLocation = Download.checkFilePath(fileUrl: productId, for: .documentDirectory) {
-                            DispatchQueue.main.async {
-                                if let topController = UIApplication.topViewController() {
-                                    let folioReader = FolioReader()
-                                    folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
-                                }
-                                print ("should open the file at \(fileLocation)")
-                                IAP.trackIAPActions("download excerpt success", productId: productId)
-                            }
-                        }
- */
+                         let config = FolioReaderConfig()
+                         config.scrollDirection = .horizontal
+                         config.allowSharing = false
+                         config.tintColor = UIColor(netHex: 0x9E2F50)
+                         config.menuBackgroundColor = UIColor(netHex: 0xFFF1E0)
+                         config.enableTTS = false
+                         
+                         newStatus = "new"
+                         if let fileLocation = Download.checkFilePath(fileUrl: productId, for: .documentDirectory) {
+                         DispatchQueue.main.async {
+                         if let topController = UIApplication.topViewController() {
+                         let folioReader = FolioReader()
+                         folioReader.presentReader(parentViewController: topController, withEpubPath: fileLocation, andConfig: config)
+                         }
+                         print ("should open the file at \(fileLocation)")
+                         IAP.trackIAPActions("download excerpt success", productId: productId)
+                         }
+                         }
+                         */
                         
                     }
                 }catch{

@@ -13,26 +13,29 @@ struct APIs {
     
     // MARK: Domain Name For APIs
     private static let htmlDomains = [
-        "https://d1budb999l6vta.cloudfront.net/",
+        "https://api.ftmailbox.com/",
         "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
     // MARK: Domain Name maily for stories
     private static let backupHTMLDomains = [
-        "https://d37m993yiqhccr.cloudfront.net/",
+        "https://d1budb999l6vta.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
+
     ]
     
     // MARK: Backup server for List Pages
     private static let backupHTMLDomains2 = [
-        "https://d2noncecxepzyq.cloudfront.net/",
+        "https://d37m993yiqhccr.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
     ]
 
     // MARK: Backup server 3
     private static let backupHTMLDomains3 = [
-        "https://danla2f5eudt1.cloudfront.net/",
+        "https://d2noncecxepzyq.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
+//        "https://danla2f5eudt1.cloudfront.net/",
+//        "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
     // MARK: If there are http resources that you rely on in your page, don't use https as the url base
@@ -660,8 +663,9 @@ struct JSCodes {
             return jsCode
         }
     }
-    public static func get(in id: String, with json: String) -> String {
-        return "updateProductsHTML('\(id)', \(json));"
+    public static func get(in id: String, with json: String, where position: String) -> String {
+        // updateProductsHTML
+        return "updateProductsHTML('\(id)', \(json), '\(position)');"
     }
 }
 
@@ -820,10 +824,11 @@ struct Settings {
 }
 
 struct FullScreenFallBack {
-    static let id = "com.ft.ftchinese.mobile.book.lunch1"
+    static let id = "com.ft.ftchinese.mobile.book.yearin2018"
     static let link = ""
-    static let backgroundColor = "#ffcb9e"
+    static let backgroundColor = "#000000"
 }
+
 struct ContentItemRenderContent {
     static var addPersonInfo = false
 }

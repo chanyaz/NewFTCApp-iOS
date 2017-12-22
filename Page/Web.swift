@@ -171,19 +171,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 }
             case "buyproduct":
                 // MARK: open the product page
-                let productId = url.host
-                let products = IAP.get(IAPs.shared.products, in: "ebook", with: nil)
-                for product in products {
-                    if productId == product.id {
-                        if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
-                            contentItemViewController.dataObject = product
-                            contentItemViewController.hidesBottomBarWhenPushed = true
-                            navigationController?.isNavigationBarHidden = false
-                            navigationController?.pushViewController(contentItemViewController, animated: true)
-                        }
-                        break
-                    }
-                }
+                openProductStoreFront(url.host)
             default:
                 break
             }
@@ -191,9 +179,6 @@ extension UIViewController: SFSafariViewControllerDelegate{
     }
     
     func openHTMLBook(_ fileLocation: String, productId: String) {
-        
-        
-        
         print ("open html file from location: \(fileLocation)")
         if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController  {
             //print(dataViewController.view.frame)
@@ -275,6 +260,26 @@ extension UIViewController: SFSafariViewControllerDelegate{
             ]
             dataViewController.pageTitle = id
             self.navigationController?.pushViewController(dataViewController, animated: true)
+        }
+    }
+    
+    func openProductStoreFront(_ productId: String?) {
+        let products = IAP.get(IAPs.shared.products, in: "ebook", with: nil)
+        for product in products {
+            if productId == product.id {
+                if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
+                    contentItemViewController.dataObject = product
+                    contentItemViewController.hidesBottomBarWhenPushed = true
+                    if navigationController != nil {
+                        navigationController?.isNavigationBarHidden = false
+                        navigationController?.pushViewController(contentItemViewController, animated: true)
+                    } else if let topViewController = UIApplication.topViewController() as? DataViewController {
+                        topViewController.navigationController?.isNavigationBarHidden = false
+                        topViewController.navigationController?.pushViewController(contentItemViewController, animated: true)
+                    }
+                }
+                break
+            }
         }
     }
 }

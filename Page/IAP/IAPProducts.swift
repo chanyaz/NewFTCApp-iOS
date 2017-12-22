@@ -35,6 +35,7 @@ public struct IAPProducts {
             "period":"year"
         ]
     ]
+    
     private static let membershipData = [
         [
             "id":"com.ft.ftchinese.mobile.subscription.member",
@@ -178,11 +179,10 @@ public struct IAPProducts {
     ]
     
     // MARK: - update JSCode for displaying on WKWebView
-    public func updateIAPsJSCodes() {
+    public static func updateHome(for type: String) -> String {
         let hightlightIds = ["com.ft.ftchinese.mobile.book.yearin2018"]
         let highlightJSON = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: hightlightIds)
         let hightJSCode = JSCodes.get(in: "iap-highlight", with: highlightJSON, where: "center")
-        
         let ids = [
             "com.ft.ftchinese.mobile.book.magazine",
             "com.ft.ftchinese.mobile.book.magazine2",
@@ -193,7 +193,9 @@ public struct IAPProducts {
         ]
         let json = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: ids)
         let jsCode = JSCodes.get(in: "iap-ebooks", with: json, where: "rail")
-        IAPs.shared.jsCodes = "\(hightJSCode)\(jsCode)"
+        let finalJsCode = "\(hightJSCode)\(jsCode)"
+        IAPs.shared.jsCodes = finalJsCode
+        return finalJsCode
     }
     
     // MARK: - Add product group names and titles

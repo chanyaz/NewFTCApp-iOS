@@ -1215,7 +1215,6 @@ extension SuperDataViewController {
         }
     }
     
-    
     // MARK: - load IAP products and update UI
     fileprivate func loadProductsHTML(for type: String) {
         IAPs.shared.products = []
@@ -1232,17 +1231,16 @@ extension SuperDataViewController {
             // MARK: - Get product regardless of the request result
             
             // MARK: - Get only the type of products needed
-            updateIAPsJSCodes()
-            
-            self?.webView?.evaluateJavaScript(jsCode) { (result, error) in
-                if result != nil {
-                    print (result ?? "unprintable JS result")
+            let jsCode = IAPProducts.updateHome(for: type)
+            DispatchQueue.main.async {
+                self?.webView?.evaluateJavaScript(jsCode) { (result, error) in
+                    if result != nil {
+                        print (result ?? "unprintable JS result")
+                    }
                 }
             }
         }
-        
     }
-    
     
     // MARK: Handle Subscription Related Actions
     @objc public func handlePurchaseNotification(_ notification: Notification) {
@@ -1297,48 +1295,12 @@ extension SuperDataViewController {
             DispatchQueue.main.async(execute: {
                 self.switchUI("fail")
             })
-            //            jsCode = "iapActions('', 'fail')"
-            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-            //            }
             IAP.trackIAPActions("buy or restore error", productId: "")
         }
     }
     
-    
     public func switchUI(_ actionType: String) {
         loadProducts()
-//        switch actionType {
-//        case "success":
-//            print ("show open and delete button")
-//            loadProducts()
-////            hideAll()
-////            buttons["open"]?.isHidden = false
-////            buttons["delete"]?.isHidden = false
-//        case "pendingdownload":
-//            print ("show download view only")
-////            hideAll()
-////            downloadingView.isHidden = false
-////            buttons["download"]?.isHidden = false
-//        case "downloading":
-//            print ("show downloading view")
-////            hideAll()
-////            downloadingView.isHidden = false
-//        case "pending":
-//            print ("show buy and try button. buy button disabled. ")
-////            hideAll()
-////            buttons["buy"]?.isHidden = false
-////            buttons["buy"]?.isEnabled = false
-////            buttons["try"]?.isHidden = false
-//        case "fail", "new":
-//            print ("show buy and try button")
-//            loadProducts()
-////            hideAll()
-////            buttons["buy"]?.isHidden = false
-////            buttons["buy"]?.isEnabled = true
-////            buttons["try"]?.isHidden = false
-//        default:
-//            break
-//        }
     }
     
 }
@@ -1388,7 +1350,6 @@ extension SuperDataViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //print ("sizeFor Item At called")
         let sizeInfo = getSizeInfo()
         let itemsPerRow = sizeInfo.itemsPerRow
         let currentSizeClass = sizeInfo.sizeClass
@@ -1485,10 +1446,8 @@ extension SuperDataViewController: WKScriptMessageHandler {
                     sponsors.append(sponsor)
                 }
                 Sponsors.shared.sponsors = sponsors
-                //print ("sponsors is now \(Sponsors.shared.sponsors)")
             }
         } else if message.name == "selectItem" {
-            //print (message.body)
             if let rowString = message.body as? String,
                 let row = Int(rowString) {
                 let indexPath = IndexPath(row: row, section: 0)

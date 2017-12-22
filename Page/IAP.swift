@@ -16,6 +16,7 @@ struct IAP {
     public static let myPurchasesKey = "My Purchases"
     public static let purchaseHistoryKey = "purchase history"
     public static let purchasedPropertyString = "purchased"
+    private static let productPricesKey = "Product Prices Key"
     
     public static func get(_ products: [SKProduct], in group: String?, with privilege: PrivilegeType?) -> [ContentItem] {
         var contentItems = [ContentItem]()
@@ -103,7 +104,7 @@ struct IAP {
                             formatter.locale = product.priceLocale
                             return formatter
                         }()
-                        productPrice = priceFormatter.string(from: product.price) ?? ""
+                        productPrice = priceFormatter.string(from: product.price) ?? getPriceInfoFromLocal(id)
                         productDescription = product.localizedDescription
                         
                         if product.localizedTitle != "" {
@@ -536,6 +537,34 @@ struct IAP {
         Track.event(category: "In-App Purchase", action: actionType, label: productId)
     }
     
+    
+    
+    public static func savePriceInfo(_ products: [SKProduct]) {
+        var productPrices: [String: String] = [:]
+        for product in products {
+            let id = product.productIdentifier
+            let price = product.price
+            let priceFormatter: NumberFormatter = {
+                let formatter = NumberFormatter()
+                formatter.formatterBehavior = .behavior10_4
+                formatter.numberStyle = .currency
+                formatter.locale = product.priceLocale
+                return formatter
+            }()
+            let productPrice = priceFormatter.string(from: price) ?? ""
+            productPrices[id] = productPrice
+        }
+        UserDefaults.standard.set(productPrices, forKey: productPricesKey)
+    }
+    
+    public static func getPriceInfoFromLocal(_ id: String) -> String {
+        if let productPrices = UserDefaults.standard.dictionary(forKey: productPricesKey) as? [String: String]{
+            if let productPrice = productPrices[id] {
+                return productPrice
+            }
+        }
+        return ""
+    }
     
 }
 

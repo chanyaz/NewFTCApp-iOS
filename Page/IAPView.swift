@@ -393,9 +393,8 @@ class IAPView: UIView {
                     formatter.locale = product.priceLocale
                     return formatter
                 }()
-                let price = priceFormatter.string(from: product.price) ?? ""
+                let price = priceFormatter.string(from: product.price) ?? IAP.getPriceInfoFromLocal(product.productIdentifier)
                 DispatchQueue.main.async {
-                    //print ("successfully get \(product.productIdentifier) at \(price)")
                     self.setButton(self.buttons["buy"], title: "购买：\(price)", disabledTitle: "连接中...", positions: [.right], width: "half", type: "highlight")
                 }
             }

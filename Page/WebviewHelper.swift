@@ -111,7 +111,7 @@ struct WebviewHelper {
                     } else {
                         imageHTML = ""
                     }
-
+                    
                     
                 } else {
                     finalBody = headlineBody.finalBody
@@ -189,34 +189,40 @@ struct WebviewHelper {
     
     // MARK: load content pages such as story, interactive, audio, video, etc...
     static func loadContent(url: String, base: String, webView: WKWebView?) {
-        if let urlFinal = URL(string:url),
-            let baseUrl = URL(string: base) {
-            if url.hasPrefix("https://") {
-                // MARK: if url is https, it can be downloaded
-                if let data = Download.readFile(url, for: .cachesDirectory, as: "html"),
-                    let htmlString = String(data: data, encoding: .utf8) {
-                    webView?.loadHTMLString(htmlString, baseURL:baseUrl)
-                    // MARK: if user is on wifi, download the url for possible update of content.
-                    if IJReachability().connectedToNetworkOfType() == .wiFi {
-                        Download.downloadUrl(url, to: .cachesDirectory, as: "html")
-                    }
-                } else {
-                    // MARK: otherwise, download the url and load HTML String
-                    print ("Download Url: \(urlFinal)")
-                    Download.getDataFromUrl(urlFinal, completion: {[weak webView] (data, response, error) in
-                        if let data = data {
-                            if let htmlString = String(data: data, encoding: .utf8) {
+        if var urlComponents = URLComponents(string: url) {
+            let newQuery = APIs.newQueryForWebPage()
+            if urlComponents.queryItems != nil {
+                urlComponents.queryItems?.append(newQuery)
+            } else {
+                urlComponents.queryItems = [newQuery]
+            }
+            if let urlLink = urlComponents.url,
+                let baseUrl = URL(string: base) {
+                // MARK: - If it's a url that might be saved
+                if urlLink.scheme == "https" {
+                    if let data = Download.readFile(url, for: .cachesDirectory, as: "html"),
+                        let htmlString = String(data: data, encoding: .utf8) {
+                        webView?.loadHTMLString(htmlString, baseURL:baseUrl)
+                        // MARK: - If user is on wifi, download the url for possible update of content.
+                        if IJReachability().connectedToNetworkOfType() == .wiFi {
+                            Download.downloadUrl(url, to: .cachesDirectory, as: "html")
+                        }
+                    } else {
+                        // MARK: - If the file has not been downloaded yet
+                        Download.getDataFromUrl(urlLink, completion: {[weak webView] (data, response, error) in
+                            if let data = data,
+                                let htmlString = String(data: data, encoding: .utf8) {
                                 DispatchQueue.main.async {
                                     webView?.loadHTMLString(htmlString, baseURL:baseUrl)
                                 }
                                 Download.saveFile(data, filename: url, to: .cachesDirectory, as: "html")
                             }
-                        }
-                    })
+                        })
+                    }
+                } else {
+                    let request = URLRequest(url: urlLink)
+                    webView?.load(request)
                 }
-            } else {
-                let req = URLRequest(url:urlFinal)
-                webView?.load(req)
             }
         }
     }

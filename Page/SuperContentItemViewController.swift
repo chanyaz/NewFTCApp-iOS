@@ -496,42 +496,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 }
                 let urlString = APIs.convert(urlStringOriginal)
                 print ("loading \(urlString)")
-                if var urlComponents = URLComponents(string: urlString) {
-                    let newQuery = APIs.newQueryForWebPage()
-                    if urlComponents.queryItems != nil {
-                        urlComponents.queryItems?.append(newQuery)
-                    } else {
-                        urlComponents.queryItems = [newQuery]
-                    }
-                    if let url = urlComponents.url,
-                        let baseUrl = URL(string: baseUrlString) {
-                        // MARK: - If it's a url that might be saved
-                        if url.scheme == "https" {
-                            if let data = Download.readFile(urlString, for: .cachesDirectory, as: "html"),
-                                let htmlString = String(data: data, encoding: .utf8) {
-                                webView?.loadHTMLString(htmlString, baseURL:baseUrl)
-                                Download.downloadUrl(urlString, to: .cachesDirectory, as: "html")
-                            } else {
-                                // MARK: If the file has not been downloaded yet
-                                Download.getDataFromUrl(url, completion: {[weak self] (data, response, error) in
-                                    if let data = data {
-                                        if let htmlString = String(data: data, encoding: .utf8) {
-                                            DispatchQueue.main.async {
-                                                self?.webView?.loadHTMLString(htmlString, baseURL:baseUrl)
-                                            }
-                                            Download.saveFile(data, filename: urlString, to: .cachesDirectory, as: "html")
-                                        }
-                                    }
-                                })
-                            }
-                        } else {
-                            print ("Not HTTPS, Load Directly in Browser")
-                            let request = URLRequest(url: url)
-                            webView?.load(request)
-                        }
-
-                    }
-                }
+                WebviewHelper.loadContent(url: urlString, base: baseUrlString, webView: webView)
             }
         }
     }

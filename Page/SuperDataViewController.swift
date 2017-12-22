@@ -560,6 +560,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             for section in sections {
                 let items = section.items
                 for item in items {
+                    //print ("prefetch item: \(item.type)/\(item.id)")
                     if item.type == "story" {
                         let apiUrl = APIs.get(item.id, type: item.type)
                         //print ("read story json: \(apiUrl)")
@@ -592,8 +593,15 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         let apiUrl = item.id
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "html") == nil {
                             print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                        }
+                        Download.downloadUrl(apiUrl, to: .cachesDirectory, as: "html")
+                    } else if ["video"].contains(item.type) {
+                        let apiUrl = APIs.getUrl(item.id, type: item.type, isSecure: true, isPartial: false)
+                        //(item.id, type: item.type)
+                        if Download.readFile(apiUrl, for: .cachesDirectory, as: "html") == nil {
+                            print ("Video Prefetch: File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         } else {
-                            print ("File already exists. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                            print ("Video Prefetch: File already downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         }
                         Download.downloadUrl(apiUrl, to: .cachesDirectory, as: "html")
                     }

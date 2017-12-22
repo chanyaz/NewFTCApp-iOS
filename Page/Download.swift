@@ -319,7 +319,7 @@ struct Download {
         let timeStamp = "&t=\(year)\(month)\(day)\(hour)\(minutesTrucated)"
         let versionFromBundle: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         let connector = (urlString.range(of: "?") == nil) ? "?": "&"
-        return "\(urlString)\(connector)v=\(versionFromBundle)\(timeStamp)"
+        return "\(urlString)\(connector)v=\(versionFromBundle)\(timeStamp)&device=\(DeviceInfo.checkDeviceType())"
     }
     
     public static func getQueryStringParameter(url: String, param: String) -> String? {

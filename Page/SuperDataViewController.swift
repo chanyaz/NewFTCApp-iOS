@@ -1224,6 +1224,14 @@ extension SuperDataViewController {
                     //self?.products = products
                     IAPs.shared.products = products
                     
+                    // MARK: - Save product price
+                    var productPrices: [String: String] = [:]
+                    for product in products {
+                        let id = product.productIdentifier
+                        let price = product.price
+                    }
+                    
+                    
                     // MARK: Update privilege from network
                     PrivilegeHelper.updateFromNetwork()
                 }

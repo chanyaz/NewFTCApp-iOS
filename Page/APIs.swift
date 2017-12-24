@@ -87,6 +87,8 @@ struct APIs {
             urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         case "htmlbook":
             urlString = "\(webPageDomains)\(type)/\(id)"
+        case "pagemaker":
+            urlString = "\(domain)m/corp/preview.html?pageid=\(id)&webview=ftcapp"
         case "tag":
             if let encodedTag = id.removingPercentEncoding?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
                 urlString = "\(domain)\(type)/\(encodedTag)?type=json"
@@ -145,6 +147,12 @@ struct APIs {
             }
         }
         return checkServer(newString)
+    }
+    
+    // MARK: Handle non-https links and try to convert them into https links
+    static func handleMaualLink(_ from: String) -> String {
+        
+        return from
     }
     
     // MARK: Check if the server is likely to respond correctly
@@ -443,6 +451,7 @@ struct LinkPattern {
     static let tag = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
     static let archiver = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/archiver/([0-9-]+)"]
     static let channel = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/([0-9-a-zA-Z]+.html)"]
+    static let pagemaker = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/m/corp/preview.html\\?pageid\\=([0-9-a-zA-Z]+)"]
     static let other = ["^(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
     static let image = [
         "^(http[s]*://.*.jpg)$",

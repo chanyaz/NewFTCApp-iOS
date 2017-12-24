@@ -590,7 +590,12 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             )
                         }
                     } else if item.type == "manual" {
-                        let apiUrl = item.id
+                        let apiUrl: String
+                        if let contentId = item.id.matchingStrings(regexes: LinkPattern.pagemaker) {
+                            apiUrl = APIs.get(contentId, type: "pagemaker")
+                        } else {
+                            apiUrl = item.id
+                        }
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "html") == nil {
                             print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         }
@@ -1068,6 +1073,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 audioPlayer.themeColor = themeColor
                 navigationController?.pushViewController(audioPlayer, animated: true)
             }
+        } else if let contentId = selectedItem.id.matchingStrings(regexes: LinkPattern.pagemaker) {
+            openManualPage(contentId, of: "pagemaker", with: selectedItem.headline)
         } else {
             switch selectedItem.type {
             case "membership":

@@ -69,7 +69,8 @@ open class IAPHelper : NSObject  {
         super.init()
         // TODO: - If there's a receipt url, get the receipt
         if let url = IAPHelper.url {
-            self.receipt = NSData(contentsOf: url)
+            receipt = NSData(contentsOf: url)
+            //print ("IAP receipt: \(String(describing: receipt))")
         }
         //print (receipt ?? "no receipt is found")
         SKPaymentQueue.default().add(self)

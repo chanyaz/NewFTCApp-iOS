@@ -245,20 +245,31 @@ extension UIViewController: SFSafariViewControllerDelegate{
     func openDataView(_ id: String?, of type: String) {
         if let id = id,
             let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
-//            let domain = APIs.getUrlStringInLanguage(APIs.htmlDomains)
-//            let finalDomain = APIs.checkServer(domain)
-//            let listAPI = APIs.convert("\(finalDomain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&bodyonly=yes&001")
-//            let urlString = APIs.convert("http://www.ftchinese.com/\(type)/\(id)")
             let listAPI = APIs.getUrl(id, type: type, isSecure: true, isPartial: true)
             let urlString = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
             dataViewController.dataObject = [
                 "title": id,
-                //"api": APIs.get(id, type: type),
                 "listapi": listAPI,
                 "url": urlString,
                 "screenName":"\(type)/\(id)"
             ]
             dataViewController.pageTitle = id
+            self.navigationController?.pushViewController(dataViewController, animated: true)
+        }
+    }
+    
+    func openManualPage(_ id: String?, of type: String, with title: String) {
+        if let id = id,
+            let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+            let listAPI = APIs.getUrl(id, type: type, isSecure: true, isPartial: true)
+            let urlString = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
+            dataViewController.dataObject = [
+                "title": title,
+                "listapi": listAPI,
+                "url": urlString,
+                "screenName":"\(type)/\(id)"
+            ]
+            dataViewController.pageTitle = title
             self.navigationController?.pushViewController(dataViewController, animated: true)
         }
     }

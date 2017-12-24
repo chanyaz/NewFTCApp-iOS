@@ -215,17 +215,25 @@ struct APIs {
         if isPartial == true {
             partialParameter = "?bodyonly=yes"
         } else {
-            partialParameter = "?"
+            partialParameter = "?bodyonly=no"
+        }
+        let hideAdParameter: String
+        if id.range(of: "EditorChoice") != nil {
+            hideAdParameter = "&ad=no"
+        } else {
+            hideAdParameter = ""
         }
         switch type {
         case "video":
-            urlString = "\(webPageDomain)\(type)/\(id)\(partialParameter)&webview=ftcapp&002"
+            urlString = "\(webPageDomain)\(type)/\(id)\(partialParameter)&webview=ftcapp"
         case "radio":
-            urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&001"
+            urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp"
+        case "pagemaker":
+            urlString = "\(webPageDomain)m/corp/preview.html\(partialParameter)&pageid=\(id)&webview=ftcapp\(hideAdParameter)"
         case "interactive", "gym", "special":
             urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&i=3&001"
         case "channel", "tag", "archive", "archiver":
-            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())\(partialParameter)&webview=ftcapp&001"
+            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())\(partialParameter)&webview=ftcapp"
         case "story":
             urlString = "\(publicDomain)/\(type)/\(id)\(partialParameter)&webview=ftcapp&full=y"
         case "photonews", "photo":
@@ -354,6 +362,17 @@ struct APIs {
             finalUrlString = urlString
         }
         return finalUrlString
+    }
+    
+    // MARK: check if the dataObject is a type that should hide ad
+    static func shouldHideAd(_ dataObject: [String: String]) -> Bool {
+        if dataObject["type"] == "htmlbook" {
+            return true
+        }
+        if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
+            return true
+        }
+        return false
     }
     
     // MARK: Add query parameter to the url so that the web pages knows it is opened in our app. Then it'll do things like hide headers.

@@ -225,6 +225,17 @@ struct APIs {
         return finalUrlString
     }
     
+    // MARK: check if the dataObject is a type that should hide ad
+    static func shouldHideAd(_ dataObject: [String: String]) -> Bool {
+        if dataObject["type"] == "htmlbook" {
+            return true
+        }
+        if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
+            return true
+        }
+        return false
+    }
+    
     // MARK: Add query parameter to the url so that the web pages knows it is opened in our app. Then it'll do things like hide headers.
     static func newQueryForWebPage() -> URLQueryItem {
         return URLQueryItem(name: "webview", value: "ftcapp")

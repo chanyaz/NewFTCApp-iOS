@@ -592,7 +592,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     } else if item.type == "manual" {
                         let apiUrl: String
                         if let contentId = item.id.matchingStrings(regexes: LinkPattern.pagemaker) {
-                            apiUrl = APIs.get(contentId, type: "pagemaker")
+                            //apiUrl = APIs.get(contentId, type: "pagemaker")
+                            apiUrl = APIs.getUrl(contentId, type: "pagemaker", isSecure: true, isPartial: true)
                         } else {
                             apiUrl = item.id
                         }
@@ -1157,7 +1158,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     let pageDataRaw = pageData1
                     let pageData: [ContentItem]
                     
-                    if selectedItem.type == "manual" || dataObject["type"] == "htmlbook" {
+                    if selectedItem.type == "manual" || APIs.shouldHideAd(dataObject) == true {
                         // MARK: For manual html pages in ebooks, hide bottom bar and ads
                         let pageData1 = AdLayout.removeAds(in: pageDataRaw)
                         pageData = AdLayout.markAsDownloaded(in: pageData1)

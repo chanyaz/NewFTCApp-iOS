@@ -3,6 +3,8 @@
 import UIKit
 
 class ContentItem{
+    // MARK: Privileges required to view this content item, nil means none
+    var privilegeRequirement: PrivilegeType?
     // MARK: Diffent types of iamges
     var thumbnailImage: UIImage?
     var coverImage: UIImage?

@@ -1155,10 +1155,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             }
                         }
                     }
-                    let pageDataRaw = pageData1
+                    // MARK: Check the membership privilege type for the content
+                    let pageDataRaw = AdLayout.addPrivilegeRequirements(in: pageData1, with: dataObject)
                     let pageData: [ContentItem]
                     
-                    // TODO: Editor's Choice Data Can be Transferred
                     if selectedItem.type == "manual" || APIs.shouldHideAd(dataObject) == true {
                         // MARK: For manual html pages in ebooks, hide bottom bar and ads
                         let pageData1 = AdLayout.removeAds(in: pageDataRaw)

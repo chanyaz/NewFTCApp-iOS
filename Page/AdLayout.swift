@@ -176,6 +176,21 @@ struct AdLayout {
         return newItems
     }
     
+    static func addPrivilegeRequirements(in items: [ContentItem], with dataObject: [String: String]) -> [ContentItem] {
+        let newItems = items
+        for item in newItems {
+            if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
+                item.privilegeRequirement = .EditorsChoice
+                item.hideAd = true
+            }
+            // TODO: Check if premium content is the final type
+            if item.type == "premium" {
+                item.privilegeRequirement = .ExclusiveContent
+            }
+        }
+        return newItems
+    }
+    
     static func markAsDownloaded(in items: [ContentItem]) -> [ContentItem] {
         let newItems = items
         for item in newItems {

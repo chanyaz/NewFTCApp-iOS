@@ -181,11 +181,11 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         
         var audioIcon: UIImage?
         
-        if Color.NavButton.isAudio{
+        if Color.NavButton.isAudio {
             //let audioButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(listen))
             audioIcon = UIImage(named: "Audio")
             audioButton = UIBarButtonItem(image: audioIcon, style: .plain, target: self, action: #selector(listen))
-        }else{
+        } else {
             audioIcon = UIImage(named: "Share")
             audioButton = UIBarButtonItem(image: audioIcon, style: .plain, target: self, action: #selector(actionSheet))
             navigationController?.setNavigationBarHidden(false, animated: false)

@@ -30,19 +30,21 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     public lazy var webView: WKWebView? = nil
     fileprivate let contentAPI = ContentFetch()
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-    
-//    let adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
-//    let adMPU2 = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle2',container:'mpuInStroy'}));</script>"
-    
+
     @IBOutlet weak var containerView: UIView!
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()
         // MARK: Check if the user have the required privilege to view this content
         if let privilege = dataObject?.privilegeRequirement {
-            print ("privilege requirement is \(privilege), should show something if user does not have that privilege")
+            if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
+                print ("privilege requirement \(privilege) not found in \(Privilege.shared)")
+                
+            } else {
+                print ("privilege requirement \(privilege) found in \(Privilege.shared)")
+            }
         }
-        if ContentItemRenderContent.addPersonInfo == false{
+        if ContentItemRenderContent.addPersonInfo == false {
             if dataObject?.type == "ad" {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 if let controller = storyboard.instantiateViewController(withIdentifier: "LaunchScreen") as? LaunchScreen {

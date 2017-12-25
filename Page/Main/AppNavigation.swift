@@ -412,13 +412,13 @@ struct AppNavigation {
                     "Insert Content": "follows",
                     "compactLayout": ""
                 ],
-//                [
-//                    "title": "会员订阅",
-//                    "type": "iap",
-//                    "subtype":"membership",
-//                    "compactLayout": "books",
-//                    "screenName":"myft/membership"
-//                ],
+                [
+                    "title": "会员订阅",
+                    "type": "iap",
+                    "subtype":"membership",
+                    "compactLayout": "books",
+                    "screenName":"myft/membership"
+                ],
                 [
                     "title": "FT电子书",
                     "type": "iap",

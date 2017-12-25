@@ -64,9 +64,14 @@ struct PrivilegeViewHelper {
     public static func insertPrivilegeView(to sourceView: UIView) {
         let privilegeView = PrivilegeView()
         privilegeView.initUI()
-        privilegeView.frame = sourceView.frame
-        privilegeView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        privilegeView.frame = sourceView.frame
+//        privilegeView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         sourceView.addSubview(privilegeView)
+        privilegeView.translatesAutoresizingMaskIntoConstraints = false
+        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
+        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
+        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.right, multiplier: 1, constant: 0))
     }
 }
 

@@ -1146,7 +1146,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     var pageIndexCount = 0
                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
                         for (itemIndex, item) in section.items.enumerated() {
-                            if ["story", "video", "interactive", "photo", "manual"].contains(item.type) {
+                            if ["story", "video", "interactive", "photo", "manual", "premium"].contains(item.type) {
                                 if sectionIndex == indexPath.section && itemIndex == indexPath.row {
                                     currentPageIndex = pageIndexCount
                                 }

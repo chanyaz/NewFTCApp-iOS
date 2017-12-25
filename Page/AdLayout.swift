@@ -186,6 +186,7 @@ struct AdLayout {
             // TODO: Check if premium content is the final type
             if item.type == "premium" {
                 item.privilegeRequirement = .ExclusiveContent
+                item.hideAd = true
             }
         }
         return newItems

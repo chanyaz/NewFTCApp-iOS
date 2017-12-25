@@ -38,6 +38,10 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()
+        // MARK: Check if the user have the required privilege to view this content
+        if let privilege = dataObject?.privilegeRequirement {
+            print ("privilege requirement is \(privilege), should show something if user does not have that privilege")
+        }
         if ContentItemRenderContent.addPersonInfo == false{
             if dataObject?.type == "ad" {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -92,15 +96,17 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 
                 config.userContentController = contentController
                 config.allowsInlineMediaPlayback = true
-                if dataObject?.type == "video" {
-                    if #available(iOS 10.0, *) {
-                        config.mediaTypesRequiringUserActionForPlayback = .init(rawValue: 0)
+                if let dataObjectType = dataObject?.type {
+                    if dataObjectType == "video" {
+                        if #available(iOS 10.0, *) {
+                            config.mediaTypesRequiringUserActionForPlayback = .init(rawValue: 0)
+                        }
+                    } else if dataObjectType == "manual" {
+                        isFullScreen = true
+                    } else if dataObject?.isDownloaded == true && ["story","premium"].contains(dataObjectType) {
+                        // MARK: If you open a story from a downloaded eBook.
+                        isFullScreen = true
                     }
-                } else if dataObject?.type == "manual" {
-                    isFullScreen = true
-                } else if dataObject?.isDownloaded == true && dataObject?.type == "story" {
-                    // MARK: If you open a story from a downloaded eBook.
-                    isFullScreen = true
                 }
                 
                 // MARK: Add the webview as a subview of containerView
@@ -257,9 +263,11 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     }
     
     private func getDetailInfo() {
-        if let id = dataObject?.id, let type = dataObject?.type, type == "story" {
+        if let id = dataObject?.id,
+            let type = dataObject?.type,
+            ["story", "premium"].contains(type) {
             //MARK: if it is a story, get the API
-            let urlString = APIs.get(id, type: "story")
+            let urlString = APIs.get(id, type: type)
             view.addSubview(activityIndicator)
             activityIndicator.center = self.view.center
             activityIndicator.startAnimating()
@@ -323,7 +331,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             let eBody = item.ebody
             // MARK: Whether eBody is empty string
             let type = item.type
-            if type == "story" {
+            if ["story", "premium"].contains(type) {
                 if let eBody = eBody, eBody != "" {
                     English.sharedInstance.has[id] = true
                 } else {
@@ -373,7 +381,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             switch type {
             case "video", "interactive", "photonews", "photo", "gym", "special", "html":
                 renderWebView()
-            case "story":
+            case "story", "premium":
                 if (dataObject?.cbody) != nil {
                     renderWebView()
                 }
@@ -398,7 +406,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     
     private func renderWebView() {
         if let type = dataObject?.type,
-            ["story", "ebook"].contains(type) || subType == .UserComments {
+            ["story", "premium", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
             WebviewHelper.renderStory(type, subType: subType, dataObject: dataObject, webView: webView)
             if subType == .UserComments {

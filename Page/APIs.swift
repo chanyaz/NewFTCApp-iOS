@@ -85,6 +85,9 @@ struct APIs {
         switch type {
         case "story":
             urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
+        case "premium":
+            // TODO: Update the url when premium api is available
+            urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         case "htmlbook":
             urlString = "\(webPageDomains)\(type)/\(id)"
         case "pagemaker":
@@ -96,7 +99,7 @@ struct APIs {
                 urlString = "\(domain)\(type)/\(id)?type=json"
             }
         case "follow":
-            // TODO: Calculate the url string for follow
+            // MARK: Calculate the url string for follow
             let followTypes = Meta.map
             var parameterString = ""
             for followTypeArray in followTypes {

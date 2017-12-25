@@ -65,6 +65,11 @@ struct Color {
         static let showFullScreenAdWhenLaunch = true
     }
     
+    // MARK: The box that blocks content to request user to subscribe
+    struct Subscription {
+        static let boxBackground = (day: "#faeadd", night: "#AAAAAA")
+    }
+    
     struct Theme {
         static func get(_ theme: String) -> (background: String, border: String, title: String, tag: String, lead: String) {
             switch theme {

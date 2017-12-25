@@ -39,7 +39,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         if let privilege = dataObject?.privilegeRequirement {
             if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
                 print ("privilege requirement \(privilege) not found in \(Privilege.shared)")
-                
+                PrivilegeViewHelper.insertPrivilegeView(to: view)
             } else {
                 print ("privilege requirement \(privilege) found in \(Privilege.shared)")
             }
@@ -62,16 +62,9 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     controller.didMove(toParentViewController: self)
                 }
             } else {
-                //            self.navigationController?.isNavigationBarHidden = false
-                //            self.tabBarController?.tabBar.isHidden = false
                 let webViewBG = UIColor(hex: Color.Content.background)
                 view.backgroundColor = webViewBG
-                //            self.edgesForExtendedLayout = []
-                //            self.extendedLayoutIncludesOpaqueBars = false
-                
-                
                 let config = WKWebViewConfiguration()
-                
                 // MARK: Tell the web view what kind of connection the user is currently on
                 let contentController = WKUserContentController();
                 if let type = dataObject?.type {
@@ -88,14 +81,12 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     )
                     contentController.addUserScript(userScript)
                 }
-                
                 // MARK: This is Very Important! Use LeadAvoider so that ARC kicks in correctly.
                 contentController.add(LeakAvoider(delegate:self), name: "alert")
                 contentController.add(LeakAvoider(delegate:self), name: "follow")
                 contentController.add(LeakAvoider(delegate:self), name: "clip")
                 contentController.add(LeakAvoider(delegate:self), name: "listen")
                 contentController.add(LeakAvoider(delegate:self), name: "mySetting")
-                
                 config.userContentController = contentController
                 config.allowsInlineMediaPlayback = true
                 if let dataObjectType = dataObject?.type {
@@ -110,7 +101,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                         isFullScreen = true
                     }
                 }
-                
                 // MARK: Add the webview as a subview of containerView
                 if isFullScreen == false {
                     webView = WKWebView(frame: containerView.bounds, configuration: config)
@@ -121,9 +111,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     view = webView
                     view.clipsToBounds = false
                 }
-                
                 webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                
                 // MARK: set the web view opaque to avoid white screen during loading
                 webView?.isOpaque = false
                 webView?.backgroundColor = webViewBG

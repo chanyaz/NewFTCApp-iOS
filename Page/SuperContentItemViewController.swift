@@ -35,15 +35,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()
-        // MARK: Check if the user have the required privilege to view this content
-        if let privilege = dataObject?.privilegeRequirement {
-            if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
-                print ("privilege requirement \(privilege) not found in \(Privilege.shared)")
-                PrivilegeViewHelper.insertPrivilegeView(to: view)
-            } else {
-                print ("privilege requirement \(privilege) found in \(Privilege.shared)")
-            }
-        }
         if ContentItemRenderContent.addPersonInfo == false {
             if dataObject?.type == "ad" {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -132,6 +123,17 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 }
                 navigationController?.delegate = self
             }
+            
+            // MARK: Check if the user have the required privilege to view this content
+            if let privilege = dataObject?.privilegeRequirement {
+                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
+                    print ("privilege requirement \(privilege) not found in \(Privilege.shared)")
+                    PrivilegeViewHelper.insertPrivilegeView(to: view)
+                } else {
+                    print ("privilege requirement \(privilege) found in \(Privilege.shared)")
+                }
+            }
+            
         }
         
         // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference

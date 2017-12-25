@@ -349,7 +349,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         let id = contentPageData[currentPageIndex].id
         let type = contentPageData[currentPageIndex].type
         //print ("English shared instance is now: \(English.sharedInstance)")
-        if type == "story", let hasEnglish = English.sharedInstance.has[id], hasEnglish == true {
+        if ["story", "premium"].contains(type), let hasEnglish = English.sharedInstance.has[id], hasEnglish == true {
             print ("Language: current view should display English Switch")
             languages?.isHidden = false
             actualLanguageIndex = UserDefaults.standard.integer(forKey: Key.languagePreference)
@@ -433,7 +433,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     fileprivate func checkRightNavButton(_ type: String) {
         // MARK: Update Right Bar Button Item
-        if type == "story" {
+        if ["story", "premium"].contains(type) {
             navigationItem.rightBarButtonItem = audioButton
         } else {
             navigationItem.rightBarButtonItem = nil

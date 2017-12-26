@@ -203,6 +203,9 @@ public struct IAPProducts {
     public static let eBooks = addProductGroup(eBooksData, group: "ebook", groupTitle: "FT电子书")
     public static let memberships = addProductGroup(membershipData, group: "membership", groupTitle: "会员")
     
+    // MARK: - The screen name for membership subscription view
+    public static let membershipScreenName = "myft/membership"
+    
     // MARK: - Combine all types of products into one and request for more information, such as price, from app store
     public static let allProducts = memberships + subscriptions + eBooks
     fileprivate static let productIdentifiers: Set<ProductIdentifier> = getProductIds(products: allProducts)

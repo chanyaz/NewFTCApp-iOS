@@ -128,7 +128,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             if let privilege = dataObject?.privilegeRequirement {
                 if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
                     print ("privilege requirement \(privilege) not found in \(Privilege.shared)")
-                    PrivilegeViewHelper.insertPrivilegeView(to: view)
+                    PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege)
                 } else {
                     print ("privilege requirement \(privilege) found in \(Privilege.shared)")
                 }

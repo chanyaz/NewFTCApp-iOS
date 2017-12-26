@@ -183,6 +183,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 searchBar = UISearchBar()
                 searchBar?.sizeToFit()
                 searchBar?.showsScopeBar = true
+                // MARK: use this so that search bar doesn't enlarge navigation bar height
+                if #available(iOS 11.0, *) {
+                    searchBar?.heightAnchor.constraint(equalToConstant: 44).isActive = true
+                }
                 //navigationItem.titleView = searchBar
                 
                 

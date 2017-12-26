@@ -183,7 +183,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 }
             }
         }
-        
     }
     
     deinit {

@@ -17,10 +17,10 @@ class PrivilegeView: UIView {
     let verticalPadding: CGFloat = 0
     let horizontalMargin: CGFloat = 15
     let boxViewHeight: CGFloat = 240
-    let buttonInsect = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    let buttonInsect = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 8)
     
     let titleText = "成为会员，阅读FT独家内容"
-    let subscriptionTitle = "即刻订阅"
+    let subscriptionTitle = "即刻订阅▶︎"
     
     func initUI() {
         backgroundColor = .clear
@@ -30,6 +30,10 @@ class PrivilegeView: UIView {
     private func addBoxView() {
         addSubview(boxView)
         boxView.backgroundColor = UIColor(hex: Color.Subscription.boxBackground)
+        boxView.layer.shadowColor = UIColor.black.cgColor
+        boxView.layer.shadowOffset = CGSize(width: 0, height: -15)
+        boxView.layer.shadowOpacity = 0.3
+        boxView.layer.shadowRadius = 15.0
         boxView.translatesAutoresizingMaskIntoConstraints = false
         addConstraint(NSLayoutConstraint(item: boxView, attribute: NSLayoutAttribute.bottomMargin, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -verticalPadding))
         addConstraint(NSLayoutConstraint(item: boxView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.left, multiplier: 1, constant: horizontalMargin))
@@ -48,13 +52,15 @@ class PrivilegeView: UIView {
         
         // MARK: Add the subscription button
         boxView.addSubview(subscriptButton)
-        subscriptButton.spacing = 3
+        subscriptButton.spacing = 8
         subscriptButton.translatesAutoresizingMaskIntoConstraints = false
         subscriptButton.setTitle(subscriptionTitle, for: .normal)
         subscriptButton.setBackgroundColor(color: UIColor(hex: Color.Button.subscriptionBackground), forState: .normal)
         subscriptButton.contentEdgeInsets = buttonInsect
         addConstraint(NSLayoutConstraint(item: subscriptButton, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: titleView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: horizontalMargin))
         addConstraint(NSLayoutConstraint(item: subscriptButton, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: boxView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        
+        // MARK: Add the login label
         
         
     }
@@ -64,14 +70,14 @@ struct PrivilegeViewHelper {
     public static func insertPrivilegeView(to sourceView: UIView) {
         let privilegeView = PrivilegeView()
         privilegeView.initUI()
-//        privilegeView.frame = sourceView.frame
-//        privilegeView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        privilegeView.frame = sourceView.frame
+        privilegeView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         sourceView.addSubview(privilegeView)
-        privilegeView.translatesAutoresizingMaskIntoConstraints = false
-        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
-        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
-        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.right, multiplier: 1, constant: 0))
+//        privilegeView.translatesAutoresizingMaskIntoConstraints = false
+//        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
+//        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+//        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
+//        sourceView.addConstraint(NSLayoutConstraint(item: privilegeView, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: sourceView, attribute: NSLayoutAttribute.right, multiplier: 1, constant: 0))
     }
 }
 
@@ -91,8 +97,7 @@ class UIButtonWithSpacing: UIButton {
     
     fileprivate func updateTitleLabel_() {
         let states:[UIControlState] = [.normal, .highlighted, .selected, .disabled]
-        for state in states
-        {
+        for state in states {
             let currentText = super.title(for: state)
             self.setTitle(currentText, for: state)
         }

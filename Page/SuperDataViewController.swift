@@ -187,26 +187,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 if #available(iOS 11.0, *) {
                     searchBar?.heightAnchor.constraint(equalToConstant: 44).isActive = true
                 }
-                //navigationItem.titleView = searchBar
-                
-                
-                
-                // MARK: Use a UIView to contain the Search Bar so that the height won't be larger than needed
-//                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 500))
-//                containerView.autoresizesSubviews = true
-//                containerView.backgroundColor = UIColor.blue
-//                if let searchBar = searchBar {
-//                    containerView.addSubview(searchBar)
-////                    searchBar.translatesAutoresizingMaskIntoConstraints = false
-////                    view.addConstraint(NSLayoutConstraint(item: searchBar, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: containerView, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
-////                    view.addConstraint(NSLayoutConstraint(item: searchBar, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: containerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-////                    view.addConstraint(NSLayoutConstraint(item: searchBar, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: containerView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
-////                    view.addConstraint(NSLayoutConstraint(item: searchBar, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: containerView, attribute: NSLayoutAttribute.right, multiplier: 1, constant: 0))
-//                }
                 navigationItem.titleView = searchBar
-                
-                
-                
                 searchBar?.becomeFirstResponder()
                 searchBar?.delegate = self
                 

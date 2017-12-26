@@ -94,6 +94,20 @@ struct PrivilegeHelper {
             return ("付费功能", "阅读编辑精选需要付费")
         }
     }
+    
+    // MARK: Get all privileges for web
+    static func getPrivilegesForWeb() -> String {
+        var privileges: [String] = []
+        if Privilege.shared.exclusiveContent == true {
+            privileges.append("premium")
+        }
+        if Privilege.shared.editorsChoice == true {
+            privileges.append("EditorChoice")
+        }
+        let jsCode = String(describing: privileges).replacingOccurrences(of: "\"", with: "'")
+        return jsCode
+    }
+    
 }
 
 

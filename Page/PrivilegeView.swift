@@ -17,7 +17,7 @@ class PrivilegeView: UIView {
     
     let verticalPadding: CGFloat = 0
     let horizontalMargin: CGFloat = 15
-    let boxViewHeight: CGFloat = 190
+    let boxViewHeight: CGFloat = 220
     let buttonInsect = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 8)
     
     let titleText = "成为会员，阅读FT独家内容"
@@ -39,7 +39,7 @@ class PrivilegeView: UIView {
         boxView.layer.shadowOpacity = 0.9
         boxView.layer.shadowRadius = 15.0
         boxView.translatesAutoresizingMaskIntoConstraints = false
-        addConstraint(NSLayoutConstraint(item: boxView, attribute: NSLayoutAttribute.bottomMargin, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottomMargin, multiplier: 1, constant: -verticalPadding))
+        addConstraint(NSLayoutConstraint(item: boxView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -verticalPadding))
         addConstraint(NSLayoutConstraint(item: boxView, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0))
         addConstraint(NSLayoutConstraint(item: boxView, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.right, multiplier: 1, constant: 0))
         addConstraint(NSLayoutConstraint(item: boxView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: boxViewHeight))

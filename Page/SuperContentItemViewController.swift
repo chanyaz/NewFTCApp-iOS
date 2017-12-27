@@ -10,8 +10,6 @@ import UIKit
 //import UIKit.NSTextAttachment
 import WebKit
 
-
-
 class SuperContentItemViewController: UIViewController, UINavigationControllerDelegate {
     var dataObject: ContentItem?
     var pageTitle = ""
@@ -19,7 +17,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     var themeColor: String?
     var currentLanguageIndex: Int?
     var action: String?
-    
+    var isLoadingForTheFirstTime = true
+    var isPrivilegeViewOn = false
     // MARK: show in full screen
     var isFullScreen = false
     
@@ -125,13 +124,10 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
             
             // MARK: Check if the user have the required privilege to view this content
-            if let privilege = dataObject?.privilegeRequirement {
-                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
-                    print ("privilege requirement \(privilege) not found in \(Privilege.shared)")
+            if let privilege = dataObject?.privilegeRequirement,
+                !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
                     PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege)
-                } else {
-                    print ("privilege requirement \(privilege) found in \(Privilege.shared)")
-                }
+                    isPrivilegeViewOn = true
             }
             
         }
@@ -161,16 +157,11 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         )
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let id = dataObject?.id, let type = dataObject?.type, let headline = dataObject?.headline {
             let screenName = "/\(DeviceInfo.checkDeviceType())/\(type)/\(id)/\(headline)"
             Track.screenView(screenName)
-            
             if type != "video" {
                 let jsCode = JSCodes.get(type)
                 //print ("View will Appear, about to excute this javascript code: \(jsCode)")
@@ -183,6 +174,16 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 }
             }
         }
+        // MARK: If there's a PrivilegeView in the view, check if it should be removed
+        if isLoadingForTheFirstTime == false,
+            isPrivilegeViewOn == true,
+            let privilege = dataObject?.privilegeRequirement,
+            PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
+            PrivilegeViewHelper.removePrivilegeView(from: view)
+            isPrivilegeViewOn = false
+        }
+        // MARK: At the end of viewWillAppear, set isLoadingForTheFirstTime to false so that when user's are back from another view, the privilege block will be checked again.
+        isLoadingForTheFirstTime = false
     }
     
     deinit {

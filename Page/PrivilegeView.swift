@@ -106,6 +106,14 @@ struct PrivilegeViewHelper {
         sourceView.addSubview(privilegeView)
     }
     
+    public static func removePrivilegeView(from sourceView: UIView) {
+        for subview in sourceView.subviews {
+            if let subview = subview as? PrivilegeView {
+                subview.removeFromSuperview()
+            }
+        }
+    }
+    
     public static func showSubscriptionView(for privilegeRequired: PrivilegeType) -> Bool {
         if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
         let membershipChannelData = AppNavigation.getChannelData(of: IAPProducts.membershipScreenName),

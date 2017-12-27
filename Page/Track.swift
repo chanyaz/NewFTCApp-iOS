@@ -49,13 +49,4 @@ struct Track {
         }
     }
     
-//    private static func customMetric(_ metricValue: String) {
-//        //[tracker set:[GAIFields customMetricForIndex:1] value:metricValue];
-//        for trackingId in GA.trackingIds {
-//            let tracker = GAI.sharedInstance().tracker(withTrackingId: trackingId)
-//            //tracker?.set(1, value: metricValue)
-//            tracker?.set("customMetricForIndex:1", value: metricValue)
-//        }
-//    }
-    
 }

@@ -9,13 +9,12 @@
 import Foundation
 import UIKit
 
-
-
 struct NotificationHelper {
     static func handle(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
         // if launched from a tap on a notification
-        AppLaunch.sharedInstance.from = "notification"
+        
         if let launchOptions = launchOptions {
+            AppLaunch.shared.from = "notification"
             if let userInfo = launchOptions[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary {
                 let action = userInfo["action"] as? String
                 let id = userInfo["id"] as? String
@@ -23,10 +22,6 @@ struct NotificationHelper {
                     return
                 }
                 let title = (aps["alert"] as? NSDictionary)?["title"] as? String
-                print ("notification title is \(String(describing: title))")
-                //                if let rootViewController = self.window?.rootViewController as? ViewController {
-                //                    rootViewController.openNotification(action, id: id, title: title)
-                //                }
                 if UIApplication.topViewController() != nil {
                     // MARK: If the top view controller is already there, for example, when the app is activated from background
                     open(action, id: id, title: title)

@@ -58,6 +58,9 @@ class LaunchScreen: UIViewController {
     
     override func loadView() {
         super.loadView()
+        DispatchQueue.global().async {
+            self.happyUser.launchCount()
+        }
         adOverlayView()
     }
     
@@ -167,7 +170,7 @@ class LaunchScreen: UIViewController {
                 showStartScreenForIAP(overlayViewNormal)
                 //showStartScreenDefault(overlayViewNormal)
                 // MARK: Request user to review only if the app starts without the launch ad
-                if AppLaunch.sharedInstance.from == "notification" {
+                if AppLaunch.shared.from == "notification" {
                     happyUser.canTryRequestReview = false
                 }
                 happyUser.requestReview()
@@ -603,7 +606,7 @@ class LaunchScreen: UIViewController {
             self.removeFromParentViewController()
         }
         
-        AppLaunch.sharedInstance.fullScreenDismissed = true
+        AppLaunch.shared.fullScreenDismissed = true
         if let topViewController = UIApplication.topViewController() {
             topViewController.setNeedsStatusBarAppearanceUpdate()
         }
@@ -635,7 +638,7 @@ class PlayerView: UIView {
 
 
 struct AppLaunch {
-    static var sharedInstance = AppLaunch()
+    static var shared = AppLaunch()
     var launched = false
     var adShowed = false
     var fullScreenDismissed = false

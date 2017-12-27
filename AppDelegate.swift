@@ -46,13 +46,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WXApi.registerApp(WeChat.appId)
         
         // MARK: Show the Launch Screen only when there is tabbar controller
-        if AppLaunch.sharedInstance.launched == false {
+        if AppLaunch.shared.launched == false {
             if let rootViewController = window?.rootViewController as? UITabBarController,
                 Color.Ad.showFullScreenAdWhenLaunch == true {
                 rootViewController.showLaunchScreen()
-                AppLaunch.sharedInstance.launched = true
+                AppLaunch.shared.launched = true
             } else {
-                AppLaunch.sharedInstance.fullScreenDismissed = true
+                AppLaunch.shared.fullScreenDismissed = true
             }
         }
         

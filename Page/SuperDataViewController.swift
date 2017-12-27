@@ -27,7 +27,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     var withPrivilege: PrivilegeType?
     var privilegeDescriptionBody: String?
     var isLoadingForTheFirstTime = true
-
+    
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
     
@@ -52,7 +52,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     public lazy var webView: WKWebView? = nil
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -426,12 +425,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print ("view will appear called")
         isVisible = true
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
         }
-        //updateWebviewTraffic()
         filterDataWithAudioUrl()
         // MARK: In setting page, you might need to update UI to reflected change in preference
         if let type = dataObject["type"],
@@ -439,14 +436,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             loadSettings()
         }
         
-        // MARK: - Update privilege locking when coming back from another view
+        // MARK: - Update privilege lock class in HTML when coming back from another view. If you do this with notification, you won't be able to access the correct value in the class.
         if isLoadingForTheFirstTime == false,
-            let webView = webView {
+            webView != nil {
             let jsCode = "window.gPrivileges=\(PrivilegeHelper.getPrivilegesForWeb());updateHeadlineLocks();"
-            webView.evaluateJavaScript(jsCode) { (result, error) in
-                if result != nil {
-                    print (result ?? "unprintable JS result")
-                }
+            webView?.evaluateJavaScript(jsCode) { (result, error) in
             }
         }
         isLoadingForTheFirstTime = false
@@ -491,7 +485,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     deinit {
-        
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: nil)
         
@@ -1297,9 +1290,9 @@ extension SuperDataViewController {
                         // MARK: If it's a buy or restore action, mark the item as success
                         newStatus = "success"
                     }
-                    DispatchQueue.main.async(execute: {
+                    DispatchQueue.main.async {
                         self.switchUI(newStatus)
-                    })
+                    }
                 }
             } else if let errorObject = notification.object as? [String : String?] {
                 // MARK: - When there is an error
@@ -1337,6 +1330,7 @@ extension SuperDataViewController {
         }
     }
     
+
     public func switchUI(_ actionType: String) {
         loadProducts()
     }
@@ -1365,7 +1359,7 @@ extension SuperDataViewController {
             
         }
     }
-
+    
 }
 
 extension SuperDataViewController : UICollectionViewDelegateFlowLayout {

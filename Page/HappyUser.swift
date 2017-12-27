@@ -12,7 +12,7 @@ import StoreKit
 public class HappyUser {
     private let versionKey = "current version"
     private let launchCountKey = "launch count"
-    private let requestReviewFrequency = 10
+    private let requestReviewFrequency = 8
     private let ratePromptKey = "rate prompted"
     private var shouldTrackRequestReview = false
     public var didRequestReview = false
@@ -30,7 +30,7 @@ public class HappyUser {
             currentLaunchCount = 1
         }
         UserDefaults.standard.set(currentLaunchCount, forKey: launchCountKey)
-        //print ("current version is \(versionFromBundle) and launch count is \(currentLaunchCount)")
+        print ("current version is \(versionFromBundle) and launch count is \(currentLaunchCount)")
         
         
         //        if let bundle = Bundle.main.bundleIdentifier {
@@ -44,7 +44,9 @@ public class HappyUser {
         let currentLaunchCount: Int = UserDefaults.standard.integer(forKey: launchCountKey)
         let ratePrompted: Bool = UserDefaults.standard.bool(forKey: ratePromptKey)
         // MARK: check for situations where you don't want to trigger request review
-        if ratePrompted != true && currentLaunchCount >= requestReviewFrequency && canTryRequestReview == true {
+        if ratePrompted != true,
+            currentLaunchCount >= requestReviewFrequency,
+            canTryRequestReview == true {
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
                 UserDefaults.standard.set(true, forKey: ratePromptKey)

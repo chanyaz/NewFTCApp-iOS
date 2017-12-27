@@ -45,7 +45,7 @@ class CustomNavigationController: UINavigationController, UINavigationController
     // MARK: - This has to be here, otherwise it won't work on iPhone X
     // MARK: - https://forums.developer.apple.com/thread/88962
     override var prefersStatusBarHidden: Bool {
-        if AppLaunch.sharedInstance.fullScreenDismissed == false {
+        if AppLaunch.shared.fullScreenDismissed == false {
             return true
         } else {
             return false

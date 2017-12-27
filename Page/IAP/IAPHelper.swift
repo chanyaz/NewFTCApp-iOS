@@ -191,16 +191,23 @@ extension IAPHelper: SKPaymentTransactionObserver {
     private func purchaseSuccess(transaction: SKPaymentTransaction) {
         let actionType = "buy success"
         let productId = transaction.payment.productIdentifier
+        // MARK: 1. First save the purchase information to device
         savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)
-        deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
+        // MARK: 2. Use the saved information to update Privileges
         PrivilegeHelper.updateFromDevice()
+        // MARK: 3. Send notification to related objects such the view controllers and iap views so that UI can be updated
+        deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
         SKPaymentQueue.default().finishTransaction(transaction)
     }
     
     private func restore(transaction: SKPaymentTransaction) {
         let actionType = "restore success"
         guard let productId = transaction.original?.payment.productIdentifier else { return }
+        // MARK: 1. First save the purchase information to device
         savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)
+        // MARK: 2. Use the saved information to update Privileges
+        PrivilegeHelper.updateFromDevice()
+        // MARK: 3. Send notification to related objects such the view controllers and iap views so that UI can be updated
         deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
         SKPaymentQueue.default().finishTransaction(transaction)
     }

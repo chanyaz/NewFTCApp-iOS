@@ -27,7 +27,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     var withPrivilege: PrivilegeType?
     var privilegeDescriptionBody: String?
     var isLoadingForTheFirstTime = true
-    var isPrivilegeViewOn = false
 
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
@@ -450,6 +449,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 }
             }
         }
+        isLoadingForTheFirstTime = false
     }
     
     

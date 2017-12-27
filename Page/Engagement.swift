@@ -61,7 +61,7 @@ struct Engagement {
         }
     }
     
-    static func screen(_ name: String) {
+    static func screen(_ name: String) -> (score: Double, frequency: Int, recency: Int, volumn: Int)  {
         check()
         let timeStamp = Date().timeIntervalSince1970
         let log: [String: Any] = [
@@ -72,7 +72,8 @@ struct Engagement {
         EngagementData.shared.log.append(log)
         save()
         let engagementScore = score()
-        print ("Log is now: \(EngagementData.shared.log) and engagement socre is \(engagementScore)")
+        print ("Log is now: \(EngagementData.shared.log) and engagement score is \(engagementScore)")
+        return engagementScore
     }
     
     static func score() -> (score: Double, frequency: Int, recency: Int, volumn: Int) {

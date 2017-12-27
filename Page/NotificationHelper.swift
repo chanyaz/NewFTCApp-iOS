@@ -102,7 +102,6 @@ struct NotificationHelper {
             default:
                 break
             }
-            
         }
     }
 }

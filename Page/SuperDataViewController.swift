@@ -26,6 +26,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     var adchId = AdLayout.homeAdChId
     var withPrivilege: PrivilegeType?
     var privilegeDescriptionBody: String?
+    var isLoadingForTheFirstTime = true
+    var isPrivilegeViewOn = false
+
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
     
@@ -435,6 +438,17 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         if let type = dataObject["type"],
             type == "setting" {
             loadSettings()
+        }
+        
+        // MARK: - Update privilege locking when coming back from another view
+        if isLoadingForTheFirstTime == false,
+            let webView = webView {
+            let jsCode = "window.gPrivileges=\(PrivilegeHelper.getPrivilegesForWeb());updateHeadlineLocks();"
+            webView.evaluateJavaScript(jsCode) { (result, error) in
+                if result != nil {
+                    print (result ?? "unprintable JS result")
+                }
+            }
         }
     }
     

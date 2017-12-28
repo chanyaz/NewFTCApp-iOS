@@ -39,8 +39,8 @@ open class IAPHelper : NSObject  {
     fileprivate var productsRequest: SKProductsRequest?
     fileprivate var productsRequestCompletionHandler: ProductsRequestCompletionHandler?
     static let IAPHelperPurchaseNotification = "IAPHelperPurchaseNotification"
-    fileprivate static let url = Bundle.main.appStoreReceiptURL
-    fileprivate lazy var receipt: NSData? = nil
+    //fileprivate static let url = Bundle.main.appStoreReceiptURL
+    //fileprivate lazy var receipt: NSData? = nil
     public init(productIds: Set<ProductIdentifier>) {
         productIdentifiers = productIds
         for productIdentifier in productIds {
@@ -68,10 +68,15 @@ open class IAPHelper : NSObject  {
         }
         super.init()
         // TODO: - If there's a receipt url, get the receipt
-        if let url = IAPHelper.url {
-            receipt = NSData(contentsOf: url)
-            //print ("IAP receipt: \(String(describing: receipt))")
+//        if let url = IAPHelper.url {
+//            receipt = NSData(contentsOf: url)
+//            //print ("IAP receipt: \(String(describing: receipt))")
+//        }
+        // MARK: - Use globally thread as it will not not change UI directly
+        DispatchQueue.global().async {
+            self.validateReceipt()
         }
+        
         //print (receipt ?? "no receipt is found")
         SKPaymentQueue.default().add(self)
     }
@@ -80,6 +85,43 @@ open class IAPHelper : NSObject  {
 // MARK: - StoreKit API
 
 extension IAPHelper {
+    // MARK: - For now, let's just monitor 
+    func validateReceipt() {
+        if let receiptUrl = Bundle.main.appStoreReceiptURL {
+            let receipt = NSData(contentsOf: receiptUrl)
+            let serverUrlString = IAPProducts.serverUrlString
+            if let receiptdata = receipt?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) as NSString?,
+                let serverUrl = URL(string: serverUrlString) {
+                let request = NSMutableURLRequest(url: serverUrl)
+                let session = URLSession.shared
+                request.httpMethod = "POST"
+                request.httpBody = receiptdata.data(using: String.Encoding.ascii.rawValue)
+                
+                let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
+                    let json = try? JSONSerialization.jsonObject(with: data!, options: .mutableLeaves) as? NSDictionary
+                    if(error != nil) {
+                        print(error?.localizedDescription as Any)
+                        let jsonStr = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                        print("Error could not parse JSON: '\(String(describing: jsonStr))'")
+                    } else {
+                        if let parseJSON = json {
+                            print("Receipt \(String(describing: parseJSON))")
+                        } else {
+                            if let data = data {
+                                let jsonStr = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                                print("Receipt Error: \(String(describing: jsonStr))")
+                            } else {
+                                print ("Receipt error: data is nil")
+                            }
+                        }
+                    }
+                })
+                task.resume()
+            }
+        }
+    }
+    
+    
     // MARK: Stage 1:  Retrieving Product Information
     // MARK: Request products from app store by passing product identifiers. Note that Apple doesn't allow you to request products if you don't already know the product ids.
     public func requestProducts(completionHandler: @escaping ProductsRequestCompletionHandler) {
@@ -121,6 +163,9 @@ extension IAPHelper {
         print ("restore purchase transaction")
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
+    
+    
+    
 }
 
 // MARK: - Stage 1:  Retrieving Product Information: Implement the SKProductsRequestDelegate protocol to handle product requests

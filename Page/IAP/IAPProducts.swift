@@ -189,7 +189,7 @@ public struct IAPProducts {
     fileprivate static let productIdentifiers: Set<ProductIdentifier> = getProductIds(products: allProducts)
     public static let store = IAPHelper(productIds: productIdentifiers)
     
-    public static let serverUrlString = "http://www.brianjcoleman.com/code/verifyReceipt.php"
+    public static let serverUrlString = "https://api.ftmailbox.com/ios-receipt-validation.php"
     
     fileprivate static func addProductGroup(_ products:  [Dictionary<String, Any>], group: String, groupTitle: String) -> [Dictionary<String, Any>]{
         var newProducts:  [Dictionary<String, Any>] = []

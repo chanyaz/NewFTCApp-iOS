@@ -176,7 +176,8 @@ struct WebviewHelper {
                             .replacingOccurrences(of: "{font-class}", with: fontClass)
                             .replacingOccurrences(of: "{comments-id}", with: commentsId)
                             .replacingOccurrences(of: "{night-class}", with: nightClass)
-                        webView?.loadHTMLString(storyHTML, baseURL:url)
+                        let storyHTMLCheckingVideo = JSCodes.getInlineVideo(storyHTML)
+                        webView?.loadHTMLString(storyHTMLCheckingVideo, baseURL:url)
                     } catch {
                         webView?.load(request)
                     }

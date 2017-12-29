@@ -137,7 +137,8 @@ extension IAPHelper {
             do {
                 let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
                 let receiptString = receiptData.base64EncodedString(options: [])
-                let dict = ["receipt-data" : receiptString, "password" : "a3af21ddf07a45f39e699172856200c6"] as [String : String]
+                //let dict = ["receipt-data" : receiptString, "password" : "a3af21ddf07a45f39e699172856200c6"] as [String : String]
+                let dict = ["receipt-data" : receiptString] as [String : String]
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .init(rawValue: 0))
                     if let sandboxURL = Foundation.URL(string:server) {
@@ -146,17 +147,16 @@ extension IAPHelper {
                         request.httpBody = jsonData
                         let session = URLSession(configuration: URLSessionConfiguration.default)
                         let task = session.dataTask(with: request) { data, response, error in
-                            print("receipt validation from func receiptValidation response: \(String(describing: response))")
-                            if let data = data {
-                                print("receipt validation from func receiptValidation. Body as: \(String(describing: String(data: data, encoding: .utf8))) ")
-                            }
+                            //print("receipt validation from func receiptValidation response: \(String(describing: response))")
+//                            if let data = data {
+//                                print("receipt validation from func receiptValidation. Body as: \(String(describing: String(data: data, encoding: .utf8))) ")
+//                            }
                             if let receivedData = data,
                                 let httpResponse = response as? HTTPURLResponse,
                                 error == nil,
                                 httpResponse.statusCode == 200 {
                                 do {
                                     if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
-
                                         // MARK: - parse and verify the required informatin in the jsonResponse
                                         print ("receipt validation from func receiptValidation success: \(jsonResponse)")
                                     } else {

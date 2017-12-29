@@ -85,7 +85,7 @@ open class IAPHelper : NSObject  {
 // MARK: - StoreKit API
 
 extension IAPHelper {
-    // MARK: - For now, let's just monitor 
+    // MARK: - For now, let's just monitor
     func validateReceipt() {
         if let receiptUrl = Bundle.main.appStoreReceiptURL {
             let receipt = NSData(contentsOf: receiptUrl)

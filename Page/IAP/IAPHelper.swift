@@ -47,7 +47,7 @@ open class IAPHelper : NSObject  {
             // MARK: - Saving the purchase information when you init the app again. If the user is not online or logged into apple account, he/she will not be able to use or see the products he already bought last time. So the user defaults need to be updated in the view controller event listeners when a purchase or download is successful. This is useful if the user switch to another device.
             // TODO: - User defaults may not be the best place to store information about purchased products in a real application. An owner of a jailbroken device could easily access your app’s UserDefaults plist, and modify it to ‘unlock’ purchases. If this sort of thing concerns you, then it’s worth checking out Apple’s documentation on Validating App Store Receipts – this allows you to verify that a user has made a particular purchase.
             let purchased = UserDefaults.standard.bool(forKey: productIdentifier)
-            print ("\(productIdentifier) is set to \(purchased)")
+            //print ("\(productIdentifier) is set to \(purchased)")
             
             let downloaded = { () -> Bool in
                 if Download.checkFilePath(fileUrl: productIdentifier, for: .documentDirectory) == nil {
@@ -58,12 +58,12 @@ open class IAPHelper : NSObject  {
             }()
             if downloaded {
                 purchasedProductIdentifiers.insert(productIdentifier)
-                print("IAP Helper: Previously downloaded: \(productIdentifier)")
+                //print("IAP Helper: Previously downloaded: \(productIdentifier)")
             } else if purchased {
                 purchasedProductIdentifiers.insert(productIdentifier)
-                print("IAP Helper: Previously purchased: \(productIdentifier)")
+                //print("IAP Helper: Previously purchased: \(productIdentifier)")
             } else {
-                print("IAP Helper: Not purchased: \(productIdentifier)")
+                //print("IAP Helper: Not purchased: \(productIdentifier)")
             }
         }
         super.init()
@@ -74,9 +74,9 @@ open class IAPHelper : NSObject  {
         //        }
         // MARK: - Use globally thread as it will not not change UI directly
         DispatchQueue.global().async {
-            self.validateReceipt(with: IAPProducts.serverUrlString)
+            //self.validateReceipt(with: IAPProducts.serverUrlString)
             //self.validateReceipt(with: "https://sandbox.itunes.apple.com/verifyReceipt")
-            //self.receiptValidation(with: IAPProducts.serverUrlString)
+            self.receiptValidation(with: IAPProducts.serverUrlString)
             //self.receiptValidation(with: "https://sandbox.itunes.apple.com/verifyReceipt")
         }
         
@@ -131,55 +131,56 @@ extension IAPHelper {
         }
     }
     
-//    func receiptValidation(with server: String) {
-//        if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
-//            FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
-//            do {
-//                let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
-//                let receiptString = receiptData.base64EncodedString(options: [])
-//                let dict = ["receipt-data" : receiptString, "password" : "a3af21ddf07a45f39e699172856200c6"] as [String : String]
-//                do {
-//                    let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
-//                    if let sandboxURL = Foundation.URL(string:server) {
-//                        var request = URLRequest(url: sandboxURL)
-//                        print ("print data start: ")
-//                        print (jsonData)
-//                        print ("print data end")
-//                        request.httpMethod = "POST"
-//                        request.httpBody = jsonData
-//                        let session = URLSession(configuration: URLSessionConfiguration.default)
-//                        let task = session.dataTask(with: request) { data, response, error in
-//                            if let receivedData = data,
-//                                let httpResponse = response as? HTTPURLResponse,
-//                                error == nil,
-//                                httpResponse.statusCode == 200 {
-//                                do {
-//                                    if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
-//
-//                                        // MARK: - parse and verify the required informatin in the jsonResponse
-//                                        print ("receipt validation from func receiptValidation: \(jsonResponse)")
-//                                    } else {
-//                                        print("receipt validation from func receiptValidation: Failed to cast serialized JSON to Dictionary<String, AnyObject>")
-//                                    }
-//                                } catch {
-//                                    print("receipt validation from func receiptValidation: Couldn't serialize JSON with error: " + error.localizedDescription)
-//                                }
-//                            }
-//                        }
-//                        task.resume()
-//                    } else {
-//                        print("receipt validation from func receiptValidation: Couldn't convert string into URL. Check for special characters.")
-//                    }
-//                }
-//                catch {
-//                    print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
-//                }
-//            }
-//            catch {
-//                print("Couldn't read receipt data with error: " + error.localizedDescription)
-//            }
-//        }
-//    }
+    func receiptValidation(with server: String) {
+        if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
+            FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
+            do {
+                let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
+                let receiptString = receiptData.base64EncodedString(options: [])
+                let dict = ["receipt-data" : receiptString, "password" : "a3af21ddf07a45f39e699172856200c6"] as [String : String]
+                do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .init(rawValue: 0))
+                    if let sandboxURL = Foundation.URL(string:server) {
+                        var request = URLRequest(url: sandboxURL)
+                        request.httpMethod = "POST"
+                        request.httpBody = jsonData
+                        let session = URLSession(configuration: URLSessionConfiguration.default)
+                        let task = session.dataTask(with: request) { data, response, error in
+                            print("receipt validation from func receiptValidation response: \(String(describing: response))")
+                            if let data = data {
+                                print("receipt validation from func receiptValidation. Body as: \(String(describing: String(data: data, encoding: .utf8))) ")
+                            }
+                            if let receivedData = data,
+                                let httpResponse = response as? HTTPURLResponse,
+                                error == nil,
+                                httpResponse.statusCode == 200 {
+                                do {
+                                    if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
+
+                                        // MARK: - parse and verify the required informatin in the jsonResponse
+                                        print ("receipt validation from func receiptValidation success: \(jsonResponse)")
+                                    } else {
+                                        print("receipt validation from func receiptValidation: Failed to cast serialized JSON to Dictionary<String, AnyObject>. The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")
+                                    }
+                                } catch {
+                                    print("receipt validation from func receiptValidation: Couldn't serialize JSON with error: \(error.localizedDescription). The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")
+                                }
+                            }
+                        }
+                        task.resume()
+                    } else {
+                        print("receipt validation from func receiptValidation: Couldn't convert string into URL. Check for special characters.")
+                    }
+                }
+                catch {
+                    print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
+                }
+            }
+            catch {
+                print("Couldn't read receipt data with error: " + error.localizedDescription)
+            }
+        }
+    }
     
     
     // MARK: Stage 1:  Retrieving Product Information

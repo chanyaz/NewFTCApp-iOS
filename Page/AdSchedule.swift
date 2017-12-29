@@ -516,7 +516,7 @@ class AdSchedule {
                     file.write(data)
                     //print("JSON data was written to the file successfully!")
                 } catch let error as NSError {
-                    print("Couldn't write to file: \(error.localizedDescription)")
+                    //print("Couldn't write to file: \(error.localizedDescription)")
                 }
             }
         }

@@ -72,7 +72,7 @@ struct Engagement {
         EngagementData.shared.log.append(log)
         save()
         let engagementScore = score()
-        print ("Log is now: \(EngagementData.shared.log) and engagement score is \(engagementScore)")
+        //print ("Log is now: \(EngagementData.shared.log) and engagement score is \(engagementScore)")
         return engagementScore
     }
     
@@ -115,7 +115,7 @@ struct Engagement {
             "label": label
         ]
         FootPrint.shared.log.append(log)
-        print ("Log is now: \(FootPrint.shared.log)")
+        //print ("Log is now: \(FootPrint.shared.log)")
     }
     
     static func catchError(_ description: String, withFatal: NSNumber) {
@@ -128,7 +128,7 @@ struct Engagement {
             "withFatal": withFatal
         ]
         FootPrint.shared.log.append(log)
-        print ("Log is now: \(FootPrint.shared.log)")
+        //print ("Log is now: \(FootPrint.shared.log)")
     }
     
 }

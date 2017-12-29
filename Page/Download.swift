@@ -63,9 +63,9 @@ struct Download {
                     do {
                         let file = try FileHandle(forWritingTo: filePath)
                         file.write(data)
-                        print("write to file: \(realFileName) successfully!")
+                        //print("write to file: \(realFileName) successfully!")
                     } catch let error as NSError {
-                        print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
+                        //print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
                     }
                 }
             }
@@ -402,7 +402,7 @@ struct Download {
                     file.write(data)
                     print("again write data to file : \(data) successfully!")
                 } catch let error as NSError {
-                    print("Couldn't again write to file: \(error.localizedDescription)")
+                    //print("Couldn't again write to file: \(error.localizedDescription)")
                 }
             }else{
                 let created = fileManager.createFile(atPath: filePath.path, contents: nil, attributes: nil)

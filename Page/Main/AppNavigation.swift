@@ -38,7 +38,7 @@ struct AppNavigation {
                     "title": "中国",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",
                     "listapi":"https://api.ftmailbox.com/channel/china.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/china.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/china.html?webview=ftcapp",
                     "regularLayout": "",
                     "screenName":"homepage/china",
                     "coverTheme":"Wheat"
@@ -67,7 +67,7 @@ struct AppNavigation {
                     "title": "全球",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/world.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/world.html?webview=ftcapp&bodyonly=yes&002",
-                    "url":"http://www.ftchinese.com/channel/world.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/world.html?webview=ftcapp",
                     "screenName":"homepage/world",
                     "coverTheme":"Pink"
                 ],
@@ -75,7 +75,7 @@ struct AppNavigation {
                     "title": "观点",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/opinion.html?webview=ftcapp&bodyonly=yes&ad=no",
-                    "url":"http://www.ftchinese.com/channel/opinion.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/opinion.html?webview=ftcapp",
                     "screenName":"homepage/opinion",
                     "coverTheme": "Opinion"
                 ],
@@ -83,7 +83,7 @@ struct AppNavigation {
                     "title": "专栏",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/column.html?webview=ftcapp&bodyonly=yes&ad=no",
-                    "url":"http://www.ftchinese.com/channel/column.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/column.html?webview=ftcapp",
                     "screenName":"homepage/column",
                     "coverTheme": "Opinion"
                 ],
@@ -91,7 +91,7 @@ struct AppNavigation {
                     "title": "金融市场",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/markets.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/markets.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/markets.html?webview=ftcapp",
                     "screenName":"homepage/markets",
                     "coverTheme": "OutOfBox"
                 ],
@@ -99,7 +99,7 @@ struct AppNavigation {
                     "title": "商业",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/markets.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/markets.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/markets.html?webview=ftcapp",
                     "screenName":"homepage/business",
                     "coverTheme": "OutOfBox"
                 ],
@@ -107,7 +107,7 @@ struct AppNavigation {
                     "title": "科技",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/technology.html?webview=ftcapp&bodyonly=yes&001",
-                    "url":"http://www.ftchinese.com/channel/technology.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/technology.html?webview=ftcapp",
                     "screenName":"homepage/technology",
                     "coverTheme": "OutOfBox"
                 ],
@@ -115,7 +115,7 @@ struct AppNavigation {
                     "title": "管理",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/management.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/management.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/management.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/management.html?webview=ftcapp",
                     "screenName":"homepage/management",
                     "coverTheme": "Blue"
                 ],
@@ -132,7 +132,7 @@ struct AppNavigation {
                     "title": "生活时尚",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/lifestyle.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/lifestyle.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/lifestyle.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/lifestyle.html?webview=ftcapp",
                     "screenName":"homepage/lifestyle",
                     "compactLayout": "OutOfBox",
                     "coverTheme": "OutOfBox-LifeStyle"
@@ -142,7 +142,7 @@ struct AppNavigation {
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/column.html?type=json",
                     "listapi":"https://api.ftmailbox.com/channel/special.html?webview=ftcapp&bodyonly=yes&ad=no&001",
                     // MARK: Use the keeplinks parameter to tell web view that there's no need to replace the links in this page
-                    "url":"http://www.ftchinese.com/channel/special.html?newad=yes&ad=no&keeplinks=yes",
+                    "url":"http://www.ftchinese.com/channel/special.html?webview=ftcapp&ad=no&keeplinks=yes",
                     "screenName":"homepage/special",
                     "coverTheme": "Opinion"
                 ],
@@ -150,7 +150,7 @@ struct AppNavigation {
                     "title": "热门文章",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=hot",
                     "listapi":"https://api.ftmailbox.com/channel/weekly.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/weekly.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/weekly.html?webview=ftcapp",
                     "compactLayout": "OutOfBox",
                     "regularLayout": "",
                     "coverTheme": "OutOfBox",
@@ -160,7 +160,7 @@ struct AppNavigation {
                     "title": "数据新闻",
                     //"api":"https://api.ftmailbox.com/channel/json.html?pageid=datanews",
                     "listapi":"https://api.ftmailbox.com/channel/datanews.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/datanews.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/datanews.html?webview=ftcapp",
                     "screenName":"homepage/datanews",
                     "compactLayout": "OutOfBox",
                     "coverTheme": "OutOfBox"
@@ -255,6 +255,15 @@ struct AppNavigation {
             "isNavLightContent": true,
             "Channels": [
                 [
+                    "title": "商学院观察",
+                    //"api":"https://api.ftmailbox.com/channel/json.html?pageid=mbastory",
+                    "listapi": "https://api.ftmailbox.com/m/corp/preview.html?pageid=mbastory&webview=ftcapp&bodyonly=yes",
+                    "url":"http://www.ftchinese.com/channel/mba.html?webview=ftcapp",
+                    "screenName":"ftacademy/mbastory",
+                    "compactLayout": "OutOfBox",
+                    "coverTheme": "OutOfBox"
+                ],
+                [
                     "title": "热点观察",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=hotcourse",
                     "listapi": "https://api.ftmailbox.com/m/corp/preview.html?pageid=hotcourse&webview=ftcapp&bodyonly=yes",
@@ -276,17 +285,8 @@ struct AppNavigation {
                     "title": "互动小测",
                     //"api":"https://api.ftmailbox.com/channel/json.html?pageid=quizplus",
                     "listapi": "https://api.ftmailbox.com/m/corp/preview.html?pageid=quizplus&webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/mba.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/mba.html?webview=ftcapp",
                     "screenName":"ftacademy/quiz",
-                    "compactLayout": "OutOfBox",
-                    "coverTheme": "OutOfBox"
-                ],
-                [
-                    "title": "商学院观察",
-                    //"api":"https://api.ftmailbox.com/channel/json.html?pageid=mbastory",
-                    "listapi": "https://api.ftmailbox.com/m/corp/preview.html?pageid=mbastory&webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/mba.html?newad=yes",
-                    "screenName":"ftacademy/mbastory",
                     "compactLayout": "OutOfBox",
                     "coverTheme": "OutOfBox"
                 ],
@@ -294,7 +294,7 @@ struct AppNavigation {
                     "title": "深度阅读",
                     //"api":"https://api.ftmailbox.com/channel/json.html?pageid=mbaread",
                     "listapi": "https://api.ftmailbox.com/m/corp/preview.html?pageid=mbaread&webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/mba.html?newad=yes",
+                    "url":"http://www.ftchinese.com/channel/mba.html?webview=ftcapp",
                     "screenName":"ftacademy/read",
                     "compactLayout": "OutOfBox",
                     "coverTheme": "OutOfBox"
@@ -412,13 +412,13 @@ struct AppNavigation {
                     "Insert Content": "follows",
                     "compactLayout": ""
                 ],
-                [
-                    "title": "会员订阅",
-                    "type": "iap",
-                    "subtype":"membership",
-                    "compactLayout": "books",
-                    "screenName":"myft/membership"
-                ],
+//                [
+//                    "title": "会员订阅",
+//                    "type": "iap",
+//                    "subtype":"membership",
+//                    "compactLayout": "books",
+//                    "screenName":"myft/membership"
+//                ],
                 [
                     "title": "FT电子书",
                     "type": "iap",

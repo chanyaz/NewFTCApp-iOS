@@ -58,13 +58,13 @@ struct Download {
                     let realFileName = getFileNameFromUrlString(filename, as: fileExtension)
                     let filePath = directoryPath.appendingPathComponent(realFileName)
                     let fileManager = FileManager.default
-                    let created = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
+                    _ = fileManager.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
                     // MARK: - Write that JSON to the file created earlier
                     do {
                         let file = try FileHandle(forWritingTo: filePath)
                         file.write(data)
                         //print("write to file: \(realFileName) successfully!")
-                    } catch let error as NSError {
+                    } catch _ as NSError {
                         //print("Couldn't write to file: \(error.localizedDescription). created: \(created)")
                     }
                 }
@@ -401,7 +401,7 @@ struct Download {
                     let file = try FileHandle(forWritingTo: filePath)
                     file.write(data)
                     print("again write data to file : \(data) successfully!")
-                } catch let error as NSError {
+                } catch _ as NSError {
                     //print("Couldn't again write to file: \(error.localizedDescription)")
                 }
             }else{

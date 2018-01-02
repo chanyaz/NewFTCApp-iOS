@@ -84,6 +84,9 @@ class PrivilegeView: UIView {
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         addConstraint(NSLayoutConstraint(item: loginLabel, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: subscriptButton, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: horizontalMargin))
         addConstraint(NSLayoutConstraint(item: loginLabel, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: boxView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+        let tapGestureRecognizerForLogin = UITapGestureRecognizer(target:self, action:#selector(showAccountPage(_:)))
+        loginLabel.isUserInteractionEnabled = true
+        loginLabel.addGestureRecognizer(tapGestureRecognizerForLogin)
         
     }
 
@@ -92,6 +95,23 @@ class PrivilegeView: UIView {
             let _ = PrivilegeViewHelper.showSubscriptionView(for: privilegeRequired)
         }
     }
+    
+    
+    @objc open func showAccountPage(_ sender: UITapGestureRecognizer) {
+            if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+                dataViewController.dataObject = [
+                    "title": "账户",
+                    "type": "account",
+                    "url":"http://app003.ftmailbox.com/iphone-2014.html",
+                    "screenName":"myft/account"
+                ]
+                dataViewController.pageTitle = "登入"
+                if let topViewController = UIApplication.topViewController() {
+                    topViewController.navigationController?.pushViewController(dataViewController, animated: true)
+                }
+            }
+    }
+
     
 }
 

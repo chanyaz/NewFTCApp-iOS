@@ -43,7 +43,8 @@ If a large chunk of your audience is in China, you should use WeChat's SDK rathe
 ### Always Validate: 
 As a client side, don't blindly trust anyone or anything, not even your own servers. If you have large audience in China, that's especially true. For example, what can go wrong with an HTML snippet of less than 10k? According to our own tracking, it returns wrong results 5000 times a day. (Yes, the server guy should fix it. But the client should validate. ) If we don't validate every HTML snippet we get, some users are going to be really upset. 
 
-
+### Avoid dependency as much as as possible: 
+Depending on code writen by others can be easy at the start but brings a lot of pain along the way. Take the example of an e-pub reader. When you install it through cocoapods, it automatically adds another 8 dependencies for you. This makes your app build very slow and adds another 10 MB to your app size, which is big deal. What if the depency code stopped upgraging to the latest SWIFT? What if the code that you depend on has bug that causes fatal run-time error? So I depend on things only when I have to. That means only two SDKs: WeChat and Google Analytics. 
 
 
 ## How To Start
@@ -54,9 +55,6 @@ $ pod install --repo-update
 $ open Page.xcworkspace
 
 For more, check out [Cocoa Pod](https://cocoapods.org/)
-
-
-
 
 
 ## Deprecated: Development Milestones moved to Redmine

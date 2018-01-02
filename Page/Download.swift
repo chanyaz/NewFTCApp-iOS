@@ -269,7 +269,7 @@ struct Download {
             }
         }
         UserDefaults.standard.set(newSavedItems, forKey: key)
-        print ("saved item is now: \(newSavedItems)")
+        //print ("saved item is now: \(newSavedItems)")
     }
     
     public static func get(_ from: String) -> [ContentItem] {

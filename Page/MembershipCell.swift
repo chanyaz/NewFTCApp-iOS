@@ -21,8 +21,7 @@ class MembershipCell: CustomCell {
     @IBOutlet weak var iapBackground: UIView!
     @IBOutlet weak var price: UILabel!
     @IBOutlet weak var benefitsLabel: UILabel!
-    
-    
+    @IBOutlet weak var restoreButton: UIButton!
     @IBOutlet weak var buyButton: UIButton!
     @IBAction func buy(_ sender: Any) {
         switch buyState {
@@ -37,6 +36,11 @@ class MembershipCell: CustomCell {
         }
     }
 
+    @IBAction func restore(_ sender: Any) {
+        IAPProducts.store.restorePurchases()
+        Track.event(category: "IAP", action: "restore", label: "All")
+    }
+    
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
         setupLayout()
@@ -68,18 +72,24 @@ class MembershipCell: CustomCell {
         buyButton.setTitle("订阅", for: .normal)
         buyButton.setTitle("已订阅", for: .disabled)
         
+        // MARK: - update restore button content
+        restoreButton.setTitle("恢复购买", for: .normal)
+        
         if let id = itemCell?.id {
             let status = IAP.checkStatus(id)
             if ["success", "pendingdownload"].contains(status) {
                 buyButton.isEnabled = false
+                restoreButton.isHidden = true
             } else {
                 buyButton.isEnabled = true
+                restoreButton.isHidden = false
             }
         }
-        
     }
     
     private func setupLayout() {
+        let buttonTint = UIColor(hex: Color.Button.subscriptionBackground)
+        
         // MARK: - Update Styles and Layouts
         containerView.backgroundColor = UIColor(hex: Color.Content.background)
         headline.textColor = UIColor(hex: Color.Content.headline)
@@ -95,6 +105,13 @@ class MembershipCell: CustomCell {
         // MARK: - Set Button Colors
         buyButton.backgroundColor = UIColor(hex: Color.Button.subscriptionBackground)
         buyButton.setTitleColor(UIColor(hex: Color.Button.subscriptionColor), for: .normal)
+        
+        // MARK: - Set restore button
+        restoreButton.tintColor = buttonTint
+        restoreButton.layer.cornerRadius = 3
+        restoreButton.layer.borderColor = buttonTint.cgColor
+        restoreButton.layer.borderWidth = 1
+        restoreButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5)
         
     }
     

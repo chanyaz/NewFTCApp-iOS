@@ -13,7 +13,8 @@ For now, it does the following things:
 ### Billigual Support
 ### Swipe between Channels
 ### Advertising: including launch ad, in page, banners, MPUs and paid post
-### In-app Purchase: buying, downloading. Auto-renewing subscription in the working. 
+### In-app Purchase: buying, downloading. 
+### In-app Purchase: Autorenewing Subscription. 
 
 ## Some good features
 ### All possible customizations in one place: You just need to replicate the target "ftchinese"
@@ -24,7 +25,6 @@ For now, it does the following things:
 
 ## Future development
 ### Infinite Scrolling for page that uses collection view
-### Autorenewing Subscription
 
 ## Pitfalls: What we learned the hard way
 ### Dynamic Type Support: 
@@ -38,10 +38,10 @@ As a proof, you can look at other apps developed by the world's best iOS develop
 The FTChinese allows you to use collection to display list screens. But we suggest that you stick to WKWebView as much as possible. For advanced iOS developers, you can use profilling to check the difference between collection view and WKWebView. 
 
 ### Sharing: 
-If a large chunk of your audience is in China, you should use WeChat's SDK rather than it's share extension for sharing. And you should use a customized action sheet view controller rather than the iOS one. There are serious bugs with WeChat's share extension and there's no way to hide it from the iOS' default action view controller. If user experience bugs after they share, they blame you, not Apple or WeChat. So my advice is, use your own share sheet and fall back to iOS develop activity view controller. 
+If a large chunk of your audience is in China, you should use WeChat's SDK rather than it's share extension for sharing. And you should use a customized action sheet view controller rather than the iOS one. There are serious bugs with WeChat's share extension and there's no way to hide any share extension from the iOS' default action view controller. If user experiences bugs after they share, they blame you, not Apple or WeChat. So my advice is, use your own share sheet and fall back to iOS develop activity view controller. 
 
 ### Always Validate: 
-As a client side, don't trust anyone or anything, not even your own servers. If you have large audience in China, that's especially true. For example, what can go wrong with an HTML snippet of less than 10k? According to our own tracking, it returns wrong results 5000 times a day. If we don't validate every HTML snippet we get, some users are going to be really upset. 
+As a client side, don't blindly trust anyone or anything, not even your own servers. If you have large audience in China, that's especially true. For example, what can go wrong with an HTML snippet of less than 10k? According to our own tracking, it returns wrong results 5000 times a day. (Yes, the server guy should fix it. But the client should validate. ) If we don't validate every HTML snippet we get, some users are going to be really upset. 
 
 
 

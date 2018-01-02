@@ -17,9 +17,11 @@ struct Track {
         for trackingId in GA.trackingIds {
             let tracker = GAI.sharedInstance().tracker(withTrackingId: trackingId)
             tracker?.set(kGAIScreenName, value: name)
-            tracker?.set(GAIFields.customMetric(for: 1), value: String(engagement.score))
+            let metricName = GAIFields.customMetric(for: 1)
+            let engagementScore = String(engagement.score)
+            tracker?.set(metricName, value: engagementScore)
             let builder = GAIDictionaryBuilder.createScreenView()
-            if let obj = builder?.build() as [NSObject : AnyObject]? {
+            if let obj = builder?.build() as [NSObject: AnyObject]? {
                 tracker?.send(obj)
                 //print ("send track for screen name: \(name)")
             }

@@ -237,8 +237,8 @@ extension UIViewController: SFSafariViewControllerDelegate{
             contentItemViewController.hidesBottomBarWhenPushed = hidesBottomBar
             contentItemViewController.navigationItem.title = title
             navigationController?.pushViewController(contentItemViewController, animated: true)
-            
         }
+        
     }
     
     

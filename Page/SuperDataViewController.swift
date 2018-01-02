@@ -151,6 +151,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             contentController.add(LeakAvoider(delegate:self), name: "alert")
             contentController.add(LeakAvoider(delegate:self), name: "items")
             contentController.add(LeakAvoider(delegate:self), name: "sponsors")
+            contentController.add(LeakAvoider(delegate:self), name: "user")
             contentController.add(LeakAvoider(delegate:self), name: "selectItem")
             config.userContentController = contentController
             config.allowsInlineMediaPlayback = true
@@ -1478,6 +1479,11 @@ extension SuperDataViewController: WKScriptMessageHandler {
                     sponsors.append(sponsor)
                 }
                 Sponsors.shared.sponsors = sponsors
+            }
+        } else if message.name == "user" {
+            // MARK: Get user information
+            if let body = message.body as? [String: String] {
+                UserInfo.updateUserInfo(with: body)
             }
         } else if message.name == "selectItem" {
             if let rowString = message.body as? String,

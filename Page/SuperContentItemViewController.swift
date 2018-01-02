@@ -76,6 +76,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 contentController.add(LeakAvoider(delegate:self), name: "follow")
                 contentController.add(LeakAvoider(delegate:self), name: "clip")
                 contentController.add(LeakAvoider(delegate:self), name: "listen")
+                contentController.add(LeakAvoider(delegate:self), name: "user")
                 contentController.add(LeakAvoider(delegate:self), name: "mySetting")
                 config.userContentController = contentController
                 config.allowsInlineMediaPlayback = true
@@ -576,6 +577,11 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
                     topController.navigationController?.pushViewController(settingsController, animated: true)
                 }
                 print ("mySetting this: \(body)")
+            case "user":
+                // MARK: Get user information
+                if let body = message.body as? [String: String] {
+                    UserInfo.updateUserInfo(with: body)
+                }
             default:
                 break
             }

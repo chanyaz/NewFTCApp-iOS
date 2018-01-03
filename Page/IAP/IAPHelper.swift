@@ -74,10 +74,7 @@ open class IAPHelper : NSObject  {
         //        }
         // MARK: - Use globally thread as it will not not change UI directly
         DispatchQueue.global().async {
-            //self.validateReceipt(with: IAPProducts.serverUrlString)
-            //self.validateReceipt(with: "https://sandbox.itunes.apple.com/verifyReceipt")
             self.receiptValidation(with: IAPProducts.serverUrlString)
-            //self.receiptValidation(with: "https://sandbox.itunes.apple.com/verifyReceipt")
         }
         
         //print (receipt ?? "no receipt is found")
@@ -138,19 +135,19 @@ extension IAPHelper {
                 let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
                 let receiptString = receiptData.base64EncodedString(options: [])
                 //let dict = ["receipt-data" : receiptString, "password" : "a3af21ddf07a45f39e699172856200c6"] as [String : String]
-                let dict = ["receipt-data" : receiptString] as [String : String]
+                let dict = [
+                    "receipt-data": receiptString,
+                    "user-id": UserInfo.shared.userId ?? "",
+                    "user-name": UserInfo.shared.userName ?? ""
+                ] as [String : String]
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .init(rawValue: 0))
-                    if let sandboxURL = Foundation.URL(string:server) {
-                        var request = URLRequest(url: sandboxURL)
+                    if let siteServerUrl = Foundation.URL(string:server) {
+                        var request = URLRequest(url: siteServerUrl)
                         request.httpMethod = "POST"
                         request.httpBody = jsonData
                         let session = URLSession(configuration: URLSessionConfiguration.default)
                         let task = session.dataTask(with: request) { data, response, error in
-                            //print("receipt validation from func receiptValidation response: \(String(describing: response))")
-//                            if let data = data {
-//                                print("receipt validation from func receiptValidation. Body as: \(String(describing: String(data: data, encoding: .utf8))) ")
-//                            }
                             if let receivedData = data,
                                 let httpResponse = response as? HTTPURLResponse,
                                 error == nil,

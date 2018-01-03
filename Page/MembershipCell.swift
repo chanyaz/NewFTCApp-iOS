@@ -24,12 +24,42 @@ class MembershipCell: CustomCell {
     @IBOutlet weak var restoreButton: UIButton!
     @IBOutlet weak var buyButton: UIButton!
     @IBAction func buy(_ sender: Any) {
+        
+//        let alert = UIAlertController(title: "请选择您的操作设置", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+//        alert.addAction(UIAlertAction(
+//            title: "清除所有音频",
+//            style: UIAlertActionStyle.default,
+//            handler: {_ in self.removeAllAudios() }
+//        ))
+//        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+//        self.present(alert, animated: true, completion: nil)
+        
+        
         switch buyState {
         case .New:
             if let id = itemCell?.id {
-                buyState = .Purchasing
-                buyButton.setTitle("连接中...", for: .normal)
-                IAP.buy(id)
+                // MARK: If user logged in, purchase directly
+                if UserInfo.shared.userName != nil && UserInfo.shared.userName != "" {
+                    buyImmediately(id)
+                } else {
+                    let alert = UIAlertController(title: "您还没有登录FT中文网", message: "建议您先登录FT中文网，再继续购买，这样您购买的会员权益可以跨设备使用。", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(
+                        title: "先去登录",
+                        style: UIAlertActionStyle.default,
+                        handler: {_ in UserInfo.showAccountPage() }
+                    ))
+                    alert.addAction(UIAlertAction(
+                        title: "直接购买",
+                        style: UIAlertActionStyle.default,
+                        handler: {_ in self.buyImmediately(id)}
+                    ))
+                    alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+                    if let topViewController = UIApplication.topViewController() {
+                        topViewController.present(alert, animated: true, completion: nil)
+                    } else {
+                        buyImmediately(id)
+                    }
+                }
             }
         case .Purchasing, .Purchased:
             print ("the item is already bought")
@@ -124,6 +154,12 @@ class MembershipCell: CustomCell {
             let containerWidth = cellWidth - cellMargins - containerViewMargins
             containerViewWidthConstraint.constant = containerWidth
         }
+    }
+    
+    private func buyImmediately(_ id: String) {
+        buyState = .Purchasing
+        buyButton.setTitle("连接中...", for: .normal)
+        IAP.buy(id)
     }
     
 }

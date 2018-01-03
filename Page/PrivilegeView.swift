@@ -98,18 +98,7 @@ class PrivilegeView: UIView {
     
     
     @objc open func showAccountPage(_ sender: UITapGestureRecognizer) {
-            if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
-                dataViewController.dataObject = [
-                    "title": "账户",
-                    "type": "account",
-                    "url":"http://app003.ftmailbox.com/iphone-2014.html",
-                    "screenName":"myft/account"
-                ]
-                dataViewController.pageTitle = "登入"
-                if let topViewController = UIApplication.topViewController() {
-                    topViewController.navigationController?.pushViewController(dataViewController, animated: true)
-                }
-            }
+            UserInfo.showAccountPage()
     }
 
     

@@ -8,11 +8,13 @@
 
 import Foundation
 struct UserInfo {
+    
     static var shared = UserInfo()
     var userName: String?
     var userId: String?
     private static let userNameKey = "User Name Key"
     private static let userIdKey = "User Id Key"
+    
     static func updateUserInfo(with body: [String: String]) {
         if let userName = body["username"],
             let userId = body["userId"] {
@@ -23,9 +25,12 @@ struct UserInfo {
             print ("user name: \(userName); user id: \(userId)")
         }
     }
-    static func getUserInfoFromNative() -> (name: String?, id: String?) {
-        // TODO: Get user information from user default
-        
-        return (nil, nil)
+    
+    static func updateUserInfoFromNative()  {
+        // MARK: Get user information from user default so that user name will be available even when you haven't visited any story page
+        UserInfo.shared.userName = UserDefaults.standard.string(forKey: userNameKey)
+        UserInfo.shared.userId = UserDefaults.standard.string(forKey: userIdKey)
+        print ("user name: \(String(describing: UserInfo.shared.userName)); user id: \(String(describing: UserInfo.shared.userId))")
     }
+    
 }

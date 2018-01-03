@@ -63,6 +63,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: - Get current language preference
         LanguageSetting.shared.currentPrefence = Setting.getCurrentOption("language-preference").index
         
+        // MARK: - Update User Login
+        UserInfo.updateUserInfoFromNative()
+        
         // MARK: - Update membership status
         PrivilegeHelper.updateFromDevice()
         

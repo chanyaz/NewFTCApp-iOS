@@ -21,7 +21,7 @@ struct APIs {
     private static let backupHTMLDomains = [
         "https://d1budb999l6vta.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
-
+        
     ]
     
     // MARK: Backup server for List Pages
@@ -29,13 +29,13 @@ struct APIs {
         "https://d37m993yiqhccr.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
     ]
-
+    
     // MARK: Backup server 3
     private static let backupHTMLDomains3 = [
         "https://d2noncecxepzyq.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
-//        "https://danla2f5eudt1.cloudfront.net/",
-//        "https://d2e90etfgpidmd.cloudfront.net/"
+        //        "https://danla2f5eudt1.cloudfront.net/",
+        //        "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
     // MARK: If there are http resources that you rely on in your page, don't use https as the url base
@@ -188,7 +188,7 @@ struct APIs {
                 if nextServerIndex >= servers.count {
                     nextServerIndex = 0
                 }
-
+                
                 if let serverUsedByFromString = serverUsedByFromString {
                     let newUrlString = from.replacingOccurrences(of: serverUsedByFromString, with: servers[nextServerIndex])
                     //print ("Server Watch: new url string is \(newUrlString)")
@@ -286,73 +286,73 @@ struct APIs {
         return finalUrlString
     }
     
-//    // MARK: Use different domains for different types of content
-//    static func getUrl(_ id: String, type: String) -> String {
-//        let urlString: String
-//        let webPageDomain = getUrlStringInLanguage(webPageDomains)
-//        let publicDomain = getUrlStringInLanguage(publicDomains)
-//        switch type {
-//        case "video":
-//            urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&002"
-//        case "radio":
-//            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&001"
-//        case "interactive", "gym", "special":
-//            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
-//        case "channel", "tag", "archive", "archiver":
-//            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
-//        case "story":
-//            urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
-//        case "photonews", "photo":
-//            urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
-//        case "register":
-//            urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
-//        case "htmlbook":
-//            urlString = "\(webPageDomain)htmlbook"
-//        case "htmlfile":
-//            urlString = "\(webPageDomain)htmlfile"
-//        case "html":
-//            urlString = "\(webPageDomain)\(id).html"
-//        default:
-//            urlString = "\(webPageDomain)"
-//        }
-//        return urlString
-//    }
+    //    // MARK: Use different domains for different types of content
+    //    static func getUrl(_ id: String, type: String) -> String {
+    //        let urlString: String
+    //        let webPageDomain = getUrlStringInLanguage(webPageDomains)
+    //        let publicDomain = getUrlStringInLanguage(publicDomains)
+    //        switch type {
+    //        case "video":
+    //            urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&002"
+    //        case "radio":
+    //            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&001"
+    //        case "interactive", "gym", "special":
+    //            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
+    //        case "channel", "tag", "archive", "archiver":
+    //            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
+    //        case "story":
+    //            urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
+    //        case "photonews", "photo":
+    //            urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
+    //        case "register":
+    //            urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
+    //        case "htmlbook":
+    //            urlString = "\(webPageDomain)htmlbook"
+    //        case "htmlfile":
+    //            urlString = "\(webPageDomain)htmlfile"
+    //        case "html":
+    //            urlString = "\(webPageDomain)\(id).html"
+    //        default:
+    //            urlString = "\(webPageDomain)"
+    //        }
+    //        return urlString
+    //    }
     
     
-//    // MARK: Use different domains for different types of content
-//    static func getSecureUrl(_ id: String, type: String) -> String {
-//        let urlString: String
-//        let originalDomain = getUrlStringInLanguage(htmlDomains)
-//        let domain = checkServer(originalDomain)
-//
-//        switch type {
-//        case "video":
-//            urlString = "\(domain)\(type)/\(id)?webview=ftcapp&002"
-//        case "radio":
-//            urlString = "\(domain)interactive/\(id)?webview=ftcapp&001"
-//        case "interactive", "gym", "special":
-//            urlString = "\(domain)interactive/\(id)?webview=ftcapp&i=3&001"
-//        case "channel", "tag", "archive", "archiver":
-//            urlString = "\(domain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
-//        case "story":
-//            urlString = "\(domain)/\(type)/\(id)?webview=ftcapp&full=y"
-//        case "photonews", "photo":
-//            urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
-//        case "register":
-//            urlString = "\(domain)index.php/users/register?i=4&webview=ftcapp"
-//        case "htmlbook":
-//            urlString = "\(domain)htmlbook"
-//        case "htmlfile":
-//            urlString = "\(domain)htmlfile"
-//        case "html":
-//            urlString = "\(domain)\(id).html"
-//        default:
-//            urlString = "\(domain)"
-//        }
-//        return urlString
-//    }
+    //    // MARK: Use different domains for different types of content
+    //    static func getSecureUrl(_ id: String, type: String) -> String {
+    //        let urlString: String
+    //        let originalDomain = getUrlStringInLanguage(htmlDomains)
+    //        let domain = checkServer(originalDomain)
+    //
+    //        switch type {
+    //        case "video":
+    //            urlString = "\(domain)\(type)/\(id)?webview=ftcapp&002"
+    //        case "radio":
+    //            urlString = "\(domain)interactive/\(id)?webview=ftcapp&001"
+    //        case "interactive", "gym", "special":
+    //            urlString = "\(domain)interactive/\(id)?webview=ftcapp&i=3&001"
+    //        case "channel", "tag", "archive", "archiver":
+    //            urlString = "\(domain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
+    //        case "story":
+    //            urlString = "\(domain)/\(type)/\(id)?webview=ftcapp&full=y"
+    //        case "photonews", "photo":
+    //            urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
+    //        case "register":
+    //            urlString = "\(domain)index.php/users/register?i=4&webview=ftcapp"
+    //        case "htmlbook":
+    //            urlString = "\(domain)htmlbook"
+    //        case "htmlfile":
+    //            urlString = "\(domain)htmlfile"
+    //        case "html":
+    //            urlString = "\(domain)\(id).html"
+    //        default:
+    //            urlString = "\(domain)"
+    //        }
+    //        return urlString
+    //    }
     
-
+    
     // MARK: Get url string for subtypes by adding parameters to type urlstring
     static func getUrl(_ id: String, type: String, subType: ContentSubType) -> String {
         let urlString = getUrl(id, type: type, isSecure: false, isPartial: false)
@@ -679,7 +679,7 @@ struct JSCodes {
             jsCode += "document.body.style.backgroundColor = '#FFF1E0';"
             jsCode += "var sections = document.querySelectorAll('section, .rich_media_area_extra, .rich_media_area_primary');"
             jsCode += "for (var i=0; i<sections.length; i++) {sections[i].style.backgroundColor = 'transparent';}"
-
+            
             jsCode += "var hiddenEles = document.querySelectorAll('.qr_code_pc');"
             jsCode += "for (var j=0; j<hiddenEles.length; j++) {hiddenEles[j].style.display = 'none';}"
             
@@ -763,18 +763,18 @@ struct Settings {
                     timeStamp: 0,
                     section: 0,
                     row: 0)
-//                ContentItem(
-//                    id: "enable-push",
-//                    image: "",
-//                    headline: "新闻推送",
-//                    lead: "",
-//                    type: "setting",
-//                    preferSponsorImage: "",
-//                    tag: "",
-//                    customLink: "",
-//                    timeStamp: 0,
-//                    section: 0,
-//                    row: 0)
+                //                ContentItem(
+                //                    id: "enable-push",
+                //                    image: "",
+                //                    headline: "新闻推送",
+                //                    lead: "",
+                //                    type: "setting",
+                //                    preferSponsorImage: "",
+                //                    tag: "",
+                //                    customLink: "",
+                //                    timeStamp: 0,
+                //                    section: 0,
+                //                    row: 0)
             ],
             type: "Group",
             adid: nil
@@ -895,6 +895,32 @@ struct HTMLValidator {
         }
         print ("html Data cannot be converted to string ")
         Track.event(category: "CatchError", action: "HTML Data Conversion Fail", label: url)
+        return false
+    }
+}
+
+struct EngagementTracker {
+    static func shouldTrackEngagementVolumn(for screenName: String) -> Bool {
+        // MARK: For a premium subscriber, only editor's choice count as effective volume
+        if Privilege.shared.editorsChoice == true {
+            if screenName.range(of: "EditorChoice") != nil {
+                return true
+            } else {
+                return false
+            }
+        }
+        // MARK: For a standard subscriber, only exclusive content counts as effective volume
+        if Privilege.shared.exclusiveContent == true {
+            if screenName.range(of: "premium") != nil || screenName.range(of: "audio/en/story") != nil {
+                return true
+            } else {
+                return false
+            }
+        }
+        // MARK: For non-subscribers, any free content counts as effective volume
+        if screenName.range(of: "story") != nil || screenName.range(of: "audio") != nil{
+            return true
+        }
         return false
     }
 }

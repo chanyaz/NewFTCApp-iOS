@@ -33,6 +33,9 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     private let download = DownloadHelper(directory: "audio")
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
+    public var language: String?
+    public var screenName: String? 
+    
     var item: ContentItem?
     var themeColor: String?
     
@@ -264,11 +267,15 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         initStyle()
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
-        Track.screenView(screenName)
+        let screen: String
+        if let currentScreenName = screenName {
+            screen = "/\(DeviceInfo.checkDeviceType())/\(currentScreenName)"
+        } else {
+            screen = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
+        }
+        Track.screenView(screen)
         checkLoveButton()
     }
     
@@ -321,7 +328,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         Download.removeFiles(["mp3"])
         downloadButton.status = .remote
     }
-    
     
     // MARK: - When users click on a link from the web view.
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: (@escaping (WKNavigationActionPolicy) -> Void)) {

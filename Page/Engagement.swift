@@ -81,9 +81,10 @@ struct Engagement {
         var visitingDates = [Int]()
         for log in EngagementData.shared.log {
             if let timeStamp = log["time"] as? TimeInterval {
-                if let screenName = log["name"] as? String,
-                    screenName.range(of: "story") != nil {
-                    volume += 1
+                if let screenName = log["name"] as? String {
+                    if EngagementTracker.shouldTrackEngagementVolumn(for: screenName) {
+                        volume += 1
+                    }
                 }
                 let visitingDate = DateHelper.getDay(timeStamp)
                 if visitingDates.contains(visitingDate) == false {

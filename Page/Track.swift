@@ -26,7 +26,6 @@ struct Track {
                 //print ("send track for screen name: \(name)")
             }
         }
-
     }
     
     public static func event(category: String, action: String, label: String) {

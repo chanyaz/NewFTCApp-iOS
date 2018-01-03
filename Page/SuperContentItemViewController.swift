@@ -161,7 +161,16 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let id = dataObject?.id, let type = dataObject?.type, let headline = dataObject?.headline {
-            let screenName = "/\(DeviceInfo.checkDeviceType())/\(type)/\(id)/\(headline)"
+            
+            // MARK: Check if the user is tapping from editor choice
+            var tapFrom = ""
+            if let privilege = dataObject?.privilegeRequirement {
+                if privilege == .EditorsChoice {
+                    tapFrom = "EditorChoice/"
+                }
+            }
+            
+            let screenName = "/\(DeviceInfo.checkDeviceType())/\(tapFrom)\(type)/\(id)/\(headline)"
             Track.screenView(screenName)
             if type != "video" {
                 let jsCode = JSCodes.get(type)
@@ -506,11 +515,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         IAPProducts.store.restorePurchases()
         Track.event(category: "IAP", action: "restore", label: "All")
     }
-    
-
-    
-    
-    
     
     
 }

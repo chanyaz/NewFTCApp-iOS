@@ -268,6 +268,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             // dataObject.caudio = "https://creatives.ftimg.net/album/c5fe0be8-ca48-11e7-ab18-7a9fb7d6163e.mp3"
             let audioFileUrl: String?
             
+            var audioLanguage: String? = nil
+            var audioScreenName: String? = nil
+            
             // MARK: Check if there's audio file attached to this item
             if let caudio = dataObject.caudio,
                 caudio != "",
@@ -276,11 +279,15 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 //                    PlayerAPI.sharedInstance.getSingletonItem(item: dataObject)
                 //                    PlayerAPI.sharedInstance.openPlay()
                 audioFileUrl = caudio
+                audioLanguage = "ch"
+                audioScreenName = "audio/\(audioLanguage ?? "")/story/\(dataObject.id)"
             } else if let eaudio = dataObject.eaudio,
                 eaudio != "",
                 language == "en" {
                 print ("There is english audio: \(eaudio) for this item, handle it later. ")
                 audioFileUrl = eaudio
+                audioLanguage = "en"
+                audioScreenName = "audio/\(audioLanguage ?? "")/story/\(dataObject.id)"
                 // MARK: If the user doesn't have the necessary privilege to listen to English audio, present membership options to him
                 // MARK: If a user bought the eBook, he should be able to listen to it without membership privilege
                 if Privilege.shared.englishAudio == false && dataObject.isDownloaded == false {
@@ -300,6 +307,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                     AudioContent.sharedInstance.body["interactiveUrl"] = APIs.getUrl(dataObject.id, type: dataObject.type, isSecure: false, isPartial: false)
                     audioPlayer.item = dataObject
                     audioPlayer.themeColor = themeColor
+                    audioPlayer.screenName = audioScreenName
+                    audioPlayer.language = audioLanguage
                     navigationController?.pushViewController(audioPlayer, animated: true)
                 }
             } else {

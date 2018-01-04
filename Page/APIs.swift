@@ -723,6 +723,28 @@ struct Alerts {
 
 // MARK: - Setting page
 struct Settings {
+    
+    static let subscriberContact = ContentSection(
+        title: "订户专线",
+        items: [
+            ContentItem(
+                id: "subscriber-contact",
+                image: "",
+                headline: "客服",
+                lead: "",
+                type: "setting",
+                preferSponsorImage: "",
+                tag: "",
+                customLink: "",
+                timeStamp: 0,
+                section: 0,
+                row: 0
+            )
+        ],
+        type: "Group",
+        adid: nil
+    )
+    
     static let page = [
         ContentSection(
             title: "阅读偏好",

@@ -23,18 +23,8 @@ class MembershipCell: CustomCell {
     @IBOutlet weak var benefitsLabel: UILabel!
     @IBOutlet weak var restoreButton: UIButton!
     @IBOutlet weak var buyButton: UIButton!
+    
     @IBAction func buy(_ sender: Any) {
-        
-//        let alert = UIAlertController(title: "请选择您的操作设置", message: nil, preferredStyle: UIAlertControllerStyle.alert)
-//        alert.addAction(UIAlertAction(
-//            title: "清除所有音频",
-//            style: UIAlertActionStyle.default,
-//            handler: {_ in self.removeAllAudios() }
-//        ))
-//        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-//        self.present(alert, animated: true, completion: nil)
-        
-        
         switch buyState {
         case .New:
             if let id = itemCell?.id {

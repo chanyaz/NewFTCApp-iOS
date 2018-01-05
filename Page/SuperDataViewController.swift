@@ -1087,7 +1087,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     return false
                 }
             }
-            
             if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
                 AudioContent.sharedInstance.body["title"] = selectedItem.headline
                 AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl

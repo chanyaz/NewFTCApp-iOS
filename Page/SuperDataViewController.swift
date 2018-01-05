@@ -1079,6 +1079,15 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         // MARK: For a normal cell, allow the action to go through. For special types of cell, such as advertisment in a wkwebview, do not take any action and let wkwebview handle tap.
         // MARK: if it is an audio file, push the audio view controller
         if let audioFileUrl = selectedItem.audioFileUrl {
+            // MARK: If the user doesn't have the necessary privilege to listen to English audio, present membership options to him
+            // MARK: If a user bought the eBook, he should be able to listen to it without membership privilege
+            if Privilege.shared.editorsChoice == false && APIs.isEditorChoice(dataObject) {
+                // MARK: Only if membership subscription view is correctly displayed
+                if PrivilegeViewHelper.showSubscriptionView(for: .EditorsChoice) {
+                    return false
+                }
+            }
+            
             if let audioPlayer = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AudioPlayer") as? AudioPlayer {
                 AudioContent.sharedInstance.body["title"] = selectedItem.headline
                 AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl

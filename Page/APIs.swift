@@ -435,7 +435,7 @@ struct ErrorMessages {
         private static let explainTitle = "为什么会发生这样的事？"
         private static let explainDescription = "我们问了领先的经济学家，得到了如下的解释："
         private static let explainations = [
-            (title: "滞胀", description: "获取您所需要数据的成本涨了，但是数据加载进程又停滞不前。"),
+            (title: "滞胀", description: "获取您所需内容的成本涨了，但是内容加载进程又停滞不前。"),
             (title: "通用经济学", description: "没有市场，数据交换发生不了啊！"),
             (title: "流动性陷阱", description: "我们把钱给了技术团队，但是由于现在利息太低，他们就把钱藏在机房里了。所以服务器还是没有启动！"),
             (title: "没达到帕累托最优", description: "存在着另外一个板块，它会让每个人都更开心，而且不会让任何人更不开心。"),

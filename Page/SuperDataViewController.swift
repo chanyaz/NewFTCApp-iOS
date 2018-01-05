@@ -377,7 +377,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             let localbackupString = localbackupNSString as String
                             defaultString = localbackupString
                         } else {
-                            defaultString  = "<div style=\"text-align: center;\">Loading...</div>"
+                            //defaultString  = ErrorMessages.Loading.loadingMessage
+                            defaultString = ErrorMessages.Loading.getExplainationHTML(with: urlString)
                         }
                         let listContentString: String
                         if let listContentData = Download.readFile(listAPI, for: .cachesDirectory, as: fileExtension) {
@@ -1342,7 +1343,13 @@ extension SuperDataViewController {
     
     // MARK: - load settings and update UI
     fileprivate func loadSettings() {
-        let contentSections = GB2Big5.convert(Settings.page)
+        let settingsPage:[ContentSection] // = Settings.page
+        if Privilege.shared.exclusiveContent == true {
+            settingsPage = Settings.subscriberContact + Settings.page
+        } else {
+            settingsPage = Settings.page
+        }
+        let contentSections = GB2Big5.convert(settingsPage)
         let results = ContentFetchResults(apiUrl: "", fetchResults: contentSections)
         //        let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
         //        let verticalCass = UIScreen.main.traitCollection.verticalSizeClass

@@ -428,6 +428,35 @@ struct ErrorMessages {
         static let gb = "亲爱的读者，您现在无法连接FT中文网的服务器，请稍后重试。"
         static let big5 = "親愛的讀者，您現在無法連接FT中文網的服務器，請稍後重試。"
     }
+    struct Loading {
+        private static let loadingMessage = "<div style=\"text-align: center;\" id='loading-message'>努力加载中...</div>"
+        private static let title = "非常抱歉"
+        private static let description = "服务器开小差了，您的手机暂时无法获得新的内容。"
+        private static let explainTitle = "为什么会发生这样的事？"
+        private static let explainDescription = "我们问了领先的经济学家，得到了如下的解释："
+        private static let explainations = [
+            (title: "滞胀", description: "获取您所需要数据的成本涨了，但是数据加载进程又停滞不前。"),
+            (title: "通用经济学", description: "没有市场，数据交换发生不了啊！"),
+            (title: "流动性陷阱", description: "我们把钱给了技术团队，但是由于现在利息太低，他们就把钱藏在机房里了。所以服务器还是没有启动！"),
+            (title: "没达到帕累托最优", description: "存在着另外一个板块，它会让每个人都更开心，而且不会让任何人更不开心。"),
+            (title: "供给和需求", description: "太多人蜂拥到FT中文网，导致服务器的服务能力产生了短缺。"),
+            (title: "经典经济学", description: "根本就不存在你要看的那个板块，所以你啥也看不见，我们也不会干预。"),
+            (title: "凯恩斯经济学", description: "对这个板块的累积需求不一定等于我们能提供服务的能力。"),
+            (title: "马尔萨斯理论", description: "不受限制，以几何级数增长的数据请求导致像素的短缺，引发了一场不可避免的灾难。我们对这个板块实施了计划生育，它根本就没出生。")
+        ]
+        static func getExplainationHTML(with url: String) -> String {
+            let titleString = "<h1>\(title)</h1><div>\(description)</div><div>请<a onclick=\"javascript: window.location.href='\(url)';\">点击此处重试一次</a></div>"
+            let explainString = "<h2>\(explainTitle)</h2><div>\(explainDescription)</div>"
+            var explains = ""
+            for explain in explainations {
+                explains += "<h3>\(explain.title)</h3><div>\(explain.description)</div>"
+            }
+            let explainerString = "<style>h1, h2, h3, div {line-height: 140%;}div{padding-bottom: 1em;}</style><div style='padding: 15px;display:none;' id='economics-explainer'>\(titleString)\(explainString)\(explains)</div>"
+            let timeoutScript = "<script>setTimeout(function(){document.getElementById('loading-message').style.display = 'none';document.getElementById('economics-explainer').style.display = 'block';}, 10000);</script>"
+            return "\(loadingMessage)\(explainerString)\(timeoutScript)"
+        }
+        
+    }
 }
 
 // MARK: - Use struct to store information so that Xcode can auto-complete codes
@@ -626,6 +655,7 @@ struct DeviceToken {
     // MARK: - Post device token to server
     static func forwardTokenToServer(deviceToken token: Data) {
         let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
+        UserInfo.shared.deviceToken = hexEncodedToken
         print("device token: \(hexEncodedToken)")
         // MARK: calculate appNumber based on your bundel ID
         let bundleID = Bundle.main.bundleIdentifier ?? ""
@@ -724,26 +754,28 @@ struct Alerts {
 // MARK: - Setting page
 struct Settings {
     
-    static let subscriberContact = ContentSection(
-        title: "订户专线",
-        items: [
-            ContentItem(
-                id: "subscriber-contact",
-                image: "",
-                headline: "客服",
-                lead: "",
-                type: "setting",
-                preferSponsorImage: "",
-                tag: "",
-                customLink: "",
-                timeStamp: 0,
-                section: 0,
-                row: 0
-            )
-        ],
-        type: "Group",
-        adid: nil
-    )
+    static let subscriberContact = [
+        ContentSection(
+            title: "订户专线",
+            items: [
+                ContentItem(
+                    id: "subscriber-contact",
+                    image: "",
+                    headline: "客服",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0
+                )
+            ],
+            type: "Group",
+            adid: nil
+        )
+    ]
     
     static let page = [
         ContentSection(

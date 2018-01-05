@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+
 struct DeviceInfo {
     public static func checkDeviceType() -> String {
         let deviceType: String

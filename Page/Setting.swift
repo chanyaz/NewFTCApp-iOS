@@ -44,7 +44,7 @@ struct Setting {
             settingType = "action"
             settingDefault = 0
             settingOn = false
-        case "feedback", "app-store", "privacy", "about":
+        case "feedback", "app-store", "privacy", "about", "subscriber-contact":
             settingType = "detail"
             settingDefault = 0
             settingOn = false
@@ -196,6 +196,8 @@ struct Setting {
             urlString = "http://www.ftchinese.com/m/corp/service.html"
         case "about":
             urlString = "http://www.ftchinese.com/m/corp/aboutus.html"
+        case "subscriber-contact":
+            urlString = "http://www.ftchinese.com/m/corp/subscriber.html?webview=ftcapp"
         default:
             urlString = nil
             break

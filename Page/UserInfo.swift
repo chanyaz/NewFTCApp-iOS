@@ -12,6 +12,7 @@ struct UserInfo {
     static var shared = UserInfo()
     var userName: String?
     var userId: String?
+    var deviceToken: String?
     private static let userNameKey = "User Name Key"
     private static let userIdKey = "User Id Key"
     

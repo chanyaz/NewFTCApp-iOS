@@ -8,7 +8,6 @@
 
 import Foundation
 struct Track {
-    
     public static func screenView(_ name: String) {
         // MARK: Save screen name locally
         let engagement = Engagement.screen(name)
@@ -25,6 +24,62 @@ struct Track {
                 tracker?.send(obj)
                 //print ("send track for screen name: \(name)")
             }
+        }
+        
+        sendEngagementData(engagement)
+
+        
+    }
+    
+    private static func sendEngagementData(_ engagement: (score: Double, frequency: Int, recency: Int, volumn: Int)) {
+        // MARK: Must have something that can identify the user. Otherwise the data is uselss.
+        if UserInfo.shared.userName == nil && UserInfo.shared.userId == nil && UserInfo.shared.deviceToken == nil {
+            return
+        }
+        let s = String(engagement.score)
+        let f = String(engagement.frequency)
+        let r = String(engagement.recency)
+        let v = String(engagement.volumn)
+        let u = UserInfo.shared.userName ?? ""
+        let i = UserInfo.shared.userId ?? ""
+        let d = UserInfo.shared.deviceToken ?? ""
+        let engagementDict = [
+            "s": s,
+            "f": f,
+            "r": r,
+            "v": v,
+            "u": u,
+            "i": i,
+            "d": d
+            ] as [String : String]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: engagementDict, options: .init(rawValue: 0))
+            if let siteServerUrl = Foundation.URL(string:"https://api.ftmailbox.com/engagement-tracker.php") {
+                var request = URLRequest(url: siteServerUrl)
+                request.httpMethod = "POST"
+                request.httpBody = jsonData
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                let task = session.dataTask(with: request) { data, response, error in
+                    if let receivedData = data,
+                        let httpResponse = response as? HTTPURLResponse,
+                        error == nil,
+                        httpResponse.statusCode == 200 {
+                        do {
+                            if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
+                                // MARK: - parse and verify the required informatin in the jsonResponse
+                                print ("engagement validation from func receiptValidation success: \(jsonResponse)")
+                            }
+                        } catch {
+                            
+                        }
+                    }
+                }
+                task.resume()
+            }
+        }
+        catch {
+            print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
         }
     }
     

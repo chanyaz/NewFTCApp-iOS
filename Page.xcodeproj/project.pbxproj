@@ -1017,7 +1017,7 @@
 				600BD6A01F1DBB080077C104 /* Push */,
 				60D461C51F1C4F80009B7196 /* Track */,
 				601418091EEA91BA00DC3EF9 /* Networks */,
-				60C0D65C1F17405300E6F77D /* Growth Hack */,
+				60C0D65C1F17405300E6F77D /* Engagement */,
 				6094DD731FA1615900AAD736 /* Ads */,
 				60B2EF071EE680DE00B8C6DA /* StyleHelpers */,
 				50D9BA101F230A87002A188F /* Performance */,
@@ -1209,14 +1209,14 @@
 			name = StyleHelpers;
 			sourceTree = "<group>";
 		};
-		60C0D65C1F17405300E6F77D /* Growth Hack */ = {
+		60C0D65C1F17405300E6F77D /* Engagement */ = {
 			isa = PBXGroup;
 			children = (
 				60C0D65A1F17402500E6F77D /* HappyUser.swift */,
 				508E60121FE5002E005F664F /* Engagement.swift */,
 				50559B921FFBC194005938F5 /* UserInfo.swift */,
 			);
-			name = "Growth Hack";
+			name = Engagement;
 			sourceTree = "<group>";
 		};
 		60C558731F29C703004C4E0E /* Launch */ = {

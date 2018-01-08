@@ -51,10 +51,13 @@ struct Download {
             // TODO: - Find out why JSONSerialization.isValidJSONObject(data) doesn't work
             if fileExtension == "json" {
                 let JSON = try? JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0))
-                if let _ = JSON as? NSDictionary {
+                if let _ = JSON as? NSDictionary{
                 } else {
-                    Track.event(category: "CatchError", action: "JSON Validation Failure", label: filename)
-                    return
+                    if let _ = JSON as? NSArray {
+                    } else {
+                        Track.event(category: "CatchError", action: "JSON Validation Failure", label: filename)
+                        return
+                    }
                 }
             }
             if let directoryPathString = NSSearchPathForDirectoriesInDomains(to, .userDomainMask, true).first {

@@ -411,9 +411,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         do {
             if let savedTalkData = Download.readFile("chatHistoryTalk", for: .cachesDirectory, as: "json") {
+                print("Read HistoryData")
                 let jsonAny = try JSONSerialization.jsonObject(with: savedTalkData, options: .mutableContainers)
                 if let jsonDic = jsonAny as? NSArray, let historyTalk = jsonDic as? [[String:String]] {
                     self.historyTalkData = historyTalk
+                    print("historyTalk:\(historyTalk)")
                     //print("historyTalkDataNum:\(self.historyTalkData?.count ?? 0)")
                 }
             }
@@ -515,7 +517,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         // TODO:如果是退出小冰，就执行存储；如果是点击card文章，那就不执行存储,记录一个card文章阅读开始时间时间戳即可
         if self.isReadingCard == false {
-            
             var toSaveHistoryTalkArr:[[String: String]]
             var toSaveTalkData:Data
             var newHistoryTalkData:[[String: String]]
@@ -531,6 +532,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             //print("newHistoryNum:\(newHistoryNum)")
             //MARK:只存储最近的100条对话记录 // TODO:增加手指下拉动作监测，拉一次多展现10条历史对话记录
             if newHistoryNum > 0 {
+                
                 if newHistoryNum <= 100  {
                     toSaveHistoryTalkArr = newHistoryTalkData
                     //print("case 1:\(toSaveHistoryTalkArr.count)")
@@ -541,10 +543,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 }
                 do {
                     toSaveTalkData = try JSONSerialization.data(withJSONObject: toSaveHistoryTalkArr, options:.prettyPrinted)
-                    //print("toSaveTalkDataNum:\(toSaveTalkData.count)")
                     Download.saveFile(toSaveTalkData, filename: "chatHistoryTalk", to:.cachesDirectory , as: "json")
-                } catch {
-                    
+                } catch{
+                    print("Save Failed")
                 }
             }
         } else {

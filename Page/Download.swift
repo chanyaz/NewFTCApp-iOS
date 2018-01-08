@@ -11,9 +11,13 @@ struct Download {
     public static let serverNotRespondingKey = "Server Not Responding Key"
     
     public static func handleServerError(_ urlString: String, error: NSError?) {
+        let statusType = Connection.current()
+        guard statusType != "no" else {
+            return
+        }
         markServerAsNotResponding(urlString)
-        Track.catchError("\(urlString) Request Error: \(String(describing: error))", withFatal: 1)
-        Track.event(category: "CatchError", action: "Fail to Connect", label: urlString)
+        //Track.catchError("\(urlString) Request Error: \(String(describing: error))", withFatal: 1)
+        Track.event(category: "CatchError", action: "Fail to Connect on \(statusType)", label: urlString)
     }
     
     public static func markServerAsNotResponding(_ urlString: String) {

@@ -12,6 +12,7 @@ import StoreKit
 import MediaPlayer
 
 class SuperDataViewController: UICollectionViewController, UINavigationControllerDelegate, UICollectionViewDataSourcePrefetching {
+    var refreshContr: RefreshConrolView?
     var isLandscape = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
@@ -179,8 +180,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             webView?.navigationDelegate = self
             webView?.clipsToBounds = true
             webView?.scrollView.bounces = true
-            refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
-            webView?.scrollView.addSubview(refreshControl)
+            refreshContr = RefreshConrolView(target: self, refreshAction: #selector(refreshWebView))
+//            refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
+            webView?.scrollView.addSubview(refreshContr!)
+//            webView?.scrollView.addSubview(refreshControl)
             if dataObjectType == "Search" {
                 searchBar = UISearchBar()
                 searchBar?.sizeToFit()
@@ -332,7 +335,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             )
         } else {
             activityIndicator.removeFromSuperview()
-            refreshControl.endRefreshing()
+//            refreshControl.endRefreshing()
+            refreshContr?.endRefreshing()
         }
     }
     
@@ -402,7 +406,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         )
                         DispatchQueue.main.async {
                             self.webView?.loadHTMLString(listHTML, baseURL:url)
-                            self.refreshControl.endRefreshing()
+//                            self.refreshControl.endRefreshing()
+                            self.refreshContr?.endRefreshing()
                         }
                         
                     } catch {
@@ -655,6 +660,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         }
         activityIndicator.removeFromSuperview()
         refreshControl.endRefreshing()
+        
     }
     
     private func requestNewContent() {

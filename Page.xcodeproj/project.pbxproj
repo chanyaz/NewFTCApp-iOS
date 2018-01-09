@@ -366,6 +366,7 @@
 		F258A5B91F613E9B0095253A /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F258A5B71F613E9A0095253A /* AudioPlayerView.swift */; };
 		F2592E821FAC2208000850B6 /* SubscribeTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2592E801FAC2208000850B6 /* SubscribeTimeTableViewCell.swift */; };
 		F2592E831FAC2208000850B6 /* SubscribeTimeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2592E811FAC2208000850B6 /* SubscribeTimeTableViewCell.xib */; };
+		F27CD3372004598700AF08EF /* CustomRefreshConrolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CD3362004598700AF08EF /* CustomRefreshConrolView.swift */; };
 		F27D9A7F1F976FA800A95188 /* account.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7A1F976F4600A95188 /* account.html */; };
 		F27D9A801F976FAB00A95188 /* ebook.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7C1F976F4600A95188 /* ebook.html */; };
 		F27D9A821F976FB200A95188 /* html-book.html in Resources */ = {isa = PBXBuildFile; fileRef = F27D9A7B1F976F4600A95188 /* html-book.html */; };
@@ -679,6 +680,7 @@
 		F258A5B71F613E9A0095253A /* AudioPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayerView.swift; path = Audio/AudioPlayerView.swift; sourceTree = "<group>"; };
 		F2592E801FAC2208000850B6 /* SubscribeTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeTimeTableViewCell.swift; sourceTree = "<group>"; };
 		F2592E811FAC2208000850B6 /* SubscribeTimeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubscribeTimeTableViewCell.xib; sourceTree = "<group>"; };
+		F27CD3362004598700AF08EF /* CustomRefreshConrolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRefreshConrolView.swift; sourceTree = "<group>"; };
 		F27D9A781F976F4600A95188 /* register.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = register.html; path = Page/FTCC/register.html; sourceTree = SOURCE_ROOT; };
 		F27D9A791F976F4600A95188 /* search.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = search.html; path = Page/FTCC/search.html; sourceTree = SOURCE_ROOT; };
 		F27D9A7A1F976F4600A95188 /* account.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = account.html; path = Page/FTCC/account.html; sourceTree = SOURCE_ROOT; };
@@ -1103,6 +1105,7 @@
 				F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */,
 				604F2F811FA845B500A923E5 /* SuperContentItemViewController.swift */,
 				600BD6A11F1EF20B0077C104 /* English.swift */,
+				F27CD3362004598700AF08EF /* CustomRefreshConrolView.swift */,
 				6013F6C11F6F99EC00F83462 /* Settings */,
 				600BD6AB1F21A65E0077C104 /* Audio */,
 				60124FB71F317F8B00CFA04C /* Chat */,
@@ -2071,6 +2074,7 @@
 			files = (
 				60F1A52E1F5EAD0D0007F9F3 /* IAPs.swift in Sources */,
 				608C55211EF78FA100AF27CB /* DetailModelController.swift in Sources */,
+				F27CD3372004598700AF08EF /* CustomRefreshConrolView.swift in Sources */,
 				60986A461F1CAC5300583157 /* DataForShare.swift in Sources */,
 				602153A71F399E010077A7AF /* NewsNavigationController.swift in Sources */,
 				AFB831C71FAC353C001531E0 /* AppDelegate.swift in Sources */,

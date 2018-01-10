@@ -31,7 +31,6 @@ class RefreshConrolView: UIRefreshControl {
     lazy var backgroundView: UIView = UIView()
     var refreshTarget: AnyObject?
     var refreshAction: Selector?
-    lazy var imageView: UIImageView = UIImageView()
     lazy var label: UILabel = UILabel()
     lazy var pullToRefreshButton :UIButtonPullToRefresh = UIButtonPullToRefresh()
     var currentStatus: refreshState? {
@@ -174,7 +173,7 @@ class RefreshConrolView: UIRefreshControl {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            let when = DispatchTime.now() + 0.4 // change 2 to desired number of seconds
+            let when = DispatchTime.now() + 0.4
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.currentStatus = refreshState.normal
             }

@@ -20,6 +20,7 @@ struct Color {
         static let backgroundForSectionCover = (day: "#f2dfce", night: "#333333")
         static let tag = (day: "#9E2F50", night: "#BBBBBB")
         static let time = (day: "#8b572a", night: "#BBBBBB")
+        static let stroke = (day: "#c2272f", night: "#BBBBBB")
     }
     
     struct Tab {

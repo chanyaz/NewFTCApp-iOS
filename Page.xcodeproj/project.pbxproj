@@ -248,6 +248,7 @@
 		607094AF1EE943A900760A60 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AE1EE943A900760A60 /* Channels.swift */; };
 		6072F9F31F57ED280035AD92 /* IAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6072F9F21F57ED280035AD92 /* IAP.swift */; };
 		6072F9F41F57ED280035AD92 /* IAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6072F9F21F57ED280035AD92 /* IAP.swift */; };
+		60789CB720061AE000CD8ED2 /* CustomRefreshConrolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CD3362004598700AF08EF /* CustomRefreshConrolView.swift */; };
 		60814F601F580FB200041801 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60814F5E1F580FB200041801 /* BookCell.swift */; };
 		60814F611F580FB200041801 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60814F5E1F580FB200041801 /* BookCell.swift */; };
 		60814F621F580FB200041801 /* BookCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60814F5F1F580FB200041801 /* BookCell.xib */; };
@@ -1105,7 +1106,6 @@
 				F23BF9EF1F170E090052FDB4 /* PageCollectionViewLayoutH.swift */,
 				604F2F811FA845B500A923E5 /* SuperContentItemViewController.swift */,
 				600BD6A11F1EF20B0077C104 /* English.swift */,
-				F27CD3362004598700AF08EF /* CustomRefreshConrolView.swift */,
 				6013F6C11F6F99EC00F83462 /* Settings */,
 				600BD6AB1F21A65E0077C104 /* Audio */,
 				60124FB71F317F8B00CFA04C /* Chat */,
@@ -1199,6 +1199,7 @@
 		60B2EF071EE680DE00B8C6DA /* StyleHelpers */ = {
 			isa = PBXGroup;
 			children = (
+				F27CD3362004598700AF08EF /* CustomRefreshConrolView.swift */,
 				6093F1651EE90E81009F16EE /* CustomPopTransition.swift */,
 				508E60151FE503BB005F664F /* DateHelper.swift */,
 				60D4B8F21EE7A22C00A4506D /* StyleExtensions.swift */,
@@ -1978,6 +1979,7 @@
 				50D4BD3D1F6382A700DD64E1 /* NotificationHelper.swift in Sources */,
 				60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */,
 				602153301F397C650077A7AF /* WeChatShare.swift in Sources */,
+				60789CB720061AE000CD8ED2 /* CustomRefreshConrolView.swift in Sources */,
 				F2251B551FA85CBC001B6236 /* PortraitTableViewCell.swift in Sources */,
 				50C31B3A1F6CD83900F4CF61 /* SimpleHeaderView.swift in Sources */,
 				600BC50A1FC7D81B00652ADA /* ShareMore.swift in Sources */,

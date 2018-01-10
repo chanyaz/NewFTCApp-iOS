@@ -12,7 +12,7 @@ import StoreKit
 import MediaPlayer
 
 class SuperDataViewController: UICollectionViewController, UINavigationControllerDelegate, UICollectionViewDataSourcePrefetching {
-    var refreshContr: RefreshConrolView?
+    var refreshContr: CustomRefreshConrol?
     var isLandscape = false
     var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
@@ -180,7 +180,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             webView?.navigationDelegate = self
             webView?.clipsToBounds = true
             webView?.scrollView.bounces = true
-            refreshContr = RefreshConrolView(target: self, refreshAction: #selector(refreshWebView))
+            refreshContr = CustomRefreshConrol(target: self, refreshAction: #selector(refreshWebView))
 //            refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
             webView?.scrollView.addSubview(refreshContr!)
 //            webView?.scrollView.addSubview(refreshControl)

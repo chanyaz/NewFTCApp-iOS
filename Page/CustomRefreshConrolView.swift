@@ -7,14 +7,14 @@
 //
 
 import Foundation
-//刷新Label的text
+// MARK: - 刷新Label的text
 let normalTitle = "下拉刷新"
 let pullingTitle = "松开立即请求"
 let refreshingTitle = "正在刷新"
 
-//当下拉到转完圈之前一直是“下拉刷新”，刚转完之后就变成“松开立即请求”，松手之后，变成“正在刷新”，当刷新完成就恢复为“下拉刷新”（即原始状态，复原）
-//第一步：考虑怎么绘制转圈？根据contentOffset值来确定高度，圈的显示多少跟contentOffset有个正比关系；怎么有转圈动画呢？应该有个参数，设置动画为true。
-//第二步：监听ScrollView正在拖动的和拖动结束的状态；触摸开始，下拉，触摸结束，把这些状态变化，怎么监听动作？
+// MARK: - 当下拉到转完圈之前一直是“下拉刷新”，刚转完之后就变成“松开立即请求”，松手之后，变成“正在刷新”，当刷新完成就恢复为“下拉刷新”（即原始状态，复原）
+// MARK: - 第一步：考虑怎么绘制转圈？根据contentOffset值来确定高度，圈的显示多少跟contentOffset有个正比关系；怎么有转圈动画呢？应该有个参数，设置动画为true。
+// MARK: - 第二步：监听ScrollView正在拖动的和拖动结束的状态；触摸开始，下拉，触摸结束，把这些状态变化，怎么监听动作？
 
 
 
@@ -24,7 +24,7 @@ enum refreshState{
     case refreshing
 }
 
-class RefreshConrolView: UIRefreshControl {
+class CustomRefreshConrol: UIRefreshControl {
     let refreshHeight: CGFloat = 60
     let screenWidth: CGFloat = UIScreen.main.bounds.size.width
     var originalOffsetY: CGFloat?
@@ -198,8 +198,7 @@ class UIButtonPullToRefresh: UIButton {
         let circlePath = UIBezierPath(roundedRect: CGRect(x: x, y: y, width: self.frame.height, height: self.frame.height), cornerRadius: self.frame.height / 2).cgPath
         circleShape.path = circlePath
         circleShape.lineWidth = 2
-//        circleShape.strokeColor = UIColor.brown.cgColor
-        circleShape.strokeColor = UIColor(hex: "#c2272f").cgColor
+        circleShape.strokeColor = UIColor(hex: Color.Content.stroke).cgColor
         circleShape.strokeStart = 0
         circleShape.strokeEnd = 0
         circleShape.fillColor = UIColor.clear.cgColor

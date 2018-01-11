@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 // MARK: - 刷新Label的text
 let normalTitle = "下拉刷新"
 let pullingTitle = "松开立即请求"
@@ -25,6 +26,8 @@ enum refreshState{
 }
 
 class CustomRefreshConrol: UIRefreshControl {
+    //  MARK: - select sound:  https://github.com/TUNER88/iOSSystemSoundsLibrary
+    let systemSoundID: SystemSoundID = 1102
     let refreshHeight: CGFloat = 60
     let screenWidth: CGFloat = UIScreen.main.bounds.size.width
     var originalOffsetY: CGFloat?
@@ -81,10 +84,9 @@ class CustomRefreshConrol: UIRefreshControl {
     
     //设置控件的大小
     private func updateFrame(){
-        let totalWidth: CGFloat = 35 + 20 + self.label.bounds.size.width
-        let imageViewX: CGFloat = (screenWidth - totalWidth) / 2
-      
-        self.label.frame = CGRect(x: imageViewX + 35 + 20, y: (refreshHeight - self.label.bounds.size.height)/2, width: label.bounds.size.width, height: self.label.bounds.size.height)
+        let totalWidth: CGFloat = 55 + self.label.bounds.size.width
+        let labelX: CGFloat = (screenWidth - totalWidth) / 2
+        self.label.frame = CGRect(x: labelX + 55, y: (refreshHeight - self.label.bounds.size.height)/2, width: label.bounds.size.width, height: self.label.bounds.size.height)
         self.pullToRefreshButton.frame = CGRect(x: 120, y: CGFloat(15), width: CGFloat(24), height: CGFloat(24))
     }
     
@@ -102,7 +104,7 @@ class CustomRefreshConrol: UIRefreshControl {
     }
     var endRefresh = false;
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        print("refreshControl fresh--\(self.isRefreshing)-- isDragging:\(self.superScrollView.isDragging) --originalOffsetY:\(self.superScrollView.contentInset.top)---值为\(self.superScrollView.contentOffset.y)")
+//        print("refreshControl fresh--\(self.isRefreshing)-- isDragging:\(self.superScrollView.isDragging) --originalOffsetY:\(self.superScrollView.contentInset.top)---值为\(self.superScrollView.contentOffset.y)")
         if self.superScrollView.isDragging && !self.isRefreshing{
             if self.originalOffsetY == nil {
                 self.currentStatus = refreshState.normal
@@ -114,6 +116,7 @@ class CustomRefreshConrol: UIRefreshControl {
                 self.currentStatus = refreshState.normal
             }else if  self.currentStatus == refreshState.normal && self.superScrollView.contentOffset.y < normalPullingOffset{
                 self.currentStatus = refreshState.pulling
+                AudioServicesPlaySystemSound (systemSoundID)
             }
             
         }else if !self.superScrollView.isDragging{
@@ -125,10 +128,10 @@ class CustomRefreshConrol: UIRefreshControl {
         let pullDistance: CGFloat = -self.frame.origin.y
         //      pullDistance = MIN(60, -self.frame.origin.y); 悬浮在顶部
         self.backgroundView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: pullDistance)
-        let totalWidth = 35 + 20 + self.label.bounds.size.width
-        let imageViewX = (screenWidth - totalWidth)/2
+        let totalWidth = 55 + self.label.bounds.size.width
+        let labelX = (screenWidth - totalWidth)/2
 
-        self.label.frame = CGRect(x: imageViewX + 35 + 20, y: -refreshHeight + pullDistance + (refreshHeight - self.label.bounds.size.height)/2, width: self.label.frame.size.width, height: self.label.frame.size.height)
+        self.label.frame = CGRect(x: labelX + 55, y: -refreshHeight + pullDistance + (refreshHeight - self.label.bounds.size.height)/2, width: self.label.frame.size.width, height: self.label.frame.size.height)
         
         self.pullToRefreshButton.frame = CGRect(x: 120, y: -refreshHeight+pullDistance+(refreshHeight-self.pullToRefreshButton.bounds.size.height)/2, width: self.pullToRefreshButton.bounds.size.width, height: self.pullToRefreshButton.bounds.size.height)
         self.pullToRefreshButton.progress = Float(pullDistance)/Float(refreshHeight)

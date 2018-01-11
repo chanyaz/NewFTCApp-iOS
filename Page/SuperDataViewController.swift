@@ -14,7 +14,7 @@ import MediaPlayer
 class SuperDataViewController: UICollectionViewController, UINavigationControllerDelegate, UICollectionViewDataSourcePrefetching {
     var refreshContr: CustomRefreshConrol?
     var isLandscape = false
-    var refreshControl = UIRefreshControl()
+//    var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
     let flowLayoutH = PageCollectionViewLayoutH()
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
@@ -125,8 +125,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             // MARK: - show refresh controll only when there is api
             if dataObject["api"] != nil || dataObjectType == "follow" {
                 if #available(iOS 10.0, *) {
-                    refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
-                    collectionView?.refreshControl = refreshControl
+//                    refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
+                    refreshContr = CustomRefreshConrol(target: self, refreshAction: #selector(refreshControlDidFire))
+                    collectionView?.refreshControl = refreshContr
                 }
             }
             
@@ -551,7 +552,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             [weak self] results, error in
             DispatchQueue.main.async {
                 self?.activityIndicator.removeFromSuperview()
-                self?.refreshControl.endRefreshing()
+                self?.refreshContr?.endRefreshing()
                 if let error = error {
                     print("Error searching : \(error)")
                     Download.handleServerError(acturalUrlString, error: error)
@@ -659,7 +660,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             self.collectionView?.reloadData()
         }
         activityIndicator.removeFromSuperview()
-        refreshControl.endRefreshing()
+        refreshContr?.endRefreshing()
         
     }
     

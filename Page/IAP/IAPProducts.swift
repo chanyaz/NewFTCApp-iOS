@@ -40,22 +40,22 @@ public struct IAPProducts {
                 "收听英文文章音频"
             ],
             "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
-        ],
-        [
-            "id":"com.ft.ftchinese.mobile.subscription.diamond",
-            "title":"钻石会员",
-            "teaser":"",
-            "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
-            "period":"year",
-            "benefits": [
-                "《FT投资参考》和《FT科技季刊》",
-                "《FT周刊》，精选不可错过的必读内容",
-                "两张张价值9999元的FT中文网年会贵宾门票",
-                "阅读FT中文网所有独家内容",
-                "订制内容推送到客户端"
-            ],
-            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
         ]
+//        [
+//            "id":"com.ft.ftchinese.mobile.subscription.diamond",
+//            "title":"钻石会员",
+//            "teaser":"",
+//            "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
+//            "period":"year",
+//            "benefits": [
+//                "《FT投资参考》和《FT科技季刊》",
+//                "《FT周刊》，精选不可错过的必读内容",
+//                "两张张价值9999元的FT中文网年会贵宾门票",
+//                "阅读FT中文网所有独家内容",
+//                "订制内容推送到客户端"
+//            ],
+//            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
+//        ]
         //        [
         //            "id":"com.ft.ftchinese.mobile.subscription.trial",
         //            "title":"试读会员",
@@ -154,6 +154,13 @@ public struct IAPProducts {
             "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
             "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
         ]
+    ]
+    
+    public static let finePrintItems = [
+        (headline: "订阅价格与周期", lead: "您可以在应用内订阅《FT中文网会员》和《FT中文网高端会员》两种服务。《FT中文网会员》每年订阅价格为 198元（$28.99），订阅后您可以解锁阅读FT中文网每日新增的两篇独家文章内容，以及解锁双语文章的英语语音服务。《FT中文网高端会员》每年订阅价格为 1998元（$294.99），订阅后您可以解锁《FT中文网会员》提供的所有服务，再加上每周的《编辑精选》周刊。"),
+        (headline: "付费方式", lead: "购买流程完全由Apple完成。您将通过Apple的iTunes账号，在确认购买成功之后完成支付。根据Apple的规定，在购买成功之后，您之前的试用期限（如果有）将被清零。"),
+        (headline: "关于自动续订", lead: "苹果 App Store 官方订阅功能为自动续费订阅。用户需手动在 iTunes 账户设置管理中关闭自动续订功能, 如果订阅期结束前的一天内未关闭自动续订功能, 订阅周期会自动延续。"),
+        (headline: "跨设备获取已订阅内容", lead: "《FT中文网会员》和《FT中文网高端会员》两种服务都适用于 iPhone 和 iPad，你的订阅可以同时在 iPhone/iPad 上使用。如果你已经在 iPad 上订阅, 在 iPhone 上, 请选择「恢复订阅」以查看已订阅内容；反之亦然。")
     ]
     
     // MARK: - update JSCode for displaying on WKWebView

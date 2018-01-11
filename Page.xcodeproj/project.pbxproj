@@ -249,6 +249,10 @@
 		6072F9F31F57ED280035AD92 /* IAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6072F9F21F57ED280035AD92 /* IAP.swift */; };
 		6072F9F41F57ED280035AD92 /* IAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6072F9F21F57ED280035AD92 /* IAP.swift */; };
 		60789CB720061AE000CD8ED2 /* CustomRefreshConrolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CD3362004598700AF08EF /* CustomRefreshConrolView.swift */; };
+		60789CBA20070F3800CD8ED2 /* FinePrintCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60789CB820070F3800CD8ED2 /* FinePrintCell.swift */; };
+		60789CBB20070F3800CD8ED2 /* FinePrintCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60789CB820070F3800CD8ED2 /* FinePrintCell.swift */; };
+		60789CBC20070F3800CD8ED2 /* FinePrintCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60789CB920070F3800CD8ED2 /* FinePrintCell.xib */; };
+		60789CBD20070F3800CD8ED2 /* FinePrintCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60789CB920070F3800CD8ED2 /* FinePrintCell.xib */; };
 		60814F601F580FB200041801 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60814F5E1F580FB200041801 /* BookCell.swift */; };
 		60814F611F580FB200041801 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60814F5E1F580FB200041801 /* BookCell.swift */; };
 		60814F621F580FB200041801 /* BookCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60814F5F1F580FB200041801 /* BookCell.xib */; };
@@ -576,6 +580,8 @@
 		607094AC1EE9436900760A60 /* Tabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		607094AE1EE943A900760A60 /* Channels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
 		6072F9F21F57ED280035AD92 /* IAP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAP.swift; sourceTree = "<group>"; };
+		60789CB820070F3800CD8ED2 /* FinePrintCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinePrintCell.swift; sourceTree = "<group>"; };
+		60789CB920070F3800CD8ED2 /* FinePrintCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FinePrintCell.xib; sourceTree = "<group>"; };
 		60814F5E1F580FB200041801 /* BookCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
 		60814F5F1F580FB200041801 /* BookCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookCell.xib; sourceTree = "<group>"; };
 		6084C7CB1F452A210035F60C /* register.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = register.html; path = FTChinese/register.html; sourceTree = "<group>"; };
@@ -1369,6 +1375,8 @@
 				60814F5F1F580FB200041801 /* BookCell.xib */,
 				60586B011FC280B400C4FBB3 /* MembershipCell.swift */,
 				60586B021FC280B400C4FBB3 /* MembershipCell.xib */,
+				60789CB820070F3800CD8ED2 /* FinePrintCell.swift */,
+				60789CB920070F3800CD8ED2 /* FinePrintCell.xib */,
 				60FEBB531EF0E94B00C3EBB6 /* HeadlineCell.swift */,
 				60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */,
 				6019A9CF1F4C457D00B8FB69 /* FollowCell.swift */,
@@ -1697,6 +1705,7 @@
 				F2C216E11FB030F500927980 /* SubscribeSchemeTableViewCell.xib in Resources */,
 				6021536E1F397C650077A7AF /* schedule.json in Resources */,
 				50C31B3C1F6CD83900F4CF61 /* SimpleHeaderView.xib in Resources */,
+				60789CBD20070F3800CD8ED2 /* FinePrintCell.xib in Resources */,
 				F234B9531FA1C4CE00AACDAB /* my-love.html in Resources */,
 				F2592E831FAC2208000850B6 /* SubscribeTimeTableViewCell.xib in Resources */,
 				6021536F1F397C650077A7AF /* ChannelCellRegular.xib in Resources */,
@@ -1757,6 +1766,7 @@
 				AF64F57B1F582A1700AFAFFC /* Assets.xcassets in Resources */,
 				60C558721F29B786004C4E0E /* schedule.json in Resources */,
 				60F4C1721EFCEBC000F21EB6 /* ChannelCellRegular.xib in Resources */,
+				60789CBC20070F3800CD8ED2 /* FinePrintCell.xib in Resources */,
 				606FD1491FB003540087AE75 /* help.html in Resources */,
 				601C41811F99BC28002D26B2 /* account-big5.html in Resources */,
 				608502581F8B61C300C333A2 /* list.html in Resources */,
@@ -2019,6 +2029,7 @@
 				F2E090701F5A6A3900F4409F /* ColumnViewController.swift in Sources */,
 				F241183F1FAEAA4C00EE50EB /* SubscribeSchemeViewController.swift in Sources */,
 				6021534E1F397C650077A7AF /* ShareImageActivityProvider.swift in Sources */,
+				60789CBB20070F3800CD8ED2 /* FinePrintCell.swift in Sources */,
 				F22545DB1FC5174E00322C42 /* AudioModel.swift in Sources */,
 				F2E0906D1F5A6A3900F4409F /* ColumnCollectionViewCell.swift in Sources */,
 				600BC5071FC683FA00652ADA /* CustomShareViewController.swift in Sources */,
@@ -2154,6 +2165,7 @@
 				60586B031FC280B400C4FBB3 /* MembershipCell.swift in Sources */,
 				60C5586C1F29826A004C4E0E /* Web.swift in Sources */,
 				601417701EEA3F7600DC3EF9 /* DataViewController.swift in Sources */,
+				60789CBA20070F3800CD8ED2 /* FinePrintCell.swift in Sources */,
 				50057FCB1EE977D80092180A /* PagesViewController.swift in Sources */,
 				609763B01F0DCFC100088280 /* AdModel.swift in Sources */,
 				6094DD711FA1612300AAD736 /* Ads.swift in Sources */,

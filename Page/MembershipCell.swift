@@ -93,7 +93,7 @@ class MembershipCell: CustomCell {
         buyButton.setTitle("已订阅", for: .disabled)
         
         // MARK: - update restore button content
-        restoreButton.setTitle("恢复购买", for: .normal)
+        restoreButton.setTitle("恢复订阅", for: .normal)
         
         if let id = itemCell?.id {
             let status = IAP.checkStatus(id)

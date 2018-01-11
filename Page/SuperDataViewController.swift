@@ -114,6 +114,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             collectionView?.register(UINib.init(nibName: "OptionCell", bundle: nil), forCellWithReuseIdentifier: "OptionCell")
             collectionView?.register(UINib.init(nibName: "BookCell", bundle: nil), forCellWithReuseIdentifier: "BookCell")
             collectionView?.register(UINib.init(nibName: "MembershipCell", bundle: nil), forCellWithReuseIdentifier: "MembershipCell")
+            collectionView?.register(UINib.init(nibName: "FinePrintCell", bundle: nil), forCellWithReuseIdentifier: "FinePrintCell")
             collectionView?.register(UINib.init(nibName: "HeadlineCell", bundle: nil), forCellWithReuseIdentifier: "HeadlineCell")
             collectionView?.register(UINib.init(nibName: "Ad", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Ad")
             collectionView?.register(UINib.init(nibName: "HeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
@@ -832,6 +833,15 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 cell.updateUI()
                 return cell
             }
+        case "FinePrintCell":
+            if let cell = cellItem as? FinePrintCell {
+                cell.cellWidth = cellWidth
+                cell.itemCell = fetches.fetchResults[indexPath.section].items[indexPath.row]
+                cell.pageTitle = pageTitle
+                cell.themeColor = themeColor
+                cell.updateUI()
+                return cell
+            }
         case "FollowCell":
             if let cell = cellItem as? FollowCell {
                 cell.cellWidth = cellWidth
@@ -971,6 +981,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 reuseIdentifier = "BookCell"
             } else if item.type == "membership" {
                 reuseIdentifier = "MembershipCell"
+            } else if item.type == "fineprint" {
+                reuseIdentifier = "FinePrintCell"
             } else if item.type == "follow" {
                 reuseIdentifier = "FollowCell"
             } else if item.type == "setting" {
@@ -1105,7 +1117,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             openManualPage(contentId, of: "pagemaker", with: selectedItem.headline)
         } else {
             switch selectedItem.type {
-            case "membership":
+            case "membership", "fineprint":
                 return false
             case "column":
                 if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
@@ -1254,7 +1266,67 @@ extension SuperDataViewController {
                 type: "List",
                 adid: ""
             )
-            let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
+            let finalContentSections: [ContentSection]
+            if dataObjectSubType == "membership" {                
+                var finePrintItems: [ContentItem] = []
+                for item in IAPProducts.finePrintItems {
+                    let oneItem = ContentItem(id: "", image: "", headline: item.headline, lead: item.lead, type: "fineprint", preferSponsorImage: "", tag: "", customLink: "", timeStamp: 0, section: 0, row: 0)
+                    finePrintItems.append(oneItem)
+                }
+                let finePrints = ContentSection(
+                    title: "订阅说明与注意事项",
+                    items: finePrintItems,
+                    type: "List",
+                    adid: ""
+                )
+                let links = ContentSection(
+                    title: "更多服务与信息",
+                    items: [
+                        ContentItem(
+                            id: "privacy",
+                            image: "",
+                            headline: "隐私声明",
+                            lead: "",
+                            type: "setting",
+                            preferSponsorImage: "",
+                            tag: "",
+                            customLink: "",
+                            timeStamp: 0,
+                            section: 0,
+                            row: 0),
+                        ContentItem(
+                            id: "user-term",
+                            image: "",
+                            headline: "用户协议",
+                            lead: "",
+                            type: "setting",
+                            preferSponsorImage: "",
+                            tag: "",
+                            customLink: "",
+                            timeStamp: 0,
+                            section: 0,
+                            row: 0),
+                        ContentItem(
+                            id: "feedback",
+                            image: "",
+                            headline: "反馈",
+                            lead: "",
+                            type: "setting",
+                            preferSponsorImage: "",
+                            tag: "",
+                            customLink: "",
+                            timeStamp: 0,
+                            section: 0,
+                            row: 0)
+                    ],
+                    type: "Group",
+                    adid: nil
+                )
+                finalContentSections = [contentSections, finePrints, links]
+            } else {
+                finalContentSections = [contentSections]
+            }
+            let results = ContentFetchResults(apiUrl: "", fetchResults: finalContentSections)
             self?.updateUI(with: results)
         }
     }

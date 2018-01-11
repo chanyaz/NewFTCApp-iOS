@@ -44,7 +44,7 @@ struct Setting {
             settingType = "action"
             settingDefault = 0
             settingOn = false
-        case "feedback", "app-store", "privacy", "about", "subscriber-contact":
+        case "feedback", "app-store", "privacy", "about", "subscriber-contact", "user-term":
             settingType = "detail"
             settingDefault = 0
             settingOn = false
@@ -189,15 +189,17 @@ struct Setting {
         let urlString: String?
         switch id {
         case "feedback":
-            urlString = "http://www.ftchinese.com/m/corp/faq.html"
+            urlString = "http://www.ftchinese.com/m/corp/faq.html?ad=no"
         case "app-store":
             urlString = "itms-apps://itunes.apple.com/us/app/apple-store/id443870811?mt=8"
         case "privacy":
-            urlString = "http://www.ftchinese.com/m/corp/service.html"
+            urlString = "http://www.ftchinese.com/m/corp/privacy-policy.html?ad=no"
+        case "user-term":
+            urlString = "http://www.ftchinese.com/m/corp/service.html?ad=no"
         case "about":
-            urlString = "http://www.ftchinese.com/m/corp/aboutus.html"
+            urlString = "http://www.ftchinese.com/m/corp/aboutus.html?ad=no"
         case "subscriber-contact":
-            urlString = "http://www.ftchinese.com/m/corp/subscriber.html?webview=ftcapp"
+            urlString = "http://www.ftchinese.com/m/corp/subscriber.html?webview=ftcapp&ad=no"
         default:
             urlString = nil
             break

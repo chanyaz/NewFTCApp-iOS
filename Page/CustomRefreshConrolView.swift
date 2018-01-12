@@ -84,10 +84,11 @@ class CustomRefreshConrol: UIRefreshControl {
     
     //设置控件的大小
     private func updateFrame(){
-        let totalWidth: CGFloat = 55 + self.label.bounds.size.width
+        let totalWidth: CGFloat = 24 + 30 + 86
         let labelX: CGFloat = (screenWidth - totalWidth) / 2
-        self.label.frame = CGRect(x: labelX + 55, y: (refreshHeight - self.label.bounds.size.height)/2, width: label.bounds.size.width, height: self.label.bounds.size.height)
-        self.pullToRefreshButton.frame = CGRect(x: 120, y: CGFloat(15), width: CGFloat(24), height: CGFloat(24))
+        
+        self.label.frame = CGRect(x: labelX + 54, y: (refreshHeight - self.label.bounds.size.height)/2, width: label.bounds.size.width, height: self.label.bounds.size.height)
+        self.pullToRefreshButton.frame = CGRect(x: labelX, y: CGFloat(15), width: CGFloat(24), height: CGFloat(24))
     }
     
     //TODO: - 释放监听
@@ -128,13 +129,14 @@ class CustomRefreshConrol: UIRefreshControl {
         let pullDistance: CGFloat = -self.frame.origin.y
         //      pullDistance = MIN(60, -self.frame.origin.y); 悬浮在顶部
         self.backgroundView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: pullDistance)
-        let totalWidth = 55 + self.label.bounds.size.width
+        let totalWidth: CGFloat = 24 + 30 + 86
         let labelX = (screenWidth - totalWidth)/2
 
-        self.label.frame = CGRect(x: labelX + 55, y: -refreshHeight + pullDistance + (refreshHeight - self.label.bounds.size.height)/2, width: self.label.frame.size.width, height: self.label.frame.size.height)
+        self.label.frame = CGRect(x: labelX + 54, y: -refreshHeight + pullDistance + (refreshHeight - self.label.bounds.size.height)/2, width: self.label.frame.size.width, height: self.label.frame.size.height)
         
-        self.pullToRefreshButton.frame = CGRect(x: 120, y: -refreshHeight+pullDistance+(refreshHeight-self.pullToRefreshButton.bounds.size.height)/2, width: self.pullToRefreshButton.bounds.size.width, height: self.pullToRefreshButton.bounds.size.height)
+        self.pullToRefreshButton.frame = CGRect(x: labelX, y: -refreshHeight+pullDistance+(refreshHeight-self.pullToRefreshButton.bounds.size.height)/2, width: self.pullToRefreshButton.bounds.size.width, height: self.pullToRefreshButton.bounds.size.height)
         self.pullToRefreshButton.progress = Float(pullDistance)/Float(refreshHeight)
+//        print("self.label.bounds.size.width:\(self.label.bounds.size.width)")
     }
     
     
@@ -190,7 +192,7 @@ class UIButtonPullToRefresh: UIButton {
     var progress: Float = 0 {
         didSet {
             circleShape.strokeEnd = CGFloat(self.progress)
-            print("progress--\(progress)")
+//            print("progress--\(progress)")
         }
     }
     

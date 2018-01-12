@@ -108,7 +108,9 @@ extension UIViewController {
         } else {
             popoverPresentationController?.sourceView = view
         }
+        
         present(activityVC, animated: true, completion: nil)
+        grabImagesForShare()
     }
     
     func launchActionSheet(for item: ContentItem, from sender: Any) {
@@ -141,13 +143,17 @@ extension UIViewController {
                 popoverPresentationController?.sourceView = view
             }
             
-            // MARK: - Use the time between action sheet popped and share action clicked to grab the image icon
-            if ShareHelper.shared.webPageImageIcon.range(of: "https://image.webservices.ft.com") == nil{
-                ShareHelper.shared.webPageImageIcon = "https://image.webservices.ft.com/v1/images/raw/\(ShareHelper.shared.webPageImageIcon)?source=ftchinese&width=72&height=72"
-            }
-            if let imgUrl = URL(string: ShareHelper.shared.webPageImageIcon) {
-                ShareHelper.updateThubmnail(imgUrl)
-            }
+            grabImagesForShare()
+        }
+    }
+    
+    private func grabImagesForShare() {
+        // MARK: - Use the time between action sheet popped and share action clicked to grab the image icon
+        if ShareHelper.shared.webPageImageIcon.range(of: "https://image.webservices.ft.com") == nil{
+            ShareHelper.shared.webPageImageIcon = "https://image.webservices.ft.com/v1/images/raw/\(ShareHelper.shared.webPageImageIcon)?source=ftchinese&width=72&height=72"
+        }
+        if let imgUrl = URL(string: ShareHelper.shared.webPageImageIcon) {
+            ShareHelper.updateThubmnail(imgUrl)
         }
     }
     

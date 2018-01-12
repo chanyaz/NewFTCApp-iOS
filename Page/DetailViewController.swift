@@ -345,8 +345,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     
     @objc public func updateEnglishStatus() {
         //print ("English Status Change Received: \(English.sharedInstance.has)")
-        let id = contentPageData[currentPageIndex].id
-        let type = contentPageData[currentPageIndex].type
+        let item = contentPageData[currentPageIndex]
+        let id = item.id
+        let type = item.type
         //print ("English shared instance is now: \(English.sharedInstance)")
         if ["story", "premium"].contains(type), let hasEnglish = English.sharedInstance.has[id], hasEnglish == true {
             print ("Language: current view should display English Switch")
@@ -360,7 +361,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         languages?.selectedSegmentIndex = actualLanguageIndex
         
         // MARK: Update right nav button
-        checkRightNavButton(type)
+        checkRightNavButton(item)
         
     }
     
@@ -430,12 +431,14 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         }
     }
     
-    fileprivate func checkRightNavButton(_ type: String) {
+    fileprivate func checkRightNavButton(_ item: ContentItem?) {
         // MARK: Update Right Bar Button Item
+        if let type = item?.type {
         if ["story", "premium"].contains(type) {
             navigationItem.rightBarButtonItem = audioButton
         } else {
             navigationItem.rightBarButtonItem = nil
+        }
         }
     }
     
@@ -460,12 +463,12 @@ extension DetailViewController: DetailModelDelegate {
                 isFullScreenAdOn = false
             }
         }
+        
         checkSaveButton()
         
         // MARK: Update right nav button
-        if let type = item?.type {
-            checkRightNavButton(type)
-        }
+        checkRightNavButton(item)
+        
         // MARK: Ask the view controller to hide or show status bar
         setNeedsStatusBarAppearanceUpdate()
     }

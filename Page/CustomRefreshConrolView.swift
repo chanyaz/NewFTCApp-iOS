@@ -190,7 +190,7 @@ class UIButtonPullToRefresh: UIButton {
     var progress: Float = 0 {
         didSet {
             circleShape.strokeEnd = CGFloat(self.progress)
-            print("progress--\(progress)")
+//            print("progress--\(progress)")
         }
     }
     

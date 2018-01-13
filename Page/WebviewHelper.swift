@@ -176,8 +176,10 @@ struct WebviewHelper {
                             .replacingOccurrences(of: "{font-class}", with: fontClass)
                             .replacingOccurrences(of: "{comments-id}", with: commentsId)
                             .replacingOccurrences(of: "{night-class}", with: nightClass)
+                            
                         let storyHTMLCheckingVideo = JSCodes.getInlineVideo(storyHTML)
-                        webView?.loadHTMLString(storyHTMLCheckingVideo, baseURL:url)
+                        let storyHTMLRemovingCodes = JSCodes.getCleanHTML(storyHTMLCheckingVideo)
+                        webView?.loadHTMLString(storyHTMLRemovingCodes, baseURL:url)
                     } catch {
                         webView?.load(request)
                     }
@@ -237,7 +239,7 @@ struct WebviewHelper {
         let eBody = dataObject?.ebody ?? ""
         let cBody = dataObject?.cbody ?? ""
         let cHeadline = dataObject?.headline ?? ""
-        if eBody != "" && languagePreference == 1 {
+        if eBody != "" && (languagePreference == 1 || (dataObject?.type == "interactive" && dataObject?.eaudio != nil)) {
             headline = eHeadline
             body = eBody
         } else if eBody != "" && languagePreference == 2 {

@@ -277,7 +277,7 @@ struct APIs {
         let finalUrlString: String
         switch type {
         case "audio":
-            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&v=1"
+            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&for=audio&v=7"
                 .replacingOccurrences(of: "&i=3", with: "")
                 .replacingOccurrences(of: "?i=3", with: "")
         default:
@@ -285,73 +285,6 @@ struct APIs {
         }
         return finalUrlString
     }
-    
-    //    // MARK: Use different domains for different types of content
-    //    static func getUrl(_ id: String, type: String) -> String {
-    //        let urlString: String
-    //        let webPageDomain = getUrlStringInLanguage(webPageDomains)
-    //        let publicDomain = getUrlStringInLanguage(publicDomains)
-    //        switch type {
-    //        case "video":
-    //            urlString = "\(webPageDomain)\(type)/\(id)?webview=ftcapp&002"
-    //        case "radio":
-    //            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&001"
-    //        case "interactive", "gym", "special":
-    //            urlString = "\(webPageDomain)interactive/\(id)?webview=ftcapp&i=3&001"
-    //        case "channel", "tag", "archive", "archiver":
-    //            urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
-    //        case "story":
-    //            urlString = "\(publicDomain)/\(type)/\(id)?webview=ftcapp&full=y"
-    //        case "photonews", "photo":
-    //            urlString = "\(webPageDomain)photonews/\(id)?webview=ftcapp&i=3"
-    //        case "register":
-    //            urlString = "\(publicDomain)index.php/users/register?i=4&webview=ftcapp"
-    //        case "htmlbook":
-    //            urlString = "\(webPageDomain)htmlbook"
-    //        case "htmlfile":
-    //            urlString = "\(webPageDomain)htmlfile"
-    //        case "html":
-    //            urlString = "\(webPageDomain)\(id).html"
-    //        default:
-    //            urlString = "\(webPageDomain)"
-    //        }
-    //        return urlString
-    //    }
-    
-    
-    //    // MARK: Use different domains for different types of content
-    //    static func getSecureUrl(_ id: String, type: String) -> String {
-    //        let urlString: String
-    //        let originalDomain = getUrlStringInLanguage(htmlDomains)
-    //        let domain = checkServer(originalDomain)
-    //
-    //        switch type {
-    //        case "video":
-    //            urlString = "\(domain)\(type)/\(id)?webview=ftcapp&002"
-    //        case "radio":
-    //            urlString = "\(domain)interactive/\(id)?webview=ftcapp&001"
-    //        case "interactive", "gym", "special":
-    //            urlString = "\(domain)interactive/\(id)?webview=ftcapp&i=3&001"
-    //        case "channel", "tag", "archive", "archiver":
-    //            urlString = "\(domain)\(type)/\(id.addUrlEncoding())?webview=ftcapp&001"
-    //        case "story":
-    //            urlString = "\(domain)/\(type)/\(id)?webview=ftcapp&full=y"
-    //        case "photonews", "photo":
-    //            urlString = "\(domain)photonews/\(id)?webview=ftcapp&i=3"
-    //        case "register":
-    //            urlString = "\(domain)index.php/users/register?i=4&webview=ftcapp"
-    //        case "htmlbook":
-    //            urlString = "\(domain)htmlbook"
-    //        case "htmlfile":
-    //            urlString = "\(domain)htmlfile"
-    //        case "html":
-    //            urlString = "\(domain)\(id).html"
-    //        default:
-    //            urlString = "\(domain)"
-    //        }
-    //        return urlString
-    //    }
-    
     
     // MARK: Get url string for subtypes by adding parameters to type urlstring
     static func getUrl(_ id: String, type: String, subType: ContentSubType) -> String {
@@ -700,6 +633,7 @@ struct JSCodes {
     static let turnOnNightClass = "setTimeout(function(){document.documentElement.className += ' night';},0);"
     static let turnOffNightClass = "document.documentElement.className = document.documentElement.className.replace(/night/g, '');"
     static let autoPlayVideoType = "autoPlayVideo"
+    static let englishAudioType = "English Audio"
     static func get(_ type: String) -> String {
         let isNightMode = Setting.isSwitchOn("night-reading-mode")
         let nightModeCode: String
@@ -711,6 +645,9 @@ struct JSCodes {
         switch type {
         case autoPlayVideoType:
             let jsCode = "\(nightModeCode)window.gConnectionType = '\(Connection.current())';playVideoOnWifi();"
+            return jsCode
+        case englishAudioType:
+            let jsCode = "\(nightModeCode)window.gConnectionType = '\(Connection.current())';var ebody = document.getElementById('speedread-article').innerHTML;webkit.messageHandlers.ebody.postMessage({ebody: ebody});"
             return jsCode
         case "manual":
             var jsCode = ""
@@ -750,6 +687,20 @@ struct JSCodes {
         }
         return storyHTMLCheckingVideo
     }
+    
+    public static func getCleanHTML(_ storyHTML: String) -> String {
+        let storyHTMLCleanHTML: String
+        if storyHTML.range(of: "<div class=\"story-theme\"><a target=\"_blank\" href=\"/tag/\"></a><button class=\"myft-follow plus\" data-tag=\"\" data-type=\"tag\">关注</button></div>") != nil {
+            storyHTMLCleanHTML = storyHTML.replacingOccurrences(of: "<div class=\"story-theme\"><a target=\"_blank\" href=\"/tag/\"></a><button class=\"myft-follow plus\" data-tag=\"\" data-type=\"tag\">关注</button></div>", with: "")
+                .replacingOccurrences(of: "<div class=\"story-image image\" style=\"margin-bottom:0;\"><figure data-url=\"\" class=\"loading\"></figure></div>", with: "")
+                .replacingOccurrences(of: "<div class=\"story-box last-child\" ><h2 class=\"box-title\"><a>相关话题</a></h2><ul class=\"top10\"><li class=\"story-theme mp1\"><a target=\"_blank\" href=\"/tag/\"></a><div class=\"icon-right\"><button class=\"myft-follow plus\" data-tag=\"\" data-type=\"tag\">关注</button></div></li></ul></div>", with: "")
+        } else {
+            storyHTMLCleanHTML = storyHTML
+        }
+        return storyHTMLCleanHTML
+    }
+    
+    
 }
 
 // MARK: - Alert Messages that you might want to change for your own

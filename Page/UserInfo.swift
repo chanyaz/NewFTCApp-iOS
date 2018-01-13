@@ -23,7 +23,7 @@ struct UserInfo {
             UserInfo.shared.userId = userId
             UserDefaults.standard.set(userName, forKey: userNameKey)
             UserDefaults.standard.set(userId, forKey: userIdKey)
-            print ("user name: \(userName); user id: \(userId)")
+            //print ("user name: \(userName); user id: \(userId)")
         }
     }
     

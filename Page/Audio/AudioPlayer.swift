@@ -246,7 +246,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         let url: String
         if let id = item?.id,
             let type = item?.type {
-            if ["story", "premium"].contains(type) {
+            if ["story", "premium"].contains(type) || item?.ebody != nil{
                 item?.hideAd = true
                 WebviewHelper.renderStory(type, subType: .None, dataObject: item, webView: webView)
             } else {

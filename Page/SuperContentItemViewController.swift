@@ -61,6 +61,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     let jsCode: String
                     if type == "video" && dataObject?.isLandingPage == true {
                         jsCode = JSCodes.get(JSCodes.autoPlayVideoType)
+                    } else if type == "interactive" && dataObject?.eaudio != nil {
+                        jsCode = JSCodes.get(JSCodes.englishAudioType)
                     } else {
                         jsCode = JSCodes.get(type)
                     }
@@ -78,6 +80,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 contentController.add(LeakAvoider(delegate:self), name: "listen")
                 contentController.add(LeakAvoider(delegate:self), name: "user")
                 contentController.add(LeakAvoider(delegate:self), name: "mySetting")
+                contentController.add(LeakAvoider(delegate:self), name: "ebody")
                 config.userContentController = contentController
                 config.allowsInlineMediaPlayback = true
                 if let dataObjectType = dataObject?.type {
@@ -547,6 +550,11 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
             case "alert":
                 if let title = body["title"], let lead = body["message"] {
                     Alert.present(title, message: lead)
+                }
+            case "ebody":
+                //print ("ebody received");
+                if let ebody = body["ebody"] {
+                    dataObject?.ebody = ebody
                 }
             case "follow":
                 if let type = body["type"], let keyword = body["tag"], let action = body["action"] {

@@ -283,11 +283,11 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 audioScreenName = "audio/\(audioLanguage ?? "")/story/\(dataObject.id)"
             } else if let eaudio = dataObject.eaudio,
                 eaudio != "",
-                language == "en" {
+                language == "en" || dataObject.type == "interactive" {
                 print ("There is english audio: \(eaudio) for this item, handle it later. ")
                 audioFileUrl = eaudio
                 audioLanguage = "en"
-                audioScreenName = "audio/\(audioLanguage ?? "")/story/\(dataObject.id)"
+                audioScreenName = "audio/\(audioLanguage ?? "")/\(dataObject.type)/\(dataObject.id)"
                 // MARK: If the user doesn't have the necessary privilege to listen to English audio, present membership options to him
                 // MARK: If a user bought the eBook, he should be able to listen to it without membership privilege
                 if Privilege.shared.englishAudio == false && dataObject.isDownloaded == false {
@@ -434,11 +434,11 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     fileprivate func checkRightNavButton(_ item: ContentItem?) {
         // MARK: Update Right Bar Button Item
         if let type = item?.type {
-        if ["story", "premium"].contains(type) {
-            navigationItem.rightBarButtonItem = audioButton
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
+            if ["story", "premium"].contains(type) || item?.eaudio != nil {
+                navigationItem.rightBarButtonItem = audioButton
+            } else {
+                navigationItem.rightBarButtonItem = nil
+            }
         }
     }
     

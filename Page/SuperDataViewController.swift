@@ -343,9 +343,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     }
     
     private func requestNewContentForWebview(_ listAPI: String, urlString: String, fileExtension: String) {
-        view.addSubview(activityIndicator)
-        activityIndicator.center = self.view.center
-        activityIndicator.startAnimating()
+        DispatchQueue.main.async {
+            self.view.addSubview(self.activityIndicator)
+            self.activityIndicator.center = self.view.center
+            self.activityIndicator.startAnimating()
+        }
         let listAPIString = APIs.convert(Download.addVersionAndTimeStamp(listAPI))
         print ("requesting api from: \(listAPIString)")
         if let url = URL(string: listAPIString) {

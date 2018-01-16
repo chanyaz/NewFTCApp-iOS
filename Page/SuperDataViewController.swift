@@ -14,7 +14,7 @@ import MediaPlayer
 class SuperDataViewController: UICollectionViewController, UINavigationControllerDelegate, UICollectionViewDataSourcePrefetching {
     var refreshContr: CustomRefreshConrol?
     var isLandscape = false
-//    var refreshControl = UIRefreshControl()
+    //    var refreshControl = UIRefreshControl()
     let flowLayout = PageCollectionViewLayoutV()
     let flowLayoutH = PageCollectionViewLayoutH()
     let columnNum: CGFloat = 1 //use number of columns instead of a static maximum cell width
@@ -126,7 +126,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             // MARK: - show refresh controll only when there is api
             if dataObject["api"] != nil || dataObjectType == "follow" {
                 if #available(iOS 10.0, *) {
-//                    refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
+                    //                    refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
                     refreshContr = CustomRefreshConrol(target: self, refreshAction: #selector(refreshControlDidFire))
                     collectionView?.refreshControl = refreshContr
                 }
@@ -183,9 +183,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             webView?.clipsToBounds = true
             webView?.scrollView.bounces = true
             refreshContr = CustomRefreshConrol(target: self, refreshAction: #selector(refreshWebView))
-//            refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
+            //            refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
             webView?.scrollView.addSubview(refreshContr!)
-//            webView?.scrollView.addSubview(refreshControl)
+            //            webView?.scrollView.addSubview(refreshControl)
             if dataObjectType == "Search" {
                 searchBar = UISearchBar()
                 searchBar?.sizeToFit()
@@ -337,7 +337,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             )
         } else {
             activityIndicator.removeFromSuperview()
-//            refreshControl.endRefreshing()
+            //            refreshControl.endRefreshing()
             refreshContr?.endRefreshing()
         }
     }
@@ -408,7 +408,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         )
                         DispatchQueue.main.async {
                             self.webView?.loadHTMLString(listHTML, baseURL:url)
-//                            self.refreshControl.endRefreshing()
+                            //                            self.refreshControl.endRefreshing()
                             self.refreshContr?.endRefreshing()
                         }
                         
@@ -1419,7 +1419,7 @@ extension SuperDataViewController {
         }
     }
     
-
+    
     public func switchUI(_ actionType: String) {
         loadProducts()
     }
@@ -1554,10 +1554,16 @@ extension SuperDataViewController: WKScriptMessageHandler {
             )
             prefetch()
             // MARK: Extract Adid
+            //print (message.body)
             if let body = message.body as? [String: Any],
-                let meta = body["meta"] as? [String: String],
-                let adId = meta["adid"] {
-                adchId = adId
+                let meta = body["meta"] as? [String: String] {
+                if let adId = meta["adid"] {
+                    adchId = adId
+                }
+                if let title = meta["title"] {
+                    pageTitle = title
+                    navigationItem.title = title
+                }
             }
         } else if message.name == "sponsors" {
             // MARK: Get sponsor information

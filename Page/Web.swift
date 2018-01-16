@@ -50,7 +50,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 let linkSource = (urlString.matchingStrings(regexes: LinkPattern.xiaobingStoryLink) != nil) ? "xiaobing" : nil
                 if let type = type,
                     ["tag", "archiver", "channel"].contains(type) == true {
-                    openDataView(id, of: type)
+                    openDataView(id, of: type, in: urlString)
                     return
                 }
                 if let type = type,
@@ -242,20 +242,35 @@ extension UIViewController: SFSafariViewControllerDelegate{
     }
     
     
-    func openDataView(_ id: String?, of type: String) {
+    func openDataView(_ id: String?, of type: String, in url: String?) {
         if let id = id,
             let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
             let listAPI = APIs.getUrl(id, type: type, isSecure: true, isPartial: true)
             let urlString = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
+            let finalListAPI = combineParameters(listAPI, with: url)
+            let finalUrlString = combineParameters(urlString, with: url)
             dataViewController.dataObject = [
                 "title": id,
-                "listapi": listAPI,
-                "url": urlString,
+                "listapi": finalListAPI,
+                "url": finalUrlString,
                 "screenName":"\(type)/\(id)"
             ]
             dataViewController.pageTitle = id
             self.navigationController?.pushViewController(dataViewController, animated: true)
         }
+    }
+    
+    private func combineParameters(_ firstUrl: String, with secondUrl: String?) -> String {
+        let secondUrlParameter: String
+        if let secondUrl = secondUrl,
+            secondUrl.range(of: "?") != nil {
+            secondUrlParameter = secondUrl.replacingOccurrences(of: "^[^?]+\\?", with: "", options: .regularExpression)
+        } else {
+            secondUrlParameter = ""
+        }
+        let connector = (firstUrl.range(of: "?") == nil) ? "?": "&"
+        let finalUrl = "\(firstUrl)\(connector)\(secondUrlParameter)"
+        return finalUrl
     }
     
     func openManualPage(_ id: String?, of type: String, with title: String) {

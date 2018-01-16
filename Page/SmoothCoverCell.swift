@@ -140,7 +140,7 @@ class SmoothCoverCell: UICollectionViewCell {
     @objc open func tapTag(_ recognizer: UITapGestureRecognizer) {
         if let topController = UIApplication.topViewController(),
             let tag = topicView.text {
-            topController.openDataView(tag, of: "tag")
+            topController.openDataView(tag, of: "tag", in: nil)
         }
     }
     

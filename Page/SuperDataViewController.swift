@@ -184,7 +184,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             webView?.scrollView.bounces = true
             refreshContr = CustomRefreshConrol(target: self, refreshAction: #selector(refreshWebView))
             //            refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
-            webView?.scrollView.addSubview(refreshContr!)
+            if let refreshContr = refreshContr {
+                webView?.scrollView.addSubview(refreshContr)
+            }
             //            webView?.scrollView.addSubview(refreshControl)
             if dataObjectType == "Search" {
                 searchBar = UISearchBar()
@@ -353,17 +355,30 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
                 DispatchQueue.global().async {
+                    var status: RequestStatus? = nil
                     if error != nil {
                         Download.handleServerError(listAPIString, error: error)
+                        let statusType = Connection.current()
+                        if statusType == "no" {
+                            status = .NoConnection
+                        } else {
+                            status = .ConnectionFailed
+                        }
                     }
                     if let data = data,
-                        error == nil,
-                        HTMLValidator.validate(data, url: listAPIString) {
-                        Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
+                        error == nil {
+                        if HTMLValidator.validate(data, url: listAPIString) {
+                            Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
+                            status = .Success
+                        } else {
+                            status = .ValidationFaild
+                        }
                     }
                     DispatchQueue.main.async {
                         self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
                         self?.activityIndicator.removeFromSuperview()
+                        // TODO: Show a message in the view controller, which disappears in 2 seconds.
+                        RequestMessage.show(status, in: self?.view)
                     }
                 }
             }

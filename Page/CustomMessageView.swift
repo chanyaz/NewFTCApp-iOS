@@ -56,6 +56,7 @@ struct RequestMessage {
             let message = status.rawValue
             let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: height)
             button.frame = frame
+            button.autoresizingMask = [.flexibleWidth]
             button.setTitle(message, for: .normal)
             button.setBackgroundColor(color: UIColor(hex: "#f2e5da"), forState: .normal)
             button.setTitleColor(UIColor(hex: Color.Content.lead), for: .normal)

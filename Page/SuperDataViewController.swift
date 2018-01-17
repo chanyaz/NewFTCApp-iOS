@@ -49,6 +49,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     )
     fileprivate let contentAPI = ContentFetch()
     var dataObject = [String: String]()
+    // MARK: Don't change pageTitle if you are in a page view controller. 
     var pageTitle: String = ""
     
     public lazy var webView: WKWebView? = nil
@@ -1578,7 +1579,7 @@ extension SuperDataViewController: WKScriptMessageHandler {
                     adchId = adId
                 }
                 if let title = meta["title"] {
-                    pageTitle = title
+                    // MARK: - Set the navigation title to the page title, if applicable
                     navigationItem.title = title
                 }
             }

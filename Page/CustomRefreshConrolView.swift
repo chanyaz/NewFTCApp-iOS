@@ -11,7 +11,7 @@ import AVFoundation
 // MARK: - 刷新Label的text
 let normalTitle = "下拉刷新"
 let pullingTitle = "松开立即请求"
-let refreshingTitle = "正在刷新"
+let refreshingTitle = "正在等待服务器响应"
 
 // MARK: - 当下拉到转完圈之前一直是“下拉刷新”，刚转完之后就变成“松开立即请求”，松手之后，变成“正在刷新”，当刷新完成就恢复为“下拉刷新”（即原始状态，复原）
 // MARK: - 第一步：考虑怎么绘制转圈？根据contentOffset值来确定高度，圈的显示多少跟contentOffset有个正比关系；怎么有转圈动画呢？应该有个参数，设置动画为true。
@@ -141,7 +141,6 @@ class CustomRefreshConrol: UIRefreshControl {
     
     
     func setCurrentState(currentState: refreshState){
-        
         switch currentState{
         case refreshState.normal:
             print("切换到Normal")

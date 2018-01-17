@@ -54,6 +54,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     public lazy var webView: WKWebView? = nil
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    private let requestStatus = UIButton()
+    private var requestStatusAdded = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -338,6 +340,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 urlString: urlString,
                 fileExtension: fileExtension
             )
+            RequestMessage.update(.Hidden, with: self.requestStatus, in: self.view)
         } else {
             activityIndicator.removeFromSuperview()
             //            refreshControl.endRefreshing()
@@ -347,9 +350,16 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     private func requestNewContentForWebview(_ listAPI: String, urlString: String, fileExtension: String) {
         DispatchQueue.main.async {
-            self.view.addSubview(self.activityIndicator)
-            self.activityIndicator.center = self.view.center
-            self.activityIndicator.startAnimating()
+//            self.view.addSubview(self.activityIndicator)
+//            self.activityIndicator.center = self.view.center
+//            self.activityIndicator.startAnimating()
+            if self.requestStatusAdded == false {
+                RequestMessage.add(.Pending, with: self.requestStatus, in: self.view)
+                self.requestStatusAdded = true
+            }
+            if self.refreshContr?.currentStatus == .normal {
+                RequestMessage.update(.Pending, with: self.requestStatus, in: self.view)
+            }
         }
         let listAPIString = APIs.convert(Download.addVersionAndTimeStamp(listAPI))
         print ("requesting api from: \(listAPIString)")
@@ -377,9 +387,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     }
                     DispatchQueue.main.async {
                         self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
-                        self?.activityIndicator.removeFromSuperview()
+//                        self?.activityIndicator.removeFromSuperview()
                         // TODO: Show a message in the view controller, which disappears in 2 seconds.
-                        RequestMessage.show(status, in: self?.view)
+                        RequestMessage.update(status, with: self?.requestStatus, in: self?.view)
                     }
                 }
             }

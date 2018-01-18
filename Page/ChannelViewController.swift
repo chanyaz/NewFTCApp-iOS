@@ -258,6 +258,8 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     
     func goToPage(_ index: Int, isUserPanningEnd: Bool) {
         self.isUserPanningEnd = isUserPanningEnd
+        // MARK: update the current page index
+        //print (pageViewController)
         currentChannelIndex = index
         updateBackBarButton(for: index)
     }
@@ -283,7 +285,14 @@ extension ChannelViewController {
 extension ChannelViewController: ChannelModelDelegate {
     func pagePanningEnd(_ pageInfoObject: (index: Int, title: String)) {
         let index = pageInfoObject.index
-        // print ("panning to \(pageInfoObject.title): \(index)")
+        print ("panning to \(pageInfoObject.title): \(index)")
         goToPage(index, isUserPanningEnd: true)
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        print ("page changed with panning: \(pageViewController)/\(finished)")
+        if let presentedDataViewController = pageViewController.presentedViewController as? DataViewController {
+            print ("page changed with panning: \(presentedDataViewController.pageTitle)\(finished)")
+        }
     }
 }

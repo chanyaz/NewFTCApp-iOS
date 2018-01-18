@@ -29,7 +29,8 @@ class MembershipCell: CustomCell {
         case .New:
             if let id = itemCell?.id {
                 // MARK: If user logged in, purchase directly
-                if UserInfo.shared.userName != nil && UserInfo.shared.userName != "" {
+                print ("user id is now \(String(describing: UserInfo.shared.userId))")
+                if UserInfo.shared.userId != nil && UserInfo.shared.userId != "" {
                     buyImmediately(id)
                 } else {
                     let alert = UIAlertController(title: "您还没有登录FT中文网", message: "建议您先登录FT中文网，再继续购买，这样您购买的会员服务可以跨设备享受。", preferredStyle: UIAlertControllerStyle.alert)

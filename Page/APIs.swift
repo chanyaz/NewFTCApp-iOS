@@ -237,7 +237,7 @@ struct APIs {
             urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&i=3&001"
         case "channel", "tag", "archive", "archiver":
             urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())\(partialParameter)&webview=ftcapp"
-        case "story":
+        case "story", "premium":
             urlString = "\(publicDomain)/\(type)/\(id)\(partialParameter)&webview=ftcapp&full=y"
         case "photonews", "photo":
             urlString = "\(webPageDomain)photonews/\(id)\(partialParameter)&webview=ftcapp&i=3"

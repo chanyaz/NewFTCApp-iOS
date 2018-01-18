@@ -20,9 +20,9 @@ class PrivilegeView: UIView {
     let boxViewHeight: CGFloat = 220
     let buttonInsect = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 8)
     
-    let titleText = "成为会员，阅读FT独家内容"
+    let titleText = "购买会员服务，阅读FT独家内容"
     let subscriptionTitle = "立即订阅▶︎"
-    let loginQuestion = "已经是FT中文网会员？"
+    let loginQuestion = "已经购买过？"
     let loginAction = "登录"
     
     func initUI() {
@@ -73,20 +73,22 @@ class PrivilegeView: UIView {
         subscriptButton.isUserInteractionEnabled = true
         subscriptButton.addGestureRecognizer(tapGestureRecognizer)
 
-        // MARK: Add the login label
-        let attrs1 = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : fontColor]
-        let attrs2 = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : actionColor]
-        let attributedString1 = NSMutableAttributedString(string: loginQuestion, attributes:attrs1)
-        let attributedString2 = NSMutableAttributedString(string: loginAction, attributes:attrs2)
-        attributedString1.append(attributedString2)
-        loginLabel.attributedText = attributedString1
-        boxView.addSubview(loginLabel)
-        loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        addConstraint(NSLayoutConstraint(item: loginLabel, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: subscriptButton, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: horizontalMargin))
-        addConstraint(NSLayoutConstraint(item: loginLabel, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: boxView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-        let tapGestureRecognizerForLogin = UITapGestureRecognizer(target:self, action:#selector(showAccountPage(_:)))
-        loginLabel.isUserInteractionEnabled = true
-        loginLabel.addGestureRecognizer(tapGestureRecognizerForLogin)
+        // MARK: Add the login label only if the user hasn't log in
+        if UserInfo.shared.userId == nil || UserInfo.shared.userId == "" {
+            let attrs1 = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : fontColor]
+            let attrs2 = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : actionColor]
+            let attributedString1 = NSMutableAttributedString(string: loginQuestion, attributes:attrs1)
+            let attributedString2 = NSMutableAttributedString(string: loginAction, attributes:attrs2)
+            attributedString1.append(attributedString2)
+            loginLabel.attributedText = attributedString1
+            boxView.addSubview(loginLabel)
+            loginLabel.translatesAutoresizingMaskIntoConstraints = false
+            addConstraint(NSLayoutConstraint(item: loginLabel, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: subscriptButton, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: horizontalMargin))
+            addConstraint(NSLayoutConstraint(item: loginLabel, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: boxView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
+            let tapGestureRecognizerForLogin = UITapGestureRecognizer(target:self, action:#selector(showAccountPage(_:)))
+            loginLabel.isUserInteractionEnabled = true
+            loginLabel.addGestureRecognizer(tapGestureRecognizerForLogin)
+        }
         
     }
 

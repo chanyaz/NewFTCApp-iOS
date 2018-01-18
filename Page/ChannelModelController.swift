@@ -50,20 +50,13 @@ class ChannelModelController: ModelController{
         // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
         if let currentPageIndex = pageTitles.index(of: viewController.pageTitle) {
             print ("index Of ViewController: \(currentPageIndex)")
-            // MARK: In this case, notification is not the best way to pass data from model to controller. We should use Delegate instead.
-            // MARK: Post a notification that the current page index is changed. And also make clear that it comes from user panning pages
+            // MARK: In this case, notification is not the best way to pass data from model to controller. Use Delegate instead.
             let pageInfoObject = (
                 index: currentPageIndex,
                 title: viewController.pageTitle
             )
-//            if let tabName = self.tabName {
-//                let name = NSNotification.Name(rawValue: Event.pagePanningEnd(for: tabName))
-//                NotificationCenter.default.post(name: name, object: pageInfoObject)
-//                
-//            }
-            //print ("should run delegate of \(pageInfoObject.title)")
+            //print ("should run delegate for panning to \(pageInfoObject.title)")
             delegate?.pagePanningEnd(pageInfoObject)
-
             return currentPageIndex
         }
         return NSNotFound

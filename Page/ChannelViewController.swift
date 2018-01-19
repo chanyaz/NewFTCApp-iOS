@@ -132,9 +132,11 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         channelScrollerView?.delegate = self
         channelScrollerView?.dataSource = self
         updateColorScheme()
+        
         if let channelScrollerView = channelScrollerView {
             self.view.addSubview(channelScrollerView)
         }
+        
         //modelController.delegate = self
         
         // MARK: - Notification For English Status Change

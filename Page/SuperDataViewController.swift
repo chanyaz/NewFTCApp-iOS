@@ -51,6 +51,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     var dataObject = [String: String]()
     // MARK: Don't change pageTitle if you are in a page view controller. 
     var pageTitle: String = ""
+    var pageIndex: Int?
     
     public lazy var webView: WKWebView? = nil
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)

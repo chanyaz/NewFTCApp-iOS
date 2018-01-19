@@ -14,7 +14,10 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     private let channelScrollerHeight: CGFloat = 44
     let cellMinWidth: CGFloat = 50
     
-    
+    var lastPendingViewControllerPageTitle = ""
+    var currentViewControllerPageTitle = ""
+    var lastPendingViewControllerIndex: Int?
+    var currentViewControllerIndex: Int?
     
     var channelScrollerView: UICollectionView?
     var scrollerCellIdentifier = "ChannelScrollerCell"
@@ -132,7 +135,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         if let channelScrollerView = channelScrollerView {
             self.view.addSubview(channelScrollerView)
         }
-        modelController.delegate = self
+        //modelController.delegate = self
         
         // MARK: - Notification For English Status Change
         NotificationCenter.default.addObserver(
@@ -282,17 +285,43 @@ extension ChannelViewController {
     }
 }
 
-extension ChannelViewController: ChannelModelDelegate {
-    func pagePanningEnd(_ pageInfoObject: (index: Int, title: String)) {
-        let index = pageInfoObject.index
-        print ("panning to \(pageInfoObject.title): \(index)")
-        goToPage(index, isUserPanningEnd: true)
-    }
+extension ChannelViewController {
     
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        print ("page changed with panning: \(pageViewController)/\(finished)")
-        if let presentedDataViewController = pageViewController.presentedViewController as? DataViewController {
-            print ("page changed with panning: \(presentedDataViewController.pageTitle)\(finished)")
+//    func pagePanningEnd(_ pageInfoObject: (index: Int, title: String)) {
+////        let index = pageInfoObject.index
+////        //print ("panning to \(pageInfoObject.title): \(index)")
+////        goToPage(index, isUserPanningEnd: true)
+//    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        //print ("page will change with panning: \(pageViewController)")
+        if let viewController = pendingViewControllers[0] as? DataViewController {
+            // 2
+            lastPendingViewControllerPageTitle = viewController.pageTitle
+            lastPendingViewControllerIndex = viewController.pageIndex
+            print ("Will be panning to \(lastPendingViewControllerPageTitle)/\(String(describing: lastPendingViewControllerIndex))")
         }
     }
+    
+//    func pageViewController(_ pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]){
+//        print ("page will change with panning: \(pageViewController)")
+//        if let viewController = pendingViewControllers[0] as? DataViewController {
+//            // 2
+//            lastPendingViewControllerPageTitle = viewController.pageTitle
+//            print ("Will be panning to \(lastPendingViewControllerPageTitle)")
+//        }
+//    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        //print ("page changed with panning: \(pageViewController)/\(completed)")
+        if completed {
+            currentViewControllerPageTitle = lastPendingViewControllerPageTitle
+            currentViewControllerIndex = lastPendingViewControllerIndex
+            print ("page changed with panning: \(currentViewControllerPageTitle)/\(String(describing: currentViewControllerIndex))")
+            if let index = currentViewControllerIndex {
+                goToPage(index, isUserPanningEnd: true)
+            }
+        }
+    }
+    
 }

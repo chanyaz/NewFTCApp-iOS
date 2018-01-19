@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 class ChannelModelController: ModelController{
     var pageData = [[String: String]]()
-    weak var delegate: ChannelModelDelegate?
+    //weak var delegate: ChannelModelDelegate?
     // MARK: - If it's a channel view
     init(tabName: String) {
         super.init()
@@ -42,6 +42,7 @@ class ChannelModelController: ModelController{
         dataViewController.pageTitle = self.pageTitles[index]
         dataViewController.coverTheme = self.coverThemes[index]
         dataViewController.themeColor = self.pageThemeColor
+        dataViewController.pageIndex = index
         return dataViewController
     }
     
@@ -51,12 +52,12 @@ class ChannelModelController: ModelController{
         if let currentPageIndex = pageTitles.index(of: viewController.pageTitle) {
             print ("index Of ViewController: \(currentPageIndex)")
             // MARK: In this case, notification is not the best way to pass data from model to controller. Use Delegate instead.
-            let pageInfoObject = (
-                index: currentPageIndex,
-                title: viewController.pageTitle
-            )
+//            let pageInfoObject = (
+//                index: currentPageIndex,
+//                title: viewController.pageTitle
+//            )
             //print ("should run delegate for panning to \(pageInfoObject.title)")
-            delegate?.pagePanningEnd(pageInfoObject)
+            //delegate?.pagePanningEnd(pageInfoObject)
             return currentPageIndex
         }
         return NSNotFound

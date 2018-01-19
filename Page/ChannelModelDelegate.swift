@@ -9,6 +9,7 @@
 import Foundation
 // MARK: Delegate Step 1: Create Protocol.
 
-protocol ChannelModelDelegate: class {
-    func pagePanningEnd(_ pageInfoObject: (index: Int, title: String))
-}
+//protocol ChannelModelDelegate: class {
+//    func pagePanningEnd(_ pageInfoObject: (index: Int, title: String))
+//}
+

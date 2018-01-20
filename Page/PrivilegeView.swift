@@ -8,6 +8,12 @@
 
 import Foundation
 import UIKit
+
+struct ConversionTracker {
+    static var shared = ConversionTracker()
+    var item: ContentItem?
+}
+
 class PrivilegeView: UIView {
     var privilegeRequired: PrivilegeType?
     let boxView = UIView()
@@ -95,12 +101,20 @@ class PrivilegeView: UIView {
     @objc open func showSubscription(_ sender: UITapGestureRecognizer) {
         if let privilegeRequired = privilegeRequired {
             let _ = PrivilegeViewHelper.showSubscriptionView(for: privilegeRequired)
+            // MARK: Track the tap event even if something is wrong with the conversion item
+            let type = ConversionTracker.shared.item?.type ?? ""
+            let id = ConversionTracker.shared.item?.id ?? ""
+            Track.event(category: "Privilege View", action: "Tap Subscription", label: "\(type)/\(id)")
         }
     }
     
     
     @objc open func showAccountPage(_ sender: UITapGestureRecognizer) {
             UserInfo.showAccountPage()
+        // MARK: Track the tap event even if something is wrong with the conversion item
+        let type = ConversionTracker.shared.item?.type ?? ""
+        let id = ConversionTracker.shared.item?.id ?? ""
+        Track.event(category: "Privilege View", action: "Tap Login", label: "\(type)/\(id)")
     }
 
     
@@ -108,13 +122,23 @@ class PrivilegeView: UIView {
 
 struct PrivilegeViewHelper {
     
-    public static func insertPrivilegeView(to sourceView: UIView, with privilegeType: PrivilegeType) {
+    public static func insertPrivilegeView(to sourceView: UIView, with privilegeType: PrivilegeType, from item: ContentItem?) {
         let privilegeView = PrivilegeView()
         privilegeView.privilegeRequired = privilegeType
+        //privilegeView.sourceItem = item
         privilegeView.initUI()
         privilegeView.frame = sourceView.frame
         privilegeView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         sourceView.addSubview(privilegeView)
+        
+        // MARK: Update the conversion tracker item
+        ConversionTracker.shared.item = item
+        
+        // MARK: Track the event of PrivilegeView display
+        if let type = item?.type,
+            let id = item?.id {
+            Track.event(category: "Privilege View", action: "Display", label: "\(type)/\(id)")
+        }
     }
     
     public static func removePrivilegeView(from sourceView: UIView) {
@@ -143,31 +167,4 @@ struct PrivilegeViewHelper {
     }
 }
 
-class UIButtonWithSpacing: UIButton {
-    override func setTitle(_ title: String?, for state: UIControlState) {
-        if let title = title, spacing != 0 {
-            let color = super.titleColor(for: state) ?? UIColor.black
-            let attributedTitle = NSAttributedString(
-                string: title,
-                attributes: [NSAttributedStringKey.kern: spacing,
-                             NSAttributedStringKey.foregroundColor: color])
-            super.setAttributedTitle(attributedTitle, for: state)
-        } else {
-            super.setTitle(title, for: state)
-        }
-    }
-    
-    fileprivate func updateTitleLabel_() {
-        let states:[UIControlState] = [.normal, .highlighted, .selected, .disabled]
-        for state in states {
-            let currentText = super.title(for: state)
-            self.setTitle(currentText, for: state)
-        }
-    }
-    
-    @IBInspectable var spacing:CGFloat = 0 {
-        didSet {
-            updateTitleLabel_()
-        }
-    }
-}
+

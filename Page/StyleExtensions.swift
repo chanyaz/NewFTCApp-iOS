@@ -479,3 +479,33 @@ extension UIView {
         return nil
     }
 }
+
+
+class UIButtonWithSpacing: UIButton {
+    override func setTitle(_ title: String?, for state: UIControlState) {
+        if let title = title, spacing != 0 {
+            let color = super.titleColor(for: state) ?? UIColor.black
+            let attributedTitle = NSAttributedString(
+                string: title,
+                attributes: [NSAttributedStringKey.kern: spacing,
+                             NSAttributedStringKey.foregroundColor: color])
+            super.setAttributedTitle(attributedTitle, for: state)
+        } else {
+            super.setTitle(title, for: state)
+        }
+    }
+    
+    fileprivate func updateTitleLabel_() {
+        let states:[UIControlState] = [.normal, .highlighted, .selected, .disabled]
+        for state in states {
+            let currentText = super.title(for: state)
+            self.setTitle(currentText, for: state)
+        }
+    }
+    
+    @IBInspectable var spacing:CGFloat = 0 {
+        didSet {
+            updateTitleLabel_()
+        }
+    }
+}

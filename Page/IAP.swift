@@ -535,6 +535,10 @@ struct IAP {
     
     public static func trackIAPActions(_ actionType: String, productId: String) {
         Track.event(category: "In-App Purchase", action: actionType, label: productId)
+        if let type = ConversionTracker.shared.item?.type,
+            let id = ConversionTracker.shared.item?.id {
+            Track.event(category: "Privilege View", action: "\(actionType): \(productId)", label: "\(type)/\(id)")
+        }
     }
     
     

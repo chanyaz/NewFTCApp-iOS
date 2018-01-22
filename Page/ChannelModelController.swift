@@ -32,18 +32,21 @@ class ChannelModelController: ModelController{
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> DataViewController? {
         // Return the data view controller for the given index.
         print ("Return the data view controller for \(index)")
+        // print (pageData)
         if (self.pageData.count == 0) || (index >= self.pageData.count) {
             return nil
         }
         // Create a new view controller and pass suitable data.
-        let dataViewController = storyboard.instantiateViewController(withIdentifier: "DataViewController") as! DataViewController
-        //print(dataViewController.view.frame)
-        dataViewController.dataObject = self.pageData[index]
-        dataViewController.pageTitle = self.pageTitles[index]
-        dataViewController.coverTheme = self.coverThemes[index]
-        dataViewController.themeColor = self.pageThemeColor
-        dataViewController.pageIndex = index
-        return dataViewController
+        if let dataViewController = storyboard.instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
+            //print(dataViewController.view.frame)
+            dataViewController.dataObject = self.pageData[index]
+            dataViewController.pageTitle = self.pageTitles[index]
+            dataViewController.coverTheme = self.coverThemes[index]
+            dataViewController.themeColor = self.pageThemeColor
+            dataViewController.pageIndex = index
+            return dataViewController
+        }
+        return nil
     }
     
     func indexOfViewController(_ viewController: DataViewController) -> Int {

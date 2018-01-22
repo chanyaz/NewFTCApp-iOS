@@ -449,6 +449,7 @@ extension DetailViewController: DetailModelDelegate {
     func didChangePage(_ item: ContentItem?, index: Int) {
         currentPageIndex = index
         //print ("DetailModelDelegate: current item \(index): \(String(describing: item?.headline))")
+        
         if ToolBarStatus.shouldHide == true {
             navigationController?.setNavigationBarHidden(false, animated: true)
             toolBar.isHidden = true
@@ -459,7 +460,12 @@ extension DetailViewController: DetailModelDelegate {
                 isFullScreenAdOn = true
             } else {
                 navigationController?.setNavigationBarHidden(false, animated: true)
-                toolBar.isHidden = false
+                // MARK: If a user tapped from a page like Editor's Choice, bottom bar should be hidden, at least for now, so that he/she won't be able to share it. 
+                if showBottomBar == true {
+                    toolBar.isHidden = false
+                } else {
+                    toolBar.isHidden = true
+                }
                 isFullScreenAdOn = false
             }
         }

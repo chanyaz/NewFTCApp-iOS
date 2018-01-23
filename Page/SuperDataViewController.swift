@@ -1131,7 +1131,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             // MARK: If a user bought the eBook, he should be able to listen to it without membership privilege
             if Privilege.shared.editorsChoice == false && APIs.isEditorChoice(dataObject) {
                 // MARK: Only if membership subscription view is correctly displayed
-                if PrivilegeViewHelper.showSubscriptionView(for: .EditorsChoice) {
+                if PrivilegeViewHelper.showSubscriptionView(for: .EditorsChoice, with: selectedItem) {
                     return false
                 }
             }

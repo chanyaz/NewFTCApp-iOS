@@ -100,11 +100,11 @@ class PrivilegeView: UIView {
 
     @objc open func showSubscription(_ sender: UITapGestureRecognizer) {
         if let privilegeRequired = privilegeRequired {
-            let _ = PrivilegeViewHelper.showSubscriptionView(for: privilegeRequired)
+            let _ = PrivilegeViewHelper.showSubscriptionView(for: privilegeRequired, with: ConversionTracker.shared.item)
             // MARK: Track the tap event even if something is wrong with the conversion item
             let type = ConversionTracker.shared.item?.type ?? ""
             let id = ConversionTracker.shared.item?.id ?? ""
-            Track.event(category: "Privilege View", action: "Tap Subscription", label: "\(type)/\(id)")
+            Track.event(category: "Privileges", action: "Tap Subscription", label: "\(type)/\(id)")
         }
     }
     
@@ -114,7 +114,7 @@ class PrivilegeView: UIView {
         // MARK: Track the tap event even if something is wrong with the conversion item
         let type = ConversionTracker.shared.item?.type ?? ""
         let id = ConversionTracker.shared.item?.id ?? ""
-        Track.event(category: "Privilege View", action: "Tap Login", label: "\(type)/\(id)")
+        Track.event(category: "Privileges", action: "Tap Login", label: "\(type)/\(id)")
     }
 
     
@@ -137,7 +137,7 @@ struct PrivilegeViewHelper {
         // MARK: Track the event of PrivilegeView display
         if let type = item?.type,
             let id = item?.id {
-            Track.event(category: "Privilege View", action: "Display", label: "\(type)/\(id)")
+            Track.event(category: "Privileges", action: "Display", label: "\(type)/\(id)")
         }
     }
     
@@ -149,10 +149,17 @@ struct PrivilegeViewHelper {
         }
     }
     
-    public static func showSubscriptionView(for privilegeRequired: PrivilegeType) -> Bool {
+    public static func showSubscriptionView(for privilegeRequired: PrivilegeType, with sourceItem: ContentItem?) -> Bool {
         if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
         let membershipChannelData = AppNavigation.getChannelData(of: IAPProducts.membershipScreenName),
         let topViewController = UIApplication.topViewController() {
+            // MARK: Update the source item
+            ConversionTracker.shared.item = sourceItem
+            // MARK: Track the event of Subscription View display
+            if let type = sourceItem?.type,
+                let id = sourceItem?.id {
+                Track.event(category: "Privileges", action: "Pop Subscription", label: "\(type)/\(id)")
+            }
             // MARK: Show a reason why user is redirected here
             let privilegeDescription = PrivilegeHelper.getDescription(privilegeRequired)
             dataViewController.dataObject = membershipChannelData

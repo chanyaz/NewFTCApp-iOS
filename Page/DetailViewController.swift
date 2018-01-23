@@ -292,7 +292,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 // MARK: If a user bought the eBook, he should be able to listen to it without membership privilege
                 if Privilege.shared.englishAudio == false && dataObject.isDownloaded == false {
                     // MARK: Only if membership subscription view is correctly displayed
-                    if PrivilegeViewHelper.showSubscriptionView(for: .EnglishAudio) {
+                    let audioDataObject = ContentItem(id: dataObject.id, image: "", headline: dataObject.headline, lead: dataObject.lead, type: "EnglishAudio", preferSponsorImage: "", tag: dataObject.tag, customLink: "", timeStamp: 0, section: 0, row: 0)
+                    if PrivilegeViewHelper.showSubscriptionView(for: .EnglishAudio, with: audioDataObject) {
                         return
                     }
                 }

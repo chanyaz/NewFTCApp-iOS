@@ -199,22 +199,19 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
             }
         }
     }
-    
-    
-    
+
     @objc public func showChat() {
         if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
             navigationController?.pushViewController(chatViewController, animated: true)
         }
     }
+    
     @objc public func showPerson() {
         print("should to add person interface")
         ContentItemRenderContent.addPersonInfo = true
         if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
             navigationController?.pushViewController(chatViewController, animated: true)
-
         }
-        
 //        openHTMLInBundle("person-information", title: "注册", isFullScreen: false, hidesBottomBar: true)
     }
  
@@ -226,7 +223,6 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         backItem.title = title
         navigationItem.backBarButtonItem = backItem
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pageData.count
@@ -248,7 +244,6 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
         }
         return cell
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let numberOfChannels = CGFloat(pageData.count)

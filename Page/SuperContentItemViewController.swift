@@ -128,6 +128,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
             
             // MARK: Check if the user have the required privilege to view this content
+            //print (dataObject?.privilegeRequirement as Any)
             if let privilege = dataObject?.privilegeRequirement,
                 !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
                 PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject)

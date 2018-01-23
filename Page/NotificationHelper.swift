@@ -38,7 +38,8 @@ struct NotificationHelper {
     static func handle(_ url: URL) {
         if let topController = UIApplication.topViewController() {
             // MARK: If the top view controller is already there, for example, when the app is activated from background
-            topController.openLink(url)        } else {
+            topController.openLink(url)
+        } else {
             // MARK: When an app is launched rather than awakened, should wait for several seconds before topViewController is not nil
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(3000)) {
                 if let topController = UIApplication.topViewController() {
@@ -67,9 +68,9 @@ struct NotificationHelper {
                     topController.navigationController?.pushViewController(dataViewController, animated: true)
                     return
                 }
-            case "story", "video", "photo", "gym", "special":
+            case "story", "premium", "video", "photo", "gym", "special":
                 if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
-                    detailViewController.contentPageData = [ContentItem(
+                    let contentItems = [ContentItem(
                         id: id,
                         image: "",
                         headline: "",
@@ -81,6 +82,8 @@ struct NotificationHelper {
                         timeStamp: 0,
                         section: 0,
                         row: 0)]
+                    let finalContentItems = AdLayout.addPrivilegeRequirements(in: contentItems, with: [:])
+                    detailViewController.contentPageData = finalContentItems
                     topController.navigationController?.pushViewController(detailViewController, animated: true)
                     return
                 }

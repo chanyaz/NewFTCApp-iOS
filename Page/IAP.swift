@@ -10,7 +10,6 @@ import Foundation
 import StoreKit
 // import FolioReaderKit
 
-
 struct IAP {
     // MARK: - The key name for purchase information in user defaults
     public static let myPurchasesKey = "My Purchases"
@@ -540,9 +539,7 @@ struct IAP {
             Track.event(category: "Privileges", action: "\(actionType): \(productId)", label: "\(type)/\(id)")
         }
     }
-    
-    
-    
+
     public static func savePriceInfo(_ products: [SKProduct]) {
         var productPrices: [String: String] = [:]
         for product in products {

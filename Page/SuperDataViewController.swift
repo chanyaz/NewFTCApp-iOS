@@ -363,7 +363,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             }
         }
         let listAPIString = APIs.convert(Download.addVersionAndTimeStamp(listAPI))
-        print ("requesting api from: \(listAPIString)")
+        //print ("requesting api from: \(listAPIString)")
         if let url = URL(string: listAPIString) {
             Download.getDataFromUrl(url) {[weak self] (data, response, error)  in
                 DispatchQueue.global().async {
@@ -380,16 +380,24 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     if let data = data,
                         error == nil {
                         if HTMLValidator.validate(data, url: listAPIString) {
-                            Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
-                            status = .Success
+                            if APIs.noRepeatForSameContent(listAPI) == true,
+                                let currentData = Download.readFile(listAPI, for: .cachesDirectory, as: fileExtension),
+                                currentData == data {
+                                status = .ContentUnchanged
+                            } else {
+                                Download.saveFile(data, filename: listAPI, to: .cachesDirectory, as: fileExtension)
+                                status = .Success
+                            }
                         } else {
                             status = .ValidationFaild
                         }
                     }
                     DispatchQueue.main.async {
-                        self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
+                        if status == .Success {
+                            self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
+                        }
 //                        self?.activityIndicator.removeFromSuperview()
-                        // TODO: Show a message in the view controller, which disappears in 2 seconds.
+                        // MARK: Show a message in the view controller, which disappears in 2 seconds.
                         RequestMessage.update(status, with: self?.requestStatus, in: self?.view)
                     }
                 }

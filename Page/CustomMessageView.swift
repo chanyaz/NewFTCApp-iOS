@@ -14,6 +14,7 @@ enum RequestStatus: String {
     case Success = "更新成功，内容马上显示"
     case NoConnection = "您现在没有联网，显示缓存的内容"
     case Pending = "正在等待服务器的响应..."
+    case ContentUnchanged = "您已经获得了最新的内容"
     case Hidden = ""
 }
 

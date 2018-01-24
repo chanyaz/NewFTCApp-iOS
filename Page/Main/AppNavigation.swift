@@ -321,7 +321,7 @@ struct AppNavigation {
                 [
                     "title": "最新",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=stream",
-                    "listapi": "https://api.ftmailbox.com/channel/stream.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api.ftmailbox.com/channel/stream.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url":"http://www.ftchinese.com/channel/stream.html?webview=ftcapp",
                     "coverTheme": "Video",
                     "compactLayout": "Video",
@@ -331,7 +331,7 @@ struct AppNavigation {
                     "title": "政经",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=vpolitics",
                     "listapi": "https://api.ftmailbox.com/channel/vpolitics.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/vpolitics.html?webview=ftcapp",
+                    "url":"http://www.ftchinese.com/channel/vpolitics.html?webview=ftcapp&norepeat=yes",
                     "screenName":"video/politics",
                     "coverTheme": "Video",
                     "compactLayout": "Video"
@@ -339,7 +339,7 @@ struct AppNavigation {
                 [
                     "title": "商业",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=vbusiness",
-                    "listapi": "https://api.ftmailbox.com/channel/vbusiness.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api.ftmailbox.com/channel/vbusiness.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url":"http://www.ftchinese.com/channel/vbusiness.html?webview=ftcapp",
                     "screenName":"video/business",
                     "coverTheme": "Video",
@@ -348,7 +348,7 @@ struct AppNavigation {
                 [
                     "title": "秒懂",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=explainer",
-                    "listapi": "https://api.ftmailbox.com/channel/explainer.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api.ftmailbox.com/channel/explainer.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url":"http://www.ftchinese.com/channel/explainer.html?webview=ftcapp",
                     "screenName":"video/business",
                     "coverTheme": "Video",
@@ -357,7 +357,7 @@ struct AppNavigation {
                 [
                     "title": "金融",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=vfinance",
-                    "listapi": "https://api.ftmailbox.com/channel/vfinance.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api.ftmailbox.com/channel/vfinance.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url":"http://www.ftchinese.com/channel/vfinance.html?webview=ftcapp",
                     "screenName":"video/finance",
                     "coverTheme": "Video",
@@ -366,7 +366,7 @@ struct AppNavigation {
                 [
                     "title": "文化",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=vculture",
-                    "listapi": "https://api.ftmailbox.com/channel/vculture.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api.ftmailbox.com/channel/vculture.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url":"http://www.ftchinese.com/channel/vculture.html?webview=ftcapp",
                     "screenName":"video/culture",
                     "coverTheme": "Video",
@@ -375,7 +375,7 @@ struct AppNavigation {
                 [
                     "title": "高端视点",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=viewtop",
-                    "listapi": "https://api.ftmailbox.com/channel/viewtop.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api.ftmailbox.com/channel/viewtop.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url":"http://www.ftchinese.com/channel/viewtop.html?webview=ftcapp",
                     "screenName":"video/viewtop",
                     "coverTheme": "Video",
@@ -384,7 +384,7 @@ struct AppNavigation {
                 [
                     "title": "有色眼镜",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=tinted",
-                    "listapi": "https://api.ftmailbox.com/channel/videotinted.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api.ftmailbox.com/channel/videotinted.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url":"http://www.ftchinese.com/channel/videotinted.html?webview=ftcapp",
                     "screenName":"video/tinted",
                     "coverTheme": "Video",

@@ -154,7 +154,6 @@ struct APIs {
     
     // MARK: Handle non-https links and try to convert them into https links
     static func handleMaualLink(_ from: String) -> String {
-        
         return from
     }
     
@@ -306,6 +305,14 @@ struct APIs {
             return true
         }
         if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
+            return true
+        }
+        return false
+    }
+    
+    // MARK: check if the list api url indicates no-repeat for same content
+    static func noRepeatForSameContent(_ url: String) -> Bool {
+        if url.range(of: "norepeat=yes") != nil {
             return true
         }
         return false

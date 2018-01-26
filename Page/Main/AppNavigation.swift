@@ -375,9 +375,9 @@ struct AppNavigation {
                 [
                     "title": "高端视点",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=viewtop",
-                    "listapi": "https://api.ftmailbox.com/channel/viewtop.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
-                    "url":"http://www.ftchinese.com/channel/viewtop.html?webview=ftcapp",
-                    "screenName":"video/viewtop",
+                    //"listapi": "https://api.ftmailbox.com/channel/viewtop.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
+                    "url": "http://www.ftchinese.com/channel/viewtop.html?webview=ftcapp&norepeat=no",
+                    "screenName": "video/viewtop",
                     "coverTheme": "Video",
                     "compactLayout": "Video"
                 ],

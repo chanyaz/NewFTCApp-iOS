@@ -129,7 +129,6 @@
 		5094D6782020AAA7000F32AB /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093F1651EE90E81009F16EE /* CustomPopTransition.swift */; };
 		5094D6792020AAA7000F32AB /* AcademyNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602153971F399E010077A7AF /* AcademyNavigationController.swift */; };
 		5094D67A2020AAA7000F32AB /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607094AE1EE943A900760A60 /* Channels.swift */; };
-		5094D67B2020AAA7000F32AB /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602153981F399E010077A7AF /* AppNavigation.swift */; };
 		5094D67C2020AAA7000F32AB /* PushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600BD69E1F1DBAFF0077C104 /* PushHelper.swift */; };
 		5094D67D2020AAA7000F32AB /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508E60151FE503BB005F664F /* DateHelper.swift */; };
 		5094D67E2020AAA7000F32AB /* APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600C0CFD1F5CDD7D00226F84 /* APIs.swift */; };
@@ -208,6 +207,7 @@
 		5094D6C92020AAA7000F32AB /* ThemeCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6054B2851F6628B300E34990 /* ThemeCoverCell.xib */; };
 		5094D6CA2020AAA7000F32AB /* register-big5.html in Resources */ = {isa = PBXBuildFile; fileRef = 601C41741F99BAC2002D26B2 /* register-big5.html */; };
 		5094D6CB2020AAA7000F32AB /* HeadlineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60FEBB541EF0E94B00C3EBB6 /* HeadlineCell.xib */; };
+		5094D6D620211116000F32AB /* AppNavigationHD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5094D6D520211116000F32AB /* AppNavigationHD.swift */; };
 		50A704C31EEB689900660022 /* ContentFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C01EEB689900660022 /* ContentFetch.swift */; };
 		50A704C41EEB689900660022 /* ContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C11EEB689900660022 /* ContentItem.swift */; };
 		50A704C51EEB689900660022 /* ContentFetchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A704C21EEB689900660022 /* ContentFetchResults.swift */; };
@@ -649,6 +649,7 @@
 		508E60151FE503BB005F664F /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		5094D6D32020AAA7000F32AB /* HD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5094D6D42020AAA7000F32AB /* Page copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Page copy2-Info.plist"; path = "/Users/zhangoliver/sandbox/NewFTCApp-iOS/Page copy2-Info.plist"; sourceTree = "<absolute>"; };
+		5094D6D520211116000F32AB /* AppNavigationHD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationHD.swift; sourceTree = "<group>"; };
 		50A704C01EEB689900660022 /* ContentFetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetch.swift; sourceTree = "<group>"; };
 		50A704C11EEB689900660022 /* ContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentItem.swift; sourceTree = "<group>"; };
 		50A704C21EEB689900660022 /* ContentFetchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchResults.swift; sourceTree = "<group>"; };
@@ -984,6 +985,7 @@
 			isa = PBXGroup;
 			children = (
 				602153981F399E010077A7AF /* AppNavigation.swift */,
+				5094D6D520211116000F32AB /* AppNavigationHD.swift */,
 				602153991F399E010077A7AF /* Styles.swift */,
 				600C0CFD1F5CDD7D00226F84 /* APIs.swift */,
 				6021539B1F399E010077A7AF /* CustomTabBarController.swift */,
@@ -2338,6 +2340,7 @@
 				5094D6472020AAA7000F32AB /* SmoothCoverCell.swift in Sources */,
 				5094D6482020AAA7000F32AB /* IconCell.swift in Sources */,
 				5094D6492020AAA7000F32AB /* OptionCell.swift in Sources */,
+				5094D6D620211116000F32AB /* AppNavigationHD.swift in Sources */,
 				5094D64A2020AAA7000F32AB /* OutOfBoxCoverCell.swift in Sources */,
 				5094D64B2020AAA7000F32AB /* ContentFetch.swift in Sources */,
 				5094D64C2020AAA7000F32AB /* AdCellRegular.swift in Sources */,
@@ -2387,7 +2390,6 @@
 				5094D6782020AAA7000F32AB /* CustomPopTransition.swift in Sources */,
 				5094D6792020AAA7000F32AB /* AcademyNavigationController.swift in Sources */,
 				5094D67A2020AAA7000F32AB /* Channels.swift in Sources */,
-				5094D67B2020AAA7000F32AB /* AppNavigation.swift in Sources */,
 				5094D67C2020AAA7000F32AB /* PushHelper.swift in Sources */,
 				5094D67D2020AAA7000F32AB /* DateHelper.swift in Sources */,
 				5094D67E2020AAA7000F32AB /* APIs.swift in Sources */,

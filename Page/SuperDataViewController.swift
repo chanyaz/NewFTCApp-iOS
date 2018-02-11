@@ -618,7 +618,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 let items = section.items
                 for item in items {
                     //print ("prefetch item: \(item.type)/\(item.id)")
-                    if item.type == "story" {
+                    if ["story","premium"].contains(item.type) {
                         let apiUrl = APIs.get(item.id, type: item.type)
                         //print ("read story json: \(apiUrl)")
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "json") == nil {

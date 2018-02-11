@@ -46,8 +46,8 @@ struct AppNavigation {
                 [
                     "title": "独家",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",
-                    "listapi":"https://api.ftmailbox.com/channel/exclusive.html?webview=ftcapp&bodyonly=yes",
-                    "url":"http://www.ftchinese.com/channel/exclusive.html?webview=ftcapp",
+                    "listapi":"https://api.ftmailbox.com/channel/exclusive.html?webview=ftcapp&bodyonly=yes&ad=no&001",
+                    "url":"http://www.ftchinese.com/channel/exclusive.html?webview=ftcapp&ad=no",
                     "regularLayout": "",
                     "screenName":"homepage/exclusive",
                     "coverTheme":"Wheat"

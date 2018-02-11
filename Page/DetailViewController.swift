@@ -271,6 +271,18 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             var audioLanguage: String? = nil
             var audioScreenName: String? = nil
             
+            // MARK: Check if the user has the privilege for the content itself
+            if let privilege = dataObject.privilegeRequirement,
+                !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
+                // TODO: Show an alert so that the user can buy
+                let alert = UIAlertController(title: "订阅用户专享内容", message: "您好，本内容是订户专享，请先完成订阅", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
+                if let topViewController = UIApplication.topViewController() {
+                    topViewController.present(alert, animated: true, completion: nil)
+                }
+                return
+            }
+            
             // MARK: Check if there's audio file attached to this item
             if let caudio = dataObject.caudio,
                 caudio != "",
@@ -281,6 +293,8 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 audioFileUrl = caudio
                 audioLanguage = "ch"
                 audioScreenName = "audio/\(audioLanguage ?? "")/story/\(dataObject.id)"
+
+                
             } else if let eaudio = dataObject.eaudio,
                 eaudio != "",
                 language == "en" || dataObject.type == "interactive" {

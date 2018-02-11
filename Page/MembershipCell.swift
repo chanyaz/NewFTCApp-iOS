@@ -13,6 +13,8 @@ class MembershipCell: CustomCell {
 
     var pageTitle = ""
     var buyState: BuyState = .New
+    private let buttonManageKey = "管理订阅"
+    private let buttonRestoreKey = "恢复订阅"
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headline: UILabel!
@@ -58,8 +60,17 @@ class MembershipCell: CustomCell {
     }
 
     @IBAction func restore(_ sender: Any) {
-        IAPProducts.store.restorePurchases()
-        Track.event(category: "IAP", action: "restore", label: "All")
+        if let button = sender as? UIButton,
+        let buttonTitle = button.title(for: .normal),
+        buttonTitle == buttonManageKey {
+            let manageSubscriptionUrl = "https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions"
+            if let url = URL(string:manageSubscriptionUrl) {
+                UIApplication.shared.openURL(url)
+            }
+        } else {
+            IAPProducts.store.restorePurchases()
+            Track.event(category: "IAP", action: "restore", label: "All")
+        }
     }
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
@@ -93,17 +104,19 @@ class MembershipCell: CustomCell {
         buyButton.setTitle("订阅", for: .normal)
         buyButton.setTitle("已订阅", for: .disabled)
         
-        // MARK: - update restore button content
-        restoreButton.setTitle("恢复订阅", for: .normal)
         
         if let id = itemCell?.id {
             let status = IAP.checkStatus(id)
             if ["success", "pendingdownload"].contains(status) {
+                // MARK: - update restore button content
+                restoreButton.setTitle(buttonManageKey, for: .normal)
                 buyButton.isEnabled = false
-                restoreButton.isHidden = true
+                //restoreButton.isHidden = true
             } else {
+                // MARK: - update restore button content
+                restoreButton.setTitle(buttonRestoreKey, for: .normal)
                 buyButton.isEnabled = true
-                restoreButton.isHidden = false
+                //restoreButton.isHidden = false
             }
         }
     }

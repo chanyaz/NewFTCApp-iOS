@@ -1611,7 +1611,8 @@ extension SuperDataViewController: WKScriptMessageHandler {
                         tag: item["tag"] ?? "",
                         title: item["title"] ?? "",
                         adid: item["adid"] ?? "",
-                        channel: item["channel"] ?? ""
+                        channel: item["channel"] ?? "",
+                        hideAd: item["hideAd"]
                     )
                     sponsors.append(sponsor)
                 }

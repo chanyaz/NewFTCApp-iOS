@@ -18,11 +18,13 @@ struct Sponsor {
     var title: String
     var adid: String
     var channel: String
+    var hideAd: String?
     // MARK: - If it's a channel view
-    init(tag: String, title: String, adid: String, channel: String) {
+    init(tag: String, title: String, adid: String, channel: String, hideAd: String?) {
         self.tag = tag
         self.title = title
         self.adid = adid
         self.channel = channel
+        self.hideAd = hideAd
     }
 }

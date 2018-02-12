@@ -19,7 +19,17 @@ struct WebviewHelper {
         if let id = dataObject?.id {
             let urlStringOriginal = (subType == .None) ? APIs.getUrl(id, type: type, isSecure: false, isPartial: false) : APIs.getUrl(id, type: type, subType: subType)
             let urlString: String
+            var shouldHideAd = false
             if dataObject?.hideAd == true {
+                shouldHideAd = true
+            } else if let keywords = dataObject?.keywords {
+                for sponsor in Sponsors.shared.sponsors {
+                    if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) && sponsor.hideAd == "yes" {
+                        shouldHideAd = true
+                    }
+                }
+            }
+            if shouldHideAd == true {
                 urlString = APIs.removeAd(urlStringOriginal)
             } else {
                 urlString = urlStringOriginal

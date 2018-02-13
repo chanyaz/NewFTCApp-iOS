@@ -327,7 +327,20 @@ struct Download {
         let timeStamp = "&t=\(year)\(month)\(day)\(hour)\(minutesTrucated)"
         let versionFromBundle: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         let connector = (urlString.range(of: "?") == nil) ? "?": "&"
-        return "\(urlString)\(connector)v=\(versionFromBundle)\(timeStamp)&device=\(DeviceInfo.checkDeviceType())"
+        // MARK: Add subscriber information for home page
+        let subscriberParameter: String
+        if urlString.range(of: "pagetype=home") != nil {
+            if Privilege.shared.editorsChoice == true {
+                subscriberParameter = "&subscription=premium"
+            } else if Privilege.shared.exclusiveContent == true {
+                subscriberParameter = "&subscription=member"
+            } else {
+                subscriberParameter = ""
+            }
+        } else {
+            subscriberParameter = ""
+        }
+        return "\(urlString)\(connector)v=\(versionFromBundle)\(timeStamp)\(subscriberParameter)&device=\(DeviceInfo.checkDeviceType())"
     }
     
     public static func getQueryStringParameter(url: String, param: String) -> String? {

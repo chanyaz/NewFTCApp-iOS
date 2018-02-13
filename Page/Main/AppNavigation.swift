@@ -28,7 +28,7 @@ struct AppNavigation {
                     //"api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
                     //"api": "https://api.ftmailbox.com/channel/json.html?pageid=home&dfadfadfadfadf",
                     "url":"http://www.ftchinese.com/?webview=ftcapp",
-                    "listapi":"https://api.ftmailbox.com/?webview=ftcapp&bodyonly=yes&maxB=1&backupfile=localbackup&showIAP=yes&subscription=member&001",
+                    "listapi":"https://api.ftmailbox.com/?webview=ftcapp&bodyonly=yes&maxB=1&backupfile=localbackup&showIAP=yes&pagetype=home&001",
                     "compactLayout": "home",
                     "coverTheme": "Classic",
                     "screenName":"homepage",

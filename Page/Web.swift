@@ -10,7 +10,7 @@ import Foundation
 import SafariServices
 import StoreKit
 
-extension UIViewController: SFSafariViewControllerDelegate{
+extension UIViewController: SFSafariViewControllerDelegate {
     // MARK: Handle All the Recogizable Links Here
     func openLink(_ url: URL) {
         if let urlScheme = url.scheme {
@@ -139,7 +139,7 @@ extension UIViewController: SFSafariViewControllerDelegate{
                 // MARK: Handle tapping from today extension
                 let action = url.host
                 let id = url.lastPathComponent
-                NotificationHelper.open(action, id: id, title: "title")
+                NotificationHelper.open(action, id: id, title: "")
             case "screen":
                 if let hostString = url.host {
                     let screenName = hostString + url.path

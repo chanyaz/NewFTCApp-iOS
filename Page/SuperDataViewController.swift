@@ -1203,7 +1203,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     contentItemViewController.themeColor = themeColor
                     navigationController?.pushViewController(contentItemViewController, animated: true)
                 }
-                
             case "TryBook":
                 Alerts.tryBook()
                 break

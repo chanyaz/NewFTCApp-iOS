@@ -139,14 +139,14 @@ struct AppNavigation {
                     "screenName":"homepage/technology",
                     "coverTheme": "OutOfBox"
                 ],
-//                [
-//                    "title": "教育",
-//                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
-//                    "listapi":"https://api.ftmailbox.com/channel/education.html?webview=ftcapp&bodyonly=yes&001",
-//                    "url":"http://www.ftchinese.com/channel/education.html?webview=ftcapp",
-//                    "screenName":"homepage/education",
-//                    "coverTheme": "OutOfBox"
-//                ],
+                [
+                    "title": "教育",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
+                    "listapi":"https://api.ftmailbox.com/channel/education.html?webview=ftcapp&bodyonly=yes&001",
+                    "url":"http://www.ftchinese.com/channel/education.html?webview=ftcapp",
+                    "screenName":"homepage/education",
+                    "coverTheme": "OutOfBox"
+                ],
                 [
                     "title": "管理",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/management.html?type=json",

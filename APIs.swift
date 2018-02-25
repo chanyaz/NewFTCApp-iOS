@@ -211,6 +211,23 @@ struct APIs {
         return urlString
     }
 
+    
+    static func getSubscriptionParameter(from urlString: String) -> String {
+        let subscriberParameter: String
+        if urlString.range(of: "pagetype=home") != nil {
+            if Privilege.shared.editorsChoice == true {
+                subscriberParameter = "&subscription=premium"
+            } else if Privilege.shared.exclusiveContent == true {
+                subscriberParameter = "&subscription=member"
+            } else {
+                subscriberParameter = ""
+            }
+        } else {
+            subscriberParameter = ""
+        }
+        return subscriberParameter
+    }
+    
     // MARK: Get url string for subtypes by adding parameters to type urlstring
     static func getUrl(_ id: String, type: String, subType: ContentSubType) -> String {
         let urlString = getUrl(id, type: type, isSecure: false, isPartial: false)

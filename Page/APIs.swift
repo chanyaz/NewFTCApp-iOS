@@ -21,7 +21,6 @@ struct APIs {
     private static let backupHTMLDomains = [
         "https://d1budb999l6vta.cloudfront.net/",
         "https://d2e90etfgpidmd.cloudfront.net/"
-        
     ]
     
     // MARK: Backup server for List Pages
@@ -62,7 +61,6 @@ struct APIs {
     
     // MARK: Types of files that you want to clean from time to time
     static let expireFileTypes = ["json", "jpeg", "jpg", "png", "gif", "mp3", "mp4", "mov", "mpeg", "cover", "thumbnail", "html", "OutlookoftheFutureof2017", "lunch2", "lunch1"]
-    
     
     public static func getUrlStringInLanguage(_ from: [String]) -> String {
         let currentPrefence = LanguageSetting.shared.currentPrefence
@@ -198,7 +196,6 @@ struct APIs {
         return from
     }
     
-    
     // MARK: Use different domains for different types of content
     static func getUrl(_ id: String, type: String, isSecure: Bool, isPartial: Bool) -> String {
         let urlString: String
@@ -297,6 +294,23 @@ struct APIs {
             finalUrlString = urlString
         }
         return finalUrlString
+    }
+    
+    // MARK: get the url parameter related to subscription
+    static func getSubscriptionParameter(from urlString: String) -> String {
+        let subscriberParameter: String
+        if urlString.range(of: "pagetype=home") != nil {
+            if Privilege.shared.editorsChoice == true {
+                subscriberParameter = "&subscription=premium"
+            } else if Privilege.shared.exclusiveContent == true {
+                subscriberParameter = "&subscription=member"
+            } else {
+                subscriberParameter = ""
+            }
+        } else {
+            subscriberParameter = ""
+        }
+        return subscriberParameter
     }
     
     // MARK: check if the dataObject is a type that should hide ad

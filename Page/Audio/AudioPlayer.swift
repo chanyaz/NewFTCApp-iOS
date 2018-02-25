@@ -172,22 +172,38 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     deinit {
-        removePlayerItemObservers()
         
+//        if self.isMovingFromParentViewController {
+//            if let player = player {
+//                player.pause()
+//                self.player = nil
+//            }
+//        } else {
+//            print ("Audio is not being popped")
+//        }
+        
+        if let player = player {
+            player.pause()
+            self.player = nil
+            print ("player is set to nil")
+        }
+        
+        removePlayerItemObservers()
+
         // MARK: - Remove Observe download status change
         NotificationCenter.default.removeObserver(
             self,
             name: Notification.Name(rawValue: download.downloadStatusNotificationName),
             object: nil
         )
-        
+
         // MARK: - Remove Observe download progress change
         NotificationCenter.default.removeObserver(
             self,
             name: Notification.Name(rawValue: download.downloadProgressNotificationName),
             object: nil
         )
-        
+
         // MARK: - Remove Observe Audio Route Change and Update UI accordingly
         NotificationCenter.default.removeObserver(
             self,
@@ -197,18 +213,19 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         )
 
         NotificationCenter.default.removeObserver(self)
-        
+
         // MARK: - Stop loading and remove message handlers to avoid leak
         self.webView?.stopLoading()
         self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
         self.webView?.configuration.userContentController.removeAllUserScripts()
-        
+
         // MARK: - Remove delegate to deal with crashes on iOS 8
         self.webView?.navigationDelegate = nil
         self.webView?.scrollView.delegate = nil
-        
+
         print ("deinit successfully and observer removed")
     }
+    
     
     override func loadView() {
         super.loadView()
@@ -277,18 +294,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
         Track.screenView(screen)
         checkLoveButton()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        if self.isMovingFromParentViewController {
-            if let player = player {
-                player.pause()
-                self.player = nil
-            }
-        } else {
-            print ("Audio is not being popped")
-        }
     }
     
     private func initStyle() {

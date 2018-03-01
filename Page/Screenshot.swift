@@ -73,7 +73,6 @@ extension WKWebView {
                 } else if scrollHeight > contentHeight - frameHeight {
                     isEndOfSnapShot = true
                     let image = ShareHelper.stitchImages(images: images, isVertical: true)
-                    //let image = images[0]
                     completion(image)
                 }
             }

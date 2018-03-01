@@ -81,6 +81,7 @@ class WeChatShare : UIActivity{
         }
         
         if to.range(of: "screenshot") != nil {
+            
             let imageObject =  WXImageObject()
             if let currentWebView = ShareHelper.shared.currentWebView
                  {
@@ -94,16 +95,21 @@ class WeChatShare : UIActivity{
                         let req = SendMessageToWXReq()
                         req.bText = false
                         req.message = message
-                        
+                            let eventAction: String
                         if toString.range(of: "chat") != nil {
                             req.scene = 0
+                            eventAction = "iOS Screen Shot to WeChat Friend"
                         } else if toString.range(of: "moment") != nil {
                             req.scene = 1
+                            eventAction = "iOS Screen Shot to WeChat Moment"
                         } else if toString == "fav" {
                             req.scene = 2
+                            eventAction = "iOS Screen Shot to WeChat Favorate"
                         } else {
                             req.scene = 1
+                            eventAction = "iOS Screen Shot to WeChat Moment"
                         }
+                        Track.event(category: "Share", action: eventAction, label: ShareHelper.shared.webPageUrl)
                         WXApi.send(req)
                         
                         }
@@ -130,20 +136,26 @@ class WeChatShare : UIActivity{
             let req = SendMessageToWXReq()
             req.bText = false
             req.message = message
-            
+            let eventAction: String
             if toString.range(of: "chat") != nil {
                 req.scene = 0
+                eventAction = "iOS Web Page to WeChat Friend"
             } else if toString.range(of: "moment") != nil {
                 req.scene = 1
+                eventAction = "iOS Web Page to WeChat Moment"
             } else if toString == "fav" {
                 req.scene = 2
+                eventAction = "iOS Web Page to WeChat Favorate"
             } else {
                 req.scene = 1
+                eventAction = "iOS Web Page to WeChat Moment"
             }
+            Track.event(category: "Share", action: eventAction, label: ShareHelper.shared.webPageUrl)
             WXApi.send(req)
             
             
         }
+        
         
 
     }

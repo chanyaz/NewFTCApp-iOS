@@ -90,8 +90,8 @@ extension UIViewController {
     func launchCustomActionSheet(for item: ContentItem, from sender: Any) {
         updateShareContent(for: item, from: sender)
         let activityVC = CustomShareViewController()
-        
-        if Privilege.shared.exclusiveContent {
+        if #available(iOS 10.0, *),
+            Privilege.shared.exclusiveContent {
             activityVC.shareItems = [
                 WeChatShare(to: "chat-custom"),
                 WeChatShare(to: "moment-custom"),
@@ -108,7 +108,6 @@ extension UIViewController {
                 ShareMore(contentItem: item, from: sender)
             ]
         }
-        
         // MARK: Use this to support both iPhone and iPad
         activityVC.modalPresentationStyle = .overCurrentContext
         let popoverPresentationController = activityVC.popoverPresentationController
@@ -119,7 +118,6 @@ extension UIViewController {
         } else {
             popoverPresentationController?.sourceView = view
         }
-        
         present(activityVC, animated: true, completion: nil)
         grabImagesForShare()
     }
@@ -194,8 +192,6 @@ extension UIViewController {
         ShareHelper.shared.webPageImageIcon = ShareHelper.shared.webPageImage
         getCurrentWebView()
         
-        // MARK: - capture the screen shot of the webview
-        //captureScreenShot()
     }
     
 }

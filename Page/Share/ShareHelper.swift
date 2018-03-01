@@ -90,13 +90,24 @@ extension UIViewController {
     func launchCustomActionSheet(for item: ContentItem, from sender: Any) {
         updateShareContent(for: item, from: sender)
         let activityVC = CustomShareViewController()
-        activityVC.shareItems = [
-            WeChatShare(to: "chat-custom"),
-            WeChatShare(to: "moment-custom"),
-            //WeChatShare(to: "chat-screenshot"),
-            OpenInSafari(to: "safari-custom"),
-            ShareMore(contentItem: item, from: sender)
-        ]
+        
+        if Privilege.shared.exclusiveContent {
+            activityVC.shareItems = [
+                WeChatShare(to: "chat-custom"),
+                WeChatShare(to: "moment-custom"),
+                WeChatShare(to: "chat-screenshot"),
+                //OpenInSafari(to: "safari-custom"),
+                ShareMore(contentItem: item, from: sender)
+            ]
+        } else {
+            activityVC.shareItems = [
+                WeChatShare(to: "chat-custom"),
+                WeChatShare(to: "moment-custom"),
+                //WeChatShare(to: "chat-screenshot"),
+                OpenInSafari(to: "safari-custom"),
+                ShareMore(contentItem: item, from: sender)
+            ]
+        }
         
         // MARK: Use this to support both iPhone and iPad
         activityVC.modalPresentationStyle = .overCurrentContext
@@ -184,7 +195,7 @@ extension UIViewController {
         getCurrentWebView()
         
         // MARK: - capture the screen shot of the webview
-        // captureScreenShot()
+        //captureScreenShot()
     }
     
 }

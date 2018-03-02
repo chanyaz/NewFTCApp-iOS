@@ -53,6 +53,54 @@ struct PrivilegeHelper {
         }
     }
     
+    static func updateFromReceipt(_ receipt: [String: AnyObject]) {
+        if let status = receipt["status"] as? Int,
+            status == 0,
+            let receipts = receipt["receipt"] as? [String: Any],
+            let receiptItems = receipts["in_app"] as? [[String: Any]] {
+            var products = [String: ProductStatus]()
+            for item in receiptItems {
+                if let id = item["product_id"] as? String {
+                    if let expiresDate = item["expires_date"] as? String {
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+                        if let date = dateFormatter.date(from: expiresDate) {
+                            if let currentExpireDate = products[id]?.expireDate,
+                                currentExpireDate > date {
+                                // MARK: If there's an existing expiration date and it's later than the current date, no need to update
+                            } else {
+                                products[id] = ProductStatus.init(expireDate: date)
+                            }
+                        } else {
+                            products[id] = ProductStatus.init(expireDate: nil)
+                        }
+                    } else {
+                        products[id] = ProductStatus.init(expireDate: nil)
+                    }
+                }
+            }
+            // MARK: Now compare dates and save to device
+            for (id, status) in products {
+                if let date = status.expireDate {
+                    // MARK: handle subscrition expiration date
+                    if date >= Date() {
+                        print ("\(id) is valid! ")
+                        UserDefaults.standard.set(true, forKey: id)
+                    } else {
+                        print ("\(id) has expired at \(date), today is \(Date())")
+                        // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
+                        //UserDefaults.standard.set(false, forKey: id)
+                    }
+                } else {
+                    // MARK: Not a subscription
+                    print ("\(id) is valid! ")
+                    UserDefaults.standard.set(true, forKey: id)
+                }
+            }
+            //print (products)
+        }
+    }
+    
     static func updateFromNetwork() {
         let memberships = IAPProducts.memberships
         for membership in memberships {
@@ -110,6 +158,9 @@ struct PrivilegeHelper {
     
 }
 
+struct ProductStatus {
+    var expireDate: Date?
+}
 
 enum AdDisplay {
     case no

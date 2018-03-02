@@ -118,11 +118,7 @@ extension IAPHelper {
                                     if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
                                         // MARK: - parse and verify the required informatin in the jsonResponse
                                         print ("receipt validation from func receiptValidation success: \(jsonResponse)")
-//                                        for (key, value) in jsonResponse {
-//                                            print (key)
-//                                            print (value)
-//                                        }
-                                        let _ = self.getValidProduct(jsonResponse)
+                                        PrivilegeHelper.updateFromReceipt(jsonResponse)
                                     } else {
                                         print("receipt validation from func receiptValidation: Failed to cast serialized JSON to Dictionary<String, AnyObject>. The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")
                                     }
@@ -146,16 +142,19 @@ extension IAPHelper {
         }
     }
     
-    private func getValidProduct(_ receipt: [String: AnyObject]) -> [String] {
-        var productIds = [String]()
-        if let status = receipt["status"] as? Int,
-            status == 0,
-            let receipts = receipt["receipt"] as? [String: Any],
-            let receiptItems = receipts["in_app"] as? [Any] {
-            print (receiptItems)
-        }
-        return productIds
-    }
+//    private func getValidProduct(_ receipt: [String: AnyObject]) -> [String] {
+//        var productIds = [String]()
+//        if let status = receipt["status"] as? Int,
+//            status == 0,
+//            let receipts = receipt["receipt"] as? [String: Any],
+//            let receiptItems = receipts["in_app"] as? [String: Any] {
+//            print (receiptItems)
+//            for item in receiptItems {
+//
+//            }
+//        }
+//        return productIds
+//    }
     
     
     // MARK: Stage 1:  Retrieving Product Information

@@ -97,6 +97,8 @@ struct PrivilegeHelper {
                     UserDefaults.standard.set(true, forKey: id)
                 }
             }
+            // MARK: update the privileges connected to buying
+            updateFromDevice()
             //print (products)
         }
     }

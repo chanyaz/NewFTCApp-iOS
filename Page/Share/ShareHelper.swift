@@ -90,20 +90,20 @@ extension UIViewController {
     func launchCustomActionSheet(for item: ContentItem, from sender: Any) {
         updateShareContent(for: item, from: sender)
         let activityVC = CustomShareViewController()
+        print ("sharing \(item.type)/\(item.id)")
         if #available(iOS 10.0, *),
-            Privilege.shared.exclusiveContent {
+            Privilege.shared.exclusiveContent,
+            item.type != "premium" {
             activityVC.shareItems = [
                 WeChatShare(to: "chat-custom"),
                 WeChatShare(to: "moment-custom"),
                 WeChatShare(to: "chat-screenshot"),
-                //OpenInSafari(to: "safari-custom"),
                 ShareMore(contentItem: item, from: sender)
             ]
         } else {
             activityVC.shareItems = [
                 WeChatShare(to: "chat-custom"),
                 WeChatShare(to: "moment-custom"),
-                //WeChatShare(to: "chat-screenshot"),
                 OpenInSafari(to: "safari-custom"),
                 ShareMore(contentItem: item, from: sender)
             ]

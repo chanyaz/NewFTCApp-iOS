@@ -12,17 +12,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="MembershipCell" customModule="FTCC" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="323" height="427"/>
+            <rect key="frame" x="0.0" y="0.0" width="323" height="274"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="323" height="427"/>
+                <rect key="frame" x="0.0" y="0.0" width="323" height="274"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yfD-Kf-wUR">
-                        <rect key="frame" x="0.0" y="0.0" width="323" height="427"/>
+                        <rect key="frame" x="0.0" y="0.0" width="323" height="274"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p1w-Ld-JDv">
-                                <rect key="frame" x="14" y="14" width="295" height="399"/>
+                                <rect key="frame" x="14" y="14" width="295" height="246"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeZ-uA-ElO">
@@ -32,25 +32,25 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="755" text="Lead" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RXw-TM-ab8">
-                                <rect key="frame" x="28" y="71.5" width="267" height="201.5"/>
+                                <rect key="frame" x="28" y="71.5" width="267" height="49"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Benefits" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-wI-zDn">
-                                <rect key="frame" x="28" y="281" width="267" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beneifits" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-wI-zDn">
+                                <rect key="frame" x="28" y="128.5" width="267" height="20.5"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XZi-iQ-jsf">
-                                <rect key="frame" x="28" y="376" width="267" height="21"/>
+                                <rect key="frame" x="28" y="223" width="267" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="248" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5D4-wy-PyN">
-                                <rect key="frame" x="28" y="302" width="267" height="44"/>
+                                <rect key="frame" x="28" y="149" width="267" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="kGr-uk-fEJ"/>
                                 </constraints>
@@ -61,7 +61,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zvb-cd-CZj">
-                                <rect key="frame" x="249" y="371" width="46" height="30"/>
+                                <rect key="frame" x="249" y="218" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="restore:" destination="gTV-IL-0wX" eventType="touchUpInside" id="qck-ZX-EVF"/>
@@ -103,7 +103,7 @@
                 <constraint firstItem="yfD-Kf-wUR" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="WqD-Ql-KCG"/>
                 <constraint firstAttribute="trailing" secondItem="yfD-Kf-wUR" secondAttribute="trailing" id="atl-An-Mg5"/>
             </constraints>
-            <size key="customSize" width="323" height="426"/>
+            <size key="customSize" width="323" height="273"/>
             <connections>
                 <outlet property="benefitsLabel" destination="Rci-wI-zDn" id="9gW-38-KXQ"/>
                 <outlet property="buyButton" destination="5D4-wy-PyN" id="Cqv-jD-CER"/>
@@ -115,7 +115,7 @@
                 <outlet property="price" destination="XZi-iQ-jsf" id="bvf-fz-41k"/>
                 <outlet property="restoreButton" destination="zvb-cd-CZj" id="enz-xQ-ITM"/>
             </connections>
-            <point key="canvasLocation" x="-374.5" y="-367.5"/>
+            <point key="canvasLocation" x="-374.5" y="-444"/>
         </collectionViewCell>
     </objects>
 </document>

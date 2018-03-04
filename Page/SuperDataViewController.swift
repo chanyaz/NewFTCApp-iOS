@@ -98,7 +98,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     flowLayout.estimatedItemSize = CGSize(width: availableWidth, height: 250)
                 }
                 cellWidth = availableWidth
-                
             }
             
             
@@ -1374,7 +1373,6 @@ extension SuperDataViewController {
         IAPProducts.store.requestProducts{[weak self] success, products in
             if success {
                 if let products = products {
-                    //self?.products = products
                     IAPs.shared.products = products
                     
                     // MARK: - Save product price so that you can use when you launch next time if connection to app store is bad
@@ -1520,9 +1518,13 @@ extension SuperDataViewController : UICollectionViewDelegateFlowLayout {
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem: CGFloat
         let heightPerItem: CGFloat
-        // TODO: Should do the layout based on cell's properties
+        // MARK:
         let reuseIdentifier = getReuseIdentifierForCell(indexPath)
-        if reuseIdentifier == "SettingCell" || reuseIdentifier == "OptionCell" {
+        if reuseIdentifier == "MembershipCell" {
+            // MARK: Important setting to avoid header view of next section being displayed over the current cell.
+            widthPerItem = availableWidth / itemsPerRow
+            heightPerItem = widthPerItem * 4
+        } else if reuseIdentifier == "SettingCell" || reuseIdentifier == "OptionCell" {
             widthPerItem = availableWidth / itemsPerRow
             heightPerItem = 44
         } else if reuseIdentifier == "BookCell" {

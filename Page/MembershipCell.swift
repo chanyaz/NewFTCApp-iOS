@@ -75,11 +75,11 @@ class MembershipCell: CustomCell {
     
     // MARK: Use the data source to update UI for the cell. This is unique for different types of cell.
     override func updateUI() {
-        setupLayout()
         updateContent()
+        setupLayout()
         sizeCell()
     }
-    
+
     private func updateContent() {
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
@@ -87,7 +87,7 @@ class MembershipCell: CustomCell {
         
         var benefitsString = ""
         if let productBenefits = itemCell?.productBenefits {
-            // TODO: Display Product Benefits
+            // MARK: Display Product Benefits
             for benefit in productBenefits {
                 benefitsString += "- \(benefit)\n"
             }
@@ -103,7 +103,6 @@ class MembershipCell: CustomCell {
         price.text = "\(itemCell?.productPrice ?? "")/年"
         buyButton.setTitle("订阅", for: .normal)
         buyButton.setTitle("已订阅", for: .disabled)
-        
         
         if let id = itemCell?.id {
             let status = IAP.checkStatus(id)

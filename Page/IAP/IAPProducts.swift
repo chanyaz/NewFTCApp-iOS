@@ -56,18 +56,6 @@ public struct IAPProducts {
 //            ],
 //            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
 //        ]
-        //        [
-        //            "id":"com.ft.ftchinese.mobile.subscription.trial",
-        //            "title":"试读会员",
-        //            "teaser":"注册成为试读会员",
-        //            "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
-        //            "period":"month",
-        //            "benefits": [
-        //                "1个月内屏蔽部分网站广告，升级阅读体验",
-        //                "会员期间免费阅读4篇付费内容",
-        //                "可选择开启手机客户端专属订制内容推送，你感兴趣的不再错过"
-        //            ]
-        //        ]
     ]
     
     private static let eBooksData = [

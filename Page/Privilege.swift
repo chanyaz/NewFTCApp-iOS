@@ -58,6 +58,7 @@ struct PrivilegeHelper {
             status == 0,
             let receipts = receipt["receipt"] as? [String: Any],
             let receiptItems = receipts["in_app"] as? [[String: Any]] {
+            
             var products = [String: ProductStatus]()
             for item in receiptItems {
                 if let id = item["product_id"] as? String {
@@ -84,19 +85,27 @@ struct PrivilegeHelper {
                 if let date = status.expireDate {
                     // MARK: handle subscrition expiration date
                     if date >= Date() {
-                        print ("\(id) is valid! ")
+                        //print ("\(id) is valid! ")
                         UserDefaults.standard.set(true, forKey: id)
                     } else {
-                        print ("\(id) has expired at \(date), today is \(Date())")
+                        print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
                         // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
                         //UserDefaults.standard.set(false, forKey: id)
+                        if let environment = receipt["environment"] as? String {
+                            print ("environment is \(environment)")
+                            if environment == "Production" {
+                                print (receipt)
+                            }
+                        }
                     }
                 } else {
                     // MARK: Not a subscription
-                    print ("\(id) is valid! ")
+                    //print ("\(id) is valid! ")
                     UserDefaults.standard.set(true, forKey: id)
                 }
+                
             }
+            
             // MARK: update the privileges connected to buying
             updateFromDevice()
             //print (products)
@@ -157,6 +166,39 @@ struct PrivilegeHelper {
         let jsCode = String(describing: privileges).replacingOccurrences(of: "\"", with: "'")
         return jsCode
     }
+    
+    
+    // MARK: - DO NOT DELETE!!!
+    // MARK: - Quick Test for playground. The aim is to crunch as many as possible receipts data to see if  the updateFromReceipt is 100% correct, which is important.
+    /*
+    static func runTest() {
+        if let allFiles = Bundle.main.urls(forResourcesWithExtension: "log", subdirectory: nil) {
+            for fileURL in allFiles {
+                print ("\(fileURL.lastPathComponent): ")
+                if let content = try? String(contentsOf: fileURL, encoding: String.Encoding.utf8) {
+                    let contentDeliminated = content.replacingOccurrences(of: "[{\"user-id\":", with: "|[{\"user-id\":")
+                    let contentArray = contentDeliminated.split(separator: "|")
+                    for item in contentArray {
+                        //print (item)
+                        let data = item.data(using: .utf8)!
+                        do {
+                            if let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [Dictionary<String,AnyObject>]
+                            {
+                                if jsonArray.count > 1 {
+                                    updateFromReceipt(jsonArray[1])
+                                }
+                            } else {
+                                print("bad json")
+                            }
+                        } catch _ as NSError {
+                            //print(error)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    */
     
 }
 

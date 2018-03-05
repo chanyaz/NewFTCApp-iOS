@@ -50,22 +50,26 @@ public class HappyUser {
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
                 UserDefaults.standard.set(true, forKey: ratePromptKey)
-                didRequestReview = true
-                shouldTrackRequestReview = true
+                let deviceType = DeviceInfo.checkDeviceType()
+                let versionFromBundle = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+                let currentLaunchCount = UserDefaults.standard.integer(forKey: launchCountKey)
+                Track.event(category: "\(deviceType) Request Review", action: versionFromBundle, label: "\(currentLaunchCount)")
+                //didRequestReview = true
+                //shouldTrackRequestReview = true
             }
         }
     }
     
-    func requestReviewTracking() -> String? {
-        let deviceType = DeviceInfo.checkDeviceType()
-        let versionFromBundle = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        let currentLaunchCount = UserDefaults.standard.integer(forKey: launchCountKey)
-        let jsCode = "try{ga('send','event', '\(deviceType) Request Review', '\(versionFromBundle)', '\(currentLaunchCount)', {'nonInteraction':1});}catch(ignore){}"
-        if shouldTrackRequestReview == true {
-            shouldTrackRequestReview = false
-            didRequestReview = true
-            return jsCode
-        }
-        return nil
-    }
+    //    func requestReviewTracking() -> String? {
+    //        let deviceType = DeviceInfo.checkDeviceType()
+    //        let versionFromBundle = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    //        let currentLaunchCount = UserDefaults.standard.integer(forKey: launchCountKey)
+    //        let jsCode = "try{ga('send','event', '\(deviceType) Request Review', '\(versionFromBundle)', '\(currentLaunchCount)', {'nonInteraction':1});}catch(ignore){}"
+    //        if shouldTrackRequestReview == true {
+    //            shouldTrackRequestReview = false
+    //            didRequestReview = true
+    //            return jsCode
+    //        }
+    //        return nil
+    //    }
 }

@@ -94,6 +94,8 @@ struct PrivilegeHelper {
                         if let environment = receipt["environment"] as? String {
                             print ("environment is \(environment)")
                             if environment == "Production" {
+                                let trackLabel = UserInfo.shared.userId ?? UserInfo.shared.userName ?? UserInfo.shared.deviceToken ?? ""
+                                Track.event(category: "iOS Receipt Expires", action: id, label: "\(trackLabel)")
                                 print (receipt)
                             }
                         }

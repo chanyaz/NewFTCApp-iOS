@@ -143,12 +143,12 @@ class CustomRefreshConrol: UIRefreshControl {
     func setCurrentState(currentState: refreshState){
         switch currentState{
         case refreshState.normal:
-            print("切换到Normal")
+//            print("切换到Normal")
             self.label.text = normalTitle
             self.label.sizeToFit()
 
         case refreshState.pulling:
-            print("切换到Pulling")
+//            print("切换到Pulling")
             self.label.text = pullingTitle
             self.label.sizeToFit()
         case refreshState.refreshing:
@@ -160,7 +160,7 @@ class CustomRefreshConrol: UIRefreshControl {
     }
     //刷新状态执行的方法
     fileprivate func doRefreshAction(){
-        print("开始刷新动作")
+//        print("开始刷新动作")
         if (self.refreshTarget?.responds(to: self.refreshAction))!{
             self.refreshTarget?.performSelector(inBackground: self.refreshAction!, with: nil)
         }
@@ -168,7 +168,7 @@ class CustomRefreshConrol: UIRefreshControl {
     
     override func beginRefreshing() {
         super.beginRefreshing()
-         print("开始刷新")
+//         print("开始刷新")
     }
     override func endRefreshing() {
         super.endRefreshing()

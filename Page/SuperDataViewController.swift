@@ -202,8 +202,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 navigationItem.titleView = searchBar
                 searchBar?.becomeFirstResponder()
                 searchBar?.delegate = self
-                
-                
                 let urlStringSearch = APIs.convert(APIs.searchUrl)
                 if let url = URL(string: urlStringSearch) {
                     let request = URLRequest(url: url)
@@ -274,7 +272,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         }
                     } catch {
                         print ("cannot open the html book file")
-                        //self.webView?.load(request)
                     }
                 }
             }  else if dataObjectType == "clip" {
@@ -318,7 +315,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             object: nil
         )
         
-        
         // MARK: listen to in-app purchase transaction notification. There's no need to remove it in code after iOS 9 as the system will do that for you. https://useyourloaf.com/blog/unregistering-nsnotificationcenter-observers-in-ios-9/
         NotificationCenter.default.addObserver(
             self,
@@ -326,8 +322,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification),
             object: nil
         )
-        
-        
+
     }
     
     @objc public func refreshWebView(_ sender: Any) {

@@ -721,7 +721,15 @@ struct JSCodes {
         return storyHTMLCleanHTML
     }
     
-    
+    public static func getUserLoginJsCode() -> String {
+        let jsCode: String
+        if UserInfo.shared.userName != nil && UserInfo.shared.userName != "" {
+            jsCode = "hideUserLogin();"
+        } else {
+            jsCode = "promptUserLogin();"
+        }
+        return (jsCode)
+    }
 }
 
 // MARK: - Alert Messages that you might want to change for your own

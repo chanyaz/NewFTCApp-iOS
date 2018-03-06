@@ -3,9 +3,24 @@ window.adchID = '5000';
 document.title = '一周熱門文章';
 window.adChannelId = adchID;
 </script>
-<script type="text/javascript">
+  
+<script>
 var bannerCount = '';
+var testDB = '';
+var nowDB = 'yes';
 if(bannerCount == 0) {
+if (testDB == 'yes') {
+document.write(displayDBAd({
+devices:['PC'],
+adName:'PC-Leaderboard-Num1',
+container:'banner'
+}));
+document.write(displayDBAd({
+devices: ['iPhoneWeb','AndroidWeb','iPhoneApp','AndroidApp'],
+adName:'Mobile-Banner-Num1',
+container:'banner'
+}));
+} else {
 document.write(writeAdNew({
 devices: ['PC'],
 pattern:'Leaderboard',
@@ -16,7 +31,30 @@ devices: ['iPhoneWeb', 'AndroidWeb','iPhoneApp','AndroidApp'],
 pattern:'Banner',
 position:'Num1'
 }));
-} else if(bannerCount == 1) {
+}
+} else if (bannerCount == 1) {
+if (nowDB == 'yes' && adChannelId !='1000' &&adChannelId != '5048') {
+document.write(displayDBAd({
+devices:['PC'],
+adName:'PC-Banner-Num1',
+container:'banner'
+}));
+/*
+document.write(displayDBAd({
+devices:['iPhoneWeb','AndroidWeb','iPhoneApp','AndroidApp'],
+adName:'Mobile-Banner-Num2',
+container:'banner'
+}));
+*/
+var adChannelId = getAdChannelId();
+if (adChannelId!= '5048') {
+document.write(writeAdNew({
+devices: ['iPhoneWeb','AndroidWeb','iPhoneApp','AndroidApp'],
+pattern:'Banner',
+position:'Num2'
+}));
+}
+} else {
 document.write(writeAdNew({
 devices: ['PC'],
 pattern:'Banner',
@@ -30,18 +68,35 @@ pattern:'Banner',
 position:'Num2'
 }));
 }
-} else if(bannerCount == 2) {
+}
+} else if (bannerCount == 2) {
+if (testDB == 'yes') {
+document.write(displayDBAd({
+devices:['PC'],
+adName:'PC-Banner-Num2',
+container:'banner'
+}));
+} else {
 document.write(writeAdNew({
 devices: ['PC'],
 pattern:'Banner',
 position:'Num2'
 }));
-} else if(bannerCount == 3) {
+}
+} else if (bannerCount == 3) {
+if (testDB == 'yes') {
+document.write(displayDBAd({
+devices:['PC'],
+adName:'PC-Banner-Num3',
+container:'banner'
+}));
+} else {
 document.write(writeAdNew({
 devices: ['PC'],
 pattern:'Banner',
 position:'Num3'
 }));
+}
 }
 </script>
 <div class="block-container has-side"><div class="block-inner">
@@ -51,65 +106,65 @@ position:'Num3'
 <div class="items">
 
 
-<div class="item-container XL8 L8 M12 S6 P12 item-container-app has-image" data-id="001076212" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076212#adchannelID=5000">為什麼美國不歡迎中國企業了？</a></h2>
-<a class="image" target="_blank" href="/story/001076212#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/4/000061334_piclink.jpg"></figure></a><div class="item-lead">黃亞生：不應將中企在美連續受阻歸因為「偏見」，理解當前政治環境變化，爭取被美國社會更多了解，才是應該做的。</div><div class="item-time">2018年2月5日</div>
+<div class="item-container XL8 L4 M12 S6 P12 item-container-app has-image" data-id="001076470" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076470#adchannelID=5000">什麼樣的修憲不違憲？</a></h2>
+<a class="image" target="_blank" href="/story/001076470#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000069730_piclink.jpg"></figure></a><div class="item-lead">張千帆：憲法本身有一個規范等級秩序，而不是條文的簡單堆積，有些條文比其它條文更基本、更重要，因而地位更高。</div><div class="item-time">2018年2月27日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 XL-half XL-right L4 L-half L-right M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076232" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076232#adchannelID=5000">日本溫泉小鎮帶給中國什麼樣的警示？</a></h2>
-<a class="image" target="_blank" href="/story/001076232#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000070668_piclink.jpg"></figure></a><div class="item-lead">吉密歐：越後湯澤是一座迷人的山城。但它也如同一個縮影，體現著日本鄉村經濟面臨的挑戰：糟糕的人口結構。</div><div class="item-time">6天前</div>
+<div class="item-container XL4 XL-half XL-right L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076530" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076530#adchannelID=5000">中國經濟面臨水危機</a></h2>
+<a class="image" target="_blank" href="/story/001076530#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/1/000076161_piclink.jpg"></figure></a><div class="item-lead">帕頓：水危機迫在眉睫，中國需出台比現有措施更有效的政策促成「駱駝經濟」的實現，但這樣的政策將面臨極大阻力。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 XL-half XL-right XL-lower L4 L-half L-right L-lower M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076269" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076269#adchannelID=5000">印度如何趕超中國？</a></h2>
-<a class="image" target="_blank" href="/story/001076269#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/1/000075861_piclink.jpg"></figure></a><div class="item-lead">沃爾夫：根據現狀來看，合理的估計是，印度經濟年增速將穩定在7%至8%之間。但印度還需繼續改革、發展科技和教育。</div><div class="item-time">4天前</div>
+<div class="item-container XL4 XL-half XL-right XL-lower L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076469" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076469#adchannelID=5000">安邦事件如何定性？</a></h2>
+<a class="image" target="_blank" href="/story/001076469#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000062188_piclink.jpg"></figure></a><div class="item-lead">周浩：中國官方對安邦事件的定性，是過去兩年「去槓桿」政策累積的一個爆發點。如果回溯在過去一年，會對整體政策圖景有更清晰的認識。</div><div class="item-time">2018年2月27日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076305" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076305#adchannelID=5000">在這個歷史站點，我們可以期許什麼？</a></h2>
-<a class="image" target="_blank" href="/story/001076305#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000066750_piclink.jpg"></figure></a><div class="item-lead">吳思：在勾勒出中國所處的歷史位置地圖後，我從行政、立法、司法、經濟、社會、意識形態六個領域談對中國的期許。</div><div class="item-time">3天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076543" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076543#adchannelID=5000">羅斯、萊特希澤與特朗普：三個人的對華貿易戰</a></h2>
+<a class="image" target="_blank" href="/story/001076543#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000066602_piclink.jpg"></figure></a><div class="item-lead">王一鳴：特朗普、羅斯和萊特希澤在推動對華貿易戰進程中的角色、理念和行為習慣其實並不相同，存在三種打開方式。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076252" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076252#adchannelID=5000">梁漱溟與孫冶方：中國憲法史上值得書寫的兩位人物</a></h2>
-<a class="image" target="_blank" href="/story/001076252#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000065956_piclink.jpg"></figure></a><div class="item-lead">龔刃韌：梁漱溟和孫冶方之所以敢在中國幾次修憲過程中公開表達個人意見和說真話，與他們正直的品格有著直接關系。</div><div class="item-time">5天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076474" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076474#adchannelID=5000">美國對華政策可能犯了戰略錯誤</a></h2>
+<a class="image" target="_blank" href="/story/001076474#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000056162_piclink.jpg"></figure></a><div class="item-lead">周波：把美中關系視為大國之間的競爭，這是美國繼在伊拉克和阿富汗打了兩場戰爭之後，正在犯下的另一個錯判。</div><div class="item-time">2018年2月27日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076267" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076267#adchannelID=5000">互聯網紅利的終結</a></h2>
-<a class="image" target="_blank" href="/story/001076267#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/4/000075514_piclink.jpg"></figure></a><div class="item-lead">陳歆磊、史穎波：智能手機市場下滑預示著所有線上業務將隨之出現停滯或增長放緩。全球科技巨頭的轉型已經悄然而至，中國公司卻落後了半拍。</div><div class="item-time">4天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076484" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076484#adchannelID=5000">房產稅：言之鑿鑿，行之過早？</a></h2>
+<a class="image" target="_blank" href="/story/001076484#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000072486_piclink.jpg"></figure></a><div class="item-lead">明利：中國即將進入存量房時代，房產稅勢在必行；但考慮「去庫存」總基調下，2020年前全國范圍內統一開征房產稅的可能性將比較低。</div><div class="item-time">6天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076293" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076293#adchannelID=5000">千金難買 「牛回頭」？</a></h2>
-<a class="image" target="_blank" href="/story/001076293#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000075922_piclink.jpg"></figure></a><div class="item-lead">李海濤：在經歷了整整九年的連續大���市之後，美股呈現疲態，並開始劇烈調整，自2月以來出現大幅下跌。</div><div class="item-time">3天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076550" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076550#adchannelID=5000">東北衰落困擾中國經濟</a></h2>
+<a class="image" target="_blank" href="/story/001076550#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000076192_piclink.jpg"></figure></a><div class="item-lead">有觀點認為，關於東北未來的爭論，是「市場導向型改革」與「政府驅動型產業政策」之間的爭辯，這也是中國經濟需要面對的抉擇。</div><div class="item-time">1天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076242" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076242#adchannelID=5000">從「情趣內衣特色小鎮」看中國產業政策</a></h2>
-<a class="image" target="_blank" href="/story/001076242#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/7/000075817_piclink.jpg"></figure></a><div class="item-lead">10年前，江蘇省東王集鎮還主要是稻田。今天，這裡是「情趣內衣」生產中心。該鎮是中國圍繞特定產業發展「特色小鎮」的縮影。</div><div class="item-time">6天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076538" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076538#adchannelID=5000">中國知名「太子黨」陳小魯去世 享年71歲</a></h2>
+<a class="image" target="_blank" href="/story/001076538#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/4/000076164_piclink.jpg"></figure></a><div class="item-lead">身為陳毅之子，陳小魯是他那代「太子黨」中最突出的人物之一，在晚年擔當起同齡人的良知，對文革罪孽作出懺悔。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076204" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076204#adchannelID=5000">從硅谷視角審視中國創新</a></h2>
-<a class="image" target="_blank" href="/story/001076204#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000064955_piclink.jpg"></figure></a><div class="item-lead">倫道夫：中國主要模仿甚或剽竊西方技術麼？中國深度創新仍然滯後，漸進性創新表現突出，未來政策如何加速中國的創新能力？</div><div class="item-time">5天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076547" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076547#adchannelID=5000">中國的主旋律影片在變化</a></h2>
+<a class="image" target="_blank" href="/story/001076547#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/7/000076187_piclink.jpg"></figure></a><div class="item-lead">劉裘蒂：從《紅海行動》收獲些許國際肯定，到《北京八分鐘》受西方盛贊，中國主旋律影片似乎在走出說教。</div><div class="item-time">1天���</div>
 <div class="item-bottom"></div>
 </div></div>
 <script type="text/javascript">
@@ -121,65 +176,65 @@ position:'Middle1'
 </script>
 
 <div class="XLT LT MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076286" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076286#adchannelID=5000">海航努力駕馭顛簸航程</a></h2>
-<a class="image" target="_blank" href="/story/001076286#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/9/000069439_piclink.jpg"></figure></a><div class="item-lead">海航通過舉債迅速擴張，但這種策略蘊含風險：當市場或政治環境變得不那麼有利時，危機就會突然爆發。</div><div class="item-time">3天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076511" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076511#adchannelID=5000">俄羅斯與美國：誰能「站到最後」？</a></h2>
+<a class="image" target="_blank" href="/story/001076511#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000076135_piclink.jpg"></figure></a><div class="item-lead">拉赫曼：普京知道俄羅斯有嚴重的問題，但美國自身也有問題。因此他的策略是盡量搞大美國的問題，讓美國先倒。</div><div class="item-time">5天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076244" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076244#adchannelID=5000">嚴介和起訴蘭州政府拖欠工程款</a></h2>
-<a class="image" target="_blank" href="/story/001076244#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/1/000075821_piclink.jpg"></figure></a><div class="item-lead">這位在中國排第八的富豪表示，太平洋建設集團至今沒有收到「蘭州新城」有關工程的款項。該項目已於2013年被政府叫停。</div><div class="item-time">6天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076537" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076537#adchannelID=5000">特朗普拍板對鋼鐵和鋁進口征收關稅</a></h2>
+<a class="image" target="_blank" href="/story/001076537#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000075192_piclink.jpg"></figure></a><div class="item-lead">美國總統宣布將「在很長一段時期」對鋼鐵和鋁進口征收重稅，以保護本土鋼鐵及鋁業，此舉很可能招致歐盟和中國報復。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076282" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076282#adchannelID=5000">喝葡萄酒：不養生，也不致癌</a></h2>
-<a class="image" target="_blank" href="/story/001076282#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000075905_piclink.jpg"></figure></a><div class="item-lead">謝立：營養學說致命的盲區就是，人有心理和情感需求。愛喝酒的人不是為了健康，而是為了盡興喝酒。</div><div class="item-time">3天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076483" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076483#adchannelID=5000">劉鶴攜改革承諾赴美對話</a></h2>
+<a class="image" target="_blank" href="/story/001076483#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/1/000063061_piclink.jpg"></figure></a><div class="item-lead">中共中央政治局委員、即將出任副總理的劉鶴此次訪美，意在防止中美爆發貿易戰，但可能受到特朗普政府的冷遇。</div><div class="item-time">2018年2月27日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076213" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076213#adchannelID=5000">克隆猴背後的中國科研實力疾進</a></h2>
-<a class="image" target="_blank" href="/story/001076213#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000075778_piclink.jpg"></figure></a><div class="item-lead">阿胡賈：誕生在上海的兩只克隆獼猴，再度表明克隆人在科學上是可能的，同時也反映出中國在科學舞台上的迅速崛起。</div><div class="item-time">2018年2月5日</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076542" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076542#adchannelID=5000">中國「兩會」代表中富豪人數減少</a></h2>
+<a class="image" target="_blank" href="/story/001076542#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000075966_piclink.jpg"></figure></a><div class="item-lead">參加第十三屆全國人大會議和政協會議的億萬富翁人數為153人，比第十二屆少了56人，但其總財富同比增長近20%。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076201" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076201#adchannelID=5000">程原：為何跨國企業裡中國籍高管仍不多見？</a></h2>
-<a class="image" target="_blank" href="/story/001076201#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000075762_piclink.jpg"></figure></a><div class="item-lead">全球頂級獵頭之一——羅盛咨詢的程原認為，中國高管仍普遍缺乏擔任國際職位的意願，與此同時，在華外企出現「老外」高管重新增多的趨勢。</div><div class="item-time">2018年2月5日</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076486" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076486#adchannelID=5000">台灣行政院長呼籲民眾不要搶購衛生紙</a></h2>
+<a class="image" target="_blank" href="/story/001076486#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/9/000076109_piclink.jpg"></figure></a><div class="item-lead">因有報道稱衛生紙即將漲價，台灣民眾將超市衛生紙搶購一空。台灣行政院長周二表示台灣物價非常穩定，呼籲民眾不要恐慌。</div><div class="item-time">2018年2月27日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076248" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076248#adchannelID=5000">平台市場監管：大就是惡嗎？</a></h2>
-<a class="image" target="_blank" href="/story/001076248#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000074706_piclink.jpg"></figure></a><div class="item-lead">鐘鴻鈞：今天討論阿裡、騰訊的壟斷時必須記住，這個壟斷，也許同樣很快就會被無法想象的創新和技術進步打破。</div><div class="item-time">5天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076508" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076508#adchannelID=5000">2月份中國制造業PMI降幅為六年來最大</a></h2>
+<a class="image" target="_blank" href="/story/001076508#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000076126_piclink.jpg"></figure></a><div class="item-lead">2月份制造業PMI降至50.3%，逼近榮枯線。有經濟學家認為即使計入春節影響，數據仍顯示出今年開年制造業活動明顯放緩。</div><div class="item-time">6天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076304" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076304#adchannelID=5000">新年期許：是有天道這麼回事兒</a></h2>
-<a class="image" target="_blank" href="/story/001076304#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/1/000070321_piclink.jpg"></figure></a><div class="item-lead">盛洪：是有天道這麼回事兒，但需要我們起來行。不要期待天道自動發揮作用，一定是要通過人的努力發揮作用。</div><div class="item-time">3天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076513" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076513#adchannelID=5000">特朗普用保護主義對付中國</a></h2>
+<a class="image" target="_blank" href="/story/001076513#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000076132_piclink.jpg"></figure></a><div class="item-lead">特朗普正在推動一項擴大美國外國投資委員會管轄范圍的改革，當前瞄准的主要目標是中國及其對美國知識產權的胃口。</div><div class="item-time">5天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076309" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076309#adchannelID=5000">延續「平昌和平窗口期」：從六方博弈到三國協調</a></h2>
-<a class="image" target="_blank" href="/story/001076309#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000075215_piclink.jpg"></figure></a><div class="item-lead">王鵬：若韓國能拉攏中朝，以自身為中心打造一個三邊協調的多軌道、多層面長效機制，將能重建東北亞共同安全新格局。</div><div class="item-time">1天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076489" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076489#adchannelID=5000">中國知名高中的核心競爭力</a></h2>
+<a class="image" target="_blank" href="/story/001076489#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000062398_piclink.jpg"></figure></a><div class="item-lead">肖經棟：除了生源優秀外，在學校的教育資源、家長支持力度以及學生的綜合素質上，京滬深等地名校各有不同。</div><div class="item-time">6天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076283" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076283#adchannelID=5000">中國疑似開發出超音速軌道炮</a></h2>
-<a class="image" target="_blank" href="/story/001076283#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000075880_piclink.jpg"></figure></a><div class="item-lead">網上公布的照片似乎顯示中國大型登陸艦「海洋山」號加裝了軌道炮。目前還沒有任何一個國家在海上測試過軌道炮。</div><div class="item-time">4天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076531" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076531#adchannelID=5000">吉利入股戴姆勒的動機</a></h2>
+<a class="image" target="_blank" href="/story/001076531#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000068265_piclink.jpg"></figure></a><div class="item-lead">吉利收購資金來源的模糊讓外界猜測其背後是否有政治動機，但分析師表示，入股戴姆勒本身也符合吉利對規模的追求。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 <script type="text/javascript">
@@ -191,156 +246,142 @@ position:'Middle2'
 </script>
 
 <div class="XLT LT MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076311" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076311#adchannelID=5000">Space X與夢想</a></h2>
-<a class="image" target="_blank" href="/story/001076311#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/9/000075949_piclink.jpg"></figure></a><div class="item-lead">王一鳴：今天的世界比以往任何時候都更需要哥倫布、達爾文和愛因斯坦，更需要一種羅曼蒂克般的發夢精神。</div><div class="item-time">1天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076450" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076450#adchannelID=5000">吳小暉的起落</a></h2>
+<a class="image" target="_blank" href="/story/001076450#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/3/000069053_piclink.jpg"></figure></a><div class="item-lead">51歲的吳小暉被控集資詐騙和職務侵佔，作為中國最耀眼的並購者之一，其流星般的職業生涯就此落下帷幕。</div><div class="item-time">2018年2月24日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076200" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076200#adchannelID=5000">中國對日本，要有長期打算</a></h2>
-<a class="image" target="_blank" href="/story/001076200#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/7/000063557_piclink.jpg"></figure></a><div class="item-lead">曹辛：中日兩國確定的國家發展戰略目標「中國夢」和日本的「正常化」，是水火不容，還是可以「共存共榮」？</div><div class="item-time">2018年2月2日</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076552" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076552#adchannelID=5000">只有用憲法，憲法才有用</a></h2>
+<a class="image" target="_blank" href="/story/001076552#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/1/000076201_piclink.jpg"></figure></a><div class="item-lead">盛洪：憲法需要普遍地用才能起作用，用憲法的最好行動，就是對違反憲法的法律法規和行政文件提出合憲性審查。</div><div class="item-time">1天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076294" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076294#adchannelID=5000">比特幣、黃金白銀，這次不一樣？</a></h2>
-<a class="image" target="_blank" href="/story/001076294#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/4/000075824_piclink.jpg"></figure></a><div class="item-lead">徐瑾：相比於比特幣，時下沒有哪種資產更能激發國人的熱愛與恐懼。比特幣不過是黃金的高科技變體；貨幣之爭也是信念之爭，白銀的歷史循環還沒落幕。</div><div class="item-time">3天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076568" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076568#adchannelID=5000">中國稱取消國家主席任期期限源於基層「一致呼籲」</a></h2>
+<a class="image" target="_blank" href="/story/001076568#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000076220_piclink.jpg"></figure></a><div class="item-lead">參加人大年會的代表和記者傳閱的一份文件稱，許多地區、部門和廣大黨員干部群眾一致呼籲修改憲法中國家主席任職期限的有關規定。</div><div class="item-time">1天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076268" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076268#adchannelID=5000">憨相為何能贏天下？</a></h2>
-<a class="image" target="_blank" href="/story/001076268#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000074062_piclink.jpg"></figure></a><div class="item-lead">老愚：官場上混的人，大都有一副憨相，平時在眾人面前故作傻乎乎狀，令人產生親切感、人情味，有此人可欺之錯覺。</div><div class="item-time">4天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076479" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076479#adchannelID=5000">自行車的「高速」夢</a></h2>
+<a class="image" target="_blank" href="/story/001076479#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/3/000076103_piclink.jpg"></figure></a><div class="item-lead">在廈門，一條首次出現的自行車高速路引發了關於路權、經濟性和城市交通未來的思考和憧憬。</div><div class="item-time">2018年2月27日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076302" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076302#adchannelID=5000">阿裡巴巴和騰訊因海外支付違規被罰款</a></h2>
-<a class="image" target="_blank" href="/story/001076302#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000074706_piclink.jpg"></figure></a><div class="item-lead">阿裡巴巴和騰訊旗下支付服務部門因違反跨境外匯交易法規而分別被罰款60萬元人民幣，使兩個科技巨頭被卷入北京打擊資本外流的戰爭。</div><div class="item-time">3天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076526" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076526#adchannelID=5000">2018：人民幣迎來利好</a></h2>
+<a class="image" target="_blank" href="/story/001076526#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/4/000072964_piclink.jpg"></figure></a><div class="item-lead">對人民幣投資來說，今年將是樂觀的一年。不僅中國內地A股將首次被納入新興市場基准股指，人民幣債券也有望在未來迎來類似動作。</div><div class="item-time">5天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076241" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076241#adchannelID=5000">萬達在壓力之下繼續「輕資產」</a></h2>
-<a class="image" target="_blank" href="/story/001076241#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000074386_piclink.jpg"></figure></a><div class="item-lead">這家中國綜合企業集團將把大約47億元人民幣的上市電影公司股權出售給阿裡巴巴，將31億元人民幣的股權出售給文投控股。</div><div class="item-time">6天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076536" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076536#adchannelID=5000">葉簡明據傳被帶走後華信債券受重挫</a></h2>
+<a class="image" target="_blank" href="/story/001076536#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000063535_piclink.jpg"></figure></a><div class="item-lead">有關董事長葉簡明被調查的報道使華信能源入股俄羅斯石油公司的90億美元交易復雜化，外界對華信籌資能力表示懷疑。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076250" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076250#adchannelID=5000">香港終審法院推翻黃之鋒三人入獄判決</a></h2>
-<a class="image" target="_blank" href="/story/001076250#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000063930_piclink.jpg"></figure></a><div class="item-lead">香港終審法院周二裁定，黃之鋒、羅冠聰和周永康因2016年試圖沖擊政府辦公室被判非法集會，原審判決三人不用入獄，該判決並無明顯不恰。</div><div class="item-time">6天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076529" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076529#adchannelID=5000">世行新經濟指標：揭示各國人均財富的變化</a></h2>
+<a class="image" target="_blank" href="/story/001076529#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000076160_piclink.jpg"></figure></a><div class="item-lead">世界銀行通過追蹤1995年至2014年間141個國家四類資本的變化，力求提供比GDP數據更全面反映經濟進步狀況的指標。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076257" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076257#adchannelID=5000">德國工會贏得28小時工作周權利</a></h2>
-<a class="image" target="_blank" href="/story/001076257#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000065830_piclink.jpg"></figure></a><div class="item-lead">巴登-符騰堡州金屬和電氣行業的90萬工人將被允許把工作周從35小時縮短到28小時，同時保留重返全職工作的權利。</div><div class="item-time">5天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076487" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076487#adchannelID=5000">征收房產稅應該考慮什麼？</a></h2>
+<a class="image" target="_blank" href="/story/001076487#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000065216_piclink.jpg"></figure></a><div class="item-lead">張一：從征稅成本看，要征收房產稅，首先必須對不動產進行全國聯網和登記。從效果看，房產稅可能難以達到政策制定者預期的目標。</div><div class="item-time">6天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076284" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076284#adchannelID=5000">中國內地房地產開發商大幅撤出香港土地市場</a></h2>
-<a class="image" target="_blank" href="/story/001076284#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000075882_piclink.jpg"></figure></a><div class="item-lead">自去年4月以來，在香港政府的土地拍賣中，中國內地開發商拍得的土地按價值計佔總數的11%，而之前兩年的比例約為50%。</div><div class="item-time">4天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076539" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076539#adchannelID=5000">普京：俄將部署「無敵」新型核武</a></h2>
+<a class="image" target="_blank" href="/story/001076539#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/7/000067197_piclink.jpg"></figure></a><div class="item-lead">俄羅斯總統在國情咨文中稱，俄已開發出能突破任何防御的先進核武器。此舉將助燃人們對俄美展開新一輪軍備競賽的擔憂。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076259" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076259#adchannelID=5000">韓國法庭釋放三星繼承人引發憤怒</a></h2>
-<a class="image" target="_blank" href="/story/001076259#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000067518_piclink.jpg"></figure></a><div class="item-lead">李在鎔被釋放，強化了韓國各界對於該國政商精英串通的擔憂。外界預測，這位三星實際領導人將參加周末的冬奧會開幕式。</div><div class="item-time">5天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076548" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076548#adchannelID=5000">亞洲共享單車折戟歐洲市場</a></h2>
+<a class="image" target="_blank" href="/story/001076548#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000067795_piclink.jpg"></figure></a><div class="item-lead">亞洲共享單車初創企業在歐洲城市推出的共享單車遭遇了從物流、監管到破壞、盜竊以及大規模損毀等問題。</div><div class="item-time">1天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076256" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076256#adchannelID=5000">美國股市強勁反彈 巨幅波動重現市場</a></h2>
-<a class="image" target="_blank" href="/story/001076256#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000075838_piclink.jpg"></figure></a><div class="item-lead">在華爾街前一天錄得六年來最大單日跌幅後，周二道指大漲567點，標普500指數錄得���特朗普上任以來單日最佳表現。</div><div class="item-time">5天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076540" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076540#adchannelID=5000">比較中美小學作業，我們該如何給孩子「減負「？</a></h2>
+<a class="image" target="_blank" href="/story/001076540#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000076166_piclink.jpg"></figure></a><div class="item-lead">樓夷：老師在教學上擁有相當大的自由度，所以，通過一項作業同時鍛煉孩子多項學科能力，也是自然的選擇了。</div><div class="item-time">4天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076278" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076278#adchannelID=5000">五角大樓稱SpaceX火箭發射「鼓舞人心」</a></h2>
-<a class="image" target="_blank" href="/story/001076278#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000075866_piclink.jpg"></figure></a><div class="item-lead">波音和洛克希德•馬丁結成的發射聯盟迄今主宰美國軍事太空發射，但獵鷹重型火箭讓美國國防部看到打破壟斷格局的希望。</div><div class="item-time">4天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076488" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076488#adchannelID=5000">中美金融市場誰更平穩？</a></h2>
+<a class="image" target="_blank" href="/story/001076488#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/1/000067661_piclink.jpg"></figure></a><div class="item-lead">張明：美國股市與債市可能雙雙面臨下行調整之壓力；而受國內金融強監管影響，中國長期利率的調整早於美國，幅度大於美國。</div><div class="item-time">5天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076246" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076246#adchannelID=5000">信貸收緊限制中國房產市場發展</a></h2>
-<a class="image" target="_blank" href="/story/001076246#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000075826_piclink.jpg"></figure></a><div class="item-lead">僅管房價上升，FT《投資參考》的一月份中國房地產指數卻再次下跌。信貸環境收緊預計在2018年會繼續擠壓房產市場。</div><div class="item-time">5天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076557" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076557#adchannelID=5000">中國尋求避免與美國打貿易戰</a></h2>
+<a class="image" target="_blank" href="/story/001076557#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/1/000069531_piclink.jpg"></figure></a><div class="item-lead">中國外交部副部長張業遂在全國人大年會前夕表示，中美共同利益遠大於分歧，合作是唯一正確選擇，中方不想同美方打貿易戰。</div><div class="item-time">1天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076263" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076263#adchannelID=5000">特朗普上任頭一年美國貿易逆差創9年新高</a></h2>
-<a class="image" target="_blank" href="/story/001076263#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000075845_piclink.jpg"></figure></a><div class="item-lead">2017年美國貿易逆差增長了12.1%。這表明，在履行自己對於改寫美國與世界貿易關系的承諾方面，特朗普並沒有取得多少進展。</div><div class="item-time">5天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076501" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076501#adchannelID=5000">羅斯柴爾德董事長即將交棒給第七代</a></h2>
+<a class="image" target="_blank" href="/story/001076501#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/9/000076119_piclink.jpg"></figure></a><div class="item-lead">75歲的戴維•羅斯柴爾德將卸任該行董事長，他的兒子、37歲的亞歷山大將接掌這個已有200年歷史的銀行業王朝。</div><div class="item-time">6天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076223" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076223#adchannelID=5000">從「工作量證明」解密「區塊鏈」</a></h2>
-<a class="image" target="_blank" href="/story/001076223#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/4/000074744_piclink.jpg"></figure></a><div class="item-lead">李洋：在一個互不認識、沒有中心、缺乏互信的環境裡，大家只需要在最長的區塊鏈上工作，就能保證系統信息的真實性，這就是「工作量證明」機制。</div><div class="item-time">6天前</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076519" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076519#adchannelID=5000">印度重獲「增長最快的大型經濟體」稱號</a></h2>
+<a class="image" target="_blank" href="/story/001076519#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/3/000074123_piclink.jpg"></figure></a><div class="item-lead">去年末季印度經濟同比增長7.2%，超過同期中國經濟增速。此前印度經濟增長受到廢鈔令和銷售稅改革的負面影響。</div><div class="item-time">5天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class="XLT LT MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076211" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076211#adchannelID=5000">真實復蘇的洗禮</a></h2>
-<a class="image" target="_blank" href="/story/001076211#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/2/000075412_piclink.jpg"></figure></a><div class="item-lead">程實、王宇哲：真實復蘇的洗禮讓未來更加值得期待。真實的復蘇擊碎了虛擬貨幣的夢想、博傻的市場氛圍、保護主義的逆流、需求端的被動依賴。</div><div class="item-time">2018年2月5日</div>
+<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076497" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076497#adchannelID=5000">全球汽車制造商競相鎖定鋰供應</a></h2>
+<a class="image" target="_blank" href="/story/001076497#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000067380_piclink.jpg"></figure></a><div class="item-lead">為了搶佔電動汽車市場，從大眾到特斯拉，各車企試圖鎖定鋰電池材料的供應。中國或成為全球鋰需求的主要影響因素。</div><div class="item-time">6天前</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076295" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076295#adchannelID=5000">馬斯克一手造夢想一手造時勢</a></h2>
-<a class="image" target="_blank" href="/story/001076295#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/0/000075920_piclink.jpg"></figure></a><div class="item-lead">過去人們常說，蘋果公司的偏執狂創始人喬布斯創造了自己的「現實扭力場」，同樣的說法如今也可適用於馬斯克。</div><div class="item-time">3天前</div>
+<div class="item-container XL4 XL-half L4 L-half M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076471" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076471#adchannelID=5000">中國國際人才競爭力正在取得新突破</a></h2>
+<a class="image" target="_blank" href="/story/001076471#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/6/000074106_piclink.jpg"></figure></a><div class="item-lead">王輝耀：《2017中國區域國際人才競爭力報告》藍皮書最近出爐，展示了中國區域國際人才競爭力發展情況和特點。</div><div class="item-time">2018年2月27日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076315" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076315#adchannelID=5000">阿裡巴巴加快印度布局</a></h2>
-<a class="image" target="_blank" href="/story/001076315#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000074368_piclink.jpg"></figure></a><div class="item-lead">阿裡巴巴將印度作為進軍海外的頭號陣地，通過投資印度本土的佼佼者，緊鑼密鼓地布局一個又一個業務。</div><div class="item-time">1天前</div>
+<div class="item-container XL4 XL-half L4 L-half M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076458" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076458#adchannelID=5000">人口下降導致日本廢棄土地激增</a></h2>
+<a class="image" target="_blank" href="/story/001076458#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/5/000072245_piclink.jpg"></figure></a><div class="item-lead">日本逾20%的土地沒有可以立即聯絡到的所有人。對於政府以及建築和地產行業而言，這是一個不斷蔓延的噩夢。</div><div class="item-time">2018年2月26日</div>
 <div class="item-bottom"></div>
 </div></div>
 
-<div class="XLT LT MT PT ST"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076231" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076231#adchannelID=5000">中國擴張應受歡迎而非遏制</a></h2>
-<a class="image" target="_blank" href="/story/001076231#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000068048_piclink.jpg"></figure></a><div class="item-lead">坎貝爾：尋求參與中國驚人增長的西方企業，應該著眼於尋找合適的合作伙伴，而非不明智地試圖遏制中國的擴張。</div><div class="item-time">6天前</div>
-<div class="item-bottom"></div>
-</div></div>
-
-<div class=" MT PT"></div>
-<div class="item-container XL4 L4 M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076221" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076221#adchannelID=5000">美元貶值背後的歐洲因素</a></h2>
-<a class="image" target="_blank" href="/story/001076221#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/7/000075647_piclink.jpg"></figure></a><div class="item-lead">沈建光：當前市場對於歐洲強勁復蘇仍沒有充分認識，看好美國多於歐洲，一旦預期與現實出現反差，會進一步助推歐元上漲，使美元維持弱勢。</div><div class="item-time">6天前</div>
-<div class="item-bottom"></div>
-</div></div>
-
-<div class=" MT PT ST"></div>
-<div class="item-container XL4 XL-half L4 L-half M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076292" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076292#adchannelID=5000">治理「大城市病」的根本途徑</a></h2>
-<a class="image" target="_blank" href="/story/001076292#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/3/000074613_piclink.jpg"></figure></a><div class="item-lead">肖金成：大城市人口增多不可避免，但我們應通過產業結構調整、多中心組團式城市、規劃發展城市群，治理大城市病。</div><div class="item-time">3天前</div>
+<div class="XLT-clear-right LT-clear-right MT PT ST"></div>
+<div class="item-container XL4 XL-half XL-lower L4 L-half L-lower M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076485" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076485#adchannelID=5000">Lex專欄：吉利入股戴姆勒的好處</a></h2>
+<a class="image" target="_blank" href="/story/001076485#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/7/000076107_piclink.jpg"></figure></a><div class="item-lead">吉利僅需支出不多的現金就入股戴姆勒，並由此得到打入德國制造業和進行品牌營銷的機會，這是一筆劃算的交易。</div><div class="item-time">2018年2月27日</div>
 <div class="item-bottom"></div>
 </div></div>
 
 <div class=" MT PT"></div>
-<div class="item-container XL4 XL-half XL-lower L4 L-half L-lower M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076225" data-type="story"><div class="item-inner">
-<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076225#adchannelID=5000">外國人來中國讀中學？</a></h2>
-<a class="image" target="_blank" href="/story/001076225#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/7/000075857_piclink.jpg"></figure></a><div class="item-lead">肖經棟：中國近年新建不少國際學校，采用國際通用課程，已開始吸引別國的小留學生前來就讀K12階段課程。</div><div class="item-time">4天前</div>
+<div class="item-container XL4 XL-half XL-lower L4 L-half L-lower M12 M-half S6 P12 P-half item-container-app has-image" data-id="001076499" data-type="story"><div class="item-inner">
+<h2 class="item-headline"><a class="item-headline-link" target="_blank" href="/story/001076499#adchannelID=5000">阿裡巴巴洽談收購餓了麼</a></h2>
+<a class="image" target="_blank" href="/story/001076499#adchannelID=5000"><figure class="loading" data-url="http://i.ftimg.net/picture/8/000067478_piclink.jpg"></figure></a><div class="item-lead">該交易對餓了麼這個���賣平台的估值可能高達95億美元。阿裡巴巴和騰訊都在演變為科技綜合企業，主宰人們生活的眾多方面。</div><div class="item-time">6天前</div>
 <div class="item-bottom"></div>
 </div></div>
 <div class="clearfloat"></div>
@@ -362,16 +403,16 @@ position:'Right1'
 <div class="mps P-hide">
 <h2 class="list-title"><a href="/channel/weekly.html">熱門文章</a></h2>
 <ul class="top10">
-<li class="mp1"><span>1. </span><a target="_blank" href="/story/001076309?dailypop">延續「平昌和平窗口期」：從六方博弈到三國協調</a></li>
-<li class="mp2"><span>2. </span><a target="_blank" href="/story/001076311?dailypop">Space X與夢想</a></li>
-<li class="mp3"><span>3. </span><a target="_blank" href="/story/001076315?dailypop">阿裡巴巴加快印度布局</a></li>
-<li class="mp4"><span>4. </span><a target="_blank" href="/story/001076320?dailypop">以色列為報復對敘利亞展開空襲</a></li>
-<li class="mp5"><span>5. </span><a target="_blank" href="/story/001076312?dailypop">「一帶一路」沿線國家成來華留學新增長點</a></li>
-<li class="mp6"><span>6. </span><a target="_blank" href="/story/001076317?dailypop">金正恩邀請韓國總統到平壤會談</a></li>
-<li class="mp7"><span>7. </span><a target="_blank" href="/story/001076319?dailypop">特朗普拒絕發布民主黨備忘錄</a></li>
-<li class="mp8"><span>8. </span><a target="_blank" href="/story/001076290?dailypop">英國玩具公司Hamleys：被中國千百度收購意味著什麼？</a></li>
-<li class="mp9"><span>9. </span><a target="_blank" href="/story/001076321?dailypop">美國企業簽署首份向中國供應美國LNG長期合同</a></li>
-<li class="mp10"><span>10. </span><a target="_blank" href="/story/001076318?dailypop">海航減持德銀股份</a></li>
+<li class="mp1"><span>1. </span><a target="_blank" href="/story/001076550?dailypop">東北衰落困擾中國經濟</a></li>
+<li class="mp2"><span>2. </span><a target="_blank" href="/story/001076547?dailypop">中國的主旋律影片在變化</a></li>
+<li class="mp3"><span>3. </span><a target="_blank" href="/story/001076552?dailypop">只有用憲法，憲法才有用</a></li>
+<li class="mp4"><span>4. </span><a target="_blank" href="/story/001076568?dailypop">中國稱取消國家主席任期期限源於基層「一致呼籲」</a></li>
+<li class="mp5"><span>5. </span><a target="_blank" href="/story/001076548?dailypop">亞洲共享單車折戟歐洲市場</a></li>
+<li class="mp6"><span>6. </span><a target="_blank" href="/story/001076557?dailypop">中國尋求避免與美國打貿易戰</a></li>
+<li class="mp7"><span>7. </span><a target="_blank" href="/story/001076560?dailypop">李克強：今年中國經濟增長目標為6.5%左右</a></li>
+<li class="mp8"><span>8. </span><a target="_blank" href="/story/001076563?dailypop">FT社評：普京的危險核姿態</a></li>
+<li class="mp9"><span>9. </span><a target="_blank" href="/story/001076553?dailypop">馬斯克和傻瓜億萬富豪俱樂部</a></li>
+<li class="mp10"><span>10. </span><a target="_blank" href="/story/001076556?dailypop">納瓦羅：美國鋼鐵關稅不會豁免任何國家</a></li>
 </ul>
 </div>
 <script type="text/javascript">

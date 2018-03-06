@@ -438,9 +438,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             listAPI.range(of: "showIAP=yes") != nil {
                             iapCode = jsCode
                         }
+                        let userLoginJsCode = JSCodes.getUserLoginJsCode()
                         listHTML = listHTML.replacingOccurrences(
                             of: "{iap-js-code}",
-                            with: iapCode
+                            with: "\(iapCode)\(userLoginJsCode)"
                         )
                         DispatchQueue.main.async {
                             self.webView?.loadHTMLString(listHTML, baseURL:url)
@@ -488,8 +489,16 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             webView?.evaluateJavaScript(jsCode) { (result, error) in
             }
         }
+        
+        // MARK: - Update User Name Prompt Based on User Name
+        let jsCode = JSCodes.getUserLoginJsCode()
+        webView?.evaluateJavaScript(jsCode) { (result, error) in
+            print ("\(jsCode) excuted! ")
+        }
+        
         isLoadingForTheFirstTime = false
     }
+
     
     
     override func viewDidDisappear(_ animated: Bool) {

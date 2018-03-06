@@ -68,7 +68,7 @@ struct Track {
                         do {
                             if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
                                 // MARK: - parse and verify the required informatin in the jsonResponse
-                                print ("engagement validation from func receiptValidation success: \(jsonResponse)")
+                                print ("Engagement validation from func receiptValidation success: \(jsonResponse)")
                             }
                         } catch {
                             
@@ -79,7 +79,7 @@ struct Track {
             }
         }
         catch {
-            print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
+            print("Engagement validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
         }
     }
     

@@ -35,6 +35,12 @@ struct Privilege {
 
 }
 
+// MARK: Quick way to indicate membership purchases
+struct InAppPurchases {
+    static var shared = InAppPurchases()
+    var memberships: [String] = []
+}
+
 struct PrivilegeHelper {
     
     static func updateFromDevice() {
@@ -47,6 +53,10 @@ struct PrivilegeHelper {
                     if let privilege = membership["privilege"] as? Privilege {
                         Privilege.shared = privilege
                         print ("IAP: check locally and privilege is \(privilege)")
+                    }
+                    // MARK: get users's membership purchase history
+                    if InAppPurchases.shared.memberships.contains(id) == false {
+                        InAppPurchases.shared.memberships.append(id)
                     }
                 }
             }
@@ -95,7 +105,7 @@ struct PrivilegeHelper {
                             print ("environment is \(environment)")
                             if environment == "Production" {
                                 let trackLabel = UserInfo.shared.userId ?? UserInfo.shared.userName ?? UserInfo.shared.deviceToken ?? ""
-                                Track.event(category: "iOS Receipt Expires", action: id, label: "\(trackLabel)")
+                                Track.event(category: "iOS Subscription Expires", action: id, label: "\(trackLabel)")
                                 print (receipt)
                             }
                         }

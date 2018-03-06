@@ -90,12 +90,13 @@ open class IAPHelper : NSObject  {
 
 extension IAPHelper {
     func receiptValidation(with server: String) {
-        if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
+        // MARK: Only validate receipts if the user has bought membership subscription
+        if InAppPurchases.shared.memberships.count > 0,
+            let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
             FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
             do {
                 let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
                 let receiptString = receiptData.base64EncodedString(options: [])
-                //let dict = ["receipt-data" : receiptString, "password" : "a3af21ddf07a45f39e699172856200c6"] as [String : String]
                 let dict = [
                     "receipt-data": receiptString,
                     "user-id": UserInfo.shared.userId ?? "",
@@ -141,20 +142,6 @@ extension IAPHelper {
             }
         }
     }
-    
-//    private func getValidProduct(_ receipt: [String: AnyObject]) -> [String] {
-//        var productIds = [String]()
-//        if let status = receipt["status"] as? Int,
-//            status == 0,
-//            let receipts = receipt["receipt"] as? [String: Any],
-//            let receiptItems = receipts["in_app"] as? [String: Any] {
-//            print (receiptItems)
-//            for item in receiptItems {
-//
-//            }
-//        }
-//        return productIds
-//    }
     
     
     // MARK: Stage 1:  Retrieving Product Information

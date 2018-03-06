@@ -338,16 +338,12 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             RequestMessage.update(.Hidden, with: self.requestStatus, in: self.view)
         } else {
             activityIndicator.removeFromSuperview()
-            //            refreshControl.endRefreshing()
             refreshContr?.endRefreshing()
         }
     }
     
     private func requestNewContentForWebview(_ listAPI: String, urlString: String, fileExtension: String) {
         DispatchQueue.main.async {
-//            self.view.addSubview(self.activityIndicator)
-//            self.activityIndicator.center = self.view.center
-//            self.activityIndicator.startAnimating()
             if self.requestStatusAdded == false {
                 RequestMessage.add(.Pending, with: self.requestStatus, in: self.view)
                 self.requestStatusAdded = true
@@ -390,7 +386,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         if status == .Success {
                             self?.renderWebview (listAPI, urlString: urlString, fileExtension: fileExtension)
                         }
-//                        self?.activityIndicator.removeFromSuperview()
                         // MARK: Show a message in the view controller, which disappears in 2 seconds.
                         RequestMessage.update(status, with: self?.requestStatus, in: self?.view)
                     }

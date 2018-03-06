@@ -445,7 +445,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         )
                         DispatchQueue.main.async {
                             self.webView?.loadHTMLString(listHTML, baseURL:url)
-                            //                            self.refreshControl.endRefreshing()
                             self.refreshContr?.endRefreshing()
                         }
                         

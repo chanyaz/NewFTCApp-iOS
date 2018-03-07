@@ -84,12 +84,29 @@ class MembershipCell: CustomCell {
         // MARK: - Update dispay of the cell
         headline.text = itemCell?.headline.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
         lead.text = itemCell?.lead.replacingOccurrences(of: "\\s*$", with: "", options: .regularExpression)
-        
+        var buttonActionString = "订阅"
         var benefitsString = ""
         if let productBenefits = itemCell?.productBenefits {
             // MARK: Display Product Benefits
             for benefit in productBenefits {
                 benefitsString += "- \(benefit)\n"
+            }
+            if let id = itemCell?.id,
+                let expiresString = IAP.checkPurchaseInDevice(id, property: "expires") {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = PrivilegeHelper.dateFormatString
+                if let expiresDate = dateFormatter.date(from: expiresString) {
+                    dateFormatter.dateFormat = PrivilegeHelper.dateFormatStringSimple
+                    let expiresDateStringNew = dateFormatter.string(from: expiresDate)
+                    let expiresStatement: String
+                    if expiresDate >= Date() {
+                        expiresStatement = "您的订阅将于\(expiresDateStringNew)过期"
+                    } else {
+                        expiresStatement = "您的订阅已于\(expiresDateStringNew)过期"
+                    }
+                    benefitsString += "\n\(expiresStatement)\n"
+                }
+                buttonActionString = "续订"
             }
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = 8
@@ -101,20 +118,22 @@ class MembershipCell: CustomCell {
 
         // MARK: - update buy button content
         price.text = "\(itemCell?.productPrice ?? "")/年"
-        buyButton.setTitle("订阅", for: .normal)
-        buyButton.setTitle("已订阅", for: .disabled)
+        
+        buyButton.setTitle(buttonActionString, for: .normal)
+//        buyButton.setTitle("已订阅", for: .disabled)
         
         if let id = itemCell?.id {
             let status = IAP.checkStatus(id)
             if ["success", "pendingdownload"].contains(status) {
                 // MARK: - update restore button content
                 restoreButton.setTitle(buttonManageKey, for: .normal)
-                buyButton.isEnabled = false
+                //buyButton.setTitle("续订", for: .normal)
+                // buyButton.isEnabled = false
                 //restoreButton.isHidden = true
             } else {
                 // MARK: - update restore button content
                 restoreButton.setTitle(buttonRestoreKey, for: .normal)
-                buyButton.isEnabled = true
+                //buyButton.isEnabled = true
                 //restoreButton.isHidden = false
             }
         }

@@ -1305,7 +1305,10 @@ extension SuperDataViewController {
             } else {
                 purchaseStatus = .All
             }
-            let items = IAP.get(IAPs.shared.products, in: dataObjectSubType, with: self?.withPrivilege, include: purchaseStatus)
+            var items = IAP.get(IAPs.shared.products, in: dataObjectSubType, with: self?.withPrivilege, include: purchaseStatus)
+            if items.count == 0 {
+                items = IAP.get(IAPs.shared.products, in: dataObjectSubType, with: self?.withPrivilege, include: .All)
+            }
             let contentSections = ContentSection(
                 title: self?.privilegeDescriptionBody ?? "",
                 items: items,

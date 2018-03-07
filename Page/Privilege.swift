@@ -43,6 +43,7 @@ struct InAppPurchases {
 
 struct PrivilegeHelper {
     public static let dateFormatString = "yyyy-MM-dd HH:mm:ss VV"
+    public static let dateFormatStringSimple = "yyyy年MM月dd日HH:mm"
     public static func updateFromDevice() {
         let memberships = IAPProducts.memberships
         for membership in memberships {
@@ -64,11 +65,12 @@ struct PrivilegeHelper {
     }
     
     public static func updateFromReceipt(_ receipt: [String: AnyObject]) {
+        
+        
         if let status = receipt["status"] as? Int,
             status == 0,
             let receipts = receipt["receipt"] as? [String: Any],
             let receiptItems = receipts["in_app"] as? [[String: Any]] {
-            
             var products = [String: ProductStatus]()
             for item in receiptItems {
                 if let id = item["product_id"] as? String {
@@ -90,6 +92,9 @@ struct PrivilegeHelper {
                     }
                 }
             }
+            
+            // TODO: Parse pending_renewal_info to get information about the user's auto_renew_status
+            
             // MARK: Now compare dates and save to device
             for (id, status) in products {
                 if let date = status.expireDate {
@@ -100,8 +105,8 @@ struct PrivilegeHelper {
                     } else {
                         print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
                         // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
-//                        UserDefaults.standard.set(false, forKey: id)
-//                        IAP.savePurchase(id, property: "purchased", value: "N")
+                        UserDefaults.standard.set(false, forKey: id)
+                        IAP.savePurchase(id, property: "purchased", value: "N")
                         
                         if let environment = receipt["environment"] as? String {
                             print ("environment is \(environment)")
@@ -124,6 +129,8 @@ struct PrivilegeHelper {
                 }
                 
             }
+            
+            //print(receipt)
             
             // MARK: update the privileges connected to buying
             updateFromDevice()

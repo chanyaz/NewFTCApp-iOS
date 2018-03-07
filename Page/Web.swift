@@ -290,7 +290,7 @@ extension UIViewController: SFSafariViewControllerDelegate {
     }
     
     func openProductStoreFront(_ productId: String?) {
-        let products = IAP.get(IAPs.shared.products, in: "ebook", with: nil)
+        let products = IAP.get(IAPs.shared.products, in: "ebook", with: nil, include: .All)
         for product in products {
             if productId == product.id {
                 if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {

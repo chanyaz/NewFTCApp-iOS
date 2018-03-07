@@ -307,6 +307,8 @@ struct Download {
     // MARK: - Retrieve a property value from the user default's "my purchase" key
     public static func getPropertyFromUserDefault(_ id: String, property: String) -> String? {
         if let myPurchases = UserDefaults.standard.dictionary(forKey: IAP.myPurchasesKey) as? [String: Dictionary<String, String>] {
+//            print ("my purchases: ")
+//            print (myPurchases)
             return myPurchases[id]?[property]
         }
         return nil

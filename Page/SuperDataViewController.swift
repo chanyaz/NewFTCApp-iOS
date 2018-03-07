@@ -1293,7 +1293,19 @@ extension SuperDataViewController {
             // MARK: - Get product regardless of the request result
             print ("product loaded: \(String(describing: IAPs.shared.products))")
             let dataObjectSubType = self?.dataObject["subtype"] ?? "membership"
-            let items = IAP.get(IAPs.shared.products, in: dataObjectSubType, with: self?.withPrivilege)
+            let purchaseStatus: PurchaseStatus
+            if let include = self?.dataObject["include"] {
+                if include == "purchased" {
+                    purchaseStatus = .Purchased
+                } else if include == "notpurchased" {
+                    purchaseStatus = .NotPurchased
+                } else {
+                    purchaseStatus = .All
+                }
+            } else {
+                purchaseStatus = .All
+            }
+            let items = IAP.get(IAPs.shared.products, in: dataObjectSubType, with: self?.withPrivilege, include: purchaseStatus)
             let contentSections = ContentSection(
                 title: self?.privilegeDescriptionBody ?? "",
                 items: items,

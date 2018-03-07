@@ -744,8 +744,21 @@ struct Settings {
     
     static let subscriberContact = [
         ContentSection(
-            title: "订户专线",
+            title: "订阅服务",
             items: [
+                ContentItem(
+                    id: "subscriber-info",
+                    image: "",
+                    headline: "我的订阅",
+                    lead: "",
+                    type: "setting",
+                    preferSponsorImage: "",
+                    tag: "",
+                    customLink: "",
+                    timeStamp: 0,
+                    section: 0,
+                    row: 0
+                ),
                 ContentItem(
                     id: "subscriber-contact",
                     image: "",

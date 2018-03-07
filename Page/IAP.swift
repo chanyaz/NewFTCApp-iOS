@@ -10,6 +10,12 @@ import Foundation
 import StoreKit
 // import FolioReaderKit
 
+enum PurchaseStatus {
+    case All
+    case Purchased
+    case NotPurchased
+}
+
 struct IAP {
     // MARK: - The key name for purchase information in user defaults
     public static let myPurchasesKey = "My Purchases"
@@ -17,7 +23,7 @@ struct IAP {
     public static let purchasedPropertyString = "purchased"
     private static let productPricesKey = "Product Prices Key"
     
-    public static func get(_ products: [SKProduct], in group: String?, with privilege: PrivilegeType?) -> [ContentItem] {
+    public static func get(_ products: [SKProduct], in group: String?, with privilege: PrivilegeType?, include purchaseStatus: PurchaseStatus) -> [ContentItem] {
         var contentItems = [ContentItem]()
         
         for oneProduct in IAPProducts.allProducts {
@@ -151,7 +157,10 @@ struct IAP {
                 contentItem.periodString = periodString
                 contentItem.productPrice = productPrice
                 contentItem.productBenefits = productBenefits
-                contentItems.append(contentItem)
+                let productPurchaseStatus: PurchaseStatus = (isPurchased) ? .Purchased: .NotPurchased
+                if purchaseStatus == .All || productPurchaseStatus == purchaseStatus {
+                    contentItems.append(contentItem)
+                }
             }
         }
         
@@ -160,7 +169,7 @@ struct IAP {
     
     
     public static func getJSON(_ products: [SKProduct], in group: String?, shuffle: Bool, filter: [String]?) -> String {
-        var contentItems = get(products, in: group, with: nil)
+        var contentItems = get(products, in: group, with: nil, include: .All)
         if shuffle {
             contentItems = contentItems.shuffled()
         }
@@ -255,7 +264,7 @@ struct IAP {
     public static func checkPurchaseInDevice(_ productId: String, property: String) -> String? {
         if let myPurchases = UserDefaults.standard.dictionary(forKey: myPurchasesKey) as? [String: Dictionary<String, String>] {
             if let myPurchase = myPurchases[productId] {
-                print ("myPurchase: \(myPurchase)")
+                // print ("myPurchase: \(myPurchase)")
                 if let value = myPurchase[property]{
                     return value
                 }

@@ -95,12 +95,14 @@ struct PrivilegeHelper {
                 if let date = status.expireDate {
                     // MARK: handle subscrition expiration date
                     if date >= Date() {
-                        //print ("\(id) is valid! ")
+                        print ("\(id) is valid! ")
                         UserDefaults.standard.set(true, forKey: id)
                     } else {
                         print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
                         // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
-                        //UserDefaults.standard.set(false, forKey: id)
+//                        UserDefaults.standard.set(false, forKey: id)
+//                        IAP.savePurchase(id, property: "purchased", value: "N")
+                        
                         if let environment = receipt["environment"] as? String {
                             print ("environment is \(environment)")
                             if environment == "Production" {
@@ -112,7 +114,7 @@ struct PrivilegeHelper {
                     }
                 } else {
                     // MARK: Not a subscription
-                    //print ("\(id) is valid! ")
+                    print ("\(id) is valid! ")
                     UserDefaults.standard.set(true, forKey: id)
                 }
                 

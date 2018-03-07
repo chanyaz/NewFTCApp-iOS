@@ -44,6 +44,10 @@ struct Setting {
             settingType = "action"
             settingDefault = 0
             settingOn = false
+        case "subscriber-info":
+            settingType = "screen"
+            settingDefault = 0
+            settingOn = false
         case "feedback", "app-store", "privacy", "about", "subscriber-contact", "user-term":
             settingType = "detail"
             settingDefault = 0
@@ -158,6 +162,8 @@ struct Setting {
             handleAction(id, title: title)
         case "detail":
             handleDetail(id, title: title)
+        case "screen":
+            handleScreen(id, title: title)
         default:
             break
         }
@@ -183,6 +189,35 @@ struct Setting {
         default:
             break
         }
+    }
+    
+    private static func handleScreen(_ id: String, title: String) {
+        let dataObject: [String: String]
+        switch id {
+        case "subscriber-info":
+            dataObject = [
+                "title": "我的订阅",
+                "type": "iap",
+                "subtype":"membership",
+                "compactLayout": "books",
+                "screenName":"myft/membership",
+                "include": "purchased"
+            ]
+        default:
+            dataObject = [:]
+            break
+        }
+        
+        if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
+            let topViewController = UIApplication.topViewController() {
+            //print(dataViewController.view.frame)
+            dataViewController.dataObject = dataObject
+            dataViewController.hidesBottomBarWhenPushed = true
+            dataViewController.pageTitle = dataObject["title"] ?? ""
+            topViewController.navigationController?.pushViewController(dataViewController, animated: true)
+        }
+        
+        
     }
     
     private static func handleDetail(_ id: String, title: String) {

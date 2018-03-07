@@ -42,8 +42,8 @@ struct InAppPurchases {
 }
 
 struct PrivilegeHelper {
-    
-    static func updateFromDevice() {
+    public static let dateFormatString = "yyyy-MM-dd HH:mm:ss VV"
+    public static func updateFromDevice() {
         let memberships = IAPProducts.memberships
         for membership in memberships {
             if let id = membership["id"] as? String {
@@ -63,7 +63,7 @@ struct PrivilegeHelper {
         }
     }
     
-    static func updateFromReceipt(_ receipt: [String: AnyObject]) {
+    public static func updateFromReceipt(_ receipt: [String: AnyObject]) {
         if let status = receipt["status"] as? Int,
             status == 0,
             let receipts = receipt["receipt"] as? [String: Any],
@@ -74,7 +74,7 @@ struct PrivilegeHelper {
                 if let id = item["product_id"] as? String {
                     if let expiresDate = item["expires_date"] as? String {
                         let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+                        dateFormatter.dateFormat = dateFormatString
                         if let date = dateFormatter.date(from: expiresDate) {
                             if let currentExpireDate = products[id]?.expireDate,
                                 currentExpireDate > date {
@@ -112,6 +112,11 @@ struct PrivilegeHelper {
                             }
                         }
                     }
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = dateFormatString
+                    let expireDateString = dateFormatter.string(from: date)
+                    print ("\(id) expires at \(expireDateString)")
+                    IAP.savePurchase(id, property: "expires", value: expireDateString)
                 } else {
                     // MARK: Not a subscription
                     print ("\(id) is valid! ")
@@ -126,7 +131,7 @@ struct PrivilegeHelper {
         }
     }
     
-    static func updateFromNetwork() {
+    public static func updateFromNetwork() {
         let memberships = IAPProducts.memberships
         for membership in memberships {
             if let id = membership["id"] as? String {
@@ -145,7 +150,7 @@ struct PrivilegeHelper {
         }
     }
     
-    static func isPrivilegeIncluded(_ privilegeType: PrivilegeType, in privilge: Privilege) -> Bool {
+    public static func isPrivilegeIncluded(_ privilegeType: PrivilegeType, in privilge: Privilege) -> Bool {
         switch privilegeType {
         case .EnglishAudio:
             return privilge.englishAudio
@@ -157,7 +162,7 @@ struct PrivilegeHelper {
     }
     
     // TODO: Need to get the correct words
-    static func getDescription(_ privilegeType: PrivilegeType) -> (title: String, body: String) {
+    public static func getDescription(_ privilegeType: PrivilegeType) -> (title: String, body: String) {
         switch privilegeType {
         case .EnglishAudio:
             return ("付费功能", "收听英文语音需要付费")
@@ -169,7 +174,7 @@ struct PrivilegeHelper {
     }
     
     // MARK: Get all privileges for web
-    static func getPrivilegesForWeb() -> String {
+    public static func getPrivilegesForWeb() -> String {
         var privileges: [String] = []
         if Privilege.shared.exclusiveContent == true {
             privileges.append("premium")
@@ -217,7 +222,7 @@ struct PrivilegeHelper {
 }
 
 struct ProductStatus {
-    var expireDate: Date?
+    public var expireDate: Date?
 }
 
 enum AdDisplay {

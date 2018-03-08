@@ -7,6 +7,27 @@
 //
 
 import Foundation
+
+struct ForceDomains {
+    static var shared = ForceDomains()
+    var newDomain: String?
+    private static let forceDomainKey = "Force Domain Key"
+    public static func saveNewDomain(_ domain: String) {
+        ForceDomains.shared.newDomain = domain
+        UserDefaults.standard.set(domain, forKey: forceDomainKey)
+    }
+    public static func getNewDomain() -> String? {
+        if let newDomain = ForceDomains.shared.newDomain {
+            return newDomain
+        }
+        if let newDomain = UserDefaults.standard.string(forKey: forceDomainKey) {
+            return newDomain
+        }
+        return nil
+    }
+    
+}
+
 struct Download {
     public static let serverNotRespondingKey = "Server Not Responding Key"
     
@@ -397,6 +418,10 @@ struct Download {
                             for storyIdString in storyIds {
                                 if let storyId = storyIdString.matchingFirstString(regex: storyIdPatterns) {
                                     let forceDomain = aps["d"] as? String
+                                    if let forceDomain = forceDomain {
+                                        //ForceDomains.shared.newDomain = forceDomain
+                                        ForceDomains.saveNewDomain(forceDomain)
+                                    }
                                     let apiUrl = APIs.get(storyId, type: "story", forceDomain: forceDomain)
                                     print ("downloading: \(apiUrl)")
                                     downloadUrl(apiUrl, to: .cachesDirectory, as: "json")

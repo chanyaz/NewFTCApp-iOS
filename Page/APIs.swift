@@ -158,6 +158,11 @@ struct APIs {
     // MARK: Check if the server is likely to respond correctly
     private static func checkServer(_ from: String) -> String {
         if let serverNotResponding = UserDefaults.standard.string(forKey: Download.serverNotRespondingKey) {
+            // MARK: If the server is blocked and new one is available, use that
+            if let forceDomain = ForceDomains.getNewDomain() {
+                let newUrl = from.replacingOccurrences(of: "^http.*.com/", with: forceDomain, options: .regularExpression)
+                return newUrl
+            }
             let currentPreference = LanguageSetting.shared.currentPrefence
             let currentIndex = (currentPreference == 0) ? 0 : 1
             let servers = [

@@ -42,7 +42,8 @@ struct APIs {
     ]
     
     private static let publicDomains = [
-        "http://app003.ftmailbox.com/",
+        //"http://app003.ftmailbox.com/",
+        "http://www.ftchinese.com/",
         "http://big5.ftmailbox.com/"
     ]
     

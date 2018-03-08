@@ -39,7 +39,8 @@ struct UserInfo {
             dataViewController.dataObject = [
                 "title": "账户",
                 "type": "account",
-                "url":"http://app003.ftmailbox.com/iphone-2014.html",
+                "url":"http://www.ftchinese.com/account.html",
+                //"url":"http://app003.ftmailbox.com/iphone-2014.html",
                 "screenName":"myft/account"
             ]
             dataViewController.pageTitle = "登入"

@@ -381,6 +381,7 @@ struct Download {
                             for storyIdString in storyIds {
                                 if let storyId = storyIdString.matchingFirstString(regex: storyIdPatterns) {
                                     let apiUrl = APIs.get(storyId, type: "story")
+                                    print ("downloading: \(apiUrl)")
                                     downloadUrl(apiUrl, to: .cachesDirectory, as: "json")
                                 }
                             }

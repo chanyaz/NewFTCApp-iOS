@@ -214,7 +214,8 @@ struct AppNavigation {
                 [
                     "title": "文章收藏",
                     "type": "clip",
-                    "url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
+                    //"url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
+                    "url":"http://www.ftchinese.com/users/favstorylist?webview=ftcapp",
                     "screenName":"myft",
                     "compactLayout": ""
                 ],
@@ -436,7 +437,8 @@ struct AppNavigation {
                 [
                     "title": "收藏",
                     "type": "clip",
-                    "url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
+                    //"url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
+                    "url":"http://www.ftchinese.com/users/favstorylist?webview=ftcapp",
                     "screenName":"myft",
                     "compactLayout": ""
                 ],
@@ -457,7 +459,8 @@ struct AppNavigation {
                 [
                     "title": "账户",
                     "type": "account",
-                    "url":"http://app003.ftmailbox.com/iphone-2014.html",
+                    //"url":"http://app003.ftmailbox.com/iphone-2014.html",
+                    "url":"http://www.ftchinese.com/account.html",
                     "screenName":"myft/account"
                 ],
                 [

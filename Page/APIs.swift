@@ -75,11 +75,10 @@ struct APIs {
     }
     
     // MARK: Construct url strings for different types of content
-    static func get(_ id: String, type: String) -> String {
+    static func get(_ id: String, type: String, forceDomain: String?) -> String {
         let urlString: String
         let originalDomain = getUrlStringInLanguage(htmlDomains)
-        let domain = checkServer(originalDomain)
-        //let domain = originalDomain
+        let domain = forceDomain ?? checkServer(originalDomain)
         
         switch type {
         case "story":

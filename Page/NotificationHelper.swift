@@ -61,7 +61,7 @@ struct NotificationHelper {
             case "tag":
                 if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
                     dataViewController.dataObject = ["title": id,
-                                                     "api": APIs.get(id, type: action),
+                                                     "api": APIs.get(id, type: action, forceDomain: nil),
                                                      "url":"",
                                                      "screenName":"tag/\(id)"]
                     dataViewController.pageTitle = id

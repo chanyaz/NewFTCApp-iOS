@@ -144,7 +144,7 @@ class BigImageCell: CustomCell {
     @IBAction func tapTagButton(_ sender: UIButton) {
         if let tag = sender.currentTitle {
             if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
-                let tagAPI = APIs.get(tag, type: "tag")
+                let tagAPI = APIs.get(tag, type: "tag", forceDomain: nil)
                 
                 dataViewController.dataObject = ["title": tag,
                                                  "api": tagAPI,

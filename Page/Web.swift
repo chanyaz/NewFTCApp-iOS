@@ -187,7 +187,7 @@ extension UIViewController: SFSafariViewControllerDelegate {
                 "headline": productId,
                 "type": "htmlbook",
                 "screenName":"htmlbook/\(productId)",
-                "url":  APIs.get(productId, type: "htmlbook")
+                "url":  APIs.get(productId, type: "htmlbook", forceDomain: nil)
             ]
             let title = IAP.findProductInfoById(productId)?["title"] as? String ?? "FT电子书"
             dataViewController.pageTitle = title

@@ -38,8 +38,10 @@ struct Download {
     }
     
     public static func downloadUrl(_ urlString: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
+        print ("downloadUrl: \(urlString) as \(String(describing: fileExtension))")
         if let url = URL(string: urlString) {
             getDataFromUrl(url) {(data, response, error)  in
+                print ("downloadUrl returned: \(urlString) as \(String(describing: fileExtension))")
                 if let data = data, error == nil {
                     saveFile(data, filename: urlString, to: to, as: fileExtension)
                 }
@@ -353,9 +355,23 @@ struct Download {
         }
     }
     
-    public static func grabHTMLResource(_ listAPI: String, completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        //MARK: Do this only when user is using wifi
-        if IJReachability().connectedToNetworkOfType() == .wiFi {
+    public static func grabHTMLResource(_ listAPI: String, aps: NSDictionary, completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        //MARK: Do this only when user is using wifi or the notification specifies that this download is vital
+        let forceDownload: Bool
+        if let forceDownloadFromNotification = aps["fd"] as? Int,
+            forceDownloadFromNotification == 1 {
+            forceDownload = true
+        } else {
+            forceDownload = false
+        }
+        let validationNecessary: Bool
+        if let validationNecessaryFromNotification = aps["nv"] as? Int,
+            validationNecessaryFromNotification == 0 {
+            validationNecessary = false
+        } else {
+            validationNecessary = true
+        }
+        if IJReachability().connectedToNetworkOfType() == .wiFi || forceDownload == true {
             Track.event(category: "Background Download", action: "Request", label: listAPI)
             let listAPIString = APIs.convert(Download.addVersionAndTimeStamp(listAPI))
             if let url = URL(string: listAPIString) {
@@ -368,7 +384,7 @@ struct Download {
                     }
                     if let data = data,
                         error == nil,
-                        HTMLValidator.validate(data, url: listAPIString) {
+                        HTMLValidator.validate(data, url: listAPIString) || !validationNecessary {
                         saveFile(data, filename: listAPI, to: .cachesDirectory, as: "html")
                         Track.event(category: "Background Download", action: "Success", label: listAPI)
                         DispatchQueue.main.async { () -> Void in
@@ -376,19 +392,18 @@ struct Download {
                         }
                         // MARK: - Continue to parse the HTML and download story json files
                         if let htmlCode = String(data: data, encoding: .utf8){
-                            let storyIdPatterns = "data-id=\"([0-9]+)\" data-type=\"story\""
+                            let storyIdPatterns = "data-id=\"([0-9]+)\" data-type=\"[storypremium]+\""
                             let storyIds = matches(for: storyIdPatterns, in: htmlCode)
                             for storyIdString in storyIds {
                                 if let storyId = storyIdString.matchingFirstString(regex: storyIdPatterns) {
-                                    let apiUrl = APIs.get(storyId, type: "story")
+                                    let forceDomain = aps["d"] as? String
+                                    let apiUrl = APIs.get(storyId, type: "story", forceDomain: forceDomain)
                                     print ("downloading: \(apiUrl)")
                                     downloadUrl(apiUrl, to: .cachesDirectory, as: "json")
                                 }
                             }
                         }
-
                         completionHandler(.newData)
-
                     } else {
                         Track.event(category: "Background Download", action: "HTML Valid Fail", label: listAPI)
                         completionHandler(.noData)

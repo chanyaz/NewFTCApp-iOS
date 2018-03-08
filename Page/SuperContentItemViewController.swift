@@ -273,7 +273,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             let type = dataObject?.type,
             ["story", "premium"].contains(type) {
             //MARK: if it is a story, get the API
-            let urlString = APIs.get(id, type: type)
+            let urlString = APIs.get(id, type: type, forceDomain: nil)
             view.addSubview(activityIndicator)
             activityIndicator.center = self.view.center
             activityIndicator.startAnimating()

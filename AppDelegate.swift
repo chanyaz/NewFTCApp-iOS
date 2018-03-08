@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if let isContentAvailable = aps["content-available"] as? Int,
                     isContentAvailable == 1 {
                     print ("received a silent notification with the value of \(isContentAvailable)")
-                    Download.grabHTMLResource(id, completionHandler: { (fetchResult) in
+                    Download.grabHTMLResource(id, aps: aps, completionHandler: { (fetchResult) in
                         // MARK: - Make sure to always execute completionHandler correctly. Otherwise the system will not let you access internet for ensuing silent notifications.
                         completionHandler(fetchResult)
                     })

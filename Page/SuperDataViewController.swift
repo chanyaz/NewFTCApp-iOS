@@ -616,7 +616,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 for item in items {
                     //print ("prefetch item: \(item.type)/\(item.id)")
                     if ["story","premium"].contains(item.type) {
-                        let apiUrl = APIs.get(item.id, type: item.type)
+                        let apiUrl = APIs.get(item.id, type: item.type, forceDomain: nil)
                         //print ("read story json: \(apiUrl)")
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "json") == nil {
                             print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
@@ -719,10 +719,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             } else if type == "options" {
                 loadOptions()
             } else if type == "follow" {
-                let urlString = Download.addVersionAndTimeStamp(APIs.get("follow", type: type))
+                let urlString = Download.addVersionAndTimeStamp(APIs.get("follow", type: type, forceDomain: nil))
                 getAPI(urlString)
             } else {
-                let urlString = APIs.get("", type: type)
+                let urlString = APIs.get("", type: type, forceDomain: nil)
                 getAPI(urlString)
             }
         } else {

@@ -164,7 +164,9 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let id = dataObject?.id, let type = dataObject?.type, let headline = dataObject?.headline {
+        if let id = dataObject?.id,
+            let type = dataObject?.type,
+            let headline = dataObject?.headline {
             
             // MARK: Check if the user is tapping from editor choice
             var tapFrom = ""

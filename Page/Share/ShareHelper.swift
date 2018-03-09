@@ -92,8 +92,8 @@ extension UIViewController {
         let activityVC = CustomShareViewController()
         print ("sharing \(item.type)/\(item.id)")
         if #available(iOS 10.0, *),
-            Privilege.shared.exclusiveContent,
-            item.type != "premium" {
+            Privilege.shared.exclusiveContent {
+            //item.type != "premium" {
             activityVC.shareItems = [
                 WeChatShare(to: "chat-custom"),
                 WeChatShare(to: "moment-custom"),

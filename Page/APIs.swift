@@ -161,7 +161,7 @@ struct APIs {
             // MARK: If the server is blocked and new one is available, use that. It should only apply to https.
             if let forceDomain = ForceDomains.getNewDomain(),
                 from.range(of: "https://") != nil {
-                let newUrl = from.replacingOccurrences(of: "^https://.*.com/", with: forceDomain, options: .regularExpression)
+                let newUrl = from.replacingOccurrences(of: "^https://.*.(com|net)/", with: forceDomain, options: .regularExpression)
                 return newUrl
             }
             let currentPreference = LanguageSetting.shared.currentPrefence

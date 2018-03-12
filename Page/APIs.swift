@@ -40,8 +40,8 @@ struct APIs {
     
     // MARK: Domain reserved for subscribers only
     private static let subscriberDomain = [
-        "https://www.ftchinese.com/",
-        "https://www.ftchinese.com/"
+        "https://d31b34rc1ppbon.cloudfront.net/",
+        "https://d31b34rc1ppbon.cloudfront.net/"
         //        "https://danla2f5eudt1.cloudfront.net/",
         //        "https://d2e90etfgpidmd.cloudfront.net/"
     ]
@@ -180,9 +180,9 @@ struct APIs {
                 // MARK: If the device get notification from APNS
                 newFrom = newFrom.replacingOccurrences(of: "^https://.*.(com|net)/", with: forceDomain, options: .regularExpression)
                 newSecureDomain = forceDomain
-//            } else if Privilege.shared.exclusiveContent {
-//                newFrom = newFrom.replacingOccurrences(of: "^https://.*.(com|net)/", with: subscriberDomain[currentIndex], options: .regularExpression)
-//                newSecureDomain = subscriberDomain[currentIndex]
+            } else if Privilege.shared.exclusiveContent {
+                newFrom = newFrom.replacingOccurrences(of: "^https://.*.(com|net)/", with: subscriberDomain[currentIndex], options: .regularExpression)
+                newSecureDomain = subscriberDomain[currentIndex]
             } else {
                 newSecureDomain = nil
             }

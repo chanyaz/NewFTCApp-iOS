@@ -430,7 +430,7 @@ struct Download {
                         }
                         completionHandler(.newData)
                     } else {
-                        Track.event(category: "Background Download", action: "HTML Valid Fail", label: listAPI)
+                        Track.event(category: "Background Download", action: "HTML Validation Fail", label: listAPI)
                         completionHandler(.noData)
                     }
                 }

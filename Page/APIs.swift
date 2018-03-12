@@ -37,6 +37,15 @@ struct APIs {
         //        "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
+    
+    // MARK: Domain reserved for subscribers only
+    private static let subscriberDomain = [
+        "https://www.ftchinese.com/",
+        "https://www.ftchinese.com/"
+        //        "https://danla2f5eudt1.cloudfront.net/",
+        //        "https://d2e90etfgpidmd.cloudfront.net/"
+    ]
+    
     // MARK: If there are http resources that you rely on in your page, don't use https as the url base
     private static let webPageDomains = [
         "http://www.ftchinese.com/",
@@ -48,6 +57,8 @@ struct APIs {
         "http://www.ftchinese.com/",
         "http://big5.ftmailbox.com/"
     ]
+    
+    
     
     
     // MARK: Number of days you want to keep the cached files
@@ -157,49 +168,82 @@ struct APIs {
     
     // MARK: Check if the server is likely to respond correctly
     private static func checkServer(_ from: String) -> String {
-        if let serverNotResponding = UserDefaults.standard.string(forKey: Download.serverNotRespondingKey) {
-            // MARK: If the server is blocked and new one is available, use that. It should only apply to https.
-            if let forceDomain = ForceDomains.getNewDomain(),
-                from.range(of: "https://") != nil {
-                let newUrl = from.replacingOccurrences(of: "^https://.*.(com|net)/", with: forceDomain, options: .regularExpression)
-                return newUrl
+        // MARK: Get the current luanguage index
+        let currentPreference = LanguageSetting.shared.currentPrefence
+        let currentIndex = (currentPreference == 0) ? 0 : 1
+        // MARK: If the server is inaccessible and new one is available, use that. It should only apply to https.
+        var newFrom = from
+        let newSecureDomain:String?
+        if newFrom.range(of: "https://") != nil {
+            // MARK: Exclusive domain for subscribers
+            if let forceDomain = ForceDomains.getNewDomain() {
+                // MARK: If the device get notification from APNS
+                newFrom = newFrom.replacingOccurrences(of: "^https://.*.(com|net)/", with: forceDomain, options: .regularExpression)
+                newSecureDomain = forceDomain
+//            } else if Privilege.shared.exclusiveContent {
+//                newFrom = newFrom.replacingOccurrences(of: "^https://.*.(com|net)/", with: subscriberDomain[currentIndex], options: .regularExpression)
+//                newSecureDomain = subscriberDomain[currentIndex]
+            } else {
+                newSecureDomain = nil
             }
-            let currentPreference = LanguageSetting.shared.currentPrefence
-            let currentIndex = (currentPreference == 0) ? 0 : 1
-            let servers = [
-                htmlDomains[currentIndex],
-                backupHTMLDomains[currentIndex],
-                backupHTMLDomains2[currentIndex],
-                backupHTMLDomains3[currentIndex]
-            ]
+        } else {
+            newSecureDomain = nil
+        }
+        // MARK: Switch to new domain immediately for subscribers and important user, only if the new secure domain is availabe and assumed accessible
+        let serverNotResponding = UserDefaults.standard.string(forKey: Download.serverNotRespondingKey)
+        print ("Server Watch: new domain \(String(describing: newSecureDomain)) and old server that are not responding: \(String(describing: serverNotResponding))")
+        if newSecureDomain != nil && newSecureDomain != serverNotResponding {
+            print ("Server Watch: new domain \(String(describing: newSecureDomain))")
+            return newFrom
+        }
+        if let serverNotResponding = serverNotResponding {
+            let servers: [String]
+            if let newSecureDomain = newSecureDomain {
+                // MARK: If a new secure domain is available, add it to the available server list
+                servers = [
+                    newSecureDomain,
+                    htmlDomains[currentIndex],
+                    backupHTMLDomains[currentIndex],
+                    backupHTMLDomains2[currentIndex],
+                    backupHTMLDomains3[currentIndex]
+                ]
+            } else {
+                servers = [
+                    htmlDomains[currentIndex],
+                    backupHTMLDomains[currentIndex],
+                    backupHTMLDomains2[currentIndex],
+                    backupHTMLDomains3[currentIndex]
+                ]
+            }
+
             //print ("Server Watch: \(servers.joined(separator: ","))")
             // MARK: if you are checking a url that is not using one of the backup servers, return immediately.
             var serverUsedByFromString: String? = nil
             for server in servers {
-                if from.hasPrefix(server) {
+                if newFrom.hasPrefix(server) {
                     serverUsedByFromString = server
                     break
                 }
             }
             if serverUsedByFromString == nil {
-                //print ("Server Watch: did not find \(from)")
-                return from
+                //print ("Server Watch: did not find \(newFrom)")
+                return newFrom
             }
-            //print ("Server Watch: found \(from)")
+            //print ("Server Watch: found \(newFrom)")
             if let errorServerIndex = servers.index(of: serverNotResponding) {
                 var nextServerIndex = errorServerIndex + 1
                 if nextServerIndex >= servers.count {
                     nextServerIndex = 0
                 }
-                
                 if let serverUsedByFromString = serverUsedByFromString {
-                    let newUrlString = from.replacingOccurrences(of: serverUsedByFromString, with: servers[nextServerIndex])
-                    //print ("Server Watch: new url string is \(newUrlString)")
+                    let newUrlString = newFrom.replacingOccurrences(of: serverUsedByFromString, with: servers[nextServerIndex])
+                    print ("Server Watch: new url string is \(newUrlString)")
                     return newUrlString
                 }
             }
         }
-        return from
+        print ("Server Watch: current url string is \(newFrom) without change")
+        return newFrom
     }
     
     // MARK: Use different domains for different types of content

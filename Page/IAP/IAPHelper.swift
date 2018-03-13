@@ -103,6 +103,8 @@ extension IAPHelper {
                     "user-name": UserInfo.shared.userName ?? "",
                     "device-token": UserInfo.shared.deviceToken ?? ""
                 ] as [String : String]
+                let eventAction = UserInfo.shared.userId ?? "Member"
+                Track.event(category: "Subscriber Token", action: eventAction, label: UserInfo.shared.deviceToken ?? "None")
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .init(rawValue: 0))
                     if let siteServerUrl = Foundation.URL(string:server) {

@@ -71,6 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: - Don't delete this. It's very useful.
         //GB2Big5.createDict()
         //let _ = GB2Big5.makeMyDict()
+        
+        
+
 
         return true
     }
@@ -178,6 +181,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         startCheckImpressionTimer()
+        checkNotificationStatus()
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
@@ -244,6 +248,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 userInfo: nil,
                 repeats: true
             )
+        }
+    }
+    
+    private func checkNotificationStatus() {
+        // MARK: Prompt the Alert to Request user to allow notification
+        if UserInfo.shared.shouldRequestUserToAllowNotification == false {
+            return
+        }
+        if #available(iOS 10.0, *) {
+            let center = UNUserNotificationCenter.current()
+            // MARK: Check for user's notification status
+            center.getNotificationSettings(completionHandler: { (settings) in
+                if settings.authorizationStatus == .notDetermined {
+                    // Notification permission has not been asked yet, go for it!
+                    print ("Notification not asked! ")
+                    self.requestUserToAllowNotification()
+                }
+                if settings.authorizationStatus == .denied {
+                    // Notification permission was previously denied, go to settings & privacy to re-enable
+                    print ("Notification denied! ")
+                    self.requestUserToAllowNotification()
+                }
+                if settings.authorizationStatus == .authorized {
+                    // Notification permission was already granted
+                    print ("Notification allowed! ")
+                }
+            })
+        } else {
+            // Fallback on earlier versions
+            let isRegisteredForRemoteNotifications = UIApplication.shared.isRegisteredForRemoteNotifications
+            if isRegisteredForRemoteNotifications == false {
+                // Show alert user is not registered for notification
+                requestUserToAllowNotification()
+                print ("Notification allowed! ")
+            }
+        }
+
+    }
+
+    private func requestUserToAllowNotification() {
+        if UserInfo.shared.shouldRequestUserToAllowNotification && Privilege.shared.exclusiveContent {
+            let title = "重要通知"
+            let lead = "亲爱的订户，为了保障您的权益，请在您设备的设置中允许本应用向您发送通知推送，以便我们保证把您购买的内容发送给您。"
+            let alert = UIAlertController(title: title, message: lead, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "立即设置", style: .default, handler: { (action: UIAlertAction) in
+                //rootViewController.openNotification(notiAction as? String, id: id as? String, title: title)
+                if let settingUrl = URL(string: UIApplicationOpenSettingsURLString) {
+                    if UIApplication.shared.canOpenURL(settingUrl) {
+                        UIApplication.shared.openURL(settingUrl)
+                    }
+                }
+            }))
+            alert.addAction(UIAlertAction(title: "以后再说", style: UIAlertActionStyle.default, handler: nil))
+            self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+            UserInfo.shared.shouldRequestUserToAllowNotification = false
         }
     }
     

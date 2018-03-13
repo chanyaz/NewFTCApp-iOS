@@ -13,6 +13,7 @@ struct UserInfo {
     var userName: String?
     var userId: String?
     var deviceToken: String?
+    var shouldRequestUserToAllowNotification = true
     private static let userNameKey = "User Name Key"
     private static let userIdKey = "User Id Key"
     

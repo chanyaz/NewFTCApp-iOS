@@ -61,7 +61,12 @@ class LaunchScreen: UIViewController {
         DispatchQueue.global().async {
             self.happyUser.launchCount()
         }
+        
+
+        
         adOverlayView()
+        
+
     }
     
     override func viewDidLoad() {

@@ -103,8 +103,8 @@ extension IAPHelper {
                     "user-name": UserInfo.shared.userName ?? "",
                     "device-token": UserInfo.shared.deviceToken ?? ""
                 ] as [String : String]
-                let eventAction = UserInfo.shared.userId ?? "Member"
-                Track.event(category: "Subscriber Token", action: eventAction, label: UserInfo.shared.deviceToken ?? "None")
+                Track.token()
+                
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .init(rawValue: 0))
                     if let siteServerUrl = Foundation.URL(string:server) {
@@ -271,6 +271,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         DispatchQueue.global().async {
             //self.receiptValidation(with: IAPProducts.serverUrlString)
             self.receiptValidation(with: "https://sandbox.itunes.apple.com/verifyReceipt")
+            Track.token()
         }
         SKPaymentQueue.default().finishTransaction(transaction)
     }
@@ -285,6 +286,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         // MARK: 3. Send notification to related objects such the view controllers and iap views so that UI can be updated
         deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
         SKPaymentQueue.default().finishTransaction(transaction)
+        Track.token()
     }
     
     private func fail(transaction: SKPaymentTransaction) {

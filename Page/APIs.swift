@@ -42,8 +42,6 @@ struct APIs {
     private static let subscriberDomain = [
         "https://d31b34rc1ppbon.cloudfront.net/",
         "https://d31b34rc1ppbon.cloudfront.net/"
-        //        "https://danla2f5eudt1.cloudfront.net/",
-        //        "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
     // MARK: If there are http resources that you rely on in your page, don't use https as the url base
@@ -57,9 +55,6 @@ struct APIs {
         "http://www.ftchinese.com/",
         "http://big5.ftmailbox.com/"
     ]
-    
-    
-    
     
     // MARK: Number of days you want to keep the cached files
     static let expireDay: TimeInterval = 7

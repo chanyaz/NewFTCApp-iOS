@@ -105,4 +105,17 @@ struct Track {
         }
     }
     
+    public static func token() {
+        let eventAction = UserInfo.shared.userId ?? "Member"
+        let eventCategory: String
+        if Privilege.shared.editorsChoice {
+            eventCategory = "Subscriber Token: VIP"
+        } else if Privilege.shared.exclusiveContent {
+            eventCategory = "Subscriber Token: Member"
+        } else {
+            eventCategory = "Subscriber Token: Other"
+        }
+        event(category: eventCategory, action: eventAction, label: UserInfo.shared.deviceToken ?? "None")
+    }
+    
 }

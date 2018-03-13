@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.shared.applicationIconBadgeNumber = 0
         Track.event(category: "\(DeviceInfo.checkDeviceType()) App Launch", action: "Success", label: Bundle.main.bundleIdentifier ?? "")
-        
+                
         // MARK: - Get current language preference
         LanguageSetting.shared.currentPrefence = Setting.getCurrentOption("language-preference").index
         
@@ -182,6 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         startCheckImpressionTimer()
         checkNotificationStatus()
+        checkTokenForSubscriber()
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
@@ -305,6 +306,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserInfo.shared.shouldRequestUserToAllowNotification = false
         }
     }
+    
+    private func checkTokenForSubscriber() {
+        if Privilege.shared.exclusiveContent {
+            Track.token()
+        }
+    }
+
     
 }
 

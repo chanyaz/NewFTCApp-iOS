@@ -33,7 +33,11 @@ class ChannelScrollerCell: UICollectionViewCell {
             if Color.ChannelScroller.addTextSpace{
                 channel.addTextSpacing(value: 12)
             }
-           
+        }
+        // MARK: Show the new channel sign
+        if let isNew = pageData["new"],
+            isNew == "yes" {
+            print ("this is a new channel! ")
         }
 
         if isSelected == true {

@@ -145,7 +145,8 @@ struct AppNavigation {
                     "listapi":"https://api.ftmailbox.com/channel/education.html?webview=ftcapp&bodyonly=yes&001",
                     "url":"http://www.ftchinese.com/channel/education.html?webview=ftcapp",
                     "screenName":"homepage/education",
-                    "coverTheme": "OutOfBox"
+                    "coverTheme": "OutOfBox",
+                    "new": "yes"
                 ],
                 [
                     "title": "管理",

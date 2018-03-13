@@ -40,8 +40,8 @@ struct APIs {
     
     // MARK: Domain reserved for subscribers only
     private static let subscriberDomain = [
-        "https://d31b34rc1ppbon.cloudfront.net/",
-        "https://d31b34rc1ppbon.cloudfront.net/"
+        "https://www.ftimg.net/",
+        "https://www.ftimg.net/"
     ]
     
     // MARK: If there are http resources that you rely on in your page, don't use https as the url base

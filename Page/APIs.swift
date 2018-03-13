@@ -1000,7 +1000,7 @@ struct HTMLValidator {
 }
 
 struct EngagementTracker {
-    static func shouldTrackEngagementVolumn(for screenName: String) -> Bool {
+    public static func shouldTrackEngagementVolumn(for screenName: String) -> Bool {
         // MARK: For a premium subscriber, only editor's choice count as effective volume
         if Privilege.shared.editorsChoice == true {
             if screenName.range(of: "EditorChoice") != nil {
@@ -1022,5 +1022,15 @@ struct EngagementTracker {
             return true
         }
         return false
+    }
+    
+    public static func getEventCategory() -> String {
+        if Privilege.shared.editorsChoice {
+            return "VIP"
+        }
+        if Privilege.shared.exclusiveContent {
+            return "Member"
+        }
+        return "Other"
     }
 }

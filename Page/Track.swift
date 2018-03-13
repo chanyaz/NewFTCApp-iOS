@@ -43,8 +43,11 @@ struct Track {
         let u = UserInfo.shared.userName ?? ""
         let i = UserInfo.shared.userId ?? ""
         let d = UserInfo.shared.deviceToken ?? ""
-        let eventAction = UserInfo.shared.userId ?? UserInfo.shared.deviceToken ?? ""
-        Track.event(category: "Engagement", action: eventAction, label: s)
+        let eventCategory = "iOS Engagement: \(EngagementTracker.getEventCategory())"
+        let eventActionOriginal = UserInfo.shared.userId ?? UserInfo.shared.deviceToken ?? ""
+        let eventAction = (eventActionOriginal != "") ? eventActionOriginal : "Unknown"
+        let eventLabel = "(\(s),\(f),\(r),\(v))"
+        Track.event(category: eventCategory, action: eventAction, label: eventLabel)
         let engagementDict = [
             "s": s,
             "f": f,
@@ -108,16 +111,18 @@ struct Track {
     }
     
     public static func token() {
-        let eventAction = UserInfo.shared.userId ?? "Member"
-        let eventCategory: String
-        if Privilege.shared.editorsChoice {
-            eventCategory = "Subscriber Token: VIP"
-        } else if Privilege.shared.exclusiveContent {
-            eventCategory = "Subscriber Token: Member"
+        let eventCategory = "iOS Token: \(EngagementTracker.getEventCategory())"
+        let eventAction: String
+        if let userId = UserInfo.shared.userId,
+            userId != "" {
+            eventAction = userId
         } else {
-            eventCategory = "Subscriber Token: Other"
+            eventAction = "Visitor"
         }
-        event(category: eventCategory, action: eventAction, label: UserInfo.shared.deviceToken ?? "None")
+        // MARK: Even if there's no device token, we still want to record this so that we know who has not yet enabled notification
+        let eventLabelOriginal = UserInfo.shared.deviceToken ?? ""
+        let eventLabel = (eventLabelOriginal != "") ? eventLabelOriginal : "None"
+        event(category: eventCategory, action: eventAction, label: eventLabel)
     }
     
 }

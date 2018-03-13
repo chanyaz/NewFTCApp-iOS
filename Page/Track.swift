@@ -43,6 +43,8 @@ struct Track {
         let u = UserInfo.shared.userName ?? ""
         let i = UserInfo.shared.userId ?? ""
         let d = UserInfo.shared.deviceToken ?? ""
+        let eventAction = UserInfo.shared.userId ?? UserInfo.shared.deviceToken ?? ""
+        Track.event(category: "Engagement", action: eventAction, label: s)
         let engagementDict = [
             "s": s,
             "f": f,
@@ -55,7 +57,7 @@ struct Track {
         
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: engagementDict, options: .init(rawValue: 0))
-            if let siteServerUrl = Foundation.URL(string:"https://api.ftmailbox.com/engagement-tracker.php") {
+            if let siteServerUrl = Foundation.URL(string: "https://api001.ftmailbox.com/engagement-tracker.php") {
                 var request = URLRequest(url: siteServerUrl)
                 request.httpMethod = "POST"
                 request.httpBody = jsonData

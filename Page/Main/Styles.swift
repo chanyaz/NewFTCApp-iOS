@@ -150,7 +150,22 @@ struct WeChat {
 }
 
 struct GA {
-    static let trackingIds = ["UA-1608715-1", "UA-1608715-3"]
+
+    public static let trackingIds = ["UA-1608715-1", "UA-1608715-3"]
+    public static func trackUser(_ id: String) {
+        // MARK: Track additional user information
+        if id == "UA-1608715-3" {
+//            NSString *dimensionValue = @"SOME_DIMENSION_VALUE";
+//            [tracker set:[GAIFields customDimensionForIndex:3] value:dimensionValue];
+        }
+    }
+//    public static func getTrackingIds() -> [String] {
+//        if Privilege.shared.exclusiveContent {
+//            let subscriberTrackingIds = trackingIds + ["daffad"]
+//            return subscriberTrackingIds
+//        }
+//        return trackingIds
+//    }
 }
 
 struct Share {

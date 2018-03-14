@@ -65,7 +65,7 @@ struct Track {
         
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: engagementDict, options: .init(rawValue: 0))
-            if let siteServerUrl = Foundation.URL(string: "https://api001.ftmailbox.com/engagement-tracker.php") {
+            if let siteServerUrl = Foundation.URL(string: APIs.engagementTrackerUrlString) {
                 var request = URLRequest(url: siteServerUrl)
                 request.httpMethod = "POST"
                 request.httpBody = jsonData

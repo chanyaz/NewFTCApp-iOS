@@ -160,6 +160,16 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             name: Notification.Name(rawValue: Event.nightModeChanged),
             object: nil
         )
+        
+        
+        // MARK: listen to in-app purchase transaction notification. There's no need to remove it in code after iOS 9 as the system will do that for you. https://useyourloaf.com/blog/unregistering-nsnotificationcenter-observers-in-ios-9/
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePurchaseNotification(_:)),
+            name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification),
+            object: nil
+        )
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -644,4 +654,22 @@ extension SuperContentItemViewController {
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: width))
         view.addConstraint(NSLayoutConstraint(item: iapView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: height))
     }
+    
+    // MARK: Handle Subscription Related Actions
+    @objc public func handlePurchaseNotification(_ notification: Notification) {
+        
+        // MARK: If purchase or restore is successful while the current page is showing an error, refresh the page with new domain
+
+        
+        let typeString = dataObject?.type ?? ""
+        // MARK: If the story type is premium, render the story again.
+        if ["premium"].contains(typeString) {
+            getDetailInfo()
+        }
+        
+        
+        
+    }
+    
+    
 }

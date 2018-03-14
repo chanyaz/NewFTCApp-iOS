@@ -56,8 +56,22 @@ struct APIs {
         "http://big5.ftmailbox.com/"
     ]
     
+    
+    // MARK: - Domain Check: iOS Receipt Validation
+    public static let iOSReceiptValidationUrlString = "https://api001.ftmailbox.com/ios-receipt-validation.php"
+    
+    // MARK: - Domain Check: Engagement Tracker
+    public static let engagementTrackerUrlString = "https://api001.ftmailbox.com/engagement-tracker.php"
+    
+    // MARK: - Domain Check: Launch Ad Schedule
+    public static let lauchAdSchedule = "https://d31b34rc1ppbon.cloudfront.net/index.php/jsapi/applaunchschedule"
+    
+    // MARK: - Domain Check: Track device token
+    public static let deviceTokenUrlString = "https://noti.ftimg.net/iphone-collect.php"
+    
     // MARK: Number of days you want to keep the cached files
-    static let expireDay: TimeInterval = 7
+    public static let expireDay: TimeInterval = 7
+    
     
     // MARK: Search is mostly rendered using web
     //static let searchUrl = "http://app003.ftmailbox.com/search/"
@@ -658,7 +672,7 @@ struct AdMobTrack {
 
 // MARK: - For push notification
 struct DeviceToken {
-    static let url = "https://noti.ftimg.net/iphone-collect.php"
+
     // MARK: - Post device token to server
     static func forwardTokenToServer(deviceToken token: Data) {
         let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
@@ -687,7 +701,7 @@ struct DeviceToken {
         }
         let timeZone = TimeZone.current.abbreviation() ?? ""
         let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
-        PostData.sendDeviceToken(body: urlEncoded)
+        PostData.send(to: APIs.deviceTokenUrlString, with: urlEncoded)
     }
 }
 

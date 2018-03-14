@@ -74,7 +74,7 @@ open class IAPHelper : NSObject  {
         //        }
         // MARK: - Use global thread as it will not not change UI directly
         DispatchQueue.global().async {
-            self.receiptValidation(with: IAPProducts.serverUrlString)
+            self.receiptValidation(with: APIs.iOSReceiptValidationUrlString)
             //self.receiptValidation(with: "https://buy.itunes.apple.com/verifyReceipt")
             //self.receiptValidation(with: "https://sandbox.itunes.apple.com/verifyReceipt")
             //self.receiptValidation(with: "https://api.ftmailbox.com/ios-test.php")

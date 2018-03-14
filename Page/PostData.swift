@@ -10,8 +10,8 @@ import Foundation
 
 struct PostData {
     
-    static func sendDeviceToken(body: String) {
-        guard let url = URL(string: DeviceToken.url) else {
+    static func send(to urlString: String, with body: String) {
+        guard let url = URL(string: urlString) else {
             return
         }
         guard let bodyData = body.data(using: .utf8) else {

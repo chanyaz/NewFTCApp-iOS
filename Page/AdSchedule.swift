@@ -26,7 +26,7 @@ class AdSchedule {
     
     
     private let adScheduleFileName = "schedule.json"
-    private let lauchAdSchedule = "https://d31b34rc1ppbon.cloudfront.net/index.php/jsapi/applaunchschedule"
+
     private let imageTypes = ["png","jpg","gif"]
     private let videoTypes = ["mov","mp4"]
     private let htmlTypes = ["html"]
@@ -472,7 +472,7 @@ class AdSchedule {
     // download the latest ad schedule and creatives
     func updateAdSchedule() {
         let dateInString = DateHelper.getCurrentDateString(dateFormat: "yyyyMMddHHmm")
-        let urlString = lauchAdSchedule + "?" + dateInString
+        let urlString = APIs.lauchAdSchedule + "?" + dateInString
         let urlLauchAdSchedule = URL(string: urlString)
         grabFileFromWeb(url: urlLauchAdSchedule, fileName: self.adScheduleFileName, parseScheduleForDownload: true)
     }

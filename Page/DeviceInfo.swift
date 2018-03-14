@@ -20,6 +20,8 @@ struct DeviceInfo {
         }
         return deviceType
     }
+    public static let manageSubscriptionUrl = "https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions"
+
     
 //    public static func checkSafeAreaTop() {
 //        // MARK: Get the safe area top so that full screen launch ad can display close button in the right place

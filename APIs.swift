@@ -535,7 +535,7 @@ struct DeviceToken {
         }
         let timeZone = TimeZone.current.abbreviation() ?? ""
         let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
-        PostData.sendDeviceToken(body: urlEncoded)
+        PostData.send(to: APIs.deviceTokenUrlString, with: urlEncoded)
     }
 }
 

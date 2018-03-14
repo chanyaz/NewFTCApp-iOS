@@ -63,8 +63,7 @@ class MembershipCell: CustomCell {
         if let button = sender as? UIButton,
         let buttonTitle = button.title(for: .normal),
         buttonTitle == buttonManageKey {
-            let manageSubscriptionUrl = "https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions"
-            if let url = URL(string:manageSubscriptionUrl) {
+            if let url = URL(string:DeviceInfo.manageSubscriptionUrl) {
                 UIApplication.shared.openURL(url)
             }
         } else {

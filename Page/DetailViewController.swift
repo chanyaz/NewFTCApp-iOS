@@ -265,7 +265,6 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 text = dataObject.ebody ?? ""
             }
             
-            // dataObject.caudio = "https://creatives.ftimg.net/album/c5fe0be8-ca48-11e7-ab18-7a9fb7d6163e.mp3"
             let audioFileUrl: String?
             
             var audioLanguage: String? = nil

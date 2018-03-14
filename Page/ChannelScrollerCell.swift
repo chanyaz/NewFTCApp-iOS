@@ -12,6 +12,7 @@ class ChannelScrollerCell: UICollectionViewCell {
     
     @IBOutlet weak var channel: UILabel!
     @IBOutlet weak var underLine: UIView!
+    @IBOutlet weak var superscript: UIImageView!
     
     var cellHeight: CGFloat?
     var pageData = [String: String]() {
@@ -36,8 +37,11 @@ class ChannelScrollerCell: UICollectionViewCell {
         }
         // MARK: Show the new channel sign
         if let isNew = pageData["new"],
-            isNew == "yes" {
-            print ("this is a new channel! ")
+            isNew == "yes",
+            let image = UIImage(named: "NewSuperscript") {
+            superscript.image = image
+        } else {
+            superscript.image = nil
         }
 
         if isSelected == true {

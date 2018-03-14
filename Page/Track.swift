@@ -19,6 +19,11 @@ struct Track {
             let metricName = GAIFields.customMetric(for: 1)
             let engagementScore = String(engagement.score)
             tracker?.set(metricName, value: engagementScore)
+            if let userId = UserInfo.shared.userId,
+                userId != "" {
+                let metricName = "userId"
+                tracker?.set(metricName, value: userId)
+            }
             let builder = GAIDictionaryBuilder.createScreenView()
             if let obj = builder?.build() as [NSObject: AnyObject]? {
                 tracker?.send(obj)

@@ -152,12 +152,31 @@ struct WeChat {
 struct GA {
 
     public static let trackingIds = ["UA-1608715-1", "UA-1608715-3"]
-    public static func trackUser(_ id: String) {
+    
+    // MARK: Tracking info specifically linked to your GA property
+    public static func customDimensions(_ id: String) -> [(index: Int, value: String?)] {
         // MARK: Track additional user information
         if id == "UA-1608715-3" {
-//            NSString *dimensionValue = @"SOME_DIMENSION_VALUE";
-//            [tracker set:[GAIFields customDimensionForIndex:3] value:dimensionValue];
+            let userType: String
+            if Privilege.shared.editorsChoice {
+                userType = "VIP"
+            } else if Privilege.shared.exclusiveContent {
+                userType = "Subscriber"
+            } else if let id = UserInfo.shared.userId,
+                id != "" {
+                userType = "Free Member"
+            } else {
+                userType = "Visitor"
+            }
+            let customDimensions: [(index: Int, value: String?)] = [
+                (index: 1, value: userType),
+                (index: 2, value: UserInfo.shared.userId),
+                (index: 3, value: UserInfo.shared.deviceToken),
+                (index: 4, value: EngagementData.shared.latest)
+            ]
+            return customDimensions
         }
+        return []
     }
 //    public static func getTrackingIds() -> [String] {
 //        if Privilege.shared.exclusiveContent {

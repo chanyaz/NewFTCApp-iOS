@@ -19,6 +19,8 @@ struct EngagementData {
     static var shared = EngagementData()
     var log: [[String: Any]] = []
     var hasChecked = false
+    var latest: String?
+    var latestTuple: (score: Double, frequency: Int, recency: Int, volumn: Int)?
 }
 
 struct Engagement {
@@ -102,7 +104,11 @@ struct Engagement {
         let lastVisitDate = visitingDates.last ?? 90
         let recency = min(max(currentDate - lastVisitDate, 0),90)
         let score: Double = (Double(frequecy) * sqrt(Double(volume)))/(1 + Double(recency))
-        return (score, frequecy, recency, volume)
+        // MARK: Every time score is calculated, save the string so that it can be retrieved quickly when you need to send it to your analytics account, such as Google Analytics. 
+        EngagementData.shared.latest = "\(score),\(frequecy),\(recency),\(volume)"
+        let latestTuple = (score, frequecy, recency, volume)
+        EngagementData.shared.latestTuple = latestTuple
+        return latestTuple
     }
     
     static func event(category: String, action: String, label: String) {

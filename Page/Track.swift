@@ -11,29 +11,65 @@ struct Track {
     public static func screenView(_ name: String) {
         // MARK: Save screen name locally
         let engagement = Engagement.screen(name)
-         
         // MARK: Google Analytics
         for trackingId in GA.trackingIds {
-            let tracker = GAI.sharedInstance().tracker(withTrackingId: trackingId)
+            let tracker = setGATracker(trackingId, with: engagement)
             tracker?.set(kGAIScreenName, value: name)
-            let metricName = GAIFields.customMetric(for: 1)
-            let engagementScore = String(engagement.score)
-            tracker?.set(metricName, value: engagementScore)
-            if let userId = UserInfo.shared.userId,
-                userId != "" {
-                let metricName = "userId"
-                tracker?.set(metricName, value: userId)
-            }
             let builder = GAIDictionaryBuilder.createScreenView()
             if let obj = builder?.build() as [NSObject: AnyObject]? {
                 tracker?.send(obj)
-                //print ("send track for screen name: \(name)")
+                print ("send track for screen name: \(name)")
             }
         }
-        
         sendEngagementData(engagement)
-
-        
+    }
+    
+    public static func event(category: String, action: String, label: String) {
+        for trackingId in GA.trackingIds {
+            let tracker = setGATracker(trackingId, with: EngagementData.shared.latestTuple)
+            let builder = GAIDictionaryBuilder.createEvent(withCategory: category, action: action, label: label, value: 0)
+            if let obj = builder?.build() as [NSObject : AnyObject]? {
+                tracker?.send(obj)
+                print ("send track for event: \(category), \(action), \(label), \(trackingId)")
+            }
+        }
+    }
+    
+    public static func catchError(_ description: String, withFatal: NSNumber) {
+        for trackingId in GA.trackingIds {
+            let tracker = setGATracker(trackingId, with: EngagementData.shared.latestTuple)
+            let builder = GAIDictionaryBuilder.createException(withDescription: description, withFatal: withFatal)
+            if let obj = builder?.build() as [NSObject : AnyObject]? {
+                tracker?.send(obj)
+                print ("send error: \(description) with fatal number of \(withFatal)")
+            }
+        }
+    }
+    
+    private static func setGATracker(_ trackingId: String, with engagement: (score: Double, frequency: Int, recency: Int, volumn: Int)?) -> GAITracker? {
+        let tracker = GAI.sharedInstance().tracker(withTrackingId: trackingId)
+        let metricName = GAIFields.customMetric(for: 1)
+        if let engagement = engagement {
+            let engagementScore = String(engagement.score)
+            tracker?.set(metricName, value: engagementScore)
+        }
+        if let userId = UserInfo.shared.userId,
+            userId != "" {
+            let metricName = "userId"
+            tracker?.set(metricName, value: userId)
+        }
+        // MARK: Set up custom dimensions
+        let customDimensions = GA.customDimensions(trackingId)
+        for customDimension in customDimensions {
+            let dimensionIndex = UInt(customDimension.index)
+            let dimensionName = GAIFields.customDimension(for: dimensionIndex)
+            let dimensionValue = customDimension.value ?? ""
+            // MARK: Only set values that are meaningful
+            if dimensionValue != "" {
+                tracker?.set(dimensionName, value: dimensionValue)
+            }
+        }
+        return tracker
     }
     
     private static func sendEngagementData(_ engagement: (score: Double, frequency: Int, recency: Int, volumn: Int)) {
@@ -92,29 +128,7 @@ struct Track {
             print("Engagement validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
         }
     }
-    
-    public static func event(category: String, action: String, label: String) {
-        for trackingId in GA.trackingIds {
-            let tracker = GAI.sharedInstance().tracker(withTrackingId: trackingId)
-            let builder = GAIDictionaryBuilder.createEvent(withCategory: category, action: action, label: label, value: 0)
-            if let obj = builder?.build() as [NSObject : AnyObject]? {
-                tracker?.send(obj)
-                print ("send track for event: \(category), \(action), \(label), \(trackingId)")
-            }
-        }
-    }
-    
-    public static func catchError(_ description: String, withFatal: NSNumber) {
-        for trackingId in GA.trackingIds {
-            let tracker = GAI.sharedInstance().tracker(withTrackingId: trackingId)
-            let builder = GAIDictionaryBuilder.createException(withDescription: description, withFatal: withFatal)
-            if let obj = builder?.build() as [NSObject : AnyObject]? {
-                tracker?.send(obj)
-                print ("send error: \(description) with fatal number of \(withFatal)")
-            }
-        }
-    }
-    
+
     public static func token() {
         let eventCategory = "iOS Token: \(EngagementTracker.getEventCategory())"
         let eventAction: String

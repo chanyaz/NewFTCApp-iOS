@@ -94,6 +94,7 @@ class ContentFetch {
         return [ContentSection]()
     }
     
+    // TODO: It might be useful to handle JSON following this video: https://www.lynda.com/iOS-tutorials/Read-JSON-files/633856/716704-4.html
     func formatPageMakerJSON(_ sections: [[String: Any]]) -> [ContentSection] {
         var contentSections = [ContentSection]()
         for section in sections {

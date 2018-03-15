@@ -38,7 +38,8 @@ open class IAPHelper : NSObject  {
     fileprivate var purchasedProductIdentifiers = Set<ProductIdentifier>()
     fileprivate var productsRequest: SKProductsRequest?
     fileprivate var productsRequestCompletionHandler: ProductsRequestCompletionHandler?
-    static let IAPHelperPurchaseNotification = "IAPHelperPurchaseNotification"
+    public static let IAPHelperPurchaseNotification = "IAPHelperPurchaseNotification"
+    public static let receiptValidatedNotification = "IAP Receipt Validated Notification"
     //fileprivate static let url = Bundle.main.appStoreReceiptURL
     //fileprivate lazy var receipt: NSData? = nil
     public init(productIds: Set<ProductIdentifier>) {
@@ -78,7 +79,6 @@ open class IAPHelper : NSObject  {
             //self.receiptValidation(with: "https://buy.itunes.apple.com/verifyReceipt")
             //self.receiptValidation(with: "https://sandbox.itunes.apple.com/verifyReceipt")
             //self.receiptValidation(with: "https://api.ftmailbox.com/ios-test.php")
-            
         }
         
         //print (receipt ?? "no receipt is found")
@@ -226,6 +226,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
             switch (transaction.transactionState) {
             case .purchased:
                 purchaseSuccess(transaction: transaction)
+                print ("SKPaymentTransactionObserver: buy success \(transaction.payment.productIdentifier)")
                 break
             case .failed:
                 fail(transaction: transaction)
@@ -269,8 +270,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         // MARK: 4. Validate the receipt
         // MARK: - Use globally thread as it will not not change UI directly
         DispatchQueue.global().async {
-            //self.receiptValidation(with: IAPProducts.serverUrlString)
-            self.receiptValidation(with: "https://sandbox.itunes.apple.com/verifyReceipt")
+            self.receiptValidation(with: APIs.iOSReceiptValidationUrlString)
             Track.token()
         }
         SKPaymentQueue.default().finishTransaction(transaction)

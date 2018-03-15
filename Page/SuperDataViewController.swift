@@ -323,6 +323,16 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             object: nil
         )
 
+        // MARK: listen to in-app purchase receipt validation notification. This is useful to provide immediate visual feedback when user buys or renews a product.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePurchaseNotification(_:)),
+            name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification),
+            object: nil
+        )
+        
+        
+        
     }
     
     @objc public func refreshWebView(_ sender: Any) {
@@ -530,6 +540,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification), object: nil)
+
         
         // MARK: release all the delegate to avoid crash in iOS 9
         webView?.scrollView.delegate = nil

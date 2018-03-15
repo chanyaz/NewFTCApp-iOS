@@ -326,7 +326,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         // MARK: listen to in-app purchase receipt validation notification. This is useful to provide immediate visual feedback when user buys or renews a product.
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(handlePurchaseNotification(_:)),
+            selector: #selector(handleReceiptValidationNotification(_:)),
             name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification),
             object: nil
         )
@@ -1476,6 +1476,12 @@ extension SuperDataViewController {
             })
             IAP.trackIAPActions("buy or restore error", productId: "")
         }
+    }
+    
+    // MARK: Handle Subscription Related Actions
+    @objc public func handleReceiptValidationNotification(_ notification: Notification) {
+        print ("receipt notification received: \(notification)")
+        loadProducts()
     }
     
     

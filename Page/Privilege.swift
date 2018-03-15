@@ -66,7 +66,6 @@ struct PrivilegeHelper {
     
     public static func updateFromReceipt(_ receipt: [String: AnyObject]) {
         
-        
         if let status = receipt["status"] as? Int,
             status == 0,
             let receipts = receipt["receipt"] as? [String: Any],
@@ -93,7 +92,18 @@ struct PrivilegeHelper {
                 }
             }
             
-            // TODO: Parse pending_renewal_info to get information about the user's auto_renew_status
+            // MARK: Parse pending_renewal_info to get information about the user's auto_renew_status
+            //var pendingRenewalProducts = [String: Bool]()
+            if let pendingRenewalInfo = receipt["pending_renewal_info"] as? [[String: Any]] {
+                for item in pendingRenewalInfo {
+                    //print ("autorenewal product: \(item)")
+                    if let id = item["auto_renew_product_id"] as? String,
+                        let status = item["auto_renew_status"] as? String {
+                        //pendingRenewalProducts[id] = (status == 1) ? true : false
+                        IAP.savePurchase(id, property: "auto_renew_status", value: status)
+                    }
+                }
+            }
             
             // MARK: Now compare dates and save to device
             for (id, status) in products {
@@ -134,6 +144,9 @@ struct PrivilegeHelper {
             
             // MARK: update the privileges connected to buying
             updateFromDevice()
+            
+            // MARK: post notification about the receipt validation event
+            NotificationCenter.default.post(name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification), object: "Receipt Validate Done! ")
             //print (products)
         }
     }

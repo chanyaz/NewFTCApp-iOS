@@ -99,7 +99,12 @@ class MembershipCell: CustomCell {
                     let expiresDateStringNew = dateFormatter.string(from: expiresDate)
                     let expiresStatement: String
                     if expiresDate >= Date() {
-                        expiresStatement = "您的订阅将于\(expiresDateStringNew)过期"
+                        if let isAutoRenew = IAP.checkPurchaseInDevice(id, property: "auto_renew_status"),
+                            isAutoRenew == "1" {
+                            expiresStatement = "您的订阅目前是自动续期，如您在\(expiresDateStringNew)前一天内未关闭自动续订功能，订阅周期会自动延续并扣费。如您需要关闭自动续期，请点击“管理订阅”按钮进入iTunes Store进行设置。"
+                        } else {
+                            expiresStatement = "您的订阅将于\(expiresDateStringNew)过期"
+                        }
                     } else {
                         expiresStatement = "您的订阅已于\(expiresDateStringNew)过期"
                     }

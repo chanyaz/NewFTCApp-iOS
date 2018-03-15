@@ -71,7 +71,18 @@ struct Engagement {
             "type": "screen",
             "name": name
         ]
-        EngagementData.shared.log.append(log)
+        var shouldAppendNewLog = true
+        for item in EngagementData.shared.log {
+            if let currentName = log["name"] as? String,
+            let itemName = item["name"] as? String,
+                currentName == itemName {
+                shouldAppendNewLog = false
+                break
+            }
+        }
+        if shouldAppendNewLog {
+            EngagementData.shared.log.append(log)
+        }
         save()
         let engagementScore = score()
         //print ("Log is now: \(EngagementData.shared.log) and engagement score is \(engagementScore)")

@@ -72,7 +72,7 @@ struct Track {
         return tracker
     }
     
-    private static func sendEngagementData(_ engagement: (score: Double, frequency: Int, recency: Int, volumn: Int)) {
+    public static func sendEngagementData(_ engagement: (score: Double, frequency: Int, recency: Int, volumn: Int)) {
         // MARK: Must have something that can identify the user. Otherwise the data is uselss.
         if UserInfo.shared.userName == nil && UserInfo.shared.userId == nil && UserInfo.shared.deviceToken == nil {
             return
@@ -85,8 +85,19 @@ struct Track {
         let i = UserInfo.shared.userId ?? ""
         let d = UserInfo.shared.deviceToken ?? ""
         let eventCategory = "iOS Engagement: \(EngagementTracker.getEventCategory())"
-        let eventActionOriginal = UserInfo.shared.userId ?? UserInfo.shared.deviceToken ?? ""
-        let eventAction = (eventActionOriginal != "") ? eventActionOriginal : "Unknown"
+//        print ("user id shared value as: \(UserInfo.shared.userId)")
+//        print ("divice token shared value as: \(UserInfo.shared.deviceToken)")
+//        print ("device token saved as: \(UserDefaults.standard.string(forKey: DeviceToken.key))")
+        let userId = UserInfo.shared.userId ?? ""
+        if UserInfo.shared.deviceToken == nil {
+            UserInfo.shared.deviceToken = UserDefaults.standard.string(forKey: DeviceToken.key)
+        }
+        let eventAction: String
+        if userId != "" {
+            eventAction = userId
+        } else {
+            eventAction = UserInfo.shared.deviceToken ?? "unknown"
+        }
         let eventLabel = "(\(s),\(f),\(r),\(v))"
         Track.event(category: eventCategory, action: eventAction, label: eventLabel)
         let engagementDict = [

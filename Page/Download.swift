@@ -385,6 +385,7 @@ struct Download {
         } else {
             forceDownload = false
         }
+        // MARK: if nv is 1, the html file must be validated
         let validationNecessary: Bool
         if let validationNecessaryFromNotification = aps["nv"] as? Int,
             validationNecessaryFromNotification == 0 {
@@ -392,6 +393,9 @@ struct Download {
         } else {
             validationNecessary = true
         }
+        // MARK: Send Engagement Data
+        let engagement = Engagement.score()
+        Track.sendEngagementData(engagement)
         if IJReachability().connectedToNetworkOfType() == .wiFi || forceDownload == true {
             Track.event(category: "Background Download", action: "Request", label: listAPI)
             let listAPIString = APIs.convert(Download.addVersionAndTimeStamp(listAPI))
@@ -408,6 +412,7 @@ struct Download {
                         HTMLValidator.validate(data, url: listAPIString) || !validationNecessary {
                         saveFile(data, filename: listAPI, to: .cachesDirectory, as: "html")
                         Track.event(category: "Background Download", action: "Success", label: listAPI)
+                        // MARK: Only update the badge number if download is successful
                         DispatchQueue.main.async { () -> Void in
                             UIApplication.shared.applicationIconBadgeNumber = 1
                         }

@@ -674,11 +674,12 @@ struct AdMobTrack {
 
 // MARK: - For push notification
 struct DeviceToken {
-
+    public static let key = "Device Token Key Word"
     // MARK: - Post device token to server
     static func forwardTokenToServer(deviceToken token: Data) {
         let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
         UserInfo.shared.deviceToken = hexEncodedToken
+        UserDefaults.standard.set(hexEncodedToken, forKey: key)
         print("device token: \(hexEncodedToken)")
         // MARK: calculate appNumber based on your bundel ID
         let bundleID = Bundle.main.bundleIdentifier ?? ""

@@ -199,7 +199,7 @@ class PlayerAPI {
         var parsedUrlString:String = ""
         parsedUrlString = urlString.replacingOccurrences(
             of: "^(http).+(album/)",
-            with: "https://du3rcmbgk4e8q.cloudfront.net/album/",
+            with: "\(APIs.audioDomain)album/",
             options: .regularExpression
         )
         parsedUrlString =  parsedUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!

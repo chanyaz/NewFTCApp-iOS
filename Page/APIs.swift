@@ -56,6 +56,8 @@ struct APIs {
         "http://big5.ftmailbox.com/"
     ]
     
+    // MARK: - Domain Check: HTTPS domain for audio files
+    public static let audioDomain = "https://d1h6mhhb33bllx.cloudfront.net/"
     
     // MARK: - Domain Check: iOS Receipt Validation
     public static let iOSReceiptValidationUrlString = "https://api001.ftmailbox.com/ios-receipt-validation.php"

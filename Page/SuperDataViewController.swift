@@ -127,7 +127,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             view.backgroundColor = UIColor(hex: Color.Content.background)
             collectionView?.backgroundColor = UIColor(hex: Color.Content.background)
             // MARK: - show refresh controll only when there is api
-            if dataObject["api"] != nil || dataObjectType == "follow" {
+            if dataObject["api"] != nil || ["follow", "iap"].contains(dataObjectType) {
                 if #available(iOS 10.0, *) {
                     //                    refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
                     refreshContr = CustomRefreshConrol(target: self, refreshAction: #selector(refreshControlDidFire))
@@ -1300,6 +1300,7 @@ extension SuperDataViewController {
                 if let products = products {
                     //self?.products = products
                     IAPs.shared.products = products
+                    ReceiptHelper.receiptValidation(with: APIs.iOSReceiptValidationUrlString)
                 }
             }
             // MARK: - Get product regardless of the request result

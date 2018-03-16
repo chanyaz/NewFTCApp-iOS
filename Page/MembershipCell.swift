@@ -13,6 +13,7 @@ class MembershipCell: CustomCell {
 
     var pageTitle = ""
     var buyState: BuyState = .New
+    var isAutoRenewal: Bool? = nil
     private let buttonManageKey = "管理订阅"
     private let buttonRestoreKey = "恢复订阅"
     
@@ -27,8 +28,8 @@ class MembershipCell: CustomCell {
     @IBOutlet weak var buyButton: UIButton!
     
     @IBAction func buy(_ sender: Any) {
-        switch buyState {
-        case .New:
+        if buyState == .New || (buyState == .Purchased && isAutoRenewal == nil) {
+            // MARK: If the purchase is new or expired, or auto renewal status is unknown, buy it
             if let id = itemCell?.id {
                 // MARK: If user logged in, purchase directly
                 print ("user id is now \(String(describing: UserInfo.shared.userId))")
@@ -54,7 +55,21 @@ class MembershipCell: CustomCell {
                     }
                 }
             }
-        case .Purchasing, .Purchased:
+        } else if buyState == .Purchasing {
+            // MARK: If the purchase is in process, do it. 
+            Alert.present("您正在购买", message: "正在等待苹果服务器的回应，无需进一步操作")
+            print ("the item is already bought")
+        } else {
+            // MARK: If the user has bought the item an isAutoRenewal is not nil, tap the button will lead to the manage subscription button
+            if isAutoRenewal != nil {
+                if let url = URL(string:DeviceInfo.manageSubscriptionUrl) {
+                    UIApplication.shared.openURL(url)
+                }
+            } else if let id = itemCell?.id {
+                buyImmediately(id)
+            } else {
+                Alert.present("对不起", message: "找不到已购产品的ID号，请截屏找FT中文网客服帮忙。")
+            }
             print ("the item is already bought")
         }
     }
@@ -92,6 +107,7 @@ class MembershipCell: CustomCell {
             }
             if let id = itemCell?.id,
                 let expiresString = IAP.checkPurchaseInDevice(id, property: "expires") {
+                buttonActionString = "续订"
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = PrivilegeHelper.dateFormatString
                 if let expiresDate = dateFormatter.date(from: expiresString) {
@@ -99,18 +115,35 @@ class MembershipCell: CustomCell {
                     let expiresDateStringNew = dateFormatter.string(from: expiresDate)
                     let expiresStatement: String
                     if expiresDate >= Date() {
-                        if let isAutoRenew = IAP.checkPurchaseInDevice(id, property: "auto_renew_status"),
-                            isAutoRenew == "1" {
-                            expiresStatement = "您的订阅目前是自动续期，如您在\(expiresDateStringNew)前一天内未关闭自动续订功能，订阅周期会自动延续并扣费。如您需要关闭自动续期，请点击“管理订阅”按钮进入iTunes Store进行设置。"
+                        buyState = .Purchased
+                        if let isAutoRenew = IAP.checkPurchaseInDevice(id, property: "auto_renew_status") {
+                            if isAutoRenew == "1" {
+                                // MARK: The autorenewal is set to true, remind user about this so that he/she won't be surprised when money is taken.
+                                expiresStatement = "您的订阅目前是自动续期，如您在\(expiresDateStringNew)前一天内未关闭自动续订功能，订阅周期会自动延续并扣费。如您需要关闭自动续期，请点击下方按钮进入iTunes Store进行设置。"
+                                buttonActionString = "关闭自动续期"
+                                isAutoRenewal = true
+                            } else {
+                                // MARK: The autorenewal is set to false, remind the user that he/she can change it to true.
+                                expiresStatement = "您的订阅将于\(expiresDateStringNew)过期，如您希望续订，请点击下方按钮进入iTunes Store进行设置。"
+                                buttonActionString = "打开自动续期"
+                                isAutoRenewal = false
+                            }
                         } else {
+                            // MARK: The autorenewal status is unknown, the user can tap to manually renew
                             expiresStatement = "您的订阅将于\(expiresDateStringNew)过期"
+                            isAutoRenewal = nil
+                            buttonActionString = "续订"
                         }
                     } else {
+                        // MARK: The subscription has expired. Prompt the user to renew.
                         expiresStatement = "您的订阅已于\(expiresDateStringNew)过期"
+                        buyState = .New
+                        isAutoRenewal = false
+                        buttonActionString = "续订"
                     }
                     benefitsString += "\n\(expiresStatement)\n"
                 }
-                buttonActionString = "续订"
+                
             }
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = 8

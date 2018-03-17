@@ -324,6 +324,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         )
 
         // MARK: listen to in-app purchase receipt validation notification. This is useful to provide immediate visual feedback when user buys or renews a product.
+        // MARK: Only do this is when the type of the data object is iap, otherwise it fetches data.
         if dataObjectType == "iap" {
             NotificationCenter.default.addObserver(
                 self,
@@ -1299,6 +1300,12 @@ extension SuperDataViewController {
     
     // MARK: - load IAP products and update UI
     fileprivate func loadProducts() {
+        // MARK: only be executed when data object type is iap
+        guard let dataObjectType = dataObject["type"],
+            dataObjectType == "iap" else {
+                print ("loadProducts() should only be executed when data object type is iap! ")
+                return
+        }
         IAPs.shared.products = []
         IAPProducts.store.requestProducts{[weak self] success, products in
             if success {

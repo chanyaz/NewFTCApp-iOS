@@ -172,7 +172,8 @@ struct GA {
                 (index: 1, value: userType),
                 (index: 2, value: UserInfo.shared.userId),
                 (index: 3, value: UserInfo.shared.deviceToken),
-                (index: 4, value: EngagementData.shared.latest)
+                (index: 4, value: EngagementData.shared.latest),
+                (index: 5, value: UIDevice.current.identifierForVendor?.uuidString)
             ]
             return customDimensions
         }

@@ -74,7 +74,7 @@ struct Track {
     
     public static func sendEngagementData(_ engagement: (score: Double, frequency: Int, recency: Int, volumn: Int)) {
         // MARK: Must have something that can identify the user. Otherwise the data is uselss.
-        if UserInfo.shared.userName == nil && UserInfo.shared.userId == nil && UserInfo.shared.deviceToken == nil {
+        if UserInfo.shared.userName == nil && UserInfo.shared.userId == nil && UserInfo.shared.deviceToken == nil && UIDevice.current.identifierForVendor == nil {
             return
         }
         let s = String(engagement.score)
@@ -84,6 +84,7 @@ struct Track {
         let u = UserInfo.shared.userName ?? ""
         let i = UserInfo.shared.userId ?? ""
         let d = UserInfo.shared.deviceToken ?? ""
+        let uuid = UIDevice.current.identifierForVendor?.uuidString ?? ""
         let eventCategory = "iOS Engagement: \(EngagementTracker.getEventCategory())"
 //        print ("user id shared value as: \(UserInfo.shared.userId)")
 //        print ("divice token shared value as: \(UserInfo.shared.deviceToken)")
@@ -96,7 +97,7 @@ struct Track {
         if userId != "" {
             eventAction = userId
         } else {
-            eventAction = UserInfo.shared.deviceToken ?? "unknown"
+            eventAction = UserInfo.shared.deviceToken ?? UIDevice.current.identifierForVendor?.uuidString ?? "unknown"
         }
         let eventLabel = "(\(s),\(f),\(r),\(v))"
         Track.event(category: eventCategory, action: eventAction, label: eventLabel)
@@ -107,9 +108,9 @@ struct Track {
             "v": v,
             "u": u,
             "i": i,
-            "d": d
+            "d": d,
+            "uuid": uuid
             ] as [String : String]
-        
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: engagementDict, options: .init(rawValue: 0))
             if let siteServerUrl = Foundation.URL(string: APIs.engagementTrackerUrlString) {
@@ -151,7 +152,7 @@ struct Track {
         }
         // MARK: Even if there's no device token, we still want to record this so that we know who has not yet enabled notification
         let eventLabelOriginal = UserInfo.shared.deviceToken ?? ""
-        let eventLabel = (eventLabelOriginal != "") ? eventLabelOriginal : "None"
+        let eventLabel = (eventLabelOriginal != "") ? eventLabelOriginal : ""
         event(category: eventCategory, action: eventAction, label: eventLabel)
     }
     

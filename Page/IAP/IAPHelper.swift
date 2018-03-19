@@ -303,7 +303,8 @@ struct ReceiptHelper {
                     "receipt-data": receiptString,
                     "user-id": UserInfo.shared.userId ?? "",
                     "user-name": UserInfo.shared.userName ?? "",
-                    "device-token": UserInfo.shared.deviceToken ?? ""
+                    "device-token": UserInfo.shared.deviceToken ?? "",
+                    "device-id": UIDevice.current.identifierForVendor ?? ""
                     ] as [String : String]
                 Track.token()
                 

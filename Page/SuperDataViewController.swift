@@ -324,12 +324,15 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         )
 
         // MARK: listen to in-app purchase receipt validation notification. This is useful to provide immediate visual feedback when user buys or renews a product.
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleReceiptValidationNotification(_:)),
-            name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification),
-            object: nil
-        )
+        // MARK: Only do this is when the type of the data object is iap, otherwise it fetches data.
+        if dataObjectType == "iap" {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleReceiptValidationNotification(_:)),
+                name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification),
+                object: nil
+            )
+        }
         
         
         
@@ -540,8 +543,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification), object: nil)
-
+        
+        if let dataObjectType = dataObject["type"],
+            dataObjectType == "iap" {
+            NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification), object: nil)
+        }
         
         // MARK: release all the delegate to avoid crash in iOS 9
         webView?.scrollView.delegate = nil
@@ -1294,6 +1300,12 @@ extension SuperDataViewController {
     
     // MARK: - load IAP products and update UI
     fileprivate func loadProducts() {
+        // MARK: only be executed when data object type is iap
+        guard let dataObjectType = dataObject["type"],
+            dataObjectType == "iap" else {
+                print ("loadProducts() should only be executed when data object type is iap! ")
+                return
+        }
         IAPs.shared.products = []
         IAPProducts.store.requestProducts{[weak self] success, products in
             if success {
@@ -1482,7 +1494,13 @@ extension SuperDataViewController {
     // MARK: Handle Subscription Related Actions
     @objc public func handleReceiptValidationNotification(_ notification: Notification) {
         print ("receipt notification received: \(notification)")
-        loadProducts()
+        // MARK: Only when data object type is iap
+        if let dataObjectType = dataObject["type"],
+            dataObjectType == "iap" {
+            loadProducts()
+        } else {
+            print ("No need to update UI in the dataview controller as it is not a type iap data object. ")
+        }
     }
     
     
@@ -1517,7 +1535,6 @@ extension SuperDataViewController {
             //            let horizontalClass = UIScreen.main.traitCollection.horizontalSizeClass
             //            let verticalCass = UIScreen.main.traitCollection.verticalSizeClass
             updateUI(with: results)
-            
         }
     }
     

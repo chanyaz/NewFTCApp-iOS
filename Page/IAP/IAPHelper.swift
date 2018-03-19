@@ -304,7 +304,7 @@ struct ReceiptHelper {
                     "user-id": UserInfo.shared.userId ?? "",
                     "user-name": UserInfo.shared.userName ?? "",
                     "device-token": UserInfo.shared.deviceToken ?? "",
-                    "device-id": UIDevice.current.identifierForVendor ?? ""
+                    "device-id": UIDevice.current.identifierForVendor?.uuidString ?? ""
                     ] as [String : String]
                 Track.token()
                 

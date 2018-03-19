@@ -57,26 +57,29 @@ struct APIs {
     ]
     
     // MARK: - Domain Check: HTTPS domain for audio files
+    // TODO: - Create a subscriber audio domain
     public static let audioDomain = "https://d1h6mhhb33bllx.cloudfront.net/"
     
     // MARK: - Domain Check: iOS Receipt Validation
+    // TODO: - Create a subscriber receipt domain
     public static let iOSReceiptValidationUrlString = "https://api001.ftmailbox.com/ios-receipt-validation.php"
     
     // MARK: - Domain Check: Engagement Tracker
+    // TODO: - Create a subscriber receipt domain
     public static let engagementTrackerUrlString = "https://api001.ftmailbox.com/engagement-tracker.php"
     
-    // MARK: - Domain Check: Launch Ad Schedule
-    public static let lauchAdSchedule = "https://d31b34rc1ppbon.cloudfront.net/index.php/jsapi/applaunchschedule"
-    
     // MARK: - Domain Check: Track device token
+    // TODO: - Create a subscriber device token collection domain
     public static let deviceTokenUrlString = "https://noti.ftimg.net/iphone-collect.php"
+    
+    // MARK: - Domain Check: Launch Ad Schedule.
+    // TODO: - Use background downloading domain just for launch ad schedule
+    public static let lauchAdSchedule = "https://d31b34rc1ppbon.cloudfront.net/index.php/jsapi/applaunchschedule"
     
     // MARK: Number of days you want to keep the cached files
     public static let expireDay: TimeInterval = 7
     
-    
     // MARK: Search is mostly rendered using web
-    //static let searchUrl = "http://app003.ftmailbox.com/search/"
     public static let searchUrl = "http://www.ftchinese.com/search/"
     public static func jsForSearch(_ keywords: String) -> String {
         return "search('\(keywords)');"
@@ -439,16 +442,38 @@ struct APIs {
     }
     
     static func sendThirdPartyTrackings(_ itemId: String, category: String, action: String, label: String) {
+        let timeInterval = Int((Date().timeIntervalSince1970)*100000)
+        let cntTime = String(timeInterval)
+        let ip = NetworkHelper.getWiFiAddress() ?? ""
+        let targetDict = [
+            "category": category,
+            "action": action,
+            "label": label,
+            "iosToken": UserInfo.shared.deviceToken ?? ""
+        ]
+        var targetString = ""
+        var isFirstItem = true
+        for (key, value) in targetDict {
+            let seperatorString: String
+            if isFirstItem == false {
+                seperatorString = ","
+            } else {
+                seperatorString = ""
+                isFirstItem = false
+            }
+            targetString += "\(seperatorString)\"\(key)\":\"\(value)\""
+        }
         let dataForYoulu = [
             "appId": "5002",
             "itemId": itemId,
-            "deviceId": "",
-            "action": "3",
-            "target": "",
-            "cntTime": "1474732800",
-            "ip": "192.168.0.1",
-            "cki": "xxxxx"
+            "deviceId": UIDevice.current.identifierForVendor?.uuidString ?? "",
+            "action": "0",
+            "target": "{\(targetString)}",
+            "cntTime": cntTime,
+            "ip": ip,
+            "cki": UserInfo.shared.userId ?? ""
         ]
+        print (dataForYoulu)
         PostData.sendToThirdParty("https://uluai.com.cn/rcmd/getAppInfo", with: dataForYoulu)
     }
     

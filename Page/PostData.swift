@@ -10,7 +10,7 @@ import Foundation
 
 struct PostData {
     
-    static func send(to urlString: String, with body: String) {
+    public static func send(to urlString: String, with body: String) {
         guard let url = URL(string: urlString) else {
             return
         }
@@ -33,4 +33,14 @@ struct PostData {
         }
         dataTask.resume()
     }
+    
+    public static func sendToThirdParty(_ url: String, with dict: [String: String]) {
+        let timeZone = TimeZone.current.abbreviation() ?? ""
+        var urlEncoded = "t=\(timeZone)"
+        for (key, value) in dict {
+            urlEncoded += "&\(key)=\(value)"
+        }
+        PostData.send(to: url, with: urlEncoded)
+    }
+    
 }

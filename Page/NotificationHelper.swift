@@ -104,7 +104,7 @@ struct NotificationHelper {
                 }
             case "unlock":
                 let newDomain = "https://\(id)/"
-                ForceDomains.saveNewDomain(newDomain)
+                ForceDomains.saveNewDomain(newDomain, forBaseUrl: false)
             default:
                 break
             }

@@ -213,7 +213,7 @@ struct APIs {
         let newSecureDomain:String?
         if newFrom.range(of: "https://") != nil {
             // MARK: Exclusive domain for subscribers
-            if let forceDomain = ForceDomains.getNewDomain(),
+            if let forceDomain = ForceDomains.getNewDomain(forBaseUrl: false),
                 forceDomain != serverNotResponding {
                 // MARK: If the device get notification from APNS
                 newFrom = newFrom.replacingOccurrences(of: "^https://.*.(com|net)/", with: forceDomain, options: .regularExpression)
@@ -226,6 +226,8 @@ struct APIs {
             }
         } else {
             newSecureDomain = nil
+            // TODO: Use new base url
+            
         }
 
         print ("Server Watch: new domain \(String(describing: newSecureDomain)) and old server that are not responding: \(String(describing: serverNotResponding))")

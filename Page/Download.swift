@@ -11,17 +11,33 @@ import Foundation
 struct ForceDomains {
     static var shared = ForceDomains()
     var newDomain: String?
+    var newBaseUrlDomain: String?
     private static let forceDomainKey = "Force Domain Key"
-    public static func saveNewDomain(_ domain: String) {
-        ForceDomains.shared.newDomain = domain
-        UserDefaults.standard.set(domain, forKey: forceDomainKey)
-    }
-    public static func getNewDomain() -> String? {
-        if let newDomain = ForceDomains.shared.newDomain {
-            return newDomain
+    private static let forceBaseUrlDomainKey = "Force Base Url Domain Key"
+    public static func saveNewDomain(_ domain: String, forBaseUrl: Bool) {
+        if forBaseUrl {
+            ForceDomains.shared.newBaseUrlDomain = domain
+            UserDefaults.standard.set(domain, forKey: forceBaseUrlDomainKey)
+        } else {
+            ForceDomains.shared.newDomain = domain
+            UserDefaults.standard.set(domain, forKey: forceDomainKey)
         }
-        if let newDomain = UserDefaults.standard.string(forKey: forceDomainKey) {
-            return newDomain
+    }
+    public static func getNewDomain(forBaseUrl: Bool) -> String? {
+        if forBaseUrl {
+            if let newDomain = ForceDomains.shared.newBaseUrlDomain {
+                return newDomain
+            }
+            if let newDomain = UserDefaults.standard.string(forKey: forceBaseUrlDomainKey) {
+                return newDomain
+            }
+        } else {
+            if let newDomain = ForceDomains.shared.newDomain {
+                return newDomain
+            }
+            if let newDomain = UserDefaults.standard.string(forKey: forceDomainKey) {
+                return newDomain
+            }
         }
         return nil
     }
@@ -424,8 +440,12 @@ struct Download {
                                     let forceDomain = aps["d"] as? String
                                     if let forceDomain = forceDomain {
                                         //ForceDomains.shared.newDomain = forceDomain
-                                        ForceDomains.saveNewDomain(forceDomain)
+                                        ForceDomains.saveNewDomain(forceDomain, forBaseUrl: false)
                                     }
+                                    if let forceBaseUrlDomain = aps["b"] as? String {
+                                        ForceDomains.saveNewDomain(forceBaseUrlDomain, forBaseUrl: true)
+                                    }
+                                    
                                     let apiUrl = APIs.get(storyId, type: "story", forceDomain: forceDomain)
                                     print ("downloading: \(apiUrl)")
                                     downloadUrl(apiUrl, to: .cachesDirectory, as: "json")

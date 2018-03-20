@@ -129,10 +129,22 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             
             // MARK: Check if the user have the required privilege to view this content
             //print (dataObject?.privilegeRequirement as Any)
-            if let privilege = dataObject?.privilegeRequirement,
-                !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
-                PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject)
+            if let privilege = dataObject?.privilegeRequirement {
+                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
+                    PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject)
                     isPrivilegeViewOn = true
+                } else {
+                    print ("User is allowed to read a premium content: \(String(describing: dataObject?.type))/\(String(describing: dataObject?.id))")
+                    // MARK: A subscriber is reading a piece of paid content
+                    let eventLabel: String
+                    if let itemType = dataObject?.type,
+                        let itemId = dataObject?.id {
+                        eventLabel = "\(itemType)/\(itemId)"
+                    } else {
+                        eventLabel = ""
+                    }
+                    Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
+                }
             }
             
         }

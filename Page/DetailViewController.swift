@@ -271,15 +271,20 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
             var audioScreenName: String? = nil
             
             // MARK: Check if the user has the privilege for the content itself
-            if let privilege = dataObject.privilegeRequirement,
-                !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
-                // TODO: Show an alert so that the user can buy
-                let alert = UIAlertController(title: "订阅用户专享内容", message: "您好，本内容是订户专享，请先完成订阅", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
-                if let topViewController = UIApplication.topViewController() {
-                    topViewController.present(alert, animated: true, completion: nil)
+            if let privilege = dataObject.privilegeRequirement {
+                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
+                    // MARK: Show an alert so that the user can buy
+                    let alert = UIAlertController(title: "订阅用户专享内容", message: "您好，本内容是订户专享，请先完成订阅", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
+                    if let topViewController = UIApplication.topViewController() {
+                        topViewController.present(alert, animated: true, completion: nil)
+                    }
+                    return
                 }
-                return
+                print ("User is allowed to listen to a premium content: \(dataObject.type)/\(dataObject.id)")
+                // MARK: A subscriber is reading a piece of paid content
+                let eventLabel = "\(dataObject.type)/\(dataObject.id)"
+                Track.eventToAll(category: "Privileges", action: "Listen", label: eventLabel)
             }
             
             // MARK: Check if there's audio file attached to this item

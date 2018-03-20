@@ -548,9 +548,12 @@ struct IAP {
         }
         if let type = ConversionTracker.shared.item?.type,
             let id = ConversionTracker.shared.item?.id {
-            Track.event(category: "Privileges", action: "\(actionType): \(productId)", label: "\(type)/\(id)")
+            Track.eventToAll(category: "Privileges", action: "\(actionType): \(productId)", label: "\(type)/\(id)")
+            //APIs.sendThirdPartyTrackings("\(type)/\(id)", category: "Privileges", action: "\(actionType): \(productId)", label: "\(type)/\(id)")
         }
     }
+    
+    
 
     public static func savePriceInfo(_ products: [SKProduct]) {
         var productPrices: [String: String] = [:]

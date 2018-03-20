@@ -449,7 +449,8 @@ struct APIs {
             "category": category,
             "action": action,
             "label": label,
-            "iosToken": UserInfo.shared.deviceToken ?? ""
+            "iosToken": UserInfo.shared.deviceToken ?? "",
+            "visitorId": UserInfo.shared.uniqueVisitorId ?? ""
         ]
         var targetString = ""
         var isFirstItem = true
@@ -473,7 +474,7 @@ struct APIs {
             "ip": ip,
             "cki": UserInfo.shared.userId ?? ""
         ]
-        print (dataForYoulu)
+        print ("data for youlu: \(dataForYoulu)")
         PostData.sendToThirdParty("https://uluai.com.cn/rcmd/getAppInfo", with: dataForYoulu)
     }
     

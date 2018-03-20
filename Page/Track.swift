@@ -35,6 +35,11 @@ struct Track {
         }
     }
     
+    public static func eventToAll(category: String, action: String, label: String) {
+        event(category: category, action: action, label: label)
+        APIs.sendThirdPartyTrackings(label, category: category, action: action, label: label)
+    }
+    
     public static func catchError(_ description: String, withFatal: NSNumber) {
         for trackingId in GA.trackingIds {
             let tracker = setGATracker(trackingId, with: EngagementData.shared.latestTuple)

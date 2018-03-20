@@ -13,9 +13,11 @@ struct UserInfo {
     var userName: String?
     var userId: String?
     var deviceToken: String?
+    var uniqueVisitorId: String?
     var shouldRequestUserToAllowNotification = true
     private static let userNameKey = "User Name Key"
     private static let userIdKey = "User Id Key"
+    private static let uniqueVisitorIdKey = "unique visitor id key"
     
     static func updateUserInfo(with body: [String: String]) {
         if let userName = body["username"],
@@ -26,13 +28,19 @@ struct UserInfo {
             UserDefaults.standard.set(userId, forKey: userIdKey)
             print ("update user name: \(userName); user id: \(userId)")
         }
+        if let uniqueVisitorId = body["uniqueVisitorId"] {
+            UserInfo.shared.uniqueVisitorId = uniqueVisitorId
+            UserDefaults.standard.set(uniqueVisitorId, forKey: uniqueVisitorIdKey)
+            print ("Unique Visitor Id: \(uniqueVisitorId)")
+        }
     }
     
-    static func updateUserInfoFromNative()  {
+    static func updateUserInfoFromNative() {
         // MARK: Get user information from user default so that user name will be available even when you haven't visited any story page
         UserInfo.shared.userName = UserDefaults.standard.string(forKey: userNameKey)
         UserInfo.shared.userId = UserDefaults.standard.string(forKey: userIdKey)
-        print ("user name: \(String(describing: UserInfo.shared.userName)); user id: \(String(describing: UserInfo.shared.userId))")
+        UserInfo.shared.uniqueVisitorId = UserDefaults.standard.string(forKey: uniqueVisitorIdKey)
+        print ("user name: \(String(describing: UserInfo.shared.userName)); user id: \(String(describing: UserInfo.shared.userId)); unique visitor id: \(String(describing: UserInfo.shared.uniqueVisitorId))")
     }
     
     static func showAccountPage() {

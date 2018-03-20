@@ -104,7 +104,7 @@ class PrivilegeView: UIView {
             // MARK: Track the tap event even if something is wrong with the conversion item
             let type = ConversionTracker.shared.item?.type ?? ""
             let id = ConversionTracker.shared.item?.id ?? ""
-            Track.event(category: "Privileges", action: "Tap Subscription", label: "\(type)/\(id)")
+            Track.eventToAll(category: "Privileges", action: "Tap Subscription", label: "\(type)/\(id)")
         }
     }
     
@@ -114,7 +114,7 @@ class PrivilegeView: UIView {
         // MARK: Track the tap event even if something is wrong with the conversion item
         let type = ConversionTracker.shared.item?.type ?? ""
         let id = ConversionTracker.shared.item?.id ?? ""
-        Track.event(category: "Privileges", action: "Tap Login", label: "\(type)/\(id)")
+        Track.eventToAll(category: "Privileges", action: "Tap Login", label: "\(type)/\(id)")
     }
 
     
@@ -137,7 +137,7 @@ struct PrivilegeViewHelper {
         // MARK: Track the event of PrivilegeView display
         if let type = item?.type,
             let id = item?.id {
-            Track.event(category: "Privileges", action: "Display", label: "\(type)/\(id)")
+            Track.eventToAll(category: "Privileges", action: "Display", label: "\(type)/\(id)")
         }
     }
     
@@ -158,7 +158,7 @@ struct PrivilegeViewHelper {
             // MARK: Track the event of Subscription View display
             if let type = sourceItem?.type,
                 let id = sourceItem?.id {
-                Track.event(category: "Privileges", action: "Pop Subscription", label: "\(type)/\(id)")
+                Track.eventToAll(category: "Privileges", action: "Pop Subscription", label: "\(type)/\(id)")
             }
             // MARK: Show a reason why user is redirected here
             let privilegeDescription = PrivilegeHelper.getDescription(privilegeRequired)

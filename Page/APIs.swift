@@ -40,8 +40,8 @@ struct APIs {
     
     // MARK: Domain reserved for subscribers only
     private static let subscriberDomain = [
-        "https://www.ftimg.net/",
-        "https://www.ftimg.net/"
+        "https://webnodeiv.ftchinese.com/",
+        "https://webnodeiv.ftchinese.com/"
     ]
     
     // MARK: If there are http resources that you rely on in your page, don't use https as the url base
@@ -57,21 +57,40 @@ struct APIs {
     ]
     
     // MARK: - Domain Check: HTTPS domain for audio files
-    // TODO: - Create a subscriber audio domain
-    public static let audioDomain = "https://d1h6mhhb33bllx.cloudfront.net/"
+    public static func getAudioDomain() -> String {
+        if Privilege.shared.exclusiveContent {
+            return "https://creatives001.ftimg.net/"
+        }
+        return "https://d1h6mhhb33bllx.cloudfront.net/"
+    }
     
     // MARK: - Domain Check: iOS Receipt Validation
-    // TODO: - Create a subscriber receipt domain
-    public static let iOSReceiptValidationUrlString = "https://api001.ftmailbox.com/ios-receipt-validation.php"
+    public static func getiOSReceiptValidationUrlString() -> String {
+        if Privilege.shared.exclusiveContent {
+            return "https://api002.ftmailbox.com/ios-receipt-validation.php"
+        }
+        return "https://api001.ftmailbox.com/ios-receipt-validation.php"
+    }
     
     // MARK: - Domain Check: Engagement Tracker
-    // TODO: - Create a subscriber receipt domain
-    public static let engagementTrackerUrlString = "https://api001.ftmailbox.com/engagement-tracker.php"
+    public static func getEngagementTrackerUrlString() -> String {
+        if Privilege.shared.exclusiveContent {
+            return "https://api002.ftmailbox.com/engagement-tracker.php"
+        }
+        return "https://api001.ftmailbox.com/engagement-tracker.php"
+    }
     
     // MARK: - Domain Check: Track device token
-    // TODO: - Create a subscriber device token collection domain
-    public static let deviceTokenUrlString = "https://noti.ftimg.net/iphone-collect.php"
+    public static func getDeviceTokenUrlString() -> String {
+        if Privilege.shared.exclusiveContent {
+            return "https://noti001.ftimg.net/iphone-collect.php"
+        }
+        return "https://noti.ftimg.net/iphone-collect.php"
+    }
     
+    
+    
+ 
     // MARK: - Domain Check: Launch Ad Schedule.
     // TODO: - Use background downloading domain just for launch ad schedule
     public static let lauchAdSchedule = "https://d31b34rc1ppbon.cloudfront.net/index.php/jsapi/applaunchschedule"
@@ -185,12 +204,17 @@ struct APIs {
         // MARK: Get the current luanguage index
         let currentPreference = LanguageSetting.shared.currentPrefence
         let currentIndex = (currentPreference == 0) ? 0 : 1
+        
+        // MARK: Switch to new domain immediately for subscribers and important user, only if the new secure domain is availabe and assumed accessible
+        let serverNotResponding = UserDefaults.standard.string(forKey: Download.serverNotRespondingKey)
+        
         // MARK: If the server is inaccessible and new one is available, use that. It should only apply to https.
         var newFrom = from
         let newSecureDomain:String?
         if newFrom.range(of: "https://") != nil {
             // MARK: Exclusive domain for subscribers
-            if let forceDomain = ForceDomains.getNewDomain() {
+            if let forceDomain = ForceDomains.getNewDomain(),
+                forceDomain != serverNotResponding {
                 // MARK: If the device get notification from APNS
                 newFrom = newFrom.replacingOccurrences(of: "^https://.*.(com|net)/", with: forceDomain, options: .regularExpression)
                 newSecureDomain = forceDomain
@@ -203,8 +227,7 @@ struct APIs {
         } else {
             newSecureDomain = nil
         }
-        // MARK: Switch to new domain immediately for subscribers and important user, only if the new secure domain is availabe and assumed accessible
-        let serverNotResponding = UserDefaults.standard.string(forKey: Download.serverNotRespondingKey)
+
         print ("Server Watch: new domain \(String(describing: newSecureDomain)) and old server that are not responding: \(String(describing: serverNotResponding))")
         if newSecureDomain != nil && newSecureDomain != serverNotResponding {
             print ("Server Watch: new domain \(String(describing: newSecureDomain))")
@@ -745,7 +768,7 @@ struct DeviceToken {
         }
         let timeZone = TimeZone.current.abbreviation() ?? ""
         let urlEncoded = "d=\(hexEncodedToken)&t=\(timeZone)&s=start&p=&dt=\(deviceType)&a=\(appNumber)"
-        PostData.send(to: APIs.deviceTokenUrlString, with: urlEncoded)
+        PostData.send(to: APIs.getDeviceTokenUrlString(), with: urlEncoded)
     }
 }
 

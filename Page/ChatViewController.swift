@@ -497,7 +497,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
      */
     override func viewDidAppear(_ animated: Bool) {
         print("View Did Appear")
-        Track.screenView("Chat/Xiaobing")
+        Track.screenView("Chat/Xiaobing", trackEngagement: false)
         
         //TODO:再记录一个card文章阅读结束时间时间戳，然后发送createTrackRequest
         if self.isReadingCard == true {

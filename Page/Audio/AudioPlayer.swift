@@ -292,7 +292,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         } else {
             screen = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
         }
-        Track.screenView(screen)
+        Track.screenView(screen, trackEngagement: true)
         checkLoveButton()
     }
     
@@ -412,7 +412,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     private func prepareAudioPlay() {
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
-        audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "\(APIs.audioDomain)album/")
+        audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "\(APIs.getAudioDomain())album/")
         // MARK: - Remove toolBar's top border. This cannot be done in interface builder.
         toolBar.clipsToBounds = true
         

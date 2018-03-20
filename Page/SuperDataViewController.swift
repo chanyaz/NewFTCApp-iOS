@@ -475,7 +475,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         super.viewWillAppear(animated)
         isVisible = true
         if let screeName = dataObject["screenName"] {
-            Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)")
+            Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)", trackEngagement: true)
         }
         filterDataWithAudioUrl()
         // MARK: In setting page, you might need to update UI to reflected change in preference
@@ -1312,7 +1312,7 @@ extension SuperDataViewController {
                 if let products = products {
                     //self?.products = products
                     IAPs.shared.products = products
-                    ReceiptHelper.receiptValidation(with: APIs.iOSReceiptValidationUrlString)
+                    ReceiptHelper.receiptValidation(with: APIs.getiOSReceiptValidationUrlString())
                 }
             }
             // MARK: - Get product regardless of the request result

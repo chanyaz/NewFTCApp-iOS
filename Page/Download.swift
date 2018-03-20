@@ -39,7 +39,6 @@ struct Download {
         markServerAsNotResponding(urlString)
         //Track.catchError("\(urlString) Request Error: \(String(describing: error))", withFatal: 1)
         Track.event(category: "CatchError", action: "Fail to Connect on \(statusType)", label: urlString)
-
     }
     
     public static func markServerAsNotResponding(_ urlString: String) {

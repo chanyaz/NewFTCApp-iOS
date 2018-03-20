@@ -102,6 +102,9 @@ struct NotificationHelper {
                     topController.openLink(url)
                     return
                 }
+            case "unlock":
+                let newDomain = "https://\(id)/"
+                ForceDomains.saveNewDomain(newDomain)
             default:
                 break
             }

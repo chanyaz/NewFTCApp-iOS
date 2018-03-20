@@ -496,7 +496,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         try? AVAudioSession.sharedInstance().setActive(true)
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/audio/\(audioId)/\(audioTitle)"
-        Track.screenView(screenName)
+        Track.screenView(screenName, trackEngagement: true)
         if (player?.rate != 0) && (player?.error == nil) {
 //        if TabBarAudioContent.sharedInstance.isPlaying == true{
             startRotateAnimate()

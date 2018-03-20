@@ -199,7 +199,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
             
             let screenName = "/\(DeviceInfo.checkDeviceType())/\(tapFrom)\(type)/\(id)/\(headline)"
-            Track.screenView(screenName)
+            Track.screenView(screenName, trackEngagement: true)
             if type != "video" {
                 let jsCode = JSCodes.get(type)
                 //print ("View will Appear, about to excute this javascript code: \(jsCode)")

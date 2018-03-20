@@ -17,7 +17,7 @@
 //
 //    func sendDeviceToken() {
 //        if postString != "" && deviceUserId != "no" && deviceTokenSent == false {
-//            let url = URL(string: APIs.deviceTokenUrlString)
+//            let url = URL(string: APIs.getDeviceTokenUrlString())
 //            let request = NSMutableURLRequest(url:url!)
 //            let postStringFinal = "\(postString)\(deviceUserId)"
 //            request.httpMethod = "POST"

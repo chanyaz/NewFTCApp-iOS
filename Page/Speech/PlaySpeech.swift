@@ -133,7 +133,7 @@ class PlaySpeech: UIViewController, AVSpeechSynthesizerDelegate,UIPopoverPresent
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let screenName = "/\(DeviceInfo.checkDeviceType())/SpeechToText/\(audioId)/\(audioLanguage)/\(audioTitle)"
-        Track.screenView(screenName)
+        Track.screenView(screenName, trackEngagement: true)
         let eventCategory = "Listen To Story"
         let body = SpeechContent.sharedInstance.body
         if let language = body["language"], let title = body["title"] {

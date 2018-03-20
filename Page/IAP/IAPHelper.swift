@@ -75,7 +75,7 @@ open class IAPHelper : NSObject  {
         //        }
         // MARK: - Use global thread as it will not not change UI directly
         DispatchQueue.global().async {
-            ReceiptHelper.receiptValidation(with: APIs.iOSReceiptValidationUrlString)
+            ReceiptHelper.receiptValidation(with: APIs.getiOSReceiptValidationUrlString())
             //ReceiptHelper.receiptValidation(with: "https://buy.itunes.apple.com/verifyReceipt")
             //ReceiptHelper.receiptValidation(with: "https://sandbox.itunes.apple.com/verifyReceipt")
             //ReceiptHelper.receiptValidation(with: "https://api.ftmailbox.com/ios-test.php")
@@ -216,7 +216,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         // MARK: 4. Validate the receipt
         // MARK: - Use globally thread as it will not not change UI directly
         DispatchQueue.global().async {
-            ReceiptHelper.receiptValidation(with: APIs.iOSReceiptValidationUrlString)
+            ReceiptHelper.receiptValidation(with: APIs.getiOSReceiptValidationUrlString())
             Track.token()
         }
         SKPaymentQueue.default().finishTransaction(transaction)

@@ -8,7 +8,7 @@
 
 import Foundation
 struct Track {
-    public static func screenView(_ name: String) {
+    public static func screenView(_ name: String, trackEngagement: Bool) {
         // MARK: Save screen name locally
         let engagement = Engagement.screen(name)
         // MARK: Google Analytics
@@ -21,10 +21,13 @@ struct Track {
                 print ("send track for screen name: \(name)")
             }
         }
+        if trackEngagement == true {
         sendEngagementData(engagement)
+        }
     }
     
     public static func event(category: String, action: String, label: String) {
+        
         for trackingId in GA.trackingIds {
             let tracker = setGATracker(trackingId, with: EngagementData.shared.latestTuple)
             let builder = GAIDictionaryBuilder.createEvent(withCategory: category, action: action, label: label, value: 0)
@@ -49,6 +52,7 @@ struct Track {
                 print ("send error: \(description) with fatal number of \(withFatal)")
             }
         }
+        
     }
     
     private static func setGATracker(_ trackingId: String, with engagement: (score: Double, frequency: Int, recency: Int, volumn: Int)?) -> GAITracker? {
@@ -78,10 +82,12 @@ struct Track {
     }
     
     public static func sendEngagementData(_ engagement: (score: Double, frequency: Int, recency: Int, volumn: Int)) {
+        
         // MARK: Must have something that can identify the user. Otherwise the data is uselss.
         if UserInfo.shared.userName == nil && UserInfo.shared.userId == nil && UserInfo.shared.deviceToken == nil && UIDevice.current.identifierForVendor == nil {
             return
         }
+        let scoreInt = Int(engagement.score)
         let s = String(engagement.score)
         let f = String(engagement.frequency)
         let r = String(engagement.recency)
@@ -91,9 +97,9 @@ struct Track {
         let d = UserInfo.shared.deviceToken ?? ""
         let uuid = UIDevice.current.identifierForVendor?.uuidString ?? ""
         let eventCategory = "iOS Engagement: \(EngagementTracker.getEventCategory())"
-//        print ("user id shared value as: \(UserInfo.shared.userId)")
-//        print ("divice token shared value as: \(UserInfo.shared.deviceToken)")
-//        print ("device token saved as: \(UserDefaults.standard.string(forKey: DeviceToken.key))")
+        //        print ("user id shared value as: \(UserInfo.shared.userId)")
+        //        print ("divice token shared value as: \(UserInfo.shared.deviceToken)")
+        //        print ("device token saved as: \(UserDefaults.standard.string(forKey: DeviceToken.key))")
         let userId = UserInfo.shared.userId ?? ""
         if UserInfo.shared.deviceToken == nil {
             UserInfo.shared.deviceToken = UserDefaults.standard.string(forKey: DeviceToken.key)
@@ -104,7 +110,7 @@ struct Track {
         } else {
             eventAction = UserInfo.shared.deviceToken ?? UIDevice.current.identifierForVendor?.uuidString ?? "unknown"
         }
-        let eventLabel = "(\(s),\(f),\(r),\(v))"
+        let eventLabel = "\(scoreInt)"
         Track.event(category: eventCategory, action: eventAction, label: eventLabel)
         let engagementDict = [
             "s": s,
@@ -118,7 +124,7 @@ struct Track {
             ] as [String : String]
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: engagementDict, options: .init(rawValue: 0))
-            if let siteServerUrl = Foundation.URL(string: APIs.engagementTrackerUrlString) {
+            if let siteServerUrl = Foundation.URL(string: APIs.getEngagementTrackerUrlString()) {
                 var request = URLRequest(url: siteServerUrl)
                 request.httpMethod = "POST"
                 request.httpBody = jsonData
@@ -144,8 +150,9 @@ struct Track {
         catch {
             print("Engagement validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
         }
+        
     }
-
+    
     public static func token() {
         let eventCategory = "iOS Token: \(EngagementTracker.getEventCategory())"
         let eventAction: String
@@ -161,6 +168,6 @@ struct Track {
         event(category: eventCategory, action: eventAction, label: eventLabel)
     }
     
-
+    
     
 }

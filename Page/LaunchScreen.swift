@@ -84,7 +84,7 @@ class LaunchScreen: UIViewController {
             object: nil
         )
         
-        Track.screenView("/\(DeviceInfo.checkDeviceType())/FullScreenAdView")
+        Track.screenView("/\(DeviceInfo.checkDeviceType())/FullScreenAdView", trackEngagement: false)
     }
     
     override func didReceiveMemoryWarning() {

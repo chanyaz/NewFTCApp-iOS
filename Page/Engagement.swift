@@ -31,36 +31,37 @@ struct Engagement {
     
     // MARK: When the app launches, check the file system for engagement data
     private static func check() {
-        if EngagementData.shared.hasChecked == true {
-            return
-        }
-        if  let data = Download.readFile(engagementDataFileName, for: .documentDirectory, as: engagementDataFileExtension),
-            let json = try? JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0)),
-            let log = json as? [[String: Any]] {
-            EngagementData.shared.log = log
-        }
-        EngagementData.shared.hasChecked = true
+            if EngagementData.shared.hasChecked == true {
+                return
+            }
+            if  let data = Download.readFile(engagementDataFileName, for: .documentDirectory, as: engagementDataFileExtension),
+                let json = try? JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions(rawValue: 0)),
+                let log = json as? [[String: Any]] {
+                EngagementData.shared.log = log
+            }
+            EngagementData.shared.hasChecked = true
     }
     
     static func save() {
-        let logs = EngagementData.shared.log
-        let logsCleaned = logs.filter { (log) -> Bool in
-            if let timeStamp = log["time"] as? TimeInterval {
-                let engageDays = Date().timeIntervalSince1970 - daysForEngagement * secondsInAday
-                //let daysPassed = (timeStamp - engageDays)/secondsInAday
-                //print ("days passed: \(daysPassed)")
-                if timeStamp >= engageDays {
-                    //print ("log: keep it")
-                    return true
+
+            let logs = EngagementData.shared.log
+            let logsCleaned = logs.filter { (log) -> Bool in
+                if let timeStamp = log["time"] as? TimeInterval {
+                    let engageDays = Date().timeIntervalSince1970 - daysForEngagement * secondsInAday
+                    //let daysPassed = (timeStamp - engageDays)/secondsInAday
+                    //print ("days passed: \(daysPassed)")
+                    if timeStamp >= engageDays {
+                        //print ("log: keep it")
+                        return true
+                    }
+                    //print ("log: remove it")
+                    return false
                 }
-                //print ("log: remove it")
                 return false
             }
-            return false
-        }
-        if let data = try? JSONSerialization.data(withJSONObject: logsCleaned, options: JSONSerialization.WritingOptions(rawValue: 0)) {
-            Download.saveFile(data, filename: engagementDataFileName, to: .documentDirectory, as: engagementDataFileExtension)
-        }
+            if let data = try? JSONSerialization.data(withJSONObject: logsCleaned, options: JSONSerialization.WritingOptions(rawValue: 0)) {
+                Download.saveFile(data, filename: engagementDataFileName, to: .documentDirectory, as: engagementDataFileExtension)
+            }
     }
     
     static func screen(_ name: String) -> (score: Double, frequency: Int, recency: Int, volumn: Int)  {
@@ -87,6 +88,7 @@ struct Engagement {
         let engagementScore = score()
         //print ("Log is now: \(EngagementData.shared.log) and engagement score is \(engagementScore)")
         return engagementScore
+
     }
     
     static func score() -> (score: Double, frequency: Int, recency: Int, volumn: Int) {
@@ -115,10 +117,11 @@ struct Engagement {
         let lastVisitDate = visitingDates.last ?? 90
         let recency = min(max(currentDate - lastVisitDate, 0),90)
         let score: Double = (Double(frequecy) * sqrt(Double(volume)))/(1 + Double(recency))
-        // MARK: Every time score is calculated, save the string so that it can be retrieved quickly when you need to send it to your analytics account, such as Google Analytics. 
-        EngagementData.shared.latest = "\(score),\(frequecy),\(recency),\(volume)"
         let latestTuple = (score, frequecy, recency, volume)
-        EngagementData.shared.latestTuple = latestTuple
+        // MARK: Every time score is calculated, save the string so that it can be retrieved quickly when you need to send it to your analytics account, such as Google Analytics. 
+            //EngagementData.shared.latest = "\(Int(score)),\(frequecy),\(recency),\(volume)"
+            EngagementData.shared.latest = "\(Int(score))"
+            EngagementData.shared.latestTuple = latestTuple
         return latestTuple
     }
     

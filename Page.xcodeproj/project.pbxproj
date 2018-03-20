@@ -444,6 +444,10 @@
 		607CA25F205F658600A01A7D /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607CA25E205F658600A01A7D /* NetworkHelper.swift */; };
 		607CA260205F658600A01A7D /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607CA25E205F658600A01A7D /* NetworkHelper.swift */; };
 		607CA261205F658600A01A7D /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607CA25E205F658600A01A7D /* NetworkHelper.swift */; };
+		607CA2632060C5E400A01A7D /* FTCMobileiPhone8281472201803166.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 607CA2622060C5E400A01A7D /* FTCMobileiPhone8281472201803166.jpg */; };
+		607CA2672060C6FC00A01A7D /* 20180302mobile8281472.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 607CA2642060C6FB00A01A7D /* 20180302mobile8281472.jpg */; };
+		607CA2682060C6FC00A01A7D /* Mobile-fullscreen828-1472-50-benz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 607CA2652060C6FB00A01A7D /* Mobile-fullscreen828-1472-50-benz.jpg */; };
+		607CA2692060C6FC00A01A7D /* 20180115rolextrafficWelcomead_mo_828-1472.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 607CA2662060C6FC00A01A7D /* 20180115rolextrafficWelcomead_mo_828-1472.jpg */; };
 		60814F601F580FB200041801 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60814F5E1F580FB200041801 /* BookCell.swift */; };
 		60814F611F580FB200041801 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60814F5E1F580FB200041801 /* BookCell.swift */; };
 		60814F621F580FB200041801 /* BookCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60814F5F1F580FB200041801 /* BookCell.xib */; };
@@ -779,6 +783,10 @@
 		60789CB820070F3800CD8ED2 /* FinePrintCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinePrintCell.swift; sourceTree = "<group>"; };
 		60789CB920070F3800CD8ED2 /* FinePrintCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FinePrintCell.xib; sourceTree = "<group>"; };
 		607CA25E205F658600A01A7D /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
+		607CA2622060C5E400A01A7D /* FTCMobileiPhone8281472201803166.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = FTCMobileiPhone8281472201803166.jpg; sourceTree = "<group>"; };
+		607CA2642060C6FB00A01A7D /* 20180302mobile8281472.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 20180302mobile8281472.jpg; sourceTree = "<group>"; };
+		607CA2652060C6FB00A01A7D /* Mobile-fullscreen828-1472-50-benz.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Mobile-fullscreen828-1472-50-benz.jpg"; sourceTree = "<group>"; };
+		607CA2662060C6FC00A01A7D /* 20180115rolextrafficWelcomead_mo_828-1472.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "20180115rolextrafficWelcomead_mo_828-1472.jpg"; sourceTree = "<group>"; };
 		60814F5E1F580FB200041801 /* BookCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
 		60814F5F1F580FB200041801 /* BookCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookCell.xib; sourceTree = "<group>"; };
 		6084C7CB1F452A210035F60C /* register.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = register.html; path = FTChinese/register.html; sourceTree = "<group>"; };
@@ -1445,6 +1453,10 @@
 				60C5586D1F2990CD004C4E0E /* LaunchScreen.swift */,
 				60C5586F1F299F09004C4E0E /* AdSchedule.swift */,
 				60C558711F29B786004C4E0E /* schedule.json */,
+				607CA2662060C6FC00A01A7D /* 20180115rolextrafficWelcomead_mo_828-1472.jpg */,
+				607CA2642060C6FB00A01A7D /* 20180302mobile8281472.jpg */,
+				607CA2652060C6FB00A01A7D /* Mobile-fullscreen828-1472-50-benz.jpg */,
+				607CA2622060C5E400A01A7D /* FTCMobileiPhone8281472201803166.jpg */,
 			);
 			name = Launch;
 			sourceTree = "<group>";
@@ -2051,6 +2063,7 @@
 				60FEBB521EF0CEAE00C3EBB6 /* CoverCell.xib in Resources */,
 				601AC21B1F4870780004196A /* search.html in Resources */,
 				60F4C16E1EFCEBA500F21EB6 /* CoverCellRegular.xib in Resources */,
+				607CA2672060C6FC00A01A7D /* 20180302mobile8281472.jpg in Resources */,
 				601C41861F99BC39002D26B2 /* search-big5.html in Resources */,
 				50EC3A641EF1E18E00BF17AD /* Ad.xib in Resources */,
 				601C41841F99BC33002D26B2 /* list-big5.html in Resources */,
@@ -2063,6 +2076,7 @@
 				601C41821F99BC2B002D26B2 /* ebook-big5.html in Resources */,
 				50DA6E811F4037C8006B4CDE /* story.html in Resources */,
 				50C31B351F6CCFF000F4CF61 /* SettingCell.xib in Resources */,
+				607CA2632060C5E400A01A7D /* FTCMobileiPhone8281472201803166.jpg in Resources */,
 				60C466521F7F25EF004E6D02 /* html-book.html in Resources */,
 				6084C7CC1F452A210035F60C /* register.html in Resources */,
 				604FF94C1EEF7649005D2A41 /* ChannelCell.xib in Resources */,
@@ -2098,6 +2112,7 @@
 				50C31B471F7006D500F4CF61 /* OptionCell.xib in Resources */,
 				60586B051FC280B400C4FBB3 /* MembershipCell.xib in Resources */,
 				602153C41F39A4390077A7AF /* ShareIcon.jpg in Resources */,
+				607CA2682060C6FC00A01A7D /* Mobile-fullscreen828-1472-50-benz.jpg in Resources */,
 				602153C31F39A4390077A7AF /* mute.png in Resources */,
 				6019A9D31F4C457D00B8FB69 /* FollowCell.xib in Resources */,
 				60B8554A1F6A118600FE190E /* VideoCoverCell.xib in Resources */,
@@ -2105,6 +2120,7 @@
 				6054B2881F6628B300E34990 /* ThemeCoverCell.xib in Resources */,
 				601C41851F99BC36002D26B2 /* register-big5.html in Resources */,
 				60FEBB561EF0E94B00C3EBB6 /* HeadlineCell.xib in Resources */,
+				607CA2692060C6FC00A01A7D /* 20180115rolextrafficWelcomead_mo_828-1472.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

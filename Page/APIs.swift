@@ -226,13 +226,17 @@ struct APIs {
             }
         } else {
             newSecureDomain = nil
-            // TODO: Use new base url
-            
+            // MARK: Use new base url
+            if let forceDomainForBaseUrl = ForceDomains.getNewDomain(forBaseUrl: true),
+                forceDomainForBaseUrl != publicDomains[currentIndex] {
+                newFrom = newFrom.replacingOccurrences(of: publicDomains[currentIndex], with: forceDomainForBaseUrl)
+                //print ("New Base Url is: \(newFrom)")
+            }
         }
 
-        print ("Server Watch: new domain \(String(describing: newSecureDomain)) and old server that are not responding: \(String(describing: serverNotResponding))")
+        //print ("Server Watch: new domain \(String(describing: newSecureDomain)) and old server that are not responding: \(String(describing: serverNotResponding))")
         if newSecureDomain != nil && newSecureDomain != serverNotResponding {
-            print ("Server Watch: new domain \(String(describing: newSecureDomain))")
+            //print ("Server Watch: new domain \(String(describing: newSecureDomain))")
             return newFrom
         }
         if let serverNotResponding = serverNotResponding {
@@ -297,7 +301,8 @@ struct APIs {
             publicDomain = domain
         } else {
             webPageDomain = getUrlStringInLanguage(webPageDomains)
-            publicDomain = getUrlStringInLanguage(publicDomains)
+            let publicDomainOriginal = getUrlStringInLanguage(publicDomains)
+            publicDomain = checkServer(publicDomainOriginal)
         }
         let partialParameter: String
         if isPartial == true {

@@ -172,6 +172,11 @@ extension UIViewController: SFSafariViewControllerDelegate {
             case "buyproduct":
                 // MARK: open the product page
                 openProductStoreFront(url.host)
+            case "speak":
+                // MARK: Text to Speech
+                if let word = url.host {
+                    SpeakWord.speak(word)
+                }
             default:
                 break
             }

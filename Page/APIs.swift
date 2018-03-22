@@ -819,7 +819,7 @@ struct JSCodes {
             return jsCode
         default:
             let fontClass = Setting.getFontClass()
-            let jsCode = "window.gConnectionType = '\(Connection.current())';\(nightModeCode)checkFontSize('\(fontClass)');"
+            let jsCode = "window.isTextToSpeechEnabled=true;window.gConnectionType = '\(Connection.current())';\(nightModeCode)checkFontSize('\(fontClass)');"
             return jsCode
         }
     }

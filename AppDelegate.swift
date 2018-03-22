@@ -126,6 +126,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let aps = userInfo["aps"] as? NSDictionary {
             let title: String = (aps["alert"] as? [String:String])?["title"] ?? "为您推荐"
             //let lead: String = (aps["alert"] as? [String:String])?["body"] ?? ""
+            // MARK: Update secure domain name with the new notification
+            if let forceDomain = aps["d"] as? String {
+                ForceDomains.saveNewDomain(forceDomain, forBaseUrl: false)
+            }
             
             if let notiAction = userInfo["action"],
                 let id = userInfo["id"] as? String {

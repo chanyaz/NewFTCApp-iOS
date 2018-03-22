@@ -453,7 +453,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
     fileprivate func checkRightNavButton(_ item: ContentItem?) {
         // MARK: Update Right Bar Button Item
         if let type = item?.type {
-            if ["story", "premium"].contains(type) || item?.eaudio != nil {
+            if ["story", "premium"].contains(type) || (item?.eaudio != nil && item?.eaudio != "") {
                 navigationItem.rightBarButtonItem = audioButton
             } else {
                 navigationItem.rightBarButtonItem = nil

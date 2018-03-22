@@ -439,7 +439,6 @@ struct Download {
                                 if let storyId = storyIdString.matchingFirstString(regex: storyIdPatterns) {
                                     let forceDomain = aps["d"] as? String
                                     if let forceDomain = forceDomain {
-                                        //ForceDomains.shared.newDomain = forceDomain
                                         ForceDomains.saveNewDomain(forceDomain, forBaseUrl: false)
                                     }
                                     if let forceBaseUrlDomain = aps["b"] as? String {

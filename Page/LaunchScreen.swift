@@ -18,7 +18,6 @@ import MediaPlayer
 
 class LaunchScreen: UIViewController {
     // MARK: - Find out whether the user is happy and prompt rating if he/she is happy
-    public let happyUser = HappyUser()
     public var showCloseButton = true
     public var isBetweenPages = false
     private lazy var timer: Timer? = nil
@@ -59,14 +58,9 @@ class LaunchScreen: UIViewController {
     override func loadView() {
         super.loadView()
         DispatchQueue.global().async {
-            self.happyUser.launchCount()
+            HappyUser.shared.feedback(1)
         }
-        
-
-        
         adOverlayView()
-        
-
     }
     
     override func viewDidLoad() {
@@ -176,14 +170,13 @@ class LaunchScreen: UIViewController {
                 //showStartScreenDefault(overlayViewNormal)
                 // MARK: Request user to review only if the app starts without the launch ad
                 if AppLaunch.shared.from == "notification" {
-                    happyUser.canTryRequestReview = false
+                    HappyUser.shared.canTryRequestReview = false
                 }
-                happyUser.requestReview()
+                HappyUser.shared.requestReview()
             }
         }
     }
-    
-    
+
     private func showStartScreenForIAP(_ overlayViewNormal: UIView) {
         if let image = UIImage(named: "FullScreenFallBack") {
             let imageView =  UIImageView(image: image)

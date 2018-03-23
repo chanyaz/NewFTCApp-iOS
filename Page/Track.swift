@@ -36,6 +36,10 @@ struct Track {
                 print ("send track for event: \(category), \(action), \(label), \(trackingId)")
             }
         }
+        let feedbackScore = ErrorMessages.Feedback.score(category: category, action: action, label: label)
+        if feedbackScore != 0 {
+            HappyUser.shared.feedback(feedbackScore)
+        }
     }
     
     public static func eventToAll(category: String, action: String, label: String) {

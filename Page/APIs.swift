@@ -549,7 +549,21 @@ struct ErrorMessages {
             let timeoutScript = "<script>setTimeout(function(){document.getElementById('loading-message').style.display = 'none';document.getElementById('economics-explainer').style.display = 'block';}, 10000);</script>"
             return "\(loadingMessage)\(explainerString)\(timeoutScript)"
         }
-        
+    }
+    // MARK: This code is here because every app would want to set up different ways to measure user happyness.
+    struct Feedback {
+        public static func score(category: String, action: String, label: String) -> Int {
+            if category == "CatchError" {
+                // MARK: If there's an error, the user is likely to be very upset. So don't even try to request review.
+                HappyUser.shared.canTryRequestReview = false
+                // MARK: For now, a catch error event gets a minus one score. We can update that later.
+                return -1
+            }
+            // TODO: There might some events that indicate the user should be very happy. This might be a good opportunity to request review.
+            
+            
+            return 0
+        }
     }
 }
 

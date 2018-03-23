@@ -9,66 +9,47 @@
 import Foundation
 import StoreKit
 // MARK: When user is happy, request review
-public class HappyUser {
+struct HappyUser {
+    public static var shared = HappyUser()
     private let versionKey = "current version"
-    private let launchCountKey = "launch count"
-    private let requestReviewFrequency = 8
+    private let scoreKey = "launch count"
+    private let requestReviewThreshhold = 8
     private let ratePromptKey = "rate prompted"
-    private var shouldTrackRequestReview = false
+    public var shouldTrackRequestReview = false
     public var didRequestReview = false
     public var canTryRequestReview = true
     
-    func launchCount() {
+    public func feedback(_ score: Int) {
         let versionFromBundle: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         let versionFromUserDefault: String = UserDefaults.standard.string(forKey: versionKey) ?? ""
-        var currentLaunchCount: Int = UserDefaults.standard.integer(forKey: launchCountKey)
+        var currentLaunchCount: Int = UserDefaults.standard.integer(forKey: scoreKey)
         if versionFromBundle == versionFromUserDefault {
-            currentLaunchCount += 1
+            currentLaunchCount += score
         } else {
             UserDefaults.standard.set(versionFromBundle, forKey: versionKey)
             UserDefaults.standard.set(false, forKey: ratePromptKey)
-            currentLaunchCount = 1
+            currentLaunchCount = score
         }
-        UserDefaults.standard.set(currentLaunchCount, forKey: launchCountKey)
-        print ("current version is \(versionFromBundle) and launch count is \(currentLaunchCount)")
-        
-        
-        //        if let bundle = Bundle.main.bundleIdentifier {
-        //            UserDefaults.standard.removePersistentDomain(forName: bundle)
-        //        }
-        
+        UserDefaults.standard.set(currentLaunchCount, forKey: scoreKey)
+        print ("current version is \(versionFromBundle) and current Happy User score is \(currentLaunchCount)")
     }
     
-    func requestReview() {
+    public func requestReview() {
         // MARK: Request user to review
-        let currentLaunchCount: Int = UserDefaults.standard.integer(forKey: launchCountKey)
+        let currentLaunchCount: Int = UserDefaults.standard.integer(forKey: scoreKey)
         let ratePrompted: Bool = UserDefaults.standard.bool(forKey: ratePromptKey)
         if ratePrompted != true,
-            currentLaunchCount >= requestReviewFrequency,
-            canTryRequestReview == true {
+            currentLaunchCount >= requestReviewThreshhold,
+            HappyUser.shared.canTryRequestReview == true {
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
                 UserDefaults.standard.set(true, forKey: ratePromptKey)
                 let deviceType = DeviceInfo.checkDeviceType()
                 let versionFromBundle = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-                let currentLaunchCount = UserDefaults.standard.integer(forKey: launchCountKey)
+                let currentLaunchCount = UserDefaults.standard.integer(forKey: scoreKey)
                 Track.event(category: "\(deviceType) Request Review", action: versionFromBundle, label: "\(currentLaunchCount)")
-                //didRequestReview = true
-                //shouldTrackRequestReview = true
             }
         }
     }
     
-    //    func requestReviewTracking() -> String? {
-    //        let deviceType = DeviceInfo.checkDeviceType()
-    //        let versionFromBundle = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    //        let currentLaunchCount = UserDefaults.standard.integer(forKey: launchCountKey)
-    //        let jsCode = "try{ga('send','event', '\(deviceType) Request Review', '\(versionFromBundle)', '\(currentLaunchCount)', {'nonInteraction':1});}catch(ignore){}"
-    //        if shouldTrackRequestReview == true {
-    //            shouldTrackRequestReview = false
-    //            didRequestReview = true
-    //            return jsCode
-    //        }
-    //        return nil
-    //    }
 }

@@ -78,7 +78,6 @@ open class IAPHelper : NSObject  {
             ReceiptHelper.receiptValidation(with: APIs.getiOSReceiptValidationUrlString())
             //ReceiptHelper.receiptValidation(with: "https://buy.itunes.apple.com/verifyReceipt")
             //ReceiptHelper.receiptValidation(with: "https://sandbox.itunes.apple.com/verifyReceipt")
-            //ReceiptHelper.receiptValidation(with: "https://api.ftmailbox.com/ios-test.php")
         }
         
         //print (receipt ?? "no receipt is found")

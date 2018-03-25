@@ -13,7 +13,7 @@ struct APIs {
     
     // MARK: Domain Name For APIs
     private static let htmlDomains = [
-        "https://api.ftmailbox.com/",
+        "https://api003.ftmailbox.com/",
         "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
@@ -50,6 +50,8 @@ struct APIs {
         "http://big5.ftchinese.com/"
     ]
     
+   
+    
     private static let publicDomains = [
         //"http://app003.ftmailbox.com/",
         "http://www.ftchinese.com/",
@@ -61,15 +63,16 @@ struct APIs {
         if Privilege.shared.exclusiveContent {
             return "https://creatives001.ftimg.net/"
         }
-        return "https://d1h6mhhb33bllx.cloudfront.net/"
+        return "https://creatives002.ftimg.net"
     }
+    
     
     // MARK: - Domain Check: iOS Receipt Validation
     public static func getiOSReceiptValidationUrlString() -> String {
         if Privilege.shared.exclusiveContent {
             return "https://api002.ftmailbox.com/ios-receipt-validation.php"
         }
-        return "https://api001.ftmailbox.com/ios-receipt-validation.php"
+        return "https://api003.ftmailbox.com/ios-receipt-validation.php"
     }
     
     // MARK: - Domain Check: Engagement Tracker
@@ -77,7 +80,7 @@ struct APIs {
         if Privilege.shared.exclusiveContent {
             return "https://api002.ftmailbox.com/engagement-tracker.php"
         }
-        return "https://api001.ftmailbox.com/engagement-tracker.php"
+        return "https://api003.ftmailbox.com/engagement-tracker.php"
     }
     
     // MARK: - Domain Check: Track device token
@@ -93,7 +96,7 @@ struct APIs {
  
     // MARK: - Domain Check: Launch Ad Schedule.
     // TODO: - Use background downloading domain just for launch ad schedule
-    public static let lauchAdSchedule = "https://d31b34rc1ppbon.cloudfront.net/index.php/jsapi/applaunchschedule"
+    public static let lauchAdSchedule = "https://webnodev.ftchinese.com/index.php/jsapi/applaunchschedule"
     
     // MARK: Number of days you want to keep the cached files
     public static let expireDay: TimeInterval = 7
@@ -245,17 +248,17 @@ struct APIs {
                 // MARK: If a new secure domain is available, add it to the available server list
                 servers = [
                     newSecureDomain,
-                    htmlDomains[currentIndex],
-                    backupHTMLDomains[currentIndex],
-                    backupHTMLDomains2[currentIndex],
-                    backupHTMLDomains3[currentIndex]
+                    htmlDomains[currentIndex]
+//                    backupHTMLDomains[currentIndex],
+//                    backupHTMLDomains2[currentIndex],
+//                    backupHTMLDomains3[currentIndex]
                 ]
             } else {
                 servers = [
-                    htmlDomains[currentIndex],
-                    backupHTMLDomains[currentIndex],
-                    backupHTMLDomains2[currentIndex],
-                    backupHTMLDomains3[currentIndex]
+                    htmlDomains[currentIndex]
+//                    backupHTMLDomains[currentIndex],
+//                    backupHTMLDomains2[currentIndex],
+//                    backupHTMLDomains3[currentIndex]
                 ]
             }
 

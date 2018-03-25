@@ -65,8 +65,8 @@ public struct IAPProducts {
             "teaser":"2018前瞻：中美博弈之年？",
             "description": "<p>编者按:美国总统特朗普会在今年遭遇弹劾吗？他会为了凝聚支持而兑现选举承诺、发动对华贸易战吗？中国领导人会因取悦特朗普的成本越来越高而决定放弃忍耐、与美国彻底闹僵吗？中国经济能成功防范住“灰犀牛”吗？房地产市场会在今年发生巨变吗？技术创新能否给各国经济带来新出路，使它们免于陷入相互对抗？投资者在注定要动荡的一年，又该如何把握？FT中文网整合一个多月来分析人士对今年前景做出的各种预测，希望能给读者带来答案。</p >",
             "image":"https://d1h6mhhb33bllx.cloudfront.net/2018.jpg",
-            "download": "https://api.ftmailbox.com/m/corp/preview.html?pageid=yearbook2018&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&018",
-            "downloadfortry": "https://api.ftmailbox.com/m/corp/preview.html?pageid=yearbook2018&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&018"
+            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=yearbook2018&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&018",
+            "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=yearbook2018&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&018"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.yearin2018",
@@ -74,8 +74,8 @@ public struct IAPProducts {
             "teaser":"FT中文网2017年刊",
             "description": "<p>回顾2017年FT中文网最受读者关注的内容，“中国的地缘政治局势”和“中国（中国人）在当今世界的地位”两大主题稳居榜首。 地缘政治方面，尽管南海局势出现缓和迹象，但从金正男遇刺到朝鲜多次核试验、洲际导弹试射，半岛局势一系列令人瞠目结舌的戏剧性发展不断提醒中国人：家门口的危机从未真正缓和，摊牌之日正在逼近。西南方向，中印两国在洞朗地区的军事对峙一度剑拔弩张，引发了国际市场对亚洲两大新兴经济体前途的担忧。与此同时，中国的相对西方的迅速崛起以及官方主导的“软实力”对外输出不但引发西方的强烈反弹，也凸显了正在大步“走出去”的中国人之种种矛盾心态。</p><p>2017年又是中国国内政经局势的定调之年。中共19大对高度集权的确认，仅仅缓解了国内外观察者的部分担忧；从经济何时触底到产业政策、楼市走向、教育改革，更多令人焦虑的问题随之而来。到了2017年下半年，多地爆出的幼儿园虐童丑闻和北京等大城市的“赶人”争议，令国人焦虑心态集中爆发。从看似光鲜的城市中产到苦苦追求生活改善的低收入、流动人口，不同阶层都意识到了自己“中国梦”的脆弱一面。</p>",
             "image":"http://i.ftimg.net/picture/9/000074679_piclink.jpg",
-            "download": "https://api.ftmailbox.com/m/corp/preview.html?pageid=yearbook2017&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&020",
-            "downloadfortry": "https://api.ftmailbox.com/m/corp/preview.html?pageid=yearbook2017&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&020"
+            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=yearbook2017&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&020",
+            "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=yearbook2017&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&020"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.magazine",

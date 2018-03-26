@@ -17,7 +17,7 @@ public struct IAPProducts {
     private static let membershipData = [
         [
             "id":"com.ft.ftchinese.mobile.subscription.member",
-            "title":"普通会员",
+            "title":"标准会员",
             "teaser":"",
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",

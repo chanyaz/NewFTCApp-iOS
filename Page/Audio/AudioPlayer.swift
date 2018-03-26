@@ -245,10 +245,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         let contentController = WKUserContentController()
         contentController.addUserScript(userScript)
         // MARK: - Use a LeakAvoider to avoid leak
-        contentController.add(
-            LeakAvoider(delegate:self),
-            name: "callbackHandler"
-        )
+        contentController.add(LeakAvoider(delegate:self), name: "callbackHandler")
+        contentController.add(LeakAvoider(delegate:self), name: "audioData")
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         self.webView = WKWebView(frame: self.containerView.frame, configuration: config)
@@ -317,7 +315,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if(message.name == "callbackHandler") {
+        if message.name == "callbackHandler" {
             if let infoForShare = message.body as? String{
                 print(infoForShare)
                 let toArray = infoForShare.components(separatedBy: "|")
@@ -325,6 +323,22 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 ShareHelper.shared.webPageImage = toArray[0]
                 ShareHelper.shared.webPageImageIcon = toArray[1]
                 print("get image icon from web page: \(ShareHelper.shared.webPageImageIcon)")
+            }
+        } else if message.name == "audioData" {
+            if let audioData = message.body as? [String: Any],
+                let scriptData = audioData["text"] as? [[[String: Any]]] {
+                var startTimes = [[Double]]()
+                for scriptBlock in scriptData {
+                    var currentBlock = [Double]()
+                    for oneScript in scriptBlock {
+                        if let oneTime = oneScript["start"] as? Double {
+                            currentBlock.append(oneTime)
+                        }
+                    }
+                    startTimes.append(currentBlock)
+                }
+                audioScriptData = startTimes
+                //print ("audio data is received: \(audioScriptData)")
             }
         }
     }
@@ -405,9 +419,41 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
     }
     
+    private var audioScriptData: [[Double]]?
     private func updatePlayTime(current time: CMTime, duration: CMTime) {
         playDuration.text = "-\((duration-time).durationText)"
         playTime.text = time.durationText
+        updateTimeInWeb(time)
+    }
+    
+    
+    private var lastIndex = (k:0, l:0)
+    private var latestIndex = (k:0, l:0)
+    
+    private func updateTimeInWeb(_ time: CMTime) {
+        if let audioScriptData = audioScriptData {
+            let currentTimeInSeconds = Double(CMTimeGetSeconds(time))
+            //print ("current CM time is: \(currentTimeInSeconds)")
+            for (k, timeBlockValue) in audioScriptData.enumerated() {
+                for (l, timeValue) in timeBlockValue.enumerated() {
+                    if timeValue >= currentTimeInSeconds {
+                        let lastK = lastIndex.k
+                        let lastL = lastIndex.l
+                        if k != latestIndex.k || l != latestIndex.l {
+                            let jsCode = "showHightlight(\(lastK), \(lastL));"
+                            webView?.evaluateJavaScript(jsCode) { (result, error) in
+                                if result != nil {
+                                    print (result ?? "unprintable JS result")
+                                }
+                            }
+                            latestIndex = (k:k, l:l)
+                        }
+                        return
+                    }
+                    lastIndex = (k:k, l:l)
+                }
+            }
+        }
     }
     
     private func prepareAudioPlay() {

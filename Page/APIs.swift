@@ -63,7 +63,7 @@ struct APIs {
         if Privilege.shared.exclusiveContent {
             return "https://creatives001.ftimg.net/"
         }
-        return "https://creatives002.ftimg.net"
+        return "https://creatives002.ftimg.net/"
     }
     
     
@@ -370,7 +370,7 @@ struct APIs {
         let finalUrlString: String
         switch type {
         case "audio":
-            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&for=audio&v=7"
+            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&for=audio&enableScript=yes&v=9"
                 .replacingOccurrences(of: "&i=3", with: "")
                 .replacingOccurrences(of: "?i=3", with: "")
         default:

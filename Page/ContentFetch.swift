@@ -147,6 +147,11 @@ class ContentFetch {
                         if shortlead.range(of: ".mp3$", options: .regularExpression) != nil {
                             oneItem.audioFileUrl = shortlead
                         }
+                        
+                        // MARK: sub type for interactive type
+                        oneItem.subType = item["subType"] as? String
+                        
+                        
                         // MARK: Calculate the attributed string for lead so that the cells don't have to calculate it repeatedly
                         oneItem.attributedLead = getAttributedLead(lead)
                         // MARK: Get the overlay button image so that you don't have to do it in the cell updateUI

@@ -11,6 +11,7 @@ import WebKit
 
 enum ContentSubType {
     case UserComments
+    case SpeedReading
     case None
 }
 

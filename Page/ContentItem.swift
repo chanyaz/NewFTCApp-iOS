@@ -59,6 +59,9 @@ class ContentItem{
     var caudio: String?
     var eaudio: String?
     
+    // MARK: Sub Type of Interative
+    var subType: String?
+    
     // MARK: properties that are exclusive for eBooks
     var productGroupTitle: String?
     var isDownloaded = false

@@ -247,6 +247,9 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         // MARK: - Use a LeakAvoider to avoid leak
         contentController.add(LeakAvoider(delegate:self), name: "callbackHandler")
         contentController.add(LeakAvoider(delegate:self), name: "audioData")
+        contentController.add(LeakAvoider(delegate:self), name: "scrollTo")
+        
+        
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         self.webView = WKWebView(frame: self.containerView.frame, configuration: config)
@@ -339,6 +342,11 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 }
                 audioScriptData = startTimes
                 //print ("audio data is received: \(audioScriptData)")
+            }
+        } else if message.name == "scrollTo" {
+            if let scrollY = message.body as? Int {
+                let scrollPoint = CGPoint(x: 0, y: scrollY)
+                webView?.scrollView.setContentOffset(scrollPoint, animated: true)
             }
         }
     }

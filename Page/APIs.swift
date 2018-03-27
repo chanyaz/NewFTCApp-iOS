@@ -370,7 +370,7 @@ struct APIs {
         let finalUrlString: String
         switch type {
         case "audio":
-            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&for=audio&enableScript=yes&v=10"
+            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&for=audio&enableScript=yes&v=17"
                 .replacingOccurrences(of: "&i=3", with: "")
                 .replacingOccurrences(of: "?i=3", with: "")
         default:

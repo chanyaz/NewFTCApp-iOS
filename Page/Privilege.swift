@@ -16,13 +16,20 @@ struct Privilege {
     var englishAudio = false
     var exclusiveContent = false
     var editorsChoice = false
+    var speedreading = false
+    var radio = false
+    var archive = false
     
-    init(adDisplay: AdDisplay, englishText: Bool, englishAudio: Bool, exclusiveContent: Bool, editorsChoice: Bool) {
+    
+    init(adDisplay: AdDisplay, englishText: Bool, englishAudio: Bool, exclusiveContent: Bool, editorsChoice: Bool, speedreading: Bool, radio: Bool, archive: Bool) {
         self.adDisplay = adDisplay
         self.englishText = englishText
         self.englishAudio = englishAudio
         self.exclusiveContent = exclusiveContent
         self.editorsChoice = editorsChoice
+        self.speedreading = speedreading
+        self.radio = radio
+        self.archive = archive
     }
     
     init() {
@@ -31,6 +38,9 @@ struct Privilege {
         self.englishAudio = false
         self.exclusiveContent = false
         self.editorsChoice = false
+        self.speedreading = false
+        self.radio = false
+        self.archive = false
     }
 
 }
@@ -178,6 +188,14 @@ struct PrivilegeHelper {
             return privilge.exclusiveContent
         case .EditorsChoice:
             return privilge.editorsChoice
+        case .SpeedReading:
+            return privilge.speedreading
+        case .Radio:
+            return privilge.radio
+        case .EnglishText:
+            return privilge.englishText
+        case .Archive:
+            return privilge.archive
         }
     }
     
@@ -190,6 +208,14 @@ struct PrivilegeHelper {
             return ("付费功能", "查看独家内容需要付费")
         case .EditorsChoice:
             return ("付费功能", "阅读编辑精选需要付费")
+        case .SpeedReading:
+            return ("付费功能", "金融英语速读需要付费")
+        case .Radio:
+            return ("付费功能", "FT英语电台需要付费")
+        case .EnglishText:
+            return ("付费功能", "阅读英文和双语内容需要付费")
+        case .Archive:
+            return ("付费功能", "阅读七天以前的文章需要付费")
         }
     }
     
@@ -255,4 +281,8 @@ enum PrivilegeType {
     case EnglishAudio
     case ExclusiveContent
     case EditorsChoice
+    case SpeedReading
+    case Radio
+    case Archive
+    case EnglishText
 }

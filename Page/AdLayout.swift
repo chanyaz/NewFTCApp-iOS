@@ -183,11 +183,20 @@ struct AdLayout {
                 item.privilegeRequirement = .EditorsChoice
                 item.hideAd = true
             }
-            // TODO: Check if premium content is the final type
-            if item.type == "premium" {
+            // MARK: Check for premium content
+            if item.type == "premium"  {
                 item.privilegeRequirement = .ExclusiveContent
                 item.hideAd = true
             }
+            if item.subType == "speedreading" {
+                item.privilegeRequirement = .SpeedReading
+                item.hideAd = true
+            }
+            if item.subType == "radio" {
+                item.privilegeRequirement = .Radio
+                item.hideAd = true
+            }
+            
         }
         return newItems
     }

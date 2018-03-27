@@ -22,10 +22,13 @@ public struct IAPProducts {
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",
             "benefits": [
-                "阅读FT中文网所有独家内容",
-                "收听英文文章音频"
+                "精选深度分析",
+                "中英双语内容",
+                "金融英语速读训练",
+                "英语原声电台",
+                "无限浏览7日前所有历史文章（近8万篇）"
             ],
-            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false, speedreading: true, radio: true, archive: true)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.vip",
@@ -34,12 +37,11 @@ public struct IAPProducts {
             "image":"http://i.ftimg.net/picture/6/000068886_piclink.jpg",
             "period":"year",
             "benefits": [
-                "《FT编辑精选》，每周不可错过的独家必读内容",
-                "获得两张价值3999元的FT中文网年度论坛门票（不包含食宿差旅）",
-                "阅读FT中文网所有独家内容",
-                "收听英文文章音频"
+                "享受“标准会员”所有权益",
+                "编辑精选，总编/各版块主编每周五为您推荐本周必读资讯，分享他们的思想与观点",
+                "FT中文网2018年度论坛门票2张，价值3,999元/张（不包含食宿差旅）"
             ],
-            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true, speedreading: true, radio: true, archive: true)
         ]
 //        [
 //            "id":"com.ft.ftchinese.mobile.subscription.diamond",

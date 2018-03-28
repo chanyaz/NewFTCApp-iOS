@@ -471,7 +471,7 @@ struct IAP {
         if Download.checkFilePath(fileUrl: fileName, for: .documentDirectory) != nil {
             savePurchase(id, property: purchasedPropertyString, value: "Y")
             return "success"
-        } else if IAPProducts.store.isProductPurchased(id) == true {
+        } else if IAPProducts.store.isProductPurchased(id) == true || PrivilegeHelper.isPrivilegeIncluded(.Book, in: Privilege.shared) {
             savePurchase(id, property: purchasedPropertyString, value: "Y")
             return "pendingdownload"
         }

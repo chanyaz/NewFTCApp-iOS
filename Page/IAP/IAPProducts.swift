@@ -28,7 +28,7 @@ public struct IAPProducts {
                 "英语原声电台",
                 "无限浏览7日前所有历史文章（近8万篇）"
             ],
-            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false, speedreading: true, radio: true, archive: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false, speedreading: true, radio: true, archive: true, book: false)
         ],
         [
             "id":"com.ft.ftchinese.mobile.subscription.vip",
@@ -41,7 +41,7 @@ public struct IAPProducts {
                 "编辑精选，总编/各版块主编每周五为您推荐本周必读资讯，分享他们的思想与观点",
                 "FT中文网2018年度论坛门票2张，价值3,999元/张（不包含食宿差旅）"
             ],
-            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true, speedreading: true, radio: true, archive: true)
+            "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true, speedreading: true, radio: true, archive: true, book: true)
         ]
 //        [
 //            "id":"com.ft.ftchinese.mobile.subscription.diamond",
@@ -66,7 +66,7 @@ public struct IAPProducts {
             "title":"2018前瞻：中美博弈之年？",
             "teaser":"2018前瞻：中美博弈之年？",
             "description": "<p>编者按:美国总统特朗普会在今年遭遇弹劾吗？他会为了凝聚支持而兑现选举承诺、发动对华贸易战吗？中国领导人会因取悦特朗普的成本越来越高而决定放弃忍耐、与美国彻底闹僵吗？中国经济能成功防范住“灰犀牛”吗？房地产市场会在今年发生巨变吗？技术创新能否给各国经济带来新出路，使它们免于陷入相互对抗？投资者在注定要动荡的一年，又该如何把握？FT中文网整合一个多月来分析人士对今年前景做出的各种预测，希望能给读者带来答案。</p >",
-            "image":"https://d1h6mhhb33bllx.cloudfront.net/2018.jpg",
+            "image":"https://creatives002.ftimg.net/2018.jpg",
             "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=yearbook2018&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&018",
             "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=yearbook2018&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&018"
         ],
@@ -84,64 +84,64 @@ public struct IAPProducts {
             "title":"生活时尚·旅行特刊",
             "teaser":"探寻世界的尽头",
             "image":"http://i.ftimg.net/picture/4/000073894_piclink.jpg",
-            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10582_bodyonly.html",
-            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10582_Preview.html"
+            "download": "https://creatives002.ftimg.net/ibook/10582_bodyonly.html",
+            "downloadfortry": "https://creatives002.ftimg.net/ibook/10582_Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.magazine2",
             "title":"如何在“人工智能”时代生存？——创新经济特刊",
             "teaser":"终身学习，是我们在人工智能时代的宿命",
             "image":"http://i.ftimg.net/picture/7/000073887_piclink.jpg",
-            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10584_bodyonly.html",
-            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10584_Preview.html"
+            "download": "https://creatives002.ftimg.net/ibook/10584_bodyonly.html",
+            "downloadfortry": "https://creatives002.ftimg.net/ibook/10584_Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.career",
             "title":"管理·性别与职场",
             "teaser":"职场女性生存指南",
             "image":"http://i.ftimg.net/picture/7/000073927_piclink.jpg",
-            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10595_bodyonly.html",
-            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10595_Preview.html"
+            "download": "https://creatives002.ftimg.net/ibook/10595_bodyonly.html",
+            "downloadfortry": "https://creatives002.ftimg.net/ibook/10595_Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.economy1",
             "title":"10年，金融危机为我们留下了什么？",
             "teaser":"世界经济·第1辑",
             "image":"http://i.ftimg.net/picture/3/000073933_piclink.jpg",
-            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10598_bodyonly.html",
-            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10598_Preview.html"
+            "download": "https://creatives002.ftimg.net/ibook/10598_bodyonly.html",
+            "downloadfortry": "https://creatives002.ftimg.net/ibook/10598_Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.economy2",
             "title":"2018，掘金中国股市？",
             "teaser":"中国经济·第1辑",
             "image":"http://i.ftimg.net/picture/9/000073929_piclink.jpg",
-            "download": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10599_bodyonly.html",
-            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/ibook/10599_Preview.html"
+            "download": "https://creatives002.ftimg.net/ibook/10599_bodyonly.html",
+            "downloadfortry": "https://creatives002.ftimg.net/ibook/10599_Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.dailyenglish1",
             "title":"读《金融时报》学英语（一）",
             "teaser":"挑选FT每日英语文章精华，集结成册",
             "image":"http://i.ftimg.net/picture/5/000074025_piclink.jpg",
-            "download": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=ebook-english-1&bodyonly=yes&webview=ftcapp&ad=no&013",
-            "downloadfortry": "https://d1budb999l6vta.cloudfront.net/m/corp/preview.html?pageid=ebook-english-1&bodyonly=yes&webview=ftcapp&ad=no&try=yes&013"
+            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebook-english-1&bodyonly=yes&webview=ftcapp&ad=no&014",
+            "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebook-english-1&bodyonly=yes&webview=ftcapp&ad=no&try=yes&014"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.lunch1",
             "title":"与FT共进午餐（一）",
             "teaser":"英国《金融时报》最受欢迎的栏目",
             "image":"http://i.ftimg.net/picture/2/000068702_piclink.jpg",
-            "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch1_body.html",
-            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch1Preview.html"
+            "download": "https://creatives002.ftimg.net/lunch1_body.html",
+            "downloadfortry": "https://creatives002.ftimg.net/lunch1Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.lunch2",
             "title":"与FT共进午餐（二）",
             "teaser":"英国《金融时报》最受欢迎的栏目",
             "image":"http://i.ftimg.net/picture/3/000068703_piclink.jpg",
-            "download": "https://d1h6mhhb33bllx.cloudfront.net/lunch2_body.html",
-            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/lunch2Preview.html"
+            "download": "https://creatives002.ftimg.net/lunch2_body.html",
+            "downloadfortry": "https://creatives002.ftimg.net/lunch2Preview.html"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.OutlookoftheFutureof2017",
@@ -150,8 +150,8 @@ public struct IAPProducts {
             "image":"http://i.ftimg.net/picture/9/000068669_piclink.jpg",
             //"download": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html",
             //"downloadfortry": "https://danla2f5eudt1.cloudfront.net/channel/html-book-teawithft.html"
-            "download": "https://d1h6mhhb33bllx.cloudfront.net/10430_body.html",
-            "downloadfortry": "https://d1h6mhhb33bllx.cloudfront.net/10430_Preview.html"
+            "download": "https://creatives002.ftimg.net/10430_body.html",
+            "downloadfortry": "https://creatives002.ftimg.net/10430_Preview.html"
         ]
     ]
     

@@ -19,9 +19,9 @@ struct Privilege {
     var speedreading = false
     var radio = false
     var archive = false
+    var book = false
     
-    
-    init(adDisplay: AdDisplay, englishText: Bool, englishAudio: Bool, exclusiveContent: Bool, editorsChoice: Bool, speedreading: Bool, radio: Bool, archive: Bool) {
+    init(adDisplay: AdDisplay, englishText: Bool, englishAudio: Bool, exclusiveContent: Bool, editorsChoice: Bool, speedreading: Bool, radio: Bool, archive: Bool, book: Bool) {
         self.adDisplay = adDisplay
         self.englishText = englishText
         self.englishAudio = englishAudio
@@ -30,6 +30,7 @@ struct Privilege {
         self.speedreading = speedreading
         self.radio = radio
         self.archive = archive
+        self.book = book
     }
     
     init() {
@@ -41,6 +42,7 @@ struct Privilege {
         self.speedreading = false
         self.radio = false
         self.archive = false
+        self.book = false
     }
 
 }
@@ -196,6 +198,8 @@ struct PrivilegeHelper {
             return privilge.englishText
         case .Archive:
             return privilge.archive
+        case .Book:
+            return privilge.book
         }
     }
     
@@ -216,6 +220,8 @@ struct PrivilegeHelper {
             return ("付费功能", "阅读英文内容需要付费")
         case .Archive:
             return ("付费功能", "阅读七天前内容需要付费")
+        case .Book:
+            return ("付费功能", "高端订户免费阅读电子书")
         }
     }
     
@@ -285,4 +291,5 @@ enum PrivilegeType {
     case Radio
     case Archive
     case EnglishText
+    case Book
 }

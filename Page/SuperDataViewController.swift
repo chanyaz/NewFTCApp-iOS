@@ -1641,7 +1641,7 @@ extension SuperDataViewController: WKScriptMessageHandler {
             )
             prefetch()
             // MARK: Extract Adid
-            print ("message body is: \(message.body)")
+            // print ("message body is: \(message.body)")
             if let body = message.body as? [String: Any],
                 let meta = body["meta"] as? [String: String] {
                 if let adId = meta["adid"] {

@@ -213,9 +213,9 @@ struct PrivilegeHelper {
         case .Radio:
             return ("付费功能", "FT英语电台需要付费")
         case .EnglishText:
-            return ("付费功能", "阅读英文和双语内容需要付费")
+            return ("付费功能", "阅读英文内容需要付费")
         case .Archive:
-            return ("付费功能", "阅读七天以前的文章需要付费")
+            return ("付费功能", "阅读七天前内容需要付费")
         }
     }
     

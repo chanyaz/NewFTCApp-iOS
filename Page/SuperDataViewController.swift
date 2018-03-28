@@ -1162,7 +1162,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 AudioContent.sharedInstance.body["title"] = selectedItem.headline
                 AudioContent.sharedInstance.body["audioFileUrl"] = audioFileUrl
                 AudioContent.sharedInstance.body["interactiveUrl"] = "/index.php/ft/interactive/\(selectedItem.id)"
-                audioPlayer.item = selectedItem
+                audioPlayer.item = AdLayout.addPrivilegeRequirement(in: selectedItem, with: dataObject)
+                //selectedItem
+                
+                //let pageDataRaw = AdLayout.addPrivilegeRequirements(in: pageData1, with: dataObject)
+                
                 audioPlayer.themeColor = themeColor
                 navigationController?.pushViewController(audioPlayer, animated: true)
             }

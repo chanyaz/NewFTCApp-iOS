@@ -38,6 +38,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     var item: ContentItem?
     var themeColor: String?
+    var isPrivilegeViewOn = false
     
     @IBOutlet weak var containerView: UIWebView!
     @IBOutlet weak var toolBar: UIToolbar!
@@ -279,6 +280,25 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             ShareHelper.shared.webPageUrl = "http://www.ftchinese.com/interactive/\(audioId)"
             url = "\(ShareHelper.shared.webPageUrl)?hideheader=yes&ad=no&inNavigation=yes&v=1"
             WebviewHelper.loadContent(url: url, base: url, webView: webView)
+        }
+        
+        // MARK: Check if the audio is behind pay wall
+        if let privilege = item?.privilegeRequirement {
+            if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
+                PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: item)
+                isPrivilegeViewOn = true
+            } else {
+                print ("User is allowed to read a premium content: \(String(describing: item?.type))/\(String(describing: item?.id))")
+                // MARK: A subscriber is reading a piece of paid content
+                let eventLabel: String
+                if let itemType = item?.type,
+                    let itemId = item?.id {
+                    eventLabel = "\(itemType)/\(itemId)"
+                } else {
+                    eventLabel = ""
+                }
+                Track.eventToAll(category: "Privileges", action: "Listen", label: eventLabel)
+            }
         }
         
         navigationItem.title = item?.headline

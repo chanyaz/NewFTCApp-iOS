@@ -177,39 +177,74 @@ struct AdLayout {
     }
     
     static func addPrivilegeRequirements(in items: [ContentItem], with dataObject: [String: String]) -> [ContentItem] {
-        let newItems = items
-        for item in newItems {
-            if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
-                item.privilegeRequirement = .EditorsChoice
-                item.hideAd = true
-            }
-            // MARK: Check for premium content
-            if item.type == "premium"  {
-                item.privilegeRequirement = .ExclusiveContent
-                item.hideAd = true
-            }
-            if item.subType == "speedreading" {
-                item.privilegeRequirement = .SpeedReading
-                item.hideAd = true
-            }
-            if item.subType == "radio" {
-                item.privilegeRequirement = .Radio
-                item.hideAd = true
-            }
-            
-            if item.timeStamp > 0 {
-                let timeInterval = Date().timeIntervalSince1970
-                let timeDifference = timeInterval - item.timeStamp
-                let timeDifferenceInDays = timeDifference/(60*60*24)
-                print ("pubdate: \(item.timeStamp), today: \(timeInterval), difference in days: \(timeDifferenceInDays)")
-                if timeDifferenceInDays > 7 {
-                    item.privilegeRequirement = .Archive
-                    item.hideAd = true
-                }
-            }
-            
+        var newItems = [ContentItem]()
+        for item in items {
+//            if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
+//                item.privilegeRequirement = .EditorsChoice
+//                item.hideAd = true
+//            }
+//            // MARK: Check for premium content
+//            if item.type == "premium"  {
+//                item.privilegeRequirement = .ExclusiveContent
+//                item.hideAd = true
+//            }
+//            if item.subType == "speedreading" {
+//                item.privilegeRequirement = .SpeedReading
+//                item.hideAd = true
+//            }
+//            if item.subType == "radio" {
+//                item.privilegeRequirement = .Radio
+//                item.hideAd = true
+//            }
+//
+//            if item.timeStamp > 0 {
+//                let timeInterval = Date().timeIntervalSince1970
+//                let timeDifference = timeInterval - item.timeStamp
+//                let timeDifferenceInDays = timeDifference/(60*60*24)
+//                print ("pubdate: \(item.timeStamp), today: \(timeInterval), difference in days: \(timeDifferenceInDays)")
+//                if timeDifferenceInDays > 7 {
+//                    item.privilegeRequirement = .Archive
+//                    item.hideAd = true
+//                }
+//            }
+            let newItem = addPrivilegeRequirement(in: item, with: dataObject)
+            newItems.append(newItem)
         }
         return newItems
+    }
+    
+    
+    static func addPrivilegeRequirement(in item: ContentItem, with dataObject: [String: String]) -> ContentItem {
+        let newItem = item
+        if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
+            newItem.privilegeRequirement = .EditorsChoice
+            newItem.hideAd = true
+        }
+        // MARK: Check for premium content
+        if newItem.type == "premium"  {
+            newItem.privilegeRequirement = .ExclusiveContent
+            newItem.hideAd = true
+        }
+        if newItem.subType == "speedreading" {
+            newItem.privilegeRequirement = .SpeedReading
+            newItem.hideAd = true
+        }
+        if newItem.subType == "radio" {
+            newItem.privilegeRequirement = .Radio
+            newItem.hideAd = true
+        }
+        
+        if newItem.timeStamp > 0 {
+            let timeInterval = Date().timeIntervalSince1970
+            let timeDifference = timeInterval - newItem.timeStamp
+            let timeDifferenceInDays = timeDifference/(60*60*24)
+            print ("pubdate: \(item.timeStamp), today: \(timeInterval), difference in days: \(timeDifferenceInDays)")
+            if timeDifferenceInDays > 7 {
+                newItem.privilegeRequirement = .Archive
+                newItem.hideAd = true
+            }
+        }
+        return newItem
     }
     
     static func markAsDownloaded(in items: [ContentItem]) -> [ContentItem] {

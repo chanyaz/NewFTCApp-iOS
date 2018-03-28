@@ -1260,8 +1260,8 @@
 		6037DD3F1F287907007DB2FF /* Player */ = {
 			isa = PBXGroup;
 			children = (
-				600C0D031F5D582500226F84 /* AudioPlayerHelper.swift */,
 				600BD6A41F21A6560077C104 /* AudioPlayer.swift */,
+				600C0D031F5D582500226F84 /* AudioPlayerHelper.swift */,
 				600BD6A31F21A6560077C104 /* AudioHelper.swift */,
 				F22545DC1FC5626300322C42 /* RemoteDownloadHelper.swift */,
 				600BD6A51F21A6560077C104 /* DownloadHelper.swift */,

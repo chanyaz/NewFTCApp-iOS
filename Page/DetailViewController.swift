@@ -368,7 +368,9 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         let id = item.id
         let type = item.type
         //print ("English shared instance is now: \(English.sharedInstance)")
-        if ["story", "premium"].contains(type), let hasEnglish = English.sharedInstance.has[id], hasEnglish == true {
+        if ["story", "premium"].contains(type),
+            let hasEnglish = English.sharedInstance.has[id],
+            hasEnglish == true {
             print ("Language: current view should display English Switch")
             languages?.isHidden = false
             actualLanguageIndex = UserDefaults.standard.integer(forKey: Key.languagePreference)

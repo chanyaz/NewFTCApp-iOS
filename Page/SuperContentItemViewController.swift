@@ -18,7 +18,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     var currentLanguageIndex: Int?
     var action: String?
     var isLoadingForTheFirstTime = true
-    var isPrivilegeViewOn = false
+    var isPrivilegeViewForAllLanguages = false
     // MARK: show in full screen
     var isFullScreen = false
     
@@ -132,9 +132,9 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             if let privilege = dataObject?.privilegeRequirement {
                 if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
                     PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject)
-                    isPrivilegeViewOn = true
+                    isPrivilegeViewForAllLanguages = true
                 } else {
-                    print ("User is allowed to read a premium content: \(String(describing: dataObject?.type))/\(String(describing: dataObject?.id))")
+                    // print ("User is allowed to read a premium content: \(String(describing: dataObject?.type))/\(String(describing: dataObject?.id))")
                     // MARK: A subscriber is reading a piece of paid content
                     let eventLabel: String
                     if let itemType = dataObject?.type,
@@ -213,12 +213,17 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
         }
         // MARK: If there's a PrivilegeView in the view, check if it should be removed
-        if isLoadingForTheFirstTime == false,
-            isPrivilegeViewOn == true,
-            let privilege = dataObject?.privilegeRequirement,
-            PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
-            PrivilegeViewHelper.removePrivilegeView(from: view)
-            isPrivilegeViewOn = false
+        if isLoadingForTheFirstTime == false {
+            if isPrivilegeViewForAllLanguages == true {
+                if let privilege = dataObject?.privilegeRequirement,
+                    PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared)  {
+                    PrivilegeViewHelper.removePrivilegeView(from: view)
+                    isPrivilegeViewForAllLanguages = false
+                }
+            } else {
+                print ("Language: check if the privilege view should be removed")
+                checkPrivilegeFor(.EnglishText)
+            }
         }
         // MARK: At the end of viewWillAppear, set isLoadingForTheFirstTime to false so that when user's are back from another view, the privilege block will be checked again.
         isLoadingForTheFirstTime = false
@@ -259,6 +264,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 print ("javascript result is \(String(describing: result))")
             }
         }
+        checkPrivilegeFor(.EnglishText)
     }
     
     @objc public func changeFont(_ notification: Notification) {
@@ -394,6 +400,11 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
             
             updatePageContent()
+            
+            
+            // MARK: Check if you should pop out privilege view after content is available
+            checkPrivilegeFor(.EnglishText)
+            
         }
     }
     
@@ -535,6 +546,44 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 let urlString = APIs.convert(urlStringOriginal)
                 print ("loading \(urlString)")
                 WebviewHelper.loadContent(url: urlString, base: baseUrlString, webView: webView)
+            }
+        }
+    }
+    
+    
+    private func checkPrivilegeFor(_ privilege: PrivilegeType) {
+        if let itemType = dataObject?.type,
+            let itemId = dataObject?.id,
+            ["story"].contains(itemType),
+            isPrivilegeViewForAllLanguages == false {
+            if privilege == .EnglishText {
+                // MARK: Check the actual displayed language
+                let actualLanguage: Int
+                if let hasEnglish = English.sharedInstance.has[itemId],
+                    hasEnglish == true {
+                    actualLanguage = UserDefaults.standard.integer(forKey: Key.languagePreference)
+                } else {
+                    actualLanguage = 0
+                }
+                
+                // print ("Language: \(actualLanguage); isPrivilegeViewOn: \(isPrivilegeViewForAllLanguages)")
+                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) && actualLanguage != 0 {
+                    PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject)
+                } else {
+                    // MARK: A subscriber is reading a piece of paid content
+                    let languageSuffix: String
+                    switch actualLanguage {
+                    case 1:
+                        languageSuffix = "/en"
+                    case 2:
+                        languageSuffix = "/ce"
+                    default:
+                        languageSuffix = ""
+                    }
+                    let eventLabel = "\(itemType)/\(itemId)\(languageSuffix)"
+                    Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
+                    PrivilegeViewHelper.removePrivilegeView(from: view)
+                }
             }
         }
     }

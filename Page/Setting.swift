@@ -234,7 +234,7 @@ struct Setting {
         case "about":
             urlString = "http://www.ftchinese.com/m/corp/aboutus.html?ad=no"
         case "subscriber-contact":
-            urlString = "http://www.ftchinese.com/m/corp/subscriber.html?webview=ftcapp&ad=no"
+            urlString = APIs.customerServiceUrlString
         default:
             urlString = nil
             break

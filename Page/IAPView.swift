@@ -465,7 +465,7 @@ extension IAPView: URLSessionDownloadDelegate {
     //MARK: - URLSessionDownloadDelegate
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
-                    didFinishDownloadingTo location: URL){
+                    didFinishDownloadingTo location: URL) {
         if let productId = session.configuration.identifier {
             let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
             let documentDirectoryPath:String = path[0]
@@ -582,9 +582,22 @@ extension IAPView: URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession,
                     task: URLSessionTask,
                     didCompleteWithError error: Error?){
-        if let error = error {
-            print(error.localizedDescription)
-            Alert.present("下载失败，您可以稍后再试", message: error.localizedDescription)
+        if error != nil {
+            // print(error.localizedDescription)
+            let title = "无法下载？"
+            let lead = "亲爱的用户，如果您在中国大陆，可能会无法连接我们的服务器。您可以再次尝试，如果始终无法下载，请联系我们的客服。"
+            let alert = UIAlertController(title: title, message: lead, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "联系客服", style: .default, handler: { (action: UIAlertAction) in
+                // MARK: Link to customer service page
+                if let url = URL(string: APIs.customerServiceUrlString) {
+                    UIApplication.topViewController()?.openLink(url)
+                }
+            }))
+            alert.addAction(UIAlertAction(title: "我再试试看", style: UIAlertActionStyle.default, handler: nil))
+            if let topViewController = UIApplication.topViewController() {
+                topViewController.present(alert, animated: true, completion: nil)
+            }
+            
             if let productId = session.configuration.identifier {
                 DispatchQueue.main.async(execute: {
                     self.switchUI("pendingdownload")

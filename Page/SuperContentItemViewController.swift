@@ -623,8 +623,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         IAPProducts.store.restorePurchases()
         Track.event(category: "IAP", action: "restore", label: "All")
     }
-    
-    
 }
 
 // MARK: Handle links here

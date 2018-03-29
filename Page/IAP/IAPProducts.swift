@@ -28,6 +28,7 @@ public struct IAPProducts {
                 "英语原声电台",
                 "无限浏览7日前所有历史文章（近8万篇）"
             ],
+            "key": "standard",
             "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: false, speedreading: true, radio: true, archive: true, book: false)
         ],
         [
@@ -41,6 +42,7 @@ public struct IAPProducts {
                 "编辑精选，总编/各版块主编每周五为您推荐本周必读资讯，分享他们的思想与观点",
                 "FT中文网2018年度论坛门票2张，价值3,999元/张（不包含食宿差旅）"
             ],
+            "key": "premium",
             "privilege": Privilege(adDisplay: .reasonable, englishText: true, englishAudio: true, exclusiveContent: true, editorsChoice: true, speedreading: true, radio: true, archive: true, book: true)
         ]
 //        [

@@ -59,9 +59,32 @@ struct PrivilegeHelper {
     public static func updateFromDevice() {
         let memberships = IAPProducts.memberships
         for membership in memberships {
-            if let id = membership["id"] as? String {
-                let purchased = UserDefaults.standard.bool(forKey: id)
-                //print ("IAP: \(id) purchase status is \(purchased)")
+            if let id = membership["id"] as? String,
+                let key = membership["key"] as? String {
+                var purchased = UserDefaults.standard.bool(forKey: id)
+                if purchased == false {
+                    print ("No app store purchase, check the key of \(key)")
+                    if UserInfo.shared.subscriptionType == key,
+                        let expireDate = UserInfo.shared.subscriptionExpire{
+                        print ("No app store purchase, found the key of \(key)")
+                        let today = Double(Date().timeIntervalSince1970)
+                        if expireDate >= today {
+                            print ("No app store purchase, the expire date is in the future")
+                            purchased = true
+                        } else {
+                            print ("No app store purchase, the expire date is in the past")
+                        }
+                        
+                        let date = Date(timeIntervalSince1970: expireDate)
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = dateFormatString
+                        let expireDateString = dateFormatter.string(from: date)
+                        print ("No app store purchase, \(id) expires at \(expireDateString)")
+                        IAP.savePurchase(id, property: "expires", value: expireDateString)
+                        
+                    }
+                }
+                print ("IAP: \(id) purchase status is \(purchased)")
                 if purchased == true {
                     if let privilege = membership["privilege"] as? Privilege {
                         Privilege.shared = privilege
@@ -207,21 +230,21 @@ struct PrivilegeHelper {
     public static func getDescription(_ privilegeType: PrivilegeType) -> (title: String, body: String) {
         switch privilegeType {
         case .EnglishAudio:
-            return ("付费功能", "收听英文语音需要付费")
+            return ("解锁英文语音", "购买会员服务，收听英文语音")
         case .ExclusiveContent:
-            return ("付费功能", "查看独家内容需要付费")
+            return ("解锁FT独家内容", "购买会员服务，阅读FT独家内容")
         case .EditorsChoice:
-            return ("付费功能", "阅读编辑精选需要付费")
+            return ("解锁编辑精选", "购买高端会员，阅读编辑精选")
         case .SpeedReading:
-            return ("付费功能", "金融英语速读需要付费")
+            return ("解锁金融英语速读", "购买会员服务，使用金融英语速读")
         case .Radio:
-            return ("付费功能", "FT英语电台需要付费")
+            return ("解锁英语电台", "购买会员服务，收听FT英语电台")
         case .EnglishText:
-            return ("付费功能", "阅读英文内容需要付费")
+            return ("解锁英文和中英对照", "购买会员服务，阅读英文内容")
         case .Archive:
-            return ("付费功能", "阅读七天前内容需要付费")
+            return ("解锁档案文章", "购买会员服务，阅读七天前文章")
         case .Book:
-            return ("付费功能", "高端订户免费阅读电子书")
+            return ("解锁电子书", "高端会员免费阅读电子书")
         }
     }
     

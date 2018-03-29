@@ -26,7 +26,7 @@ class PrivilegeView: UIView {
     let boxViewHeight: CGFloat = 220
     let buttonInsect = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 8)
     
-    let titleText = "购买会员服务，阅读FT独家内容"
+    var titleText = "购买会员服务，阅读FT独家内容"
     let subscriptionTitle = "立即订阅▶︎"
     let loginQuestion = "已经购买过？"
     let loginAction = "登录"
@@ -124,6 +124,7 @@ struct PrivilegeViewHelper {
     
     public static func insertPrivilegeView(to sourceView: UIView, with privilegeType: PrivilegeType, from item: ContentItem?) {
         let privilegeView = PrivilegeView()
+        privilegeView.titleText = PrivilegeHelper.getDescription(privilegeType).body
         privilegeView.privilegeRequired = privilegeType
         //privilegeView.sourceItem = item
         privilegeView.initUI()
@@ -165,8 +166,8 @@ struct PrivilegeViewHelper {
             dataViewController.dataObject = membershipChannelData
             // MARK: Only show options that include this privilege
             dataViewController.withPrivilege = privilegeRequired
-            dataViewController.privilegeDescriptionBody = privilegeDescription.body
-            dataViewController.pageTitle = privilegeDescription.title
+            dataViewController.privilegeDescriptionBody = privilegeDescription.title
+            dataViewController.pageTitle = "会员订阅"
             topViewController.navigationController?.pushViewController(dataViewController, animated: true)
             return true
         }

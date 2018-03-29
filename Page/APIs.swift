@@ -200,6 +200,12 @@ struct APIs {
         return checkServer(newString)
     }
     
+    // MARK: Get Public Domain
+    static func getPublicDomain() -> String {
+        let currentPreference = max(1, min(0,LanguageSetting.shared.currentPrefence))
+        return publicDomains[currentPreference]
+    }
+    
     // MARK: Handle non-https links and try to convert them into https links
     static func handleMaualLink(_ from: String) -> String {
         return from

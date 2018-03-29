@@ -219,19 +219,23 @@ struct AdLayout {
         if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
             newItem.privilegeRequirement = .EditorsChoice
             newItem.hideAd = true
+            return newItem
         }
         // MARK: Check for premium content
         if newItem.type == "premium"  {
             newItem.privilegeRequirement = .ExclusiveContent
             newItem.hideAd = true
+            return newItem
         }
         if newItem.subType == "speedreading" {
             newItem.privilegeRequirement = .SpeedReading
             newItem.hideAd = true
+            return newItem
         }
         if newItem.subType == "radio" {
             newItem.privilegeRequirement = .Radio
             newItem.hideAd = true
+            return newItem
         }
         
         if newItem.timeStamp > 0 {
@@ -242,6 +246,7 @@ struct AdLayout {
             if timeDifferenceInDays > 7 {
                 newItem.privilegeRequirement = .Archive
                 newItem.hideAd = true
+                return newItem
             }
         }
         return newItem

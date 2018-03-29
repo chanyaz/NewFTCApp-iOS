@@ -237,7 +237,6 @@ struct AdLayout {
             newItem.hideAd = true
             return newItem
         }
-        
         if newItem.timeStamp > 0 {
             let timeInterval = Date().timeIntervalSince1970
             let timeDifference = timeInterval - newItem.timeStamp

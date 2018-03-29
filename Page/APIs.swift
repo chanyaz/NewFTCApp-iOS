@@ -1109,25 +1109,29 @@ struct HTMLValidator {
 
 struct EngagementTracker {
     public static func shouldTrackEngagementVolumn(for screenName: String) -> Bool {
-        // MARK: For a premium subscriber, only editor's choice count as effective volume
-        if Privilege.shared.editorsChoice == true {
-            if screenName.range(of: "EditorChoice") != nil {
-                return true
-            } else {
-                return false
-            }
-        }
-        // MARK: For a standard subscriber, only exclusive content counts as effective volume
-        if Privilege.shared.exclusiveContent == true {
-            if screenName.range(of: "premium") != nil || screenName.range(of: "audio/en/story") != nil {
-                return true
-            } else {
-                return false
+        // MARK: Pair the keywords with the privileges
+        let engagementForPrivilege: [(keyword: String, privilegeIncluded: Bool)]
+        engagementForPrivilege = [
+            ("EditorChoice", Privilege.shared.editorsChoice),
+            ("/Book", Privilege.shared.book),
+            ("premium", Privilege.shared.exclusiveContent),
+            ("/SpeedReading", Privilege.shared.speedreading),
+            ("audio/en/story", Privilege.shared.englishAudio),
+            ("/audio", Privilege.shared.radio),
+            ("/Archive", Privilege.shared.archive),
+            ("/en/", Privilege.shared.englishText),
+            ("/ce/", Privilege.shared.englishText)
+        ]
+        for item in engagementForPrivilege {
+            if screenName.range(of: item.keyword) != nil {
+                return item.privilegeIncluded
             }
         }
         // MARK: For non-subscribers, any free content counts as effective volume
-        if screenName.range(of: "story") != nil || screenName.range(of: "audio") != nil{
-            return true
+        if !Privilege.shared.exclusiveContent {
+            if screenName.range(of: "story") != nil || screenName.range(of: "audio") != nil || screenName.range(of: "interactive") != nil {
+                return true
+            }
         }
         return false
     }

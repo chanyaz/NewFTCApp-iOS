@@ -29,6 +29,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     public lazy var webView: WKWebView? = nil
     fileprivate let contentAPI = ContentFetch()
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    
+    private var currentActualLanguage: (index: Int, suffix: String)?
 
     @IBOutlet weak var containerView: UIView!
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
@@ -184,22 +186,13 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         
     }
     
+
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let id = dataObject?.id,
-            let type = dataObject?.type,
-            let headline = dataObject?.headline {
-            
-            // MARK: Check if the user is tapping from editor choice
-            var tapFrom = ""
-            if let privilege = dataObject?.privilegeRequirement {
-                if privilege == .EditorsChoice {
-                    tapFrom = "EditorChoice/"
-                }
-            }
-            
-            let screenName = "/\(DeviceInfo.checkDeviceType())/\(tapFrom)\(type)/\(id)/\(headline)"
-            Track.screenView(screenName, trackEngagement: true)
+        if let type = dataObject?.type,
+            let id = dataObject?.id {
+            trackScreenView(type: type, id: id)
             if type != "video" {
                 let jsCode = JSCodes.get(type)
                 //print ("View will Appear, about to excute this javascript code: \(jsCode)")
@@ -265,6 +258,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
         }
         checkPrivilegeFor(.EnglishText)
+        trackScreenView(type: dataObject?.type, id: dataObject?.id)
     }
     
     @objc public func changeFont(_ notification: Notification) {
@@ -390,21 +384,15 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             dataObject?.tag = item.tag
             dataObject?.image = item.image
             dataObject?.keywords = item.keywords
-            
             if let caudio = item.caudio, caudio != "" {
                 dataObject?.caudio = caudio
             }
-            
             if let eaudio = item.eaudio, eaudio != "" {
                 dataObject?.eaudio = eaudio
             }
-            
             updatePageContent()
-            
-            
             // MARK: Check if you should pop out privilege view after content is available
             checkPrivilegeFor(.EnglishText)
-            
         }
     }
     
@@ -551,6 +539,29 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     }
     
     
+    
+    private func updateAcutualLanguage() {
+        if let itemId = dataObject?.id {
+            let actualLanguage: Int
+            if let hasEnglish = English.sharedInstance.has[itemId],
+                hasEnglish == true {
+                actualLanguage = UserDefaults.standard.integer(forKey: Key.languagePreference)
+            } else {
+                actualLanguage = 0
+            }
+            let languageSuffix: String
+            switch actualLanguage {
+            case 1:
+                languageSuffix = "/en"
+            case 2:
+                languageSuffix = "/ce"
+            default:
+                languageSuffix = ""
+            }
+            currentActualLanguage = (actualLanguage, languageSuffix)
+        }
+    }
+    
     private func checkPrivilegeFor(_ privilege: PrivilegeType) {
         if let itemType = dataObject?.type,
             let itemId = dataObject?.id,
@@ -558,33 +569,53 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             isPrivilegeViewForAllLanguages == false {
             if privilege == .EnglishText {
                 // MARK: Check the actual displayed language
-                let actualLanguage: Int
-                if let hasEnglish = English.sharedInstance.has[itemId],
-                    hasEnglish == true {
-                    actualLanguage = UserDefaults.standard.integer(forKey: Key.languagePreference)
-                } else {
-                    actualLanguage = 0
-                }
+                updateAcutualLanguage()
                 
                 // print ("Language: \(actualLanguage); isPrivilegeViewOn: \(isPrivilegeViewForAllLanguages)")
-                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) && actualLanguage != 0 {
+                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) && currentActualLanguage != nil && currentActualLanguage?.index != 0 {
                     PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject)
                 } else {
                     // MARK: A subscriber is reading a piece of paid content
-                    let languageSuffix: String
-                    switch actualLanguage {
-                    case 1:
-                        languageSuffix = "/en"
-                    case 2:
-                        languageSuffix = "/ce"
-                    default:
-                        languageSuffix = ""
-                    }
-                    let eventLabel = "\(itemType)/\(itemId)\(languageSuffix)"
+
+                    let eventLabel = "\(itemType)/\(itemId)\(currentActualLanguage?.suffix ?? "")"
                     Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
                     PrivilegeViewHelper.removePrivilegeView(from: view)
                 }
             }
+        }
+    }
+    
+    private func trackScreenView(type: String?, id: String?) {
+        updateAcutualLanguage()
+        if let type = type,
+            let id = id {
+            let headline: String
+            if currentActualLanguage?.index == 1 {
+                headline = dataObject?.eheadline ?? ""
+            } else {
+                headline = dataObject?.headline ?? ""
+            }
+            // MARK: Check if the user is tapping from editor choice, speedreading, or archive
+            let tapFrom: String
+            if let privilege = dataObject?.privilegeRequirement {
+                switch privilege {
+                case .EditorsChoice:
+                    tapFrom = "EditorChoice/"
+                case .SpeedReading:
+                    tapFrom = "SpeedReading/"
+                case .Archive:
+                    tapFrom = "Archive/"
+                case .Book:
+                    tapFrom = "Book/"
+                default:
+                    tapFrom = ""
+                }
+            } else {
+                tapFrom = ""
+            }
+            let languageSuffix = currentActualLanguage?.suffix ?? ""
+            let screenName = "/\(DeviceInfo.checkDeviceType())/\(tapFrom)\(type)/\(id)\(languageSuffix)/\(headline)"
+            Track.screenView(screenName, trackEngagement: true)
         }
     }
     

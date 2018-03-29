@@ -11,14 +11,14 @@ struct Track {
     public static func screenView(_ name: String, trackEngagement: Bool) {
         // MARK: Save screen name locally
         let engagement = Engagement.screen(name)
-        // MARK: Google Analytics
-        for trackingId in GA.trackingIds {
+        // MARK: Track Screen Views Only On App Property
+        for trackingId in GA.trackingIdsForApp {
             let tracker = setGATracker(trackingId, with: engagement)
             tracker?.set(kGAIScreenName, value: name)
             let builder = GAIDictionaryBuilder.createScreenView()
             if let obj = builder?.build() as [NSObject: AnyObject]? {
                 tracker?.send(obj)
-                print ("send track for screen name: \(name)")
+                print ("\(trackingId) screen name: \(name)")
             }
         }
         if trackEngagement == true {

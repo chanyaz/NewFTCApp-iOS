@@ -150,9 +150,9 @@ struct WeChat {
 }
 
 struct GA {
-
-    public static let trackingIds = ["UA-1608715-1", "UA-1608715-3"]
-    
+    public static let trackingIdsForWeb = ["UA-1608715-1"]
+    public static let trackingIdsForApp = ["UA-1608715-3"]
+    public static let trackingIds = trackingIdsForWeb + trackingIdsForApp
     // MARK: Tracking info specifically linked to your GA property
     public static func customDimensions(_ id: String) -> [(index: Int, value: String?)] {
         // MARK: Track additional user information

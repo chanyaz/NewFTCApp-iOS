@@ -249,6 +249,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         contentController.add(LeakAvoider(delegate:self), name: "callbackHandler")
         contentController.add(LeakAvoider(delegate:self), name: "audioData")
         contentController.add(LeakAvoider(delegate:self), name: "scrollTo")
+        contentController.add(LeakAvoider(delegate:self), name: "seekAudio")
         
         
         let config = WKWebViewConfiguration()
@@ -370,6 +371,12 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             if let scrollY = message.body as? Int {
                 let scrollPoint = CGPoint(x: 0, y: scrollY)
                 webView?.scrollView.setContentOffset(scrollPoint, animated: true)
+            }
+        } else if message.name == "seekAudio" {
+            if let seekAudio = message.body as? Double {
+                let newCMTime = CMTime.init(seconds: seekAudio, preferredTimescale: Int32(NSEC_PER_SEC))
+                player?.seek(to: newCMTime)
+                player?.play()
             }
         }
     }

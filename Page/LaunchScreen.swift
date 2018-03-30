@@ -34,7 +34,7 @@ class LaunchScreen: UIViewController {
     private var adShowed = false
     
     // MARK: - Hide Ad for Demo Purposes
-    private let hideAd = false
+    private let hideAd = true
     private var adType = ""
     
     private let screenWidth = UIScreen.main.bounds.width

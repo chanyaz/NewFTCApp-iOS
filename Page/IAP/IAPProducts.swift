@@ -275,7 +275,7 @@ public struct IAPProducts {
     
     // MARK: - update JSCode for displaying on WKWebView
     public static func updateHome(for type: String) -> String {
-        let hightlightIds = ["com.ft.ftchinese.mobile.book.yearbook2018"]
+        let hightlightIds = ["com.ft.ftchinese.mobile.book.bubble"]
         let highlightJSON = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: hightlightIds)
         let hightJSCode = JSCodes.get(in: "iap-highlight", with: highlightJSON, where: "center")
         let ids:[String] = [

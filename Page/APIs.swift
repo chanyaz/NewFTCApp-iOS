@@ -1083,7 +1083,7 @@ struct Settings {
 }
 
 struct FullScreenFallBack {
-    static let id = "com.ft.ftchinese.mobile.book.yearbook2018"
+    static let id = "com.ft.ftchinese.mobile.book.bubble"
     static let link = ""
     static let backgroundColor = "#000000"
 }

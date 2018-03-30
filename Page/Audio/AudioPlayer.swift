@@ -285,19 +285,22 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         // MARK: Check if the audio is behind pay wall
         if let privilege = item?.privilegeRequirement {
             if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
-                PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: item)
+                PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: item, endWith: "")
                 isPrivilegeViewOn = true
             } else {
                 print ("User is allowed to read a premium content: \(String(describing: item?.type))/\(String(describing: item?.id))")
                 // MARK: A subscriber is reading a piece of paid content
-                let eventLabel: String
-                if let itemType = item?.type,
-                    let itemId = item?.id {
-                    eventLabel = "\(itemType)/\(itemId)"
-                } else {
-                    eventLabel = ""
-                }
+//                let eventLabel: String
+//                if let itemType = item?.type,
+//                    let itemId = item?.id {
+//                    eventLabel = "\(itemType)/\(itemId)"
+//                } else {
+//                    eventLabel = ""
+//                }
+                if let item = item {
+                let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: item.type, id: item.id, suffix: "")
                 Track.eventToAll(category: "Privileges", action: "Listen", label: eventLabel)
+                }
             }
         }
         

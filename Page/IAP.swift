@@ -546,15 +546,9 @@ struct IAP {
         if let deviceToken = UserInfo.shared.deviceToken {
             Track.event(category: "IAP: \(actionType)", action: productId, label: deviceToken)
         }
-        if let type = ConversionTracker.shared.item?.type,
-            let id = ConversionTracker.shared.item?.id {
-            Track.eventToAll(category: "Privileges", action: "\(actionType): \(productId)", label: "\(type)/\(id)")
-            //APIs.sendThirdPartyTrackings("\(type)/\(id)", category: "Privileges", action: "\(actionType): \(productId)", label: "\(type)/\(id)")
-        }
+        Track.eventToAll(category: "Privileges", action: "\(actionType): \(productId)", label: ConversionTracker.shared.item?.eventLabel ?? "")
     }
     
-    
-
     public static func savePriceInfo(_ products: [SKProduct]) {
         var productPrices: [String: String] = [:]
         for product in products {

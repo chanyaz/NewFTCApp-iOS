@@ -102,19 +102,18 @@ class PrivilegeView: UIView {
         if let privilegeRequired = privilegeRequired {
             let _ = PrivilegeViewHelper.showSubscriptionView(for: privilegeRequired, with: ConversionTracker.shared.item)
             // MARK: Track the tap event even if something is wrong with the conversion item
-            let type = ConversionTracker.shared.item?.type ?? ""
-            let id = ConversionTracker.shared.item?.id ?? ""
-            Track.eventToAll(category: "Privileges", action: "Tap Subscription", label: "\(type)/\(id)")
+            if let evenLabel = ConversionTracker.shared.item?.eventLabel {
+                Track.eventToAll(category: "Privileges", action: "Tap Subscription", label: evenLabel)
+            }
         }
     }
     
     
     @objc open func showAccountPage(_ sender: UITapGestureRecognizer) {
             UserInfo.showAccountPage()
-        // MARK: Track the tap event even if something is wrong with the conversion item
-        let type = ConversionTracker.shared.item?.type ?? ""
-        let id = ConversionTracker.shared.item?.id ?? ""
-        Track.eventToAll(category: "Privileges", action: "Tap Login", label: "\(type)/\(id)")
+        if let evenLabel = ConversionTracker.shared.item?.eventLabel {
+            Track.eventToAll(category: "Privileges", action: "Tap Login", label: evenLabel)
+        }
     }
 
     
@@ -122,7 +121,7 @@ class PrivilegeView: UIView {
 
 struct PrivilegeViewHelper {
     
-    public static func insertPrivilegeView(to sourceView: UIView, with privilegeType: PrivilegeType, from item: ContentItem?) {
+    public static func insertPrivilegeView(to sourceView: UIView, with privilegeType: PrivilegeType, from item: ContentItem?, endWith suffix: String) {
         let privilegeView = PrivilegeView()
         privilegeView.titleText = PrivilegeHelper.getDescription(privilegeType).body
         privilegeView.privilegeRequired = privilegeType
@@ -132,13 +131,15 @@ struct PrivilegeViewHelper {
         privilegeView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         sourceView.addSubview(privilegeView)
         
-        // MARK: Update the conversion tracker item
-        ConversionTracker.shared.item = item
-        
-        // MARK: Track the event of PrivilegeView display
         if let type = item?.type,
             let id = item?.id {
-            Track.eventToAll(category: "Privileges", action: "Display", label: "\(type)/\(id)")
+            // MARK: Track the event of PrivilegeView display
+            let prefix = privilegeType.rawValue
+            let eventLabel = "\(prefix)/\(type)/\(id)\(suffix)"
+            // MARK: Update the conversion tracker item
+            ConversionTracker.shared.item = item
+            ConversionTracker.shared.item?.eventLabel = eventLabel
+            Track.eventToAll(category: "Privileges", action: "Display", label: eventLabel)
         }
     }
     
@@ -150,6 +151,8 @@ struct PrivilegeViewHelper {
         }
     }
     
+
+    
     public static func showSubscriptionView(for privilegeRequired: PrivilegeType, with sourceItem: ContentItem?) -> Bool {
         if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
         let membershipChannelData = AppNavigation.getChannelData(of: IAPProducts.membershipScreenName),
@@ -157,9 +160,8 @@ struct PrivilegeViewHelper {
             // MARK: Update the source item
             ConversionTracker.shared.item = sourceItem
             // MARK: Track the event of Subscription View display
-            if let type = sourceItem?.type,
-                let id = sourceItem?.id {
-                Track.eventToAll(category: "Privileges", action: "Pop Subscription", label: "\(type)/\(id)")
+            if let eventLable = sourceItem?.eventLabel {
+                Track.eventToAll(category: "Privileges", action: "Pop Subscription", label: eventLable)
             }
             // MARK: Show a reason why user is redirected here
             let privilegeDescription = PrivilegeHelper.getDescription(privilegeRequired)

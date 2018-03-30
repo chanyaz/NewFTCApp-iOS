@@ -283,7 +283,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                 }
                 print ("User is allowed to listen to a premium content: \(dataObject.type)/\(dataObject.id)")
                 // MARK: A subscriber is reading a piece of paid content
-                let eventLabel = "\(dataObject.type)/\(dataObject.id)"
+                let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: dataObject.type, id: dataObject.id, suffix: "")
                 Track.eventToAll(category: "Privileges", action: "Listen", label: eventLabel)
             }
             

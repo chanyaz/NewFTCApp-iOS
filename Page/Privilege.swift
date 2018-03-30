@@ -226,7 +226,6 @@ struct PrivilegeHelper {
         }
     }
     
-    // TODO: Need to get the correct words
     public static func getDescription(_ privilegeType: PrivilegeType) -> (title: String, body: String) {
         switch privilegeType {
         case .EnglishAudio:
@@ -246,6 +245,10 @@ struct PrivilegeHelper {
         case .Book:
             return ("解锁电子书", "高端会员免费阅读电子书")
         }
+    }
+    
+    public static func getLabel(prefix: String, type: String, id: String, suffix: String) -> String {
+        return ("\(prefix)/\(type)/\(id)\(suffix)")
     }
     
     // MARK: Get all privileges for web
@@ -306,13 +309,13 @@ enum AdDisplay {
     case all
 }
 
-enum PrivilegeType {
-    case EnglishAudio
-    case ExclusiveContent
-    case EditorsChoice
-    case SpeedReading
-    case Radio
-    case Archive
-    case EnglishText
-    case Book
+enum PrivilegeType: String {
+    case EnglishAudio = "EnglishAudio"
+    case ExclusiveContent = "ExclusiveContent"
+    case EditorsChoice = "EditorsChoice"
+    case SpeedReading = "SpeedReading"
+    case Radio = "Radio"
+    case Archive = "Archive"
+    case EnglishText = "EnglishText"
+    case Book = "Book"
 }

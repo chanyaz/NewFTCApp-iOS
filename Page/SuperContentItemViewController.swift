@@ -133,19 +133,14 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             //print (dataObject?.privilegeRequirement as Any)
             if let privilege = dataObject?.privilegeRequirement {
                 if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
-                    PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject)
+                    PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject, endWith: "")
                     isPrivilegeViewForAllLanguages = true
                 } else {
-                    // print ("User is allowed to read a premium content: \(String(describing: dataObject?.type))/\(String(describing: dataObject?.id))")
-                    // MARK: A subscriber is reading a piece of paid content
-                    let eventLabel: String
-                    if let itemType = dataObject?.type,
-                        let itemId = dataObject?.id {
-                        eventLabel = "\(itemType)/\(itemId)"
-                    } else {
-                        eventLabel = ""
+                    if let dataObject = dataObject {
+                        updateAcutualLanguage()
+                        let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: dataObject.type, id: dataObject.id, suffix: currentActualLanguage?.suffix ?? "")
+                        Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
                     }
-                    Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
                 }
             }
             
@@ -570,16 +565,17 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             if privilege == .EnglishText {
                 // MARK: Check the actual displayed language
                 updateAcutualLanguage()
-                
+                let suffix = currentActualLanguage?.suffix ?? ""
                 // print ("Language: \(actualLanguage); isPrivilegeViewOn: \(isPrivilegeViewForAllLanguages)")
                 if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) && currentActualLanguage != nil && currentActualLanguage?.index != 0 {
-                    PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject)
+                    PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject, endWith: suffix)
                 } else {
-                    // MARK: A subscriber is reading a piece of paid content
-
-                    let eventLabel = "\(itemType)/\(itemId)\(currentActualLanguage?.suffix ?? "")"
-                    Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
                     PrivilegeViewHelper.removePrivilegeView(from: view)
+                    // MARK: A subscriber is reading a piece of paid content
+                    if suffix != "" {
+                        let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: itemType, id: itemId, suffix: suffix)
+                        Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
+                    }
                 }
             }
         }

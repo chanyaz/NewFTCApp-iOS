@@ -36,6 +36,8 @@ class ContentItem{
     var adchId: String?
     var hideAd = false
     
+    var eventLabel: String?
+    
     var linkSource: String?
     
     // MARK: detail data that only comes with detail content API

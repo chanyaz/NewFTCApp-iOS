@@ -251,6 +251,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         let contentNSString = try NSString(contentsOfFile:contentHTMLPath, encoding:String.Encoding.utf8.rawValue)
                         let content = contentNSString as String
                         let resourceFileNameString: String
+                        // MARK: Two types of HTML books
                         let replaceString: String
                         if content.range(of: "item-container") != nil {
                             resourceFileNameString = "list"

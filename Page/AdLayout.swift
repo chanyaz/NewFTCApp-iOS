@@ -216,6 +216,12 @@ struct AdLayout {
     
     static func addPrivilegeRequirement(in item: ContentItem, with dataObject: [String: String]) -> ContentItem {
         let newItem = item
+        // MARK: If you are openning from an eBook, no privilege is required
+        if dataObject["type"]?.range(of: "htmlbook") != nil {
+            newItem.privilegeRequirement = nil
+            newItem.hideAd = true
+            return newItem
+        }
         if dataObject["listapi"]?.range(of: "EditorChoice") != nil {
             newItem.privilegeRequirement = .EditorsChoice
             newItem.hideAd = true

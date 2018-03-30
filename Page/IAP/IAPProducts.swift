@@ -64,6 +64,15 @@ public struct IAPProducts {
     
     private static let eBooksData = [
         [
+            "id":"com.ft.ftchinese.mobile.book.bubble",
+            "title":"是非区块链：技术、投机与泡沫",
+            "teaser":"英国《金融时报》为您呈上的此书，为您在了解分析区块链、比特币甚至ICO提供更全面的参考。",
+            "description": "<p>区块链，作为一项被预测为会对社会和商业带来巨大变革的新技术，因比特币的一路暴涨和各类数字代币的发行而热度不减。区块链技术的应用和探索会走向何方？比特币的暴涨趋势是否还会延续？数字代币究竟是投资风口，还是一种新型网络诈骗？英国《金融时报》为您呈上此书，为您在了解分析区块链、比特币甚至ICO提供更全面的参考。</p>",
+            "image":"https://creatives002.ftimg.net/bubble.jpg",
+            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooksfqkljstjypm&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&013",
+            "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooksfqkljstjypm&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&013"
+        ],
+        [
             "id":"com.ft.ftchinese.mobile.book.democracy",
             "title":"英国脱欧：民主的胜利还是失败？",
             "teaser":"我们呈上这本小书，希望能帮助您对英国公投脱离欧盟做出自己的思考和判断。",
@@ -170,15 +179,6 @@ public struct IAPProducts {
             "image":"https://creatives002.ftimg.net/bj.png",
             "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebookcfbj&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&014",
             "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebookcfbj&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&014"
-        ],
-        [
-            "id":"com.ft.ftchinese.mobile.book.bubble",
-            "title":"是非区块链：技术、投机与泡沫",
-            "teaser":"英国《金融时报》为您呈上的此书，为您在了解分析区块链、比特币甚至ICO提供更全面的参考。",
-            "description": "<p>区块链，作为一项被预测为会对社会和商业带来巨大变革的新技术，因比特币的一路暴涨和各类数字代币的发行而热度不减。区块链技术的应用和探索会走向何方？比特币的暴涨趋势是否还会延续？数字代币究竟是投资风口，还是一种新型网络诈骗？英国《金融时报》为您呈上此书，为您在了解分析区块链、比特币甚至ICO提供更全面的参考。</p>",
-            "image":"https://creatives002.ftimg.net/bubble.jpg",
-            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooksfqkljstjypm&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&013",
-            "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooksfqkljstjypm&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&013"
         ],
         [
             "id":"com.ft.ftchinese.mobile.book.person",

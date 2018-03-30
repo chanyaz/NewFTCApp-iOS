@@ -86,19 +86,7 @@ class BookCell: CustomCell {
             lead.attributedText = setStr
         }
         
-        
-        // MARK: - Load the image of the item
-        imageView.backgroundColor = UIColor(hex: Color.Image.background)
-        // MARK: - initialize image view as it will be reused. If you don't do this, the cell might show wrong image when you scroll.
-        imageView.image = nil
-        if let loadedImage = itemCell?.thumbnailImage {
-            imageView.image = loadedImage
-            //print ("image is already loaded, no need to download again. ")
-        } else {
-            itemCell?.loadImage(type: "thumbnail", width: imageWidth, height: imageHeight, completion: { [weak self](cellContentItem, error) in
-                self?.imageView.image = cellContentItem.thumbnailImage
-            })
-        }
+        loadImage("thumbnail", to: imageView)
         
         // MARK: - update buy button content
         buyButton.setTitle(itemCell?.productPrice, for: .normal)

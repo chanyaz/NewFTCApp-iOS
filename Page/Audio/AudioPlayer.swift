@@ -57,45 +57,49 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 player.pause()
                 buttonPlayAndPause.image = UIImage(named:"BigPlayButton")
             } else {
-                // MARK: - Continue audio even when device is set to mute. Do this only when user is actually playing audio because users might want to read FTC news while listening to music from other apps.
-                try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-                
-                // MARK: - Continue audio when device is in background
-                try? AVAudioSession.sharedInstance().setActive(true)
-                player.play()
-                player.replaceCurrentItem(with: playerItem)
-                buttonPlayAndPause.image = UIImage(named:"BigPauseButton")
-                
-                // TODO: - Need to find a way to display media duration and current time in lock screen
-                var mediaLength: NSNumber = 0
-                if let d = self.playerItem?.duration {
-                    let duration = CMTimeGetSeconds(d)
-                    if duration.isNaN == false {
-                        mediaLength = duration as NSNumber
-                    }
-                }
-                
-                var currentTime: NSNumber = 0
-                if let c = self.playerItem?.currentTime() {
-                    let currentTime1 = CMTimeGetSeconds(c)
-                    if currentTime1.isNaN == false {
-                        currentTime = currentTime1 as NSNumber
-                    }
-                }
-                nowPlayingCenter.updateInfo(
-                    title: audioTitle,
-                    artist: "FT中文网",
-                    albumArt: UIImage(named: "cover.jpg"),
-                    currentTime: currentTime,
-                    mediaLength: mediaLength,
-                    PlaybackRate: 1.0
-                )
+                startToPlay()
             }
             nowPlayingCenter.updateTimeForPlayerItem(player)
         }
     }
     
-    
+    private func startToPlay() {
+        if let player = player {
+            // MARK: - Continue audio even when device is set to mute. Do this only when user is actually playing audio because users might want to read FTC news while listening to music from other apps.
+            try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            
+            // MARK: - Continue audio when device is in background
+            try? AVAudioSession.sharedInstance().setActive(true)
+            player.play()
+            player.replaceCurrentItem(with: playerItem)
+            buttonPlayAndPause.image = UIImage(named:"BigPauseButton")
+            
+            // TODO: - Need to find a way to display media duration and current time in lock screen
+            var mediaLength: NSNumber = 0
+            if let d = self.playerItem?.duration {
+                let duration = CMTimeGetSeconds(d)
+                if duration.isNaN == false {
+                    mediaLength = duration as NSNumber
+                }
+            }
+            
+            var currentTime: NSNumber = 0
+            if let c = self.playerItem?.currentTime() {
+                let currentTime1 = CMTimeGetSeconds(c)
+                if currentTime1.isNaN == false {
+                    currentTime = currentTime1 as NSNumber
+                }
+            }
+            nowPlayingCenter.updateInfo(
+                title: audioTitle,
+                artist: "FT中文网",
+                albumArt: UIImage(named: "cover.jpg"),
+                currentTime: currentTime,
+                mediaLength: mediaLength,
+                PlaybackRate: 1.0
+            )
+        }
+    }
     
     
     fileprivate var isSaved = false
@@ -174,14 +178,14 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     deinit {
         
-//        if self.isMovingFromParentViewController {
-//            if let player = player {
-//                player.pause()
-//                self.player = nil
-//            }
-//        } else {
-//            print ("Audio is not being popped")
-//        }
+        //        if self.isMovingFromParentViewController {
+        //            if let player = player {
+        //                player.pause()
+        //                self.player = nil
+        //            }
+        //        } else {
+        //            print ("Audio is not being popped")
+        //        }
         
         if let player = player {
             player.pause()
@@ -190,21 +194,21 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
         
         removePlayerItemObservers()
-
+        
         // MARK: - Remove Observe download status change
         NotificationCenter.default.removeObserver(
             self,
             name: Notification.Name(rawValue: download.downloadStatusNotificationName),
             object: nil
         )
-
+        
         // MARK: - Remove Observe download progress change
         NotificationCenter.default.removeObserver(
             self,
             name: Notification.Name(rawValue: download.downloadProgressNotificationName),
             object: nil
         )
-
+        
         // MARK: - Remove Observe Audio Route Change and Update UI accordingly
         NotificationCenter.default.removeObserver(
             self,
@@ -212,18 +216,18 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             name: NSNotification.Name.AVAudioSessionRouteChange,
             object: nil
         )
-
+        
         NotificationCenter.default.removeObserver(self)
-
+        
         // MARK: - Stop loading and remove message handlers to avoid leak
         self.webView?.stopLoading()
         self.webView?.configuration.userContentController.removeScriptMessageHandler(forName: "callbackHandler")
         self.webView?.configuration.userContentController.removeAllUserScripts()
-
+        
         // MARK: - Remove delegate to deal with crashes on iOS 8
         self.webView?.navigationDelegate = nil
         self.webView?.scrollView.delegate = nil
-
+        
         print ("deinit successfully and observer removed")
     }
     
@@ -291,16 +295,16 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             } else {
                 print ("User is allowed to read a premium content: \(String(describing: item?.type))/\(String(describing: item?.id))")
                 // MARK: A subscriber is reading a piece of paid content
-//                let eventLabel: String
-//                if let itemType = item?.type,
-//                    let itemId = item?.id {
-//                    eventLabel = "\(itemType)/\(itemId)"
-//                } else {
-//                    eventLabel = ""
-//                }
+                //                let eventLabel: String
+                //                if let itemType = item?.type,
+                //                    let itemId = item?.id {
+                //                    eventLabel = "\(itemType)/\(itemId)"
+                //                } else {
+                //                    eventLabel = ""
+                //                }
                 if let item = item {
-                let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: item.type, id: item.id, suffix: "")
-                Track.eventToAll(category: "Privileges", action: "Listen", label: eventLabel)
+                    let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: item.type, id: item.id, suffix: "")
+                    Track.eventToAll(category: "Privileges", action: "Listen", label: eventLabel)
                 }
             }
         }
@@ -376,7 +380,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             if let seekAudio = message.body as? Double {
                 let newCMTime = CMTime.init(seconds: seekAudio, preferredTimescale: Int32(NSEC_PER_SEC))
                 player?.seek(to: newCMTime)
-                player?.play()
+                startToPlay()
             }
         }
     }

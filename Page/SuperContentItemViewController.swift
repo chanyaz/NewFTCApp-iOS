@@ -567,7 +567,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 updateAcutualLanguage()
                 let suffix = currentActualLanguage?.suffix ?? ""
                 // print ("Language: \(actualLanguage); isPrivilegeViewOn: \(isPrivilegeViewForAllLanguages)")
-                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) && currentActualLanguage != nil && currentActualLanguage?.index != 0 {
+                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) && currentActualLanguage != nil && currentActualLanguage?.index != 0 && dataObject?.isDownloaded == false {
                     PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject, endWith: suffix)
                 } else {
                     PrivilegeViewHelper.removePrivilegeView(from: view)

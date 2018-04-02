@@ -39,7 +39,9 @@ class CustomRefreshConrol: UIRefreshControl {
     var currentStatus: refreshState? {
         didSet{
             //根据state的改变，修改相关状态
-            self.setCurrentState(currentState: currentStatus!)
+            if let currentStatus = currentStatus {
+                self.setCurrentState(currentState: currentStatus)
+            }
         }
     }
     lazy var superScrollView: UIScrollView = UIScrollView()
@@ -97,37 +99,42 @@ class CustomRefreshConrol: UIRefreshControl {
     }
     //TODO: - KVO 监听用户操作
     override func willMove(toSuperview newSuperview: UIView?) {
-        if (newSuperview?.isKind(of: UIScrollView.superclass()!))!{
-            
-            self.superScrollView = newSuperview as! UIScrollView
+        if let superClass = UIScrollView.superclass(),
+            let newSuperview = newSuperview as? UIScrollView,
+            newSuperview.isKind(of: superClass) {
+            self.superScrollView = newSuperview
             self.superScrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.new, context: nil)
         }
     }
-    var endRefresh = false;
+    var endRefresh = false
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-//        print("refreshControl fresh--\(self.isRefreshing)-- isDragging:\(self.superScrollView.isDragging) --originalOffsetY:\(self.superScrollView.contentInset.top)---值为\(self.superScrollView.contentOffset.y)")
-        if self.superScrollView.isDragging && !self.isRefreshing{
+        print("refreshControl fresh--\(self.isRefreshing)-- isDragging:\(self.superScrollView.isDragging) --originalOffsetY:\(self.superScrollView.contentInset.top)---值为\(self.superScrollView.contentOffset.y)")
+        if self.superScrollView.isDragging && self.isRefreshing == false {
             if self.originalOffsetY == nil {
                 self.currentStatus = refreshState.normal
                 self.originalOffsetY = -self.superScrollView.contentInset.top
             }
-            let normalPullingOffset: CGFloat = self.originalOffsetY! - refreshHeight
-
-            if self.currentStatus == refreshState.normal && self.superScrollView.contentOffset.y > normalPullingOffset{
-                self.currentStatus = refreshState.normal
-            }else if  self.currentStatus == refreshState.normal && self.superScrollView.contentOffset.y < normalPullingOffset{
-                self.currentStatus = refreshState.pulling
-                AudioServicesPlaySystemSound (systemSoundID)
+            
+            if let originalOffsetY = self.originalOffsetY {
+                let normalPullingOffset = originalOffsetY - refreshHeight
+                let refreshStateShouldChangeToNormal = self.currentStatus == refreshState.normal && self.superScrollView.contentOffset.y > normalPullingOffset
+                let refreshStateShouldChangeToPulling = self.currentStatus == refreshState.normal && self.superScrollView.contentOffset.y < normalPullingOffset
+                print ("refreshStateShouldChangeToNormal: \(refreshStateShouldChangeToNormal); refreshStateShouldChangeToPulling: \(refreshStateShouldChangeToPulling)")
+                if refreshStateShouldChangeToNormal {
+                    self.currentStatus = refreshState.normal
+                } else if refreshStateShouldChangeToPulling {
+                    self.currentStatus = refreshState.pulling
+                    AudioServicesPlaySystemSound (systemSoundID)
+                }
             }
             
-        }else if !self.superScrollView.isDragging{
-            if self.currentStatus == refreshState.pulling{
+        } else if self.superScrollView.isDragging == false {
+            if self.currentStatus == refreshState.pulling {
                 self.currentStatus = refreshState.refreshing
             }
         }
         self.pullToRefreshButton.drawCircle()
         let pullDistance: CGFloat = -self.frame.origin.y
-        //      pullDistance = MIN(60, -self.frame.origin.y); 悬浮在顶部
         self.backgroundView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: pullDistance)
         let totalWidth: CGFloat = 24 + 30 + 86
         let labelX = (screenWidth - totalWidth)/2
@@ -136,7 +143,6 @@ class CustomRefreshConrol: UIRefreshControl {
         
         self.pullToRefreshButton.frame = CGRect(x: labelX, y: -refreshHeight+pullDistance+(refreshHeight-self.pullToRefreshButton.bounds.size.height)/2, width: self.pullToRefreshButton.bounds.size.width, height: self.pullToRefreshButton.bounds.size.height)
         self.pullToRefreshButton.progress = Float(pullDistance)/Float(refreshHeight)
-//        print("self.label.bounds.size.width:\(self.label.bounds.size.width)")
     }
     
     
@@ -160,22 +166,28 @@ class CustomRefreshConrol: UIRefreshControl {
     }
     //刷新状态执行的方法
     fileprivate func doRefreshAction(){
-//        print("开始刷新动作")
-        if (self.refreshTarget?.responds(to: self.refreshAction))!{
-            self.refreshTarget?.performSelector(inBackground: self.refreshAction!, with: nil)
-        }
+        print("开始刷新动作")
+        //STEP 3: Take Action
+        delegate?.refreshSuperDataView()
+//        if let refreshTarget = self.refreshTarget,
+//            refreshTarget.responds(to: self.refreshAction){
+//            if let refreshAction = self.refreshAction {
+//                print ("Should Start Refresh Content")
+//
+//                //refreshTarget.performSelector(inBackground: refreshAction, with: nil)
+//            }
+//        }
     }
     
     override func beginRefreshing() {
         super.beginRefreshing()
-//         print("开始刷新")
     }
+    
     override func endRefreshing() {
         super.endRefreshing()
         if self.currentStatus != refreshState.refreshing{
             return
         }
-
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             let when = DispatchTime.now() + 0.4
             DispatchQueue.main.asyncAfter(deadline: when) {
@@ -185,7 +197,17 @@ class CustomRefreshConrol: UIRefreshControl {
         }
     }
     
+    // STEP 2: initiate the delegate of protocol
+    weak var delegate: CustomRefreshConrolDelegate?
+    
 }
+
+// STEP 1: Create Protocol
+protocol CustomRefreshConrolDelegate: class {
+    // MARK: When user panning to change page title, the navigation item title should change accordingly
+    func refreshSuperDataView()
+}
+
 
 class UIButtonPullToRefresh: UIButton {
     var progress: Float = 0 {

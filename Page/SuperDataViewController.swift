@@ -11,6 +11,12 @@ import WebKit
 import StoreKit
 import MediaPlayer
 
+
+enum DataViewRender {
+    case collectionView
+    case webView
+}
+
 class SuperDataViewController: UICollectionViewController, UINavigationControllerDelegate, UICollectionViewDataSourcePrefetching {
     var refreshContr: CustomRefreshConrol?
     var isLandscape = false
@@ -28,6 +34,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     var withPrivilege: PrivilegeType?
     var privilegeDescriptionBody: String?
     var isLoadingForTheFirstTime = true
+    var dataViewRender = DataViewRender.collectionView
     
     // MARK: If it's the first time web view loading, no need to record PV and refresh ad iframes
     // var isWebViewFirstLoading = true
@@ -129,9 +136,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             // MARK: - show refresh controll only when there is api
             if dataObject["api"] != nil || ["follow", "iap"].contains(dataObjectType) {
                 if #available(iOS 10.0, *) {
-                    //                    refreshControl.addTarget(self, action: #selector(refreshControlDidFire(sender:)), for: .valueChanged)
                     refreshContr = CustomRefreshConrol(target: self, refreshAction: #selector(refreshControlDidFire))
                     collectionView?.refreshControl = refreshContr
+                    refreshContr?.delegate = self
                 }
             }
             
@@ -186,11 +193,12 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             webView?.clipsToBounds = true
             webView?.scrollView.bounces = true
             refreshContr = CustomRefreshConrol(target: self, refreshAction: #selector(refreshWebView))
-            //            refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControlEvents.valueChanged)
+            // MARK: Delegate Step 4: Set the delegate to self
+            refreshContr?.delegate = self
+            dataViewRender = .webView
             if let refreshContr = refreshContr {
                 webView?.scrollView.addSubview(refreshContr)
             }
-            //            webView?.scrollView.addSubview(refreshControl)
             if dataObjectType == "Search" {
                 searchBar = UISearchBar()
                 searchBar?.sizeToFit()
@@ -1759,7 +1767,16 @@ extension SuperDataViewController: UISearchBarDelegate {
     
 }
 
-
+extension SuperDataViewController: CustomRefreshConrolDelegate {
+    //MARK: Delegate Step 5: implement the methods in protocol. Make sure the class implement the delegate
+    func refreshSuperDataView() {
+        if dataViewRender == .webView {
+            refreshWebView(refreshContr as Any)
+        } else {
+            refreshControlDidFire(sender: refreshContr as AnyObject)
+        }
+    }
+}
 
 // MARK: - Private
 //private extension DataViewController {

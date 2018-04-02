@@ -96,9 +96,9 @@ struct APIs {
  
     // MARK: - Domain Check: Launch Ad Schedule.
     // TODO: - Use background downloading domain just for launch ad schedule
-    public static let lauchAdSchedule = "https://webnodev.ftchinese.com/index.php/jsapi/applaunchschedule"
-    
-    
+    //public static let lauchAdSchedule = "https://webnodev.ftchinese.com/index.php/jsapi/applaunchschedule"
+    public static let lauchAdSchedule = "https://api003.ftmailbox.com/index.php/jsapi/applaunchschedule"
+
     public static let customerServiceUrlString = "http://www.ftchinese.com/m/corp/subscriber.html?webview=ftcapp&ad=no"
     
     // MARK: Number of days you want to keep the cached files

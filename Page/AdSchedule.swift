@@ -483,7 +483,10 @@ class AdSchedule {
         if let urlValue = url {
             Download.getDataFromUrl(urlValue) {[weak self] (data, response, error)  in
                 DispatchQueue.main.async { () -> Void in
-                    guard let data = data , error == nil else { return }
+                    guard let data = data , error == nil else {
+                        print ("Downloading error with the url: \(urlValue)")
+                        return
+                    }
                     self?.saveFile(data, filename: fileName)
                     print ("file saved as \(fileName)")
                     if parseScheduleForDownload == true {

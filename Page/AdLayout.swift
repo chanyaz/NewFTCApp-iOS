@@ -54,7 +54,6 @@ struct AdLayout {
 
         switch layout {
         case "home", "Video", "OutOfBox", "OutOfBox-LifeStyle":
-            
             // MARK: - The first item in the first section should be marked as Cover.
             // MARk: - Make sure items has a least one child to avoid potential run time error.
             if newContentSections[0].items.count > 0 {
@@ -106,21 +105,6 @@ struct AdLayout {
         case "OutOfBox-No-Ad":
             if newContentSections[0].items.count > 0 {
                 newContentSections[0].items[0].isCover = true
-            }
-            newContentSections = Content.updateSectionRowIndex(newContentSections)
-            return newContentSections
-        case "Video", "OutOfBox", "OutOfBox-LifeStyle":
-            if newContentSections[0].items.count > 0 {
-                newContentSections[0].items[0].isCover = true
-            }
-            if newContentSections.count > 2 {
-                if newContentSections[0].items.count + newContentSections[1].items.count > 6 {
-                    newContentSections.insert(MPU1, at: 2)
-                }
-            }
-            newContentSections.insert(topBanner, at: 0)
-            if newContentSections.count > 3 {
-                newContentSections.append(bottomBanner)
             }
             newContentSections = Content.updateSectionRowIndex(newContentSections)
             return newContentSections

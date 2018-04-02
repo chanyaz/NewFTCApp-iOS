@@ -332,11 +332,11 @@ struct APIs {
         case "video":
             urlString = "\(webPageDomain)\(type)/\(id)\(partialParameter)&webview=ftcapp"
         case "radio":
-            urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp"
+            urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&exclusive"
         case "pagemaker":
             urlString = "\(webPageDomain)m/corp/preview.html\(partialParameter)&pageid=\(id)&webview=ftcapp\(hideAdParameter)"
         case "interactive", "gym", "special":
-            urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&i=3&001"
+            urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&i=3&001&exclusive"
         case "channel", "tag", "archive", "archiver":
             urlString = "\(webPageDomain)\(type)/\(id.addUrlEncoding())\(partialParameter)&webview=ftcapp"
         case "story", "premium":
@@ -379,7 +379,7 @@ struct APIs {
         let finalUrlString: String
         switch type {
         case "audio":
-            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&for=audio&enableScript=yes&v=17"
+            finalUrlString = "\(urlString)\(connector)hideheader=yes&ad=no&inNavigation=yes&for=audio&enableScript=yes&v=22&exclusive"
                 .replacingOccurrences(of: "&i=3", with: "")
                 .replacingOccurrences(of: "?i=3", with: "")
         default:

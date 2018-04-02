@@ -238,7 +238,7 @@ struct AppNavigation {
                 [
                     "title": "英语电台",
                     //"api": "https://api003.ftmailbox.com/channel/json.html?pageid=radio&dfadfadfadfadf",
-                    "listapi":"https://api003.ftmailbox.com/channel/premium-radio.html?webview=ftcapp&bodyonly=yes",
+                    "listapi":"https://api003.ftmailbox.com/channel/radio.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/radio.html?webview=ftcapp",
                     "screenName":"english/radio",
                     "coverTheme": ""
@@ -246,7 +246,7 @@ struct AppNavigation {
                 [
                     "title": "金融英语速读",
                     //"api": "https://api003.ftmailbox.com/channel/json.html?pageid=speedread&dfadfadfadfadf",
-                    "listapi": "https://api003.ftmailbox.com/channel/premium-speedread.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api003.ftmailbox.com/channel/speedread.html?webview=ftcapp&bodyonly=yes",
                     "url":"http://www.ftchinese.com/channel/speedread.html?webview=ftcapp",
                     "screenName":"english/speedread",
                     "coverTheme": ""

@@ -49,9 +49,7 @@ struct APIs {
         "http://www.ftchinese.com/",
         "http://big5.ftchinese.com/"
     ]
-    
-   
-    
+
     private static let publicDomains = [
         //"http://app003.ftmailbox.com/",
         "http://www.ftchinese.com/",
@@ -91,9 +89,6 @@ struct APIs {
         return "https://noti.ftimg.net/iphone-collect.php"
     }
     
-    
-    
- 
     // MARK: - Domain Check: Launch Ad Schedule.
     // TODO: - Use background downloading domain just for launch ad schedule
     //public static let lauchAdSchedule = "https://webnodev.ftchinese.com/index.php/jsapi/applaunchschedule"

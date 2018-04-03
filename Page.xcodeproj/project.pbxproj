@@ -483,6 +483,9 @@
 		60AAE0AD1FAFEBEB00E5AD20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB831C61FAC353B001531E0 /* AppDelegate.swift */; };
 		60AEE24820720C4E007443D5 /* Android-new-828x1472-she.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 60AEE24720720C4D007443D5 /* Android-new-828x1472-she.jpg */; };
 		60AEE24920720C4E007443D5 /* Android-new-828x1472-she.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 60AEE24720720C4D007443D5 /* Android-new-828x1472-she.jpg */; };
+		60AEE24B20733688007443D5 /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEE24A20733688007443D5 /* LocationHelper.swift */; };
+		60AEE24C20733688007443D5 /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEE24A20733688007443D5 /* LocationHelper.swift */; };
+		60AEE24D20733688007443D5 /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEE24A20733688007443D5 /* LocationHelper.swift */; };
 		60B855481F6A118600FE190E /* VideoCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B855461F6A118600FE190E /* VideoCoverCell.swift */; };
 		60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B855461F6A118600FE190E /* VideoCoverCell.swift */; };
 		60B8554A1F6A118600FE190E /* VideoCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B855471F6A118600FE190E /* VideoCoverCell.xib */; };
@@ -815,6 +818,7 @@
 		60986A451F1CAC5300583157 /* WeChatShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WeChatShare.swift; path = Share/WeChatShare.swift; sourceTree = "<group>"; };
 		60A8FC9C1FD5097B00A598F4 /* Sponsors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sponsors.swift; sourceTree = "<group>"; };
 		60AEE24720720C4D007443D5 /* Android-new-828x1472-she.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Android-new-828x1472-she.jpg"; sourceTree = "<group>"; };
+		60AEE24A20733688007443D5 /* LocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelper.swift; sourceTree = "<group>"; };
 		60B855461F6A118600FE190E /* VideoCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCoverCell.swift; sourceTree = "<group>"; };
 		60B855471F6A118600FE190E /* VideoCoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCoverCell.xib; sourceTree = "<group>"; };
 		60C0D65A1F17402500E6F77D /* HappyUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HappyUser.swift; sourceTree = "<group>"; };
@@ -1546,6 +1550,7 @@
 			isa = PBXGroup;
 			children = (
 				60D461C31F1C4F79009B7196 /* Track.swift */,
+				60AEE24A20733688007443D5 /* LocationHelper.swift */,
 			);
 			name = Track;
 			sourceTree = "<group>";
@@ -2428,6 +2433,7 @@
 				5094D6822020AAA7000F32AB /* Impressions.swift in Sources */,
 				5094D6832020AAA7000F32AB /* AudioModel.swift in Sources */,
 				5094D6842020AAA7000F32AB /* LanguageSetting.swift in Sources */,
+				60AEE24C20733688007443D5 /* LocationHelper.swift in Sources */,
 				5094D6852020AAA7000F32AB /* HeadlineCell.swift in Sources */,
 				5094D6862020AAA7000F32AB /* CustomPresentationAnimation.swift in Sources */,
 				607CA26C206382FA00A01A7D /* SpeakWord.swift in Sources */,
@@ -2563,6 +2569,7 @@
 				604F2F8A1FA849D300A923E5 /* DataViewController.swift in Sources */,
 				F2E090811F5A736E00F4409F /* CustomAnimation.swift in Sources */,
 				602153531F397C650077A7AF /* ContentSection.swift in Sources */,
+				60AEE24D20733688007443D5 /* LocationHelper.swift in Sources */,
 				602153541F397C650077A7AF /* CustomPopTransition.swift in Sources */,
 				602153551F397C650077A7AF /* Channels.swift in Sources */,
 				6017AAE81F879D63008D3FBF /* SmoothCoverCell.swift in Sources */,
@@ -2721,6 +2728,7 @@
 				60C0D6601F18BF5800E6F77D /* Impressions.swift in Sources */,
 				F22545DA1FC5174E00322C42 /* AudioModel.swift in Sources */,
 				603726B11F72050E0084F938 /* LanguageSetting.swift in Sources */,
+				60AEE24B20733688007443D5 /* LocationHelper.swift in Sources */,
 				60FEBB551EF0E94B00C3EBB6 /* HeadlineCell.swift in Sources */,
 				F24B79941F5555FA001B62A2 /* CustomPresentationAnimation.swift in Sources */,
 				607CA26B206382FA00A01A7D /* SpeakWord.swift in Sources */,

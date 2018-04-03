@@ -13,10 +13,11 @@ import Google
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelegate*/ {
     
     var window: UIWindow?
     var checkImpressionTimer: Timer?
+
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -72,12 +73,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //GB2Big5.createDict()
         //let _ = GB2Big5.makeMyDict()
         
-        
-
-
+//        if let location = LocationHelper.shared.get() {
+//            print ("Latitude: \(location.latitude), Longitude: \(location.longtitude)")
+//        }
         return true
     }
     
+    
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+//        print("locations = \(locValue.latitude) \(locValue.longitude)")
+//    }
     
     private func setupGoogleAnalytics() {
         

@@ -482,12 +482,20 @@ struct APIs {
         let timeInterval = Int((Date().timeIntervalSince1970)*100000)
         let cntTime = String(timeInterval)
         let ip = NetworkHelper.getWiFiAddress() ?? ""
+        // MARK: Send User Location Only For Engagement Related Analysis
+        let loc: String
+        if let location = LocationHelper.shared.get() {
+            loc = "\(location.latitude), \(location.longtitude)"
+        } else {
+            loc = ""
+        }
         let targetDict = [
             "category": category,
             "action": action,
             "label": label,
             "iosToken": UserInfo.shared.deviceToken ?? "",
-            "visitorId": UserInfo.shared.uniqueVisitorId ?? ""
+            "visitorId": UserInfo.shared.uniqueVisitorId ?? "",
+            "loc": loc
         ]
         var targetString = ""
         var isFirstItem = true

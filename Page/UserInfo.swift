@@ -41,6 +41,8 @@ struct UserInfo {
                 UserInfo.shared.subscriptionExpire = nil
                 UserDefaults.standard.set(nil, forKey: subscriptionExpireKey)
             }
+            // MARK: Update user privilege immediately
+            // PrivilegeHelper.updateFromDevice()
             // TODO: Remove the following Test Code
 //            UserInfo.shared.subscriptionType = "premium"
 //            UserInfo.shared.subscriptionExpire = 1553843894.598611
@@ -65,13 +67,9 @@ struct UserInfo {
     }
     
     static func showAccountPage() {
-        if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController {
-            dataViewController.dataObject = [
-                "title": "账户",
-                "type": "account",
-                "url": "\(APIs.getPublicDomain())account.html",
-                "screenName": "myft/account"
-            ]
+        if let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
+            let dataForAccountPage = AppNavigation.getChannelData(of: "myft/account") {
+            dataViewController.dataObject = dataForAccountPage
             dataViewController.pageTitle = "登入"
             if let topViewController = UIApplication.topViewController() {
                 topViewController.navigationController?.pushViewController(dataViewController, animated: true)

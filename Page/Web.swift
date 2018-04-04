@@ -43,6 +43,9 @@ extension UIViewController: SFSafariViewControllerDelegate {
                 } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.channel) {
                     id = contentId
                     type = "channel"
+                }  else if urlString.matchingStrings(regexes: LinkPattern.search) != nil {
+                    id = urlString
+                    type = "searchpage"
                 } else if urlString.matchingStrings(regexes: LinkPattern.other) != nil {
                     id = urlString
                     type = "webpage"

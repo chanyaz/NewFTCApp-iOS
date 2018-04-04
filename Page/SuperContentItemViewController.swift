@@ -19,6 +19,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     var action: String?
     var isLoadingForTheFirstTime = true
     var isPrivilegeViewForAllLanguages = false
+    var isPrivilegeViewForAllLanguagesChecked = false
     // MARK: show in full screen
     var isFullScreen = false
     
@@ -128,22 +129,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 }
                 navigationController?.delegate = self
             }
-            
-            // MARK: Check if the user have the required privilege to view this content
-            //print (dataObject?.privilegeRequirement as Any)
-            if let privilege = dataObject?.privilegeRequirement {
-                if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
-                    PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject, endWith: "")
-                    isPrivilegeViewForAllLanguages = true
-                } else {
-                    if let dataObject = dataObject {
-                        updateAcutualLanguage()
-                        let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: dataObject.type, id: dataObject.id, suffix: currentActualLanguage?.suffix ?? "")
-                        Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
-                    }
-                }
-            }
-            
         }
         
         // MARK: - Notification For User Tapping Navigation Title View to Change Language Preference
@@ -179,12 +164,20 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             object: nil
         )
         
+        
+        // MARK: Check if the user have the required privilege to view this content
+        //print (dataObject?.privilegeRequirement as Any)
+        checkPrivileForContent()
+        
     }
-    
 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // MARK: - Update membership status
+        PrivilegeHelper.updateFromDevice()
+        
         if let type = dataObject?.type,
             let id = dataObject?.id {
             trackScreenView(type: type, id: id)
@@ -201,17 +194,14 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
         }
         // MARK: If there's a PrivilegeView in the view, check if it should be removed
-        if isLoadingForTheFirstTime == false {
-            if isPrivilegeViewForAllLanguages == true {
-                if let privilege = dataObject?.privilegeRequirement,
-                    PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared)  {
-                    PrivilegeViewHelper.removePrivilegeView(from: view)
-                    isPrivilegeViewForAllLanguages = false
-                }
-            } else {
-                print ("Language: check if the privilege view should be removed")
-                checkPrivilegeFor(.EnglishText)
+        if isLoadingForTheFirstTime == false && isPrivilegeViewForAllLanguages {
+            if let privilege = dataObject?.privilegeRequirement,
+                PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared)  {
+                PrivilegeViewHelper.removePrivilegeView(from: view)
+                isPrivilegeViewForAllLanguages = false
             }
+        } else {
+            checkPrivilegeFor(.EnglishText)
         }
         // MARK: At the end of viewWillAppear, set isLoadingForTheFirstTime to false so that when user's are back from another view, the privilege block will be checked again.
         isLoadingForTheFirstTime = false
@@ -369,6 +359,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             dataObject?.ebody = eBody
             dataObject?.cbody = item.cbody
             dataObject?.eheadline = item.eheadline
+            dataObject?.timeStamp = item.timeStamp
             dataObject?.publishTime = item.publishTime
             dataObject?.chineseByline = item.chineseByline
             dataObject?.englishByline = item.englishByline
@@ -432,6 +423,11 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         if let type = dataObject?.type,
             ["story", "premium", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
+            if let dataObject = dataObject {
+                self.dataObject = AdLayout.addPrivilegeRequirement(in: dataObject, with: [:])
+                //print ("New Privilege Requirement: \(newDataObject.privilegeRequirement)")
+                checkPrivileForContent()
+            }
             WebviewHelper.renderStory(type, subType: subType, dataObject: dataObject, webView: webView)
             if subType == .UserComments {
                 navigationItem.title = WebviewHelper.getHeadlineBody(dataObject).headline
@@ -561,7 +557,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         if let itemType = dataObject?.type,
             let itemId = dataObject?.id,
             ["story"].contains(itemType),
-            isPrivilegeViewForAllLanguages == false {
+            isPrivilegeViewForAllLanguages == false,
+            isPrivilegeViewForAllLanguagesChecked == true {
             if privilege == .EnglishText {
                 // MARK: Check the actual displayed language
                 updateAcutualLanguage()
@@ -580,6 +577,23 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
         }
     }
+    
+    private func checkPrivileForContent() {
+        if let privilege = dataObject?.privilegeRequirement {
+            if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
+                PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject, endWith: "")
+                isPrivilegeViewForAllLanguages = true
+            } else {
+                if let dataObject = dataObject {
+                    updateAcutualLanguage()
+                    let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: dataObject.type, id: dataObject.id, suffix: currentActualLanguage?.suffix ?? "")
+                    Track.eventToAll(category: "Privileges", action: "Read", label: eventLabel)
+                }
+            }
+        }
+        isPrivilegeViewForAllLanguagesChecked = true
+    }
+    
     
     private func trackScreenView(type: String?, id: String?) {
         updateAcutualLanguage()

@@ -624,8 +624,9 @@ struct LinkPattern {
     static let photonews = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/photonews/([0-9]+)"]
     static let tag = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/tag/([^?]+)"]
     static let archiver = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/archiver/([0-9-]+)"]
+    static let search = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/search/.*page=([0-9]+)"]
     static let channel = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/([0-9-a-zA-Z]+.html)"]
-    static let pagemaker = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/m/corp/preview.html\\?pageid\\=([0-9-a-zA-Z]+)"]
+    static let pagemaker = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/m/corp/preview.html\\?pageid\\=([0-9-a-zA-Z]+)", "^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/editorchoice-issue.html\\?issue\\=([0-9-a-zA-Z]+)"]
     static let other = ["^(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
     static let image = [
         "^(http[s]*://.*.jpg)$",

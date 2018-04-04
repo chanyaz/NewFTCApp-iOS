@@ -69,6 +69,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
+
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
         if dataObject["api"] != nil || ["follow", "read", "iap", "setting", "options"].contains(dataObjectType){
@@ -483,6 +484,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         isVisible = true
+        // MARK: - Update membership status
+        PrivilegeHelper.updateFromDevice()
+        
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)", trackEngagement: true)
         }

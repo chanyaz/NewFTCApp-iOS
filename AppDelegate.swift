@@ -69,13 +69,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelega
         // MARK: - Update membership status
         PrivilegeHelper.updateFromDevice()
 
+        //        if let location = LocationHelper.shared.get() {
+        //            print ("Latitude: \(location.latitude), Longitude: \(location.longtitude)")
+        //        }
+
         // MARK: - Don't delete this. It's very useful.
         //GB2Big5.createDict()
         //let _ = GB2Big5.makeMyDict()
         
-//        if let location = LocationHelper.shared.get() {
-//            print ("Latitude: \(location.latitude), Longitude: \(location.longtitude)")
-//        }
         return true
     }
     

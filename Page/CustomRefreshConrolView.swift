@@ -108,18 +108,17 @@ class CustomRefreshConrol: UIRefreshControl {
     }
     var endRefresh = false
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        print("refreshControl fresh--\(self.isRefreshing)-- isDragging:\(self.superScrollView.isDragging) --originalOffsetY:\(self.superScrollView.contentInset.top)---值为\(self.superScrollView.contentOffset.y)")
+        //print("refreshControl fresh--\(self.isRefreshing)-- isDragging:\(self.superScrollView.isDragging) --originalOffsetY:\(self.superScrollView.contentInset.top)---值为\(self.superScrollView.contentOffset.y)")
         if self.superScrollView.isDragging && self.isRefreshing == false {
             if self.originalOffsetY == nil {
                 self.currentStatus = refreshState.normal
                 self.originalOffsetY = -self.superScrollView.contentInset.top
             }
-            
             if let originalOffsetY = self.originalOffsetY {
                 let normalPullingOffset = originalOffsetY - refreshHeight
                 let refreshStateShouldChangeToNormal = self.currentStatus == refreshState.normal && self.superScrollView.contentOffset.y > normalPullingOffset
                 let refreshStateShouldChangeToPulling = self.currentStatus == refreshState.normal && self.superScrollView.contentOffset.y < normalPullingOffset
-                print ("refreshStateShouldChangeToNormal: \(refreshStateShouldChangeToNormal); refreshStateShouldChangeToPulling: \(refreshStateShouldChangeToPulling)")
+                // print ("refreshStateShouldChangeToNormal: \(refreshStateShouldChangeToNormal); refreshStateShouldChangeToPulling: \(refreshStateShouldChangeToPulling)")
                 if refreshStateShouldChangeToNormal {
                     self.currentStatus = refreshState.normal
                 } else if refreshStateShouldChangeToPulling {
@@ -127,7 +126,6 @@ class CustomRefreshConrol: UIRefreshControl {
                     AudioServicesPlaySystemSound (systemSoundID)
                 }
             }
-            
         } else if self.superScrollView.isDragging == false {
             if self.currentStatus == refreshState.pulling {
                 self.currentStatus = refreshState.refreshing
@@ -138,13 +136,10 @@ class CustomRefreshConrol: UIRefreshControl {
         self.backgroundView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: pullDistance)
         let totalWidth: CGFloat = 24 + 30 + 86
         let labelX = (screenWidth - totalWidth)/2
-
         self.label.frame = CGRect(x: labelX + 54, y: -refreshHeight + pullDistance + (refreshHeight - self.label.bounds.size.height)/2, width: self.label.frame.size.width, height: self.label.frame.size.height)
-        
         self.pullToRefreshButton.frame = CGRect(x: labelX, y: -refreshHeight+pullDistance+(refreshHeight-self.pullToRefreshButton.bounds.size.height)/2, width: self.pullToRefreshButton.bounds.size.width, height: self.pullToRefreshButton.bounds.size.height)
         self.pullToRefreshButton.progress = Float(pullDistance)/Float(refreshHeight)
     }
-    
     
     func setCurrentState(currentState: refreshState){
         switch currentState{

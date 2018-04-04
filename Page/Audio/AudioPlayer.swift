@@ -315,6 +315,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // MARK: - Update membership status
+        PrivilegeHelper.updateFromDevice()
         let screen: String
         if let currentScreenName = screenName {
             screen = "/\(DeviceInfo.checkDeviceType())/\(currentScreenName)"

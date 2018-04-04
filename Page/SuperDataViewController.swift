@@ -70,6 +70,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
+        // MARK: - Update membership status
+        PrivilegeHelper.updateFromDevice()
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
         if dataObject["api"] != nil || ["follow", "read", "iap", "setting", "options"].contains(dataObjectType){
@@ -1689,6 +1691,8 @@ extension SuperDataViewController: WKScriptMessageHandler {
             // MARK: Get user information
             if let body = message.body as? [String: String] {
                 UserInfo.updateUserInfo(with: body)
+                // MARK: - Update membership status
+                PrivilegeHelper.updateFromDevice()
             }
         } else if message.name == "selectItem" {
             if let rowString = message.body as? String,

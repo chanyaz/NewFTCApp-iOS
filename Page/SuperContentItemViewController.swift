@@ -37,6 +37,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     // MARK: - Web View is the best way to render larget amount of content with rich layout. It is much much easier than textview, tableview or any other combination.
     override func loadView() {
         super.loadView()
+        // MARK: - Update membership status
+        PrivilegeHelper.updateFromDevice()
         if ContentItemRenderContent.addPersonInfo == false {
             if dataObject?.type == "ad" {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -706,6 +708,9 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
                 // MARK: Get user information
                 if let body = message.body as? [String: String] {
                     UserInfo.updateUserInfo(with: body)
+                    // MARK: - Update membership status
+                    PrivilegeHelper.updateFromDevice()
+                    checkPrivileForContent()
                 }
             default:
                 break

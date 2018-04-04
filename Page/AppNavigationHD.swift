@@ -198,7 +198,7 @@ struct AppNavigation {
                     "title": "文章收藏",
                     "type": "clip",
                     //"url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
-                    "url":"http://www.ftchinese.com/account.html",
+                    "url":"http://www.ftchinese.com/users/setting/index",
                     "screenName":"myft",
                     "compactLayout": ""
                 ],
@@ -442,7 +442,7 @@ struct AppNavigation {
                 [
                     "title": "账户",
                     "type": "account",
-                    "url":"http://www.ftchinese.com/account.html",
+                    "url":"http://www.ftchinese.com/users/setting/index",
                     //"url":"http://app003.ftmailbox.com/iphone-2014.html",
                     "screenName":"myft/account"
                 ],

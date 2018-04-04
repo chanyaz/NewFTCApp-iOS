@@ -139,15 +139,15 @@ struct AppNavigation {
                     "screenName":"homepage/technology",
                     "coverTheme": "OutOfBox"
                 ],
-                [
-                    "title": "教育",
-                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
-                    "listapi":"https://api003.ftmailbox.com/channel/education.html?webview=ftcapp&bodyonly=yes&001",
-                    "url":"http://www.ftchinese.com/channel/education.html?webview=ftcapp",
-                    "screenName":"homepage/education",
-                    "coverTheme": "OutOfBox",
-                    "new": "yes"
-                ],
+//                [
+//                    "title": "教育",
+//                    //"api":"https://d37m993yiqhccr.cloudfront.net/channel/markets.html?type=json",
+//                    "listapi":"https://api003.ftmailbox.com/channel/education.html?webview=ftcapp&bodyonly=yes&001",
+//                    "url":"http://www.ftchinese.com/channel/education.html?webview=ftcapp",
+//                    "screenName":"homepage/education",
+//                    "coverTheme": "OutOfBox",
+//                    "new": "yes"
+//                ],
                 [
                     "title": "管理",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/management.html?type=json",
@@ -461,7 +461,7 @@ struct AppNavigation {
                     "title": "账户",
                     "type": "account",
                     //"url":"http://app003.ftmailbox.com/iphone-2014.html",
-                    "url":"http://www.ftchinese.com/account.html",
+                    "url":"http://www.ftchinese.com/users/setting/index",
                     "screenName":"myft/account"
                 ],
                 [

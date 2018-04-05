@@ -24,6 +24,7 @@ struct UserInfo {
     private static let subscriptionExpireKey = "Subscription Expire Key"
     
     static func updateUserInfo(with body: [String: String]) {
+        print ("user info body: \(body)")
         if let userName = body["username"],
             let userId = body["userId"] {
             UserInfo.shared.userName = userName

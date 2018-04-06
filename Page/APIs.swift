@@ -41,7 +41,7 @@ struct APIs {
     // MARK: Domain reserved for subscribers only
     private static let subscriberDomain = [
         "https://webnodeiv.ftchinese.com/",
-        "https://webnodeiv.ftchinese.com/"
+        "https://d2e90etfgpidmd.cloudfront.net/"
     ]
     
     // MARK: If there are http resources that you rely on in your page, don't use https as the url base

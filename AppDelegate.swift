@@ -73,9 +73,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelega
         //            print ("Latitude: \(location.latitude), Longitude: \(location.longtitude)")
         //        }
 
-        // MARK: - Don't delete this. It's very useful.
-        //GB2Big5.createDict()
-        //let _ = GB2Big5.makeMyDict()
+//         MARK: - Don't delete this. It's very useful.
+//        GB2Big5.createDict()
+//        let _ = GB2Big5.makeMyDict()
         
         return true
     }

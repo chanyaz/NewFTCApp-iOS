@@ -343,7 +343,21 @@ extension AppDelegate: WXApiDelegate {
         return false
     }
     
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    // TODO: - Figure out how to use debugging tool to find out this change that causes the app to crash
+//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+//        if let urlScheme = url.scheme {
+//            switch urlScheme {
+//            case "ftchinese":
+//                NotificationHelper.handle(url)
+//                return true
+//            default:
+//                return WXApi.handleOpen(url, delegate: self)
+//            }
+//        }
+//        return false
+//    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if let urlScheme = url.scheme {
             switch urlScheme {
             case "ftchinese":
@@ -354,14 +368,14 @@ extension AppDelegate: WXApiDelegate {
             }
         }
         return false
-        
     }
-    
-    func onReq(_ req: BaseReq!) {
+
+    func onReq(_ req: BaseReq?) {
         // do optional stuff
     }
     
-    func onResp(_ resp: BaseResp!) {
+    func onResp(_ resp: BaseResp?) {
+        if let resp = resp {
         if let authResp = resp as? SendAuthResp {
             if let wechatAuthCode = authResp.code {
                 let wechatAccessTokenLink = WeChat.accessTokenPrefix + "appid=" + WeChat.appId + "&secret=" + WeChat.appSecret + "&code=" + wechatAuthCode + "&grant_type=authorization_code"
@@ -420,8 +434,11 @@ extension AppDelegate: WXApiDelegate {
             }
         } else {
         }
+        }
     }
+
     // code related to wechat authorization end
 }
+
 
 

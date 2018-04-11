@@ -424,7 +424,7 @@ struct Download {
                     }
                     if let data = data,
                         error == nil,
-                        HTMLValidator.validate(data, url: listAPIString) || !validationNecessary {
+                        HTMLValidator.validate(data, of: listAPIString, for: .List) != nil || !validationNecessary {
                         saveFile(data, filename: listAPI, to: .cachesDirectory, as: "html")
                         Track.event(category: "Background Download", action: "Success", label: listAPI)
                         // MARK: Only update the badge number if download is successful

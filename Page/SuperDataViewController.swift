@@ -394,7 +394,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     }
                     if let data = data,
                         error == nil {
-                        if HTMLValidator.validate(data, url: listAPIString) {
+                        if HTMLValidator.validate(data, of: listAPIString, for: .List) != nil {
                             if APIs.noRepeatForSameContent(listAPI) == true,
                                 let currentData = Download.readFile(listAPI, for: .cachesDirectory, as: fileExtension),
                                 currentData == data {

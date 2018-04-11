@@ -1098,23 +1098,36 @@ struct ContentItemRenderContent {
 
 // MARK: - Validate if the HTML snippets are what we expect rather than error message from server.
 struct HTMLValidator {
-    static func validate(_ htmlData: Data, url: String) -> Bool {
-        if let htmlCode = String(data: htmlData, encoding: .utf8){
-            if htmlCode.range(of: "item-container") != nil {
-                print ("\(url) html validated! ")
-                return true
-            } else {
-                // MARK: If the html validation fails, mark the current server as not responding so that the client can switch to another backup server
-                print ("\(url) HTML validation failed and marked as not responding: \(htmlCode)")
-                Download.markServerAsNotResponding(url)
-                Track.event(category: "CatchError", action: "HTML Validation Fail", label: url)
-                return false
+    static func validate(_ htmlData: Data, of url: String, for type: HTMLValidatorType) -> String? {
+        if let htmlCode = String(data: htmlData, encoding: String.Encoding.utf8) {
+            let keywords: [String]
+            switch type {
+            case .List:
+                keywords = ["item-container"]
+            case .Content:
+                keywords = ["story-headline", "page-header", "swipe"]
             }
+            for keyword in keywords {
+                if htmlCode.range(of: keyword) != nil {
+                    print ("\(url) html validated! ")
+                    return htmlCode
+                }
+            }
+            // MARK: If the html validation fails, mark the current server as not responding so that the client can switch to another backup server
+            print ("\(url) HTML validation failed and marked as not responding: \(htmlCode)")
+            Download.markServerAsNotResponding(url)
+            Track.event(category: "CatchError", action: "HTML Validation Fail", label: url)
+            return nil
         }
-        print ("html Data cannot be converted to string ")
+        print ("html Data cannot be converted to string \(htmlData)")
         Track.event(category: "CatchError", action: "HTML Data Conversion Fail", label: url)
-        return false
+        return nil
     }
+}
+
+enum HTMLValidatorType {
+    case List
+    case Content
 }
 
 struct EngagementTracker {

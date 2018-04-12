@@ -430,6 +430,13 @@ struct AppNavigation {
                     "compactLayout": "books",
                     "screenName":"myft/membership"
                 ],
+                [
+                    "title": "账户",
+                    "type": "account",
+                    //"url":"http://app003.ftmailbox.com/iphone-2014.html",
+                    "url":"http://www.ftchinese.com/users/setting/index",
+                    "screenName":"myft/account"
+                ],
                 ["title": "已读",
                  "type": "read",
                  "screenName":"myft",
@@ -458,11 +465,12 @@ struct AppNavigation {
 //                    "screenName":"homepage/ebook"
 //                ],
                 [
-                    "title": "账户",
-                    "type": "account",
-                    //"url":"http://app003.ftmailbox.com/iphone-2014.html",
-                    "url":"http://www.ftchinese.com/users/setting/index",
-                    "screenName":"myft/account"
+                    "title": "已购电子书",
+                    "type": "iap",
+                    "subtype":"ebook",
+                    "compactLayout": "books",
+                    "screenName":"homepage/ebook",
+                    "include": "purchased"
                 ],
                 [
                     "title": "FT商城",

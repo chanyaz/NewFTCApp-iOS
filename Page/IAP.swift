@@ -60,6 +60,7 @@ struct IAP {
                 }()
                 // MARK: - Get product information from StoreKit
                 var isPurchased = IAPProducts.store.isProductPurchased(id)
+                //print ("IAP Product First Check. isPurchased: \(isPurchased)")
                 
                 // MARK: - Membership Benefits
                 //var benefitsString = ""
@@ -82,6 +83,8 @@ struct IAP {
                         isPurchased = true
                     }
                 }
+                
+                //print ("IAP Product Second Check. isPurchased: \(isPurchased)")
                 
                 // MARK: - Get expire date from user default
                 var expireDateString = ""
@@ -160,6 +163,9 @@ struct IAP {
                 let productPurchaseStatus: PurchaseStatus = (isPurchased) ? .Purchased: .NotPurchased
                 if purchaseStatus == .All || productPurchaseStatus == purchaseStatus {
                     contentItems.append(contentItem)
+                    //print ("IAP Product Displayed. Product Purchase Status: \(productPurchaseStatus). Purchase Status: \(purchaseStatus)")
+                } else {
+                    //print ("IAP Product NOT Displayed. Product Purchase Status: \(productPurchaseStatus). Purchase Status: \(purchaseStatus)")
                 }
             }
         }

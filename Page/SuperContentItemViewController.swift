@@ -12,6 +12,7 @@ import WebKit
 
 class SuperContentItemViewController: UIViewController, UINavigationControllerDelegate {
     var dataObject: ContentItem?
+    var sourceDataObject = [String: String]()
     var pageTitle = ""
     var pageId = ""
     var themeColor: String?
@@ -426,7 +427,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             ["story", "premium", "ebook"].contains(type) || subType == .UserComments {
             // MARK: If it is a story
             if let dataObject = dataObject {
-                self.dataObject = AdLayout.addPrivilegeRequirement(in: dataObject, with: [:])
+                self.dataObject = AdLayout.addPrivilegeRequirement(in: dataObject, with: sourceDataObject)
                 //print ("New Privilege Requirement: \(newDataObject.privilegeRequirement)")
                 checkPrivileForContent()
             }

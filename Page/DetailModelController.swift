@@ -31,6 +31,7 @@ class DetailModelController: ModelController {
     weak var delegate: DetailModelDelegate?
 
     var pageData = [ContentItem]()
+    var sourceDataObject = [String: String]()
     var currentPageIndex = 0
     var currentItem: ContentItem? = nil {
         didSet {
@@ -62,6 +63,7 @@ class DetailModelController: ModelController {
         let contentItemViewController = storyboard.instantiateViewController(withIdentifier: "ContentItemViewController") as! ContentItemViewController
         //print(dataViewController.view.frame)
         contentItemViewController.dataObject = self.pageData[index]
+        contentItemViewController.sourceDataObject = self.sourceDataObject
         contentItemViewController.pageTitle = self.pageTitles[index]
         contentItemViewController.pageId = self.pageIds[index]
         contentItemViewController.themeColor = self.pageThemeColor

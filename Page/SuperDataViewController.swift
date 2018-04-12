@@ -1286,6 +1286,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     pageData[currentPageIndex].isLandingPage = true
                     detailViewController.themeColor = themeColor
                     detailViewController.contentPageData = pageData
+                    // MARK: - It is important to pass information about the source so that we can get the correct privileges for htmlbook and other types of service
+                    detailViewController.sourceDataObject = dataObject
                     detailViewController.currentPageIndex = currentPageIndex
                     navigationController?.pushViewController(detailViewController, animated: true)
                 }

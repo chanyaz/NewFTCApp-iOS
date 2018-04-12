@@ -11,6 +11,7 @@ import UIKit
 class DetailViewController: PagesViewController, UINavigationControllerDelegate/*, UIGestureRecognizerDelegate*/ {
     
     var contentPageData = [ContentItem]()
+    var sourceDataObject = [String: String]()
     var currentPageIndex = 0
     var languages: UISegmentedControl?
     var audioButton: UIBarButtonItem?
@@ -32,6 +33,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         if let contentItemViewController = storyboard?.instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
             //print(dataViewController.view.frame)
             contentItemViewController.dataObject = item
+            contentItemViewController.sourceDataObject = self.sourceDataObject
             contentItemViewController.pageTitle = item.headline
             contentItemViewController.isFullScreen = true
             contentItemViewController.subType = .UserComments
@@ -131,6 +133,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
                     pageData: contentPageData
                 )
                 _modelController?.currentPageIndex = currentPageIndex
+                _modelController?.sourceDataObject = sourceDataObject
             }
         }
         return _modelController!

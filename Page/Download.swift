@@ -369,7 +369,9 @@ struct Download {
         let connector = (urlString.range(of: "?") == nil) ? "?": "&"
         // MARK: Add subscriber information for home page
         let subscriberParameter: String = APIs.getSubscriptionParameter(from: urlString)
-        return "\(urlString)\(connector)v=\(versionFromBundle)\(timeStamp)\(subscriberParameter)&device=\(DeviceInfo.checkDeviceType())"
+        // MARK: Test Ad Parameter
+        let testAdParameter = "&testDB=yes"
+        return "\(urlString)\(connector)v=\(versionFromBundle)\(timeStamp)\(subscriberParameter)&device=\(DeviceInfo.checkDeviceType())\(testAdParameter)"
     }
     
     public static func getQueryStringParameter(url: String, param: String) -> String? {

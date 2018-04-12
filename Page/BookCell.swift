@@ -86,7 +86,7 @@ class BookCell: CustomCell {
             lead.attributedText = setStr
         }
         
-        loadImage("thumbnail", to: imageView)
+        loadImage("bookcover", to: imageView)
         
         // MARK: - update buy button content
         buyButton.setTitle(itemCell?.productPrice, for: .normal)

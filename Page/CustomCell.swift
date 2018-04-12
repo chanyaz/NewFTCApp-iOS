@@ -60,6 +60,10 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
                 loadedImage = itemCell?.coverImage
                 imageWidth = 408
                 imageHeight = 234
+            case "bookcover":
+                loadedImage = itemCell?.coverImage
+                imageWidth = 119
+                imageHeight = 160
             case "thumbnail":
                 loadedImage = itemCell?.thumbnailImage
                 imageWidth = 187

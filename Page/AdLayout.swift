@@ -221,4 +221,8 @@ struct AdLayout {
         return newItems
     }
     
+    static func switchToNewAdVendor() -> (on: Bool, parameter: String) {
+        return (true, "&testDB=yes")
+    }
+    
 }

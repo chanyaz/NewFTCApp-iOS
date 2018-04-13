@@ -366,12 +366,14 @@ struct Download {
         let minutesTrucated = cacheMinute*Int(minutes/cacheMinute)
         let timeStamp = "&t=\(year)\(month)\(day)\(hour)\(minutesTrucated)"
         let versionFromBundle: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let version = "v=\(versionFromBundle)"
         let connector = (urlString.range(of: "?") == nil) ? "?": "&"
         // MARK: Add subscriber information for home page
-        let subscriberParameter: String = APIs.getSubscriptionParameter(from: urlString)
+        let subscriber: String = APIs.getSubscriptionParameter(from: urlString)
+        let device = "&device=\(DeviceInfo.checkDeviceType())"
         // MARK: Test Ad Parameter
-        let testAdParameter = "&testDB=yes"
-        return "\(urlString)\(connector)v=\(versionFromBundle)\(timeStamp)\(subscriberParameter)&device=\(DeviceInfo.checkDeviceType())\(testAdParameter)"
+        let ad = AdLayout.switchToNewAdVendor().parameter
+        return "\(urlString)\(connector)\(version)\(timeStamp)\(subscriber)\(device)\(ad)"
     }
     
     public static func getQueryStringParameter(url: String, param: String) -> String? {

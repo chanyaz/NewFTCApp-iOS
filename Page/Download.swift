@@ -689,7 +689,6 @@ struct Download {
     }
     
     public static func getFileCreatedTime(fileName:String,directoryName: String,for directory: FileManager.SearchPathDirectory)->Date{
-//        let time = Date()
         do {
             let fileManager =  FileManager.default
             if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
@@ -733,7 +732,6 @@ struct Download {
     }
     
     public static func checkDownloadedFileInDirectory(_ url: String,directoryName: String,for directory: FileManager.SearchPathDirectory) -> String? {
-        
         if let directoryUrl = getDirectoryUrlFromDirectory(directoryName, for: directory){
             let templatepathInDocument = directoryUrl.appendingPathComponent(url)
             var templatePath: String? = nil
@@ -744,7 +742,6 @@ struct Download {
         }else{
             return nil
         }
-        
     }
  
 }

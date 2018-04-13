@@ -221,8 +221,22 @@ struct AdLayout {
         return newItems
     }
     
-    static func switchToNewAdVendor() -> (on: Bool, parameter: String) {
-        return (true, "&testDB=yes")
+    public static func switchToNewAdVendor() -> (on: Bool, parameter: String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-mm-dd" //Your date format
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT+8:00") //Current time zone
+        if let date = dateFormatter.date(from: "2020-04-13") {
+            let shouldSwitchToNewAdVendor: Bool
+            if date <= Date() {
+                shouldSwitchToNewAdVendor = true
+            } else {
+                shouldSwitchToNewAdVendor = false
+            }
+            if shouldSwitchToNewAdVendor {
+                return (true, "&testDB=yes")
+            }
+        }
+        return (false, "")
     }
     
 }

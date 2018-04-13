@@ -138,8 +138,8 @@ struct WebviewHelper {
                     timeStamp = dataObject?.publishTime ?? ""
                     lead = dataObject?.lead ?? ""
                     styleContainerStyle = ""
-                    adBanner = "<script type=\"text/javascript\">document.write(writeAdNew({devices: ['iPhoneApp'],pattern:'Banner',position:'Num1'}));</script>"
-                    adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
+                    adBanner = JSCodes.adBanner
+                    adMPU = JSCodes.adMPU
                 }
                 
                 let followTags = getFollow("tag")
@@ -157,6 +157,8 @@ struct WebviewHelper {
                     resourceFileName = "story"
                 }
                 
+                let testDB = (AdLayout.switchToNewAdVendor().on) ? "yes" : "no"
+                
                 let nightClass = Setting.getNightClass()
                 let finalFileName = GB2Big5.convertHTMLFileName(resourceFileName)
                 if let adHTMLPath = Bundle.main.path(forResource: finalFileName, ofType: "html"){
@@ -172,6 +174,7 @@ struct WebviewHelper {
                             .replacingOccurrences(of: "{story-id}", with: id)
                             .replacingOccurrences(of: "{story-image}", with: imageHTML)
                             .replacingOccurrences(of: "{related-stories}", with: relatedStories)
+                            .replacingOccurrences(of: "{testDB}", with: testDB)
                             .replacingOccurrences(of: "{related-topics}", with: relatedTopics)
                             .replacingOccurrences(of: "{comments-order}", with: userCommentsOrder)
                             .replacingOccurrences(of: "{story-container-style}", with: styleContainerStyle)
@@ -187,7 +190,6 @@ struct WebviewHelper {
                             .replacingOccurrences(of: "{font-class}", with: fontClass)
                             .replacingOccurrences(of: "{comments-id}", with: commentsId)
                             .replacingOccurrences(of: "{night-class}", with: nightClass)
-                            
                         let storyHTMLCheckingVideo = JSCodes.getInlineVideo(storyHTML)
                         let storyHTMLRemovingCodes = JSCodes.getCleanHTML(storyHTMLCheckingVideo)
                         webView?.loadHTMLString(storyHTMLRemovingCodes, baseURL:url)

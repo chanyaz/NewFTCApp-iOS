@@ -811,8 +811,73 @@ struct DeviceToken {
 
 // MARK: - JS Codes you might need to execute in your web views
 struct JSCodes {
-    static let adMPU = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle1',container:'mpuInStroy'}));</script>"
-    static let adMPU2 = "<script type=\"text/javascript\">document.write (writeAdNew({devices:['iPhoneWeb','iPhoneApp'],pattern:'MPU',position:'Middle2',container:'mpuInStroy'}));</script>"
+
+    static let adBanner = """
+    <script type=\"text/javascript\">
+    displayAd(
+        {
+            db: {
+                devices: ['iPhoneApp','AndroidApp'],
+                adName:'Mobile-Banner-Num1',
+                container:'banner'
+            },
+            dp: {
+                devices: ['iPhoneApp','AndroidApp'],
+                pattern:'Banner',
+                position:'Num1'
+            }
+        }
+    );
+    </script>
+    """.replacingOccurrences(
+        of: "[\r\t\n]",
+        with: "",
+        options: .regularExpression
+    )
+    
+    static let adMPU = """
+    <script type=\"text/javascript\">
+    displayAd ({
+    db: {
+        devices: ['iPhoneApp','AndroidApp'],
+        adName: 'Mobile-MPU-Num1',
+        container: 'mpu'
+    },
+    dp: {
+        devices: ['iPhoneApp','AndroidApp'],
+        pattern: 'MPU',
+        position: 'Middle1',
+        container: 'mpuInStory'
+    }
+    });
+    </script>
+    """.replacingOccurrences(
+        of: "[\r\t\n]",
+        with: "",
+        options: .regularExpression
+    )
+    
+    static let adMPU2 = """
+    <script type=\"text/javascript\">
+    displayAd ({
+    db: {
+        devices: ['iPhoneApp','AndroidApp'],
+        adName: 'Mobile-MPU-Num2',
+        container: 'mpu'
+    },
+    dp: {
+        devices: ['iPhoneApp','AndroidApp'],
+        pattern: 'MPU',
+        position: 'Middle2',
+        container: 'mpuInStory'
+    }
+    });
+    </script>
+    """.replacingOccurrences(
+        of: "[\r\t\n]",
+        with: "",
+        options: .regularExpression
+    )
     
     static let turnOnNightClass = "setTimeout(function(){document.documentElement.className += ' night';},0);"
     static let turnOffNightClass = "document.documentElement.className = document.documentElement.className.replace(/night/g, '');"

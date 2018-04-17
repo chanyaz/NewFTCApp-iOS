@@ -22,6 +22,7 @@ struct ShareHelper {
         webPageImageIcon = ""
     }
     var thumbnail: UIImage?
+    var coverImage: UIImage?
     var webPageUrl: String
     var webPageTitle: String
     var webPageDescription: String
@@ -29,18 +30,29 @@ struct ShareHelper {
     var webPageImageIcon: String
     var currentWebView: WKWebView?
     
-    static func updateThubmnail(_ url: URL) {
-        print("Start downloading \(url) for WeChat Shareing. lastPathComponent: \(url.absoluteString)")
+    static func updateShareImage() {
+        // print("Start downloading images for WeChat Shareing. ")
+        // print("web page image: \(ShareHelper.shared.webPageImage)")
         ShareHelper.shared.thumbnail = UIImage(named: "ftcicon.jpg")
-        Download.getDataFromUrl(url) {(data, response, error)  in
-            //DispatchQueue.main.async { () -> Void in
-            guard let data = data , error == nil else {return}
-            ShareHelper.shared.thumbnail = UIImage(data: data)
-            print("finished downloading wechat share icon: \(url.absoluteString)")
-            //}
+        if let url = URL(string: ShareHelper.shared.webPageImageIcon) {
+            Download.getDataFromUrl(url) {(data, response, error)  in
+                guard let data = data, error == nil else {return}
+                ShareHelper.shared.thumbnail = UIImage(data: data)
+                print("finished downloading wechat share icon: \(url.absoluteString)")
+            }
+        }
+        ShareHelper.shared.coverImage = nil
+        let statusType = IJReachability().connectedToNetworkOfType()
+        if statusType == .wiFi,
+            let url = URL(string: ShareHelper.shared.webPageImage) {
+            Download.getDataFromUrl(url) {(data, response, error)  in
+                guard let data = data, error == nil else {return}
+                ShareHelper.shared.coverImage = UIImage(data: data)
+                print("finished downloading content image: \(url.absoluteString)")
+            }
         }
     }
-    
+
     static func stitchImages(images: [UIImage], isVertical: Bool) -> UIImage {
         var stitchedImages : UIImage!
         if images.count > 0 {
@@ -92,8 +104,8 @@ extension UIViewController {
         let activityVC = CustomShareViewController()
         print ("sharing \(item.type)/\(item.id)")
         if #available(iOS 10.0, *),
-            Privilege.shared.exclusiveContent {
-            //item.type != "premium" {
+            Privilege.shared.exclusiveContent,
+            item.type != "premium" {
             activityVC.shareItems = [
                 WeChatShare(to: "chat-custom"),
                 WeChatShare(to: "moment-custom"),
@@ -161,9 +173,7 @@ extension UIViewController {
         if ShareHelper.shared.webPageImageIcon.range(of: "https://image.webservices.ft.com") == nil{
             ShareHelper.shared.webPageImageIcon = "https://image.webservices.ft.com/v1/images/raw/\(ShareHelper.shared.webPageImageIcon)?source=ftchinese&width=72&height=72"
         }
-        if let imgUrl = URL(string: ShareHelper.shared.webPageImageIcon) {
-            ShareHelper.updateThubmnail(imgUrl)
-        }
+        ShareHelper.updateShareImage()
     }
     
     func getCurrentWebView() {

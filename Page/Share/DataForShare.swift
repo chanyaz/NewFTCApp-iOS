@@ -22,12 +22,12 @@ class DataForShare: NSObject, UIActivityItemSource {
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any? {
         //Sina Weibo cannot handle arrays. It's either text or image
         var textForShare = ""
-        
+        //print (activityType?.rawValue)
         if activityType?.rawValue == "com.tencent.xin.sharetimeline" {
             return URL(string: ShareHelper.shared.webPageUrl)
         } else if activityType == UIActivityType.mail {
             textForShare = ShareHelper.shared.webPageDescription
-        } else if activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter {
+        } else if activityType?.rawValue == "com.sina.weibo.ShareExtension" || activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter {
             textForShare = "【" + ShareHelper.shared.webPageTitle + "】" + ShareHelper.shared.webPageDescription
             let textForShareCredit = "（分享自 @FT中文网）"
             let textForShareLimit = 140
@@ -37,7 +37,7 @@ class DataForShare: NSObject, UIActivityItemSource {
                 //textForShare = textForShare.substring(to: index) + "..."
                 textForShare = String(textForShare[..<index]) + "..."
             }
-            textForShare = textForShare + "（分享自 @FT中文网）"
+            textForShare = "\(textForShare)\(ShareHelper.shared.webPageUrl)（分享自 @FT中文网）"
         } else {
             textForShare = ShareHelper.shared.webPageTitle
         }

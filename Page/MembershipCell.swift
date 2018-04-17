@@ -14,6 +14,7 @@ class MembershipCell: CustomCell {
     var pageTitle = ""
     var buyState: BuyState = .New
     var isAutoRenewal: Bool? = nil
+    var purchaseSource: String? = nil
     private let buttonManageKey = "管理订阅"
     private let buttonRestoreKey = "恢复订阅"
     
@@ -62,8 +63,16 @@ class MembershipCell: CustomCell {
         } else {
             // MARK: If the user has bought the item an isAutoRenewal is not nil, tap the button will lead to the manage subscription button
             if isAutoRenewal != nil {
-                if let url = URL(string:DeviceInfo.manageSubscriptionUrl) {
-                    UIApplication.shared.openURL(url)
+                if purchaseSource == PurchaseSource.Site.rawValue {
+                    print ("\(String(describing: itemCell?.id)) is bought from web site! No need to do anything now! ")
+//                    if let url = URL(string: "http://www.ftacademy.cn/index.php/pay/subscriptionTTEESSTT"),
+//                        let topViewController = UIApplication.topViewController() {
+//                        topViewController.openLink(url)
+//                    }
+                } else {
+                    if let url = URL(string:DeviceInfo.manageSubscriptionUrl) {
+                        UIApplication.shared.openURL(url)
+                    }
                 }
             } else if let id = itemCell?.id {
                 buyImmediately(id)
@@ -124,8 +133,17 @@ class MembershipCell: CustomCell {
                                 isAutoRenewal = true
                             } else {
                                 // MARK: The autorenewal is set to false, remind the user that he/she can change it to true.
-                                expiresStatement = "您的订阅将于\(expiresDateStringNew)过期，如您希望续订，请点击下方按钮进入iTunes Store进行设置。"
-                                buttonActionString = "打开自动续期"
+                                if let purchaseSourceString = IAP.checkPurchaseInDevice(id, property: PrivilegeHelper.purchaseSourceKey),
+                                    purchaseSourceString == PurchaseSource.Site.rawValue {
+                                    purchaseSource = purchaseSourceString
+                                    expiresStatement = "您已经订阅到\(expiresDateStringNew)。"
+                                    buttonActionString = "已订阅"
+                                } else {
+                                    purchaseSource = PurchaseSource.AppleIAP.rawValue
+                                    expiresStatement = "您的订阅将于\(expiresDateStringNew)过期，如您希望续订，请点击下方按钮进入iTunes Store进行设置。"
+                                    buttonActionString = "打开自动续期"
+                                }
+
                                 isAutoRenewal = false
                             }
                         } else {

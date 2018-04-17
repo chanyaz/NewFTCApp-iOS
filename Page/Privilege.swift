@@ -52,10 +52,14 @@ struct InAppPurchases {
     static var shared = InAppPurchases()
     var memberships: [String] = []
 }
-
+enum PurchaseSource: String {
+    case AppleIAP = "Apple"
+    case Site = "Site"
+}
 struct PrivilegeHelper {
     public static let dateFormatString = "yyyy-MM-dd HH:mm:ss VV"
     public static let dateFormatStringSimple = "yyyy年MM月dd日HH:mm"
+    public static let purchaseSourceKey = "source"
     public static func updateFromDevice() {
         let memberships = IAPProducts.memberships
         for membership in memberships {
@@ -81,7 +85,7 @@ struct PrivilegeHelper {
                         let expireDateString = dateFormatter.string(from: date)
                         print ("No app store purchase, \(id) expires at \(expireDateString)")
                         IAP.savePurchase(id, property: "expires", value: expireDateString)
-                        
+                        IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.Site.rawValue)
                     }
                 }
                 print ("IAP: \(id) purchase status is \(purchased)")
@@ -167,6 +171,7 @@ struct PrivilegeHelper {
                     let expireDateString = dateFormatter.string(from: date)
                     print ("\(id) expires at \(expireDateString)")
                     IAP.savePurchase(id, property: "expires", value: expireDateString)
+                    IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.AppleIAP.rawValue)
                 } else {
                     // MARK: Not a subscription
                     print ("\(id) is valid! ")

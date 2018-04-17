@@ -80,10 +80,11 @@ class AdSchedule {
                     // MARK: - if this creaive is scheduled for today and for this type of device(platform)
                     if dates.contains(dateInInt) && platforms.contains(self.currentPlatform){
                         guard let currentFileName = getFileNameToPlay(creative) else {
-                            print("cannot find file name of creative")
+                            print("Pick Creatives For Today: cannot find creative")
                             return
                         }
-                        
+                        print("Pick Creatives For Today: Check \(currentFileName)")
+
                         // MARK: - Extract the file name to figure out the adType
                         let url = NSURL(string:currentFileName)
                         let pathExtention = url?.pathExtension
@@ -96,6 +97,7 @@ class AdSchedule {
                         
                         // MARK: - If the file exits, put it into an array and use weight to distribute share of voice
                         if templatePath != nil && pathExtention != nil{
+                            print("Pick Creatives For Today: Found \(currentFileName) locally")
                             let weightUpLimit = 20
                             let weightOriginal = creative["weight"] ?? "1"
                             let weightOriginalInt = Int(weightOriginal) ?? 1
@@ -103,6 +105,8 @@ class AdSchedule {
                             for _ in 1...weight {
                                 creativesForToday.append(index)
                             }
+                        } else {
+                            print("Pick Creatives For Today: Not Found \(currentFileName) locally")
                         }
                     }
                 }
@@ -115,8 +119,8 @@ class AdSchedule {
                 if (randomIndex >= 0 && creativesForToday.count > randomIndex) {
                     // MARK: Use the randomIndex to get the index of the creative that is picked for this launch
                     let currentCreativeIndex = creativesForToday[randomIndex]
-                    print (creativesForToday)
-                    print ("\(randomIndex): \(currentCreativeIndex)")
+                    print ("Pick Creatives For Today: \(creativesForToday)")
+                    print ("Pick Creatives For Today: random index is \(randomIndex) and current creative index is \(currentCreativeIndex)")
                     let currentCreative = creatives[currentCreativeIndex]
                     guard let currentFileName = getFileNameToPlay(currentCreative) else {
                         print("cannot find file name of creative")
@@ -275,24 +279,21 @@ class AdSchedule {
                         }
                     }
                 }
-                // delete files that not need for the future
-                print("these creative files are needed for a future date: ")
-                print(creativesNeededInFuture)
-                
+                // MARK: - Delete files that not need for the future
+                print("these creative files are needed for a future date: \(creativesNeededInFuture)")
+
                 
                 // Get the document directory url
                 if let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                     do {
-                        // Get the directory contents urls (including subfolders urls)
+                        // MARK: - Get the directory contents urls (including subfolders urls)
                         let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
-                        // print(directoryContents)
                         
-                        // if you want to filter the directory contents you can do like this:
+                        // MARK: - if you want to filter the directory contents you can do like this:
                         let creativeTypes = videoTypes + htmlTypes + imageTypes
                         let creativeFiles = directoryContents.filter{ creativeTypes.contains($0.pathExtension) }
                         
                         for creativeFile in creativeFiles {
-                            // print(creativeFile.lastPathComponent)
                             let creativeFileString = creativeFile.lastPathComponent
                             // MARK: You cannot remove all HTML files in documents foler. As eBooks are usually here. So check if it's not a eBook.
                             if !creativesNeededInFuture.contains(creativeFileString) && creativeFileString.range(of:"com") == nil  {
@@ -300,9 +301,6 @@ class AdSchedule {
                                 print("remove file from documents folder: \(creativeFileString)")
                             }
                         }
-                        // print("creatives:",creativeFiles)
-                        //                let mp3FileNames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
-                        //                print("mp3 list:", mp3FileNames)
                     } catch let error as NSError {
                         print(error.localizedDescription)
                     }
@@ -315,9 +313,7 @@ class AdSchedule {
     
     
     
-    // check if the creative is needed in the future
-    // if it is return true
-    // if it is needed but not downloaded yet, download it
+    // MARK: - check if the creative is needed in the future. If it is return true. If it is needed but not downloaded yet, download it
     private func checkCreativeForFuture(currentFileName: String) -> String? {
         // extract the file name to figure out the adType
         let url = NSURL(string:currentFileName)
@@ -336,7 +332,7 @@ class AdSchedule {
                 if let pathExtention = pathExtention {
                     let statusType = IJReachability().connectedToNetworkOfType()
                     if statusType == .wiFi || !videoTypes.contains(pathExtention.lowercased()){
-                        print("\(currentFileName) about to be downloaded")
+                        print("Pick Creatives For Today: \(currentFileName) should be downloaded")
                         grabFileFromWeb(url: url as URL?, fileName: lastComponent, parseScheduleForDownload: false)
                     }
                 }
@@ -483,12 +479,12 @@ class AdSchedule {
         if let urlValue = url {
             Download.getDataFromUrl(urlValue) {[weak self] (data, response, error)  in
                 DispatchQueue.main.async { () -> Void in
-                    guard let data = data , error == nil else {
-                        print ("Downloading error with the url: \(urlValue)")
+                    guard let data = data, error == nil else {
+                        print ("Pick Creatives For Today: Downloading error with the url: \(urlValue). Error Message: \(String(describing: error))")
                         return
                     }
                     self?.saveFile(data, filename: fileName)
-                    print ("file saved as \(fileName)")
+                    print ("Pick Creatives For Today: file saved as \(fileName)")
                     if parseScheduleForDownload == true {
                         //print("\(fileName) should be parsed for downloading creatives")
                         self?.parseScheduleForDownloading()

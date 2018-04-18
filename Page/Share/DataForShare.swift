@@ -37,7 +37,7 @@ class DataForShare: NSObject, UIActivityItemSource {
                 //textForShare = textForShare.substring(to: index) + "..."
                 textForShare = String(textForShare[..<index]) + "..."
             }
-            textForShare = "\(textForShare)\(ShareHelper.shared.webPageUrl)（分享自 @FT中文网）"
+            textForShare = "\(textForShare)（分享自 @FT中文网）\(ShareHelper.shared.webPageUrl)"
         } else {
             textForShare = ShareHelper.shared.webPageTitle
         }
@@ -51,8 +51,13 @@ class DataForShare: NSObject, UIActivityItemSource {
     func activityViewController(_ activityViewController: UIActivityViewController,
         thumbnailImageForActivityType activityType: UIActivityType?,
         suggestedSize size: CGSize) -> UIImage? {
-        if let image = UIImage(named: "ShareIcon") {
-            return image.resizableImage(withCapInsets: UIEdgeInsets.zero)
+        if activityType?.rawValue == "com.sina.weibo.ShareExtension" || activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter,
+            let image = ShareHelper.shared.coverImage {
+            return image
+        } else {
+            if let image = UIImage(named: "ShareIcon") {
+                return image.resizableImage(withCapInsets: UIEdgeInsets.zero)
+            }
         }
         return nil
     }

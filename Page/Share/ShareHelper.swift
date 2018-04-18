@@ -87,7 +87,6 @@ struct ShareHelper {
     }
 }
 
-
 extension UIViewController {
     
     func launchShareAction(for item: ContentItem, from sender: Any) {
@@ -142,7 +141,7 @@ extension UIViewController {
             let openInSafari = OpenInSafari(to: "safari")
             let shareData = DataForShare()
             let image = ShareImageActivityProvider(placeholderItem: iconImage)
-            let objectsToShare = [shareData, url, image] as [Any]
+            let objectsToShare = [url, shareData, image] as [Any]
             let activityVC: UIActivityViewController
             if WXApi.isWXAppSupport() == true {
                 activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: [wcActivity, wcCircle, openInSafari])

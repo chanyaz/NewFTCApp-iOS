@@ -46,6 +46,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelega
         // WeChat API
         WXApi.registerApp(WeChat.appId)
         
+        // Weibo API
+        // WeiboSDK.registerApp(String!)
+        
         // MARK: Show the Launch Screen only when there is tabbar controller
         if AppLaunch.shared.launched == false {
             if let rootViewController = window?.rootViewController as? UITabBarController,

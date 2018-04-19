@@ -42,58 +42,46 @@ class WeiboShare: UIActivity {
         return true
     }
     override func perform() {
-        
         if WeiboSDK.isWeiboAppInstalled() == false {
             let alert = UIAlertController(title: "请先安装微博", message: "谢谢您的支持！请先去app store安装微博再分享", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "了解", style: UIAlertActionStyle.default, handler: nil))
             return
         }
-        
-        //        let authReq = WBAuthorizeRequest()
-        //        authReq.redirectURI = Weibo.redirect
-        //        authReq.scope = "all"
-        //
-        //
-        //        // MARK: - Construct Weibo Web Image
-        //        let message = WBMessageObject()
-        //        message.text = "这是分享到新浪微博的一个网页"
-        //
-        //        let web = WBWebpageObject()
-        //        web.objectID = "对应多媒体的唯一标识"
-        //        web.title = "多媒体的标题"
-        //        web.description = "多媒体内容的描述: 这是一个很努力的作者"
-        //        let thumbImg = UIImage(named: "cover.jpg")// 预览图
-        //        // 不能超过32k
-        //        web.thumbnailData = UIImagePNGRepresentation(thumbImg!)!
-        //        web.webpageUrl = "http://www.jianshu.com/u/2846c3d3a974"
-        //        message.mediaObject = web
-        //
-        //
-        //        let req: WBSendMessageToWeiboRequest = WBSendMessageToWeiboRequest.request(withMessage: message, authInfo: authReq, access_token: nil) as! WBSendMessageToWeiboRequest
-        //        req.userInfo = ["info": "分享的新闻链接"] // 自定义的请求信息字典， 会在响应中原样返回
-        //        req.shouldOpenWeiboAppInstallPageIfNotInstalled = false // 当未安装客户端时是否显示下载页
-        //
-        //        let re = WeiboSDK.send(req)
-        //        print ("send request result: \(re)")
-        
-        
-        
         let webpageObject = WBWebpageObject()
-        webpageObject.webpageUrl = "http://www.ftchinese.com/"
-        webpageObject.objectID = "someid"
-        let thumbImg = UIImage(named: "cover.jpg")// 预览图
-        // 不能超过32k
-        webpageObject.thumbnailData = UIImagePNGRepresentation(thumbImg!)!
-        webpageObject.title = "title"
-        webpageObject.description = "description"
+        let shareUrl = ShareHelper.shared.webPageUrl.replacingOccurrences (
+            of: "#ccode=[0-9A-Za-z]+$",
+            with: "",
+            options: .regularExpression
+        )
+        webpageObject.webpageUrl = TextForShare.weibo(hasLink: true).url
+        webpageObject.objectID = "\(shareUrl)#ccode=\(Share.CampaignCode.weibo)"
         let message = WBMessageObject()
-        message.mediaObject = webpageObject
-        message.text = "text"
+        let img = WBImageObject()
+        if let coverImage = ShareHelper.shared.coverImage,
+            let imgData = UIImageJPEGRepresentation(coverImage, 0.8) {
+                img.imageData = imgData
+                message.imageObject = img
+                message.text = TextForShare.weibo(hasLink: false).text
+        } else {
+            // MARK: image size should be less than 32k
+            var image = ShareHelper.shared.thumbnail
+            image = image?.resizableImage(withCapInsets: UIEdgeInsets.zero)
+            if image == nil {
+                image = UIImage(named: "ShareIcon")
+            }
+            if let image = image {
+                webpageObject.thumbnailData = UIImagePNGRepresentation(image)
+            }
+            webpageObject.title = ShareHelper.shared.webPageTitle
+            webpageObject.description = ShareHelper.shared.webPageDescription
+            message.mediaObject = webpageObject
+            message.text = TextForShare.weibo(hasLink: true).text
+        }
         let sendMessageToWeiboRequest = WBSendMessageToWeiboRequest()
         sendMessageToWeiboRequest.message = message
+        sendMessageToWeiboRequest.shouldOpenWeiboAppInstallPageIfNotInstalled = true
         WeiboSDK.send(sendMessageToWeiboRequest)
-        
-        
+        Track.event(category: "Share", action: "iOS Web Page to Weibo", label: ShareHelper.shared.webPageUrl)
     }
     
 }

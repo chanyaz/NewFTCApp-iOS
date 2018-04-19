@@ -9,6 +9,31 @@
 
 import UIKit
 
+struct TextForShare {
+    public static func weibo(hasLink: Bool) -> (text: String, url: String) {
+        let shareUrl = ShareHelper.shared.webPageUrl.replacingOccurrences (
+            of: "#ccode=[0-9A-Za-z]+$",
+            with: "",
+            options: .regularExpression
+        )
+        let url = "\(shareUrl)#ccode=\(Share.CampaignCode.weibo)"
+        var textForShare = "【" + ShareHelper.shared.webPageTitle + "】" + ShareHelper.shared.webPageDescription
+        let textForShareCredit = "（分享自 @FT中文网）"
+        if hasLink {
+            textForShare = "\(textForShare)"
+        } else {
+            let textForShareLimit = 140
+            let textForShareTailCount = textForShareCredit.count + ShareHelper.shared.webPageUrl.count
+            if textForShare.count + textForShareTailCount > textForShareLimit {
+                let index = textForShare.index(textForShare.startIndex, offsetBy: textForShareLimit - textForShareTailCount - 3)
+                textForShare = String(textForShare[..<index]) + "..."
+            }
+            textForShare = "\(textForShare)\(textForShareCredit)\(url)"
+        }
+        return (textForShare, url)
+    }
+}
+
 class DataForShare: NSObject, UIActivityItemSource {
     var url: String = ShareHelper.shared.webPageUrl
     var lead: String = ShareHelper.shared.webPageDescription
@@ -28,16 +53,7 @@ class DataForShare: NSObject, UIActivityItemSource {
         } else if activityType == UIActivityType.mail {
             textForShare = ShareHelper.shared.webPageDescription
         } else if activityType?.rawValue == "com.sina.weibo.ShareExtension" || activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter {
-            textForShare = "【" + ShareHelper.shared.webPageTitle + "】" + ShareHelper.shared.webPageDescription
-            let textForShareCredit = "（分享自 @FT中文网）"
-            let textForShareLimit = 140
-            let textForShareTailCount = textForShareCredit.count + url.count
-            if textForShare.count + textForShareTailCount > textForShareLimit {
-                let index = textForShare.index(textForShare.startIndex, offsetBy: textForShareLimit - textForShareTailCount - 3)
-                //textForShare = textForShare.substring(to: index) + "..."
-                textForShare = String(textForShare[..<index]) + "..."
-            }
-            textForShare = "\(textForShare)（分享自 @FT中文网）\(ShareHelper.shared.webPageUrl)"
+            textForShare = TextForShare.weibo(hasLink: false).text
         } else {
             textForShare = ShareHelper.shared.webPageTitle
         }

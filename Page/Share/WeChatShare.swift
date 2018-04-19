@@ -130,7 +130,7 @@ class WeChatShare: UIActivity{
             )
             let c = Share.CampaignCode.wechat
             webpageObj.webpageUrl = "\(shareUrl)#ccode=\(c)"
-            print ("wechat webpage obj url is \(webpageObj.webpageUrl)")
+            //print ("wechat webpage obj url is \(webpageObj.webpageUrl)")
             message.mediaObject = webpageObj
             
             

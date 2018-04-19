@@ -153,9 +153,6 @@ struct Weibo {
     static let appKey = "707614464"
     static let appSecret = "deaad8404ad4a2304705d8957f2682a0"
     static let redirect = "https://api.weibo.com/oauth2/default.html"
-    
-    //https://api.weibo.com/oauth2/default.html
-    
 }
 
 struct GA {
@@ -201,7 +198,8 @@ struct Share {
     static let base = "http://www.ftchinese.com/"
     static let shareIconName = "ShareIcon.jpg"
     struct CampaignCode {
-        static let wechat = "2G178002"
+        static let wechat = "2G188002"
+        static let weibo = "2G189001"
         static let actionsheet = "iosaction"
     }
 }

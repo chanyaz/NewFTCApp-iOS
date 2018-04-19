@@ -142,7 +142,7 @@ struct Share {
     static let base = "http://www.ftchinese.com/"
     static let shareIconName = "ShareIcon.jpg"
     struct CampaignCode {
-        static let wechat = "2G178002"
+        static let wechat = "2G188002"
         static let actionsheet = "iosaction"
     }
 }

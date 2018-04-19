@@ -520,7 +520,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print ("view did disappear called. ")
+        //print ("view did disappear called. ")
         isVisible = false
         // MARK: if web view is not used, no need to do anything
         if webView == nil {
@@ -535,7 +535,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         let urlString = APIs.convert(urlStringOriginal)
                         self?.webViewScrollPoint = self?.webView?.scrollView.contentOffset
                         self?.renderWebview(listAPI, urlString: urlString, fileExtension: fileExtension)
-                        print ("the view is not visible, render web view called")
+                        //print ("the view is not visible, render web view called")
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] timer in
                             if let webViewScrollPoint = self?.webViewScrollPoint {
                                 self?.webView?.scrollView.setContentOffset(webViewScrollPoint, animated: false)

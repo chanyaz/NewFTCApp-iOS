@@ -203,7 +203,7 @@ struct AdLayout {
             let timeInterval = Date().timeIntervalSince1970
             let timeDifference = timeInterval - newItem.timeStamp
             let timeDifferenceInDays = timeDifference/(60*60*24)
-            print ("pubdate: \(item.timeStamp), today: \(timeInterval), difference in days: \(timeDifferenceInDays)")
+            //print ("pubdate: \(item.timeStamp), today: \(timeInterval), difference in days: \(timeDifferenceInDays)")
             if timeDifferenceInDays > 7 {
                 newItem.privilegeRequirement = .Archive
                 newItem.hideAd = true

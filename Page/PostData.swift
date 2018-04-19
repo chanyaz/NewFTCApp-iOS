@@ -21,15 +21,15 @@ struct PostData {
         request.httpMethod = "POST"
         request.httpBody = bodyData
         let dataTask = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let data = data, let res = String(data: data, encoding: .utf8) {
-                print(res)
-            }
-            if let res = response {
-                print(res)
-            }
-            if let err = error {
-                print(err)
-            }
+//            if let data = data, let res = String(data: data, encoding: .utf8) {
+//                print(res)
+//            }
+//            if let res = response {
+//                print(res)
+//            }
+//            if let err = error {
+//                print(err)
+//            }
         }
         dataTask.resume()
     }

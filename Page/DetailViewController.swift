@@ -127,7 +127,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // In more complex implementations, the model controller may be passed to the view controller.
         if _modelController == nil {
             if let t = tabName {
-                print ("detail view get the tab name of \(t)")
+                //print ("detail view get the tab name of \(t)")
                 _modelController = DetailModelController(
                     tabName: t,
                     pageData: contentPageData
@@ -374,11 +374,11 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         if ["story", "premium"].contains(type),
             let hasEnglish = English.sharedInstance.has[id],
             hasEnglish == true {
-            print ("Language: current view should display English Switch")
+            //print ("Language: current view should display English Switch")
             languages?.isHidden = false
             actualLanguageIndex = UserDefaults.standard.integer(forKey: Key.languagePreference)
         } else {
-            print ("Language: current view should hide English Switch")
+            //print ("Language: current view should hide English Switch")
             languages?.isHidden = true
             actualLanguageIndex = 0
         }

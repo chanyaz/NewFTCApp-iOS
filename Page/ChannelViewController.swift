@@ -26,7 +26,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     var currentChannelIndex: Int = 0 {
         didSet {
             if currentChannelIndex != oldValue {
-                print ("page index changed to \(String(describing: currentChannelIndex))")
+                //print ("page index changed to \(String(describing: currentChannelIndex))")
                 channelScrollerView?.reloadData()
                 // MARK: - add "view.layoutIfNeeded()" before implementing scrollToItem method
                 view.layoutIfNeeded()
@@ -35,7 +35,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
                     at: .centeredHorizontally,
                     animated: true
                 )
-                print ("scrolled to item at index \(currentChannelIndex)")
+                //print ("scrolled to item at index \(currentChannelIndex)")
                 if isUserPanningEnd == false {
                     let currentViewController: DataViewController = self.modelController.viewControllerAtIndex(currentChannelIndex, storyboard: self.storyboard!)!
                     let viewControllers = [currentViewController]

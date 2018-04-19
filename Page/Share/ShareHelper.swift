@@ -38,7 +38,7 @@ struct ShareHelper {
             Download.getDataFromUrl(url) {(data, response, error)  in
                 guard let data = data, error == nil else {return}
                 ShareHelper.shared.thumbnail = UIImage(data: data)
-                print("finished downloading wechat share icon: \(url.absoluteString)")
+                //print("finished downloading wechat share icon: \(url.absoluteString)")
             }
         }
         ShareHelper.shared.coverImage = nil
@@ -48,7 +48,7 @@ struct ShareHelper {
             Download.getDataFromUrl(url) {(data, response, error)  in
                 guard let data = data, error == nil else {return}
                 ShareHelper.shared.coverImage = UIImage(data: data)
-                print("finished downloading content image: \(url.absoluteString)")
+                //print("finished downloading content image: \(url.absoluteString)")
             }
         }
     }
@@ -101,7 +101,7 @@ extension UIViewController {
     func launchCustomActionSheet(for item: ContentItem, from sender: Any) {
         updateShareContent(for: item, from: sender)
         let activityVC = CustomShareViewController()
-        print ("sharing \(item.type)/\(item.id)")
+        //print ("sharing \(item.type)/\(item.id)")
         if #available(iOS 10.0, *),
             Privilege.shared.exclusiveContent,
             item.type != "premium" {
@@ -197,7 +197,7 @@ extension UIViewController {
     func getCurrentWebView() {
         if let detailViewController = self as? DetailViewController,
             let viewPages = detailViewController.pageViewController?.viewControllers {
-            print ("this is a detail view")
+            //print ("this is a detail view")
             let currentPageIndexNumber = detailViewController.currentPageIndex
             for viewPage in viewPages {
                 if let viewPage = viewPage as? ContentItemViewController,
@@ -211,7 +211,7 @@ extension UIViewController {
     }
     
     func updateShareContent (for item: ContentItem, from sender: Any) {
-        print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
+        //print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
         // MARK: - update some global variables
         ShareHelper.shared.webPageUrl = "\(Share.base)\(item.type)/\(item.id)?full=y#ccode=\(Share.CampaignCode.actionsheet)"
         ShareHelper.shared.webPageTitle = item.headline

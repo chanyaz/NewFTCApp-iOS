@@ -191,7 +191,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     if error != nil {
                         print ("something is wrong with js code in content item view controller: \(String(describing: error))")
                     } else {
-                        print ("js code is executed successfully! ")
+                        //print ("js code is executed successfully! ")
                     }
                 }
             }
@@ -297,7 +297,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     let contentSections = contentAPI.formatJSON(resultsDictionary)
                     let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
                     updateUI(of: id, with: results)
-                    print ("update content UI from local file with \(urlString), no need to connect to internet again")
+                    //print ("update content UI from local file with \(urlString), no need to connect to internet again")
                     activityIndicator.removeFromSuperview()
                     return
                 } else {
@@ -389,7 +389,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         let object = ""
         let name = Notification.Name(rawValue: Event.englishStatusChange)
         NotificationCenter.default.post(name: name, object: object)
-        print ("Language: Post English Status Change")
+        //print ("Language: Post English Status Change")
     }
     
     public func updatePageContent() {

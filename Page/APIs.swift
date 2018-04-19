@@ -519,7 +519,7 @@ struct APIs {
             "ip": ip,
             "cki": UserInfo.shared.userId ?? ""
         ]
-        print ("data for youlu: \(dataForYoulu)")
+        //print ("data for youlu: \(dataForYoulu)")
         PostData.sendToThirdParty("https://uluai.com.cn/rcmd/getAppInfo", with: dataForYoulu)
     }
     
@@ -781,7 +781,7 @@ struct DeviceToken {
         let hexEncodedToken = token.map { String(format: "%02hhX", $0) }.joined()
         UserInfo.shared.deviceToken = hexEncodedToken
         UserDefaults.standard.set(hexEncodedToken, forKey: key)
-        print("device token: \(hexEncodedToken)")
+        //print("device token: \(hexEncodedToken)")
         // MARK: calculate appNumber based on your bundel ID
         let bundleID = Bundle.main.bundleIdentifier ?? ""
         let appNumber: String
@@ -1174,7 +1174,7 @@ struct HTMLValidator {
             }
             for keyword in keywords {
                 if htmlCode.range(of: keyword) != nil {
-                    print ("\(url) html validated! ")
+                    //print ("\(url) html validated! ")
                     return htmlCode
                 }
             }

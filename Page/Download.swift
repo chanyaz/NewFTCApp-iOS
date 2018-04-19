@@ -207,29 +207,28 @@ struct Download {
                 var totalSize: UInt64 = 0
                 let earlyDate = Date().addingTimeInterval(-60 * 60 * 24 * APIs.expireDay)
                 for file in files {
-                    let fileName = file.lastPathComponent
+                    _ = file.lastPathComponent
                     let filePath = file.path
                     do {
                         let attr = try FileManager.default.attributesOfItem(atPath: filePath)
                         if let fileSize = attr[FileAttributeKey.size] as? UInt64,
                             let fileDate = attr[FileAttributeKey.modificationDate] as? Date {
-                            
                             if fileDate < earlyDate {
                                 try FileManager.default.removeItem(at: file)
-                                print("Manage File remove: \(fileName), expire date: \(earlyDate), now: \(Date()). ")
+                                //print("Manage File remove: \(fileName), expire date: \(earlyDate), now: \(Date()). ")
                             } else {
                                 totalSize += fileSize
-                                print("Manage File keep: date: \(fileDate), size: \(fileSize), name: \(fileName)")
+                                //print("Manage File keep: date: \(fileDate), size: \(fileSize), name: \(fileName)")
                             }
                         }
                     } catch {
-                        print("Error: \(error)")
+                        //print("Error: \(error)")
                     }
                 }
                 Track.event(category: "Cache", action: "Keep", label: "\(totalSize)")
-                print ("total size of the files is now \(totalSize)")
-            } catch let error as NSError {
-                print(error.localizedDescription)
+                //print ("total size of the files is now \(totalSize)")
+            } catch _ as NSError {
+                //print(error.localizedDescription)
             }
         }
     }

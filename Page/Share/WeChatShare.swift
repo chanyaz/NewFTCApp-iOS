@@ -31,6 +31,7 @@ class WeChatShare: UIActivity{
         case "moment-custom": return UIImage(named: "MomentCustom")
         case "chat-custom": return UIImage(named: "WeChatCustom")
         case "fav": return UIImage(named: "WeChatFav")
+        case "chat-screenshot": return UIImage(named: "ScreenCapture")
         default: return UIImage(named: "WeChat")
         }
     }

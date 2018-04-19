@@ -90,7 +90,7 @@ struct ShareHelper {
 extension UIViewController {
     
     func launchShareAction(for item: ContentItem, from sender: Any) {
-        if WXApi.isWXAppSupport() == true {
+        if WXApi.isWXAppSupport() || WeiboSDK.isWeiboAppInstalled() {
             launchCustomActionSheet(for: item, from: sender)
         } else {
             launchActionSheet(for: item, from: sender)
@@ -101,25 +101,22 @@ extension UIViewController {
     func launchCustomActionSheet(for item: ContentItem, from sender: Any) {
         updateShareContent(for: item, from: sender)
         let activityVC = CustomShareViewController()
-        //print ("sharing \(item.type)/\(item.id)")
-        if #available(iOS 10.0, *),
-            Privilege.shared.exclusiveContent,
-            item.type != "premium" {
-            activityVC.shareItems = [
-                WeChatShare(to: "chat-custom"),
-                //WeChatShare(to: "moment-custom"),
-                WeiboShare(contentItem: item, from: sender),
-                WeChatShare(to: "chat-screenshot"),
-                ShareMore(contentItem: item, from: sender)
-            ]
-        } else {
-            activityVC.shareItems = [
-                WeChatShare(to: "chat-custom"),
-                WeChatShare(to: "moment-custom"),
-                OpenInSafari(to: "safari-custom"),
-                ShareMore(contentItem: item, from: sender)
-            ]
+        var shareItems = [UIActivity]()
+        if WXApi.isWXAppInstalled() {
+            shareItems.append(WeChatShare(to: "chat-custom"))
+            shareItems.append(WeChatShare(to: "moment-custom"))
+            if #available(iOS 10.0, *),
+                Privilege.shared.exclusiveContent,
+                item.type != "premium" {
+                shareItems.append(WeChatShare(to: "chat-screenshot"))
+            }
         }
+        if WeiboSDK.isWeiboAppInstalled() {
+            shareItems.append(WeiboShare(contentItem: item, from: sender))
+        }
+        shareItems.append(OpenInSafari(to: "safari-custom"))
+        shareItems.append(ShareMore(contentItem: item, from: sender))
+        activityVC.shareItems = shareItems
         // MARK: Use this to support both iPhone and iPad
         activityVC.modalPresentationStyle = .overCurrentContext
         let popoverPresentationController = activityVC.popoverPresentationController

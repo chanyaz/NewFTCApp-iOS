@@ -30,7 +30,12 @@ class CustomShareViewController: UIViewController {
         view.addSubview(bottomLayer)
         
         // MARK: Add the action sheet view so that you can hold all the share options
-        let shareSheetHeight: CGFloat = 180
+        let itemCount: CGFloat = CGFloat(shareItems.count)
+        let columns: CGFloat = 4
+        let rows = ceil(itemCount/columns)
+            
+        
+        let shareSheetHeight: CGFloat = 180 * rows
         let shareSheetView = UIView()
         shareSheetView.backgroundColor = UIColor(hex: Color.Content.background)
         view.addSubview(shareSheetView)
@@ -41,11 +46,8 @@ class CustomShareViewController: UIViewController {
         view.addConstraint(NSLayoutConstraint(item: shareSheetView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0))
         
         // MARK: Add share images and buttons
-        
-
         let itemImageHeight: CGFloat = 60
         let itemTitleHeight: CGFloat = 20
-        //let itemPadding: CGFloat = 15
         let itemPadding: CGFloat = min(
             itemImageHeight/3,
             (view.frame.width/4 - itemImageHeight)/2
@@ -54,24 +56,22 @@ class CustomShareViewController: UIViewController {
         let itemWidth = itemImageHeight + 2 * itemPadding
         var itemLeading:CGFloat = 0
         for (index, item) in shareItems.enumerated() {
-            
             if let title = item.activityTitle,
                 let image = item.activityImage {
-                
                 let itemView = UIView()
                 itemView.tag = index
                 let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(performShare(_:)))
                 itemView.isUserInteractionEnabled = true
                 itemView.addGestureRecognizer(tapGestureRecognizer)
-                
                 itemView.translatesAutoresizingMaskIntoConstraints = false
                 //itemView.backgroundColor = UIColor.red
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemHeight))
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemWidth))
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: shareSheetView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: itemLeading))
-                view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: shareSheetView, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
-                itemLeading += itemWidth
+                view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: shareSheetView, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: -shareSheetHeight * 1/4))
                 
+                
+                itemLeading += itemWidth
                 let imageView = UIImageView()
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 imageView.image = image
@@ -80,7 +80,6 @@ class CustomShareViewController: UIViewController {
                 view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemImageHeight))
                 view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: itemView, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0))
                 view.addConstraint(NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: itemView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-                
                 let titleLabel = UILabel()
                 titleLabel.translatesAutoresizingMaskIntoConstraints = false
                 titleLabel.textAlignment = .center
@@ -93,12 +92,8 @@ class CustomShareViewController: UIViewController {
                 //view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemTitleHeight))
                 view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: itemView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
                 view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: itemView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
-                
-                
                 view.addSubview(itemView)
             }
-            
-            
         }
         
     }

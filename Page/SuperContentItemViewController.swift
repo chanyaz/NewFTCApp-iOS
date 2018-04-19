@@ -309,8 +309,8 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             contentAPI.fetchContentForUrl(urlString, fetchUpdate: .OnlyOnWifi) {[weak self] results, error in
                 DispatchQueue.main.async {
                     self?.activityIndicator.removeFromSuperview()
-                    if let error = error {
-                        print("Error searching : \(error)")
+                    if error != nil {
+                        //print("Error searching : \(error)")
                         //MARK: When something is wrong, check the user's internet connection and display a friendly message
                         let statusType = IJReachability().connectedToNetworkOfType()
                         let errorMessageString: String

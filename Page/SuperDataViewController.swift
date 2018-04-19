@@ -510,7 +510,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         // MARK: - Update User Name Prompt Based on User Name
         let jsCode = JSCodes.getUserLoginJsCode()
         webView?.evaluateJavaScript(jsCode) { (result, error) in
-            print ("\(jsCode) excuted! ")
+            //print ("\(jsCode) excuted! ")
         }
         
         isLoadingForTheFirstTime = false
@@ -551,7 +551,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        print("view will transition called. ")//第一次启动不运行，转屏出现一次
+        //print("view will transition called. ")//第一次启动不运行，转屏出现一次
         collectionView?.reloadData()
     }
     
@@ -622,7 +622,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 self?.activityIndicator.removeFromSuperview()
                 self?.refreshContr?.endRefreshing()
                 if let error = error {
-                    print("Error searching : \(error)")
+                    //print("Error searching : \(error)")
                     Download.handleServerError(acturalUrlString, error: error)
                     return
                 }
@@ -642,7 +642,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
     private func prefetch() {
         let statusType = IJReachability().connectedToNetworkOfType()
         if statusType == .wiFi {
-            print ("User is on Wifi, Continue to prefetch content")
+            //print ("User is on Wifi, Continue to prefetch content")
             let sections = fetches.fetchResults
             for section in sections {
                 let items = section.items
@@ -692,9 +692,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         let apiUrl = APIs.getUrl(item.id, type: item.type, isSecure: true, isPartial: false)
                         //(item.id, type: item.type)
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "html") == nil {
-                            print ("Video Prefetch: File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                            //print ("Video Prefetch: File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         } else {
-                            print ("Video Prefetch: File already downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                            //print ("Video Prefetch: File already downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         }
                         Download.downloadUrl(apiUrl, to: .cachesDirectory, as: "html")
                     }
@@ -762,7 +762,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             //MARK: Report to GA if there's no api to get
             Track.event(category: "CatchError", action: "no API or Type for dataObject", label: String(describing: dataObject))
             Track.catchError("no API or Type for dataObject: \(String(describing: dataObject))", withFatal: 1)
-            print("results : error")
+            //print("results : error")
         }
     }
     
@@ -1116,7 +1116,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         let results = fetches.fetchResults
         for (_, section) in results.enumerated() {
             
-            print("TabBarAudioContent section.items.count \(section.items.count)")
+            //print("TabBarAudioContent section.items.count \(section.items.count)")
             for i in 0 ..< section.items.count {
                 
                 if section.items[i].caudio != nil || section.items[i].eaudio != nil{

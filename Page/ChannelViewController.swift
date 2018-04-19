@@ -207,7 +207,7 @@ class ChannelViewController: PagesViewController, UICollectionViewDataSource, UI
     }
     
     @objc public func showPerson() {
-        print("should to add person interface")
+        //print("should to add person interface")
         ContentItemRenderContent.addPersonInfo = true
         if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContentItemViewController") as? ContentItemViewController {
             navigationController?.pushViewController(chatViewController, animated: true)

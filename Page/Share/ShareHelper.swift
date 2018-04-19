@@ -107,7 +107,8 @@ extension UIViewController {
             item.type != "premium" {
             activityVC.shareItems = [
                 WeChatShare(to: "chat-custom"),
-                WeChatShare(to: "moment-custom"),
+                //WeChatShare(to: "moment-custom"),
+                WeiboShare(contentItem: item, from: sender),
                 WeChatShare(to: "chat-screenshot"),
                 ShareMore(contentItem: item, from: sender)
             ]

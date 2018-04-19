@@ -149,6 +149,15 @@ struct WeChat {
     static let userInfoPrefix = "https://api.weixin.qq.com/sns/userinfo?"
 }
 
+struct Weibo {
+    static let appKey = "707614464"
+    static let appSecret = "deaad8404ad4a2304705d8957f2682a0"
+    static let redirect = "https://api.weibo.com/oauth2/default.html"
+    
+    //https://api.weibo.com/oauth2/default.html
+    
+}
+
 struct GA {
     public static let trackingIdsForWeb = ["UA-1608715-1"]
     public static let trackingIdsForApp = ["UA-1608715-3"]

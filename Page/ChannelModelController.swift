@@ -31,7 +31,7 @@ class ChannelModelController: ModelController{
     
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> DataViewController? {
         // Return the data view controller for the given index.
-        print ("Return the data view controller for \(index)")
+        //print ("Return the data view controller for \(index)")
         // print (pageData)
         if (self.pageData.count == 0) || (index >= self.pageData.count) {
             return nil

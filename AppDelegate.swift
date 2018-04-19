@@ -43,11 +43,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelega
         setupGoogleAnalytics()
         AdMobTrack.launch()
         
-        // WeChat API
+        // MARK: Register WeChat API
         WXApi.registerApp(WeChat.appId)
         
-        // Weibo API
-        // WeiboSDK.registerApp(String!)
+        // MARK: Register Weibo API
+        WeiboSDK.enableDebugMode(true)
+        WeiboSDK.registerApp(Weibo.appKey)
         
         // MARK: Show the Launch Screen only when there is tabbar controller
         if AppLaunch.shared.launched == false {
@@ -288,7 +289,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelega
                 }
                 if settings.authorizationStatus == .authorized {
                     // Notification permission was already granted
-                    print ("Notification allowed! ")
+                    //print ("Notification allowed! ")
                 }
             })
         } else {
@@ -297,7 +298,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelega
             if isRegisteredForRemoteNotifications == false {
                 // Show alert user is not registered for notification
                 requestUserToAllowNotification()
-                print ("Notification allowed! ")
+                //print ("Notification allowed! ")
             }
         }
 
@@ -408,7 +409,7 @@ extension AppDelegate: WXApiDelegate {
                                         if let JSONString = String(data: data, encoding: .utf8) {
                                             print ("json string is \(JSONString)")
                                             let jsCode = "socialLogin('wechat', '\(JSONString)');"
-                                            print(jsCode)
+                                            //print(jsCode)
                                             DispatchQueue.main.async { () -> Void in
                                                 if let topViewController = UIApplication.topViewController() as? ContentItemViewController {
                                                     topViewController.webView?.evaluateJavaScript(jsCode) { (result, error) in
@@ -427,8 +428,8 @@ extension AppDelegate: WXApiDelegate {
                                         }
                                     }
                                 }
-                            } catch let JSONError as NSError {
-                                print("\(JSONError)")
+                            } catch _ as NSError {
+                                //print("\(JSONError)")
                             }
                         }
                     }

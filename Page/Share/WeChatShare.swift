@@ -7,7 +7,7 @@
 //
 
 import UIKit
-class WeChatShare : UIActivity{
+class WeChatShare: UIActivity{
     var to: String
     var text:String?
     
@@ -136,6 +136,7 @@ class WeChatShare : UIActivity{
             let req = SendMessageToWXReq()
             req.bText = false
             req.message = message
+            
             let eventAction: String
             if toString.range(of: "chat") != nil {
                 req.scene = 0

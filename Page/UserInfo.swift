@@ -24,14 +24,14 @@ struct UserInfo {
     private static let subscriptionExpireKey = "Subscription Expire Key"
     
     static func updateUserInfo(with body: [String: String]) {
-        print ("user info body: \(body)")
+        //print ("user info body: \(body)")
         if let userName = body["username"],
             let userId = body["userId"] {
             UserInfo.shared.userName = userName
             UserInfo.shared.userId = userId
             UserDefaults.standard.set(userName, forKey: userNameKey)
             UserDefaults.standard.set(userId, forKey: userIdKey)
-            print ("update user name: \(userName); user id: \(userId)")
+            //print ("update user name: \(userName); user id: \(userId)")
             UserInfo.shared.subscriptionType = body["paywall"]
             UserDefaults.standard.set(UserInfo.shared.subscriptionType, forKey: subscriptionTypeKey)
             if let subscriptionExpireString = body["paywallExpire"],
@@ -53,7 +53,7 @@ struct UserInfo {
         if let uniqueVisitorId = body["uniqueVisitorId"] {
             UserInfo.shared.uniqueVisitorId = uniqueVisitorId
             UserDefaults.standard.set(uniqueVisitorId, forKey: uniqueVisitorIdKey)
-            print ("Unique Visitor Id: \(uniqueVisitorId)")
+            //print ("Unique Visitor Id: \(uniqueVisitorId)")
         }
     }
     
@@ -64,7 +64,7 @@ struct UserInfo {
         UserInfo.shared.uniqueVisitorId = UserDefaults.standard.string(forKey: uniqueVisitorIdKey)
         UserInfo.shared.subscriptionType = UserDefaults.standard.string(forKey: subscriptionTypeKey)
         UserInfo.shared.subscriptionExpire = UserDefaults.standard.double(forKey: subscriptionExpireKey)
-        print ("user name: \(String(describing: UserInfo.shared.userName)); user id: \(String(describing: UserInfo.shared.userId)); unique visitor id: \(String(describing: UserInfo.shared.uniqueVisitorId))")
+        //print ("user name: \(String(describing: UserInfo.shared.userName)); user id: \(String(describing: UserInfo.shared.userId)); unique visitor id: \(String(describing: UserInfo.shared.uniqueVisitorId))")
     }
     
     static func showAccountPage() {

@@ -11,14 +11,6 @@ import UIKit
 class ShareMore: UIActivity{
     var contentItem: ContentItem?
     var sender: Any?
-    //    var to: String
-    //    var text:String?
-    
-    //    init(to: String) {
-    //        self.to = to
-    //        self.text = ""
-    //    }
-    
     init (contentItem: ContentItem?, from: Any?) {
         self.contentItem = contentItem
         self.sender = from

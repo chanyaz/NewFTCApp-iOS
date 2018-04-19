@@ -287,12 +287,12 @@ struct APIs {
                 }
                 if let serverUsedByFromString = serverUsedByFromString {
                     let newUrlString = newFrom.replacingOccurrences(of: serverUsedByFromString, with: servers[nextServerIndex])
-                    print ("Server Watch: new url string is \(newUrlString)")
+                    //print ("Server Watch: new url string is \(newUrlString)")
                     return newUrlString
                 }
             }
         }
-        print ("Server Watch: current url string is \(newFrom) without change")
+        //print ("Server Watch: current url string is \(newFrom) without change")
         return newFrom
     }
     

@@ -80,10 +80,10 @@ class AdSchedule {
                     // MARK: - if this creaive is scheduled for today and for this type of device(platform)
                     if dates.contains(dateInInt) && platforms.contains(self.currentPlatform){
                         guard let currentFileName = getFileNameToPlay(creative) else {
-                            print("Pick Creatives For Today: cannot find creative")
+                            //print("Pick Creatives For Today: cannot find creative")
                             return
                         }
-                        print("Pick Creatives For Today: Check \(currentFileName)")
+                        //print("Pick Creatives For Today: Check \(currentFileName)")
 
                         // MARK: - Extract the file name to figure out the adType
                         let url = NSURL(string:currentFileName)
@@ -97,7 +97,7 @@ class AdSchedule {
                         
                         // MARK: - If the file exits, put it into an array and use weight to distribute share of voice
                         if templatePath != nil && pathExtention != nil{
-                            print("Pick Creatives For Today: Found \(currentFileName) locally")
+                            //print("Pick Creatives For Today: Found \(currentFileName) locally")
                             let weightUpLimit = 20
                             let weightOriginal = creative["weight"] ?? "1"
                             let weightOriginalInt = Int(weightOriginal) ?? 1
@@ -106,7 +106,7 @@ class AdSchedule {
                                 creativesForToday.append(index)
                             }
                         } else {
-                            print("Pick Creatives For Today: Not Found \(currentFileName) locally")
+                            //print("Pick Creatives For Today: Not Found \(currentFileName) locally")
                         }
                     }
                 }
@@ -119,11 +119,11 @@ class AdSchedule {
                 if (randomIndex >= 0 && creativesForToday.count > randomIndex) {
                     // MARK: Use the randomIndex to get the index of the creative that is picked for this launch
                     let currentCreativeIndex = creativesForToday[randomIndex]
-                    print ("Pick Creatives For Today: \(creativesForToday)")
-                    print ("Pick Creatives For Today: random index is \(randomIndex) and current creative index is \(currentCreativeIndex)")
+                    //print ("Pick Creatives For Today: \(creativesForToday)")
+                    //print ("Pick Creatives For Today: random index is \(randomIndex) and current creative index is \(currentCreativeIndex)")
                     let currentCreative = creatives[currentCreativeIndex]
                     guard let currentFileName = getFileNameToPlay(currentCreative) else {
-                        print("cannot find file name of creative")
+                        //print("cannot find file name of creative")
                         return
                     }
                     // MARK: - Extract the file name to figure out the adType
@@ -188,10 +188,10 @@ class AdSchedule {
                     }
                     Ads.shared.hasFullScreenAd = true
                 } else {
-                    print ("there is no creative to play this time! ")
+                    //print ("there is no creative to play this time! ")
                 }
-            } catch let JSONError as NSError {
-                print("\(JSONError)")
+            } catch _ as NSError {
+                //print("\(JSONError)")
             }
         }
     }
@@ -201,17 +201,17 @@ class AdSchedule {
             //Get Current Date in String format of YYYYMMDD
             let dateInString = DateHelper.getCurrentDateString(dateFormat: "yyyyMMdd")
             guard let dateInInt = Int(dateInString) else {
-                print("date can not be converted to int")
+                //print("date can not be converted to int")
                 return
             }
             do {
                 let JSON = try JSONSerialization.jsonObject(with: scheduleDataFinal, options:JSONSerialization.ReadingOptions(rawValue: 0))
                 guard let JSONDictionary: NSDictionary = JSON as? NSDictionary else {
-                    print("Not a Dictionary")
+                    //print("Not a Dictionary")
                     return
                 }
                 guard let creatives = JSONDictionary["sections"] as? NSArray else {
-                    print("creatives Not an Array when parsing for download")
+                    //print("creatives Not an Array when parsing for download")
                     return
                 }
                 // the creatives that are needed for now or a future date
@@ -223,11 +223,11 @@ class AdSchedule {
                 
                 for (creative) in creatives {
                     guard let currentCreative = creative as? NSDictionary else {
-                        print("creative Not a dictionary")
+                        //print("creative Not a dictionary")
                         continue
                     }
                     guard var datesString = currentCreative["dates"] as? String else {
-                        print("creative dates Not a string")
+                        //print("creative dates Not a string")
                         continue
                     }
                     // convert dates string into NSArray for later parsing
@@ -280,7 +280,7 @@ class AdSchedule {
                     }
                 }
                 // MARK: - Delete files that not need for the future
-                print("these creative files are needed for a future date: \(creativesNeededInFuture)")
+                //print("these creative files are needed for a future date: \(creativesNeededInFuture)")
 
                 
                 // Get the document directory url
@@ -298,15 +298,15 @@ class AdSchedule {
                             // MARK: You cannot remove all HTML files in documents foler. As eBooks are usually here. So check if it's not a eBook.
                             if !creativesNeededInFuture.contains(creativeFileString) && creativeFileString.range(of:"com") == nil  {
                                 try FileManager.default.removeItem(at: creativeFile)
-                                print("remove file from documents folder: \(creativeFileString)")
+                                //print("remove file from documents folder: \(creativeFileString)")
                             }
                         }
-                    } catch let error as NSError {
-                        print(error.localizedDescription)
+                    } catch _ as NSError {
+                        //print(error.localizedDescription)
                     }
                 }
-            } catch let JSONError as NSError {
-                print("\(JSONError)")
+            } catch _ as NSError {
+                //print("\(JSONError)")
             }
         }
     }
@@ -332,7 +332,7 @@ class AdSchedule {
                 if let pathExtention = pathExtention {
                     let statusType = IJReachability().connectedToNetworkOfType()
                     if statusType == .wiFi || !videoTypes.contains(pathExtention.lowercased()){
-                        print("Pick Creatives For Today: \(currentFileName) should be downloaded")
+                        //print("Pick Creatives For Today: \(currentFileName) should be downloaded")
                         grabFileFromWeb(url: url as URL?, fileName: lastComponent, parseScheduleForDownload: false)
                     }
                 }
@@ -364,10 +364,10 @@ class AdSchedule {
         // use whichever is latest
         if jsonFileTime > jsonFileTimeBundle && jsonFileTime > 0 {
             scheduleDataFinal = scheduleData
-            print("get schedule from downloaded file")
+            //print("get schedule from downloaded file")
         } else if jsonFileTimeBundle > 0 {
             scheduleDataFinal = scheduleDataBundle
-            print("get schedule from bundled json")
+            //print("get schedule from bundled json")
         } else {
             scheduleDataFinal = nil
         }
@@ -440,20 +440,20 @@ class AdSchedule {
         do {
             let JSON = try JSONSerialization.jsonObject(with: jsonData, options:JSONSerialization.ReadingOptions(rawValue: 0))
             guard let JSONDictionary: NSDictionary = JSON as? NSDictionary else {
-                print("Not a Dictionary")
+                //print("Not a Dictionary")
                 return 0
             }
             //print("JSONDictionary! \(JSONDictionary)")
             guard let JSONMeta = JSONDictionary["meta"] as? NSDictionary else {
-                print ("No meta in the adchedule json file")
+                //print ("No meta in the adchedule json file")
                 return 0
             }
             let fileTime = JSONMeta["fileTime"] as? Double ?? 0
-            print (fileTime)
+            //print ("file time is \(fileTime)")
             return fileTime
         }
-        catch let JSONError as NSError {
-            print("\(JSONError)")
+        catch _ as NSError {
+            //print("\(JSONError)")
         }
         return 0
     }
@@ -480,11 +480,11 @@ class AdSchedule {
             Download.getDataFromUrl(urlValue) {[weak self] (data, response, error)  in
                 DispatchQueue.main.async { () -> Void in
                     guard let data = data, error == nil else {
-                        print ("Pick Creatives For Today: Downloading error with the url: \(urlValue). Error Message: \(String(describing: error))")
+                        //print ("Pick Creatives For Today: Downloading error with the url: \(urlValue). Error Message: \(String(describing: error))")
                         return
                     }
                     self?.saveFile(data, filename: fileName)
-                    print ("Pick Creatives For Today: file saved as \(fileName)")
+                    //print ("Pick Creatives For Today: file saved as \(fileName)")
                     if parseScheduleForDownload == true {
                         //print("\(fileName) should be parsed for downloading creatives")
                         self?.parseScheduleForDownloading()

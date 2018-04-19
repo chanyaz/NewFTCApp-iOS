@@ -41,7 +41,7 @@ class PageCollectionViewLayoutH: UICollectionViewFlowLayout {
     
     override func prepare() {
         //        collectionView?.isPagingEnabled = true
-        print("----HHHHhengping   chuxian----")
+        //print("----HHHHhengping   chuxian----")
         
         var preSectionHeight = CGFloat(0);
         

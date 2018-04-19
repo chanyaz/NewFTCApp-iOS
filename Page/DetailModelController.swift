@@ -55,7 +55,7 @@ class DetailModelController: ModelController {
     
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> ContentItemViewController? {
         // Return the data view controller for the given index.
-        print ("Return the data view controller for \(index)")
+        //print ("Return the data view controller for \(index)")
         if (self.pageData.count == 0) || (index >= self.pageData.count) {
             return nil
         }

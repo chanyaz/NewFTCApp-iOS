@@ -52,7 +52,7 @@ class LaunchScreen: UIViewController {
             name: Notification.Name(rawValue: Event.newAdCreativeDownloaded),
             object: nil
         )
-        print ("Launch Ad Closed Successfully! ")
+        //print ("Launch Ad Closed Successfully! ")
     }
     
     override func loadView() {
@@ -150,7 +150,7 @@ class LaunchScreen: UIViewController {
     
     
     @objc public func retryAd() {
-        print ("Try to parse the ad schedule to decide if you can show an ad now")
+        //print ("Try to parse the ad schedule to decide if you can show an ad now")
         if let overlay = overlayView {
             for subUIView in overlay.subviews {
                 subUIView.removeFromSuperview()
@@ -366,7 +366,7 @@ class LaunchScreen: UIViewController {
         
         //let path = "/Users/zhangoliver/Library/Developer/CoreSimulator/Devices/D02EDCEC-BD4D-442E-91DD-FEA096B5D07C/data/Containers/Data/Application/E176DB68-9184-489C-B776-8D057159F4B1/Library/Caches/video-adv-AccentureTest2.mp4"
         
-        print ("launch ad path is \(path)")
+        //print ("launch ad path is \(path)")
         let pathUrl = URL(fileURLWithPath: path)
         maxAdTimeAfterLaunch = 60.0
         maxAdTimeAfterWebRequest = 57.0
@@ -456,7 +456,7 @@ class LaunchScreen: UIViewController {
             let timeSpent = Int(CMTimeGetSeconds(timeInterval))
             let timeRecordStep = 5
             if !timeRecorded.contains(timeSpent) && timeSpent % timeRecordStep == 0 {
-                print(timeSpent)
+                //print(timeSpent)
                 Track.event(category: "\(deviceType) Launch Video Play", action: lastcomponent, label: "\(timeSpent)")
                 timeRecorded.append(timeSpent)
             }
@@ -494,8 +494,8 @@ class LaunchScreen: UIViewController {
             sender.isSelected = true
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            } catch let error {
-                print("Couldn't turn on sound: \(error.localizedDescription)")
+            } catch _ {
+                //print("Couldn't turn on sound: \(error.localizedDescription)")
             }
         }
     }
@@ -518,7 +518,7 @@ class LaunchScreen: UIViewController {
         let timeStamp = String(unixDateStamp).replacingOccurrences(of: ".", with: "")
         for impressionUrlString in impressions {
             let impressionUrlStringWithTimestamp = impressionUrlString.replacingOccurrences(of: "[timestamp]", with: timeStamp)
-            print ("send to \(impressionUrlStringWithTimestamp)")
+            //print ("send to \(impressionUrlStringWithTimestamp)")
             if var urlComponents = URLComponents(string: impressionUrlStringWithTimestamp) {
                 let newQuery = URLQueryItem(name: "fttime", value: timeStamp)
                 if urlComponents.queryItems != nil {
@@ -533,11 +533,11 @@ class LaunchScreen: UIViewController {
                                 // MARK: Use the original impressionUrlString for Google Analytics
                                 Track.event(category: "\(deviceType) Launch Ad", action: "Fail", label: "\(impressionUrlString)")
                                 // MARK: The string should have the parameter
-                                print ("Fail to send impression to \(url.absoluteString)")
+                                //print ("Fail to send impression to \(url.absoluteString)")
                                 return
                             }
                             Track.event(category: "\(deviceType) Launch Ad", action: "Sent", label: "\(impressionUrlString)")
-                            print("sent impression to \(url.absoluteString)")
+                            //print("sent impression to \(url.absoluteString)")
                         }
                     }
                 }

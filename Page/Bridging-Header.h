@@ -31,6 +31,6 @@
 #import "WXApiObject.h"
 #import <CommonCrypto/CommonHMAC.h>
 
-// #import "WeiboSDK.h"
+#import "WeiboSDK.h"
 
 #endif /* Bridging_Header_h */

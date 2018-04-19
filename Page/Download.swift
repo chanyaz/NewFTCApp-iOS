@@ -74,10 +74,10 @@ struct Download {
     }
     
     public static func downloadUrl(_ urlString: String, to: FileManager.SearchPathDirectory, as fileExtension: String?) {
-        print ("downloadUrl: \(urlString) as \(String(describing: fileExtension))")
+        //print ("downloadUrl: \(urlString) as \(String(describing: fileExtension))")
         if let url = URL(string: urlString) {
             getDataFromUrl(url) {(data, response, error)  in
-                print ("downloadUrl returned: \(urlString) as \(String(describing: fileExtension))")
+                // print ("downloadUrl returned: \(urlString) as \(String(describing: fileExtension))")
                 if let data = data, error == nil {
                     saveFile(data, filename: urlString, to: to, as: fileExtension)
                 }

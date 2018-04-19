@@ -31,7 +31,7 @@ struct HappyUser {
             currentLaunchCount = score
         }
         UserDefaults.standard.set(currentLaunchCount, forKey: scoreKey)
-        print ("current version is \(versionFromBundle) and current Happy User score is \(currentLaunchCount)")
+        //print ("current version is \(versionFromBundle) and current Happy User score is \(currentLaunchCount)")
     }
     
     public func requestReview() {

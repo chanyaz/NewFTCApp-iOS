@@ -41,7 +41,7 @@ class PlayerAPI {
         let views = controller?.view.subviews
         for view in views! {
             if view.isKind(of: CustomSmallPlayView.self){
-                 print("views include----\(view)")
+                 //print("views include----\(view)")
                 return view as? CustomSmallPlayView
             }
         }
@@ -85,7 +85,7 @@ class PlayerAPI {
 //            print("tabbar playing index\(index)")
             let fileName = title + getFileName(urlString: audioFileUrl)
             if let localAudioFile = Download.checkDownloadedFileInDirectory(fileName, directoryName: "audioDirectory", for: .cachesDirectory){
-                print("localAudioFile path--\(localAudioFile)")
+                //print("localAudioFile path--\(localAudioFile)")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
             }else{
                 audioUrlString = self.parseAudioUrl(urlString: audioFileUrl)
@@ -100,9 +100,9 @@ class PlayerAPI {
             let asset = AVURLAsset(url: audioUrl)
             playerItem = AVPlayerItem(asset: asset)
             if player != nil {
-                print("item player exist")
+                //print("item player exist")
             }else {
-                print("item player do not exist")
+                //print("item player do not exist")
                 player = AVPlayer()
             }
             let statusType = IJReachability().connectedToNetworkOfType()

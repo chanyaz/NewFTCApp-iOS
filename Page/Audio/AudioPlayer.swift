@@ -344,18 +344,18 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        print("page loaded!")
+        //print("page loaded!")
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "callbackHandler" {
             if let infoForShare = message.body as? String{
-                print(infoForShare)
+                //print(infoForShare)
                 let toArray = infoForShare.components(separatedBy: "|")
                 ShareHelper.shared.webPageDescription = toArray[2]
                 ShareHelper.shared.webPageImage = toArray[0]
                 ShareHelper.shared.webPageImageIcon = toArray[1]
-                print("get image icon from web page: \(ShareHelper.shared.webPageImageIcon)")
+                //print("get image icon from web page: \(ShareHelper.shared.webPageImageIcon)")
             }
         } else if message.name == "audioData" {
             if let audioData = message.body as? [String: Any],
@@ -600,7 +600,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         // MARK: Receive Messages from Lock Screen
         UIApplication.shared.beginReceivingRemoteControlEvents();
         MPRemoteCommandCenter.shared().playCommand.addTarget {[weak self] event in
-            print("resume music")
+            //print("resume music")
             self?.player?.play()
             self?.buttonPlayAndPause.image = UIImage(named:"BigPauseButton")
             return .success

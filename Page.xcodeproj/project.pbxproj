@@ -490,6 +490,9 @@
 		60B855491F6A118600FE190E /* VideoCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B855461F6A118600FE190E /* VideoCoverCell.swift */; };
 		60B8554A1F6A118600FE190E /* VideoCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B855471F6A118600FE190E /* VideoCoverCell.xib */; };
 		60B8554B1F6A118600FE190E /* VideoCoverCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B855471F6A118600FE190E /* VideoCoverCell.xib */; };
+		60B92361208847DF006DBBA4 /* WeiboShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B92360208847DF006DBBA4 /* WeiboShare.swift */; };
+		60B92362208847DF006DBBA4 /* WeiboShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B92360208847DF006DBBA4 /* WeiboShare.swift */; };
+		60B92363208847DF006DBBA4 /* WeiboShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B92360208847DF006DBBA4 /* WeiboShare.swift */; };
 		60C0D65B1F17402500E6F77D /* HappyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65A1F17402500E6F77D /* HappyUser.swift */; };
 		60C0D65E1F17415A00E6F77D /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */; };
 		60C0D6601F18BF5800E6F77D /* Impressions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C0D65F1F18BF5800E6F77D /* Impressions.swift */; };
@@ -821,6 +824,7 @@
 		60AEE24A20733688007443D5 /* LocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelper.swift; sourceTree = "<group>"; };
 		60B855461F6A118600FE190E /* VideoCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCoverCell.swift; sourceTree = "<group>"; };
 		60B855471F6A118600FE190E /* VideoCoverCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCoverCell.xib; sourceTree = "<group>"; };
+		60B92360208847DF006DBBA4 /* WeiboShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeiboShare.swift; sourceTree = "<group>"; };
 		60C0D65A1F17402500E6F77D /* HappyUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HappyUser.swift; sourceTree = "<group>"; };
 		60C0D65D1F17415A00E6F77D /* DeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		60C0D65F1F18BF5800E6F77D /* Impressions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Impressions.swift; sourceTree = "<group>"; };
@@ -1425,6 +1429,7 @@
 				600BC5081FC7D81B00652ADA /* ShareMore.swift */,
 				60986A441F1CAC5300583157 /* ShareImageActivityProvider.swift */,
 				60986A451F1CAC5300583157 /* WeChatShare.swift */,
+				60B92360208847DF006DBBA4 /* WeiboShare.swift */,
 			);
 			name = Share;
 			sourceTree = "<group>";
@@ -2292,6 +2297,7 @@
 				5094D6282020AAA7000F32AB /* PageCollectionViewLayoutV.swift in Sources */,
 				5094D6292020AAA7000F32AB /* Tabs.swift in Sources */,
 				5094D62A2020AAA7000F32AB /* AudioPlayerHelper.swift in Sources */,
+				60B92362208847DF006DBBA4 /* WeiboShare.swift in Sources */,
 				5094D62B2020AAA7000F32AB /* ShareHelper.swift in Sources */,
 				5094D62C2020AAA7000F32AB /* PaddingLabel.swift in Sources */,
 				5094D62D2020AAA7000F32AB /* ChannelModelDelegate.swift in Sources */,
@@ -2491,6 +2497,7 @@
 				602CD2971F565FD500FFC1EA /* IAPHelper.swift in Sources */,
 				F2E090711F5A6A3900F4409F /* CollectInfoController.swift in Sources */,
 				602153461F397C650077A7AF /* AdModel.swift in Sources */,
+				60B92363208847DF006DBBA4 /* WeiboShare.swift in Sources */,
 				F2592E821FAC2208000850B6 /* SubscribeTimeTableViewCell.swift in Sources */,
 				602153491F397C650077A7AF /* NowPlayingCenter.swift in Sources */,
 				F2E090821F5A736E00F4409F /* CustomPresentController.swift in Sources */,
@@ -2587,6 +2594,7 @@
 				F215331C1F07691900DCA7C8 /* PageCollectionViewLayoutV.swift in Sources */,
 				607094AD1EE9436900760A60 /* Tabs.swift in Sources */,
 				600C0D041F5D582500226F84 /* AudioPlayerHelper.swift in Sources */,
+				60B92361208847DF006DBBA4 /* WeiboShare.swift in Sources */,
 				60986A481F1CAC5300583157 /* ShareHelper.swift in Sources */,
 				50F610631F2DAF8F00E3AABC /* PaddingLabel.swift in Sources */,
 				50E535C71F0729900082B181 /* ChannelModelDelegate.swift in Sources */,

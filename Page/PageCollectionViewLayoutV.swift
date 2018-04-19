@@ -42,7 +42,7 @@ class PageCollectionViewLayoutV: UICollectionViewFlowLayout{
     
     override func prepare() {
         //        collectionView?.isPagingEnabled = true
-        print("shuping")
+        //print("shuping")
 
         var preSectionHeight = CGFloat(0);
         
@@ -52,7 +52,7 @@ class PageCollectionViewLayoutV: UICollectionViewFlowLayout{
         let contentWidth = self.contentWidth
         let numSections = collectionView!.numberOfSections - 1
         
-            print ("screen --\(contentWidth)--")
+            //print ("screen --\(contentWidth)--")
             
             if contentWidth<800{
                 adHeight = 350

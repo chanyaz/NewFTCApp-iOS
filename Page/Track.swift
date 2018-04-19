@@ -18,7 +18,7 @@ struct Track {
             let builder = GAIDictionaryBuilder.createScreenView()
             if let obj = builder?.build() as [NSObject: AnyObject]? {
                 tracker?.send(obj)
-                print ("\(trackingId) screen name: \(name)")
+                //print ("\(trackingId) screen name: \(name)")
             }
         }
         if trackEngagement == true {
@@ -33,7 +33,7 @@ struct Track {
             let builder = GAIDictionaryBuilder.createEvent(withCategory: category, action: action, label: label, value: 0)
             if let obj = builder?.build() as [NSObject : AnyObject]? {
                 tracker?.send(obj)
-                print ("send track for event: \(category), \(action), \(label), \(trackingId)")
+                //print ("send track for event: \(category), \(action), \(label), \(trackingId)")
             }
         }
         let feedbackScore = ErrorMessages.Feedback.score(category: category, action: action, label: label)
@@ -139,9 +139,9 @@ struct Track {
                         error == nil,
                         httpResponse.statusCode == 200 {
                         do {
-                            if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
+                            if (try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject>) != nil {
                                 // MARK: - parse and verify the required informatin in the jsonResponse
-                                print ("Engagement validation from func receiptValidation success: \(jsonResponse)")
+                                //print ("Engagement validation from func receiptValidation success: \(jsonResponse)")
                             }
                         } catch {
                             
@@ -152,7 +152,7 @@ struct Track {
             }
         }
         catch {
-            print("Engagement validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
+            //print("Engagement validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
         }
         
     }

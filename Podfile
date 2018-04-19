@@ -10,7 +10,7 @@ pod 'Google/Analytics'
 pod 'WechatOpenSDK'
 # pod 'FolioReaderKit'
 pod 'GoogleConversionTracking'
-# pod "Weibo_SDK", :git => "https://github.com/sinaweibosdk/weibo_ios_sdk.git"
+pod "Weibo_SDK", :git => "https://github.com/sinaweibosdk/weibo_ios_sdk.git"
 end
 
 

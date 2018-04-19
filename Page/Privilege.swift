@@ -67,32 +67,32 @@ struct PrivilegeHelper {
                 let key = membership["key"] as? String {
                 var purchased = UserDefaults.standard.bool(forKey: id)
                 if purchased == false {
-                    print ("No app store purchase, check the key of \(key)")
+                    //print ("No app store purchase, check the key of \(key)")
                     if UserInfo.shared.subscriptionType == key,
                         let expireDate = UserInfo.shared.subscriptionExpire{
-                        print ("No app store purchase, found the key of \(key)")
+                        //print ("No app store purchase, found the key of \(key)")
                         let today = Double(Date().timeIntervalSince1970)
                         if expireDate >= today {
-                            print ("No app store purchase, the expire date is in the future")
+                            //print ("No app store purchase, the expire date is in the future")
                             purchased = true
                         } else {
-                            print ("No app store purchase, the expire date is in the past")
+                            //print ("No app store purchase, the expire date is in the past")
                         }
                         
                         let date = Date(timeIntervalSince1970: expireDate)
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = dateFormatString
                         let expireDateString = dateFormatter.string(from: date)
-                        print ("No app store purchase, \(id) expires at \(expireDateString)")
+                        //print ("No app store purchase, \(id) expires at \(expireDateString)")
                         IAP.savePurchase(id, property: "expires", value: expireDateString)
                         IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.Site.rawValue)
                     }
                 }
-                print ("IAP: \(id) purchase status is \(purchased)")
+                //print ("IAP: \(id) purchase status is \(purchased)")
                 if purchased == true {
                     if let privilege = membership["privilege"] as? Privilege {
                         Privilege.shared = privilege
-                        print ("IAP: check locally and privilege is \(privilege)")
+                        //print ("IAP: check locally and privilege is \(privilege)")
                     }
                     // MARK: get users's membership purchase history
                     if InAppPurchases.shared.memberships.contains(id) == false {
@@ -149,32 +149,32 @@ struct PrivilegeHelper {
                 if let date = status.expireDate {
                     // MARK: handle subscrition expiration date
                     if date >= Date() {
-                        print ("\(id) is valid! ")
+                        //print ("\(id) is valid! ")
                         UserDefaults.standard.set(true, forKey: id)
                     } else {
-                        print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
+                        //print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
                         // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
                         UserDefaults.standard.set(false, forKey: id)
                         IAP.savePurchase(id, property: "purchased", value: "N")
                         
                         if let environment = receipt["environment"] as? String {
-                            print ("environment is \(environment)")
+                            //print ("environment is \(environment)")
                             if environment == "Production" {
                                 let trackLabel = UserInfo.shared.userId ?? UserInfo.shared.userName ?? UserInfo.shared.deviceToken ?? ""
                                 Track.event(category: "iOS Subscription Expires", action: id, label: "\(trackLabel)")
-                                print (receipt)
+                                //print (receipt)
                             }
                         }
                     }
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = dateFormatString
                     let expireDateString = dateFormatter.string(from: date)
-                    print ("\(id) expires at \(expireDateString)")
+                    //print ("\(id) expires at \(expireDateString)")
                     IAP.savePurchase(id, property: "expires", value: expireDateString)
                     IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.AppleIAP.rawValue)
                 } else {
                     // MARK: Not a subscription
-                    print ("\(id) is valid! ")
+                    //print ("\(id) is valid! ")
                     UserDefaults.standard.set(true, forKey: id)
                 }
                 
@@ -200,11 +200,11 @@ struct PrivilegeHelper {
                 if purchased != "new" {
                     if let privilege = membership["privilege"] as? Privilege {
                         Privilege.shared = privilege
-                        print ("IAP: check from network and privilege is \(privilege)")
+                        //print ("IAP: check from network and privilege is \(privilege)")
                     }
                 } else {
                     UserDefaults.standard.set(false, forKey: id)
-                    print ("IAP: check from network and \(id)'s purchase status is set to false")
+                    //print ("IAP: check from network and \(id)'s purchase status is set to false")
                 }
             }
         }

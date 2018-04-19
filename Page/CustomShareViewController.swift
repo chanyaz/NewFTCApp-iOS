@@ -119,6 +119,8 @@ class CustomShareViewController: UIViewController {
                 shareItem.perform()
             } else if let shareItem = shareItem as? ShareMore {
                 shareItem.perform()
+            } else if let shareItem = shareItem as? WeiboShare {
+                shareItem.perform()
             }
         }
         dismiss(animated: true)

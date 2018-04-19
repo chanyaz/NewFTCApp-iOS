@@ -55,10 +55,12 @@ class CustomShareViewController: UIViewController {
         let itemHeight = itemImageHeight + itemTitleHeight
         let itemWidth = itemImageHeight + 2 * itemPadding
         var itemLeading:CGFloat = 0
+        
         for (index, item) in shareItems.enumerated() {
             if let title = item.activityTitle,
                 let image = item.activityImage {
                 let itemView = UIView()
+                let itemCenterY: CGFloat = -shareSheetHeight * 1/4
                 itemView.tag = index
                 let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(performShare(_:)))
                 itemView.isUserInteractionEnabled = true
@@ -68,7 +70,7 @@ class CustomShareViewController: UIViewController {
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemHeight))
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemWidth))
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: shareSheetView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: itemLeading))
-                view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: shareSheetView, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: -shareSheetHeight * 1/4))
+                view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: shareSheetView, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: itemCenterY))
                 
                 
                 itemLeading += itemWidth

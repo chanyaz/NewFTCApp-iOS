@@ -11,6 +11,7 @@ import UIKit
 
 class CustomShareViewController: UIViewController {
     var shareItems: [UIActivity] = []
+    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
     override func loadView() {
         func getItemLeading(for index: Int, with itemWidth: CGFloat, of columns: CGFloat) -> CGFloat {
             let itemIndexInRow = index % Int(columns)
@@ -41,13 +42,16 @@ class CustomShareViewController: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(close))
         bottomLayer.isUserInteractionEnabled = true
         bottomLayer.addGestureRecognizer(tapGestureRecognizer)
+        let swipeDownGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerHandler(_:)))
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(swipeDownGesture)
         view.addSubview(bottomLayer)
         
         // MARK: Add the action sheet view so that you can hold all the share options
         let itemCount: CGFloat = CGFloat(shareItems.count)
         let columns: CGFloat = 4
         let rows = ceil(itemCount/columns)
-            
+        
         
         let shareSheetHeight: CGFloat = 180 * rows
         let shareSheetView = UIView()
@@ -106,9 +110,28 @@ class CustomShareViewController: UIViewController {
         }
     }
     
-    
     @objc func close() {
         dismiss(animated: true)
+    }
+    
+    
+    @objc func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
+        let touchPoint = sender.location(in: self.view?.window)
+        if sender.state == UIGestureRecognizerState.began {
+            initialTouchPoint = touchPoint
+        } else if sender.state == UIGestureRecognizerState.changed {
+            if touchPoint.y - initialTouchPoint.y > 0 {
+                self.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
+            }
+        } else if sender.state == UIGestureRecognizerState.ended || sender.state == UIGestureRecognizerState.cancelled {
+            if touchPoint.y - initialTouchPoint.y > 100 {
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+                })
+            }
+        }
     }
     
     @objc func performShare(_ gesture : UITapGestureRecognizer) {

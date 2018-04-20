@@ -151,7 +151,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
          share.popupActionSheet(self as UIViewController, url: url)
          */
         if let item = item {
-            launchActionSheet(for: item, from: sender)
+            launchShareAction(for: item, from: sender)
         }
     }
     
@@ -355,6 +355,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 ShareHelper.shared.webPageDescription = toArray[2]
                 ShareHelper.shared.webPageImage = toArray[0]
                 ShareHelper.shared.webPageImageIcon = toArray[1]
+                item?.lead = toArray[2]
+                item?.image = toArray[0]
                 //print("get image icon from web page: \(ShareHelper.shared.webPageImageIcon)")
             }
         } else if message.name == "audioData" {

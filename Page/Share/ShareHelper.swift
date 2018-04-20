@@ -90,13 +90,12 @@ struct ShareHelper {
 extension UIViewController {
     
     func launchShareAction(for item: ContentItem, from sender: Any) {
-        if WXApi.isWXAppSupport() || WeiboSDK.isWeiboAppInstalled() {
+        if WXApi.isWXAppSupport() || WeiboSDK.isWeiboAppInstalled() || 1>0 {
             launchCustomActionSheet(for: item, from: sender)
         } else {
             launchActionSheet(for: item, from: sender)
         }
     }
-    
     
     func launchCustomActionSheet(for item: ContentItem, from sender: Any) {
         updateShareContent(for: item, from: sender)
@@ -139,24 +138,6 @@ extension UIViewController {
             let openInSafari = OpenInSafari(to: "safari")
             let shareData = DataForShare()
             let image = ShareImageActivityProvider(placeholderItem: iconImage)
-            
-            
-//            // MARK: - Construct Weibo Web Image
-//            let message = WBMessageObject()
-//            message.text = "这是分享到新浪微博的一个网页"
-//
-//            let web = WBWebpageObject()
-//            web.objectID = "对应多媒体的唯一标识"
-//            web.title = "多媒体的标题"
-//            web.description = "多媒体内容的描述: 这是一个很努力的作者"
-//            let thumbImg = UIImage(named: "cover.jpg")// 预览图
-//            // 不能超过32k
-//            web.thumbnailData = UIImagePNGRepresentation(thumbImg!)!
-//
-//            web.webpageUrl = "http://www.jianshu.com/u/2846c3d3a974"
-//
-//            message.mediaObject = web
-            
             let objectsToShare = [url, shareData, image] as [Any]
             let activityVC: UIActivityViewController
             if WXApi.isWXAppSupport() == true {
@@ -214,9 +195,8 @@ extension UIViewController {
         ShareHelper.shared.webPageTitle = item.headline
         ShareHelper.shared.webPageDescription = item.lead
         ShareHelper.shared.webPageImage = item.image
-        ShareHelper.shared.webPageImageIcon = ShareHelper.shared.webPageImage
+        ShareHelper.shared.webPageImageIcon = item.image
         getCurrentWebView()
-        
     }
     
 }

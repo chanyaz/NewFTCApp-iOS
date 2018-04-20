@@ -570,7 +570,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         searchBar?.delegate = nil
         collectionView?.dataSource = nil
         collectionView?.delegate = nil
-        print ("Data View Controller of \(pageTitle) removed successfully")
+        //print ("Data View Controller of \(pageTitle) removed successfully")
     }
     
     @objc public func nightModeChanged() {

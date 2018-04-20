@@ -245,7 +245,7 @@ class DetailViewController: PagesViewController, UINavigationControllerDelegate/
         // MARK: - Notification For English Status Change
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.englishStatusChange), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Event.nightModeChanged), object: nil)
-        print ("detail view controller removed! ")
+        //print ("detail view controller removed! ")
     }
     
     @objc public func listen() {

@@ -184,17 +184,17 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         if let type = dataObject?.type,
             let id = dataObject?.id {
             trackScreenView(type: type, id: id)
-            if type != "video" {
-                let jsCode = JSCodes.get(type)
-                //print ("View will Appear, about to excute this javascript code: \(jsCode)")
-                self.webView?.evaluateJavaScript(jsCode) { (result, error) in
-                    if error != nil {
-                        print ("something is wrong with js code in content item view controller: \(String(describing: error))")
-                    } else {
-                        //print ("js code is executed successfully! ")
-                    }
-                }
-            }
+//            if type != "video" {
+//                let jsCode = JSCodes.get(type)
+//                //print ("View will Appear, about to excute this javascript code: \(jsCode)")
+//                self.webView?.evaluateJavaScript(jsCode) { (result, error) in
+//                    if error != nil {
+//                        print ("something is wrong with js code in content item view controller: <script>\(jsCode)</script> \(String(describing: error))")
+//                    } else {
+//                        //print ("js code is executed successfully! ")
+//                    }
+//                }
+//            }
         }
         // MARK: If there's a PrivilegeView in the view, check if it should be removed
         if isLoadingForTheFirstTime == false && isPrivilegeViewForAllLanguages {
@@ -224,7 +224,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         webView?.navigationDelegate = nil
         webView?.scrollView.delegate = nil
         
-        print ("deinit content item view controller of \(pageTitle) successfully! ")
+        //print ("deinit content item view controller of \(pageTitle) successfully! ")
     }
     
     @objc public func handleLanguagePreferenceChange() {
@@ -694,7 +694,6 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
             case "mySetting":
                 if let settingsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
                     let topController = UIApplication.topViewController() {
-                    
                     settingsController.dataObject = [
                         "type": "setting",
                         "id": "setting",
@@ -704,7 +703,7 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
                     settingsController.pageTitle = "设置"
                     topController.navigationController?.pushViewController(settingsController, animated: true)
                 }
-                print ("mySetting this: \(body)")
+                //print ("mySetting this: \(body)")
             case "user":
                 // MARK: Get user information
                 if let body = message.body as? [String: String] {

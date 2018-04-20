@@ -88,7 +88,7 @@ class DetailModelController: ModelController {
     
     override func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var index = self.indexOfViewController(viewController as! ContentItemViewController)
-        print ("preparing the prev page")
+        //print ("preparing the prev page")
         
         if (index == 0) || (index == NSNotFound) {
             return nil
@@ -99,7 +99,7 @@ class DetailModelController: ModelController {
     
     override func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         var index = self.indexOfViewController(viewController as! ContentItemViewController)
-        print ("preparing the next page")
+        //print ("preparing the next page")
         if index == NSNotFound {
             return nil
         }

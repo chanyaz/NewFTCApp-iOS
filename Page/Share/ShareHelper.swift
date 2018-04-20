@@ -90,7 +90,7 @@ struct ShareHelper {
 extension UIViewController {
     
     func launchShareAction(for item: ContentItem, from sender: Any) {
-        if WXApi.isWXAppSupport() || WeiboSDK.isWeiboAppInstalled() || 1>0 {
+        if WXApi.isWXAppSupport() || WeiboSDK.isWeiboAppInstalled() {
             launchCustomActionSheet(for: item, from: sender)
         } else {
             launchActionSheet(for: item, from: sender)

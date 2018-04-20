@@ -469,7 +469,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
     }
     
-    var isAudioFileDownloaded = false
+    //var isAudioFileDownloaded = false
     private func prepareAudioPlay() {
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
         audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "\(APIs.getAudioDomain())album/")
@@ -484,7 +484,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 //print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 downloadButton.status = .success
-                isAudioFileDownloaded = true
+                playStatus.text = audioTitle
+                //isAudioFileDownloaded = true
                 //                downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
             }
             
@@ -607,11 +608,12 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 case "playbackBufferEmpty":
                     // Show loader
                     //print ("is loading...")
-                    if isAudioFileDownloaded {
-                        playStatus.text = audioTitle
-                    } else {
-                        playStatus.text = "加载中..."
-                    }
+//                    if isAudioFileDownloaded {
+//                        playStatus.text = audioTitle
+//                    } else {
+//                        playStatus.text = "加载中..."
+//                    }
+                    playStatus.text = "加载中..."
                 case "playbackLikelyToKeepUp":
                     // Hide loader
                     //print ("Audio Player: should be playing. Duration is \(String(describing: playerItem?.duration))")

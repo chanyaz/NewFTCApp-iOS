@@ -147,12 +147,14 @@ extension UIViewController: SFSafariViewControllerDelegate {
                 if let hostString = url.host {
                     let screenName = hostString + url.path
                     if let dataObject = AppNavigation.getChannelData(of: screenName),
-                        let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController  {
-                        //print(dataViewController.view.frame)
+                        let dataViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataViewController") as? DataViewController,
+                        let topViewController = UIApplication.topViewController() {
                         dataViewController.dataObject = dataObject
                         dataViewController.hidesBottomBarWhenPushed = true
                         dataViewController.pageTitle = dataObject["title"] ?? ""
-                        navigationController?.pushViewController(dataViewController, animated: true)
+                        
+                        topViewController.navigationController?.pushViewController(dataViewController, animated: true)
+                        topViewController.navigationController?.setNavigationBarHidden(false, animated: true)
                     }
                 }
             case "fileinbundle":

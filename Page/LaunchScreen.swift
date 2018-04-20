@@ -184,7 +184,11 @@ class LaunchScreen: UIViewController {
             imageView.backgroundColor = UIColor(hex: FullScreenFallBack.backgroundColor)
             imageView.contentMode = .scaleAspectFit
             imageView.isUserInteractionEnabled = true
-            defaultTapAction = "buyproduct://\(FullScreenFallBack.id)"
+            if FullScreenFallBack.id != "" {
+                defaultTapAction = "buyproduct://\(FullScreenFallBack.id)"
+            } else if FullScreenFallBack.link != "" {
+                defaultTapAction = "\(FullScreenFallBack.link)"
+            }
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickAd))
             imageView.addGestureRecognizer(tapRecognizer)
             view.addSubview(imageView)
@@ -553,11 +557,10 @@ class LaunchScreen: UIViewController {
         }
         let deviceType = DeviceInfo.checkDeviceType()
         Track.event(category: "\(deviceType) Launch Ad", action: "Click", label: "\(urlString)")
-        if urlString.hasPrefix("buyproduct://") {
+        if urlString.hasPrefix("buyproduct://") || urlString.hasPrefix("screen://") {
             close()
         }
     }
-    
     
     private func closeAfterSeconds(_ seconds: TimeInterval) {
         if timer == nil {

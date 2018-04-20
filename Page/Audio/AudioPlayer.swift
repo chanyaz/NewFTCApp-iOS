@@ -67,13 +67,11 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         if let player = player {
             // MARK: - Continue audio even when device is set to mute. Do this only when user is actually playing audio because users might want to read FTC news while listening to music from other apps.
             try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            
             // MARK: - Continue audio when device is in background
             try? AVAudioSession.sharedInstance().setActive(true)
             player.play()
             player.replaceCurrentItem(with: playerItem)
             buttonPlayAndPause.image = UIImage(named:"BigPauseButton")
-            
             // TODO: - Need to find a way to display media duration and current time in lock screen
             var mediaLength: NSNumber = 0
             if let d = self.playerItem?.duration {
@@ -82,7 +80,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                     mediaLength = duration as NSNumber
                 }
             }
-            
             var currentTime: NSNumber = 0
             if let c = self.playerItem?.currentTime() {
                 let currentTime1 = CMTimeGetSeconds(c)
@@ -177,15 +174,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     deinit {
-        
-        //        if self.isMovingFromParentViewController {
-        //            if let player = player {
-        //                player.pause()
-        //                self.player = nil
-        //            }
-        //        } else {
-        //            print ("Audio is not being popped")
-        //        }
         
         if let player = player {
             player.pause()
@@ -350,13 +338,14 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "callbackHandler" {
             if let infoForShare = message.body as? String{
-                //print(infoForShare)
                 let toArray = infoForShare.components(separatedBy: "|")
-                ShareHelper.shared.webPageDescription = toArray[2]
-                ShareHelper.shared.webPageImage = toArray[0]
-                ShareHelper.shared.webPageImageIcon = toArray[1]
-                item?.lead = toArray[2]
-                item?.image = toArray[0]
+                if toArray.count >= 3 {
+                    item?.lead = toArray[2]
+                    item?.image = toArray[0]
+                    ShareHelper.shared.webPageDescription = toArray[2]
+                    ShareHelper.shared.webPageImage = toArray[0]
+                    ShareHelper.shared.webPageImageIcon = toArray[1]
+                }
                 //print("get image icon from web page: \(ShareHelper.shared.webPageImageIcon)")
             }
         } else if message.name == "audioData" {
@@ -373,7 +362,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                     startTimes.append(currentBlock)
                 }
                 audioScriptData = startTimes
-                //print ("audio data is received: \(audioScriptData)")
             }
         } else if message.name == "scrollTo" {
             if let scrollY = message.body as? Int {

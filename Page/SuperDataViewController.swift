@@ -1256,7 +1256,9 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     var pageIndexCount = 0
                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
                         for (itemIndex, item) in section.items.enumerated() {
-                            if ["story", "premium", "video", "interactive", "photo", "manual"].contains(item.type) {
+                            if ["story", "premium", "video", "interactive", "photo", "manual"].contains(item.type),
+                                // MARK: radio should not be swiped to as it behaves differently
+                                !["radio"].contains(item.subType){
                                 if sectionIndex == indexPath.section && itemIndex == indexPath.row {
                                     currentPageIndex = pageIndexCount
                                 }

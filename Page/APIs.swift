@@ -55,7 +55,7 @@ struct APIs {
         "http://www.ftchinese.com/",
         "http://big5.ftmailbox.com/"
     ]
-    
+        
     // MARK: - Domain Check: HTTPS domain for audio files
     public static func getAudioDomain() -> String {
         if Privilege.shared.exclusiveContent {
@@ -627,6 +627,7 @@ struct LinkPattern {
     static let search = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/search/.*page=([0-9]+)"]
     static let channel = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/([0-9-a-zA-Z]+.html)"]
     static let pagemaker = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/m/corp/preview.html\\?pageid\\=([0-9-a-zA-Z]+)", "^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/editorchoice-issue.html\\?issue\\=([0-9-a-zA-Z]+)"]
+    static let subscription = ["^http[s]*:.*premium.ftacademy.cn/subscription.*$"]
     static let other = ["^(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
     static let image = [
         "^(http[s]*://.*.jpg)$",
@@ -1152,10 +1153,8 @@ struct Settings {
 }
 
 struct FullScreenFallBack {
-    //static let id = "com.ft.ftchinese.mobile.book.bubble"
-    
     static let id = ""
-    static let link = "screen://myft/membership"
+    static let link = "screen://\(IAPProducts.membershipScreenName)"
     static let backgroundColor = "#000000"
 }
 

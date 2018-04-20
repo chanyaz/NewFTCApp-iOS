@@ -200,7 +200,7 @@ struct Setting {
                 "type": "iap",
                 "subtype":"membership",
                 "compactLayout": "books",
-                "screenName":"myft/membership",
+                "screenName": IAPProducts.membershipScreenName,
                 "include": "purchased"
             ]
         default:

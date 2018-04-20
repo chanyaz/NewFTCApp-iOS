@@ -428,7 +428,7 @@ struct AppNavigation {
                     "type": "iap",
                     "subtype":"membership",
                     "compactLayout": "books",
-                    "screenName":"myft/membership"
+                    "screenName": IAPProducts.membershipScreenName
                 ],
                 [
                     "title": "账户",

@@ -22,7 +22,11 @@ extension UIViewController: SFSafariViewControllerDelegate {
                 var id: String? = nil
                 var type: String? = nil
                 // MARK: If the link pattern is recognizable, open it using native method
-                if let contentId = urlString.matchingStrings(regexes: LinkPattern.image) {
+                if urlString.matchingStrings(regexes: LinkPattern.subscription) != nil,
+                    let linkUrl = URL(string: "screen://\(IAPProducts.membershipScreenName)") {
+                    openLink(linkUrl)
+                    return
+                } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.image) {
                     id = contentId
                     type = "image"
                 } else if let contentId = urlString.matchingStrings(regexes: LinkPattern.story) {

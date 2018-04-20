@@ -141,12 +141,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     @IBAction func share(_ sender: UIBarButtonItem) {
-        /*
-         let share = ShareHelper()
-         let ccodeInActionSheet = ccode["actionsheet"] ?? "iosaction"
-         let url = URL(string: "http://www.ftchinese.com/interactive/\(audioId)#ccode=\(ccodeInActionSheet)")
-         share.popupActionSheet(self as UIViewController, url: url)
-         */
         if let item = item {
             launchShareAction(for: item, from: sender)
         }
@@ -174,29 +168,24 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     deinit {
-        
         if let player = player {
             player.pause()
             self.player = nil
             print ("player is set to nil")
         }
-        
         removePlayerItemObservers()
-        
         // MARK: - Remove Observe download status change
         NotificationCenter.default.removeObserver(
             self,
             name: Notification.Name(rawValue: download.downloadStatusNotificationName),
             object: nil
         )
-        
         // MARK: - Remove Observe download progress change
         NotificationCenter.default.removeObserver(
             self,
             name: Notification.Name(rawValue: download.downloadProgressNotificationName),
             object: nil
         )
-        
         // MARK: - Remove Observe Audio Route Change and Update UI accordingly
         NotificationCenter.default.removeObserver(
             self,
@@ -204,7 +193,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             name: NSNotification.Name.AVAudioSessionRouteChange,
             object: nil
         )
-        
         NotificationCenter.default.removeObserver(self)
         
         // MARK: - Stop loading and remove message handlers to avoid leak
@@ -281,15 +269,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: item, endWith: "")
                 isPrivilegeViewOn = true
             } else {
-                print ("User is allowed to read a premium content: \(String(describing: item?.type))/\(String(describing: item?.id))")
-                // MARK: A subscriber is reading a piece of paid content
-                //                let eventLabel: String
-                //                if let itemType = item?.type,
-                //                    let itemId = item?.id {
-                //                    eventLabel = "\(itemType)/\(itemId)"
-                //                } else {
-                //                    eventLabel = ""
-                //                }
                 if let item = item {
                     let eventLabel = PrivilegeHelper.getLabel(prefix: privilege.rawValue, type: item.type, id: item.id, suffix: "")
                     Track.eventToAll(category: "Privileges", action: "Listen", label: eventLabel)
@@ -477,7 +456,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                             let jsCode = "showHightlight(\(lastK), \(lastL));"
                             webView?.evaluateJavaScript(jsCode) { (result, error) in
                                 if result != nil {
-                                    print (result ?? "unprintable JS result")
+                                    //print (result ?? "unprintable JS result")
                                 }
                             }
                             latestIndex = (k:k, l:l)
@@ -490,21 +469,22 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
     }
     
+    var isAudioFileDownloaded = false
     private func prepareAudioPlay() {
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
         audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "\(APIs.getAudioDomain())album/")
         // MARK: - Remove toolBar's top border. This cannot be done in interface builder.
         toolBar.clipsToBounds = true
-        
         if let url = URL(string: audioUrlString) {
             // MARK: - Check if the file already exists locally
             var audioUrl = url
             //print ("checking the file in documents: \(audioUrlString)")
             let cleanAudioUrl = audioUrlString.replacingOccurrences(of: "%20", with: "")
             if let localAudioFile = download.checkDownloadedFileInDirectory(cleanAudioUrl) {
-                print ("The Audio is already downloaded")
+                //print ("The Audio is already downloaded")
                 audioUrl = URL(fileURLWithPath: localAudioFile)
                 downloadButton.status = .success
+                isAudioFileDownloaded = true
                 //                downloadButton.setImage(UIImage(named:"DeleteButton"), for: .normal)
             }
             
@@ -626,16 +606,19 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 switch k {
                 case "playbackBufferEmpty":
                     // Show loader
-                    print ("is loading...")
-                    playStatus.text = "加载中..."
-                    
+                    //print ("is loading...")
+                    if isAudioFileDownloaded {
+                        playStatus.text = audioTitle
+                    } else {
+                        playStatus.text = "加载中..."
+                    }
                 case "playbackLikelyToKeepUp":
                     // Hide loader
-                    print ("Audio Player: should be playing. Duration is \(String(describing: playerItem?.duration))")
+                    //print ("Audio Player: should be playing. Duration is \(String(describing: playerItem?.duration))")
                     playStatus.text = audioTitle
                 case "playbackBufferFull":
                     // Hide loader
-                    print ("load successfully")
+                    //print ("load successfully")
                     playStatus.text = audioTitle
                 default:
                     playStatus.text = audioTitle

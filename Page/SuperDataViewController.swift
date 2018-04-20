@@ -652,7 +652,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         let apiUrl = APIs.get(item.id, type: item.type, forceDomain: nil)
                         //print ("read story json: \(apiUrl)")
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "json") == nil {
-                            print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                            //print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         } else {
                             //print ("File already exists. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         }
@@ -685,7 +685,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                             apiUrl = item.id
                         }
                         if Download.readFile(apiUrl, for: .cachesDirectory, as: "html") == nil {
-                            print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
+                            //print ("File needs to be downloaded. id: \(item.id), type: \(item.type), api url is \(apiUrl)")
                         }
                         Download.downloadUrl(apiUrl, to: .cachesDirectory, as: "html")
                     } else if ["video"].contains(item.type) {

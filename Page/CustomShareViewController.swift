@@ -12,6 +12,20 @@ import UIKit
 class CustomShareViewController: UIViewController {
     var shareItems: [UIActivity] = []
     override func loadView() {
+        func getItemLeading(for index: Int, with itemWidth: CGFloat, of columns: CGFloat) -> CGFloat {
+            let itemIndexInRow = index % Int(columns)
+            let itemLeading = itemWidth * CGFloat(itemIndexInRow)
+            return itemLeading
+        }
+        func getItemCenterY(index: Int, rows: CGFloat, columns: CGFloat, containerHeight: CGFloat, itemHeight: CGFloat) -> CGFloat {
+            let rowIndex = floor(CGFloat(index)/columns)
+            let paddingCount = rows + 1
+            let paddingHeight = max(0, (containerHeight-itemHeight*rows)/paddingCount)
+            let rowCenterOffset = paddingHeight * (rowIndex + 1) + itemHeight * (rowIndex + 1/2)
+            let containerCenterOffset = containerHeight * 1/2
+            let itemCenterY = rowCenterOffset - containerCenterOffset
+            return itemCenterY
+        }
         super.loadView()
         // MARK: Add a bottom layer so that you can tap to dismiss
         let bottomLayer = UIView()
@@ -54,26 +68,21 @@ class CustomShareViewController: UIViewController {
         )
         let itemHeight = itemImageHeight + itemTitleHeight
         let itemWidth = itemImageHeight + 2 * itemPadding
-        var itemLeading:CGFloat = 0
-        
         for (index, item) in shareItems.enumerated() {
             if let title = item.activityTitle,
                 let image = item.activityImage {
                 let itemView = UIView()
-                let itemCenterY: CGFloat = -shareSheetHeight * 1/4
+                let itemCenterY = getItemCenterY(index: index, rows: rows, columns: columns, containerHeight: shareSheetHeight, itemHeight: itemHeight)
                 itemView.tag = index
                 let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(performShare(_:)))
+                let itemLeading = getItemLeading(for: index, with: itemWidth, of: columns)
                 itemView.isUserInteractionEnabled = true
                 itemView.addGestureRecognizer(tapGestureRecognizer)
                 itemView.translatesAutoresizingMaskIntoConstraints = false
-                //itemView.backgroundColor = UIColor.red
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemHeight))
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemWidth))
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: shareSheetView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: itemLeading))
                 view.addConstraint(NSLayoutConstraint(item: itemView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: shareSheetView, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: itemCenterY))
-                
-                
-                itemLeading += itemWidth
                 let imageView = UIImageView()
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 imageView.image = image
@@ -88,16 +97,13 @@ class CustomShareViewController: UIViewController {
                 titleLabel.text = title
                 titleLabel.font = titleLabel.font.withSize(13)
                 titleLabel.textColor = UIColor(hex: Color.Content.headline)
-                //titleLabel.adjustsFontSizeToFitWidth = true
                 itemView.addSubview(titleLabel)
                 view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemWidth))
-                //view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: itemTitleHeight))
                 view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: itemView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
                 view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: itemView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
                 view.addSubview(itemView)
             }
         }
-        
     }
     
     

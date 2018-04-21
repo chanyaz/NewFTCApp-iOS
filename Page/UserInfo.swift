@@ -44,11 +44,6 @@ struct UserInfo {
             }
             // MARK: Update user privilege immediately
             // PrivilegeHelper.updateFromDevice()
-            // TODO: Remove the following Test Code
-//            UserInfo.shared.subscriptionType = "premium"
-//            UserInfo.shared.subscriptionExpire = 1553843894.598611
-//            UserDefaults.standard.set(UserInfo.shared.subscriptionType, forKey: subscriptionTypeKey)
-//            UserDefaults.standard.set(UserInfo.shared.subscriptionExpire, forKey: subscriptionExpireKey)
         }
         if let uniqueVisitorId = body["uniqueVisitorId"] {
             UserInfo.shared.uniqueVisitorId = uniqueVisitorId

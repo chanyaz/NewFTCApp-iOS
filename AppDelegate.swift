@@ -18,6 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelega
     var window: UIWindow?
     var checkImpressionTimer: Timer?
 
+    // TODO: Deep Link. Check out the WWDC 2017 Video for Deep Link
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        
+        return true
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

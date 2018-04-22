@@ -14,7 +14,6 @@ import MediaPlayer
 import WebKit
 import SafariServices
 
-
 // MARK: - Use singleton pattern to pass speech data between view controllers. It's better in in term of code style than prepare segue.
 class AudioContent {
     static let sharedInstance = AudioContent()
@@ -32,14 +31,11 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     private let nowPlayingCenter = NowPlayingCenter()
     private let download = DownloadHelper(directory: "audio")
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-    
     public var language: String?
-    public var screenName: String? 
-    
+    public var screenName: String?
     var item: ContentItem?
     var themeColor: String?
     var isPrivilegeViewOn = false
-    
     @IBOutlet weak var containerView: UIWebView!
     @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var buttonPlayAndPause: UIBarButtonItem!
@@ -158,7 +154,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
     }
     
-    
     @IBAction func settings(_ sender: Any) {
         let alert = UIAlertController(title: "请选择您的操作设置", message: nil, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(
@@ -233,8 +228,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         contentController.add(LeakAvoider(delegate:self), name: "audioData")
         contentController.add(LeakAvoider(delegate:self), name: "scrollTo")
         contentController.add(LeakAvoider(delegate:self), name: "seekAudio")
-        
-        
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         self.webView = WKWebView(frame: self.containerView.frame, configuration: config)
@@ -244,8 +237,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         self.webView?.navigationDelegate = self
         self.webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.webView?.scrollView.delegate = self
-        
-        
         let url: String
         if let id = item?.id,
             let type = item?.type {
@@ -278,7 +269,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 }
             }
         }
-        
         navigationItem.title = item?.headline
         initStyle()
     }

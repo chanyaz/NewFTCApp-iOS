@@ -57,19 +57,22 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 player.pause()
                 buttonPlayAndPause.image = UIImage(named:"BigPlayButton")
             } else {
-                startToPlay()
+                startToPlay(from: nil)
             }
             nowPlayingCenter.updateTimeForPlayerItem(player)
         }
     }
     
-    private func startToPlay() {
+    private func startToPlay(from start: CMTime?) {
         if let player = player {
             // MARK: - Continue audio even when device is set to mute. Do this only when user is actually playing audio because users might want to read FTC news while listening to music from other apps.
             try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             // MARK: - Continue audio when device is in background
             try? AVAudioSession.sharedInstance().setActive(true)
             player.play()
+            if let start = start {
+                player.seek(to: start)
+            }
             player.replaceCurrentItem(with: playerItem)
             buttonPlayAndPause.image = UIImage(named:"BigPauseButton")
             // TODO: - Need to find a way to display media duration and current time in lock screen
@@ -350,8 +353,8 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         } else if message.name == "seekAudio" {
             if let seekAudio = message.body as? Double {
                 let newCMTime = CMTime.init(seconds: seekAudio, preferredTimescale: Int32(NSEC_PER_SEC))
-                player?.seek(to: newCMTime)
-                startToPlay()
+                //player?.seek(to: newCMTime)
+                startToPlay(from: newCMTime)
             }
         }
     }

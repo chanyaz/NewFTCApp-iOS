@@ -207,7 +207,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         self.webView?.navigationDelegate = nil
         self.webView?.scrollView.delegate = nil
         
-        print ("deinit successfully and observer removed")
+        //print ("deinit successfully and observer removed")
     }
     
     
@@ -609,21 +609,12 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             if let k = keyPath {
                 switch k {
                 case "playbackBufferEmpty":
-                    // Show loader
-                    //print ("is loading...")
-//                    if isAudioFileDownloaded {
-//                        playStatus.text = audioTitle
-//                    } else {
-//                        playStatus.text = "加载中..."
-//                    }
                     playStatus.text = "加载中..."
                 case "playbackLikelyToKeepUp":
                     // Hide loader
-                    //print ("Audio Player: should be playing. Duration is \(String(describing: playerItem?.duration))")
                     playStatus.text = audioTitle
                 case "playbackBufferFull":
                     // Hide loader
-                    //print ("load successfully")
                     playStatus.text = audioTitle
                 default:
                     playStatus.text = audioTitle
@@ -682,27 +673,5 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
 }
 
-
-
-
-// MARK: - Done: Share
-// MARK: - Done: Download Management: Download or Delete
-// MARK: - Done: When unplug earphone, pause button should be updated
-// TODO: Subscribe
 // TODO: Display Background Images for Radio Columns
-// MARK: - Done: Deinit 1. remove observers 2. quit background play mode
-// MARK: - Done: Enable background play
-// MARK: - Done: Display the audio text
-// MARK: - Done: Update play progress
-// MARK: - Done: Update progressSlider thumb image with customized ones
-// MARK: - Done: Post and Receive Status Change Notifications
-// MARK: - Done: Update UI Based on Status Change
-// MARK: - Done: Update UI Based on Download Progress
-// MARK: - Done: Choose streaming or local file to play based on availability of audio files
-// MARK: - Done: Allow users to clean files with one tap
 // TODO: Let users easily find downloaded file to play
-// MARK: - Done: Display current status so that users/reviewers know what it is going on. 1. Buffering. 2. Playtime and Duration.
-// MARK: - Done: If a user is trying to download while not on wifi, pop out an alert with friendly suggestions
-// MARK: - https://www.raywenderlich.com/94302/implement-circular-image-loader-animation-cashapelayer
-
-

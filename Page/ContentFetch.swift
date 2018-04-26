@@ -273,7 +273,10 @@ class ContentFetch {
         oneItem.attributedLead = getAttributedLead(oneItem.lead)
         oneItem.overlayButtonImage = getOverlayButtonImage(oneItem)
         oneItem.mainTag = oneItem.tag.getFirstTag(Meta.reservedTags)
-        
+        if let ftid = item["ftid"] as? String,
+            ftid != "" {
+            oneItem.ftid = ftid
+        }
         //MARK: Get images
         var image = item["image"] as? String ?? ""
         if image == "" {

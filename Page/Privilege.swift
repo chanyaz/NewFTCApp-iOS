@@ -98,6 +98,7 @@ struct PrivilegeHelper {
                     if InAppPurchases.shared.memberships.contains(id) == false {
                         InAppPurchases.shared.memberships.append(id)
                     }
+
                 }
             }
         }
@@ -151,6 +152,8 @@ struct PrivilegeHelper {
                     if date >= Date() {
                         //print ("\(id) is valid! ")
                         UserDefaults.standard.set(true, forKey: id)
+                        // MARK: Check if the server side has recorded the purchase correctly
+                        IAP.checkMembershipStatus(id)
                     } else {
                         //print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
                         // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.

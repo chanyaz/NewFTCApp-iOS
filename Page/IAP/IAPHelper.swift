@@ -218,6 +218,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
             ReceiptHelper.receiptValidation(with: APIs.getiOSReceiptValidationUrlString())
             Track.token()
         }
+        IAP.checkMembershipStatus(productId)
         SKPaymentQueue.default().finishTransaction(transaction)
     }
     
@@ -231,6 +232,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         // MARK: 3. Send notification to related objects such the view controllers and iap views so that UI can be updated
         deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
         SKPaymentQueue.default().finishTransaction(transaction)
+        IAP.checkMembershipStatus(productId)
         Track.token()
     }
     

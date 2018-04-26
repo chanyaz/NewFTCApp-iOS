@@ -543,7 +543,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                         }
                     }
                 } else {
-                    print ("the view is visible, nothing called")
+                   //print ("the view is visible, nothing called")
                 }
             }
         }

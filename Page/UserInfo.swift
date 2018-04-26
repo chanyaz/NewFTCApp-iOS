@@ -36,7 +36,7 @@ struct UserInfo {
             UserDefaults.standard.set(UserInfo.shared.subscriptionType, forKey: subscriptionTypeKey)
             if let subscriptionExpireString = body["paywallExpire"],
                 let subscriptionExpire = Double(subscriptionExpireString) {
-                UserInfo.shared.subscriptionExpire = Double(subscriptionExpire)
+                UserInfo.shared.subscriptionExpire = subscriptionExpire
                 UserDefaults.standard.set(subscriptionExpire, forKey: subscriptionExpireKey)
             } else {
                 UserInfo.shared.subscriptionExpire = nil

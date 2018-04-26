@@ -378,6 +378,9 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             }
             if let eaudio = item.eaudio, eaudio != "" {
                 dataObject?.eaudio = eaudio
+            } else if let ftid = item.ftid,
+                ftid != "" {
+                dataObject?.eaudio = APIs.getAudioFromFTId(ftid)
             }
             updatePageContent()
             // MARK: Check if you should pop out privilege view after content is available

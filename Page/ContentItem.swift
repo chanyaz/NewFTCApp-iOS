@@ -11,6 +11,7 @@ class ContentItem{
     var detailImage: UIImage?
     
     let id: String
+    var ftid: String?
     var image: String
     var headline: String
     var lead: String

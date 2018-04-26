@@ -89,6 +89,10 @@ struct APIs {
         return "https://noti.ftimg.net/iphone-collect.php"
     }
     
+    public static func getAudioFromFTId(_ ftid: String) -> String {
+        return "https://s3-us-west-2.amazonaws.com/ftlabs-audio-rss-bucket.prod/\(ftid).mp3"
+    }
+    
     // MARK: - Domain Check: Launch Ad Schedule.
     // TODO: - Use background downloading domain just for launch ad schedule
     //public static let lauchAdSchedule = "https://webnodev.ftchinese.com/index.php/jsapi/applaunchschedule"

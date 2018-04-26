@@ -581,6 +581,21 @@ struct IAP {
         }
         return ""
     }
+
+    // MARK: If user has bought with iOS in-app and logged in, check if his/her subscriptionType (set by our serve using coookie as of April 2018) is set correctly. 
+    public static func checkMembershipStatus(_ id: String) {
+        for membership in IAPProducts.memberships {
+            if id == membership["id"] as? String,
+                let key = membership["key"] as? String {
+                if let userId = UserInfo.shared.userId,
+                    userId != "",
+                    UserInfo.shared.subscriptionType == nil {
+                    Track.event(category: "iOS IAP Membership", action: "\(key)", label: userId)
+                }
+                break
+            }
+        }
+    }
     
 }
 

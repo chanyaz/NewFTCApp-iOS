@@ -161,7 +161,7 @@ class CustomRefreshConrol: UIRefreshControl {
     }
     //刷新状态执行的方法
     fileprivate func doRefreshAction(){
-        print("开始刷新动作")
+        //print("开始刷新动作")
         //STEP 3: Take Action
         delegate?.refreshSuperDataView()
 //        if let refreshTarget = self.refreshTarget,

@@ -69,7 +69,7 @@ struct PrivilegeHelper {
                 if purchased == false {
                     //print ("No app store purchase, check the key of \(key)")
                     if UserInfo.shared.subscriptionType == key,
-                        let expireDate = UserInfo.shared.subscriptionExpire{
+                        let expireDate = UserInfo.shared.subscriptionExpire {
                         //print ("No app store purchase, found the key of \(key)")
                         let today = Double(Date().timeIntervalSince1970)
                         if expireDate >= today {
@@ -84,7 +84,7 @@ struct PrivilegeHelper {
                         dateFormatter.dateFormat = dateFormatString
                         let expireDateString = dateFormatter.string(from: date)
                         //print ("No app store purchase, \(id) expires at \(expireDateString)")
-                        IAP.savePurchase(id, property: "expires", value: expireDateString)
+                        IAP.savePurchase(id, property: IAP.expiresKey, value: expireDateString)
                         IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.Site.rawValue)
                     }
                 }
@@ -173,7 +173,7 @@ struct PrivilegeHelper {
                     dateFormatter.dateFormat = dateFormatString
                     let expireDateString = dateFormatter.string(from: date)
                     //print ("\(id) expires at \(expireDateString)")
-                    IAP.savePurchase(id, property: "expires", value: expireDateString)
+                    IAP.savePurchase(id, property: IAP.expiresKey, value: expireDateString)
                     IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.AppleIAP.rawValue)
                 } else {
                     // MARK: Not a subscription

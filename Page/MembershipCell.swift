@@ -115,7 +115,7 @@ class MembershipCell: CustomCell {
                 benefitsString += "- \(benefit)\n"
             }
             if let id = itemCell?.id,
-                let expiresString = IAP.checkPurchaseInDevice(id, property: "expires") {
+                let expiresString = IAP.checkPurchaseInDevice(id, property: IAP.expiresKey) {
                 buttonActionString = "续订"
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = PrivilegeHelper.dateFormatString

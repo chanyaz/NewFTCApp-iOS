@@ -746,7 +746,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 let results = ContentFetchResults(apiUrl: "", fetchResults: [contentSections])
                 updateUI(with: results)
             } else if type == "iap" {
-                loadProducts()
+                loadProducts(isCalledFromReceiptValidation: false)
             } else if type == "setting" {
                 loadSettings()
             } else if type == "options" {
@@ -1321,8 +1321,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
 
 extension SuperDataViewController {
     
-    // MARK: - load IAP products and update UI
-    fileprivate func loadProducts() {
+    // MARK: - load IAP products and update UI.
+    fileprivate func loadProducts(isCalledFromReceiptValidation: Bool) {
         // MARK: only be executed when data object type is iap
         guard let dataObjectType = dataObject["type"],
             dataObjectType == "iap" else {
@@ -1335,7 +1335,10 @@ extension SuperDataViewController {
                 if let products = products {
                     //self?.products = products
                     IAPs.shared.products = products
-                    ReceiptHelper.receiptValidation(with: APIs.getiOSReceiptValidationUrlString())
+                    // MARK: - Use isCalledFromReceiptValidation to avoid a infinite call loop.
+                    if isCalledFromReceiptValidation == false {
+                        ReceiptHelper.receiptValidation(with: APIs.getiOSReceiptValidationUrlString())
+                    }
                 }
             }
             // MARK: - Get product regardless of the request result
@@ -1522,7 +1525,7 @@ extension SuperDataViewController {
         // MARK: Only when data object type is iap
         if let dataObjectType = dataObject["type"],
             dataObjectType == "iap" {
-            loadProducts()
+            loadProducts(isCalledFromReceiptValidation: true)
         } else {
             print ("No need to update UI in the dataview controller as it is not a type iap data object. ")
         }
@@ -1530,7 +1533,7 @@ extension SuperDataViewController {
     
     
     public func switchUI(_ actionType: String) {
-        loadProducts()
+        loadProducts(isCalledFromReceiptValidation: false)
     }
     
 }

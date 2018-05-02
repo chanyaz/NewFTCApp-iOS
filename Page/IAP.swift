@@ -22,6 +22,7 @@ struct IAP {
     public static let purchaseHistoryKey = "purchase history"
     public static let purchasedPropertyString = "purchased"
     private static let productPricesKey = "Product Prices Key"
+    public static let expiresKey = "expires"
     
     public static func get(_ products: [SKProduct], in group: String?, with privilege: PrivilegeType?, include purchaseStatus: PurchaseStatus) -> [ContentItem] {
         var contentItems = [ContentItem]()
@@ -586,12 +587,14 @@ struct IAP {
     public static func checkMembershipStatus(_ id: String) {
         for membership in IAPProducts.memberships {
             if id == membership["id"] as? String,
-                let key = membership["key"] as? String {
-                if let userId = UserInfo.shared.userId,
-                    userId != "",
-                    UserInfo.shared.subscriptionType == nil {
-                    Track.event(category: "iOS IAP Membership", action: "\(key)", label: userId)
-                }
+                let key = membership["key"] as? String,
+                let userId = UserInfo.shared.userId,
+                userId != "",
+                UserInfo.shared.subscriptionType == nil,
+                let expireDate = IAP.checkPurchaseInDevice(id, property: expiresKey),
+                expireDate != "" {
+                //print ("\(id) expires in \(String(describing: expireDate))")
+                Track.event(category: "iOS IAP Membership: \(key)", action: userId, label: expireDate)
                 break
             }
         }

@@ -7,7 +7,9 @@
 //
 import UIKit
 import Foundation
+
 struct AdLayout {
+    
     static let homeAdChId = "1000"
     static func insertAds(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
         var newContentSections = contentSections
@@ -119,7 +121,6 @@ struct AdLayout {
         if Color.Ad.showFullScreenAdBetweenPages == false /* || Ads.shared.hasFullScreenAd == false */{
             return (items, index)
         }
-        
         // MARK: Otherwise, insert ads based on the following instruction
         var newItems = items
         var newPageIndex = index

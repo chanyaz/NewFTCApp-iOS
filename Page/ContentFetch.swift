@@ -34,7 +34,6 @@ class ContentFetch {
         }
         let fetchRequest = URLRequest(url: fetchUrl)
         URLSession.shared.dataTask(with: fetchRequest, completionHandler: { (data, response, error) in
-            
             if let error = error {
                 print (error)
                 let APIError = NSError(domain: "API Server", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey:"API Server Response Error: \(fetchUrl)"])
@@ -43,7 +42,6 @@ class ContentFetch {
                 })
                 return
             }
-            
             guard let _ = response as? HTTPURLResponse,
                 let data = data else {
                     let APIError = NSError(domain: "API Server", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey:"Unknown API response"])
@@ -52,9 +50,7 @@ class ContentFetch {
                     })
                     return
             }
-            
             do {
-                print ("content fetch result is back with data, about to handle the data")
                 let resultsDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
                 let contentSections = self.formatJSON(resultsDictionary)
                 //MARK: Save the JSON File to Documents Directory
@@ -67,8 +63,6 @@ class ContentFetch {
                 completion(nil, nil)
                 return
             }
-            
-            
         }).resume()
     }
     

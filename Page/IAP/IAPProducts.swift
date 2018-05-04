@@ -69,7 +69,7 @@ public struct IAPProducts {
             "teaser":"英国《金融时报》为您呈上的此书，为您在了解分析区块链、比特币甚至ICO提供更全面的参考。",
             "description": "<p>区块链，作为一项被预测为会对社会和商业带来巨大变革的新技术，因比特币的一路暴涨和各类数字代币的发行而热度不减。区块链技术的应用和探索会走向何方？比特币的暴涨趋势是否还会延续？数字代币究竟是投资风口，还是一种新型网络诈骗？英国《金融时报》为您呈上此书，为您在了解分析区块链、比特币甚至ICO提供更全面的参考。</p>",
             "image":"https://creatives002.ftimg.net/bubble.jpg",
-            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooksfqkljstjypm&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&013",
+            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooksfqkljstjypm&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&014",
             "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooksfqkljstjypm&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&013"
         ],
         [

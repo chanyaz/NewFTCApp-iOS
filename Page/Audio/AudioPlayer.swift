@@ -66,10 +66,10 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             // MARK: - Continue audio when device is in background
             try? AVAudioSession.sharedInstance().setActive(true)
             player.play()
+            player.replaceCurrentItem(with: playerItem)
             if let start = start {
                 player.seek(to: start)
             }
-            player.replaceCurrentItem(with: playerItem)
             buttonPlayAndPause.image = UIImage(named:"BigPauseButton")
             // TODO: - Need to find a way to display media duration and current time in lock screen
             var mediaLength: NSNumber = 0

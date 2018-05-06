@@ -24,7 +24,6 @@ protocol DetailModelDelegate: class {
     func didChangePage(_ item: ContentItem?, index: Int)
 }
 
-
 class DetailModelController: ModelController {
     // MARK: Delegate Step 2: initiate the delegate of protocol
     // MARK: The class keyword in the Swift protocol definition limits protocol adoption to class types (and not structures or enums). This is important if we want to use a weak reference to the delegate. We need be sure we do not create a retain cycle between the delegate and the delegating objects, so we use a weak reference to delegate (see below).
@@ -47,11 +46,13 @@ class DetailModelController: ModelController {
         pageTitles = pageData.map { (value: ContentItem) -> String in
             return value.headline
         }
+        // MARK: Use more attributes to make sure the page Ids are truly unique
         pageIds = pageData.map { (value: ContentItem) -> String in
-            return "\(value.type)\(value.id)"
+            let id = "\(value.type)-\(value.id)-\(value.section)-\(value.row)"
+            //print ("id is now: \(id)")
+            return id
         }
     }
-    
     
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> ContentItemViewController? {
         // Return the data view controller for the given index.
@@ -79,6 +80,7 @@ class DetailModelController: ModelController {
             //currentPageTitle = pageTitles[currentPageIndex]
             self.currentPageIndex = currentPageIndex as Int
             currentItem = pageData[currentPageIndex]
+            //print ("id is now: \(viewController.pageId), curent page index: \(currentPageIndex)")
             return currentPageIndex
         }
         return NSNotFound
@@ -89,7 +91,6 @@ class DetailModelController: ModelController {
     override func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var index = self.indexOfViewController(viewController as! ContentItemViewController)
         //print ("preparing the prev page")
-        
         if (index == 0) || (index == NSNotFound) {
             return nil
         }

@@ -1269,7 +1269,6 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     // MARK: Check the membership privilege type for the content
                     let pageDataRaw = AdLayout.addPrivilegeRequirements(in: pageData1, with: dataObject)
                     let pageData: [ContentItem]
-                    
                     if selectedItem.type == "manual" || APIs.shouldHideAd(dataObject) == true {
                         // MARK: For manual html pages in ebooks, hide bottom bar and ads
                         let pageData1 = AdLayout.removeAds(in: pageDataRaw)
@@ -1287,6 +1286,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                     pageData[currentPageIndex].isLandingPage = true
                     detailViewController.themeColor = themeColor
                     detailViewController.contentPageData = pageData
+                    
                     // MARK: - It is important to pass information about the source so that we can get the correct privileges for htmlbook and other types of service
                     detailViewController.sourceDataObject = dataObject
                     detailViewController.currentPageIndex = currentPageIndex

@@ -1251,17 +1251,16 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
                 //MARK: if it is a story, video or other types of HTML based content, push the detailViewController
                 if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
                     var pageData1 = [ContentItem]()
-                    //                    var pageData2 = [ContentItem]()
                     var currentPageIndex = 0
                     var pageIndexCount = 0
                     for (sectionIndex, section) in fetches.fetchResults.enumerated() {
                         for (itemIndex, item) in section.items.enumerated() {
+                            if sectionIndex == indexPath.section && itemIndex == indexPath.row {
+                                currentPageIndex = pageIndexCount
+                            }
+                            // MARK: radio should not be swiped to as it behaves differently
                             if ["story", "premium", "video", "interactive", "photo", "manual"].contains(item.type),
-                                // MARK: radio should not be swiped to as it behaves differently
-                                !["radio"].contains(item.subType){
-                                if sectionIndex == indexPath.section && itemIndex == indexPath.row {
-                                    currentPageIndex = pageIndexCount
-                                }
+                                !["radio"].contains(item.subType) {
                                 pageData1.append(item)
                                 pageIndexCount += 1
                             }

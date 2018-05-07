@@ -35,16 +35,16 @@ If you want to build anything more complicated than the current FTChinese news a
 
 As a proof, you can look at other apps developed by the world's best iOS developers such as WeChat, PodCast, Apple App Store. Scoll their home and list screens. Then launch the FTChinese app and compare the smoothness. Once you notice the difference, it's hard to un-notice it. 
 
-The FTChinese allows you to use collection to display list screens. But we suggest that you stick to WKWebView as much as possible. For advanced iOS developers, you can use profilling to check the difference between collection view and WKWebView. 
+The FTChinese allows you to use collection view to display list screens. But we suggest that you stick to WKWebView as much as possible. For advanced iOS developers, you can use profilling to check the difference between collection view and WKWebView. 
 
 ### Sharing: 
-If a large chunk of your audience is in China, you should use WeChat's SDK rather than it's share extension for sharing. And you should use a customized action sheet view controller rather than the iOS one. There are serious bugs with WeChat's share extension and there's no way to hide any share extension from the iOS' default action view controller. If user experiences bugs after they share, they blame you, not Apple or WeChat. So my advice is, use your own share sheet and fall back to iOS develop activity view controller. 
+If a large chunk of your audience is in China, you should use WeChat and Weibo's SDK rather than their share extension for sharing. And you should use a customized action sheet view controller rather than the iOS one. There are serious bugs with the share extensions and there's no way to hide any share extension from the iOS' default action view controller. If user experiences bugs after they share, they blame you, not Apple, WeChat and Weibo. So my advice is, use your own share sheet and fall back to iOS develop activity view controller. 
 
 ### Always Validate: 
 As a client side, don't blindly trust anyone or anything, not even your own servers. If you have large audience in China, that's especially true. For example, what can go wrong with an HTML snippet of less than 10k? According to our own tracking, it returns wrong results 5000 times a day. (Yes, the server guy should fix it. But the client should validate. ) If we don't validate every HTML snippet we get, some users are going to be really upset. 
 
 ### Avoid dependency as much as as possible: 
-Depending on code writen by others can be easy at the start but brings a lot of pain along the way. Take the example of an e-pub reader. When you install it through cocoapods, it automatically adds another 8 dependencies for you. This makes your app build very slow and adds another 10 MB to your app size, which is big deal. What if the depency code stopped upgraging to the latest SWIFT? What if the code that you depend on has bug that causes fatal run-time error? So I depend on things only when I have to. That means only two SDKs: WeChat and Google Analytics. 
+Depending on code writen by others can be easy at the start but brings a lot of pain along the way. Take the example of an e-pub reader. When you install it through cocoapods, it automatically adds another 8 dependencies for you. This makes your app build very slow and adds another 10 MB to your app size, which is big deal. What if the code that you depend on stopped upgraging to the latest SWIFT? What if the code has bug that causes fatal run-time error? So I depend on things only when I have to. That means only three SDKs: WeChat, Google Analytics and Weibo. 
 
 
 ## How To Start

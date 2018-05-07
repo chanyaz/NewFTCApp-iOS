@@ -9,12 +9,12 @@ The aim of this project is to get rid of the trouble of reinventing wheels so th
 For now, it does the following things: 
 
 ## News App With Enough Functionalities
-### News Reader
-### Billigual Support
-### Swipe between Channels
+### News reader
+### Billigual uupport
+### Swipe between channels and pieces of content
 ### Advertising: including launch ad, in page, banners, MPUs and paid post
-### In-app Purchase: buying, downloading. 
-### In-app Purchase: Autorenewing Subscription. 
+### In-app purchase: buying, downloading. 
+### In-app purchase: autorenewing subscription. 
 
 ## Some good features
 ### All possible customizations in one place: You just need to replicate the target "ftchinese"

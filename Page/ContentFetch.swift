@@ -291,9 +291,11 @@ class ContentFetch {
         oneItem.publishTime = publishTime.unixToTimeStamp()
         oneItem.relatedStories = item["relative_story"] as? [[String: Any]]
         oneItem.relatedVideos = item["relative_vstory"] as? [[String: Any]]
-        
-        
-        
+        if let whitelist = item["whitelist"] as? Int,
+            whitelist == 1 {
+            oneItem.whitelist = true
+            print ("data object white list set as \(oneItem.whitelist)")
+        }
         // MARK: Get story keywords and metas
         let area = item["area"] as? String ?? ""
         let topic = item["topic"] as? String ?? ""

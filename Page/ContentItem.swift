@@ -50,6 +50,7 @@ class ContentItem{
     var locations: String?
     var relatedStories: [[String: Any]]?
     var relatedVideos: [[String: Any]]?
+    var whitelist = false
     
     var attributedLead: NSMutableAttributedString?
     var overlayButtonImage: UIImage?

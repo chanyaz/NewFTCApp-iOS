@@ -373,6 +373,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             dataObject?.tag = item.tag
             dataObject?.image = item.image
             dataObject?.keywords = item.keywords
+            dataObject?.whitelist = item.whitelist
             if let caudio = item.caudio, caudio != "" {
                 dataObject?.caudio = caudio
             }
@@ -585,7 +586,9 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     }
     
     private func checkPrivileForContent() {
-        if let privilege = dataObject?.privilegeRequirement {
+        print ("data object white list: \(dataObject?.whitelist)")
+        if dataObject?.whitelist == false,
+            let privilege = dataObject?.privilegeRequirement {
             if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {
                 PrivilegeViewHelper.insertPrivilegeView(to: view, with: privilege, from: dataObject, endWith: "")
                 isPrivilegeViewForAllLanguages = true

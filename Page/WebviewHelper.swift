@@ -27,7 +27,12 @@ struct WebviewHelper {
                 for sponsor in Sponsors.shared.sponsors {
                     if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) && sponsor.hideAd == "yes" {
                         shouldHideAd = true
+                        break
                     }
+                }
+                // MARK: Hide Ad if keywords requires that
+                if keywords.range(of: "去广告") != nil {
+                    shouldHideAd = true
                 }
             }
             if shouldHideAd == true {
@@ -302,8 +307,6 @@ struct WebviewHelper {
                 with: "$1\(JSCodes.adMPU)<p>",
                 options: .regularExpression
         )
-        
-        // TODO: Premium user will not need to see the MPU ads
         let finalBody: String
         finalBody = bodyWithMPU.replacingOccurrences(
             of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
@@ -311,7 +314,6 @@ struct WebviewHelper {
             options: .regularExpression
         )
         return (headline, finalBody)
-        
     }
     
     

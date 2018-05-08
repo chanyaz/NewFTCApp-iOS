@@ -292,6 +292,8 @@ class ContentFetch {
         oneItem.relatedStories = item["relative_story"] as? [[String: Any]]
         oneItem.relatedVideos = item["relative_vstory"] as? [[String: Any]]
         
+        
+        
         // MARK: Get story keywords and metas
         let area = item["area"] as? String ?? ""
         let topic = item["topic"] as? String ?? ""

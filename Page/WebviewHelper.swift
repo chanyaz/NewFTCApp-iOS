@@ -24,15 +24,16 @@ struct WebviewHelper {
             if dataObject?.hideAd == true {
                 shouldHideAd = true
             } else if let keywords = dataObject?.keywords {
-                for sponsor in Sponsors.shared.sponsors {
-                    if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) && sponsor.hideAd == "yes" {
-                        shouldHideAd = true
-                        break
-                    }
-                }
                 // MARK: Hide Ad if keywords requires that
-                if keywords.range(of: "去广告") != nil {
+                if keywords.range(of: KeyWords.removeAd) != nil {
                     shouldHideAd = true
+                } else {
+                    for sponsor in Sponsors.shared.sponsors {
+                        if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) && sponsor.hideAd == "yes" {
+                            shouldHideAd = true
+                            break
+                        }
+                    }
                 }
             }
             if shouldHideAd == true {
@@ -63,7 +64,11 @@ struct WebviewHelper {
                     relatedStories = "<div class=\"story-box\"><h2 class=\"box-title\"><a>相关文章</a></h2><ul class=\"top10\">\(relatedStories)</ul></div>"
                 }
                 
-                let tagsArray = tags.components(separatedBy: ",")
+                let tagsArray = tags
+                    .components(separatedBy: ",")
+                    .filter { (tag) -> Bool in
+                        !KeyWords.reserved.contains(tag)
+                }
                 var relatedTopics = ""
                 for (index, tag) in tagsArray.enumerated() {
                     relatedTopics += "<li class=\"story-theme mp\(index+1)\"><a target=\"_blank\" href=\"/tag/\(tag)\">\(tag)</a><div class=\"icon-right\"><button class=\"myft-follow plus\" data-tag=\"\(tag)\" data-type=\"tag\">关注</button></div></li>"

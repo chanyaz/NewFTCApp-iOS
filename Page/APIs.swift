@@ -1239,3 +1239,8 @@ struct EngagementTracker {
         return "Other"
     }
 }
+
+struct KeyWords {
+    public static let reserved = ["去广告", "单页", "透明", "置顶", "白底", "靠右", "沉底", "资料", "突发", "插图", "高清"]
+    public static let removeAd = "去广告"
+}

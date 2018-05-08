@@ -108,6 +108,7 @@ extension UIViewController {
                 Privilege.shared.exclusiveContent,
                 item.type != "premium" {
                 shareItems.append(WeChatShare(to: "chat-screenshot"))
+                shareItems.append(WeChatShare(to: "moment-screenshot"))
             }
         }
         if WeiboSDK.isWeiboAppInstalled() {

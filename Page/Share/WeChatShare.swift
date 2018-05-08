@@ -20,7 +20,7 @@ class WeChatShare: UIActivity{
         case "moment", "moment-custom": return UIActivityType(rawValue: "WeChatMoment")
         case "fav": return UIActivityType(rawValue: "WeChatFav")
         case "chat-custom": return UIActivityType(rawValue: "WeChat")
-        case "chat-screenshot": return UIActivityType(rawValue: "WeChat")
+        case "chat-screenshot", "moment-screenshot": return UIActivityType(rawValue: "WeChat")
         default: return UIActivityType(rawValue: "WeChat")
         }
     }
@@ -31,7 +31,7 @@ class WeChatShare: UIActivity{
         case "moment-custom": return UIImage(named: "MomentCustom")
         case "chat-custom": return UIImage(named: "WeChatCustom")
         case "fav": return UIImage(named: "WeChatFav")
-        case "chat-screenshot": return UIImage(named: "ScreenCapture")
+        case "chat-screenshot", "moment-screenshot": return UIImage(named: "ScreenCapture")
         default: return UIImage(named: "WeChat")
         }
     }
@@ -41,6 +41,7 @@ class WeChatShare: UIActivity{
         case "moment", "moment-custom": return "微信朋友圈"
         case "chat-custom": return "微信好友"
         case "chat-screenshot": return "截屏给好友"
+        case "moment-screenshot": return "截屏到朋友圈"
         case "fav": return "微信收藏"
         default: return "微信好友"
         }
@@ -60,7 +61,7 @@ class WeChatShare: UIActivity{
     override func perform() {
         var toString = ""
         switch to {
-        case "moment","moment-custom": toString = "moment"
+        case "moment","moment-custom", "moment-screenshot": toString = "moment"
         case "fav": toString = "fav"
         case "chat-custom": toString = "chat"
         case "chat-screenshot": toString = "chat"

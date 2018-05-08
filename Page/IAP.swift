@@ -586,7 +586,8 @@ struct IAP {
     // MARK: If user has bought with iOS in-app and logged in, check if his/her subscriptionType (set by our serve using coookie as of April 2018) is set correctly. 
     public static func checkMembershipStatus(_ id: String) {
         for membership in IAPProducts.memberships {
-            if id == membership["id"] as? String,
+            if UserInfo.shared.iapMembershipReadyForCrossPlatform != true,
+                id == membership["id"] as? String,
                 let key = membership["key"] as? String,
                 let userId = UserInfo.shared.userId,
                 userId != "",
@@ -607,7 +608,7 @@ struct IAP {
                     "token": tokenWithSalt,
                     "originalTransactionId": originalTransactionId
                     ] as [String : String]
-                //print ("send ios iap info to server: \(urlString). expire date: \(expireDate). with: \(dict)")
+                //print ("send ios iap info to server: \(urlString). expire date: \(expireDate). with: \(purchaseInfo)")
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: purchaseInfo, options: .init(rawValue: 0))
                     if let siteServerUrl = Foundation.URL(string:urlString) {

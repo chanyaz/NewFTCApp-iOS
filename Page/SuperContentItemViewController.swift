@@ -586,7 +586,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     }
     
     private func checkPrivileForContent() {
-        print ("data object white list: \(dataObject?.whitelist)")
+        //print ("data object white list: \(dataObject?.whitelist)")
         if dataObject?.whitelist == false,
             let privilege = dataObject?.privilegeRequirement {
             if !PrivilegeHelper.isPrivilegeIncluded(privilege, in: Privilege.shared) {

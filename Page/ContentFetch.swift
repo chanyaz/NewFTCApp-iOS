@@ -282,7 +282,6 @@ class ContentFetch {
             // MARK: FTC API has a persistent bug that provide extra string in the image url string
             oneItem.image = image.replacingOccurrences(of: "/upload/", with: "/")
         }
-        
         oneItem.cbody = item["cbody"] as? String
         oneItem.ebody = item["ebody"] as? String
         oneItem.eheadline = item["eheadline"] as? String
@@ -294,7 +293,7 @@ class ContentFetch {
         if let whitelist = item["whitelist"] as? Int,
             whitelist == 1 {
             oneItem.whitelist = true
-            print ("data object white list set as \(oneItem.whitelist)")
+            //print ("data object white list set as \(oneItem.whitelist)")
         }
         // MARK: Get story keywords and metas
         let area = item["area"] as? String ?? ""

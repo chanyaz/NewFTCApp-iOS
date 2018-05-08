@@ -201,7 +201,7 @@ struct AdLayout {
             return newItem
         }
         // MARK: - Pop out archive privilege only for story
-        if newItem.timeStamp > 0 && newItem.type == "story" {
+        if newItem.timeStamp > 0 && newItem.type == "story" && newItem.whitelist == false {
             let timeInterval = Date().timeIntervalSince1970
             let timeDifference = timeInterval - newItem.timeStamp
             let timeDifferenceInDays = timeDifference/(60*60*24)

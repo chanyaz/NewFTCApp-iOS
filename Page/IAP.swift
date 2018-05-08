@@ -582,7 +582,7 @@ struct IAP {
         }
         return ""
     }
-
+    
     // MARK: If user has bought with iOS in-app and logged in, check if his/her subscriptionType (set by our serve using coookie as of April 2018) is set correctly. 
     public static func checkMembershipStatus(_ id: String) {
         for membership in IAPProducts.memberships {
@@ -593,7 +593,55 @@ struct IAP {
                 UserInfo.shared.subscriptionType == nil,
                 let expireDate = IAP.checkPurchaseInDevice(id, property: expiresKey),
                 expireDate != "" {
+                UserInfo.shared.iapMembershipReadyForCrossPlatform = false
                 //print ("\(id) expires in \(String(describing: expireDate))")
+                let userId = UserInfo.shared.userId ?? ""
+                let urlString = APIs.get("", type: "vip", forceDomain: nil)
+                let token = "\(userId)\(id)\(expireDate)".uppercased()
+                let tokenWithSalt = "\(token)Ftchinese_iOS_App".md5()
+                let originalTransactionId = IAP.checkPurchaseInDevice(id, property: PrivilegeHelper.originalTransactionIdKey) ?? ""
+                let purchaseInfo = [
+                    "user_id": userId,
+                    "product_id": id,
+                    "expires_date": expireDate,
+                    "token": tokenWithSalt,
+                    "originalTransactionId": originalTransactionId
+                    ] as [String : String]
+                //print ("send ios iap info to server: \(urlString). expire date: \(expireDate). with: \(dict)")
+                do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: purchaseInfo, options: .init(rawValue: 0))
+                    if let siteServerUrl = Foundation.URL(string:urlString) {
+                        var request = URLRequest(url: siteServerUrl)
+                        request.httpMethod = "POST"
+                        request.httpBody = jsonData
+                        let session = URLSession(configuration: URLSessionConfiguration.default)
+                        let task = session.dataTask(with: request) { data, response, error in
+                            if let receivedData = data,
+                                let httpResponse = response as? HTTPURLResponse,
+                                error == nil,
+                                httpResponse.statusCode == 200 {
+                                do {
+                                    if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject>,
+                                        let status = jsonResponse["errmsg"] as? String,
+                                        status == "success" {
+                                        // MARK: - parse and verify the required informatin in the jsonResponse
+                                        //print ("send ios iap info to server: success: \(jsonResponse)")
+                                        UserInfo.shared.iapMembershipReadyForCrossPlatform = true
+                                    } else {
+                                        print ("send ios iap info to server: fail to cast: \(String(describing: String(data: receivedData, encoding: .utf8)))")
+                                    }
+                                } catch {
+                                    
+                                }
+                            }
+                        }
+                        task.resume()
+                    } else {
+                        //print("receipt validation from func receiptValidation: Couldn't convert string into URL. Check for special characters.")
+                    }
+                } catch {
+                    //print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
+                }
                 Track.event(category: "iOS IAP Membership: \(key)", action: userId, label: expireDate)
                 break
             }
@@ -601,7 +649,3 @@ struct IAP {
     }
     
 }
-
-
-
-

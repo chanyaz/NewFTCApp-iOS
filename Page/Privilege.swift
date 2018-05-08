@@ -60,6 +60,7 @@ struct PrivilegeHelper {
     public static let dateFormatString = "yyyy-MM-dd HH:mm:ss VV"
     public static let dateFormatStringSimple = "yyyy年MM月dd日HH:mm"
     public static let purchaseSourceKey = "source"
+    public static let originalTransactionIdKey = "original_transaction_id"
     public static func updateFromDevice() {
         let memberships = IAPProducts.memberships
         for membership in memberships {
@@ -141,6 +142,9 @@ struct PrivilegeHelper {
                         let status = item["auto_renew_status"] as? String {
                         //pendingRenewalProducts[id] = (status == 1) ? true : false
                         IAP.savePurchase(id, property: "auto_renew_status", value: status)
+                        if let originalTransactionId = item[originalTransactionIdKey] as? String {
+                            IAP.savePurchase(id, property: originalTransactionIdKey, value: originalTransactionId)
+                        }
                     }
                 }
             }

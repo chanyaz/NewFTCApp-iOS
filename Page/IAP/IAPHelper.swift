@@ -324,7 +324,7 @@ struct ReceiptHelper {
                                 do {
                                     if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
                                         // MARK: - parse and verify the required informatin in the jsonResponse
-                                        //print ("receipt validation from func receiptValidation success: \(jsonResponse)")
+                                        //print ("send ios iap info to server: receipt validation from func receiptValidation success: \(jsonResponse)")
                                         PrivilegeHelper.updateFromReceipt(jsonResponse)
                                     } else {
                                         //print("receipt validation from func receiptValidation: Failed to cast serialized JSON to Dictionary<String, AnyObject>. The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")

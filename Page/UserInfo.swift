@@ -17,6 +17,7 @@ struct UserInfo {
     var subscriptionType: String?
     var subscriptionExpire: Double?
     var shouldRequestUserToAllowNotification = true
+    var iapMembershipReadyForCrossPlatform: Bool? = nil
     private static let userNameKey = "User Name Key"
     private static let userIdKey = "User Id Key"
     private static let uniqueVisitorIdKey = "unique visitor id key"

@@ -241,4 +241,14 @@ struct AdLayout {
         return (false, "")
     }
     
+    public static func getSuffixForBaseUrl(_ dataObject: ContentItem?) -> String {
+        let suffix: String
+        if let adId = dataObject?.adchId {
+            suffix = "#adchannelID=\(adId)"
+        } else {
+            suffix = ""
+        }
+        return suffix
+    }
+    
 }

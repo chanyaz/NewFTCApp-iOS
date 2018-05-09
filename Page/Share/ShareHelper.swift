@@ -104,15 +104,17 @@ extension UIViewController {
         if WXApi.isWXAppInstalled() {
             shareItems.append(WeChatShare(to: "chat-custom"))
             shareItems.append(WeChatShare(to: "moment-custom"))
-            if #available(iOS 10.0, *),
-                Privilege.shared.exclusiveContent,
-                item.type != "premium" {
-                shareItems.append(WeChatShare(to: "chat-screenshot"))
-                shareItems.append(WeChatShare(to: "moment-screenshot"))
-            }
         }
         if WeiboSDK.isWeiboAppInstalled() {
             shareItems.append(WeiboShare(contentItem: item, from: sender))
+        }
+        if #available(iOS 10.0, *),
+            Privilege.shared.exclusiveContent,
+            item.type != "premium",
+            WXApi.isWXAppInstalled() || WeiboSDK.isWeiboAppInstalled() {
+//            shareItems.append(WeChatShare(to: "chat-screenshot"))
+//            shareItems.append(WeChatShare(to: "moment-screenshot"))
+            shareItems.append(ShareScreenshot(contentItem: item, from: sender))
         }
         shareItems.append(OpenInSafari(to: "safari-custom"))
         shareItems.append(ShareMore(contentItem: item, from: sender))

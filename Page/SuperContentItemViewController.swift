@@ -513,8 +513,9 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                 }
             }
         } else {
-            // MARK: - If it is other types of content such video and interactive features
-            if let id = dataObject?.id, let type = dataObject?.type {
+            // MARK: - If it is other types of content such as video and interactive features
+            if let id = dataObject?.id,
+                let type = dataObject?.type {
                 let urlStringOriginal: String
                 let baseUrlString: String
                 if  dataObject?.audioFileUrl != nil && type == "interactive" {
@@ -529,14 +530,13 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     urlStringOriginal = APIs.getUrl(id, type: type, isSecure: true, isPartial: false)
                     baseUrlString = APIs.getUrl(id, type: type, isSecure: false, isPartial: false)
                 }
+                let baseUrlStringFinal = baseUrlString + AdLayout.getSuffixForBaseUrl(dataObject)
                 let urlString = APIs.convert(urlStringOriginal)
-                print ("loading \(urlString)")
-                WebviewHelper.loadContent(url: urlString, base: baseUrlString, webView: webView)
+                //print ("loading \(urlString)")
+                WebviewHelper.loadContent(url: urlString, base: baseUrlStringFinal, webView: webView)
             }
         }
     }
-    
-    
     
     private func updateAcutualLanguage() {
         if let itemId = dataObject?.id {

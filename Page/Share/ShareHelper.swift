@@ -10,7 +10,10 @@ import Foundation
 import UIKit
 import AVFoundation
 import WebKit
-
+enum ActionSheetType {
+    case Default
+    case Screenshot
+}
 struct ShareHelper {
     static var shared = ShareHelper()
     private init() {
@@ -52,7 +55,7 @@ struct ShareHelper {
             }
         }
     }
-
+    
     static func stitchImages(images: [UIImage], isVertical: Bool) -> UIImage {
         var stitchedImages : UIImage!
         if images.count > 0 {
@@ -91,33 +94,44 @@ extension UIViewController {
     
     func launchShareAction(for item: ContentItem, from sender: Any) {
         if WXApi.isWXAppSupport() || WeiboSDK.isWeiboAppInstalled() {
-            launchCustomActionSheet(for: item, from: sender)
+            launchCustomActionSheet(for: item, from: sender, with: .Default)
         } else {
             launchActionSheet(for: item, from: sender)
         }
     }
     
-    func launchCustomActionSheet(for item: ContentItem, from sender: Any) {
+    func launchCustomActionSheet(for item: ContentItem, from sender: Any, with type: ActionSheetType) {
         updateShareContent(for: item, from: sender)
         let activityVC = CustomShareViewController()
         var shareItems = [UIActivity]()
-        if WXApi.isWXAppInstalled() {
-            shareItems.append(WeChatShare(to: "chat-custom"))
-            shareItems.append(WeChatShare(to: "moment-custom"))
+        if type == .Screenshot {
+            if #available(iOS 10.0, *),
+                Privilege.shared.exclusiveContent,
+                item.type != "premium",
+                WXApi.isWXAppInstalled() {
+                shareItems.append(WeChatShare(to: "chat-screenshot"))
+                shareItems.append(WeChatShare(to: "moment-screenshot"))
+                //shareItems.append(ShareScreenshot(contentItem: item, from: sender))
+            }
+        } else {
+            if WXApi.isWXAppInstalled() {
+                shareItems.append(WeChatShare(to: "chat-custom"))
+                shareItems.append(WeChatShare(to: "moment-custom"))
+            }
+            if WeiboSDK.isWeiboAppInstalled() {
+                shareItems.append(WeiboShare(contentItem: item, from: sender))
+            }
+            if #available(iOS 10.0, *),
+                Privilege.shared.exclusiveContent,
+                item.type != "premium",
+                WXApi.isWXAppInstalled() || WeiboSDK.isWeiboAppInstalled() {
+                //            shareItems.append(WeChatShare(to: "chat-screenshot"))
+                //            shareItems.append(WeChatShare(to: "moment-screenshot"))
+                shareItems.append(ShareScreenshot(contentItem: item, from: sender))
+            }
+            shareItems.append(OpenInSafari(to: "safari-custom"))
+            shareItems.append(ShareMore(contentItem: item, from: sender))
         }
-        if WeiboSDK.isWeiboAppInstalled() {
-            shareItems.append(WeiboShare(contentItem: item, from: sender))
-        }
-        if #available(iOS 10.0, *),
-            Privilege.shared.exclusiveContent,
-            item.type != "premium",
-            WXApi.isWXAppInstalled() || WeiboSDK.isWeiboAppInstalled() {
-//            shareItems.append(WeChatShare(to: "chat-screenshot"))
-//            shareItems.append(WeChatShare(to: "moment-screenshot"))
-            shareItems.append(ShareScreenshot(contentItem: item, from: sender))
-        }
-        shareItems.append(OpenInSafari(to: "safari-custom"))
-        shareItems.append(ShareMore(contentItem: item, from: sender))
         activityVC.shareItems = shareItems
         // MARK: Use this to support both iPhone and iPad
         activityVC.modalPresentationStyle = .overCurrentContext

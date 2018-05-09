@@ -28,10 +28,9 @@ class WeChatShare: UIActivity{
     override var activityImage: UIImage? {
         switch to {
         case "moment": return UIImage(named: "Moment")
-        case "moment-custom": return UIImage(named: "MomentCustom")
-        case "chat-custom": return UIImage(named: "WeChatCustom")
+        case "moment-custom", "moment-screenshot": return UIImage(named: "MomentCustom")
+        case "chat-custom", "chat-screenshot": return UIImage(named: "WeChatCustom")
         case "fav": return UIImage(named: "WeChatFav")
-        case "chat-screenshot", "moment-screenshot": return UIImage(named: "ScreenCapture")
         default: return UIImage(named: "WeChat")
         }
     }
@@ -86,10 +85,10 @@ class WeChatShare: UIActivity{
             
             let imageObject =  WXImageObject()
             if let currentWebView = ShareHelper.shared.currentWebView
-                 {
-                    currentWebView.snapshots(completion: { (image) in
-                        
-                        if let image = image {
+            {
+                currentWebView.snapshots(completion: { (image) in
+                    
+                    if let image = image {
                         imageObject.imageData = UIImagePNGRepresentation(image)
                         message.mediaObject = imageObject
                         
@@ -97,7 +96,7 @@ class WeChatShare: UIActivity{
                         let req = SendMessageToWXReq()
                         req.bText = false
                         req.message = message
-                            let eventAction: String
+                        let eventAction: String
                         if toString.range(of: "chat") != nil {
                             req.scene = 0
                             eventAction = "iOS Screen Shot to WeChat Friend"
@@ -114,12 +113,12 @@ class WeChatShare: UIActivity{
                         Track.event(category: "Share", action: eventAction, label: ShareHelper.shared.webPageUrl)
                         WXApi.send(req)
                         
-                        }
-                        
-                    })
-                    //let image = currentWebView.snapshots(10)
+                    }
                     
-
+                })
+                //let image = currentWebView.snapshots(10)
+                
+                
             }
         } else {
             message.setThumbImage(image)
@@ -155,14 +154,8 @@ class WeChatShare: UIActivity{
             }
             Track.event(category: "Share", action: eventAction, label: ShareHelper.shared.webPageUrl)
             WXApi.send(req)
-            
-            
         }
-        
-        
-
     }
-    
 }
 
 // use a subclass to return different value for fav

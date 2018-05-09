@@ -110,6 +110,10 @@ class CustomShareViewController: UIViewController {
         }
     }
     
+    public func updateItem() {
+        print ("should update items for custom share view! ")
+    }
+    
     @objc func close() {
         dismiss(animated: true)
     }
@@ -135,6 +139,7 @@ class CustomShareViewController: UIViewController {
     }
     
     @objc func performShare(_ gesture : UITapGestureRecognizer) {
+        var shouldDismissCurrentView = true
         if let v = gesture.view {
             let tag = v.tag
             let shareItem = shareItems[tag]
@@ -147,9 +152,16 @@ class CustomShareViewController: UIViewController {
                 shareItem.perform()
             } else if let shareItem = shareItem as? WeiboShare {
                 shareItem.perform()
+            } else if let shareItem = shareItem as? ShareScreenshot {
+                dismiss(animated: false)
+                shareItem.perform()
+                //updateItem()
+                shouldDismissCurrentView = false
             }
         }
-        dismiss(animated: true)
+        if shouldDismissCurrentView {
+            dismiss(animated: true)
+        }
     }
     
 }

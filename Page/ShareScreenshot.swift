@@ -45,10 +45,14 @@ class ShareScreenshot: UIActivity{
         } else if let sender = sender as? UIView {
             senderView = sender
         }
+//        if let senderView = senderView as? CustomShareViewController {
+//            senderView.updateItem()
+//        }
         if let senderView = senderView,
             let sourceViewController = senderView.parentViewController,
             let contentItem = contentItem {
-            sourceViewController.launchActionSheet(for: contentItem, from: senderView)
+            //sourceViewController.launchActionSheet(for: contentItem, from: senderView)
+            sourceViewController.launchCustomActionSheet(for: contentItem, from: senderView, with: .Screenshot)
         }
     }
     

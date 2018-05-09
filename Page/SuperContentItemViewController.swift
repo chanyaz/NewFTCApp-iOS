@@ -305,7 +305,6 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                     Download.removeFile(urlString, for: .cachesDirectory, as: "json")
                 }
             }
-            
             contentAPI.fetchContentForUrl(urlString, fetchUpdate: .OnlyOnWifi) {[weak self] results, error in
                 DispatchQueue.main.async {
                     self?.activityIndicator.removeFromSuperview()
@@ -334,7 +333,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
                         }
                         Track.event(category: "CatchError", action: "Content Fetch is Empty", label: urlString)
                     }
-                    print ("update content UI from internet with \(urlString)")
+                    //print ("update content UI from internet with \(urlString)")
                 }
             }
         } else {

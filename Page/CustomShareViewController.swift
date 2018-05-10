@@ -152,6 +152,8 @@ class CustomShareViewController: UIViewController {
                 shareItem.perform()
             } else if let shareItem = shareItem as? WeiboShare {
                 shareItem.perform()
+            } else if let shareItem = shareItem as? SaveScreenshot {
+                shareItem.perform()
             } else if let shareItem = shareItem as? ShareScreenshot {
                 dismiss(animated: false)
                 shareItem.perform()

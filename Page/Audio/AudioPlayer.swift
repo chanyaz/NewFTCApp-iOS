@@ -466,6 +466,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     private func prepareAudioPlay() {
         // MARK: - Use https url so that the audio can be buffered properly on actual devices
         audioUrlString = audioUrlString.replacingOccurrences(of: "http://v.ftimg.net/album/", with: "\(APIs.getAudioDomain())album/")
+        print ("audio url is \(audioUrlString)")
         // MARK: - Remove toolBar's top border. This cannot be done in interface builder.
         toolBar.clipsToBounds = true
         if let url = URL(string: audioUrlString) {

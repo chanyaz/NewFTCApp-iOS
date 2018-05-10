@@ -15,6 +15,8 @@ class ShareImageActivityProvider: UIActivityItemProvider {
         if activityType?.rawValue == "com.sina.weibo.ShareExtension" || activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter,
             let image = ShareHelper.shared.coverImage {
             return image
+        } else if activityType == UIActivityType.saveToCameraRoll {
+            return ShareHelper.shared.coverImage ?? ShareHelper.shared.thumbnail
         } else {
             return ShareHelper.shared.thumbnail
         }

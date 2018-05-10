@@ -118,6 +118,7 @@ extension UIViewController {
                 shareItems.append(WeChatShare(to: "chat-screenshot"))
                 shareItems.append(WeChatShare(to: "moment-screenshot"))
                 shareItems.append(WeiboShare(contentItem: item, from: sender, with: .ScreenShot))
+                shareItems.append(SaveScreenshot())
                 //shareItems.append(ShareScreenshot(contentItem: item, from: sender))
             }
         } else {

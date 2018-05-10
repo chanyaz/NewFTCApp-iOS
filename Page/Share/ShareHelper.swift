@@ -10,12 +10,21 @@ import Foundation
 import UIKit
 import AVFoundation
 import WebKit
+
 enum ActionSheetType {
     case Default
     case Screenshot
 }
+
+enum ShareToType {
+    case ScreenShot
+    case Default
+}
+
 struct ShareHelper {
+    
     static var shared = ShareHelper()
+    
     private init() {
         thumbnail = UIImage(named: Share.shareIconName)
         webPageUrl = ""
@@ -24,6 +33,7 @@ struct ShareHelper {
         webPageImage = ""
         webPageImageIcon = ""
     }
+    
     var thumbnail: UIImage?
     var coverImage: UIImage?
     var webPageUrl: String
@@ -34,14 +44,11 @@ struct ShareHelper {
     var currentWebView: WKWebView?
     
     static func updateShareImage() {
-        // print("Start downloading images for WeChat Shareing. ")
-        // print("web page image: \(ShareHelper.shared.webPageImage)")
         ShareHelper.shared.thumbnail = UIImage(named: "ftcicon.jpg")
         if let url = URL(string: ShareHelper.shared.webPageImageIcon) {
             Download.getDataFromUrl(url) {(data, response, error)  in
                 guard let data = data, error == nil else {return}
                 ShareHelper.shared.thumbnail = UIImage(data: data)
-                //print("finished downloading wechat share icon: \(url.absoluteString)")
             }
         }
         ShareHelper.shared.coverImage = nil
@@ -51,7 +58,6 @@ struct ShareHelper {
             Download.getDataFromUrl(url) {(data, response, error)  in
                 guard let data = data, error == nil else {return}
                 ShareHelper.shared.coverImage = UIImage(data: data)
-                //print("finished downloading content image: \(url.absoluteString)")
             }
         }
     }
@@ -111,6 +117,7 @@ extension UIViewController {
                 WXApi.isWXAppInstalled() {
                 shareItems.append(WeChatShare(to: "chat-screenshot"))
                 shareItems.append(WeChatShare(to: "moment-screenshot"))
+                shareItems.append(WeiboShare(contentItem: item, from: sender, with: .ScreenShot))
                 //shareItems.append(ShareScreenshot(contentItem: item, from: sender))
             }
         } else {
@@ -119,7 +126,7 @@ extension UIViewController {
                 shareItems.append(WeChatShare(to: "moment-custom"))
             }
             if WeiboSDK.isWeiboAppInstalled() {
-                shareItems.append(WeiboShare(contentItem: item, from: sender))
+                shareItems.append(WeiboShare(contentItem: item, from: sender, with: .Default))
             }
             if #available(iOS 10.0, *),
                 Privilege.shared.exclusiveContent,
@@ -206,7 +213,6 @@ extension UIViewController {
     }
     
     func updateShareContent (for item: ContentItem, from sender: Any) {
-        //print ("Share \(item.headline), id: \(item.id), type: \(item.type), image: \(item.image)")
         // MARK: - update some global variables
         ShareHelper.shared.webPageUrl = "\(Share.base)\(item.type)/\(item.id)?full=y#ccode=\(Share.CampaignCode.actionsheet)"
         ShareHelper.shared.webPageTitle = item.headline

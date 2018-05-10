@@ -11,8 +11,7 @@ import UIKit
 
 class ShareImageActivityProvider: UIActivityItemProvider {
     
-    override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any?
-    {
+    override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any? {
         if activityType?.rawValue == "com.sina.weibo.ShareExtension" || activityType == UIActivityType.postToWeibo || activityType == UIActivityType.postToTwitter,
             let image = ShareHelper.shared.coverImage {
             return image

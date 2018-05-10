@@ -1,35 +1,23 @@
 import UIKit
 
-class OpenInSafari : UIActivity{
-    
-    init(to: String) {
-        self.to = to
-        self.text = ""
-    }
-    
-    var to: String
-    var text:String?
+class SaveScreenShot : UIActivity {
 
     override var activityType: UIActivityType {
-        return UIActivityType(rawValue: "openInSafari")
+        return UIActivityType(rawValue: "SaveScreenShot")
     }
     
     override var activityImage: UIImage? {
-        if to == "safari-custom" {
-            return UIImage(named: "SafariCustom")
-        } else {
-            return UIImage(named: "Safari")
-        }
+        return UIImage(named: "ScreenCapture")
     }
     
     override var activityTitle: String {
-        return "打开链接"
+        return "保存到相册"
     }
-
+    
     override class var activityCategory: UIActivityCategory {
         return UIActivityCategory.share
     }
-
+    
     override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
         return true
     }
@@ -39,5 +27,5 @@ class OpenInSafari : UIActivity{
             UIApplication.shared.openURL(url)
         }
     }
-
+    
 }

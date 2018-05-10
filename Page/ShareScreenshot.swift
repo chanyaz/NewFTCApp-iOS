@@ -8,9 +8,11 @@
 
 import UIKit
 
-class ShareScreenshot: UIActivity{
+class ShareScreenshot: UIActivity {
+    
     var contentItem: ContentItem?
     var sender: Any?
+    
     init (contentItem: ContentItem?, from: Any?) {
         self.contentItem = contentItem
         self.sender = from
@@ -24,12 +26,11 @@ class ShareScreenshot: UIActivity{
         return UIImage(named: "ScreenCapture")
     }
     
-    override var activityTitle : String
-    {
-        return "创意截屏"
+    override var activityTitle : String {
+        return "全文截屏"
     }
     
-    override class var activityCategory : UIActivityCategory{
+    override class var activityCategory : UIActivityCategory {
         return UIActivityCategory.share
     }
     
@@ -45,13 +46,9 @@ class ShareScreenshot: UIActivity{
         } else if let sender = sender as? UIView {
             senderView = sender
         }
-//        if let senderView = senderView as? CustomShareViewController {
-//            senderView.updateItem()
-//        }
         if let senderView = senderView,
             let sourceViewController = senderView.parentViewController,
             let contentItem = contentItem {
-            //sourceViewController.launchActionSheet(for: contentItem, from: senderView)
             sourceViewController.launchCustomActionSheet(for: contentItem, from: senderView, with: .Screenshot)
         }
     }

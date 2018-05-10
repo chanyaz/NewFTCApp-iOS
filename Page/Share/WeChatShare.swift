@@ -84,8 +84,7 @@ class WeChatShare: UIActivity{
         if to.range(of: "screenshot") != nil {
             
             let imageObject =  WXImageObject()
-            if let currentWebView = ShareHelper.shared.currentWebView
-            {
+            if let currentWebView = ShareHelper.shared.currentWebView {
                 currentWebView.snapshots(completion: { (image) in
                     
                     if let image = image {
@@ -112,18 +111,13 @@ class WeChatShare: UIActivity{
                         }
                         Track.event(category: "Share", action: eventAction, label: ShareHelper.shared.webPageUrl)
                         WXApi.send(req)
-                        
                     }
-                    
                 })
-                //let image = currentWebView.snapshots(10)
-                
-                
             }
         } else {
             message.setThumbImage(image)
             let webpageObj = WXWebpageObject()
-            let shareUrl = ShareHelper.shared.webPageUrl.replacingOccurrences (
+            let shareUrl = ShareHelper.shared.webPageUrl.replacingOccurrences(
                 of: "#ccode=[0-9A-Za-z]+$",
                 with: "",
                 options: .regularExpression
@@ -132,12 +126,9 @@ class WeChatShare: UIActivity{
             webpageObj.webpageUrl = "\(shareUrl)#ccode=\(c)"
             //print ("wechat webpage obj url is \(webpageObj.webpageUrl)")
             message.mediaObject = webpageObj
-            
-            
             let req = SendMessageToWXReq()
             req.bText = false
             req.message = message
-            
             let eventAction: String
             if toString.range(of: "chat") != nil {
                 req.scene = 0

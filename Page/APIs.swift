@@ -98,7 +98,7 @@ struct APIs {
     //public static let lauchAdSchedule = "https://webnodev.ftchinese.com/index.php/jsapi/applaunchschedule"
     public static let lauchAdSchedule = "https://api003.ftmailbox.com/index.php/jsapi/applaunchschedule"
 
-    public static let customerServiceUrlString = "http://www.ftchinese.com/m/corp/subscriber.html?webview=ftcapp&ad=no"
+    public static let customerServiceUrlString = "http://www.ftchinese.com/m/corp/subscriber.html?webview=ftcapp&ad=no&0"
     
     // MARK: Number of days you want to keep the cached files
     public static let expireDay: TimeInterval = 7

@@ -506,6 +506,7 @@
 		60CFF57F20A3E1A1001A8CCC /* SaveScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CFF57E20A3E1A1001A8CCC /* SaveScreenshot.swift */; };
 		60CFF58020A3E1A1001A8CCC /* SaveScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CFF57E20A3E1A1001A8CCC /* SaveScreenshot.swift */; };
 		60CFF58120A3E1A1001A8CCC /* SaveScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CFF57E20A3E1A1001A8CCC /* SaveScreenshot.swift */; };
+		60CFF58220A44AF4001A8CCC /* APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600C0CFD1F5CDD7D00226F84 /* APIs.swift */; };
 		60D3C8C31EBFF5DC0085BEF6 /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C21EBFF5DC0085BEF6 /* ChannelViewController.swift */; };
 		60D3C8C71EBFF5DC0085BEF6 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8C61EBFF5DC0085BEF6 /* ModelController.swift */; };
 		60D3C8DA1EBFF5DC0085BEF6 /* PageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3C8D91EBFF5DC0085BEF6 /* PageTests.swift */; };
@@ -2501,6 +2502,7 @@
 				F24B79971F5555FA001B62A2 /* CustomPresentationController.swift in Sources */,
 				602E88411F43DD9600BBB4AF /* Alert.swift in Sources */,
 				602153501F397C650077A7AF /* HappyUser.swift in Sources */,
+				60CFF58220A44AF4001A8CCC /* APIs.swift in Sources */,
 				602153511F397C650077A7AF /* LeakAvoider.swift in Sources */,
 				602CD2951F565FD500FFC1EA /* IAPProducts.swift in Sources */,
 				F2E0906A1F5A6A3900F4409F /* ColumnAllListCell.swift in Sources */,

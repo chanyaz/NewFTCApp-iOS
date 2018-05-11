@@ -1039,6 +1039,20 @@
 			name = Channel;
 			sourceTree = "<group>";
 		};
+		50C89AFF20A6525E001605D4 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				600BC50B1FCBAF1900652ADA /* Screenshot.swift */,
+				60986A421F1CAC5300583157 /* OpenInSafari.swift */,
+				600BC5081FC7D81B00652ADA /* ShareMore.swift */,
+				60986A451F1CAC5300583157 /* WeChatShare.swift */,
+				60B92360208847DF006DBBA4 /* WeiboShare.swift */,
+				60CFF57A20A2A3C3001A8CCC /* ShareScreenshot.swift */,
+				60CFF57E20A3E1A1001A8CCC /* SaveScreenshot.swift */,
+			);
+			name = Options;
+			sourceTree = "<group>";
+		};
 		50D4BD3E1F6382B600DD64E1 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
@@ -1427,13 +1441,7 @@
 				600BC5051FC683FA00652ADA /* CustomShareViewController.swift */,
 				60986A411F1CAC5300583157 /* DataForShare.swift */,
 				60986A441F1CAC5300583157 /* ShareImageActivityProvider.swift */,
-				600BC50B1FCBAF1900652ADA /* Screenshot.swift */,
-				60986A421F1CAC5300583157 /* OpenInSafari.swift */,
-				600BC5081FC7D81B00652ADA /* ShareMore.swift */,
-				60986A451F1CAC5300583157 /* WeChatShare.swift */,
-				60B92360208847DF006DBBA4 /* WeiboShare.swift */,
-				60CFF57A20A2A3C3001A8CCC /* ShareScreenshot.swift */,
-				60CFF57E20A3E1A1001A8CCC /* SaveScreenshot.swift */,
+				50C89AFF20A6525E001605D4 /* Options */,
 			);
 			name = Share;
 			sourceTree = "<group>";

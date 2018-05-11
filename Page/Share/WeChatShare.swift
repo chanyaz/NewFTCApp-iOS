@@ -7,7 +7,10 @@
 //
 
 import UIKit
-class WeChatShare: UIActivity{
+class WeChatShare: UIActivity, Sharable {
+    func performShare() {
+        perform()
+    }
     var to: String
     var text:String?
     

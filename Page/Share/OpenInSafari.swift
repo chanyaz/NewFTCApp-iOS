@@ -1,6 +1,10 @@
 import UIKit
 
-class OpenInSafari : UIActivity{
+class OpenInSafari : UIActivity, Sharable {
+    func performShare() {
+        perform()
+    }
+    
     
     init(to: String) {
         self.to = to

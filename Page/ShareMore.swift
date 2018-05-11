@@ -8,7 +8,11 @@
 
 import UIKit
 
-class ShareMore: UIActivity{
+class ShareMore: UIActivity, Sharable {
+    func performShare() {
+        perform()
+    }
+    
     var contentItem: ContentItem?
     var sender: Any?
     init (contentItem: ContentItem?, from: Any?) {
@@ -38,7 +42,7 @@ class ShareMore: UIActivity{
     }
     
     override func perform() {
-        print ("should open the system share action sheet")
+        //print ("should open the system share action sheet")
         var senderView: UIView?
         if let sender = sender as? UIBarButtonItem {
             senderView = sender.value(forKey: "view") as? UIView
@@ -49,7 +53,7 @@ class ShareMore: UIActivity{
         if let senderView = senderView,
             let sourceViewController = senderView.parentViewController,
             let contentItem = contentItem {
-            sourceViewController.launchActionSheet(for: contentItem, from: senderView)
+            sourceViewController.launchSystemDefaultActionSheet(for: contentItem, from: senderView)
         }
     }
     

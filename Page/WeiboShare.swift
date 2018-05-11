@@ -14,7 +14,11 @@
 import Foundation
 import UIKit
 
-class WeiboShare: UIActivity {
+class WeiboShare: UIActivity, Sharable {
+    func performShare() {
+        perform()
+    }
+    
     
     var contentItem: ContentItem?
     var sender: Any?

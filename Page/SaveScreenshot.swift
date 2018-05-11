@@ -1,6 +1,10 @@
 import UIKit
 
-class SaveScreenshot : UIActivity {
+class SaveScreenshot : UIActivity, Sharable {
+    func performShare() {
+        perform()
+    }
+    
 
     override var activityType: UIActivityType {
         return UIActivityType(rawValue: "SaveScreenShot")

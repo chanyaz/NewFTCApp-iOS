@@ -141,7 +141,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     
     @IBAction func share(_ sender: UIBarButtonItem) {
         if let item = item {
-            launchShareAction(for: item, from: sender)
+            launchActionSheet(for: item, from: sender, with: .Default)
         }
     }
     

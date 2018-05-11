@@ -8,8 +8,10 @@
 
 import UIKit
 
-class ShareScreenshot: UIActivity {
-    
+class ShareScreenshot: UIActivity, Sharable {
+    func performShare() {
+        perform()
+    }
     var contentItem: ContentItem?
     var sender: Any?
     
@@ -49,7 +51,7 @@ class ShareScreenshot: UIActivity {
         if let senderView = senderView,
             let sourceViewController = senderView.parentViewController,
             let contentItem = contentItem {
-            sourceViewController.launchCustomActionSheet(for: contentItem, from: senderView, with: .Screenshot)
+            sourceViewController.launchActionSheet(for: contentItem, from: senderView, with: .Screenshot)
         }
     }
     

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class CustomShareViewController: UIViewController {
-    var shareItems: [UIActivity] = []
+    var shareItems: [Sharable] = []
     var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
     override func loadView() {
         func getItemLeading(for index: Int, with itemWidth: CGFloat, of columns: CGFloat) -> CGFloat {
@@ -51,8 +51,6 @@ class CustomShareViewController: UIViewController {
         let itemCount: CGFloat = CGFloat(shareItems.count)
         let columns: CGFloat = 4
         let rows = ceil(itemCount/columns)
-        
-        
         let shareSheetHeight: CGFloat = 180 * rows
         let shareSheetView = UIView()
         shareSheetView.backgroundColor = UIColor(hex: Color.Content.background)
@@ -73,8 +71,9 @@ class CustomShareViewController: UIViewController {
         let itemHeight = itemImageHeight + itemTitleHeight
         let itemWidth = itemImageHeight + 2 * itemPadding
         for (index, item) in shareItems.enumerated() {
-            if let title = item.activityTitle,
-                let image = item.activityImage {
+            if let currentItem = item as? UIActivity,
+                let title = currentItem.activityTitle,
+                let image = currentItem.activityImage {
                 let itemView = UIView()
                 let itemCenterY = getItemCenterY(index: index, rows: rows, columns: columns, containerHeight: shareSheetHeight, itemHeight: itemHeight)
                 itemView.tag = index
@@ -118,7 +117,6 @@ class CustomShareViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    
     @objc func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
         let touchPoint = sender.location(in: self.view?.window)
         if sender.state == UIGestureRecognizerState.began {
@@ -138,27 +136,17 @@ class CustomShareViewController: UIViewController {
         }
     }
     
-    @objc func performShare(_ gesture : UITapGestureRecognizer) {
+    @objc func performShare(_ sender: UITapGestureRecognizer) {
         var shouldDismissCurrentView = true
-        if let v = gesture.view {
+        if let v = sender.view {
             let tag = v.tag
             let shareItem = shareItems[tag]
-            //shareItem.perform()
-            if let shareItem = shareItem as? WeChatShare {
-                shareItem.perform()
-            } else if let shareItem = shareItem as? OpenInSafari {
-                shareItem.perform()
-            } else if let shareItem = shareItem as? ShareMore {
-                shareItem.perform()
-            } else if let shareItem = shareItem as? WeiboShare {
-                shareItem.perform()
-            } else if let shareItem = shareItem as? SaveScreenshot {
-                shareItem.perform()
-            } else if let shareItem = shareItem as? ShareScreenshot {
+            if let shareItem = shareItem as? ShareScreenshot {
                 dismiss(animated: false)
                 shareItem.perform()
-                //updateItem()
                 shouldDismissCurrentView = false
+            } else {
+                shareItem.performShare()
             }
         }
         if shouldDismissCurrentView {

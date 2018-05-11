@@ -21,10 +21,13 @@ enum ShareToType {
     case Default
 }
 
+protocol Sharable {
+    func performShare()
+}
+
 struct ShareHelper {
     
     static var shared = ShareHelper()
-    
     private init() {
         thumbnail = UIImage(named: Share.shareIconName)
         webPageUrl = ""
@@ -33,7 +36,6 @@ struct ShareHelper {
         webPageImage = ""
         webPageImageIcon = ""
     }
-    
     var thumbnail: UIImage?
     var coverImage: UIImage?
     var webPageUrl: String
@@ -98,18 +100,10 @@ struct ShareHelper {
 
 extension UIViewController {
     
-    func launchShareAction(for item: ContentItem, from sender: Any) {
-        if WXApi.isWXAppSupport() || WeiboSDK.isWeiboAppInstalled() {
-            launchCustomActionSheet(for: item, from: sender, with: .Default)
-        } else {
-            launchActionSheet(for: item, from: sender)
-        }
-    }
-    
-    func launchCustomActionSheet(for item: ContentItem, from sender: Any, with type: ActionSheetType) {
+    func launchActionSheet(for item: ContentItem, from sender: Any, with type: ActionSheetType) {
         updateShareContent(for: item, from: sender)
         let activityVC = CustomShareViewController()
-        var shareItems = [UIActivity]()
+        var shareItems = [Sharable]()
         if type == .Screenshot {
             if #available(iOS 10.0, *),
                 Privilege.shared.exclusiveContent,
@@ -131,11 +125,14 @@ extension UIViewController {
             }
             if #available(iOS 10.0, *),
                 Privilege.shared.exclusiveContent,
-                item.type != "premium",
-                WXApi.isWXAppInstalled() || WeiboSDK.isWeiboAppInstalled() {
+                item.type != "premium" {
                 //            shareItems.append(WeChatShare(to: "chat-screenshot"))
                 //            shareItems.append(WeChatShare(to: "moment-screenshot"))
-                shareItems.append(ShareScreenshot(contentItem: item, from: sender))
+                if WXApi.isWXAppInstalled() || WeiboSDK.isWeiboAppInstalled() {
+                    shareItems.append(ShareScreenshot(contentItem: item, from: sender))
+                } else {
+                    shareItems.append(SaveScreenshot())
+                }
             }
             shareItems.append(OpenInSafari(to: "safari-custom"))
             shareItems.append(ShareMore(contentItem: item, from: sender))
@@ -155,7 +152,7 @@ extension UIViewController {
         grabImagesForShare()
     }
     
-    func launchActionSheet(for item: ContentItem, from sender: Any) {
+    func launchSystemDefaultActionSheet(for item: ContentItem, from sender: Any) {
         updateShareContent(for: item, from: sender)
         if let url = URL(string: ShareHelper.shared.webPageUrl), let iconImage = UIImage(named: "ShareIcon.jpg") {
             let wcActivity = WeChatShare(to: "chat")

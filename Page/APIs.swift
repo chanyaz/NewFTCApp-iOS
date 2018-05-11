@@ -1159,9 +1159,14 @@ struct Settings {
 }
 
 struct FullScreenFallBack {
-    static let id = ""
-    static let link = "screen://\(IAPProducts.membershipScreenName)"
+//    static let id = ""
+//    static let link = "screen://\(IAPProducts.membershipScreenName)"
+//    static let backgroundColor = "#000000"
+    
+    static let id = "com.ft.ftchinese.mobile.book.person"
+    static let link = ""
     static let backgroundColor = "#000000"
+    
 }
 
 struct ContentItemRenderContent {

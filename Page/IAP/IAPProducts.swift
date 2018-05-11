@@ -64,6 +64,15 @@ public struct IAPProducts {
     
     private static let eBooksData = [
         [
+            "id":"com.ft.ftchinese.mobile.book.person",
+            "title":"留学,可以怎样改变一个人",
+            "teaser":"FT中文网精选留学及海外教育领域文章，希望学子在踏上征途之时，对当下和未来生出更清晰思考.",
+            "description": "<p>留学是一个不多见的永远都是热点的话题。从秋季冬季的准备与申请，春季面对录取通知书的选择，一直到夏天终于启程背负行囊远赴异国他乡。</p><p>FT中文网精选留学及海外教育领域文章，作者们或曾经漂洋过海，深深得益于那一段海外深造的经历，或正身处欧美大学的校园，在课业和生活中体味留学的酸甜苦辣，或对中国留学生的历史与变迁如数家珍。希望又一批学子在勇敢而又憧憬地踏上征途之时，能够对当下和未来，生出更清晰的思考。</p>",
+            "image":"https://creatives002.ftimg.net/person.jpg",
+            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooklxkyzygbygr&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&050",
+            "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooklxkyzygbygr&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&051"
+        ],
+        [
             "id":"com.ft.ftchinese.mobile.book.bubble",
             "title":"是非区块链：技术、投机与泡沫",
             "teaser":"英国《金融时报》为您呈上的此书，为您在了解分析区块链、比特币甚至ICO提供更全面的参考。",
@@ -181,15 +190,6 @@ public struct IAPProducts {
             "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebookcfbj&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&014"
         ],
         [
-            "id":"com.ft.ftchinese.mobile.book.person",
-            "title":"留学，可以怎样改变一个人",
-            "teaser":"FT中文网精选留学及海外教育领域文章，希望学子在踏上征途之时，对当下和未来生出更清晰思考。",
-            "description": "<p>留学是一个不多见的永远都是热点的话题。从秋季冬季的准备与申请，春季面对录取通知书的选择，一直到夏天终于启程背负行囊远赴异国他乡。</p><p>FT中文网精选留学及海外教育领域文章，作者们或曾经漂洋过海，深深得益于那一段海外深造的经历，或正身处欧美大学的校园，在课业和生活中体味留学的酸甜苦辣，或对中国留学生的历史与变迁如数家珍。希望又一批学子在勇敢而又憧憬地踏上征途之时，能够对当下和未来，生出更清晰的思考。</p>",
-            "image":"https://creatives002.ftimg.net/person.png",
-            "download": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooklxkyzygbygr&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&v=6.8&011",
-            "downloadfortry": "https://api003.ftmailbox.com/m/corp/preview.html?pageid=ebooklxkyzygbygr&bodyonly=yes&webview=ftcapp&ad=no&showEnglishAudio=yes&try=yes&v=6.8&011"
-        ],
-        [
             "id":"com.ft.ftchinese.mobile.book.market",
             "title":"楼市之惑",
             "teaser":"怎样实现“让普通百姓买得起房”？面对中国房地产市场和住宅产业发展的空前机遇，如何把握住？",
@@ -275,7 +275,7 @@ public struct IAPProducts {
     
     // MARK: - update JSCode for displaying on WKWebView
     public static func updateHome(for type: String) -> String {
-        let hightlightIds = ["com.ft.ftchinese.mobile.book.bubble"]
+        let hightlightIds = ["com.ft.ftchinese.mobile.book.person"]
         let highlightJSON = IAP.getJSON(IAPs.shared.products, in: type, shuffle: true, filter: hightlightIds)
         let hightJSCode = JSCodes.get(in: "iap-highlight", with: highlightJSON, where: "center")
         let ids:[String] = [
@@ -308,7 +308,7 @@ public struct IAPProducts {
     
 
     
-    fileprivate static func addProductGroup(_ products:  [Dictionary<String, Any>], group: String, groupTitle: String) -> [Dictionary<String, Any>]{
+    fileprivate static func addProductGroup(_ products:  [Dictionary<String, Any>], group: String, groupTitle: String) -> [Dictionary<String, Any>] {
         var newProducts:  [Dictionary<String, Any>] = []
         for product in products {
             var newProduct = product

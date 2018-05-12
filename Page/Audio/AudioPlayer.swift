@@ -52,6 +52,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
             if player.rate != 0 && player.error == nil {
                 player.pause()
                 buttonPlayAndPause.image = UIImage(named:"BigPlayButton")
+                UIApplication.shared.isIdleTimerDisabled = false
             } else {
                 startToPlay(from: nil)
             }
@@ -94,6 +95,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
                 mediaLength: mediaLength,
                 PlaybackRate: 1.0
             )
+            UIApplication.shared.isIdleTimerDisabled = true
         }
     }
     
@@ -132,7 +134,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         }
     }
     
-    
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         let currentValue = sender.value
         let currentTime = CMTimeMake(Int64(currentValue), 1)
@@ -166,6 +167,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     }
     
     deinit {
+        UIApplication.shared.isIdleTimerDisabled = false
         if let player = player {
             player.pause()
             self.player = nil
@@ -418,7 +420,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
     private func addPlayerItemObservers() {
         // MARK: - Observe Play to the End
         NotificationCenter.default.addObserver(self,selector:#selector(AudioPlayer.playerDidFinishPlaying), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
-        
         // MARK: - Update buffer status
         playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
         playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
@@ -431,7 +432,6 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         playTime.text = time.durationText
         updateTimeInWeb(time)
     }
-    
     
     private var lastIndex = (k:0, l:0)
     private var latestIndex = (k:0, l:0)
@@ -593,6 +593,7 @@ class AudioPlayer: UIViewController,WKScriptMessageHandler,UIScrollViewDelegate,
         self.progressSlider.value = 0
         self.buttonPlayAndPause.image = UIImage(named:"BigPlayButton")
         nowPlayingCenter.updateTimeForPlayerItem(player)
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {

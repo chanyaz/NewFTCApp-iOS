@@ -105,12 +105,6 @@ class PageCollectionViewLayoutV: UICollectionViewFlowLayout{
                     
                     
                     if endIndex != 0{
-                        
-                        //                    let sectionHeight0 = Int((endIndex-3)/3)+1
-                        //                     sectionHeight = CGFloat(sectionHeight0)*heightPerItem/2+heightItem1/2
-                        //
-                        
-                        
                         var column = 0
                         var yOffset = [CGFloat](repeating: preSectionHeight+heightItem1+heightItemWithAd+heightItem2+heightHotItem+heightItem789, count: numberOfColumns)
                         

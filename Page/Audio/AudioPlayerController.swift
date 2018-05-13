@@ -224,8 +224,8 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             let dateInString = dateFormatter.string(from: currentDate)
-            let timeInterval = Int((currentDate.timeIntervalSince1970)*100000)
-            print("current date String is:\(dateInString)--timeInterval is:\(Int(timeInterval))")
+            let timeInterval = currentDate.timeIntervalSince1970.rounded()
+            print("current date String is:\(dateInString)--timeInterval is:\(timeInterval)")
             
             
             if let caudio = caudio,let eaudio = eaudio{

@@ -238,13 +238,21 @@ class ContentFetch {
         let publishTimeString = item["last_publish_time"] as? String ?? "0"
         let publishTime = TimeInterval(publishTimeString) ?? 0
         
+        let itemType: String
+        if let paywall = item["paywall"] as? Int,
+            paywall == 1 {
+            itemType = "premium"
+        } else {
+            itemType = "story"
+        }
+        
         // MARK: Note that section may not be continuous
         let oneItem = ContentItem(
             id: "",
             image: "",
             headline: "",
             lead: "",
-            type: "story",
+            type: itemType,
             preferSponsorImage: "",
             tag: "",
             customLink: "",

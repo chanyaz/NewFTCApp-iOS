@@ -306,8 +306,7 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                         let urlString = "indexphp-jsapi-publish-ftcc"
                         if let data = Download.readFile(urlString, for: .cachesDirectory, as: "json") {
                             //print ("found \(urlString) in caches directory. ")
-                            if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
-                            {
+                            if let resultsDictionary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) {
                                 let contentSections = contentAPI.formatJSON(resultsDictionary)
                                 let results = ContentFetchResults(apiUrl: urlString, fetchResults: contentSections)
                                 print ("read results from local file\(results)")
@@ -320,7 +319,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                                             if ["story"].contains(item.type) {
                                                 pageData.append(item)
                                             }
-                                            
                                         }
                                     }
                                     pageData[index].isLandingPage = true
@@ -328,7 +326,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
                                     detailViewController.currentPageIndex = index
                                     navigationController?.pushViewController(detailViewController, animated: true)
                                 }
-                                
                                 //print ("update UI from local file with \(urlString)")
                             }
                         }
@@ -357,8 +354,6 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         let dictionaryData = dataArray[indexPath.row]  as! NSDictionary
         cell.selectedLabel.text = dictionaryData["headline"] as? String
         cell.selectedImageView.image = dictionaryData["img"] as? UIImage
-        
-        
         cell.accessoryType = .none
         cell.isEditting = self.isEditting
         if self.selectArray.contains(indexPath){
@@ -366,25 +361,21 @@ class CollectInfoController: UIViewController,UITableViewDataSource, UITableView
         }else{
             cell.isSelected = false
         }
-        
-        
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         return 80.0
-        
     }
+    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false
     }
+    
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.none
     }
-    
-    
+
 }
 
 

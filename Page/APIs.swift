@@ -485,8 +485,9 @@ struct APIs {
     }
     
     static func sendThirdPartyTrackings(_ itemId: String, category: String, action: String, label: String) {
-        let timeInterval = Int((Date().timeIntervalSince1970)*100000)
-        let cntTime = String(timeInterval)
+        let timeInterval = Date().timeIntervalSince1970.rounded()
+        // MARK: It is better to convert Double into String directly rather than converting to Int, as the latter might cause run time error if the double if larger than Int's max value. It is hard to identify as different devices have different max value for Int. 
+        let cntTime = String(timeInterval).replacingOccurrences(of: ".0", with: "")
         let ip = NetworkHelper.getWiFiAddress() ?? ""
         // MARK: Send User Location Only For Engagement Related Analysis
         let loc: String

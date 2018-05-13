@@ -373,6 +373,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
             dataObject?.image = item.image
             dataObject?.keywords = item.keywords
             dataObject?.whitelist = item.whitelist
+            dataObject?.type = item.type
             if let caudio = item.caudio, caudio != "" {
                 dataObject?.caudio = caudio
             }

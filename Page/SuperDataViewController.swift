@@ -169,6 +169,8 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             contentController.add(LeakAvoider(delegate:self), name: "sponsors")
             contentController.add(LeakAvoider(delegate:self), name: "user")
             contentController.add(LeakAvoider(delegate:self), name: "selectItem")
+            contentController.add(LeakAvoider(delegate:self), name: "sharePageFromApp")
+            
             config.userContentController = contentController
             config.allowsInlineMediaPlayback = true
             
@@ -1709,6 +1711,17 @@ extension SuperDataViewController: WKScriptMessageHandler {
                 _ = handleItemSelect(indexPath)
             } else {
                 print ("item row is not an int: \(message.body)")
+            }
+        } else if message.name == "sharePageFromApp" {
+            if let body = message.body as? [String: String],
+                let urlString = body["url"] {
+                    let title = body["title"] ?? ""
+                let lead = body["lead"] ?? ""
+                let imageUrl = body["image"] ?? ""
+                let item = ContentItem(id: "", image: imageUrl, headline: title, lead: lead, type: "page", preferSponsorImage: "", tag: "", customLink: urlString, timeStamp: 0, section: 0, row: 0)
+                if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+                    rootViewController.launchActionSheet(for: item, from: self, with: .Default)
+                }
             }
         } else if let body = message.body as? [String: String] {
             if message.name == "alert" {

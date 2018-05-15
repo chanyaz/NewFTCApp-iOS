@@ -349,7 +349,7 @@ struct AppNavigation {
                 [
                     "title": "政经",
                     //"api": "https://api003.ftmailbox.com/channel/json.html?pageid=vpolitics",
-                    "listapi": "https://api003.ftmailbox.com/channel/vpolitics.html?webview=ftcapp&bodyonly=yes",
+                    "listapi": "https://api003.ftmailbox.com/channel/vpolitics.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url":"http://www.ftchinese.com/channel/vpolitics.html?webview=ftcapp&norepeat=yes",
                     "screenName":"video/politics",
                     "coverTheme": "Video",

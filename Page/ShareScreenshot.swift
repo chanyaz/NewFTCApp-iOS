@@ -41,17 +41,22 @@ class ShareScreenshot: UIActivity, Sharable {
     }
     
     override func perform() {
-        print ("should open the share screen action sheet")
+        //print ("should open the share screen action sheet")
         var senderView: UIView?
         if let sender = sender as? UIBarButtonItem {
             senderView = sender.value(forKey: "view") as? UIView
         } else if let sender = sender as? UIView {
             senderView = sender
         }
-        if let senderView = senderView,
-            let sourceViewController = senderView.parentViewController,
-            let contentItem = contentItem {
-            sourceViewController.launchActionSheet(for: contentItem, from: senderView, with: .Screenshot)
+        if let contentItem = contentItem {
+            if let senderView = senderView,
+                let sourceViewController = senderView.parentViewController {
+                sourceViewController.launchActionSheet(for: contentItem, from: senderView, with: .Screenshot)
+            } else if let sender = sender as? UIViewController {
+                if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+                    rootViewController.launchActionSheet(for: contentItem, from: sender, with: .Screenshot)
+                }
+            }
         }
     }
     

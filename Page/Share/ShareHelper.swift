@@ -194,15 +194,18 @@ extension UIViewController {
         ShareHelper.updateShareImage()
     }
     
-    func getCurrentWebView() {
-        if let detailViewController = self as? DetailViewController,
+    private func getCurrentWebView(from sender: Any) {
+        ShareHelper.shared.currentWebView = nil
+        if let dataView = sender as? DataViewController {
+            ShareHelper.shared.currentWebView = dataView.webView
+        } else if let contentView = sender as? ContentItemViewController {
+            ShareHelper.shared.currentWebView = contentView.webView
+        } else if let detailViewController = self as? DetailViewController,
             let viewPages = detailViewController.pageViewController?.viewControllers {
-            //print ("this is a detail view")
             let currentPageIndexNumber = detailViewController.currentPageIndex
             for viewPage in viewPages {
                 if let viewPage = viewPage as? ContentItemViewController,
                     viewPage.dataObject?.id == detailViewController.contentPageData[currentPageIndexNumber].id {
-                    //ShareHelper.shared.fullPageImage = viewPage.webView?.screenshot()
                     ShareHelper.shared.currentWebView = viewPage.webView
                     break
                 }
@@ -212,12 +215,16 @@ extension UIViewController {
     
     func updateShareContent (for item: ContentItem, from sender: Any) {
         // MARK: - update some global variables
-        ShareHelper.shared.webPageUrl = "\(Share.base)\(item.type)/\(item.id)?full=y#ccode=\(Share.CampaignCode.actionsheet)"
+        if item.customLink != "" {
+            ShareHelper.shared.webPageUrl = "\(item.customLink)#ccode=\(Share.CampaignCode.actionsheet)"
+        } else {
+            ShareHelper.shared.webPageUrl = "\(Share.base)\(item.type)/\(item.id)?full=y#ccode=\(Share.CampaignCode.actionsheet)"
+        }
         ShareHelper.shared.webPageTitle = item.headline
         ShareHelper.shared.webPageDescription = item.lead
         ShareHelper.shared.webPageImage = item.image
         ShareHelper.shared.webPageImageIcon = item.image
-        getCurrentWebView()
+        getCurrentWebView(from: sender)
     }
     
 }

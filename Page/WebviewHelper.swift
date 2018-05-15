@@ -215,7 +215,7 @@ struct WebviewHelper {
     
     // MARK: load content pages such as story, interactive, audio, video, etc...
     static func loadContent(url: String, base: String, webView: WKWebView?) {
-        print ("1. Load Content Data: start from \(url)")
+        //print ("1. Load Content Data: start from \(url)")
         if var urlComponents = URLComponents(string: url) {
             let newQuery = APIs.newQueryForWebPage()
             if urlComponents.queryItems != nil {
@@ -244,22 +244,22 @@ struct WebviewHelper {
                         if IJReachability().connectedToNetworkOfType() == .wiFi {
 //                            Download.downloadUrl(url, to: .cachesDirectory, as: "html")
 //                            // MARK: - If the file has not been downloaded yet
-                            print ("4. Load Content Data: in wifi update \(urlLink)")
+                            //print ("4. Load Content Data: in wifi update \(urlLink)")
                             Download.getDataFromUrl(urlLink, completion: {(data, response, error) in
                                 if let data = data,
                                     HTMLValidator.validate(data, of: url, for: .Content) != nil {
-                                    print ("5. Load Content Data: update success: \(urlLink)")
+                                    //print ("5. Load Content Data: update success: \(urlLink)")
                                     Download.saveFile(data, filename: url, to: .cachesDirectory, as: "html")
                                 }
                             })
                         }
                     } else {
                         // MARK: - If the file has not been downloaded yet
-                        print ("2. Load Content Data: change into \(urlLink)")
+                        //print ("2. Load Content Data: change into \(urlLink)")
                         Download.getDataFromUrl(urlLink, completion: {[weak webView] (data, response, error) in
                             if let data = data,
                                 let htmlString = HTMLValidator.validate(data, of: url, for: .Content) {
-                                print ("6. Load Content Data: load success: \(urlLink)")
+                                //print ("6. Load Content Data: load success: \(urlLink)")
                                 DispatchQueue.main.async {
                                     webView?.loadHTMLString(htmlString, baseURL:baseUrl)
                                 }
@@ -277,7 +277,7 @@ struct WebviewHelper {
     }
     
     private static func loadRequest(_ urlLink: URL, in webView: WKWebView?) {
-        print ("3. Load Content Data: not working. load directly from \(urlLink)")
+        //print ("3. Load Content Data: not working. load directly from \(urlLink)")
         let request = URLRequest(url: urlLink)
         DispatchQueue.main.async {
             webView?.load(request)

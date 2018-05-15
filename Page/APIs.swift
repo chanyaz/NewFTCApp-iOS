@@ -331,7 +331,7 @@ struct APIs {
         }
         switch type {
         case "video":
-            urlString = "\(webPageDomain)\(type)/\(id)\(partialParameter)&webview=ftcapp"
+            urlString = "\(webPageDomain)\(type)/\(id)\(partialParameter)&webview=ftcapp&004"
         case "radio":
             urlString = "\(webPageDomain)interactive/\(id)\(partialParameter)&webview=ftcapp&exclusive"
         case "pagemaker":

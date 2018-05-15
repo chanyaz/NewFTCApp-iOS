@@ -29,11 +29,11 @@ struct AdParser {
     public static func parseAdCode(_ adCode: String) -> AdModel {
         //print ("ad Code is \(adCode)")
         let videoPattern = [
-        "var videoUrl = '(.+)'"
+            "var videoUrl = '(.+)'"
         ]
         let video = adCode.matchingStrings(regexes: videoPattern)
         
-
+        
         
         //TODO: This is a Test Code, Remove after testing is over
         //let video = "https://creatives.ftimg.net/video/adv/AccentureTest2.mp4"
@@ -64,7 +64,7 @@ struct AdParser {
         }
         
         print ("video is \(String(describing: video)), image is \(String(describing: image)), link is \(String(describing: link))")
-
+        
         
         // MARK: Headline for Paid Post
         let headlinePatterns = [
@@ -92,7 +92,7 @@ struct AdParser {
         
         // MARK: get lead for paid post
         let leadPatterns = [
-        "var lead = '(.+)'"
+            "var lead = '(.+)'"
         ]
         let lead = adCode.matchingStrings(regexes: leadPatterns)
         
@@ -132,12 +132,12 @@ struct AdParser {
         let base = "https://d2hxugxrr2jblf.cloudfront.net/s?z=ft&slot=676544&_sex=101&_cs=1&_csp=1&_dc=2&_mm=2&_sz=2&_am=2&_ut=member&_fallback=0"
         let urlString =  "\(base)&c=\(adid)"
         // MARK: This is a test code, remove before publishing
-//        if adid == "20220121" {
-//            let testUrlString = "https://raw.githubusercontent.com/FTChinese/AdTemplates/master/paid-post-test.html"
-//            if let url = URL(string: testUrlString) {
-//                return url
-//            }
-//        }
+        //        if adid == "20220121" {
+        //            let testUrlString = "https://raw.githubusercontent.com/FTChinese/AdTemplates/master/paid-post-test.html"
+        //            if let url = URL(string: testUrlString) {
+        //                return url
+        //            }
+        //        }
         
         if let url = URL(string: urlString) {
             print ("ad url is \(urlString)")
@@ -147,40 +147,53 @@ struct AdParser {
     }
     
     //MARK: - Even the same story might need to display different adchID when tapped from different list page. So this can only be done here.
-    public static func getAdchID(_ dataObject: ContentItem?) -> String {
-        if let dataObject = dataObject,
-            let keywords = dataObject.keywords {
-            for sponsor in Sponsors.shared.sponsors {
-                if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) && sponsor.adid != "" {
-                    return sponsor.adid
+    public static func getAdchID(_ dataObject: ContentItem?, with homePageId: String, to fallbackId: String) -> String {
+        
+        if let dataObject = dataObject {
+            if let keywords = dataObject.keywords {
+                // MARK: Check if the story belongs to a sponsored special report
+                for sponsor in Sponsors.shared.sponsors {
+                    if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) && sponsor.adid != "" {
+                        return sponsor.adid
+                    }
                 }
+                // MARK: Check if the story is tapped from a channel page
+                if let adchId = dataObject.adchId,
+                    adchId != homePageId {
+                    return adchId
+                }
+                // MARK: Use the content in the story to decide ad id
+                // TODO: should get the channel adchId from server side
+                if keywords.range(of:"lifestyle") != nil {
+                    return "1800"
+                }
+                if keywords.range(of:"management") != nil {
+                    return "1700"
+                }
+                if keywords.range(of:"opinion") != nil {
+                    return "1600"
+                }
+                if keywords.range(of:"创新经济") != nil {
+                    return "2100"
+                }
+                if keywords.range(of:"markets") != nil {
+                    return "1400"
+                }
+                if keywords.range(of:"economy") != nil {
+                    return "1300"
+                }
+                if keywords.range(of:"china") != nil {
+                    return "1100"
+                }
+                return "1200"
             }
-            // TODO: should get the channel adchId from server side
-            if keywords.range(of:"lifestyle") != nil {
-                return "1800"
-            }
-            if keywords.range(of:"management") != nil {
-                return "1700"
-            }
-            if keywords.range(of:"opinion") != nil {
-                return "1600"
-            }
-            if keywords.range(of:"创新经济") != nil {
-                return "2100"
-            }
-            if keywords.range(of:"markets") != nil {
-                return "1400"
-            }
-            if keywords.range(of:"economy") != nil {
-                return "1300"
-            }
-            if keywords.range(of:"china") != nil {
-                return "1100"
+            if dataObject.adchId != nil {
+                return fallbackId
             }
         }
-        return "1200"
+        // MARK: If there's something wrong, return a default
+        return fallbackId
     }
-    
 }
 
 

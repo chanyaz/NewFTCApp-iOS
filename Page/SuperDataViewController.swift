@@ -1640,7 +1640,6 @@ extension SuperDataViewController : UICollectionViewDelegateFlowLayout {
     
 }
 
-
 // MARK: Handle links here
 extension SuperDataViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: (@escaping (WKNavigationActionPolicy) -> Void)) {
@@ -1695,7 +1694,10 @@ extension SuperDataViewController: WKScriptMessageHandler {
                     )
                     sponsors.append(sponsor)
                 }
-                Sponsors.shared.sponsors = sponsors
+                if sponsors.count > 0 {
+                    Sponsors.shared.sponsors = sponsors
+                    //print ("adch id: update sponsors: \(sponsors)")
+                }
             }
         } else if message.name == "user" {
             // MARK: Get user information

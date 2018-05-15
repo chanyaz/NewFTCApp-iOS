@@ -86,13 +86,8 @@ struct WebviewHelper {
                 var storyTheme = ""
                 let fontClass = Setting.getFontClass()
                 var commentsId = id
-                let adchID: String
-                if dataObject?.adchId == AdLayout.homeAdChId {
-                    adchID = AdParser.getAdchID(dataObject)
-                } else {
-                    adchID = dataObject?.adchId ?? AdLayout.homeAdChId
-                }
-                
+                let adchID = AdParser.getAdchID(dataObject, with: AdLayout.homeAdChId, to: AdLayout.defaultStoryAdChId)
+                print ("adch id: \(adchID)")
                 if subType == .UserComments {
                     finalBody = ""
                     byline = ""
@@ -132,8 +127,6 @@ struct WebviewHelper {
                     } else {
                         imageHTML = ""
                     }
-                    
-                    
                 } else {
                     finalBody = headlineBody.finalBody
                     byline = dataObject?.chineseByline ?? ""

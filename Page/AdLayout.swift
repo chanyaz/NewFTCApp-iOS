@@ -11,6 +11,7 @@ import Foundation
 struct AdLayout {
     
     static let homeAdChId = "1000"
+    static let defaultStoryAdChId = "1200"
     static func insertAds(_ layout: String, to contentSections: [ContentSection]) -> [ContentSection] {
         var newContentSections = contentSections
         // MARK: It is possible that the JSON Format is broken. Check it here.

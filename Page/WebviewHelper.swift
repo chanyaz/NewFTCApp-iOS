@@ -47,7 +47,6 @@ struct WebviewHelper {
                 let tags = dataObject?.tag ?? ""
                 let tag: String
                 var imageHTML:String
-                
                 // MARK: story byline
                 let byline: String
                 var relatedStories = ""
@@ -59,11 +58,9 @@ struct WebviewHelper {
                         }
                     }
                 }
-                
                 if relatedStories != "" {
                     relatedStories = "<div class=\"story-box\"><h2 class=\"box-title\"><a>相关文章</a></h2><ul class=\"top10\">\(relatedStories)</ul></div>"
                 }
-                
                 let tagsArray = tags
                     .components(separatedBy: ",")
                     .filter { (tag) -> Bool in
@@ -76,7 +73,6 @@ struct WebviewHelper {
                 let headlineBody = getHeadlineBody(dataObject)
                 let headline = headlineBody.headline
                 let finalBody: String
-                
                 // MARK: Story Time
                 let timeStamp: String
                 var userCommentsOrder: String = ""
@@ -87,7 +83,7 @@ struct WebviewHelper {
                 let fontClass = Setting.getFontClass()
                 var commentsId = id
                 let adchID = AdParser.getAdchID(dataObject, with: AdLayout.homeAdChId, to: AdLayout.defaultStoryAdChId)
-                print ("adch id: \(adchID)")
+                //print ("adch id: \(adchID)")
                 if subType == .UserComments {
                     finalBody = ""
                     byline = ""
@@ -144,14 +140,12 @@ struct WebviewHelper {
                     adBanner = JSCodes.adBanner
                     adMPU = JSCodes.adMPU
                 }
-                
                 let followTags = getFollow("tag")
                 let followTopics = getFollow("topic")
                 let followAreas = getFollow("area")
                 let followIndustries = getFollow("industry")
                 let followAuthors = getFollow("author")
                 let followColumns = getFollow("column")
-                
                 let resourceFileName: String
                 switch type {
                 case "ebook":
@@ -159,9 +153,7 @@ struct WebviewHelper {
                 default:
                     resourceFileName = "story"
                 }
-                
                 let testDB = (AdLayout.switchToNewAdVendor().on) ? "yes" : "no"
-                
                 let nightClass = Setting.getNightClass()
                 let finalFileName = GB2Big5.convertHTMLFileName(resourceFileName)
                 if let adHTMLPath = Bundle.main.path(forResource: finalFileName, ofType: "html"){
@@ -235,8 +227,7 @@ struct WebviewHelper {
                         webView?.loadHTMLString(htmlString, baseURL:baseUrl)
                         // MARK: - If user is on wifi, download the url for possible update of content.
                         if IJReachability().connectedToNetworkOfType() == .wiFi {
-//                            Download.downloadUrl(url, to: .cachesDirectory, as: "html")
-//                            // MARK: - If the file has not been downloaded yet
+                            // MARK: - If the file has not been downloaded yet
                             //print ("4. Load Content Data: in wifi update \(urlLink)")
                             Download.getDataFromUrl(urlLink, completion: {(data, response, error) in
                                 if let data = data,
@@ -313,8 +304,7 @@ struct WebviewHelper {
         )
         return (headline, finalBody)
     }
-    
-    
+
     private static func getCEbodyHTML(eBody ebody: String, cBody cbody: String) -> String {
         func getHTML(_ htmls:[String], for index: Int, in className: String) -> String {
             let text: String
@@ -333,22 +323,19 @@ struct WebviewHelper {
         let cbodyLength = cbodyParapraphs?.count ?? 0
         let contentLength = max(ebodyLength, cbodyLength)
         var combinedText = ""
-        
-        // MARK: Use the pure text in the matching array. Filter out paragraphs that has html tags like img and div
+        // MARK: Use pure text in the matching array. Filter out paragraphs that has html tags like img and div
         let ebodysHTML = ebodyParapraphs?.map { (value) -> String in
             let text = value[1]
             return text
             }.filter{
                 !$0.contains("<img") && !$0.contains("<div")
         }
-        
         let cbodysHTML = cbodyParapraphs?.map { (value) -> String in
             let text = value[1]
             return text
             }.filter{
                 !$0.contains("<img") && !$0.contains("<div")
         }
-        
         if let ebodysHTML = ebodysHTML, let cbodysHTML = cbodysHTML {
             for i in 0..<contentLength {
                 let ebodyHTML = getHTML(ebodysHTML, for: i, in: "leftp")
@@ -358,8 +345,7 @@ struct WebviewHelper {
         }
         return combinedText
     }
-    
-    
+
     private static func getFollow(_ type: String) -> String {
         let follows = UserDefaults.standard.array(forKey: "follow \(type)") as? [String] ?? [String]()
         var followString = ""

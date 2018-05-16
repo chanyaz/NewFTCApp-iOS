@@ -307,7 +307,7 @@ struct WebviewHelper {
         )
         let finalBody: String
         finalBody = bodyWithMPU.replacingOccurrences(
-            of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
+            of: "^(<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?<p>.*?)<p>",
             with: "$1\(JSCodes.adMPU2)<p>",
             options: .regularExpression
         )

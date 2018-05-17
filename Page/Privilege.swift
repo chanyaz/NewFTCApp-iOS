@@ -62,16 +62,19 @@ struct PrivilegeHelper {
     public static let purchaseSourceKey = "source"
     public static let originalTransactionIdKey = "original_transaction_id"
     public static func updateFromDevice() {
+        var finalPrivilge = Privilege()
         let memberships = IAPProducts.memberships
         for membership in memberships {
             if let id = membership["id"] as? String,
                 let key = membership["key"] as? String {
                 var purchased = UserDefaults.standard.bool(forKey: id)
-                if purchased == false {
-                    //print ("No app store purchase, check the key of \(key)")
+                if purchased == false,
+                    UserInfo.shared.card != .Red {
+                    //MARK: - No app store purchase, set the privilege to empty
+                    // print ("IAP: No app store purchase, check the key of \(key)")
                     if UserInfo.shared.subscriptionType == key,
                         let expireDate = UserInfo.shared.subscriptionExpire {
-                        //print ("No app store purchase, found the key of \(key)")
+                        //print ("IAP: No app store purchase, found the key of \(key)")
                         let today = Double(Date().timeIntervalSince1970)
                         if expireDate >= today {
                             //print ("No app store purchase, the expire date is in the future")
@@ -79,12 +82,11 @@ struct PrivilegeHelper {
                         } else {
                             //print ("No app store purchase, the expire date is in the past")
                         }
-                        
                         let date = Date(timeIntervalSince1970: expireDate)
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = dateFormatString
                         let expireDateString = dateFormatter.string(from: date)
-                        //print ("No app store purchase, \(id) expires at \(expireDateString)")
+                        //print ("IAP: No app store purchase, \(id) expires at \(expireDateString)")
                         IAP.savePurchase(id, property: IAP.expiresKey, value: expireDateString)
                         IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.Site.rawValue)
                     }
@@ -92,17 +94,17 @@ struct PrivilegeHelper {
                 //print ("IAP: \(id) purchase status is \(purchased)")
                 if purchased == true {
                     if let privilege = membership["privilege"] as? Privilege {
-                        Privilege.shared = privilege
+                        finalPrivilge = privilege
                         //print ("IAP: check locally and privilege is \(privilege)")
                     }
                     // MARK: get users's membership purchase history
                     if InAppPurchases.shared.memberships.contains(id) == false {
                         InAppPurchases.shared.memberships.append(id)
                     }
-
                 }
             }
         }
+        Privilege.shared = finalPrivilge
     }
     
     public static func updateFromReceipt(_ receipt: [String: AnyObject]) {
@@ -134,7 +136,6 @@ struct PrivilegeHelper {
             }
             
             // MARK: Parse pending_renewal_info to get information about the user's auto_renew_status
-            //var pendingRenewalProducts = [String: Bool]()
             if let pendingRenewalInfo = receipt["pending_renewal_info"] as? [[String: Any]] {
                 for item in pendingRenewalInfo {
                     //print ("autorenewal product: \(item)")
@@ -207,6 +208,7 @@ struct PrivilegeHelper {
                 if purchased != "new" {
                     if let privilege = membership["privilege"] as? Privilege {
                         Privilege.shared = privilege
+                        UserDefaults.standard.set(true, forKey: id)
                         //print ("IAP: check from network and privilege is \(privilege)")
                     }
                 } else {

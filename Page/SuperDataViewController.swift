@@ -170,6 +170,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             contentController.add(LeakAvoider(delegate:self), name: "user")
             contentController.add(LeakAvoider(delegate:self), name: "selectItem")
             contentController.add(LeakAvoider(delegate:self), name: "sharePageFromApp")
+            contentController.add(LeakAvoider(delegate:self), name: "card")
             
             config.userContentController = contentController
             config.allowsInlineMediaPlayback = true
@@ -1723,6 +1724,25 @@ extension SuperDataViewController: WKScriptMessageHandler {
                 let item = ContentItem(id: "", image: imageUrl, headline: title, lead: lead, type: "page", preferSponsorImage: "", tag: "", customLink: urlString, timeStamp: 0, section: 0, row: 0)
                 if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
                     rootViewController.launchActionSheet(for: item, from: self, with: .Default)
+                }
+            }
+        } else if message.name == "card" {
+            if let body = message.body as? [String: String] {
+                if let cardType = body["cardType"] {
+                    let originalCardStatus = UserInfo.shared.card
+                    let newCardStatus: CardType
+                    switch cardType {
+                    case "red":
+                        newCardStatus = .Red
+                    case "yellow":
+                        newCardStatus = .Yellow
+                    default:
+                        newCardStatus = .Clear
+                    }
+                    if originalCardStatus != newCardStatus {
+                        UserInfo.shared.card = newCardStatus
+                        PrivilegeHelper.updateFromDevice()
+                    }
                 }
             }
         } else if let body = message.body as? [String: String] {

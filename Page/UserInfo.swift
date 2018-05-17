@@ -7,6 +7,13 @@
 //
 
 import Foundation
+
+enum CardType {
+    case Red
+    case Yellow
+    case Clear
+}
+
 struct UserInfo {
     
     static var shared = UserInfo()
@@ -18,6 +25,7 @@ struct UserInfo {
     var subscriptionExpire: Double?
     var shouldRequestUserToAllowNotification = true
     var iapMembershipReadyForCrossPlatform: Bool? = nil
+    var card = CardType.Clear
     private static let userNameKey = "User Name Key"
     private static let userIdKey = "User Id Key"
     private static let uniqueVisitorIdKey = "unique visitor id key"
@@ -60,7 +68,7 @@ struct UserInfo {
         UserInfo.shared.uniqueVisitorId = UserDefaults.standard.string(forKey: uniqueVisitorIdKey)
         UserInfo.shared.subscriptionType = UserDefaults.standard.string(forKey: subscriptionTypeKey)
         UserInfo.shared.subscriptionExpire = UserDefaults.standard.double(forKey: subscriptionExpireKey)
-        //print ("user name: \(String(describing: UserInfo.shared.userName)); user id: \(String(describing: UserInfo.shared.userId)); unique visitor id: \(String(describing: UserInfo.shared.uniqueVisitorId))")
+        //print ("user name: \(String(describing: UserInfo.shared.userName)); user id: \(String(describing: UserInfo.shared.userId)); unique visitor id: \(String(describing: UserInfo.shared.uniqueVisitorId)); subscription type: \(String(describing: UserInfo.shared.subscriptionType))")
     }
     
     static func showAccountPage() {

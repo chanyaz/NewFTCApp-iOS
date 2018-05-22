@@ -88,7 +88,7 @@ open class IAPHelper : NSObject  {
 // MARK: - StoreKit API
 
 extension IAPHelper {
-
+    
     
     
     // MARK: Stage 1:  Retrieving Product Information
@@ -294,57 +294,66 @@ extension IAPHelper: SKPaymentTransactionObserver {
 struct ReceiptHelper {
     public static func receiptValidation(with server: String) {
         // MARK: Only validate receipts if the user has bought membership subscription
-        if InAppPurchases.shared.memberships.count > 0,
-            let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
-            FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
-            do {
-                let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
-                let receiptString = receiptData.base64EncodedString(options: [])
-                let dict = [
-                    "receipt-data": receiptString,
-                    "user-id": UserInfo.shared.userId ?? "",
-                    "user-name": UserInfo.shared.userName ?? "",
-                    "device-token": UserInfo.shared.deviceToken ?? "",
-                    "device-id": UIDevice.current.identifierForVendor?.uuidString ?? ""
-                    ] as [String : String]
-                Track.token()
-                
+        
+        
+        
+        
+        if InAppPurchases.shared.memberships.count > 0 {
+            // MARK: Refresh the receipt from Apple
+            let request = SKReceiptRefreshRequest(receiptProperties: nil)
+            request.start()
+            
+            if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
+                FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
                 do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .init(rawValue: 0))
-                    if let siteServerUrl = Foundation.URL(string:server) {
-                        var request = URLRequest(url: siteServerUrl)
-                        request.httpMethod = "POST"
-                        request.httpBody = jsonData
-                        let session = URLSession(configuration: URLSessionConfiguration.default)
-                        let task = session.dataTask(with: request) { data, response, error in
-                            if let receivedData = data,
-                                let httpResponse = response as? HTTPURLResponse,
-                                error == nil,
-                                httpResponse.statusCode == 200 {
-                                do {
-                                    if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
-                                        // MARK: - parse and verify the required informatin in the jsonResponse
-                                        //print ("send ios iap info to server: receipt validation from func receiptValidation success: \(jsonResponse)")
-                                        PrivilegeHelper.updateFromReceipt(jsonResponse)
-                                    } else {
-                                        //print("receipt validation from func receiptValidation: Failed to cast serialized JSON to Dictionary<String, AnyObject>. The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")
+                    let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
+                    let receiptString = receiptData.base64EncodedString(options: [])
+                    let dict = [
+                        "receipt-data": receiptString,
+                        "user-id": UserInfo.shared.userId ?? "",
+                        "user-name": UserInfo.shared.userName ?? "",
+                        "device-token": UserInfo.shared.deviceToken ?? "",
+                        "device-id": UIDevice.current.identifierForVendor?.uuidString ?? ""
+                        ] as [String : String]
+                    Track.token()
+                    
+                    do {
+                        let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .init(rawValue: 0))
+                        if let siteServerUrl = Foundation.URL(string:server) {
+                            var request = URLRequest(url: siteServerUrl)
+                            request.httpMethod = "POST"
+                            request.httpBody = jsonData
+                            let session = URLSession(configuration: URLSessionConfiguration.default)
+                            let task = session.dataTask(with: request) { data, response, error in
+                                if let receivedData = data,
+                                    let httpResponse = response as? HTTPURLResponse,
+                                    error == nil,
+                                    httpResponse.statusCode == 200 {
+                                    do {
+                                        if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
+                                            // MARK: - parse and verify the required informatin in the jsonResponse
+                                            //print ("send ios iap info to server: receipt validation from func receiptValidation success: \(jsonResponse)")
+                                            PrivilegeHelper.updateFromReceipt(jsonResponse)
+                                        } else {
+                                            //print("receipt validation from func receiptValidation: Failed to cast serialized JSON to Dictionary<String, AnyObject>. The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")
+                                        }
+                                    } catch {
+                                        //print("receipt validation from func receiptValidation: Couldn't serialize JSON with error: \(error.localizedDescription). The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")
                                     }
-                                } catch {
-                                    //print("receipt validation from func receiptValidation: Couldn't serialize JSON with error: \(error.localizedDescription). The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")
                                 }
                             }
+                            task.resume()
+                        } else {
+                            print("receipt validation from func receiptValidation: Couldn't convert string into URL. Check for special characters.")
                         }
-                        task.resume()
-                    } else {
-                        print("receipt validation from func receiptValidation: Couldn't convert string into URL. Check for special characters.")
+                    }
+                    catch {
+                        print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
                     }
                 }
                 catch {
-                    print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
+                    print("Couldn't read receipt data with error: " + error.localizedDescription)
                 }
-            }
-            catch {
-                print("Couldn't read receipt data with error: " + error.localizedDescription)
             }
         }
     }

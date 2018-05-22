@@ -7,6 +7,10 @@
 //
 
 import Foundation
+enum KickOutIAPReason {
+    case Expired
+    case NoPurchaseRecord
+}
 struct Privilege {
     
     static var shared = Privilege()
@@ -44,7 +48,7 @@ struct Privilege {
         self.archive = false
         self.book = false
     }
-
+    
 }
 
 // MARK: Quick way to indicate membership purchases
@@ -108,11 +112,13 @@ struct PrivilegeHelper {
     }
     
     public static func updateFromReceipt(_ receipt: [String: AnyObject]) {
-        
+        print ("receipt received: ")
+        print (receipt)
         if let status = receipt["status"] as? Int,
             status == 0,
             let receipts = receipt["receipt"] as? [String: Any],
-            let receiptItems = receipts["in_app"] as? [[String: Any]] {
+            let receiptItems = receipts["in_app"] as? [[String: Any]],
+            receiptItems.count > 0 {
             var products = [String: ProductStatus]()
             for item in receiptItems {
                 if let id = item["product_id"] as? String {
@@ -160,19 +166,7 @@ struct PrivilegeHelper {
                         // MARK: Check if the server side has recorded the purchase correctly
                         IAP.checkMembershipStatus(id)
                     } else {
-                        //print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
-                        // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
-                        UserDefaults.standard.set(false, forKey: id)
-                        IAP.savePurchase(id, property: "purchased", value: "N")
-                        
-                        if let environment = receipt["environment"] as? String {
-                            //print ("environment is \(environment)")
-                            if environment == "Production" {
-                                let trackLabel = UserInfo.shared.userId ?? UserInfo.shared.userName ?? UserInfo.shared.deviceToken ?? ""
-                                Track.event(category: "iOS Subscription Expires", action: id, label: "\(trackLabel)")
-                                //print (receipt)
-                            }
-                        }
+                        kickOutFromIAP(id, with: receipt, for: .Expired)
                     }
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = dateFormatString
@@ -185,7 +179,13 @@ struct PrivilegeHelper {
                     //print ("\(id) is valid! ")
                     UserDefaults.standard.set(true, forKey: id)
                 }
-                
+            }
+            
+            for membership in IAPProducts.memberships {
+                if let id = membership["id"] as? String {
+                    // TODO: Check all membership ids and kick out those not included
+                    
+                }
             }
             
             //print(receipt)
@@ -196,6 +196,52 @@ struct PrivilegeHelper {
             // MARK: post notification about the receipt validation event
             NotificationCenter.default.post(name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification), object: "Receipt Validate Done! ")
             //print (products)
+        } else {
+            kickOut(IAPProducts.memberships, with: receipt, for: .NoPurchaseRecord)
+        }
+    }
+    
+    
+    
+    
+    //    private static func kickOutFromIAP(_ id: String, with receipt: [String: AnyObject], for reason: KickOutIAPReason?) {
+    //        //print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
+    //        // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
+    //        UserDefaults.standard.set(false, forKey: id)
+    //        IAP.savePurchase(id, property: "purchased", value: "N")
+    //        if let environment = receipt["environment"] as? String {
+    //            //print ("environment is \(environment)")
+    //            if environment == "Production" {
+    //                let trackLabel = UserInfo.shared.userId ?? UserInfo.shared.userName ?? UserInfo.shared.deviceToken ?? ""
+    //                Track.event(category: "iOS Subscription Expires", action: id, label: "\(trackLabel)")
+    //                //print (receipt)
+    //            }
+    //        }
+    //    }
+    
+    private static func kickOutFromIAP(_ id: String, with receipt: [String: AnyObject], for reason: KickOutIAPReason?) {
+        //print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
+        // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
+        print ("Kick Out \(id) for \(reason)")
+        return
+            UserDefaults.standard.set(false, forKey: id)
+        IAP.savePurchase(id, property: "purchased", value: "N")
+        if let environment = receipt["environment"] as? String {
+            //print ("environment is \(environment)")
+            if environment == "Production" {
+                let trackLabel = UserInfo.shared.userId ?? UserInfo.shared.userName ?? UserInfo.shared.deviceToken ?? ""
+                Track.event(category: "iOS Subscription Expires", action: id, label: "\(trackLabel)")
+                //print (receipt)
+            }
+        }
+    }
+    
+    private static func kickOut(_ memberships:  [Dictionary<String, Any>], with receipt: [String: AnyObject], for reason: KickOutIAPReason?) {
+        //let memberships = IAPProducts.memberships
+        for membership in memberships {
+            if let id = membership["id"] as? String {
+                kickOutFromIAP(id, with: receipt, for: reason)
+            }
         }
     }
     
@@ -282,34 +328,34 @@ struct PrivilegeHelper {
     // MARK: - DO NOT DELETE!!!
     // MARK: - Quick Test for playground. The aim is to crunch as many as possible receipts data to see if  the updateFromReceipt is 100% correct, which is important.
     /*
-    static func runTest() {
-        if let allFiles = Bundle.main.urls(forResourcesWithExtension: "log", subdirectory: nil) {
-            for fileURL in allFiles {
-                print ("\(fileURL.lastPathComponent): ")
-                if let content = try? String(contentsOf: fileURL, encoding: String.Encoding.utf8) {
-                    let contentDeliminated = content.replacingOccurrences(of: "[{\"user-id\":", with: "|[{\"user-id\":")
-                    let contentArray = contentDeliminated.split(separator: "|")
-                    for item in contentArray {
-                        //print (item)
-                        let data = item.data(using: .utf8)!
-                        do {
-                            if let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [Dictionary<String,AnyObject>]
-                            {
-                                if jsonArray.count > 1 {
-                                    updateFromReceipt(jsonArray[1])
-                                }
-                            } else {
-                                print("bad json")
-                            }
-                        } catch _ as NSError {
-                            //print(error)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    */
+     static func runTest() {
+     if let allFiles = Bundle.main.urls(forResourcesWithExtension: "log", subdirectory: nil) {
+     for fileURL in allFiles {
+     print ("\(fileURL.lastPathComponent): ")
+     if let content = try? String(contentsOf: fileURL, encoding: String.Encoding.utf8) {
+     let contentDeliminated = content.replacingOccurrences(of: "[{\"user-id\":", with: "|[{\"user-id\":")
+     let contentArray = contentDeliminated.split(separator: "|")
+     for item in contentArray {
+     //print (item)
+     let data = item.data(using: .utf8)!
+     do {
+     if let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [Dictionary<String,AnyObject>]
+     {
+     if jsonArray.count > 1 {
+     updateFromReceipt(jsonArray[1])
+     }
+     } else {
+     print("bad json")
+     }
+     } catch _ as NSError {
+     //print(error)
+     }
+     }
+     }
+     }
+     }
+     }
+     */
     
 }
 

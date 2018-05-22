@@ -305,25 +305,18 @@ struct IAP {
     
     
     public static func buy(_ id: String) {
-        //        print (urlString)
-        //        let productId = urlString.replacingOccurrences(of: "buy://", with: "")
         let product = findSKProductByID(id)
         if let product = product {
             IAPProducts.store.buyProduct(product)
-            // MARK: Update the interface go let users know the buying is in process
-            //            let jsCode = "iapActions('\(productId)', 'pending');"
-            //            self.webView.evaluateJavaScript(jsCode) { (result, error) in
-            //            }
             trackIAPActions("buy", productId: id)
         } else {
-            print ("cannot find the product id, try load product again")
+            print ("cannot find the product id for \(id), try load product again")
             IAPProducts.store.requestProducts{success, products in
                 if success {
                     if let products = products {
                         IAPs.shared.products = products
                         if let productNew = findSKProductByID(id) {
                             IAPProducts.store.buyProduct(productNew)
-                            // TODO: Update the interface go let users know the buying is in process
                         }
                     }
                 } else {

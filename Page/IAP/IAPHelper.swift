@@ -97,6 +97,7 @@ extension IAPHelper {
         productsRequest?.cancel()
         productsRequestCompletionHandler = completionHandler
         productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
+        //print ("request these products: \(productIdentifiers)")
         productsRequest?.delegate = self
         productsRequest?.start()
     }

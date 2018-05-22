@@ -94,9 +94,9 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
                     DispatchQueue.main.async {
                         imageView?.image = UIImage(data: downloadedImageData)
                     }
-                    print ("image is already downloaded to cache, no need to download again. ")
+                    //print ("image is already downloaded to cache, no need to download again. ")
                 } else if Setting.getSwitchStatus("no-image-with-data") != "On" || Connection.current() != "data" {
-                    print ("image is not loaded, download it now \(String(describing: self.itemCell?.image))")
+                    //print ("image is not loaded, download it now \(String(describing: self.itemCell?.image))")
                     self.itemCell?.loadImage(type:imageType, width: imageInfo.imageWidth, height: imageInfo.imageHeight, completion: { [weak self](cellContentItem, error) in
                         // MARK: - Since channel cell is resued, you should always check if it is the right image
                         if self?.itemCell?.image == cellContentItem.image {
@@ -122,7 +122,7 @@ class CustomCell: UICollectionViewCell, SFSafariViewControllerDelegate {
                                 }
                             }
                         } else {
-                            print ("image should not be displayed as the cell is reused!" )
+                            //print ("image should not be displayed as the cell is reused!" )
                         }
                     })
                 }

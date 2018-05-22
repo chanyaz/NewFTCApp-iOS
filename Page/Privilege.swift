@@ -184,7 +184,9 @@ struct PrivilegeHelper {
             for membership in IAPProducts.memberships {
                 if let id = membership["id"] as? String {
                     // TODO: Check all membership ids and kick out those not included
-                    
+                    if products[id] == nil {
+                        kickOutFromIAP(id, with: receipt, for: .NoPurchaseRecord)
+                    }
                 }
             }
             
@@ -220,18 +222,14 @@ struct PrivilegeHelper {
     //    }
     
     private static func kickOutFromIAP(_ id: String, with receipt: [String: AnyObject], for reason: KickOutIAPReason?) {
-        //print ("\(id) has expired at \(date), today is \(Date()). Detail Below")
         // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
-        print ("Kick Out \(id) for \(reason)")
-        return
+        print ("Kick Out \(id) for \(String(describing: reason))")
             UserDefaults.standard.set(false, forKey: id)
         IAP.savePurchase(id, property: "purchased", value: "N")
         if let environment = receipt["environment"] as? String {
-            //print ("environment is \(environment)")
             if environment == "Production" {
                 let trackLabel = UserInfo.shared.userId ?? UserInfo.shared.userName ?? UserInfo.shared.deviceToken ?? ""
                 Track.event(category: "iOS Subscription Expires", action: id, label: "\(trackLabel)")
-                //print (receipt)
             }
         }
     }

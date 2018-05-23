@@ -295,15 +295,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
 struct ReceiptHelper {
     public static func receiptValidation(with server: String) {
         // MARK: Only validate receipts if the user has bought membership subscription
-        
-        
-        
-        
         if InAppPurchases.shared.memberships.count > 0 {
-            // MARK: Refresh the receipt from Apple
-            let request = SKReceiptRefreshRequest(receiptProperties: nil)
-            request.start()
-            
             if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
                 FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
                 do {
@@ -317,7 +309,6 @@ struct ReceiptHelper {
                         "device-id": UIDevice.current.identifierForVendor?.uuidString ?? ""
                         ] as [String : String]
                     Track.token()
-                    
                     do {
                         let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .init(rawValue: 0))
                         if let siteServerUrl = Foundation.URL(string:server) {
@@ -357,5 +348,12 @@ struct ReceiptHelper {
                 }
             }
         }
+    }
+    
+    public static func refresh() {
+        // MARK: Refresh the receipt from Apple if it is black listed
+        let request = SKReceiptRefreshRequest(receiptProperties: nil)
+        request.start()
+        
     }
 }

@@ -11,10 +11,9 @@ enum KickOutIAPReason {
     case Expired
     case NoPurchaseRecord
 }
+
 struct Privilege {
-    
     static var shared = Privilege()
-    
     var adDisplay: AdDisplay = .all
     var englishText = false
     var englishAudio = false
@@ -114,6 +113,9 @@ struct PrivilegeHelper {
     public static func updateFromReceipt(_ receipt: [String: AnyObject]) {
         print ("receipt received: ")
         print (receipt)
+        
+        var shouldRefreshReceipt = false
+        
         if let status = receipt["status"] as? Int,
             status == 0,
             let receipts = receipt["receipt"] as? [String: Any],
@@ -151,11 +153,22 @@ struct PrivilegeHelper {
                         IAP.savePurchase(id, property: "auto_renew_status", value: status)
                         if let originalTransactionId = item[originalTransactionIdKey] as? String {
                             IAP.savePurchase(id, property: originalTransactionIdKey, value: originalTransactionId)
+                            recordTransactionId(originalTransactionId)
+                            // MARK: - if the IAP purchase is flagged as fraud
+                            if originalTransactionId == "fraudid" {
+                                shouldRefreshReceipt = true
+                                //products[id] = ProductStatus.init(expireDate: nil)
+                            }
                         }
                     }
                 }
             }
             
+            if shouldRefreshReceipt {
+                ReceiptHelper.refresh()
+            }
+            
+            // MARK: Loop through all the ids that are in the receipt and kick out those that expires
             // MARK: Now compare dates and save to device
             for (id, status) in products {
                 if let date = status.expireDate {
@@ -181,10 +194,19 @@ struct PrivilegeHelper {
                 }
             }
             
+            // MARK: Loop through all memberships and kick out those that are not included in the receipt
             for membership in IAPProducts.memberships {
                 if let id = membership["id"] as? String {
-                    // TODO: Check all membership ids and kick out those not included
-                    if products[id] == nil {
+                    // MARK: Check all membership ids and kick out those not included
+//                    if products[id] == nil {
+//                        kickOutFromIAP(id, with: receipt, for: .NoPurchaseRecord)
+//                    }
+                    if let product = products[id],
+                        let expireDate = product.expireDate,
+                    expireDate >= Date() {
+                        print ("\(id) expires at \(expireDate)")
+                    } else {
+                        print ("\(id) is not valid")
                         kickOutFromIAP(id, with: receipt, for: .NoPurchaseRecord)
                     }
                 }
@@ -241,6 +263,53 @@ struct PrivilegeHelper {
                 kickOutFromIAP(id, with: receipt, for: reason)
             }
         }
+    }
+    
+    // MARK: Send Transaction ID, time stamp and Device Id to server for validation and black listing
+    private static func recordTransactionId(_ originalTransactionId: String) {
+//        let purchaseInfo = [
+//            "user_id": userId,
+//            "product_id": id,
+//            "expires_date": expireDate,
+//            "token": tokenWithSalt,
+//            "originalTransactionId": originalTransactionId
+//            ] as [String : String]
+//        //print ("send ios iap info to server: \(urlString). expire date: \(expireDate). with: \(purchaseInfo)")
+//        do {
+//            let jsonData = try JSONSerialization.data(withJSONObject: purchaseInfo, options: .init(rawValue: 0))
+//            if let siteServerUrl = Foundation.URL(string:urlString) {
+//                var request = URLRequest(url: siteServerUrl)
+//                request.httpMethod = "POST"
+//                request.httpBody = jsonData
+//                let session = URLSession(configuration: URLSessionConfiguration.default)
+//                let task = session.dataTask(with: request) { data, response, error in
+//                    if let receivedData = data,
+//                        let httpResponse = response as? HTTPURLResponse,
+//                        error == nil,
+//                        httpResponse.statusCode == 200 {
+//                        do {
+//                            if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject>,
+//                                let status = jsonResponse["errmsg"] as? String,
+//                                status == "success" {
+//                                // MARK: - parse and verify the required informatin in the jsonResponse
+//                                //print ("send ios iap info to server: success: \(jsonResponse)")
+//                                UserInfo.shared.iapMembershipReadyForCrossPlatform = true
+//                            } else {
+//                                print ("send ios iap info to server: fail to cast: \(String(describing: String(data: receivedData, encoding: .utf8)))")
+//                            }
+//                        } catch {
+//
+//                        }
+//                    }
+//                }
+//                task.resume()
+//            } else {
+//                //print("receipt validation from func receiptValidation: Couldn't convert string into URL. Check for special characters.")
+//            }
+//        } catch {
+//            //print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
+//        }
+//        Track.event(category: "iOS IAP Membership: \(key)", action: userId, label: expireDate)
     }
     
     public static func updateFromNetwork() {

@@ -346,6 +346,8 @@ struct APIs {
             urlString = "\(webPageDomain)photonews/\(id)\(partialParameter)&webview=ftcapp&i=3"
         case "register":
             urlString = "\(publicDomain)index.php/users/register\(partialParameter)&i=4&webview=ftcapp"
+        case "service":
+            urlString = "\(publicDomain)m/corp/service.html?webview=ftcapp"
         case "htmlbook":
             urlString = "\(webPageDomain)htmlbook\(partialParameter)"
         case "htmlfile":
@@ -1251,4 +1253,8 @@ struct EngagementTracker {
 struct KeyWords {
     public static let reserved = ["去广告", "单页", "透明", "置顶", "白底", "靠右", "沉底", "资料", "突发", "插图", "高清"]
     public static let removeAd = "去广告"
+}
+
+struct ServiceAgreement {
+    public static let version: Double = 1.2
 }

@@ -171,11 +171,6 @@ extension UIViewController {
             // MARK: Add the child's View as a subview
             fullScreenView.addSubview(controller.view)
             controller.view.frame = fullScreenView.bounds
-//            if #available(iOS 11.0, *) {
-//                controller.view.frame = fullScreenView.safeAreaLayoutGuide.layoutFrame
-//            } else {
-//                controller.view.frame = fullScreenView.bounds
-//            }
             controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             // MARK: tell the childviewcontroller it's contained in it's parent
             controller.didMove(toParentViewController: self)

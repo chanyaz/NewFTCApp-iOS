@@ -475,7 +475,7 @@ struct AppNavigation {
                 [
                     "title": "FT商城",
                     "url":"https://shop193762308.taobao.com/index.htm",
-                    "screenName":"myft/account"
+                    "screenName":"myft/shop"
                 ]
             ]
         ]

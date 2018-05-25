@@ -31,6 +31,9 @@ class LaunchScreen: UIViewController {
     private lazy var player: AVPlayer? = {return nil} ()
     private lazy var token: Any? = {return nil} ()
     private lazy var overlayView: UIView? = UIView()
+    private lazy var serviceOverlay: UIView? = UIView()
+    private let serviceAgreementKey = "Service Agreement Key"
+    private var hasPopOutServiceAgreement = false
     private var adShowed = false
     
     // MARK: - Hide Ad for Demo Purposes
@@ -176,7 +179,7 @@ class LaunchScreen: UIViewController {
             }
         }
     }
-
+    
     private func showStartScreenForIAP(_ overlayViewNormal: UIView) {
         if let image = UIImage(named: "FullScreenFallBack") {
             let imageView =  UIImageView(image: image)
@@ -300,7 +303,7 @@ class LaunchScreen: UIViewController {
         //            self.overlayView?.addSubview(button)
         //        }
         // MARK: add the button directly on view so that it won't be blocked by video
-        view.addSubview(button)
+        overlayView?.addSubview(button)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(close), for: .touchUpInside)
@@ -417,17 +420,6 @@ class LaunchScreen: UIViewController {
         view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -20))
         view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
         view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
-        //playerController.view.addSubview(label)
-        //        if let avOverlayView = playerController.contentOverlayView {
-        //        avOverlayView.addSubview(label)
-        //        label.translatesAutoresizingMaskIntoConstraints = false
-        //        avOverlayView.translatesAutoresizingMaskIntoConstraints = false
-        //        avOverlayView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: avOverlayView, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 20))
-        //        avOverlayView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: avOverlayView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
-        //        avOverlayView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
-        //        avOverlayView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
-        //        }
-        
         if let image = adSchedule.backupImage {
             playerController.view.backgroundColor = UIColor(patternImage: image)
         }
@@ -436,8 +428,6 @@ class LaunchScreen: UIViewController {
         if adSchedule.closeButtonCustomization == "LeftBottom" {
             label.isHidden = true
         }
-        
-        
         NotificationCenter.default.addObserver(self, selector: #selector(close), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         if adSchedule.adLink != "" {
             let adPageLinkOverlay = UIView(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight - 44))
@@ -594,7 +584,28 @@ class LaunchScreen: UIViewController {
         if isBetweenPages == true {
             return
         }
-        
+        // MARK: If the user is launch the app, check if he has agreed our service agreement
+        if isServiceAgreementSigned() {
+            dismissViewController()
+        } else {
+            popOutServiceAgreement()
+        }
+    }
+    
+    
+    // MARK: this should be public
+    @objc func agree() {
+        // TODO: Save the agreement locally and send to server
+        acceptServiceAgreement()
+        dismissViewController()
+    }
+    
+    // MARK: this should be public
+    @objc func refuse() {
+        serviceOverlay?.removeFromSuperview()
+    }
+    
+    private func dismissViewController() {
         UIView.transition(
             with: view,
             duration: 0.5,
@@ -606,14 +617,96 @@ class LaunchScreen: UIViewController {
             self.view.superview?.removeFromSuperview()
             self.removeFromParentViewController()
         }
-        
         AppLaunch.shared.fullScreenDismissed = true
         if let topViewController = UIApplication.topViewController() {
             topViewController.setNeedsStatusBarAppearanceUpdate()
         }
-        //self.dismiss(animated: true, completion: nil)
     }
     
+    private func popOutServiceAgreement() {
+        if let serviceOverlay = serviceOverlay {
+            // MARK: If service agreement has already popped out
+            if hasPopOutServiceAgreement {
+                view.addSubview(serviceOverlay)
+                return
+            }
+            hasPopOutServiceAgreement = true
+            serviceOverlay.frame = CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight)
+            serviceOverlay.backgroundColor = UIColor(hex: "#000000", alpha: 0.9)
+            let horizontalMargin: CGFloat = 10
+            let buttonHeight:CGFloat = 44
+            let buttonPadding: CGFloat = 20
+            let topMargin: CGFloat = 44
+            let bottomMargin: CGFloat = topMargin + buttonHeight + buttonPadding
+            let adPageView = WKWebView(
+                frame: CGRect(
+                    x: 0.0 + horizontalMargin,
+                    y: 0.0 + topMargin,
+                    width: screenWidth - 2 * horizontalMargin,
+                    height: screenHeight - topMargin - bottomMargin
+                )
+            )
+            let fileName = GB2Big5.convertHTMLFileName("service")
+            if let adHTMLPath = Bundle.main.path(forResource: fileName, ofType: "html"){
+                let url = URL(string: APIs.getUrl("register", type: "register", isSecure: false, isPartial: false))
+                do {
+                    let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
+                    let storyHTML = (storyTemplate as String)
+                    print ("service agreement: \(storyHTML)")
+                    adPageView.loadHTMLString(storyHTML as String, baseURL:url)
+                    serviceOverlay.addSubview(adPageView)
+                } catch {
+                    print ("register page is not loaded correctly")
+                }
+            }
+            let refuseButton = UIButton()
+            refuseButton.frame = CGRect(
+                x: horizontalMargin,
+                y: screenHeight - bottomMargin + buttonPadding,
+                width: screenWidth/2 - 1.5*horizontalMargin,
+                height: buttonHeight
+            )
+            refuseButton.setTitle("不同意", for: .normal)
+            refuseButton.setTitleColor(UIColor(hex: Color.Button.standardFont), for: .normal)
+            refuseButton.backgroundColor = UIColor(hex: Color.Button.standard)
+            let agreementButton = UIButton()
+            agreementButton.frame = CGRect(
+                x: screenWidth/2 + 0.5*horizontalMargin,
+                y: screenHeight - bottomMargin + buttonPadding,
+                width: screenWidth/2 - 1.5*horizontalMargin,
+                height: buttonHeight
+            )
+            agreementButton.setTitle("同意", for: .normal)
+            agreementButton.setTitleColor(UIColor(hex: Color.Button.highlightFont), for: .normal)
+            agreementButton.backgroundColor = UIColor(hex: Color.Button.highlight)
+            // MARK: Add the views and buttons
+            serviceOverlay.addSubview(refuseButton)
+            serviceOverlay.addSubview(agreementButton)
+            view.addSubview(serviceOverlay)
+            // MARK: Tap agree
+            let tapAgree = UITapGestureRecognizer(target: self, action: #selector(agree))
+            agreementButton.addGestureRecognizer(tapAgree)
+            // MARK: Tap Refuse
+            let tapRefuse = UITapGestureRecognizer(target: self, action: #selector(refuse))
+            refuseButton.addGestureRecognizer(tapRefuse)
+        }
+    }
+    
+    private func isServiceAgreementSigned() -> Bool {
+        if let serviceAgreementDict = UserDefaults.standard.dictionary(forKey: serviceAgreementKey) as? [String: Double],
+            let currentVersion = serviceAgreementDict["version"],
+            currentVersion == ServiceAgreement.version {
+            return true
+        }
+        return false
+    }
+    
+    private func acceptServiceAgreement() {
+        let serviceAgreementDict = [
+            "version": ServiceAgreement.version
+        ]
+        UserDefaults.standard.set(serviceAgreementDict, forKey: serviceAgreementKey)
+    }
 }
 
 

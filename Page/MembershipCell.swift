@@ -143,7 +143,6 @@ class MembershipCell: CustomCell {
                                     expiresStatement = "您的订阅将于\(expiresDateStringNew)过期，如您希望续订，请点击下方按钮进入iTunes Store进行设置。"
                                     buttonActionString = "打开自动续期"
                                 }
-
                                 isAutoRenewal = false
                             }
                         } else {

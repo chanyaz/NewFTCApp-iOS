@@ -529,6 +529,10 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         if webView == nil {
             return
         }
+        // MARK: if a user is a subscriber, no need to refresh the data page web view as it causes problem sometimes
+        if Privilege.shared.exclusiveContent {
+            return
+        }
         if #available(iOS 10.0, *) {
             Timer.scheduledTimer(withTimeInterval: 1.2, repeats: false) { [weak self] timer in
                 if self?.isVisible == false {

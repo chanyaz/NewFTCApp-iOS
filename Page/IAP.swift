@@ -267,6 +267,16 @@ struct IAP {
         }
     }
     
+    // MARK: - Remove one piece of information into the user default's "my purchase" key
+    public static func removePurchase(_ productId: String) {
+        if var myPurchases = UserDefaults.standard.dictionary(forKey: myPurchasesKey) as? [String: Dictionary<String, String>] {
+            if myPurchases[productId] != nil {
+                myPurchases.removeValue(forKey: productId)
+                UserDefaults.standard.set(myPurchases, forKey: myPurchasesKey)
+            }
+        }
+    }
+    
     // MARK: - Check if one piece of IAP is in the user default's "my purchase" key
     public static func checkPurchaseInDevice(_ productId: String, property: String) -> String? {
         if let myPurchases = UserDefaults.standard.dictionary(forKey: myPurchasesKey) as? [String: Dictionary<String, String>] {

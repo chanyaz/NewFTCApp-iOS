@@ -145,8 +145,8 @@ struct AppNavigation {
                     "listapi":"https://api003.ftmailbox.com/channel/education.html?webview=ftcapp&bodyonly=yes&001",
                     "url":"http://www.ftchinese.com/channel/education.html?webview=ftcapp",
                     "screenName":"homepage/education",
-                    "coverTheme": "OutOfBox",
-                    "new": "yes"
+                    "coverTheme": "OutOfBox"
+                    //"new": "yes"
                 ],
                 [
                     "title": "管理",
@@ -397,6 +397,15 @@ struct AppNavigation {
                     //"listapi": "https://api003.ftmailbox.com/channel/viewtop.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
                     "url": "http://www.ftchinese.com/channel/viewtop.html?webview=ftcapp&norepeat=no",
                     "screenName": "video/viewtop",
+                    "coverTheme": "Video",
+                    "compactLayout": "Video"
+                ],
+                [
+                    "title": "FT看见",
+                    //"api": "https://api003.ftmailbox.com/channel/json.html?pageid=tinted",
+                    "listapi": "https://api003.ftmailbox.com/channel/vfeatures.html?webview=ftcapp&bodyonly=yes&norepeat=yes",
+                    "url":"http://www.ftchinese.com/channel/vfeatures.html?webview=ftcapp",
+                    "screenName":"video/features",
                     "coverTheme": "Video",
                     "compactLayout": "Video"
                 ],

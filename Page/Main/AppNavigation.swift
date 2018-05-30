@@ -60,7 +60,6 @@ struct AppNavigation {
                     "screenName":"homepage/editorchoice",
                     "coverTheme": ""
                 ],
-
 //                [
 //                    "title": "测试首页",
 //                    //"api": "https://api003.ftmailbox.com/channel/json.html?pageid=ev&dfadfadfadfadf",
@@ -90,7 +89,6 @@ struct AppNavigation {
 //                    "url":"http://www.ftchinese.com/channel/datanews.html",
 //                    "screenName":"homepage/ftcc"
 //                ],
-
                 [
                     "title": "全球",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/world.html?type=json",

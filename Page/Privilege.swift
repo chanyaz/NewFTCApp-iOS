@@ -80,7 +80,7 @@ struct PrivilegeHelper {
                 if purchased == false,
                     UserInfo.shared.card != .Red {
                     //MARK: - No app store purchase, set the privilege to empty
-                    // print ("IAP: No app store purchase, check the key of \(key)")
+                    //print ("IAP: No app store purchase, check the key of \(key)")
                     if UserInfo.shared.subscriptionType == key,
                         let expireDate = UserInfo.shared.subscriptionExpire {
                         //print ("IAP: No app store purchase, found the key of \(key)")
@@ -140,9 +140,7 @@ struct PrivilegeHelper {
                         dateFormatter.dateFormat = dateFormatString
                         if let date = dateFormatter.date(from: expiresDate) {
                             if let currentLatestExpireDate = products[id]?.expireDate,
-                                date < currentLatestExpireDate {
-                                // MARK:
-                                
+                                date < currentLatestExpireDate {                                
                             } else {
                                 // MARK: Only when the expire date is later than the current latest expire date. This way we get the latest expire date from receipt.
                                 products[id] = ProductStatus.init(expireDate: date)
@@ -263,9 +261,11 @@ struct PrivilegeHelper {
         // MARK: Don't kick user out yet. We need to make sure validation is absolutely correct.
         print ("IAP Check: Kick Out \(id) for \(String(describing: reason))")
         UserDefaults.standard.set(false, forKey: id)
-        // IAP.savePurchase(id, property: "purchased", value: "N")
-        // MARK: remove the purchase from user defaults
-        IAP.removePurchase(id)
+        IAP.savePurchase(id, property: IAP.purchasedPropertyString, value: "N")
+        // MARK: remove the purchase record entirely from user defaults if it is kicked out for reasons other than expiration
+        if reason == .AbusedPurchase || reason == .NoPurchaseRecord {
+            IAP.removePurchase(id)
+        }
         //IAP.savePurchase(id, property: "auto_renew_status", value: "0")
         if let environment = receipt["environment"] as? String {
             if environment == "Production" {

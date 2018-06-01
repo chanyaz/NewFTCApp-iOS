@@ -405,7 +405,8 @@ class IAPView: UIView {
     @objc public func handlePurchaseNotification(_ notification: Notification) {
         if let notificationObject = notification.object as? [String: Any?]{
             // MARK: when user buys or restores a product, we should display relevant information
-            if let productID = notificationObject["id"] as? String, let actionType = notificationObject["actionType"] as? String {
+            if let productID = notificationObject["id"] as? String,
+                let actionType = notificationObject["actionType"] as? String {
                 var newStatus = "new"
                 for (_, product) in IAPs.shared.products.enumerated() {
                     guard product.productIdentifier == productID else { continue }

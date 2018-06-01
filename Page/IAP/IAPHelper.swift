@@ -230,6 +230,11 @@ extension IAPHelper: SKPaymentTransactionObserver {
             IAPs.shared.originalTransactionIds.contains(orginalTransactionId) == false {
             print ("IAP Check: restoring \(orginalTransactionId)")
             IAPs.shared.originalTransactionIds.append(orginalTransactionId)
+            //产品ID、Order ID、Device ID, user id
+            let deviceToken = UserInfo.shared.deviceToken ?? ""
+            let userId = UserInfo.shared.userId ?? ""
+            let eventLabel = "u:\(userId),t:\(deviceToken)"
+            Track.event(category: "Restore: \(productId)", action: orginalTransactionId, label: eventLabel)
         }
         // MARK: 1. First save the purchase information to device
         savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)

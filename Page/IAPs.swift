@@ -30,4 +30,6 @@ struct IAPs {
     // MARK: - Keep a reference of all the Download Progress
     var downloadProgresses = [String: String]()
     
+    var originalTransactionIds = [String]()
+    
 }

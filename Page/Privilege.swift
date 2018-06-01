@@ -129,6 +129,8 @@ struct PrivilegeHelper {
             let receiptItems = receipts["in_app"] as? [[String: Any]],
             receiptItems.count > 0 {
             
+            //print ("IAP Check: \(receipt)")
+            
             // MARK: 1. Loop through all the IAP orders to update products information
             var products = [String: ProductStatus]()
             for item in receiptItems {
@@ -137,7 +139,14 @@ struct PrivilegeHelper {
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = dateFormatString
                         if let date = dateFormatter.date(from: expiresDate) {
-                            products[id] = ProductStatus.init(expireDate: date)
+                            if let currentLatestExpireDate = products[id]?.expireDate,
+                                date < currentLatestExpireDate {
+                                // MARK:
+                                
+                            } else {
+                                // MARK: Only when the expire date is later than the current latest expire date. This way we get the latest expire date from receipt.
+                                products[id] = ProductStatus.init(expireDate: date)
+                            }
                         } else {
                             products[id] = emptyStatus
                         }
@@ -172,7 +181,8 @@ struct PrivilegeHelper {
                     }
                 }
             }
-
+            
+            print ("IAP Check: Products: \(products)")
             // MARK: 3. Loop through the valid ids generated from previous steps, keep the valid ones and keep out invalid or expired ones
             for (id, status) in products {
                 if let date = status.expireDate {

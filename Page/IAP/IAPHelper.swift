@@ -226,6 +226,11 @@ extension IAPHelper: SKPaymentTransactionObserver {
     private func restore(transaction: SKPaymentTransaction) {
         let actionType = "restore success"
         guard let productId = transaction.original?.payment.productIdentifier else { return }
+        if let orginalTransactionId = transaction.original?.transactionIdentifier,
+            IAPs.shared.originalTransactionIds.contains(orginalTransactionId) == false {
+            print ("IAP Check: restoring \(orginalTransactionId)")
+            IAPs.shared.originalTransactionIds.append(orginalTransactionId)
+        }
         // MARK: 1. First save the purchase information to device
         savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)
         // MARK: 2. Use the saved information to update Privileges

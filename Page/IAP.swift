@@ -25,6 +25,7 @@ struct IAP {
     public static let expiresKey = "expires"
     public static let buyErrorString = "buy or restore error"
     
+    
     public static func get(_ products: [SKProduct], in group: String?, with privilege: PrivilegeType?, include purchaseStatus: PurchaseStatus) -> [ContentItem] {
         var contentItems = [ContentItem]()
         

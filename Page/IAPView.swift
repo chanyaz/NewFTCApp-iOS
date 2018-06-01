@@ -437,7 +437,7 @@ class IAPView: UIView {
                         if let topViewController = UIApplication.topViewController() {
                             topViewController.present(alert, animated: true, completion: nil)
                         }
-                        IAP.trackIAPActions("buy or restore error", productId: "\(productIdForTracking): \(errorMessage)")
+                        IAP.trackIAPActions(IAP.buyErrorString, productId: "\(productIdForTracking): \(errorMessage)")
                     }
                     // MARK: update the buy button
                     DispatchQueue.main.async(execute: {
@@ -455,7 +455,7 @@ class IAPView: UIView {
             DispatchQueue.main.async(execute: {
                 self.switchUI("fail")
             })
-            IAP.trackIAPActions("buy or restore error", productId: "")
+            IAP.trackIAPActions(IAP.buyErrorString, productId: "")
         }
     }
     

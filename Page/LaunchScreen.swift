@@ -652,7 +652,7 @@ class LaunchScreen: UIViewController {
                 do {
                     let storyTemplate = try NSString(contentsOfFile:adHTMLPath, encoding:String.Encoding.utf8.rawValue)
                     let storyHTML = (storyTemplate as String)
-                    print ("service agreement: \(storyHTML)")
+                    //print ("service agreement: \(storyHTML)")
                     adPageView.loadHTMLString(storyHTML as String, baseURL:url)
                     serviceOverlay.addSubview(adPageView)
                 } catch {

@@ -1247,13 +1247,11 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
             case "TryBook":
                 Alerts.tryBook()
                 break
-                
             case "ViewController":
                 if let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController {
                     navigationController?.pushViewController(chatViewController, animated: true)
                 }
                 break
-                
             default:
                 //MARK: if it is a story, video or other types of HTML based content, push the detailViewController
                 if let detailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Detail View") as? DetailViewController {
@@ -1503,7 +1501,7 @@ extension SuperDataViewController {
                         if let topViewController = UIApplication.topViewController() {
                             topViewController.present(alert, animated: true, completion: nil)
                         }
-                        IAP.trackIAPActions("buy or restore error", productId: "\(productIdForTracking): \(errorMessage)")
+                        IAP.trackIAPActions(IAP.buyErrorString, productId: "\(productIdForTracking): \(errorMessage)")
                     }
                     // MARK: update the buy button
                     DispatchQueue.main.async(execute: {
@@ -1521,7 +1519,7 @@ extension SuperDataViewController {
             DispatchQueue.main.async(execute: {
                 self.switchUI("fail")
             })
-            IAP.trackIAPActions("buy or restore error", productId: "")
+            IAP.trackIAPActions(IAP.buyErrorString, productId: "")
         }
     }
     

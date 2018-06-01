@@ -23,6 +23,7 @@ struct IAP {
     public static let purchasedPropertyString = "purchased"
     private static let productPricesKey = "Product Prices Key"
     public static let expiresKey = "expires"
+    public static let buyErrorString = "buy or restore error"
     
     public static func get(_ products: [SKProduct], in group: String?, with privilege: PrivilegeType?, include purchaseStatus: PurchaseStatus) -> [ContentItem] {
         var contentItems = [ContentItem]()
@@ -557,6 +558,11 @@ struct IAP {
             Track.event(category: "IAP: \(actionType)", action: productId, label: deviceToken)
         }
         Track.eventToAll(category: "Privileges", action: "\(actionType): \(productId)", label: ConversionTracker.shared.item?.eventLabel ?? "")
+        // MARK: If the user is tring to buy but Apple's server is down, record his/her user id so that we can check and contact her later
+        if actionType == buyErrorString,
+            let userId = UserInfo.shared.userId {
+            Track.event(category: "IAP: \(actionType) User Id", action: productId, label: userId)
+        }
     }
     
     public static func savePriceInfo(_ products: [SKProduct]) {

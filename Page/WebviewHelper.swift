@@ -29,12 +29,19 @@ struct WebviewHelper {
                     shouldHideAd = true
                 } else {
                     for sponsor in Sponsors.shared.sponsors {
-                        if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) && sponsor.hideAd == "yes" {
-                            shouldHideAd = true
+                        if (keywords.range(of: sponsor.tag) != nil || keywords.range(of: sponsor.title) != nil) {
+                            if sponsor.hideAd == "yes" {
+                                shouldHideAd = true
+                            } else {
+                                shouldHideAd = false
+                            }
                             break
                         }
                     }
                 }
+            }
+            if dataObject?.whitelist == true {
+                shouldHideAd = false
             }
             if shouldHideAd == true {
                 urlString = APIs.removeAd(urlStringOriginal)

@@ -248,7 +248,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
                 break
             default:
                 let errorMessage = transactionError.localizedDescription
-                IAP.trackIAPActions("buy or restore error", productId: "\(productId): \(errorMessage)")
+                IAP.trackIAPActions(IAP.buyErrorString, productId: "\(productId): \(errorMessage)")
                 break
             }
             deliverPurchaseFailNotification(transactionError, productId: productId)

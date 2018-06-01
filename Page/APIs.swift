@@ -636,7 +636,7 @@ struct LinkPattern {
     static let search = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/search/.*page=([0-9]+)"]
     static let channel = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/([0-9-a-zA-Z]+.html)"]
     static let pagemaker = ["^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/m/corp/preview.html\\?pageid\\=([0-9-a-zA-Z]+)", "^http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+/channel/editorchoice-issue.html\\?issue\\=([0-9-a-zA-Z]+)"]
-    static let subscription = ["^http[s]*:.*premium.ftacademy.cn/subscription.*$"]
+    static let subscription = ["^http[s]*:.*ftacademy.cn/subscription.*$"]
     static let other = ["^(http[s]*://[a-z0-9A-Z]+.ft[chinesemailboxacademy]+.[comn]+).*$"]
     static let image = [
         "^(http[s]*://.*.jpg)$",
@@ -1256,5 +1256,5 @@ struct KeyWords {
 }
 
 struct ServiceAgreement {
-    public static let version: Double = 1.2
+    public static let version: Double = 1.0
 }

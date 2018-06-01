@@ -34,6 +34,30 @@ struct AppNavigation {
                     "screenName":"homepage",
                     "Insert Content": "home"
                 ],
+                //
+                //
+                [
+                    "title": "测试1",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
+                    //"api": "https://api003.ftmailbox.com/channel/json.html?pageid=home&dfadfadfadfadf",
+                    "url":"http://www.ftchinese.com/m/marketing/adForNews.html",
+                    //"listapi":"https://api003.ftmailbox.com/?webview=ftcapp&bodyonly=yes&maxB=1&backupfile=localbackup&showIAP=yes&pagetype=home&001",
+                    "compactLayout": "home",
+                    "coverTheme": "Classic",
+                    "screenName":"homepage2",
+                    "Insert Content": "home"
+                ],
+                [
+                    "title": "测试2",
+                    //"api":"https://d37m993yiqhccr.cloudfront.net/index.php/jsapi/publish/home",
+                    //"api": "https://api003.ftmailbox.com/channel/json.html?pageid=home&dfadfadfadfadf",
+                    "url":"http://www.ftchinese.com/m/marketing/adForRadio.html",
+                    //"listapi":"https://api003.ftmailbox.com/?webview=ftcapp&bodyonly=yes&maxB=1&backupfile=localbackup&showIAP=yes&pagetype=home&001",
+                    "compactLayout": "home",
+                    "coverTheme": "Classic",
+                    "screenName":"homepage1",
+                    "Insert Content": "home"
+                ],
                 [
                     "title": "中国",
                     //"api":"https://d37m993yiqhccr.cloudfront.net/channel/china.html?type=json&001",

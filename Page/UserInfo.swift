@@ -8,10 +8,10 @@
 
 import Foundation
 
-enum CardType {
-    case Red
-    case Yellow
-    case Clear
+enum CardType: String {
+    case Red = "Red Card"
+    case Yellow = "Yellow Card"
+    case Clear = "Clear"
 }
 
 struct UserInfo {

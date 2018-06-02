@@ -265,13 +265,6 @@ struct PrivilegeHelper {
         // MARK: remove the purchase record entirely from user defaults if it is kicked out for reasons other than expiration
         if reason == .AbusedPurchase || reason == .NoPurchaseRecord {
             IAP.removePurchase(id)
-            if reason == .AbusedPurchase {
-                Alert.present("亲爱的读者", message: "我们检测到您使用的苹果应用商店Apple ID被用在多个设备上，请您使用自己的Apple ID来购买FT中文网的服务。")
-                let userId = UserInfo.shared.userId ?? ""
-                let token = UserInfo.shared.deviceToken ?? ""
-                let reasonString = reason?.rawValue ?? ""
-                Track.event(category: "IAP: \(id)", action: "Kick Out For \(reasonString)", label: "u:\(userId),t:\(token)")
-            }
         }
         //IAP.savePurchase(id, property: "auto_renew_status", value: "0")
         if let environment = receipt["environment"] as? String {
@@ -339,7 +332,6 @@ struct PrivilegeHelper {
     }
     
     private static func checkTransactionId(_ originalTransactionId: String) -> CardType {
-        //return .Yellow
         // TEST: Use oliver's id
 //        if originalTransactionId == "1000000378980806" {
 //            return .Red
@@ -347,14 +339,31 @@ struct PrivilegeHelper {
         if let cardInfo = UserDefaults.standard.dictionary(forKey: iapCardInfoKey) as? [String: [String]] {
             if let redCards = cardInfo["red"],
                 redCards.contains(originalTransactionId){
+                presentWarning(.Red, with: originalTransactionId)
                 return .Red
             }
             if let yellowCards = cardInfo["yellow"],
                 yellowCards.contains(originalTransactionId) {
+                presentWarning(.Yellow, with: originalTransactionId)
                 return .Yellow
             }
         }
         return .Clear
+    }
+    
+    private static func presentWarning(_ cardType: CardType, with originalTransactionId: String) {
+        switch cardType {
+        case .Red:
+            Alert.present("亲爱的读者", message: "我们检测到您使用的苹果应用商店Apple ID被用在多个设备上，请您使用自己的Apple ID来购买FT中文网的服务。当前使用的这个Apple ID已经被禁用。")
+        case .Yellow:
+            Alert.present("温馨提示", message: "我们检测到您使用的苹果应用商店Apple ID被用在多个设备上，请您使用自己的Apple ID来购买FT中文网的服务。")
+        default:
+            break
+        }
+        let userId = UserInfo.shared.userId ?? ""
+        let token = UserInfo.shared.deviceToken ?? ""
+        let cardTypeString = cardType.rawValue
+        Track.event(category: "IAP: \(originalTransactionId)", action: "Show \(cardTypeString)", label: "u:\(userId),t:\(token)")
     }
     
     public static func updateFromNetwork() {

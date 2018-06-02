@@ -7,10 +7,10 @@
 //
 
 import Foundation
-enum KickOutIAPReason {
-    case Expired
-    case NoPurchaseRecord
-    case AbusedPurchase
+enum KickOutIAPReason: String {
+    case Expired  = "Expired"
+    case NoPurchaseRecord = "No Purchase Record"
+    case AbusedPurchase = "Abused Purchase"
 }
 
 struct Privilege {
@@ -265,6 +265,13 @@ struct PrivilegeHelper {
         // MARK: remove the purchase record entirely from user defaults if it is kicked out for reasons other than expiration
         if reason == .AbusedPurchase || reason == .NoPurchaseRecord {
             IAP.removePurchase(id)
+            if reason == .AbusedPurchase {
+                Alert.present("亲爱的读者", message: "我们检测到您使用的苹果应用商店Apple ID被用在多个设备上，请您使用自己的Apple ID来购买FT中文网的服务。")
+                let userId = UserInfo.shared.userId ?? ""
+                let token = UserInfo.shared.deviceToken ?? ""
+                let reasonString = reason?.rawValue ?? ""
+                Track.event(category: "IAP: \(id)", action: "Kick Out For \(reasonString)", label: "u:\(userId),t:\(token)")
+            }
         }
         //IAP.savePurchase(id, property: "auto_renew_status", value: "0")
         if let environment = receipt["environment"] as? String {

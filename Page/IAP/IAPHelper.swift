@@ -88,9 +88,6 @@ open class IAPHelper : NSObject  {
 // MARK: - StoreKit API
 
 extension IAPHelper {
-    
-    
-    
     // MARK: Stage 1:  Retrieving Product Information
     // MARK: Request products from app store by passing product identifiers. Note that Apple doesn't allow you to request products if you don't already know the product ids.
     public func requestProducts(completionHandler: @escaping ProductsRequestCompletionHandler) {
@@ -116,7 +113,10 @@ extension IAPHelper {
     // MARK: - Stage 2: Requesting Payment
     public func buyProduct(_ product: SKProduct) {
         print("Buying \(product.productIdentifier)...")
-        let payment = SKPayment(product: product)
+        let payment = SKMutablePayment(product: product)
+        if let userId = UserInfo.shared.userId {
+            payment.applicationUsername = userId.md5()
+        }
         SKPaymentQueue.default().add(payment)
     }
     
@@ -133,13 +133,12 @@ extension IAPHelper {
         print ("restore purchase transaction")
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
-    
-    
-    
+
 }
 
 // MARK: - Stage 1:  Retrieving Product Information: Implement the SKProductsRequestDelegate protocol to handle product requests
 extension IAPHelper: SKProductsRequestDelegate {
+    
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         //print("Loaded list of products...")
         let products = response.products
@@ -162,6 +161,7 @@ extension IAPHelper: SKProductsRequestDelegate {
         productsRequest = nil
         productsRequestCompletionHandler = nil
     }
+    
 }
 
 // MARK: - Stage 3: Delivering Products
@@ -195,8 +195,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         //MARK: Test Url: itms-services://?action=purchaseIntent&bundleId=com.ft.ftchinese.mobile&productIdentifier=com.ft.ftchinese.mobile.book.yearin2018
         //MARK: Test Url: itms-services://?action=purchaseIntent&bundleId=com.ft.ftchinese.mobile&productIdentifier=com.ft.ftchinese.mobile.book.magazine2
         
-        
-        print ("go to product page: \(product.productIdentifier)")
+        // print ("go to product page: \(product.productIdentifier)")
         // MARK: Direct the user directly to the products store front so that they won't be confused
         if let topViewController = UIApplication.topViewController() {
             topViewController.openProductStoreFront(product.productIdentifier)
@@ -364,6 +363,6 @@ struct ReceiptHelper {
         // MARK: Refresh the receipt from Apple if it is black listed
         let request = SKReceiptRefreshRequest(receiptProperties: nil)
         request.start()
-        
     }
+    
 }

@@ -116,7 +116,7 @@ struct PrivilegeHelper {
         Privilege.shared = finalPrivilge
     }
     
-    public static func updatePurchaseInfoWithReceipt(_ receipt: [String: AnyObject]) {
+    public static func updatePurchases(_ receipt: [String: AnyObject]) {
         // MARK: if the receipt is flagged by server side as being abused, we should refresh
         var shouldRefreshReceipt = false
         var allProductIds = [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)]()

@@ -200,45 +200,49 @@ struct PrivilegeHelper {
             }
             
             // MARK: 4. Loop through all memberships and kick out those that are not included in the receipt
+            var foundValidMembershipPurchase = false
             for membership in IAPProducts.memberships {
                 if let id = membership["id"] as? String {
-                    // MARK: Check all membership ids and kick out those not included
+                    // MARK: If the expiration date is in the future, connect the purchase to server side user id
                     if let product = products[id],
                         let expireDate = product.expireDate,
                         expireDate >= Date() {
-                        // MARK: Check if the server side has recorded the purchase correctly
-                        IAP.checkMembershipStatus(id)
-//                        print ("IAP Check: \(id) expires at \(expireDate)")
-//                        allProductIds[id] = (true, status, nil)
-                    } else {
+                            // MARK: Check if the server side has recorded the purchase correctly
+                            IAP.checkMembershipStatus(id)
+                        foundValidMembershipPurchase = true
+                    }
+                    if products[id] == nil {
                         print ("IAP Check: \(id) is not valid")
                         allProductIds[id] = (false, emptyStatus, .NoPurchaseRecord)
                         //kickOutFromIAP(id, with: receipt, for: .NoPurchaseRecord)
                     }
                 }
             }
+            // MARK: If there's not even one valid membership purchase, refresh receipt just once
+            if foundValidMembershipPurchase == false {
+                shouldRefreshReceipt = true
+            }
             print ("IAP Check: all product id: \(allProductIds)")
             
             // MARK: 5. Take actions with what we get from the receipt
-            for (id, value) in allProductIds {
-                if value.keep == true {
-                    UserDefaults.standard.set(true, forKey: id)
-                    print ("IAP Check: Keep \(id)")
-                    if let date = value.status.expireDate {
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = dateFormatString
-                        let expireDateString = dateFormatter.string(from: date)
-                        IAP.savePurchase(id, property: IAP.expiresKey, value: expireDateString)
-                        IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.AppleIAP.rawValue)
-                        print ("IAP Check: update \(id) with expiration date of \(expireDateString)")
-                    }
+            for (id, productInfo) in allProductIds {
+                // MARK: Keep the product or kick out
+                if productInfo.keep == true {
+                    UserDefaults.standard.set(productInfo.keep, forKey: id)
+                    print ("IAP Check: keep \(id). keep: \(productInfo.keep)")
                 } else {
-                    kickOutFromIAP(id, with: receipt, for: value.reason)
+                    kickOutFromIAP(id, with: receipt, for: productInfo.reason)
+                    print ("IAP Check: kick \(id). keep: \(productInfo.keep)")
+                }
+                // MARK: If the product is valid, or if it is kicked out because of expiration
+                if productInfo.keep || productInfo.reason == .Expired {
+                    saveExpirationDate(id, productInfo: productInfo)
                 }
             }
             
             // MARK: update the privileges connected to buying
             updateFromDevice()
+            
             // MARK: post notification about the receipt validation event
             NotificationCenter.default.post(
                 name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification),
@@ -254,6 +258,17 @@ struct PrivilegeHelper {
             InAppPurchases.shared.hasRefreshedReceipt = true
             print ("IAP Check: refresh the receipt")
             ReceiptHelper.refresh()
+        }
+    }
+    
+    private static func saveExpirationDate(_ id: String, productInfo: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)) {
+        if let date = productInfo.status.expireDate {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = dateFormatString
+            let expireDateString = dateFormatter.string(from: date)
+            IAP.savePurchase(id, property: IAP.expiresKey, value: expireDateString)
+            IAP.savePurchase(id, property: purchaseSourceKey, value: PurchaseSource.AppleIAP.rawValue)
+            print ("IAP Check: update \(id) with expiration date of \(expireDateString)")
         }
     }
     

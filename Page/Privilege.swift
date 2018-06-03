@@ -70,7 +70,7 @@ struct PrivilegeHelper {
     public static let originalTransactionIdKey = "original_transaction_id"
     private static let iapCardInfoKey = "IAP Card Info Key"
     
-    public static func updateFromDevice() {
+    public static func updatePrivilges() {
         var finalPrivilge = Privilege()
         let memberships = IAPProducts.memberships
         for membership in memberships {
@@ -116,7 +116,7 @@ struct PrivilegeHelper {
         Privilege.shared = finalPrivilge
     }
     
-    public static func updateFromReceipt(_ receipt: [String: AnyObject]) {
+    public static func updatePurchaseInfoWithReceipt(_ receipt: [String: AnyObject]) {
         // MARK: if the receipt is flagged by server side as being abused, we should refresh
         var shouldRefreshReceipt = false
         var allProductIds = [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)]()
@@ -241,7 +241,7 @@ struct PrivilegeHelper {
             }
             
             // MARK: update the privileges connected to buying
-            updateFromDevice()
+            updatePrivilges()
             
             // MARK: post notification about the receipt validation event
             NotificationCenter.default.post(

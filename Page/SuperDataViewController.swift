@@ -71,7 +71,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         // self.clearsSelectionOnViewWillAppear = false
 
         // MARK: - Update membership status
-        PrivilegeHelper.updateFromDevice()
+        PrivilegeHelper.updatePrivilges()
         let dataObjectType = dataObject["type"] ?? ""
         // MARK: - Request Data from Server
         if dataObject["api"] != nil || ["follow", "read", "iap", "setting", "options"].contains(dataObjectType){
@@ -490,7 +490,7 @@ class SuperDataViewController: UICollectionViewController, UINavigationControlle
         super.viewWillAppear(animated)
         isVisible = true
         // MARK: - Update membership status
-        PrivilegeHelper.updateFromDevice()
+        PrivilegeHelper.updatePrivilges()
         
         if let screeName = dataObject["screenName"] {
             Track.screenView("/\(DeviceInfo.checkDeviceType())/\(screeName)", trackEngagement: true)
@@ -1707,7 +1707,7 @@ extension SuperDataViewController: WKScriptMessageHandler {
             if let body = message.body as? [String: String] {
                 UserInfo.updateUserInfo(with: body)
                 // MARK: - Update membership status
-                PrivilegeHelper.updateFromDevice()
+                PrivilegeHelper.updatePrivilges()
             }
         } else if message.name == "selectItem" {
             if let rowString = message.body as? String,
@@ -1743,7 +1743,7 @@ extension SuperDataViewController: WKScriptMessageHandler {
                     }
                     if originalCardStatus != newCardStatus {
                         UserInfo.shared.card = newCardStatus
-                        PrivilegeHelper.updateFromDevice()
+                        PrivilegeHelper.updatePrivilges()
                     }
                 }
             }

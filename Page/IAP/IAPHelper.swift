@@ -209,7 +209,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         // MARK: 1. First save the purchase information to device
         savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)
         // MARK: 2. Use the saved information to update Privileges
-        PrivilegeHelper.updateFromDevice()
+        PrivilegeHelper.updatePrivilges()
         // MARK: 3. Send notification to related objects such the view controllers and iap views so that UI can be updated
         deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
         // MARK: 4. Validate the receipt
@@ -238,7 +238,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         // MARK: 1. First save the purchase information to device
         savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)
         // MARK: 2. Use the saved information to update Privileges
-        PrivilegeHelper.updateFromDevice()
+        PrivilegeHelper.updatePrivilges()
         // MARK: 3. Send notification to related objects such the view controllers and iap views so that UI can be updated
         deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
         SKPaymentQueue.default().finishTransaction(transaction)
@@ -334,7 +334,7 @@ struct ReceiptHelper {
                                         if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject> {
                                             // MARK: - parse and verify the required informatin in the jsonResponse
                                             //print ("send ios iap info to server: receipt validation from func receiptValidation success: \(jsonResponse)")
-                                            PrivilegeHelper.updateFromReceipt(jsonResponse)
+                                            PrivilegeHelper.updatePurchaseInfoWithReceipt(jsonResponse)
                                         } else {
                                             //print("receipt validation from func receiptValidation: Failed to cast serialized JSON to Dictionary<String, AnyObject>. The string is: \(String(describing: String(data: receivedData, encoding: .utf8))) ")
                                         }

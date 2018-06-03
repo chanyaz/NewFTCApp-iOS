@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate/*, CLLocationManagerDelega
         UserInfo.updateUserInfoFromNative()
         
         // MARK: - Update membership status
-        PrivilegeHelper.updateFromDevice()
+        PrivilegeHelper.updatePrivilges()
 
         //        if let location = LocationHelper.shared.get() {
         //            print ("Latitude: \(location.latitude), Longitude: \(location.longtitude)")

@@ -39,7 +39,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
     override func loadView() {
         super.loadView()
         // MARK: - Update membership status
-        PrivilegeHelper.updateFromDevice()
+        PrivilegeHelper.updatePrivilges()
         if ContentItemRenderContent.addPersonInfo == false {
             if dataObject?.type == "ad" {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -179,7 +179,7 @@ class SuperContentItemViewController: UIViewController, UINavigationControllerDe
         super.viewWillAppear(animated)
         
         // MARK: - Update membership status
-        PrivilegeHelper.updateFromDevice()
+        PrivilegeHelper.updatePrivilges()
         
         if let type = dataObject?.type,
             let id = dataObject?.id {
@@ -715,7 +715,7 @@ extension SuperContentItemViewController: WKScriptMessageHandler {
                 if let body = message.body as? [String: String] {
                     UserInfo.updateUserInfo(with: body)
                     // MARK: - Update membership status
-                    PrivilegeHelper.updateFromDevice()
+                    PrivilegeHelper.updatePrivilges()
                     checkPrivileForContent()
                 }
             default:

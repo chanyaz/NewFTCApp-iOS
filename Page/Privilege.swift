@@ -117,21 +117,9 @@ struct PrivilegeHelper {
     }
     
     public static func updatePurchases(_ receipt: [String: AnyObject]) {
-        // MARK: if the receipt is flagged by server side as being abused, we should refresh
-        var shouldRefreshReceipt = false
-        var allProductIds = [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)]()
-        let emptyStatus = ProductStatus.init(expireDate: nil)
         
-        // MARK: Analyze the receipt to decide which purchases and subscriptions are valid
-        if let status = receipt["status"] as? Int,
-            status == 0,
-            let receipts = receipt["receipt"] as? [String: Any],
-            let receiptItems = receipts["in_app"] as? [[String: Any]],
-            receiptItems.count > 0 {
-            
-            //print ("IAP Check: \(receipt)")
-            
-            // MARK: 1. Loop through all the IAP orders to update products information
+        func getProductsFromReceiptItems(_ receiptItems: [[String : Any]]) -> [String: ProductStatus] {
+            let emptyStatus = ProductStatus.init(expireDate: nil)
             var products = [String: ProductStatus]()
             for item in receiptItems {
                 if let id = item["product_id"] as? String {
@@ -140,7 +128,7 @@ struct PrivilegeHelper {
                         dateFormatter.dateFormat = dateFormatString
                         if let date = dateFormatter.date(from: expiresDate) {
                             if let currentLatestExpireDate = products[id]?.expireDate,
-                                date < currentLatestExpireDate {                                
+                                date < currentLatestExpireDate {
                             } else {
                                 // MARK: Only when the expire date is later than the current latest expire date. This way we get the latest expire date from receipt.
                                 products[id] = ProductStatus.init(expireDate: date)
@@ -153,8 +141,14 @@ struct PrivilegeHelper {
                     }
                 }
             }
-            
-            // MARK: 2. Parse pending_renewal_info to get information about the user's auto_renew_status
+            return products
+        }
+        
+        func getProductsWithRenewalInfo(_ products: [String : ProductStatus], with receipt: [String: AnyObject]) -> (allProductIds: [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)], products: [String : ProductStatus], shouldRefreshReceipt: Bool){
+            var products = products
+            var allProductIds = [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)]()
+            var shouldRefreshReceipt = false
+            let emptyStatus = ProductStatus.init(expireDate: nil)
             if let pendingRenewalInfo = receipt["pending_renewal_info"] as? [[String: Any]] {
                 for item in pendingRenewalInfo {
                     if let id = item["auto_renew_product_id"] as? String,
@@ -179,9 +173,11 @@ struct PrivilegeHelper {
                     }
                 }
             }
-            
-            print ("IAP Check: Products: \(products)")
-            // MARK: 3. Loop through the valid ids generated from previous steps, keep the valid ones and keep out invalid or expired ones
+            return (allProductIds, products, shouldRefreshReceipt)
+        }
+        
+        func updateAllProductIdsWithProducts(_ allProductIds:  [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)], with products: [String : ProductStatus]) ->  [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)] {
+            var allProductIds = allProductIds
             for (id, status) in products {
                 if let date = status.expireDate {
                     // MARK: handle subscrition expiration date
@@ -198,17 +194,22 @@ struct PrivilegeHelper {
                     allProductIds[id] = (true, status, nil)
                 }
             }
-            
-            // MARK: 4. Loop through all memberships and kick out those that are not included in the receipt
+            return allProductIds
+        }
+        
+        func updateMemberships(_ allProductIds: [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)], with products: [String : ProductStatus], from shouldRefreshReceipt: Bool) -> (allProductIds: [String: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)], shouldRefreshReceipt: Bool) {
+            var allProductIds = allProductIds
             var foundValidMembershipPurchase = false
+            let emptyStatus = ProductStatus.init(expireDate: nil)
+            var shouldRefreshReceipt = shouldRefreshReceipt
             for membership in IAPProducts.memberships {
                 if let id = membership["id"] as? String {
                     // MARK: If the expiration date is in the future, connect the purchase to server side user id
                     if let product = products[id],
                         let expireDate = product.expireDate,
                         expireDate >= Date() {
-                            // MARK: Check if the server side has recorded the purchase correctly
-                            IAP.checkMembershipStatus(id)
+                        // MARK: Check if the server side has recorded the purchase correctly
+                        IAP.checkMembershipStatus(id)
                         foundValidMembershipPurchase = true
                     }
                     if products[id] == nil {
@@ -222,6 +223,39 @@ struct PrivilegeHelper {
             if foundValidMembershipPurchase == false {
                 shouldRefreshReceipt = true
             }
+            return (allProductIds, shouldRefreshReceipt)
+        }
+        
+        // MARK: if the receipt is flagged by server side as being abused, we should refresh
+        var shouldRefreshReceipt = false
+        //let emptyStatus = ProductStatus.init(expireDate: nil)
+        
+        // MARK: Analyze the receipt to decide which purchases and subscriptions are valid
+        if let status = receipt["status"] as? Int,
+            status == 0,
+            let receipts = receipt["receipt"] as? [String: Any],
+            let receiptItems = receipts["in_app"] as? [[String: Any]],
+            receiptItems.count > 0 {
+            
+            //print ("IAP Check: \(receipt)")
+            
+            // MARK: 1. Loop through all the IAP orders to update products information
+            var products = getProductsFromReceiptItems(receiptItems)
+            
+            // MARK: 2. Parse pending_renewal_info to get information about the user's auto_renew_status
+            let productWithRenewalInfo = getProductsWithRenewalInfo(products, with: receipt)
+            var allProductIds = productWithRenewalInfo.allProductIds
+            products = productWithRenewalInfo.products
+            shouldRefreshReceipt = productWithRenewalInfo.shouldRefreshReceipt
+            print ("IAP Check: Products: \(products)")
+            
+            // MARK: 3. Loop through the valid ids generated from previous steps, keep the valid ones and keep out invalid or expired ones
+            allProductIds = updateAllProductIdsWithProducts(allProductIds, with: products)
+            
+            // MARK: 4. Loop through all memberships and kick out those that are not included in the receipt
+            let membershipInfo = updateMemberships(allProductIds, with: products, from: shouldRefreshReceipt)
+            allProductIds = membershipInfo.allProductIds
+            shouldRefreshReceipt = membershipInfo.shouldRefreshReceipt
             print ("IAP Check: all product id: \(allProductIds)")
             
             // MARK: 5. Take actions with what we get from the receipt
@@ -240,9 +274,6 @@ struct PrivilegeHelper {
                 }
             }
             
-            // MARK: update the privileges connected to buying
-            updatePrivilges()
-            
             // MARK: post notification about the receipt validation event
             NotificationCenter.default.post(
                 name: Notification.Name(rawValue: IAPHelper.receiptValidatedNotification),
@@ -259,6 +290,8 @@ struct PrivilegeHelper {
             print ("IAP Check: refresh the receipt")
             ReceiptHelper.refresh()
         }
+        // MARK: update the privileges connected to buying
+        updatePrivilges()
     }
     
     private static func saveExpirationDate(_ id: String, productInfo: (keep: Bool, status: ProductStatus, reason: KickOutIAPReason?)) {
@@ -348,9 +381,9 @@ struct PrivilegeHelper {
     
     private static func checkTransactionId(_ originalTransactionId: String) -> CardType {
         // TEST: Use oliver's id
-//        if originalTransactionId == "1000000378980806" {
-//            return .Red
-//        }
+        //        if originalTransactionId == "1000000378980806" {
+        //            return .Red
+        //        }
         if let cardInfo = UserDefaults.standard.dictionary(forKey: iapCardInfoKey) as? [String: [String]] {
             if let redCards = cardInfo["red"],
                 redCards.contains(originalTransactionId){

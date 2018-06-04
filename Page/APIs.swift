@@ -73,6 +73,14 @@ struct APIs {
         return "https://api003.ftmailbox.com/ios-receipt-validation.php"
     }
     
+    // MARK: - Domain Check: iOS Receipt Validation
+    public static func getiOSOriginalTransactionIdTrackUrlString() -> String {
+        if Privilege.shared.exclusiveContent {
+            return "https://api002.ftmailbox.com/ios-original-transaction-id-track.php"
+        }
+        return "https://api003.ftmailbox.com/ios-original-transaction-id-track.php"
+    }
+    
     // MARK: - Domain Check: Engagement Tracker
     public static func getEngagementTrackerUrlString() -> String {
         if Privilege.shared.exclusiveContent {
@@ -170,6 +178,10 @@ struct APIs {
             print ("follow request type: \(urlString)")
         case "vip":
             urlString = "\(domain)ios-vip.php"
+        case "iosBlackList":
+            urlString = "\(domain)index.php/jsapi/\(id)"
+        case "iosYellowCard":
+            urlString = "\(domain)index.php/jsapi/yellowcard_ios"
         default:
             urlString = "\(domain)index.php/jsapi/get_story_more_info/\(id)"
         }

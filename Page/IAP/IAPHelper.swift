@@ -241,6 +241,12 @@ extension IAPHelper: SKPaymentTransactionObserver {
         PrivilegeHelper.updatePrivilges()
         // MARK: 3. Send notification to related objects such the view controllers and iap views so that UI can be updated
         deliverPurchaseNotificationFor(actionType, identifier: productId, date: transaction.transactionDate)
+        // MARK: 4. Validate the receipt
+        // MARK: - Use globally thread as it will not not change UI directly
+        DispatchQueue.global().async {
+            ReceiptHelper.receiptValidation(with: APIs.getiOSReceiptValidationUrlString())
+            Track.token()
+        }
         SKPaymentQueue.default().finishTransaction(transaction)
         IAP.checkMembershipStatus(productId)
         Track.token()
@@ -307,6 +313,8 @@ struct ReceiptHelper {
         if InAppPurchases.shared.memberships.count > 0 {
             if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
                 FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
+                // MARK: Get the red card and yellow card list
+                PrivilegeHelper.getBlackListForTransactionIds()
                 do {
                     let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
                     let receiptString = receiptData.base64EncodedString(options: [])

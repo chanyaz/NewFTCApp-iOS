@@ -58,6 +58,7 @@ struct InAppPurchases {
     static var shared = InAppPurchases()
     var memberships: [String] = []
     var hasRefreshedReceipt = false
+    var warningPresented = false
 }
 
 enum PurchaseSource: String {
@@ -161,7 +162,7 @@ struct PrivilegeHelper {
                         IAP.savePurchase(id, property: "auto_renew_status", value: status)
                         if let originalTransactionId = item[originalTransactionIdKey] as? String {
                             IAP.savePurchase(id, property: originalTransactionIdKey, value: originalTransactionId)
-                            recordTransactionId(originalTransactionId)
+                            recordTransactionId(originalTransactionId, for: id)
                             // MARK: - if the IAP purchase is flagged as abused
                             let transactionIdStatus = checkTransactionId(originalTransactionId)
                             if transactionIdStatus != .Clear {
@@ -270,7 +271,7 @@ struct PrivilegeHelper {
             let receipts = receipt["receipt"] as? [String: Any],
             let receiptItems = receipts["in_app"] as? [[String: Any]],
             receiptItems.count > 0 {
-            //print ("IAP Check: \(receipt)")
+            // print ("IAP Check: \(receipt)")
             
             // MARK: 1. Loop through all the IAP orders to update products information
             var products = initiateProducts(receiptItems)
@@ -338,87 +339,108 @@ struct PrivilegeHelper {
         }
     }
     
-    // MARK: Send Transaction ID, time stamp and Device Id to server for validation and black listing
-    private static func recordTransactionId(_ originalTransactionId: String) {
+    // MARK: Send Transaction ID and Device Id to server for validation and black listing
+    private static func recordTransactionId(_ originalTransactionId: String, for productId: String) {
         print ("IAP Check: updating original transaction id: \(originalTransactionId)")
-        //        let purchaseInfo = [
-        //            "user_id": userId,
-        //            "product_id": id,
-        //            "expires_date": expireDate,
-        //            "token": tokenWithSalt,
-        //            "originalTransactionId": originalTransactionId
-        //            ] as [String : String]
-        //        //print ("send ios iap info to server: \(urlString). expire date: \(expireDate). with: \(purchaseInfo)")
-        //        do {
-        //            let jsonData = try JSONSerialization.data(withJSONObject: purchaseInfo, options: .init(rawValue: 0))
-        //            if let siteServerUrl = Foundation.URL(string:urlString) {
-        //                var request = URLRequest(url: siteServerUrl)
-        //                request.httpMethod = "POST"
-        //                request.httpBody = jsonData
-        //                let session = URLSession(configuration: URLSessionConfiguration.default)
-        //                let task = session.dataTask(with: request) { data, response, error in
-        //                    if let receivedData = data,
-        //                        let httpResponse = response as? HTTPURLResponse,
-        //                        error == nil,
-        //                        httpResponse.statusCode == 200 {
-        //                        do {
-        //                            if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject>,
-        //                                let status = jsonResponse["errmsg"] as? String,
-        //                                status == "success" {
-        //                                // MARK: - parse and verify the required informatin in the jsonResponse
-        //                                //print ("send ios iap info to server: success: \(jsonResponse)")
-        //                                UserInfo.shared.iapMembershipReadyForCrossPlatform = true
-        //                            } else {
-        //                                print ("send ios iap info to server: fail to cast: \(String(describing: String(data: receivedData, encoding: .utf8)))")
-        //                            }
-        //                        } catch {
-        //
-        //                        }
-        //                    }
-        //                }
-        //                task.resume()
-        //            } else {
-        //                //print("receipt validation from func receiptValidation: Couldn't convert string into URL. Check for special characters.")
-        //            }
-        //        } catch {
-        //            //print("receipt validation from func receiptValidation: Couldn't create JSON with error: " + error.localizedDescription)
-        //        }
-        //        Track.event(category: "iOS IAP Membership: \(key)", action: userId, label: expireDate)
+        let userId = UserInfo.shared.userId ?? ""
+        let token = UserInfo.shared.deviceToken ?? ""
+        let purchaseInfo = [
+            "user_id": userId,
+            "product_id": productId,
+            "token": token,
+            "originalTransactionId": originalTransactionId
+        ]
+        let urlString = APIs.getiOSOriginalTransactionIdTrackUrlString()
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: purchaseInfo, options: .init(rawValue: 0))
+            if let siteServerUrl = Foundation.URL(string:urlString) {
+                var request = URLRequest(url: siteServerUrl)
+                request.httpMethod = "POST"
+                request.httpBody = jsonData
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                let task = session.dataTask(with: request) { data, response, error in
+                    if let receivedData = data,
+                        let httpResponse = response as? HTTPURLResponse,
+                        error == nil,
+                        httpResponse.statusCode == 200 {
+                        do {
+                            if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject>,
+                                let status = jsonResponse["errmsg"] as? String,
+                                status == "success" {
+                                // MARK: - The
+                            } else {
+                            }
+                        } catch {
+                            
+                        }
+                    }
+                }
+                task.resume()
+            } else {
+            }
+        } catch {
+        }
     }
     
     private static func checkTransactionId(_ originalTransactionId: String) -> CardType {
-        // TEST: Use oliver's id
-        //        if originalTransactionId == "1000000378980806" {
-        //            return .Red
-        //        }
-        if let cardInfo = UserDefaults.standard.dictionary(forKey: iapCardInfoKey) as? [String: [String]] {
-            if let redCards = cardInfo["red"],
-                redCards.contains(originalTransactionId){
-                presentWarning(.Red, with: originalTransactionId)
-                return .Red
+        func presentWarning(_ cardType: CardType, with originalTransactionId: String) {
+            if InAppPurchases.shared.warningPresented {
+                return
             }
-            if let yellowCards = cardInfo["yellow"],
-                yellowCards.contains(originalTransactionId) {
-                presentWarning(.Yellow, with: originalTransactionId)
-                return .Yellow
+            InAppPurchases.shared.warningPresented = true
+            switch cardType {
+            case .Red:
+                Alert.present("亲爱的读者", message: "我们检测到您使用的苹果应用商店Apple ID被用在多个设备上，当前使用的这个Apple ID已经被禁止使用我们的订阅服务。请您使用自己的Apple ID来购买FT中文网的服务。")
+            case .Yellow:
+                Alert.present("温馨提示", message: "我们检测到您使用的苹果应用商店Apple ID被用在多个设备上，请您使用自己的Apple ID来购买FT中文网的服务。")
+            default:
+                break
+            }
+            let userId = UserInfo.shared.userId ?? ""
+            let token = UserInfo.shared.deviceToken ?? ""
+            let cardTypeString = cardType.rawValue
+            Track.event(category: "IAP: \(originalTransactionId)", action: "Show \(cardTypeString)", label: "u:\(userId),t:\(token)")
+        }
+//        // TEST: Use oliver's id
+//                if originalTransactionId == "1000000378980806" {
+//                    presentWarning(.Yellow, with: originalTransactionId)
+//                    return .Yellow
+//                }
+        let cards: [CardType] = [.Red, .Yellow]
+        for card in cards {
+            let cardKey = getCardKey(card)
+            if let cardInfo = UserDefaults.standard.array(forKey: cardKey) as? [String],
+                cardInfo.contains(originalTransactionId) {
+                presentWarning(card, with: originalTransactionId)
+                return card
             }
         }
         return .Clear
     }
     
-    private static func presentWarning(_ cardType: CardType, with originalTransactionId: String) {
-        switch cardType {
-        case .Red:
-            Alert.present("亲爱的读者", message: "我们检测到您使用的苹果应用商店Apple ID被用在多个设备上，请您使用自己的Apple ID来购买FT中文网的服务。当前使用的这个Apple ID已经被禁用。")
-        case .Yellow:
-            Alert.present("温馨提示", message: "我们检测到您使用的苹果应用商店Apple ID被用在多个设备上，请您使用自己的Apple ID来购买FT中文网的服务。")
-        default:
-            break
+    private static func getCardKey(_ type: CardType) -> String {
+        let cardKey = "\(iapCardInfoKey): \(type.rawValue)"
+        return cardKey
+    }
+    
+    public static func getBlackListForTransactionIds() {
+        let cards: [(type: CardType, url: String)] = [
+            (.Red, APIs.get("redcard_ios", type: "iosBlackList", forceDomain: nil)),
+            (.Yellow, APIs.get("yellowcard_ios", type: "iosBlackList", forceDomain: nil))
+        ]
+        for card in cards {
+            let urlString = card.url
+            let cardKey = getCardKey(card.type)
+            if let url = URL(string: urlString) {
+                Download.getDataFromUrl(url) {(data, response, error) in
+                    if let data = data,
+                        let results = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)),
+                        let ids = results as? [String] {
+                        UserDefaults.standard.set(ids, forKey: cardKey)
+                    }
+                }
+            }
         }
-        let userId = UserInfo.shared.userId ?? ""
-        let token = UserInfo.shared.deviceToken ?? ""
-        let cardTypeString = cardType.rawValue
-        Track.event(category: "IAP: \(originalTransactionId)", action: "Show \(cardTypeString)", label: "u:\(userId),t:\(token)")
     }
     
     public static func updateFromNetwork() {

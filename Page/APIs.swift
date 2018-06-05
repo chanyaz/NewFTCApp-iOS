@@ -179,7 +179,7 @@ struct APIs {
         case "vip":
             urlString = "\(domain)ios-vip.php"
         case "iosBlackList":
-            urlString = "\(domain)index.php/jsapi/\(id)"
+            urlString = "\(domain)index.php/jsapi/\(id)?v=2"
         case "iosYellowCard":
             urlString = "\(domain)index.php/jsapi/yellowcard_ios"
         default:
@@ -491,7 +491,13 @@ struct APIs {
             let type =  item["type"] ?? ""
             let link = "/\(type)/\(id)"
             let lead = item["lead"] ?? ""
-            let contentItem = "<div class=\"item-container one-row L6 M12 S6 P12 item-container-app no-image\" data-id=\"\(id)\" data-type=\"\(type)\"><div class=\"item-inner\"><h2 class=\"item-headline\"><a target=\"_blank\" href=\"\(link)\">\(item["headline"] ?? "")</a></h2><div class=\"item-lead\">\(lead)</div><div class=\"icon-right icon-save\"></div><div class=\"item-bottom\"></div></div></div>"
+            let audioDataString: String
+            if let audioFileUrl = item["audioFileUrl"] {
+                audioDataString = " data-audio=\"\(audioFileUrl)\""
+            } else {
+                audioDataString = ""
+            }
+            let contentItem = "<div class=\"item-container one-row L6 M12 S6 P12 item-container-app no-image\" data-id=\"\(id)\" data-type=\"\(type)\"\(audioDataString)><div class=\"item-inner\"><h2 class=\"item-headline\"><a target=\"_blank\" href=\"\(link)\">\(item["headline"] ?? "")</a></h2><div class=\"item-lead\">\(lead)</div><div class=\"icon-right icon-save\"></div><div class=\"item-bottom\"></div></div></div>"
             contentItems += contentItem
         }
         contentItems = "<div class=\"block-container has-side\"><div class=\"block-inner\"><div class=\"content-container\"><div class=\"content-inner\"><div class=\"list-container\"><div class=\"list-inner\"><div class=\"items\">\(contentItems)<div id=\"myfavorite-remote\"></div><div class=\"clearfloat\"></div></div></div></div><div class=\"clearfloat block-bottom\"></div></div></div><div class=\"side-container\"><div class=\"side-inner\"><script type=\"text/javascript\">document.write (writeAdNew({devices: ['PC','PadWeb','iPhoneApp','AndroidApp'],pattern:'MPU',position:'Right1'}));</script></div></div><div class=\"clearfloat\"></div></div></div>"

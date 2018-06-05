@@ -454,9 +454,17 @@ struct AppNavigation {
                     "type": "clip",
                     //"url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
                     "url":"http://www.ftchinese.com/users/favstorylist?webview=ftcapp",
-                    "screenName":"myft",
+                    "screenName":"myft/favstorylist",
                     "compactLayout": ""
                 ],
+//                [
+//                    "title": "关注",
+//                    //"type": "follow",
+//                    //"url":"http://app003.ftmailbox.com/users/favstorylist?webview=ftcapp",
+//                    "url":"http://www.ftchinese.com/m/corp/preview.html?pageid=myftfollow&webview=ftcapp",
+//                    "screenName":"myft/follow",
+//                    "compactLayout": ""
+//                ],
                 [
                     "title": "关注",
                     "type": "follow",

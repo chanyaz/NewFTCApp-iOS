@@ -618,7 +618,7 @@ struct IAP {
                     "token": tokenWithSalt,
                     "originalTransactionId": originalTransactionId
                     ] as [String : String]
-                //print ("send ios iap info to server: \(urlString). expire date: \(expireDate). with: \(purchaseInfo)")
+                print ("send ios iap info to server: \(urlString). expire date: \(expireDate). with: \(purchaseInfo)")
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: purchaseInfo, options: .init(rawValue: 0))
                     if let siteServerUrl = Foundation.URL(string:urlString) {
@@ -629,20 +629,33 @@ struct IAP {
                         let task = session.dataTask(with: request) { data, response, error in
                             if let receivedData = data,
                                 let httpResponse = response as? HTTPURLResponse,
-                                error == nil,
-                                httpResponse.statusCode == 200 {
-                                do {
-                                    if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject>,
-                                        let status = jsonResponse["errmsg"] as? String,
-                                        status == "success" {
-                                        // MARK: - parse and verify the required informatin in the jsonResponse
-                                        //print ("send ios iap info to server: success: \(jsonResponse)")
-                                        UserInfo.shared.iapMembershipReadyForCrossPlatform = true
-                                    } else {
-                                        print ("send ios iap info to server: fail to cast: \(String(describing: String(data: receivedData, encoding: .utf8)))")
+                                error == nil {
+                                if httpResponse.statusCode == 200 {
+                                    do {
+                                        if let jsonResponse = try JSONSerialization.jsonObject(with: receivedData, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, AnyObject>,
+                                            let status = jsonResponse["errmsg"] as? String  {
+                                            if status == "success" {
+                                                // MARK: - parse and verify the required informatin in the jsonResponse
+                                                //print ("send ios iap info to server: success: \(jsonResponse)")
+                                                UserInfo.shared.iapMembershipReadyForCrossPlatform = true
+                                                if let userName = UserInfo.shared.userName,
+                                                    userName != "" {
+                                                    Alert.present("恭喜您：\(userName)", message: "您在苹果应用商店购买的订阅服务已经和您的FT中文网用户名成功绑定，您也可以在电脑上登录FT中文网，阅读付费内容。")
+                                                }
+                                            } else {
+                                                
+                                            }
+                                        } else {
+                                            print ("send ios iap info to server: fail to cast: \(String(describing: String(data: receivedData, encoding: .utf8)))")
+                                        }
+                                    } catch {
+                                        print("send ios iap info to server: fail to convert data to json dictionary")
                                     }
-                                } catch {
-                                    
+                                } else {
+                                    print ("send ios iap info to server: \(httpResponse.statusCode)")
+                                    if let returnData = String(data: receivedData, encoding: .utf8) {
+                                        print ("send ios iap info to server: \(returnData)")
+                                    }
                                 }
                             }
                         }

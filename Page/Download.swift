@@ -297,15 +297,18 @@ struct Download {
         savedItems = savedItems.filter {
             id != $0["id"]
         }
-        let item = [
+        var mutableItem = [
             "id": id,
             "headline": headline,
             "type": type,
             "lead": lead,
             "image": image
         ]
+        if let audioFileUrl = item.audioFileUrl {
+            mutableItem["audioFileUrl"] = audioFileUrl
+        }
         if action == "save" {
-            savedItems.insert(item, at: 0)
+            savedItems.insert(mutableItem, at: 0)
         }
         var newSavedItems = [[String: String]]()
         for (index, value) in savedItems.enumerated() {

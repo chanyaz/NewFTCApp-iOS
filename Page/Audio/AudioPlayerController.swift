@@ -1135,6 +1135,7 @@ class AudioPlayerController: UIViewController,UIScrollViewDelegate,WKNavigationD
         
     }
     func randomPlay(){
+        // TODO: Use Int.random(in: 0..<creativesForToday.count) after SWIFT 4.2
         let randomIndex = Int(arc4random_uniform(UInt32(urlOrigStrings.count)))
         removePlayerItemObservers()
         playingIndex = randomIndex

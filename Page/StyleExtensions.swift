@@ -482,11 +482,12 @@ extension String {
 
 // MARK: Shuffle and Array
 extension Array {
-    
+    // TODO: This will be supported natively in SWIFT 4
     func shuffled() -> [Element] {
         var results = [Element]()
         var indexes = (0 ..< count).map { $0 }
         while indexes.count > 0 {
+            // TODO: Use Int.random(in: 0..<creativesForToday.count) after SWIFT 4.2
             let indexOfIndexes = Int(arc4random_uniform(UInt32(indexes.count)))
             let index = indexes[indexOfIndexes]
             results.append(self[index])

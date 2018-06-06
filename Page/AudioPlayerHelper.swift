@@ -294,6 +294,7 @@ class PlayerAPI {
         
     }
     func randomPlay(){
+        // TODO: Use Int.random(in: 0..<creativesForToday.count) after SWIFT 4.2
         let randomIndex = Int(arc4random_uniform(UInt32(urlOrigStrings.count)))
         NotificationCenter.default.removeObserver(self, name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
         playingIndex = randomIndex

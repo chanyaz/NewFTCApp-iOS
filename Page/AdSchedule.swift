@@ -113,6 +113,7 @@ class AdSchedule {
                 
                 
                 // MARK: Pick one creative from all creatives that are scheduled for today
+                // TODO: Use Int.random(in: 0..<creativesForToday.count) after SWIFT 4.2
                 let randomIndex = Int(arc4random_uniform(UInt32(creativesForToday.count)))
                 
                 // MARK: - Important: Make sure the index is not out of range!

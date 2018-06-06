@@ -836,6 +836,7 @@ class SomeGlobal {
         var randomString = ""
         
         for _ in 0 ..< length {
+            // TODO: Use Int.random(in: 0..<creativesForToday.count) after SWIFT 4.2
             let rand = arc4random_uniform(len)
             var nextChar = letters.character(at: Int(rand))
             randomString += NSString(characters: &nextChar, length: 1) as String

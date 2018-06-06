@@ -1489,15 +1489,32 @@ extension SuperDataViewController {
                 }
             } else if let errorObject = notification.object as? [String : String?] {
                 // MARK: - When there is an error
-                if let productId = errorObject["id"]{
+                if let productId = errorObject["id"] {
                     let errorMessage = (errorObject["error"] ?? "") ?? ""
                     let productIdForTracking = productId ?? ""
                     // MARK: - If user cancel buying, no need to pop out alert
                     if errorMessage == "usercancel" {
                         IAP.trackIAPActions("cancel buying", productId: productIdForTracking)
                     } else {
-                        let alert = UIAlertController(title: "交易失败，您的钱还在口袋里", message: errorMessage, preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "我知道了", style: UIAlertActionStyle.default, handler: nil))
+                        let errorDescription = "\(errorMessage)。您可以点击下面的选项来继续完成购买："
+                        let alert = UIAlertController(title: "交易失败，您的钱还在口袋里", message: errorDescription, preferredStyle: UIAlertControllerStyle.alert)
+                        let membershipIds = IAPProducts.memberships.map { (value: [String: Any]) -> String in
+                            if let id = value["id"] as? String {
+                                return id
+                            }
+                            return ""
+                        }
+                        if let productId = productId,
+                            membershipIds.contains(productId) {
+                            alert.addAction(UIAlertAction(title: "换个方式来支付", style: .default, handler: { (action: UIAlertAction) in
+                                if let settingUrl = URL(string: APIs.subscriptionUrlString) {
+                                    if UIApplication.shared.canOpenURL(settingUrl) {
+                                        UIApplication.shared.openURL(settingUrl)
+                                    }
+                                }
+                            }))
+                        }
+                        alert.addAction(UIAlertAction(title: "取消交易", style: UIAlertActionStyle.default, handler: nil))
                         if let topViewController = UIApplication.topViewController() {
                             topViewController.present(alert, animated: true, completion: nil)
                         }

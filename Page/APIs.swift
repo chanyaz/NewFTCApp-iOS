@@ -108,6 +108,8 @@ struct APIs {
 
     public static let customerServiceUrlString = "http://www.ftchinese.com/m/corp/subscriber.html?webview=ftcapp&ad=no&0"
     
+    public static let subscriptionUrlString = "http://www.ftacademy.cn/subscription.html"//?ccode=ioserrorhandling
+    
     // MARK: Number of days you want to keep the cached files
     public static let expireDay: TimeInterval = 7
     

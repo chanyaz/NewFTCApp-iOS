@@ -271,12 +271,14 @@ extension IAPHelper: SKPaymentTransactionObserver {
                 break
             default:
                 let errorMessage = transactionError.localizedDescription
+                print("user can not finish the transaction because \(errorMessage), error code: \(transactionError.code)")
                 IAP.trackIAPActions(IAP.buyErrorString, productId: "\(productId): \(errorMessage)")
                 break
             }
             deliverPurchaseFailNotification(transactionError, productId: productId)
         }
-        SKPaymentQueue.default().finishTransaction(transaction)
+        // MARK: Your application should call finishTransaction(_:) only after it has successfully processed the transaction and unlocked the functionality purchased by the user.
+        //SKPaymentQueue.default().finishTransaction(transaction)
     }
     
     // MARK: Update Information that are stored in the device

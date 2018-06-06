@@ -1510,6 +1510,10 @@ extension SuperDataViewController {
                                 if let settingUrl = URL(string: APIs.subscriptionUrlString) {
                                     if UIApplication.shared.canOpenURL(settingUrl) {
                                         UIApplication.shared.openURL(settingUrl)
+                                        let userId = UserInfo.shared.userId ?? ""
+                                        let token = UserInfo.shared.deviceToken ?? ""
+                                        let eventLabel = "u:\(userId),t:\(token)"
+                                        Track.event(category: "IAP: Pay From Web", action: "Tap", label: eventLabel)
                                     }
                                 }
                             }))

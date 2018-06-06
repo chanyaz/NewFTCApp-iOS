@@ -234,6 +234,19 @@ extension IAPHelper: SKPaymentTransactionObserver {
             let userId = UserInfo.shared.userId ?? ""
             let eventLabel = "u:\(userId),t:\(deviceToken)"
             Track.event(category: "Restore: \(productId)", action: orginalTransactionId, label: eventLabel)
+            let cardType = PrivilegeHelper.checkTransactionId(orginalTransactionId)
+            if cardType == .Red {
+                return
+            }
+//            switch cardType {
+//            case .Red:
+//                Alert.present("亲爱的用户", message: "您目前用于恢复订阅的这个Apple Id已经被禁用，请您使用自己的Apple Id来订阅。")
+//                return
+//            case .Yellow:
+//                Alert.present("亲爱的用户", message: "您目前用于恢复订阅的这个Apple Id即将被禁用，建议您使用自己的Apple Id来订阅。")
+//            default:
+//                break
+//            }
         }
         // MARK: 1. First save the purchase information to device
         savePurchaseInfoToDevice(transaction, actionType: actionType, productId: productId)

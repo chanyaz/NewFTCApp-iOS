@@ -382,7 +382,7 @@ struct PrivilegeHelper {
         }
     }
     
-    private static func checkTransactionId(_ originalTransactionId: String) -> CardType {
+    public static func checkTransactionId(_ originalTransactionId: String) -> CardType {
         func presentWarning(_ cardType: CardType, with originalTransactionId: String) {
             if InAppPurchases.shared.warningPresented {
                 return
@@ -401,11 +401,11 @@ struct PrivilegeHelper {
             let cardTypeString = cardType.rawValue
             Track.event(category: "IAP: \(originalTransactionId)", action: "Show \(cardTypeString)", label: "u:\(userId),t:\(token)")
         }
-//        // TEST: Use oliver's id
-//                if originalTransactionId == "1000000378980806" {
-//                    presentWarning(.Yellow, with: originalTransactionId)
-//                    return .Yellow
-//                }
+        // TEST: Use oliver's id
+//        if originalTransactionId == "1000000378980806" {
+//            presentWarning(.Red, with: originalTransactionId)
+//            return .Red
+//        }
         let cards: [CardType] = [.Red, .Yellow]
         for card in cards {
             let cardKey = getCardKey(card)
